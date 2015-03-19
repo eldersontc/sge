@@ -10,7 +10,7 @@ import javax.ws.rs.core.UriInfo;
  *
  * @author elderson
  */
-@Path("generic")
+@Path("UsuarioSRV")
 public class UsuarioSRV {
     
     
