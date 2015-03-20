@@ -5,7 +5,7 @@ import com.sge.modulos.administracion.negocios.MenuDTO;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
@@ -24,15 +24,16 @@ public class MenuSRV {
     public MenuSRV() {
     }
 
-    @GET
+    @POST
     @Path("ObtenerMenus")
     @Consumes("application/json")
     @Produces("application/json")
     public String ObtenerMenus(String json) {
         List<Object> resultado = new ArrayList<>();
+        int idUsuario = new Gson().fromJson(json, int.class);
         try {
             MenuDTO menuDTO = new MenuDTO();
-            List<Object[]> lista = menuDTO.ObtenerMenus(1);
+            List<Object[]> lista = menuDTO.ObtenerMenus(idUsuario);
             resultado.add(true);
             resultado.add(lista);
         } catch (Exception e) {
