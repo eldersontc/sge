@@ -29,8 +29,8 @@ public class ApplicationConfig extends Application {
      * If required, comment out calling this method in getClasses().
      */
     private void addRestResourceClasses(Set<Class<?>> resources) {
-        resources.add(com.sge.modulos.administracion.servicios.UsuarioSRV.class);
         resources.add(com.sge.modulos.administracion.servicios.MenuSRV.class);
+        resources.add(com.sge.modulos.administracion.servicios.UsuarioSRV.class);
     }
     
 }

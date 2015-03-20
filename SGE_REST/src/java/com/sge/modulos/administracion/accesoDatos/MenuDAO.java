@@ -8,8 +8,15 @@ import java.util.List;
  */
 public class MenuDAO extends AdministracionDAO{
     
-    public List<Object[]> ObtenerMenus(){
-        String sql = "SELECT * FROM Administracion.Menu";
+    public List<Object[]> ObtenerMenus(int idUsuario){
+        String sql = "SELECT \n" +
+                        "Menu.idMenu, Menu.idMenuPadre, Menu.nombre \n" +
+                     "FROM \n" +
+                        "Administracion.PerfilUsuario AS PerfilUsuario INNER JOIN \n" +
+                        "Administracion.Menu AS Menu INNER JOIN \n" +
+                        "Administracion.PerfilMenu AS PerfilMenu ON Menu.idMenu = PerfilMenu.idMenu ON PerfilUsuario.idPerfil = PerfilMenu.idPerfil \n" +
+                     "WHERE \n" +
+                        "PerfilUsuario.idUsuario = " + idUsuario;
         return super.Query(sql);
     }
 }
