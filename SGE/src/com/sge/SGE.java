@@ -5,6 +5,8 @@
  */
 package com.sge;
 
+import com.google.gson.Gson;
+import com.sge.modulos.administracion.cliAdministracion;
 import com.sge.modulos.administracion.lisUsuario;
 
 /**
@@ -18,6 +20,32 @@ public class SGE extends javax.swing.JFrame {
      */
     public SGE() {
         initComponents();
+        LlenarMenus();
+    }
+    
+    public void LlenarMenus(){
+        cliAdministracion cliente = new cliAdministracion();
+        try {
+            String json = cliente.ObtenerMenus(new Gson().toJson(1));
+            Object[] resultado = new Gson().fromJson(json, Object[].class);
+            if((boolean)resultado[0] == true){
+                
+            }
+        } catch (Exception e) {
+        } finally {
+            cliente.close();
+        }
+    }
+    
+    public void LanzarFormulario(String menu){
+        switch (menu) {
+            case "Usuarios":
+                lisUsuario lisUsuario = new lisUsuario();
+                lisUsuario.show();
+                break;
+            default:
+                break;
+        }
     }
 
     /**
