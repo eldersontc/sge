@@ -12,8 +12,8 @@ import org.hibernate.cfg.Configuration;
  */
 public class BaseDAO {
     
-    private static Session sesion;
-    private static Transaction transaccion;
+    private Session sesion;
+    private Transaction transaccion;
 
     @SuppressWarnings("deprecation")
     public void AbrirSesion(List<String> recursos) {
@@ -58,11 +58,15 @@ public class BaseDAO {
         sesion.update(obj);
     }
     
-    public List<Object[]> Query(String sql) {
+    public List<Object[]> ObtenerLista(String sql) {
         return sesion.createSQLQuery(sql).list();
     }
+    
+    public int Ejecutar(String sql) {
+        return sesion.createSQLQuery(sql).executeUpdate();
+    }
 
-    public static Session getSesion() {
+    public Session getSesion() {
         return sesion;
     }
 }

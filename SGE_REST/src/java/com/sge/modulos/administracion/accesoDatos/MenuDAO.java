@@ -17,6 +17,6 @@ public class MenuDAO extends AdministracionDAO{
                         "Administracion.PerfilMenu AS PerfilMenu ON Menu.idMenu = PerfilMenu.idMenu ON PerfilUsuario.idPerfil = PerfilMenu.idPerfil \n" +
                      "WHERE \n" +
                         "PerfilUsuario.idUsuario = " + idUsuario;
-        return super.Query(sql);
+        return super.ObtenerLista(sql);
     }
 }

@@ -1,6 +1,12 @@
 package com.sge.modulos.administracion.servicios;
 
-import javax.ws.rs.GET;
+import com.google.gson.Gson;
+import com.sge.modulos.administracion.entidades.Usuario;
+import com.sge.modulos.administracion.negocios.UsuarioDTO;
+import java.util.ArrayList;
+import java.util.List;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
@@ -20,9 +26,72 @@ public class UsuarioSRV {
     public UsuarioSRV() {
     }
 
-    @GET
-    @Produces("application/xml")
-    public String getXml() {
-        return "XML";
+    @POST
+    @Path("ObtenerUsuarios")
+    @Consumes("application/json")
+    @Produces("application/json")
+    public String ObtenerUsuarios(String json) {
+        List<Object> resultado = new ArrayList<>();
+        //int idUsuario = new Gson().fromJson(json, int.class);
+        try {
+            UsuarioDTO usuarioDTO = new UsuarioDTO();
+            List<Object[]> lista = usuarioDTO.ObtenerUsuarios();
+            resultado.add(true);
+            resultado.add(lista);
+        } catch (Exception e) {
+            resultado.add(false);
+        }
+        return new Gson().toJson(resultado);
+    }
+    
+    @POST
+    @Path("RegistrarUsuario")
+    @Consumes("application/json")
+    @Produces("application/json")
+    public String RegistrarUsuario(String json) {
+        List<Object> resultado = new ArrayList<>();
+        Usuario usuario = new Gson().fromJson(json, Usuario.class);
+        try {
+            UsuarioDTO usuarioDTO = new UsuarioDTO();
+            usuarioDTO.RegistrarUsuario(usuario);
+            resultado.add(true);
+        } catch (Exception e) {
+            resultado.add(false);
+        }
+        return new Gson().toJson(resultado);
+    }
+    
+    @POST
+    @Path("ActualizarUsuario")
+    @Consumes("application/json")
+    @Produces("application/json")
+    public String ActualizarUsuario(String json) {
+        List<Object> resultado = new ArrayList<>();
+        Usuario usuario = new Gson().fromJson(json, Usuario.class);
+        try {
+            UsuarioDTO usuarioDTO = new UsuarioDTO();
+            usuarioDTO.ActualizarUsuario(usuario);
+            resultado.add(true);
+        } catch (Exception e) {
+            resultado.add(false);
+        }
+        return new Gson().toJson(resultado);
+    }
+    
+    @POST
+    @Path("EliminarUsuario")
+    @Consumes("application/json")
+    @Produces("application/json")
+    public String EliminarUsuario(String json) {
+        List<Object> resultado = new ArrayList<>();
+        int idUsuario = new Gson().fromJson(json, int.class);
+        try {
+            UsuarioDTO usuarioDTO = new UsuarioDTO();
+            usuarioDTO.EliminarUsuario(idUsuario);
+            resultado.add(true);
+        } catch (Exception e) {
+            resultado.add(false);
+        }
+        return new Gson().toJson(resultado);
     }
 }
