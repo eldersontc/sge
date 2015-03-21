@@ -3,10 +3,17 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.sge.modulos.administracion;
+package com.sge.modulos.administracion.formularios;
 
+import com.sge.modulos.administracion.cliente.cliAdministracion;
+import com.google.gson.Gson;
 import com.sge.base.controles.ButtonColumn;
+import com.sge.base.utils.Utils;
+import com.sge.modulos.administracion.clases.Usuario;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ImageIcon;
@@ -24,8 +31,99 @@ public class lisUsuario extends javax.swing.JInternalFrame {
      */
     public lisUsuario() {
         initComponents();
+        Init();
     }
 
+    ImageIcon Icon_Edit = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/edit-16.png"));
+    ImageIcon Icon_Save = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/edit-16.png"));
+    ImageIcon Icon_Dele = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/edit-16.png"));
+
+    Action edit = new AbstractAction() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            EditarUsuario();
+        }
+    };
+    
+    Action save = new AbstractAction() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            GuardarUsuario();
+        }
+    };
+    
+    Action dele = new AbstractAction() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            EliminarUsuario();
+        }
+    };
+    
+    public void Init() {
+        ObtenerUsuarios();
+    }
+
+    public void ObtenerUsuarios() {
+        cliAdministracion cliente = new cliAdministracion();
+        try {
+            String json = cliente.ObtenerUsuarios("");
+            cliente.close();
+            Object[] resultado = new Gson().fromJson(json, Object[].class);
+
+            DefaultTableModel modelo = (DefaultTableModel) tbUsuarios.getModel();
+            modelo.setRowCount(0);
+            List<List<Object>> filas = (List<List<Object>>) resultado[1];
+            for (List<Object> fila : filas) {
+                modelo.addRow(new Object[]{ ((Double)fila.get(0)).intValue(), fila.get(1), fila.get(2), fila.get(3), Icon_Edit, Icon_Save, Icon_Dele });
+            }
+            ButtonColumn btn_edit = new ButtonColumn(tbUsuarios, edit, 4);
+            btn_edit.setMnemonic(KeyEvent.VK_D);
+            ButtonColumn btn_save = new ButtonColumn(tbUsuarios, save, 5);
+            btn_save.setMnemonic(KeyEvent.VK_D);
+            ButtonColumn btn_dele = new ButtonColumn(tbUsuarios, dele, 6);
+            btn_dele.setMnemonic(KeyEvent.VK_D);
+        } catch (Exception e) {
+            System.out.print(e);
+        } finally {
+            cliente.close();
+        }
+    }
+
+    public void EditarUsuario(){
+        
+    }
+    
+    public void GuardarUsuario(){
+        cliAdministracion cliente = new cliAdministracion();
+        try {
+            Usuario usuario = new Usuario();
+            usuario.setIdUsuario(Utils.ObtenerValorCelda(tbUsuarios, 0));
+            usuario.setUsuario(Utils.ObtenerValorCelda(tbUsuarios, 1));
+            usuario.setClave(Utils.ObtenerValorCelda(tbUsuarios, 2));
+            usuario.setActivo(Utils.ObtenerValorCelda(tbUsuarios, 3));
+            if(usuario.getIdUsuario() == 0){
+                cliente.RegistrarUsuario(usuario);
+            } else {
+                cliente.ActualizarUsuario(usuario);
+            }
+            ObtenerUsuarios();
+        } catch (Exception e) {
+            System.out.print(e);
+        } finally {
+            cliente.close();
+        }
+    }
+    
+    public void EliminarUsuario(){
+        cliAdministracion cliente = new cliAdministracion();
+        try {
+            
+        } catch (Exception e) {
+        } finally {
+            cliente.close();
+        }
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -39,7 +137,7 @@ public class lisUsuario extends javax.swing.JInternalFrame {
         lblTitulo = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tbUsuarios = new javax.swing.JTable();
         jButton1 = new javax.swing.JButton();
 
         setClosable(true);
@@ -71,24 +169,36 @@ public class lisUsuario extends javax.swing.JInternalFrame {
         jPanel1.setBackground(java.awt.Color.white);
         jPanel1.setBorder(null);
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tbUsuarios.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {"test", "test",  new Boolean(true), "", "", ""}
+
             },
             new String [] {
-                "USUARIO", "CLAVE", "ACTIVO", "EDITAR", "GUARDAR", "ELIMINAR"
+                "IDUSUARIO", "USUARIO", "CLAVE", "ACTIVO", "EDITAR", "GUARDAR", "ELIMINAR"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.Object.class, java.lang.Boolean.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Boolean.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, true, true, true, true, true, true
             };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
             }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
         });
-        jTable1.setRowHeight(25);
-        jScrollPane1.setViewportView(jTable1);
+        tbUsuarios.setRowHeight(25);
+        jScrollPane1.setViewportView(tbUsuarios);
+        if (tbUsuarios.getColumnModel().getColumnCount() > 0) {
+            tbUsuarios.getColumnModel().getColumn(0).setMinWidth(0);
+            tbUsuarios.getColumnModel().getColumn(0).setPreferredWidth(0);
+            tbUsuarios.getColumnModel().getColumn(0).setMaxWidth(0);
+        }
 
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sge/base/imagenes/edit-16.png"))); // NOI18N
         jButton1.setText("jButton1");
@@ -141,21 +251,22 @@ public class lisUsuario extends javax.swing.JInternalFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-        ImageIcon Icon = new javax.swing.ImageIcon(getClass().getResource("/com/sge/base/imagenes/edit-16.png"));
-        model.addRow(new Object[]{"Column 1", "Column 2", true,Icon, "Column 5", "Column 6"});
         
-        Action delete = new AbstractAction()
-        {
-            public void actionPerformed(ActionEvent e)
-            {
-                JTable table = (JTable)e.getSource();
-                int modelRow = Integer.valueOf( e.getActionCommand() );
-                ((DefaultTableModel)table.getModel()).removeRow(modelRow);
-            }
-        };
- 
-        ButtonColumn buttonColumn = new ButtonColumn(jTable1, delete, 3);
+        Utils.AgregarFila(tbUsuarios, new Object[]{ 0, "", "", false, Icon_Edit, Icon_Save, Icon_Dele });
+        
+//        DefaultTableModel model = (DefaultTableModel) tbUsuarios.getModel();
+//        ImageIcon Icon = new javax.swing.ImageIcon(getClass().getResource("/com/sge/base/imagenes/edit-16.png"));
+//        model.addRow(new Object[]{"Column 1", "Column 2", true, Icon, "Column 5", "Column 6"});
+//
+//        Action delete = new AbstractAction() {
+//            public void actionPerformed(ActionEvent e) {
+//                JTable table = (JTable) e.getSource();
+//                int modelRow = Integer.valueOf(e.getActionCommand());
+//                ((DefaultTableModel) table.getModel()).removeRow(modelRow);
+//            }
+//        };
+//
+//        ButtonColumn buttonColumn = new ButtonColumn(tbUsuarios, delete, 3);
         //buttonColumn.setMnemonic(KeyEvent.VK_D);
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -164,8 +275,8 @@ public class lisUsuario extends javax.swing.JInternalFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JLabel lblTitulo;
     private javax.swing.JPanel pnlTitulo;
+    private javax.swing.JTable tbUsuarios;
     // End of variables declaration//GEN-END:variables
 }
