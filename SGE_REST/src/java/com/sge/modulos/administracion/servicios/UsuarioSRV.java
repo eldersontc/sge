@@ -32,7 +32,6 @@ public class UsuarioSRV {
     @Produces("application/json")
     public String ObtenerUsuarios(String json) {
         List<Object> resultado = new ArrayList<>();
-        //int idUsuario = new Gson().fromJson(json, int.class);
         try {
             UsuarioDTO usuarioDTO = new UsuarioDTO();
             List<Object[]> lista = usuarioDTO.ObtenerUsuarios();
