@@ -22,7 +22,7 @@ public class UsuarioDAO extends AdministracionDAO {
     }
     
     public int EliminarUsuario(int idUsuario) {
-        String sql = "DELETE Administracion.Usuario WHERE idUsuario = " + idUsuario;
+        String sql = "DELETE FROM Administracion.Usuario WHERE idUsuario = " + idUsuario;
         return super.Ejecutar(sql);
     }
 }
