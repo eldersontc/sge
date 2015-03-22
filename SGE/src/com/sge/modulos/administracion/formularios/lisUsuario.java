@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.sge.modulos.administracion.formularios;
 
 import com.sge.modulos.administracion.cliente.cliAdministracion;
@@ -12,12 +7,10 @@ import com.sge.base.utils.Utils;
 import com.sge.modulos.administracion.clases.Usuario;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-import java.util.ArrayList;
 import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ImageIcon;
-import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -34,31 +27,23 @@ public class lisUsuario extends javax.swing.JInternalFrame {
         Init();
     }
 
-    ImageIcon Icon_Edit = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/edit-16.png"));
-    ImageIcon Icon_Save = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/edit-16.png"));
-    ImageIcon Icon_Dele = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/edit-16.png"));
+    ImageIcon Icon_Save = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/save-16.png"));
+    ImageIcon Icon_Dele = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/delete-16.png"));
 
-    Action edit = new AbstractAction() {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            EditarUsuario();
-        }
-    };
-    
     Action save = new AbstractAction() {
         @Override
         public void actionPerformed(ActionEvent e) {
             GuardarUsuario();
         }
     };
-    
+
     Action dele = new AbstractAction() {
         @Override
         public void actionPerformed(ActionEvent e) {
             EliminarUsuario();
         }
     };
-    
+
     public void Init() {
         ObtenerUsuarios();
     }
@@ -74,13 +59,11 @@ public class lisUsuario extends javax.swing.JInternalFrame {
             modelo.setRowCount(0);
             List<List<Object>> filas = (List<List<Object>>) resultado[1];
             for (List<Object> fila : filas) {
-                modelo.addRow(new Object[]{ ((Double)fila.get(0)).intValue(), fila.get(1), fila.get(2), fila.get(3), Icon_Edit, Icon_Save, Icon_Dele });
+                modelo.addRow(new Object[]{((Double) fila.get(0)).intValue(), fila.get(1), fila.get(2), fila.get(3), Icon_Save, Icon_Dele});
             }
-            ButtonColumn btn_edit = new ButtonColumn(tbUsuarios, edit, 4);
-            btn_edit.setMnemonic(KeyEvent.VK_D);
-            ButtonColumn btn_save = new ButtonColumn(tbUsuarios, save, 5);
+            ButtonColumn btn_save = new ButtonColumn(tbUsuarios, save, 4);
             btn_save.setMnemonic(KeyEvent.VK_D);
-            ButtonColumn btn_dele = new ButtonColumn(tbUsuarios, dele, 6);
+            ButtonColumn btn_dele = new ButtonColumn(tbUsuarios, dele, 5);
             btn_dele.setMnemonic(KeyEvent.VK_D);
         } catch (Exception e) {
             System.out.print(e);
@@ -89,11 +72,11 @@ public class lisUsuario extends javax.swing.JInternalFrame {
         }
     }
 
-    public void EditarUsuario(){
+    public void EditarUsuario() {
         
     }
-    
-    public void GuardarUsuario(){
+
+    public void GuardarUsuario() {
         cliAdministracion cliente = new cliAdministracion();
         try {
             Usuario usuario = new Usuario();
@@ -101,10 +84,10 @@ public class lisUsuario extends javax.swing.JInternalFrame {
             usuario.setUsuario(Utils.ObtenerValorCelda(tbUsuarios, 1));
             usuario.setClave(Utils.ObtenerValorCelda(tbUsuarios, 2));
             usuario.setActivo(Utils.ObtenerValorCelda(tbUsuarios, 3));
-            if(usuario.getIdUsuario() == 0){
-                cliente.RegistrarUsuario(usuario);
+            if (usuario.getIdUsuario() == 0) {
+                cliente.RegistrarUsuario(new Gson().toJson(usuario));
             } else {
-                cliente.ActualizarUsuario(usuario);
+                cliente.ActualizarUsuario(new Gson().toJson(usuario));
             }
             ObtenerUsuarios();
         } catch (Exception e) {
@@ -113,17 +96,24 @@ public class lisUsuario extends javax.swing.JInternalFrame {
             cliente.close();
         }
     }
-    
-    public void EliminarUsuario(){
+
+    public void EliminarUsuario() {
         cliAdministracion cliente = new cliAdministracion();
         try {
-            
+            int idUsuario = Utils.ObtenerValorCelda(tbUsuarios, 0);
+            if (idUsuario == 0) {
+                Utils.EliminarFila(tbUsuarios);
+            } else {
+                cliente.EliminarUsuario(new Gson().toJson(idUsuario));
+                ObtenerUsuarios();
+            }
         } catch (Exception e) {
+            System.out.print(e);
         } finally {
             cliente.close();
         }
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -135,34 +125,47 @@ public class lisUsuario extends javax.swing.JInternalFrame {
 
         pnlTitulo = new javax.swing.JPanel();
         lblTitulo = new javax.swing.JLabel();
+        btnNuevo = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tbUsuarios = new javax.swing.JTable();
-        jButton1 = new javax.swing.JButton();
 
         setClosable(true);
 
         pnlTitulo.setBackground(new java.awt.Color(67, 100, 130));
         pnlTitulo.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        lblTitulo.setFont(new java.awt.Font("Ubuntu", 1, 15)); // NOI18N
+        lblTitulo.setFont(new java.awt.Font("Ubuntu", 1, 18)); // NOI18N
         lblTitulo.setForeground(java.awt.Color.white);
+        lblTitulo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sge/base/imagenes/list-view-16.png"))); // NOI18N
         lblTitulo.setText("LISTADO DE USUARIOS");
+
+        btnNuevo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sge/base/imagenes/add-16.png"))); // NOI18N
+        btnNuevo.setText("Nuevo");
+        btnNuevo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNuevoActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout pnlTituloLayout = new javax.swing.GroupLayout(pnlTitulo);
         pnlTitulo.setLayout(pnlTituloLayout);
         pnlTituloLayout.setHorizontalGroup(
             pnlTituloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlTituloLayout.createSequentialGroup()
-                .addGap(22, 22, 22)
-                .addComponent(lblTitulo)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap()
+                .addComponent(lblTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnNuevo)
+                .addContainerGap())
         );
         pnlTituloLayout.setVerticalGroup(
             pnlTituloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlTituloLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(lblTitulo)
+                .addGroup(pnlTituloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblTitulo)
+                    .addComponent(btnNuevo))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -174,14 +177,14 @@ public class lisUsuario extends javax.swing.JInternalFrame {
 
             },
             new String [] {
-                "IDUSUARIO", "USUARIO", "CLAVE", "ACTIVO", "EDITAR", "GUARDAR", "ELIMINAR"
+                "IDUSUARIO", "USUARIO", "CLAVE", "ACTIVO", "GUARDAR", "ELIMINAR"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Boolean.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Boolean.class, java.lang.Object.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                false, true, true, true, true, true, true
+                false, true, true, true, true, true
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -198,15 +201,9 @@ public class lisUsuario extends javax.swing.JInternalFrame {
             tbUsuarios.getColumnModel().getColumn(0).setMinWidth(0);
             tbUsuarios.getColumnModel().getColumn(0).setPreferredWidth(0);
             tbUsuarios.getColumnModel().getColumn(0).setMaxWidth(0);
+            tbUsuarios.getColumnModel().getColumn(4).setPreferredWidth(10);
+            tbUsuarios.getColumnModel().getColumn(5).setPreferredWidth(10);
         }
-
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sge/base/imagenes/edit-16.png"))); // NOI18N
-        jButton1.setText("jButton1");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -214,21 +211,15 @@ public class lisUsuario extends javax.swing.JInternalFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 554, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 551, Short.MAX_VALUE)
                 .addContainerGap())
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(153, 153, 153)
-                .addComponent(jButton1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jButton1)
-                .addContainerGap(81, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 273, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -249,30 +240,14 @@ public class lisUsuario extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
         // TODO add your handling code here:
-        
-        Utils.AgregarFila(tbUsuarios, new Object[]{ 0, "", "", false, Icon_Edit, Icon_Save, Icon_Dele });
-        
-//        DefaultTableModel model = (DefaultTableModel) tbUsuarios.getModel();
-//        ImageIcon Icon = new javax.swing.ImageIcon(getClass().getResource("/com/sge/base/imagenes/edit-16.png"));
-//        model.addRow(new Object[]{"Column 1", "Column 2", true, Icon, "Column 5", "Column 6"});
-//
-//        Action delete = new AbstractAction() {
-//            public void actionPerformed(ActionEvent e) {
-//                JTable table = (JTable) e.getSource();
-//                int modelRow = Integer.valueOf(e.getActionCommand());
-//                ((DefaultTableModel) table.getModel()).removeRow(modelRow);
-//            }
-//        };
-//
-//        ButtonColumn buttonColumn = new ButtonColumn(tbUsuarios, delete, 3);
-        //buttonColumn.setMnemonic(KeyEvent.VK_D);
-    }//GEN-LAST:event_jButton1ActionPerformed
+        Utils.AgregarFila(tbUsuarios, new Object[]{0, "", "", false, Icon_Save, Icon_Dele});
+    }//GEN-LAST:event_btnNuevoActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton btnNuevo;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblTitulo;

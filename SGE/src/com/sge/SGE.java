@@ -68,7 +68,7 @@ public class SGE extends javax.swing.JFrame {
         pnlBanner.setBackground(new java.awt.Color(67, 100, 130));
         pnlBanner.setBorder(null);
 
-        lblTituloBanner.setFont(new java.awt.Font("Ubuntu", 1, 15)); // NOI18N
+        lblTituloBanner.setFont(new java.awt.Font("Ubuntu", 1, 18)); // NOI18N
         lblTituloBanner.setForeground(java.awt.Color.white);
         lblTituloBanner.setText("SISTEMA DE GESTIÓN EMPRESARIAL");
 
@@ -76,17 +76,17 @@ public class SGE extends javax.swing.JFrame {
         pnlBanner.setLayout(pnlBannerLayout);
         pnlBannerLayout.setHorizontalGroup(
             pnlBannerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlBannerLayout.createSequentialGroup()
-                .addGap(67, 67, 67)
-                .addComponent(lblTituloBanner)
-                .addContainerGap(70, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlBannerLayout.createSequentialGroup()
+                .addGap(41, 41, 41)
+                .addComponent(lblTituloBanner, javax.swing.GroupLayout.DEFAULT_SIZE, 326, Short.MAX_VALUE)
+                .addGap(33, 33, 33))
         );
         pnlBannerLayout.setVerticalGroup(
             pnlBannerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlBannerLayout.createSequentialGroup()
-                .addGap(23, 23, 23)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlBannerLayout.createSequentialGroup()
+                .addContainerGap(24, Short.MAX_VALUE)
                 .addComponent(lblTituloBanner, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(21, Short.MAX_VALUE))
+                .addGap(20, 20, 20))
         );
 
         pnlMenu.setBackground(new java.awt.Color(67, 100, 130));
@@ -124,7 +124,7 @@ public class SGE extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(pnlBanner, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(pnlMenu, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jdpPrincipal)
+            .addComponent(jdpPrincipal, javax.swing.GroupLayout.Alignment.TRAILING)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

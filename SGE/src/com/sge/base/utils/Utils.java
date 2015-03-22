@@ -11,12 +11,16 @@ public class Utils {
 
     public static <T> T ObtenerValorCelda(JTable tabla, int columna) {
         DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
-        int fila = tabla.getSelectedRow();
-        return (T) modelo.getValueAt(fila, columna);
+        return (T) modelo.getValueAt(tabla.getSelectedRow(), columna);
     }
 
     public static void AgregarFila(JTable tabla, Object[] fila) {
         DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
         modelo.addRow(fila);
+    }
+
+    public static void EliminarFila(JTable tabla) {
+        DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
+        modelo.removeRow(tabla.getSelectedRow());
     }
 }
