@@ -17,7 +17,7 @@ public class UsuarioDAO extends AdministracionDAO {
     }
 
     public int ActualizarUsuario(int idUsuario, String usuario, String clave, boolean activo) {
-        String sql = "UPDATE Administracion.Usuario SET usuario = '" + usuario + "', clave = '" + clave + "', activo = " + activo + " WHERE idUsuario = " + idUsuario;
+        String sql = String.format("UPDATE Administracion.Usuario SET usuario = '%s', clave = '%s', activo = %b WHERE idUsuario = %d", usuario, clave, activo, idUsuario);
         return super.Ejecutar(sql);
     }
     

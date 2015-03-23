@@ -11,7 +11,7 @@ import org.hibernate.cfg.Configuration;
  * @author elderson
  */
 public class BaseDAO {
-    
+
     private Session sesion;
     private Transaction transaccion;
 
@@ -29,12 +29,13 @@ public class BaseDAO {
             throw new ExceptionInInitializerError(ex);
         }
     }
-    
-    public void CerrarSesion()
-    {
-        if (sesion != null && sesion.isOpen()) sesion.close();
+
+    public void CerrarSesion() {
+        if (sesion != null && sesion.isOpen()) {
+            sesion.close();
+        }
     }
-    
+
     public void IniciarTransaccion(List<String> recursos) {
         if (sesion == null) {
             AbrirSesion(recursos);
@@ -57,11 +58,15 @@ public class BaseDAO {
     public void Actualizar(Object obj) {
         sesion.update(obj);
     }
-    
+
+    public <T> T ObtenerPorId(Class clase, int id) {
+        return (T) sesion.get(clase, id);
+    }
+
     public List<Object[]> ObtenerLista(String sql) {
         return sesion.createSQLQuery(sql).list();
     }
-    
+
     public int Ejecutar(String sql) {
         return sesion.createSQLQuery(sql).executeUpdate();
     }

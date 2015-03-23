@@ -31,14 +31,15 @@ public class UsuarioSRV {
     @Consumes("application/json")
     @Produces("application/json")
     public String ObtenerUsuarios(String json) {
-        List<Object> resultado = new ArrayList<>();
+        List<String> resultado = new ArrayList<>();
         try {
             UsuarioDTO usuarioDTO = new UsuarioDTO();
             List<Object[]> lista = usuarioDTO.ObtenerUsuarios();
-            resultado.add(true);
-            resultado.add(lista);
+            resultado.add(new Gson().toJson(true));
+            resultado.add(new Gson().toJson(lista));
         } catch (Exception e) {
-            resultado.add(false);
+            resultado.clear();
+            resultado.add(new Gson().toJson(false));
         }
         return new Gson().toJson(resultado);
     }
@@ -48,14 +49,14 @@ public class UsuarioSRV {
     @Consumes("application/json")
     @Produces("application/json")
     public String RegistrarUsuario(String json) {
-        List<Object> resultado = new ArrayList<>();
+        List<String> resultado = new ArrayList<>();
         Usuario usuario = new Gson().fromJson(json, Usuario.class);
         try {
             UsuarioDTO usuarioDTO = new UsuarioDTO();
             usuarioDTO.RegistrarUsuario(usuario);
-            resultado.add(true);
+            resultado.add(new Gson().toJson(true));
         } catch (Exception e) {
-            resultado.add(false);
+            resultado.add(new Gson().toJson(false));
         }
         return new Gson().toJson(resultado);
     }
@@ -65,14 +66,14 @@ public class UsuarioSRV {
     @Consumes("application/json")
     @Produces("application/json")
     public String ActualizarUsuario(String json) {
-        List<Object> resultado = new ArrayList<>();
+        List<String> resultado = new ArrayList<>();
         Usuario usuario = new Gson().fromJson(json, Usuario.class);
         try {
             UsuarioDTO usuarioDTO = new UsuarioDTO();
             usuarioDTO.ActualizarUsuario(usuario);
-            resultado.add(true);
+            resultado.add(new Gson().toJson(true));
         } catch (Exception e) {
-            resultado.add(false);
+            resultado.add(new Gson().toJson(false));
         }
         return new Gson().toJson(resultado);
     }
@@ -82,14 +83,14 @@ public class UsuarioSRV {
     @Consumes("application/json")
     @Produces("application/json")
     public String EliminarUsuario(String json) {
-        List<Object> resultado = new ArrayList<>();
+        List<String> resultado = new ArrayList<>();
         int idUsuario = new Gson().fromJson(json, int.class);
         try {
             UsuarioDTO usuarioDTO = new UsuarioDTO();
             usuarioDTO.EliminarUsuario(idUsuario);
-            resultado.add(true);
+            resultado.add(new Gson().toJson(true));
         } catch (Exception e) {
-            resultado.add(false);
+            resultado.add(new Gson().toJson(false));
         }
         return new Gson().toJson(resultado);
     }

@@ -18,6 +18,7 @@ public class AdministracionDAO extends BaseDAO {
 //        recursos.add("com/sge/modulos/administracion/mapeos/PerfilUsuario.hbm.xml");
 //        recursos.add("com/sge/modulos/administracion/mapeos/PerfilMenu.hbm.xml");
         recursos.add("com/sge/modulos/administracion/mapeos/Usuario.hbm.xml");
+        recursos.add("com/sge/modulos/administracion/mapeos/Empleado.hbm.xml");
         return recursos;
     }
     
