@@ -25,13 +25,17 @@ public class regEmpleado extends javax.swing.JInternalFrame {
         Init(operacion, idEmpleado);
     }
 
+    int idEmpleado = 0;
+
     public void Init(String operacion, int idEmpleado) {
         lblTitulo.setText(operacion + lblTitulo.getText());
-        if(idEmpleado > 0)
+        this.idEmpleado = idEmpleado;
+        if (this.idEmpleado > 0) {
             ObtenerEmpleado(idEmpleado);
+        }
     }
 
-    public void ObtenerEmpleado(int idEmpleado){
+    public void ObtenerEmpleado(int idEmpleado) {
         cliAdministracion cliente = new cliAdministracion();
         try {
             String json = cliente.ObtenerEmpleado(new Gson().toJson(idEmpleado));
@@ -51,7 +55,39 @@ public class regEmpleado extends javax.swing.JInternalFrame {
             cliente.close();
         }
     }
-    
+
+    public void GuardarEmpleado() {
+        cliAdministracion cliente = new cliAdministracion();
+        try {
+            if (this.idEmpleado == 0) {
+                Empleado empleado = new Empleado();
+                empleado.setCodigo(txtCodigo.getText());
+                empleado.setNombre(txtNombre.getText());
+                empleado.setApellidoPaterno(txtApellidoPaterno.getText());
+                empleado.setApellidoMaterno(txtApellidoMaterno.getText());
+                empleado.setTipoDocumentoIdentidad(cboTipoDocumento.getSelectedItem().toString());
+                empleado.setDocumentoIdentidad(txtDocumento.getText());
+                empleado.setActivo(chkActivo.isSelected());
+                cliente.RegistrarEmpleado(empleado);
+            } else {
+                Empleado empleado = new Empleado();
+                empleado.setIdEmpleado(this.idEmpleado);
+                empleado.setCodigo(txtCodigo.getText());
+                empleado.setNombre(txtNombre.getText());
+                empleado.setApellidoPaterno(txtApellidoPaterno.getText());
+                empleado.setApellidoMaterno(txtApellidoMaterno.getText());
+                empleado.setTipoDocumentoIdentidad(cboTipoDocumento.getSelectedItem().toString());
+                empleado.setDocumentoIdentidad(txtDocumento.getText());
+                empleado.setActivo(chkActivo.isSelected());
+                cliente.ActualizarEmpleado(empleado);
+            }
+        } catch (Exception e) {
+            System.out.print(e);
+        } finally {
+            cliente.close();
+        }
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -239,11 +275,13 @@ public class regEmpleado extends javax.swing.JInternalFrame {
 
     private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
         // TODO add your handling code here:
+        GuardarEmpleado();
         this.setVisible(false);
     }//GEN-LAST:event_btnAceptarActionPerformed
 
     private void btnCancelar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelar1ActionPerformed
         // TODO add your handling code here:
+        GuardarEmpleado();
         this.setVisible(false);
     }//GEN-LAST:event_btnCancelar1ActionPerformed
 

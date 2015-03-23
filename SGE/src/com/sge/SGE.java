@@ -143,8 +143,8 @@ public class SGE extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        lisUsuario lista = new lisUsuario();
-        //lisEmpleado lista = new lisEmpleado();
+        //lisUsuario lista = new lisUsuario();
+        lisEmpleado lista = new lisEmpleado();
         //regEmpleado lista = new regEmpleado();
         jdpPrincipal.add(lista);
         lista.setVisible(true);
