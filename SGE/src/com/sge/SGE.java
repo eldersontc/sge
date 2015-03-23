@@ -7,7 +7,9 @@ package com.sge;
 
 import com.google.gson.Gson;
 import com.sge.modulos.administracion.cliente.cliAdministracion;
+import com.sge.modulos.administracion.formularios.lisEmpleado;
 import com.sge.modulos.administracion.formularios.lisUsuario;
+import com.sge.modulos.administracion.formularios.regEmpleado;
 
 /**
  *
@@ -141,9 +143,11 @@ public class SGE extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        lisUsuario lisUsuario = new lisUsuario();
-        jdpPrincipal.add(lisUsuario);
-        lisUsuario.setVisible(true);
+        lisUsuario lista = new lisUsuario();
+        //lisEmpleado lista = new lisEmpleado();
+        //regEmpleado lista = new regEmpleado();
+        jdpPrincipal.add(lista);
+        lista.setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**

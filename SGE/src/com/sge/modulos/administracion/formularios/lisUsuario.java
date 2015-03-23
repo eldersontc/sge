@@ -2,6 +2,7 @@ package com.sge.modulos.administracion.formularios;
 
 import com.sge.modulos.administracion.cliente.cliAdministracion;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.sge.base.controles.ButtonColumn;
 import com.sge.base.utils.Utils;
 import com.sge.modulos.administracion.clases.Usuario;
@@ -53,14 +54,17 @@ public class lisUsuario extends javax.swing.JInternalFrame {
         try {
             String json = cliente.ObtenerUsuarios("");
             cliente.close();
-            Object[] resultado = new Gson().fromJson(json, Object[].class);
+            String[] resultado = new Gson().fromJson(json, String[].class);
 
             DefaultTableModel modelo = (DefaultTableModel) tbUsuarios.getModel();
             modelo.setRowCount(0);
-            List<List<Object>> filas = (List<List<Object>>) resultado[1];
-            for (List<Object> fila : filas) {
-                modelo.addRow(new Object[]{((Double) fila.get(0)).intValue(), fila.get(1), fila.get(2), fila.get(3), Icon_Save, Icon_Dele});
+            
+            List<Object[]> filas = (List<Object[]>) new Gson().fromJson(resultado[1], new TypeToken<List<Object[]>>(){}.getType());
+            
+            for (Object[] fila : filas) {
+                modelo.addRow(new Object[]{((Double) fila[0]).intValue(), fila[1], fila[2], fila[3], Icon_Save, Icon_Dele});
             }
+            
             ButtonColumn btn_save = new ButtonColumn(tbUsuarios, save, 4);
             btn_save.setMnemonic(KeyEvent.VK_D);
             ButtonColumn btn_dele = new ButtonColumn(tbUsuarios, dele, 5);
@@ -70,10 +74,6 @@ public class lisUsuario extends javax.swing.JInternalFrame {
         } finally {
             cliente.close();
         }
-    }
-
-    public void EditarUsuario() {
-        
     }
 
     public void GuardarUsuario() {
@@ -126,7 +126,7 @@ public class lisUsuario extends javax.swing.JInternalFrame {
         pnlTitulo = new javax.swing.JPanel();
         lblTitulo = new javax.swing.JLabel();
         btnNuevo = new javax.swing.JButton();
-        jPanel1 = new javax.swing.JPanel();
+        pnlContenido = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tbUsuarios = new javax.swing.JTable();
 
@@ -141,7 +141,7 @@ public class lisUsuario extends javax.swing.JInternalFrame {
         lblTitulo.setText("LISTADO DE USUARIOS");
 
         btnNuevo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sge/base/imagenes/add-16.png"))); // NOI18N
-        btnNuevo.setText("Nuevo");
+        btnNuevo.setText("NUEVO");
         btnNuevo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnNuevoActionPerformed(evt);
@@ -169,8 +169,8 @@ public class lisUsuario extends javax.swing.JInternalFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jPanel1.setBackground(java.awt.Color.white);
-        jPanel1.setBorder(null);
+        pnlContenido.setBackground(java.awt.Color.white);
+        pnlContenido.setBorder(null);
 
         tbUsuarios.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -205,18 +205,18 @@ public class lisUsuario extends javax.swing.JInternalFrame {
             tbUsuarios.getColumnModel().getColumn(5).setPreferredWidth(10);
         }
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        javax.swing.GroupLayout pnlContenidoLayout = new javax.swing.GroupLayout(pnlContenido);
+        pnlContenido.setLayout(pnlContenidoLayout);
+        pnlContenidoLayout.setHorizontalGroup(
+            pnlContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlContenidoLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 551, Short.MAX_VALUE)
                 .addContainerGap())
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        pnlContenidoLayout.setVerticalGroup(
+            pnlContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlContenidoLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 273, Short.MAX_VALUE)
                 .addContainerGap())
@@ -227,14 +227,14 @@ public class lisUsuario extends javax.swing.JInternalFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(pnlTitulo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(pnlContenido, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(pnlTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(2, 2, 2)
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(pnlContenido, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -248,9 +248,9 @@ public class lisUsuario extends javax.swing.JInternalFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnNuevo;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblTitulo;
+    private javax.swing.JPanel pnlContenido;
     private javax.swing.JPanel pnlTitulo;
     private javax.swing.JTable tbUsuarios;
     // End of variables declaration//GEN-END:variables

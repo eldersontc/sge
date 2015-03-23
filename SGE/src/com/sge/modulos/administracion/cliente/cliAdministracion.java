@@ -63,6 +63,40 @@ public class cliAdministracion {
     
     ////////////////////////////////////////////////////////////////////////////
 
+    ////////////////////////////////// EMPLEADO ////////////////////////////////
+    
+    public String ObtenerEmpleados(Object requestEntity) throws ClientErrorException {
+        WebTarget resource = client.target(BASE_URI).path("EmpleadoSRV");
+        resource = resource.path("ObtenerEmpleados");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
+    }
+    
+    public String ObtenerEmpleado(Object requestEntity) throws ClientErrorException {
+        WebTarget resource = client.target(BASE_URI).path("EmpleadoSRV");
+        resource = resource.path("ObtenerEmpleado");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
+    }
+    
+    public String RegistrarEmpleado(Object requestEntity) throws ClientErrorException {
+        WebTarget resource = client.target(BASE_URI).path("EmpleadoSRV");
+        resource = resource.path("RegistrarEmpleado");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
+    }
+    
+    public String ActualizarEmpleado(Object requestEntity) throws ClientErrorException {
+        WebTarget resource = client.target(BASE_URI).path("EmpleadoSRV");
+        resource = resource.path("ActualizarEmpleado");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
+    }
+    
+    public String EliminarEmpleado(Object requestEntity) throws ClientErrorException {
+        WebTarget resource = client.target(BASE_URI).path("EmpleadoSRV");
+        resource = resource.path("EliminarEmpleado");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
+    }
+    
+    ////////////////////////////////////////////////////////////////////////////
+    
     public void close() {
         client.close();
     }
