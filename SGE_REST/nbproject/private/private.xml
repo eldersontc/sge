@@ -6,10 +6,7 @@
             <file>file:/home/elderson/GITHUB/SGE/SGE_REST/src/java/com/sge/modulos/administracion/servicios/UsuarioSRV.java</file>
             <file>file:/home/elderson/GITHUB/SGE/SGE_REST/src/java/com/sge/modulos/administracion/negocios/EmpleadoDTO.java</file>
             <file>file:/home/elderson/GITHUB/SGE/SGE_REST/src/java/com/sge/modulos/administracion/servicios/EmpleadoSRV.java</file>
-            <file>file:/home/elderson/GITHUB/SGE/SGE_REST/src/java/com/sge/modulos/administracion/accesoDatos/UsuarioDAO.java</file>
-            <file>file:/home/elderson/GITHUB/SGE/SGE_REST/src/java/com/sge/modulos/administracion/accesoDatos/EmpleadoDAO.java</file>
-            <file>file:/home/elderson/GITHUB/SGE/SGE_REST/src/java/com/sge/modulos/administracion/entidades/Empleado.java</file>
-            <file>file:/home/elderson/GITHUB/SGE/SGE_REST/src/java/com/sge/modulos/administracion/negocios/UsuarioDTO.java</file>
+            <file>file:/home/elderson/GITHUB/SGE/SGE_REST/src/java/com/sge/base/accesoDatos/BaseDAO.java</file>
         </group>
     </open-files>
 </project-private>
