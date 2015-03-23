@@ -1,15 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.sge.modulos.administracion.formularios;
 
 import com.google.gson.Gson;
-import com.sge.base.utils.Utils;
 import com.sge.modulos.administracion.clases.Empleado;
 import com.sge.modulos.administracion.cliente.cliAdministracion;
-import java.util.List;
 
 /**
  *
@@ -114,7 +107,7 @@ public class regEmpleado extends javax.swing.JInternalFrame {
         cboTipoDocumento = new javax.swing.JComboBox();
         chkActivo = new javax.swing.JCheckBox();
         btnAceptar = new javax.swing.JButton();
-        btnCancelar1 = new javax.swing.JButton();
+        btnCancelar = new javax.swing.JButton();
 
         setClosable(true);
 
@@ -169,10 +162,10 @@ public class regEmpleado extends javax.swing.JInternalFrame {
             }
         });
 
-        btnCancelar1.setText("CANCELAR");
-        btnCancelar1.addActionListener(new java.awt.event.ActionListener() {
+        btnCancelar.setText("CANCELAR");
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCancelar1ActionPerformed(evt);
+                btnCancelarActionPerformed(evt);
             }
         });
 
@@ -205,7 +198,7 @@ public class regEmpleado extends javax.swing.JInternalFrame {
                     .addGroup(pnlContenidoLayout.createSequentialGroup()
                         .addComponent(btnAceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnCancelar1, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(39, 39, 39))
         );
         pnlContenidoLayout.setVerticalGroup(
@@ -250,7 +243,7 @@ public class regEmpleado extends javax.swing.JInternalFrame {
                     .addComponent(txtDocumento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(9, 9, 9)
                 .addGroup(pnlContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnCancelar1)
+                    .addComponent(btnCancelar)
                     .addComponent(btnAceptar))
                 .addContainerGap(24, Short.MAX_VALUE))
         );
@@ -279,16 +272,16 @@ public class regEmpleado extends javax.swing.JInternalFrame {
         this.setVisible(false);
     }//GEN-LAST:event_btnAceptarActionPerformed
 
-    private void btnCancelar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelar1ActionPerformed
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
         // TODO add your handling code here:
         GuardarEmpleado();
         this.setVisible(false);
-    }//GEN-LAST:event_btnCancelar1ActionPerformed
+    }//GEN-LAST:event_btnCancelarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAceptar;
-    private javax.swing.JButton btnCancelar1;
+    private javax.swing.JButton btnCancelar;
     private javax.swing.JComboBox cboTipoDocumento;
     private javax.swing.JCheckBox chkActivo;
     private javax.swing.JLabel lblApellidoMaterno;
