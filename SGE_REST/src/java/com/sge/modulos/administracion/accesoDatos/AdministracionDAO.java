@@ -2,7 +2,6 @@ package com.sge.modulos.administracion.accesoDatos;
 
 import com.sge.base.accesoDatos.BaseDAO;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -19,6 +18,7 @@ public class AdministracionDAO extends BaseDAO {
 //        recursos.add("com/sge/modulos/administracion/mapeos/PerfilMenu.hbm.xml");
         recursos.add("com/sge/modulos/administracion/mapeos/Usuario.hbm.xml");
         recursos.add("com/sge/modulos/administracion/mapeos/Empleado.hbm.xml");
+        recursos.add("com/sge/modulos/administracion/mapeos/Moneda.hbm.xml");
         return recursos;
     }
     

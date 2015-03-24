@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.sge.modulos.compras.entidades.Proveedor" table="Proveedor" schema="Compras">
+        <id name="idProveedor" column="idProveedor">
+            <generator class="sequence">
+                <param name="sequence">Compras.proveedor_idproveedor_seq</param>
+            </generator>
+        </id>
+        <property name="razonSocial" column="razonSocial"/>
+        <property name="tipoDocumentoIdentidad" column="tipoDocumentoIdentidad"/>
+        <property name="documentoIdentidad" column="documentoIdentidad"/>
+        <property name="nombreComercial" column="nombreComercial"/>
+        <property name="fechaUltimaCompra" column="fechaUltimaCompra" insert="false"/>
+        <property name="activo" column="activo"/>
+    </class>
+</hibernate-mapping>

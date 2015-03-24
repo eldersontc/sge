@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.sge.modulos.administracion.entidades.Moneda" table="Moneda" schema="Administracion">
+        <id name="idMoneda" column="idMoneda">
+            <generator class="sequence">
+                <param name="sequence">Administracion.moneda_idmoneda_seq</param>
+            </generator>
+        </id>
+        <property name="simbolo" column="simbolo"/>
+        <property name="nombre" column="nombre"/>
+        <property name="activo" column="activo"/>
+    </class>
+</hibernate-mapping>
