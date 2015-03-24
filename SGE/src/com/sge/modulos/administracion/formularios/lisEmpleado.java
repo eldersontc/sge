@@ -11,6 +11,7 @@ import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -57,13 +58,14 @@ public class lisEmpleado extends javax.swing.JInternalFrame {
 
             DefaultTableModel modelo = (DefaultTableModel) tbEmpleados.getModel();
             modelo.setRowCount(0);
-            
-            List<Object[]> filas = (List<Object[]>) new Gson().fromJson(resultado[1], new TypeToken<List<Object[]>>(){}.getType());
-            
+
+            List<Object[]> filas = (List<Object[]>) new Gson().fromJson(resultado[1], new TypeToken<List<Object[]>>() {
+            }.getType());
+
             for (Object[] fila : filas) {
                 modelo.addRow(new Object[]{((Double) fila[0]).intValue(), fila[1], fila[2], fila[6], fila[7], Icon_Edit, Icon_Dele});
             }
-            
+
             ButtonColumn btn_edit = new ButtonColumn(tbEmpleados, edit, 5);
             btn_edit.setMnemonic(KeyEvent.VK_D);
             ButtonColumn btn_dele = new ButtonColumn(tbEmpleados, dele, 6);
@@ -83,15 +85,18 @@ public class lisEmpleado extends javax.swing.JInternalFrame {
     }
 
     public void EliminarEmpleado() {
-        cliAdministracion cliente = new cliAdministracion();
-        try {
-            int idEmpleado = Utils.ObtenerValorCelda(tbEmpleados, 0);
-            cliente.EliminarEmpleado(new Gson().toJson(idEmpleado));
-            ObtenerEmpleados();
-        } catch (Exception e) {
-            System.out.print(e);
-        } finally {
-            cliente.close();
+        int confirmacion = JOptionPane.showConfirmDialog(null, "¿SEGURO DE CONTINUAR?", "CONFIRMACIÓN", JOptionPane.YES_NO_OPTION);
+        if (confirmacion == JOptionPane.YES_OPTION) {
+            cliAdministracion cliente = new cliAdministracion();
+            try {
+                int idEmpleado = Utils.ObtenerValorCelda(tbEmpleados, 0);
+                cliente.EliminarEmpleado(new Gson().toJson(idEmpleado));
+                ObtenerEmpleados();
+            } catch (Exception e) {
+                System.out.print(e);
+            } finally {
+                cliente.close();
+            }
         }
     }
 

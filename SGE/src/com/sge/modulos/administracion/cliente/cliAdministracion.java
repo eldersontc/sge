@@ -5,7 +5,7 @@ import javax.ws.rs.client.Client;
 import javax.ws.rs.client.WebTarget;
 
 /**
- * Jersey REST client generated for REST resource:MenuSRV [MenuSRV]<br>
+ * Jersey REST client generated for REST<br>
  * USAGE:
  * <pre>
  *        cliAdministracion client = new cliAdministracion();
@@ -92,6 +92,34 @@ public class cliAdministracion {
     public String EliminarEmpleado(Object requestEntity) throws ClientErrorException {
         WebTarget resource = client.target(BASE_URI).path("EmpleadoSRV");
         resource = resource.path("EliminarEmpleado");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
+    }
+    
+    ////////////////////////////////////////////////////////////////////////////
+    
+    ////////////////////////////// MONEDA //////////////////////////////////////
+    
+    public String ObtenerMonedas(Object requestEntity) throws ClientErrorException {
+        WebTarget resource = client.target(BASE_URI).path("MonedaSRV");
+        resource = resource.path("ObtenerMonedas");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
+    }
+    
+    public String RegistrarMoneda(Object requestEntity) throws ClientErrorException {
+        WebTarget resource = client.target(BASE_URI).path("MonedaSRV");
+        resource = resource.path("RegistrarMoneda");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
+    }
+    
+    public String ActualizarMoneda(Object requestEntity) throws ClientErrorException {
+        WebTarget resource = client.target(BASE_URI).path("MonedaSRV");
+        resource = resource.path("ActualizarMoneda");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
+    }
+    
+    public String EliminarMoneda(Object requestEntity) throws ClientErrorException {
+        WebTarget resource = client.target(BASE_URI).path("MonedaSRV");
+        resource = resource.path("EliminarMoneda");
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
     }
     

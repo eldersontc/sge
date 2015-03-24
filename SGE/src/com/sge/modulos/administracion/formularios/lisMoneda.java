@@ -1,11 +1,11 @@
 package com.sge.modulos.administracion.formularios;
 
-import com.sge.modulos.administracion.cliente.cliAdministracion;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.sge.base.controles.ButtonColumn;
 import com.sge.base.utils.Utils;
-import com.sge.modulos.administracion.clases.Usuario;
+import com.sge.modulos.administracion.clases.Moneda;
+import com.sge.modulos.administracion.cliente.cliAdministracion;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.util.List;
@@ -19,45 +19,45 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author elderson
  */
-public class lisUsuario extends javax.swing.JInternalFrame {
+public class lisMoneda extends javax.swing.JInternalFrame {
 
     /**
-     * Creates new form lisUsuario
+     * Creates new form lisMoneda
      */
-    public lisUsuario() {
+    public lisMoneda() {
         initComponents();
         Init();
     }
-
+    
     ImageIcon Icon_Save = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/save-16.png"));
     ImageIcon Icon_Dele = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/delete-16.png"));
 
     Action save = new AbstractAction() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            GuardarUsuario();
+            GuardarMoneda();
         }
     };
 
     Action dele = new AbstractAction() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            EliminarUsuario();
+            EliminarMoneda();
         }
     };
 
     public void Init() {
-        ObtenerUsuarios();
+        ObtenerMonedas();
     }
 
-    public void ObtenerUsuarios() {
+    public void ObtenerMonedas() {
         cliAdministracion cliente = new cliAdministracion();
         try {
-            String json = cliente.ObtenerUsuarios("");
+            String json = cliente.ObtenerMonedas("");
             cliente.close();
             String[] resultado = new Gson().fromJson(json, String[].class);
 
-            DefaultTableModel modelo = (DefaultTableModel) tbUsuarios.getModel();
+            DefaultTableModel modelo = (DefaultTableModel) tbMonedas.getModel();
             modelo.setRowCount(0);
 
             List<Object[]> filas = (List<Object[]>) new Gson().fromJson(resultado[1], new TypeToken<List<Object[]>>() {
@@ -67,9 +67,9 @@ public class lisUsuario extends javax.swing.JInternalFrame {
                 modelo.addRow(new Object[]{((Double) fila[0]).intValue(), fila[1], fila[2], fila[3], Icon_Save, Icon_Dele});
             }
 
-            ButtonColumn btn_save = new ButtonColumn(tbUsuarios, save, 4);
+            ButtonColumn btn_save = new ButtonColumn(tbMonedas, save, 4);
             btn_save.setMnemonic(KeyEvent.VK_D);
-            ButtonColumn btn_dele = new ButtonColumn(tbUsuarios, dele, 5);
+            ButtonColumn btn_dele = new ButtonColumn(tbMonedas, dele, 5);
             btn_dele.setMnemonic(KeyEvent.VK_D);
         } catch (Exception e) {
             System.out.print(e);
@@ -78,20 +78,20 @@ public class lisUsuario extends javax.swing.JInternalFrame {
         }
     }
 
-    public void GuardarUsuario() {
+    public void GuardarMoneda() {
         cliAdministracion cliente = new cliAdministracion();
         try {
-            Usuario usuario = new Usuario();
-            usuario.setIdUsuario(Utils.ObtenerValorCelda(tbUsuarios, 0));
-            usuario.setUsuario(Utils.ObtenerValorCelda(tbUsuarios, 1));
-            usuario.setClave(Utils.ObtenerValorCelda(tbUsuarios, 2));
-            usuario.setActivo(Utils.ObtenerValorCelda(tbUsuarios, 3));
-            if (usuario.getIdUsuario() == 0) {
-                cliente.RegistrarUsuario(new Gson().toJson(usuario));
+            Moneda moneda = new Moneda();
+            moneda.setIdMoneda(Utils.ObtenerValorCelda(tbMonedas, 0));
+            moneda.setSimbolo(Utils.ObtenerValorCelda(tbMonedas, 1));
+            moneda.setNombre(Utils.ObtenerValorCelda(tbMonedas, 2));
+            moneda.setActivo(Utils.ObtenerValorCelda(tbMonedas, 3));
+            if (moneda.getIdMoneda()== 0) {
+                cliente.RegistrarMoneda(new Gson().toJson(moneda));
             } else {
-                cliente.ActualizarUsuario(new Gson().toJson(usuario));
+                cliente.ActualizarMoneda(new Gson().toJson(moneda));
             }
-            ObtenerUsuarios();
+            ObtenerMonedas();
         } catch (Exception e) {
             System.out.print(e);
         } finally {
@@ -99,17 +99,17 @@ public class lisUsuario extends javax.swing.JInternalFrame {
         }
     }
 
-    public void EliminarUsuario() {
+    public void EliminarMoneda() {
         int confirmacion = JOptionPane.showConfirmDialog(null, "¿SEGURO DE CONTINUAR?", "CONFIRMACIÓN", JOptionPane.YES_NO_OPTION);
         if (confirmacion == JOptionPane.YES_OPTION) {
             cliAdministracion cliente = new cliAdministracion();
             try {
-                int idUsuario = Utils.ObtenerValorCelda(tbUsuarios, 0);
-                if (idUsuario == 0) {
-                    Utils.EliminarFila(tbUsuarios);
+                int idMoneda = Utils.ObtenerValorCelda(tbMonedas, 0);
+                if (idMoneda == 0) {
+                    Utils.EliminarFila(tbMonedas);
                 } else {
-                    cliente.EliminarUsuario(new Gson().toJson(idUsuario));
-                    ObtenerUsuarios();
+                    cliente.EliminarMoneda(new Gson().toJson(idMoneda));
+                    ObtenerMonedas();
                 }
             } catch (Exception e) {
                 System.out.print(e);
@@ -133,7 +133,7 @@ public class lisUsuario extends javax.swing.JInternalFrame {
         btnNuevo = new javax.swing.JButton();
         pnlContenido = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tbUsuarios = new javax.swing.JTable();
+        tbMonedas = new javax.swing.JTable();
 
         setClosable(true);
 
@@ -143,7 +143,7 @@ public class lisUsuario extends javax.swing.JInternalFrame {
         lblTitulo.setFont(new java.awt.Font("Ubuntu", 1, 18)); // NOI18N
         lblTitulo.setForeground(java.awt.Color.white);
         lblTitulo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sge/base/imagenes/list-view-16.png"))); // NOI18N
-        lblTitulo.setText("LISTADO DE USUARIOS");
+        lblTitulo.setText("LISTADO DE MONEDAS");
 
         btnNuevo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sge/base/imagenes/add-16.png"))); // NOI18N
         btnNuevo.setText("NUEVO");
@@ -177,12 +177,12 @@ public class lisUsuario extends javax.swing.JInternalFrame {
         pnlContenido.setBackground(java.awt.Color.white);
         pnlContenido.setBorder(null);
 
-        tbUsuarios.setModel(new javax.swing.table.DefaultTableModel(
+        tbMonedas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "IDUSUARIO", "USUARIO", "CLAVE", "ACTIVO", "GUARDAR", "ELIMINAR"
+                "IDMONEDA", "SIMBOLO", "NOMBRE", "ACTIVO", "GUARDAR", "ELIMINAR"
             }
         ) {
             Class[] types = new Class [] {
@@ -200,14 +200,12 @@ public class lisUsuario extends javax.swing.JInternalFrame {
                 return canEdit [columnIndex];
             }
         });
-        tbUsuarios.setRowHeight(25);
-        jScrollPane1.setViewportView(tbUsuarios);
-        if (tbUsuarios.getColumnModel().getColumnCount() > 0) {
-            tbUsuarios.getColumnModel().getColumn(0).setMinWidth(0);
-            tbUsuarios.getColumnModel().getColumn(0).setPreferredWidth(0);
-            tbUsuarios.getColumnModel().getColumn(0).setMaxWidth(0);
-            tbUsuarios.getColumnModel().getColumn(4).setPreferredWidth(10);
-            tbUsuarios.getColumnModel().getColumn(5).setPreferredWidth(10);
+        tbMonedas.setRowHeight(25);
+        jScrollPane1.setViewportView(tbMonedas);
+        if (tbMonedas.getColumnModel().getColumnCount() > 0) {
+            tbMonedas.getColumnModel().getColumn(0).setMinWidth(0);
+            tbMonedas.getColumnModel().getColumn(0).setPreferredWidth(0);
+            tbMonedas.getColumnModel().getColumn(0).setMaxWidth(0);
         }
 
         javax.swing.GroupLayout pnlContenidoLayout = new javax.swing.GroupLayout(pnlContenido);
@@ -216,14 +214,14 @@ public class lisUsuario extends javax.swing.JInternalFrame {
             pnlContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlContenidoLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 551, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 515, Short.MAX_VALUE)
                 .addContainerGap())
         );
         pnlContenidoLayout.setVerticalGroup(
             pnlContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlContenidoLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 273, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 302, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -247,7 +245,7 @@ public class lisUsuario extends javax.swing.JInternalFrame {
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
         // TODO add your handling code here:
-        Utils.AgregarFila(tbUsuarios, new Object[]{0, "", "", false, Icon_Save, Icon_Dele});
+        Utils.AgregarFila(tbMonedas, new Object[]{0, "", "", false, Icon_Save, Icon_Dele});
     }//GEN-LAST:event_btnNuevoActionPerformed
 
 
@@ -257,6 +255,6 @@ public class lisUsuario extends javax.swing.JInternalFrame {
     private javax.swing.JLabel lblTitulo;
     private javax.swing.JPanel pnlContenido;
     private javax.swing.JPanel pnlTitulo;
-    private javax.swing.JTable tbUsuarios;
+    private javax.swing.JTable tbMonedas;
     // End of variables declaration//GEN-END:variables
 }
