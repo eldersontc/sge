@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.sge.modulos.inventarios.entidades.Unidad" table="Unidad" schema="Inventarios">
+        <id name="idUnidad" column="idUnidad">
+            <generator class="sequence">
+                <param name="sequence">Inventarios.unidad_idunidad_seq</param>
+            </generator>
+        </id>
+        <property name="abreviacion" column="abreviacion"/>
+        <property name="descripcion" column="descripcion"/>
+        <property name="activo" column="activo"/>
+    </class>
+</hibernate-mapping>
