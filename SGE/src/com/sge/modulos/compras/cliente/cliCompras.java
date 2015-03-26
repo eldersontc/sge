@@ -25,7 +25,7 @@ public class cliCompras {
         client = javax.ws.rs.client.ClientBuilder.newClient();
     }
     
-    ////////////////////////////////// EMPLEADO ////////////////////////////////
+    ///////////////////////////////// PROVEEDOR ////////////////////////////////
     
     public String ObtenerProveedores(Object requestEntity) throws ClientErrorException {
         WebTarget resource = client.target(BASE_URI).path("ProveedorSRV");

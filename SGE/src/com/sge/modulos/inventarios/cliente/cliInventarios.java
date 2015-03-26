@@ -81,6 +81,40 @@ public class cliInventarios {
     
     ////////////////////////////////////////////////////////////////////////////
     
+    ////////////////////////////////// PRODUCTO ////////////////////////////////
+    
+    public String ObtenerProductos(Object requestEntity) throws ClientErrorException {
+        WebTarget resource = client.target(BASE_URI).path("ProductoSRV");
+        resource = resource.path("ObtenerProductos");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
+    }
+    
+    public String ObtenerProducto(Object requestEntity) throws ClientErrorException {
+        WebTarget resource = client.target(BASE_URI).path("ProductoSRV");
+        resource = resource.path("ObtenerProducto");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
+    }
+    
+    public String RegistrarProducto(Object requestEntity) throws ClientErrorException {
+        WebTarget resource = client.target(BASE_URI).path("ProductoSRV");
+        resource = resource.path("RegistrarProducto");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
+    }
+    
+    public String ActualizarProducto(Object requestEntity) throws ClientErrorException {
+        WebTarget resource = client.target(BASE_URI).path("ProductoSRV");
+        resource = resource.path("ActualizarProducto");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
+    }
+    
+    public String EliminarProducto(Object requestEntity) throws ClientErrorException {
+        WebTarget resource = client.target(BASE_URI).path("ProductoSRV");
+        resource = resource.path("EliminarProducto");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
+    }
+    
+    ////////////////////////////////////////////////////////////////////////////
+    
     public void close() {
         client.close();
     }

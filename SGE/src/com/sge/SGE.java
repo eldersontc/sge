@@ -13,6 +13,7 @@ import com.sge.modulos.administracion.formularios.lisUsuario;
 import com.sge.modulos.administracion.formularios.regEmpleado;
 import com.sge.modulos.compras.formularios.lisProveedor;
 import com.sge.modulos.inventarios.formularios.lisAlmacen;
+import com.sge.modulos.inventarios.formularios.lisProducto;
 import com.sge.modulos.inventarios.formularios.lisUnidad;
 
 /**
@@ -153,7 +154,8 @@ public class SGE extends javax.swing.JFrame {
         //lisEmpleado lista = new lisEmpleado();
         //regEmpleado lista = new regEmpleado();
         //lisAlmacen lista = new lisAlmacen();
-        lisUnidad lista = new lisUnidad();
+        //lisUnidad lista = new lisUnidad();
+        lisProducto lista = new lisProducto();
         jdpPrincipal.add(lista);
         lista.setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
