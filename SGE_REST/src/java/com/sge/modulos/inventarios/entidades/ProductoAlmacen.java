@@ -6,7 +6,7 @@ package com.sge.modulos.inventarios.entidades;
  */
 public class ProductoAlmacen {
  
-    private int idProductoAlmancen;
+    private int idProductoAlmacen;
     private Producto producto;
     private Almacen almacen;
     private int stockFisico;
@@ -17,12 +17,12 @@ public class ProductoAlmacen {
     public ProductoAlmacen() {
     }
 
-    public int getIdProductoAlmancen() {
-        return idProductoAlmancen;
+    public int getIdProductoAlmacen() {
+        return idProductoAlmacen;
     }
 
-    public void setIdProductoAlmancen(int idProductoAlmancen) {
-        this.idProductoAlmancen = idProductoAlmancen;
+    public void setIdProductoAlmacen(int idProductoAlmancen) {
+        this.idProductoAlmacen = idProductoAlmancen;
     }
 
     public Producto getProducto() {

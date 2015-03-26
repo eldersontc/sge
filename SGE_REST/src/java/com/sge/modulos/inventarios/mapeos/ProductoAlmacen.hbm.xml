@@ -9,8 +9,8 @@
                 <param name="sequence">Inventarios.productoalmacen_idproductoalmacen_seq</param>
             </generator>
         </id>
-        <many-to-one name="producto" column="idProducto" class="Producto"/>
-        <many-to-one name="almacen" column="idAlmacen" class="Almacen"/>
+        <many-to-one name="producto" column="idProducto" class="com.sge.modulos.inventarios.entidades.Producto"/>
+        <many-to-one name="almacen" column="idAlmacen" class="com.sge.modulos.inventarios.entidades.Almacen"/>
         <property name="stockFisico" column="stockFisico"/>
         <property name="stockComprometido" column="stockComprometido"/>
         <property name="stockSolicitado" column="stockSolicitado"/>

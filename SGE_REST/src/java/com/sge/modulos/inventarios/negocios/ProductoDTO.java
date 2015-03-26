@@ -78,10 +78,10 @@ public class ProductoDTO {
             productoAlmacenDAO = new ProductoAlmacenDAO();
             productoAlmacenDAO.AsignarSesion(productoDAO);
             for (ProductoAlmacen productoAlmacen : productoAlmacenes) {
-                if(productoAlmacen.getIdProductoAlmancen() == 0)
+                if(productoAlmacen.getIdProductoAlmacen() == 0)
                     productoAlmacenDAO.Agregar(productoAlmacen);
                 else
-                    productoAlmacenDAO.EliminarProductoAlmacen(productoAlmacen.getIdProductoAlmancen());
+                    productoAlmacenDAO.EliminarProductoAlmacen(productoAlmacen.getIdProductoAlmacen());
             }
             productoDAO.ConfirmarTransaccion();
         } catch (Exception e) {
