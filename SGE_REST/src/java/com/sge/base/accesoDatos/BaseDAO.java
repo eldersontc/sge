@@ -74,4 +74,9 @@ public class BaseDAO {
     public Session getSesion() {
         return sesion;
     }
+    
+    public void AsignarSesion(BaseDAO baseDAO) 
+    {
+        this.sesion = baseDAO.getSesion();
+    }
 }
