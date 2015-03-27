@@ -2,17 +2,17 @@ package com.sge.modulos.inventarios.formularios;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.sge.base.controles.ButtonColumn;
+import com.sge.base.controles.FabricaControles;
 import com.sge.base.utils.Utils;
 import com.sge.modulos.inventarios.clases.Almacen;
 import com.sge.modulos.inventarios.cliente.cliInventarios;
 import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
 import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+import javax.swing.SwingWorker;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -35,7 +35,7 @@ public class lisAlmacen extends javax.swing.JInternalFrame {
     Action save = new AbstractAction() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            GuardarAlmacen();
+            swGuardarAlmacen.execute();
         }
     };
 
@@ -45,80 +45,128 @@ public class lisAlmacen extends javax.swing.JInternalFrame {
             EliminarAlmacen();
         }
     };
-    
+
+    SwingWorker swObtenerAlmacenes = new SwingWorker() {
+
+        @Override
+        protected Object doInBackground() {
+            FabricaControles.VerCargando(pnlContenido);
+            cliInventarios cliente = new cliInventarios();
+            String json = "";
+            try {
+                json = cliente.ObtenerAlmacenes("");
+            } catch (Exception e) {
+                json = "[false]";
+            } finally {
+                cliente.close();
+            }
+            return json;
+        }
+
+        @Override
+        protected void done() {
+            try {
+                String json = get().toString();
+                String[] resultado = new Gson().fromJson(json, String[].class);
+
+                DefaultTableModel modelo = (DefaultTableModel) tbAlmacenes.getModel();
+                modelo.setRowCount(0);
+
+                List<Object[]> filas = (List<Object[]>) new Gson().fromJson(resultado[1], new TypeToken<List<Object[]>>() {
+                }.getType());
+
+                for (Object[] fila : filas) {
+                    modelo.addRow(new Object[]{((Double) fila[0]).intValue(), fila[1], fila[2], fila[3], Icon_Save, Icon_Dele});
+                }
+
+                FabricaControles.AgregarBoton(tbAlmacenes, save, 4);
+                FabricaControles.AgregarBoton(tbAlmacenes, dele, 5);
+                FabricaControles.OcultarCargando(pnlContenido);
+            } catch (Exception e) {
+            }
+        }
+    };
+
+    SwingWorker swGuardarAlmacen = new SwingWorker() {
+
+        @Override
+        protected Object doInBackground() {
+            FabricaControles.VerCargando(pnlContenido);
+            cliInventarios cliente = new cliInventarios();
+            String json = "";
+            try {
+                Almacen almacen = new Almacen();
+                almacen.setIdAlmacen(Utils.ObtenerValorCelda(tbAlmacenes, 0));
+                almacen.setCodigo(Utils.ObtenerValorCelda(tbAlmacenes, 1));
+                almacen.setDescripcion(Utils.ObtenerValorCelda(tbAlmacenes, 2));
+                almacen.setActivo(Utils.ObtenerValorCelda(tbAlmacenes, 3));
+                if (almacen.getIdAlmacen() == 0) {
+                    json = cliente.RegistrarAlmacen(new Gson().toJson(almacen));
+                } else {
+                    json = cliente.ActualizarAlmacen(new Gson().toJson(almacen));
+                }
+            } catch (Exception e) {
+                json = "[false]";
+            } finally {
+                cliente.close();
+            }
+            return json;
+        }
+
+        @Override
+        protected void done() {
+            try {
+                FabricaControles.OcultarCargando(pnlContenido);
+                swObtenerAlmacenes.execute();
+            } catch (Exception e) {
+            }
+        }
+    };
+
+    SwingWorker swEliminarAlmacen = new SwingWorker() {
+
+        @Override
+        protected Object doInBackground() throws Exception {
+            FabricaControles.VerCargando(pnlContenido);
+            cliInventarios cliente = new cliInventarios();
+            String json = "";
+            try {
+                int idAlmacen = Utils.ObtenerValorCelda(tbAlmacenes, 0);
+                json = cliente.EliminarAlmacen(new Gson().toJson(idAlmacen));
+            } catch (Exception e) {
+                json = "[false]";
+            } finally {
+                cliente.close();
+            }
+            return json;
+        }
+
+        @Override
+        protected void done() {
+            try {
+                FabricaControles.OcultarCargando(pnlContenido);
+                swObtenerAlmacenes.execute();
+            } catch (Exception e) {
+            }
+        }
+    };
+
     public void Init() {
-        ObtenerAlmacenes();
-    }
-
-    public void ObtenerAlmacenes() {
-        cliInventarios cliente = new cliInventarios();
-        try {
-            String json = cliente.ObtenerAlmacenes("");
-            cliente.close();
-            String[] resultado = new Gson().fromJson(json, String[].class);
-
-            DefaultTableModel modelo = (DefaultTableModel) tbAlmacenes.getModel();
-            modelo.setRowCount(0);
-
-            List<Object[]> filas = (List<Object[]>) new Gson().fromJson(resultado[1], new TypeToken<List<Object[]>>() {
-            }.getType());
-
-            for (Object[] fila : filas) {
-                modelo.addRow(new Object[]{((Double) fila[0]).intValue(), fila[1], fila[2], fila[3], Icon_Save, Icon_Dele});
-            }
-
-            ButtonColumn btn_save = new ButtonColumn(tbAlmacenes, save, 4);
-            btn_save.setMnemonic(KeyEvent.VK_D);
-            ButtonColumn btn_dele = new ButtonColumn(tbAlmacenes, dele, 5);
-            btn_dele.setMnemonic(KeyEvent.VK_D);
-        } catch (Exception e) {
-            System.out.print(e);
-        } finally {
-            cliente.close();
-        }
-    }
-
-    public void GuardarAlmacen() {
-        cliInventarios cliente = new cliInventarios();
-        try {
-            Almacen almacen = new Almacen();
-            almacen.setIdAlmacen(Utils.ObtenerValorCelda(tbAlmacenes, 0));
-            almacen.setCodigo(Utils.ObtenerValorCelda(tbAlmacenes, 1));
-            almacen.setDescripcion(Utils.ObtenerValorCelda(tbAlmacenes, 2));
-            almacen.setActivo(Utils.ObtenerValorCelda(tbAlmacenes, 3));
-            if (almacen.getIdAlmacen()== 0) {
-                cliente.RegistrarAlmacen(new Gson().toJson(almacen));
-            } else {
-                cliente.ActualizarAlmacen(new Gson().toJson(almacen));
-            }
-            ObtenerAlmacenes();
-        } catch (Exception e) {
-            System.out.print(e);
-        } finally {
-            cliente.close();
-        }
+        swObtenerAlmacenes.execute();
     }
 
     public void EliminarAlmacen() {
         int confirmacion = JOptionPane.showConfirmDialog(null, "¿SEGURO DE CONTINUAR?", "CONFIRMACIÓN", JOptionPane.YES_NO_OPTION);
         if (confirmacion == JOptionPane.YES_OPTION) {
-            cliInventarios cliente = new cliInventarios();
-            try {
-                int idAlmacen = Utils.ObtenerValorCelda(tbAlmacenes, 0);
-                if (idAlmacen == 0) {
-                    Utils.EliminarFila(tbAlmacenes);
-                } else {
-                    cliente.EliminarAlmacen(new Gson().toJson(idAlmacen));
-                    ObtenerAlmacenes();
-                }
-            } catch (Exception e) {
-                System.out.print(e);
-            } finally {
-                cliente.close();
+            int idAlmacen = Utils.ObtenerValorCelda(tbAlmacenes, 0);
+            if (idAlmacen == 0) {
+                Utils.EliminarFila(tbAlmacenes);
+            } else {
+                swEliminarAlmacen.execute();
             }
         }
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -128,14 +176,50 @@ public class lisAlmacen extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        pnlTitulo = new javax.swing.JPanel();
-        lblTitulo = new javax.swing.JLabel();
-        btnNuevo = new javax.swing.JButton();
         pnlContenido = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tbAlmacenes = new javax.swing.JTable();
+        pnlTitulo = new javax.swing.JPanel();
+        lblTitulo = new javax.swing.JLabel();
+        btnNuevo = new javax.swing.JButton();
 
         setClosable(true);
+
+        pnlContenido.setBackground(java.awt.Color.white);
+        pnlContenido.setBorder(null);
+
+        tbAlmacenes.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "IDALMACEN", "CODIGO", "DESCRIPCION", "ACTIVO", "GUARDAR", "ELIMINAR"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Boolean.class, java.lang.Object.class, java.lang.Object.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, true, true, true, true, true
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tbAlmacenes.setRowHeight(25);
+        jScrollPane1.setViewportView(tbAlmacenes);
+        if (tbAlmacenes.getColumnModel().getColumnCount() > 0) {
+            tbAlmacenes.getColumnModel().getColumn(0).setMinWidth(0);
+            tbAlmacenes.getColumnModel().getColumn(0).setPreferredWidth(0);
+            tbAlmacenes.getColumnModel().getColumn(0).setMaxWidth(0);
+            tbAlmacenes.getColumnModel().getColumn(4).setPreferredWidth(30);
+            tbAlmacenes.getColumnModel().getColumn(5).setPreferredWidth(30);
+        }
 
         pnlTitulo.setBackground(new java.awt.Color(67, 100, 130));
         pnlTitulo.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -174,42 +258,6 @@ public class lisAlmacen extends javax.swing.JInternalFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        pnlContenido.setBackground(java.awt.Color.white);
-        pnlContenido.setBorder(null);
-
-        tbAlmacenes.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "IDALMACEN", "CODIGO", "DESCRIPCION", "ACTIVO", "GUARDAR", "ELIMINAR"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Boolean.class, java.lang.Object.class, java.lang.Object.class
-            };
-            boolean[] canEdit = new boolean [] {
-                false, true, true, true, true, true
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        tbAlmacenes.setRowHeight(25);
-        jScrollPane1.setViewportView(tbAlmacenes);
-        if (tbAlmacenes.getColumnModel().getColumnCount() > 0) {
-            tbAlmacenes.getColumnModel().getColumn(0).setMinWidth(0);
-            tbAlmacenes.getColumnModel().getColumn(0).setPreferredWidth(0);
-            tbAlmacenes.getColumnModel().getColumn(0).setMaxWidth(0);
-            tbAlmacenes.getColumnModel().getColumn(4).setPreferredWidth(30);
-            tbAlmacenes.getColumnModel().getColumn(5).setPreferredWidth(30);
-        }
-
         javax.swing.GroupLayout pnlContenidoLayout = new javax.swing.GroupLayout(pnlContenido);
         pnlContenido.setLayout(pnlContenidoLayout);
         pnlContenidoLayout.setHorizontalGroup(
@@ -218,12 +266,14 @@ public class lisAlmacen extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 525, Short.MAX_VALUE)
                 .addContainerGap())
+            .addComponent(pnlTitulo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         pnlContenidoLayout.setVerticalGroup(
             pnlContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlContenidoLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 268, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlContenidoLayout.createSequentialGroup()
+                .addComponent(pnlTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 261, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -231,15 +281,11 @@ public class lisAlmacen extends javax.swing.JInternalFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(pnlTitulo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(pnlContenido, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(pnlTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(2, 2, 2)
-                .addComponent(pnlContenido, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(pnlContenido, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();

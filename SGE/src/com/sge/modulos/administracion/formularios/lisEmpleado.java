@@ -2,16 +2,16 @@ package com.sge.modulos.administracion.formularios;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.sge.base.controles.ButtonColumn;
+import com.sge.base.controles.FabricaControles;
 import com.sge.base.utils.Utils;
 import com.sge.modulos.administracion.cliente.cliAdministracion;
 import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
 import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+import javax.swing.SwingWorker;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -45,36 +45,77 @@ public class lisEmpleado extends javax.swing.JInternalFrame {
         }
     };
 
-    public void Init() {
-        ObtenerEmpleados();
-    }
+    SwingWorker swObtenerEmpleados = new SwingWorker() {
 
-    public void ObtenerEmpleados() {
-        cliAdministracion cliente = new cliAdministracion();
-        try {
-            String json = cliente.ObtenerEmpleados("");
-            cliente.close();
-            String[] resultado = new Gson().fromJson(json, String[].class);
-
-            DefaultTableModel modelo = (DefaultTableModel) tbEmpleados.getModel();
-            modelo.setRowCount(0);
-
-            List<Object[]> filas = (List<Object[]>) new Gson().fromJson(resultado[1], new TypeToken<List<Object[]>>() {
-            }.getType());
-
-            for (Object[] fila : filas) {
-                modelo.addRow(new Object[]{((Double) fila[0]).intValue(), fila[1], fila[2], fila[6], fila[7], Icon_Edit, Icon_Dele});
+        @Override
+        protected Object doInBackground() {
+            FabricaControles.VerCargando(pnlContenido);
+            cliAdministracion cliente = new cliAdministracion();
+            String json = "";
+            try {
+                json = cliente.ObtenerEmpleados("");
+            } catch (Exception e) {
+                json = "[false]";
+            } finally {
+                cliente.close();
             }
-
-            ButtonColumn btn_edit = new ButtonColumn(tbEmpleados, edit, 5);
-            btn_edit.setMnemonic(KeyEvent.VK_D);
-            ButtonColumn btn_dele = new ButtonColumn(tbEmpleados, dele, 6);
-            btn_dele.setMnemonic(KeyEvent.VK_D);
-        } catch (Exception e) {
-            System.out.print(e);
-        } finally {
-            cliente.close();
+            return json;
         }
+
+        @Override
+        protected void done() {
+            try {
+                String json = get().toString();
+                String[] resultado = new Gson().fromJson(json, String[].class);
+
+                DefaultTableModel modelo = (DefaultTableModel) tbEmpleados.getModel();
+                modelo.setRowCount(0);
+
+                List<Object[]> filas = (List<Object[]>) new Gson().fromJson(resultado[1], new TypeToken<List<Object[]>>() {
+                }.getType());
+
+                for (Object[] fila : filas) {
+                    modelo.addRow(new Object[]{((Double) fila[0]).intValue(), fila[1], fila[2], fila[6], fila[7], Icon_Edit, Icon_Dele});
+                }
+
+                FabricaControles.AgregarBoton(tbEmpleados, edit, 5);
+                FabricaControles.AgregarBoton(tbEmpleados, dele, 6);
+                FabricaControles.OcultarCargando(pnlContenido);
+            } catch (Exception e) {
+            }
+        }
+    };
+    
+    SwingWorker swEliminarUnidad = new SwingWorker() {
+
+        @Override
+        protected Object doInBackground() throws Exception {
+            FabricaControles.VerCargando(pnlContenido);
+            cliAdministracion cliente = new cliAdministracion();
+            String json = "";
+            try {
+                int idEmpleado = Utils.ObtenerValorCelda(tbEmpleados, 0);
+                json = cliente.EliminarEmpleado(new Gson().toJson(idEmpleado));
+            } catch (Exception e) {
+                json = "[false]";
+            } finally {
+                cliente.close();
+            }
+            return json;
+        }
+
+        @Override
+        protected void done() {
+            try {
+                FabricaControles.OcultarCargando(pnlContenido);
+                swObtenerEmpleados.execute();
+            } catch (Exception e) {
+            }
+        }
+    };
+    
+    public void Init() {
+        swObtenerEmpleados.execute();
     }
 
     public void EditarEmpleado() {
@@ -87,16 +128,7 @@ public class lisEmpleado extends javax.swing.JInternalFrame {
     public void EliminarEmpleado() {
         int confirmacion = JOptionPane.showConfirmDialog(null, "¿SEGURO DE CONTINUAR?", "CONFIRMACIÓN", JOptionPane.YES_NO_OPTION);
         if (confirmacion == JOptionPane.YES_OPTION) {
-            cliAdministracion cliente = new cliAdministracion();
-            try {
-                int idEmpleado = Utils.ObtenerValorCelda(tbEmpleados, 0);
-                cliente.EliminarEmpleado(new Gson().toJson(idEmpleado));
-                ObtenerEmpleados();
-            } catch (Exception e) {
-                System.out.print(e);
-            } finally {
-                cliente.close();
-            }
+            swEliminarUnidad.execute();
         }
     }
 
@@ -154,23 +186,6 @@ public class lisEmpleado extends javax.swing.JInternalFrame {
             tbEmpleados.getColumnModel().getColumn(6).setPreferredWidth(50);
         }
 
-        javax.swing.GroupLayout pnlContenidoLayout = new javax.swing.GroupLayout(pnlContenido);
-        pnlContenido.setLayout(pnlContenidoLayout);
-        pnlContenidoLayout.setHorizontalGroup(
-            pnlContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlContenidoLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 556, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-        pnlContenidoLayout.setVerticalGroup(
-            pnlContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlContenidoLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 286, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-
         pnlTitulo.setBackground(new java.awt.Color(67, 100, 130));
         pnlTitulo.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
@@ -210,19 +225,34 @@ public class lisEmpleado extends javax.swing.JInternalFrame {
 
         lblTitulo.getAccessibleContext().setAccessibleDescription("");
 
+        javax.swing.GroupLayout pnlContenidoLayout = new javax.swing.GroupLayout(pnlContenido);
+        pnlContenido.setLayout(pnlContenidoLayout);
+        pnlContenidoLayout.setHorizontalGroup(
+            pnlContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlContenidoLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 556, Short.MAX_VALUE)
+                .addContainerGap())
+            .addComponent(pnlTitulo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        pnlContenidoLayout.setVerticalGroup(
+            pnlContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlContenidoLayout.createSequentialGroup()
+                .addComponent(pnlTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 298, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(pnlTitulo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(pnlContenido, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(pnlTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(2, 2, 2)
-                .addComponent(pnlContenido, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(pnlContenido, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();

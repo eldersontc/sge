@@ -3,16 +3,16 @@ package com.sge.modulos.administracion.formularios;
 import com.sge.modulos.administracion.cliente.cliAdministracion;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.sge.base.controles.ButtonColumn;
+import com.sge.base.controles.FabricaControles;
 import com.sge.base.utils.Utils;
 import com.sge.modulos.administracion.clases.Usuario;
 import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
 import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+import javax.swing.SwingWorker;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -35,7 +35,7 @@ public class lisUsuario extends javax.swing.JInternalFrame {
     Action save = new AbstractAction() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            GuardarUsuario();
+            new swGuardarUsuario().execute();
         }
     };
 
@@ -46,75 +46,121 @@ public class lisUsuario extends javax.swing.JInternalFrame {
         }
     };
 
+    public class swObtenerUsuarios extends SwingWorker<Object, Object> {
+
+        @Override
+        protected Object doInBackground() throws Exception {
+            FabricaControles.VerCargando(pnlContenido);
+            cliAdministracion cliente = new cliAdministracion();
+            String json = "";
+            try {
+                json = cliente.ObtenerUsuarios("");
+            } catch (Exception e) {
+                json = "[false]";
+            } finally {
+                cliente.close();
+            }
+            return json;
+        }
+
+        @Override
+        protected void done() {
+            try {
+                String json = get().toString();
+                String[] resultado = new Gson().fromJson(json, String[].class);
+
+                DefaultTableModel modelo = (DefaultTableModel) tbUsuarios.getModel();
+                modelo.setRowCount(0);
+
+                List<Object[]> filas = (List<Object[]>) new Gson().fromJson(resultado[1], new TypeToken<List<Object[]>>() {
+                }.getType());
+
+                for (Object[] fila : filas) {
+                    modelo.addRow(new Object[]{((Double) fila[0]).intValue(), fila[1], fila[2], fila[3], Icon_Save, Icon_Dele});
+                }
+
+                FabricaControles.AgregarBoton(tbUsuarios, save, 4);
+                FabricaControles.AgregarBoton(tbUsuarios, dele, 5);
+                FabricaControles.OcultarCargando(pnlContenido);
+            } catch (Exception e) {
+            }
+        }
+    }
+
+    public class swGuardarUsuario extends SwingWorker<Object, Object> {
+
+        @Override
+        protected Object doInBackground() {
+            FabricaControles.VerCargando(pnlContenido);
+            cliAdministracion cliente = new cliAdministracion();
+            String json = "";
+            try {
+                Usuario usuario = new Usuario();
+                usuario.setIdUsuario(Utils.ObtenerValorCelda(tbUsuarios, 0));
+                usuario.setUsuario(Utils.ObtenerValorCelda(tbUsuarios, 1));
+                usuario.setClave(Utils.ObtenerValorCelda(tbUsuarios, 2));
+                usuario.setActivo(Utils.ObtenerValorCelda(tbUsuarios, 3));
+                if (usuario.getIdUsuario() == 0) {
+                    json = cliente.RegistrarUsuario(new Gson().toJson(usuario));
+                } else {
+                    json = cliente.ActualizarUsuario(new Gson().toJson(usuario));
+                }
+            } catch (Exception e) {
+                json = "[false]";
+            } finally {
+                cliente.close();
+            }
+            return json;
+        }
+
+        @Override
+        protected void done() {
+            try {
+                new swObtenerUsuarios().execute();
+            } catch (Exception e) {
+            }
+        }
+    }
+
+    public class swEliminarUnidad extends SwingWorker<Object, Object> {
+
+        @Override
+        protected Object doInBackground() throws Exception {
+            FabricaControles.VerCargando(pnlContenido);
+            cliAdministracion cliente = new cliAdministracion();
+            String json = "";
+            try {
+                int idUsuario = Utils.ObtenerValorCelda(tbUsuarios, 0);
+                json = cliente.EliminarUsuario(new Gson().toJson(idUsuario));
+            } catch (Exception e) {
+                json = "[false]";
+            } finally {
+                cliente.close();
+            }
+            return json;
+        }
+
+        @Override
+        protected void done() {
+            try {
+                new swObtenerUsuarios().execute();
+            } catch (Exception e) {
+            }
+        }
+    }
+
     public void Init() {
-        ObtenerUsuarios();
-    }
-
-    public void ObtenerUsuarios() {
-        cliAdministracion cliente = new cliAdministracion();
-        try {
-            String json = cliente.ObtenerUsuarios("");
-            cliente.close();
-            String[] resultado = new Gson().fromJson(json, String[].class);
-
-            DefaultTableModel modelo = (DefaultTableModel) tbUsuarios.getModel();
-            modelo.setRowCount(0);
-
-            List<Object[]> filas = (List<Object[]>) new Gson().fromJson(resultado[1], new TypeToken<List<Object[]>>() {
-            }.getType());
-
-            for (Object[] fila : filas) {
-                modelo.addRow(new Object[]{((Double) fila[0]).intValue(), fila[1], fila[2], fila[3], Icon_Save, Icon_Dele});
-            }
-
-            ButtonColumn btn_save = new ButtonColumn(tbUsuarios, save, 4);
-            btn_save.setMnemonic(KeyEvent.VK_D);
-            ButtonColumn btn_dele = new ButtonColumn(tbUsuarios, dele, 5);
-            btn_dele.setMnemonic(KeyEvent.VK_D);
-        } catch (Exception e) {
-            System.out.print(e);
-        } finally {
-            cliente.close();
-        }
-    }
-
-    public void GuardarUsuario() {
-        cliAdministracion cliente = new cliAdministracion();
-        try {
-            Usuario usuario = new Usuario();
-            usuario.setIdUsuario(Utils.ObtenerValorCelda(tbUsuarios, 0));
-            usuario.setUsuario(Utils.ObtenerValorCelda(tbUsuarios, 1));
-            usuario.setClave(Utils.ObtenerValorCelda(tbUsuarios, 2));
-            usuario.setActivo(Utils.ObtenerValorCelda(tbUsuarios, 3));
-            if (usuario.getIdUsuario() == 0) {
-                cliente.RegistrarUsuario(new Gson().toJson(usuario));
-            } else {
-                cliente.ActualizarUsuario(new Gson().toJson(usuario));
-            }
-            ObtenerUsuarios();
-        } catch (Exception e) {
-            System.out.print(e);
-        } finally {
-            cliente.close();
-        }
+        new swObtenerUsuarios().execute();
     }
 
     public void EliminarUsuario() {
         int confirmacion = JOptionPane.showConfirmDialog(null, "¿SEGURO DE CONTINUAR?", "CONFIRMACIÓN", JOptionPane.YES_NO_OPTION);
         if (confirmacion == JOptionPane.YES_OPTION) {
-            cliAdministracion cliente = new cliAdministracion();
-            try {
-                int idUsuario = Utils.ObtenerValorCelda(tbUsuarios, 0);
-                if (idUsuario == 0) {
-                    Utils.EliminarFila(tbUsuarios);
-                } else {
-                    cliente.EliminarUsuario(new Gson().toJson(idUsuario));
-                    ObtenerUsuarios();
-                }
-            } catch (Exception e) {
-                System.out.print(e);
-            } finally {
-                cliente.close();
+            int idUsuario = Utils.ObtenerValorCelda(tbUsuarios, 0);
+            if (idUsuario == 0) {
+                Utils.EliminarFila(tbUsuarios);
+            } else {
+                new swEliminarUnidad().execute();
             }
         }
     }
@@ -128,14 +174,50 @@ public class lisUsuario extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        pnlTitulo = new javax.swing.JPanel();
-        lblTitulo = new javax.swing.JLabel();
-        btnNuevo = new javax.swing.JButton();
         pnlContenido = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tbUsuarios = new javax.swing.JTable();
+        pnlTitulo = new javax.swing.JPanel();
+        lblTitulo = new javax.swing.JLabel();
+        btnNuevo = new javax.swing.JButton();
 
         setClosable(true);
+
+        pnlContenido.setBackground(java.awt.Color.white);
+        pnlContenido.setBorder(null);
+
+        tbUsuarios.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "IDUSUARIO", "USUARIO", "CLAVE", "ACTIVO", "GUARDAR", "ELIMINAR"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Boolean.class, java.lang.Object.class, java.lang.Object.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, true, true, true, true, true
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tbUsuarios.setRowHeight(25);
+        jScrollPane1.setViewportView(tbUsuarios);
+        if (tbUsuarios.getColumnModel().getColumnCount() > 0) {
+            tbUsuarios.getColumnModel().getColumn(0).setMinWidth(0);
+            tbUsuarios.getColumnModel().getColumn(0).setPreferredWidth(0);
+            tbUsuarios.getColumnModel().getColumn(0).setMaxWidth(0);
+            tbUsuarios.getColumnModel().getColumn(4).setPreferredWidth(10);
+            tbUsuarios.getColumnModel().getColumn(5).setPreferredWidth(10);
+        }
 
         pnlTitulo.setBackground(new java.awt.Color(67, 100, 130));
         pnlTitulo.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -174,42 +256,6 @@ public class lisUsuario extends javax.swing.JInternalFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        pnlContenido.setBackground(java.awt.Color.white);
-        pnlContenido.setBorder(null);
-
-        tbUsuarios.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "IDUSUARIO", "USUARIO", "CLAVE", "ACTIVO", "GUARDAR", "ELIMINAR"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Boolean.class, java.lang.Object.class, java.lang.Object.class
-            };
-            boolean[] canEdit = new boolean [] {
-                false, true, true, true, true, true
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        tbUsuarios.setRowHeight(25);
-        jScrollPane1.setViewportView(tbUsuarios);
-        if (tbUsuarios.getColumnModel().getColumnCount() > 0) {
-            tbUsuarios.getColumnModel().getColumn(0).setMinWidth(0);
-            tbUsuarios.getColumnModel().getColumn(0).setPreferredWidth(0);
-            tbUsuarios.getColumnModel().getColumn(0).setMaxWidth(0);
-            tbUsuarios.getColumnModel().getColumn(4).setPreferredWidth(10);
-            tbUsuarios.getColumnModel().getColumn(5).setPreferredWidth(10);
-        }
-
         javax.swing.GroupLayout pnlContenidoLayout = new javax.swing.GroupLayout(pnlContenido);
         pnlContenido.setLayout(pnlContenidoLayout);
         pnlContenidoLayout.setHorizontalGroup(
@@ -218,12 +264,14 @@ public class lisUsuario extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 551, Short.MAX_VALUE)
                 .addContainerGap())
+            .addComponent(pnlTitulo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         pnlContenidoLayout.setVerticalGroup(
             pnlContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlContenidoLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 273, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlContenidoLayout.createSequentialGroup()
+                .addComponent(pnlTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 278, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -231,15 +279,11 @@ public class lisUsuario extends javax.swing.JInternalFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(pnlTitulo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(pnlContenido, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(pnlTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(2, 2, 2)
-                .addComponent(pnlContenido, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(pnlContenido, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();

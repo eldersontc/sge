@@ -2,17 +2,17 @@ package com.sge.modulos.inventarios.formularios;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.sge.base.controles.ButtonColumn;
+import com.sge.base.controles.FabricaControles;
 import com.sge.base.utils.Utils;
 import com.sge.modulos.inventarios.clases.Unidad;
 import com.sge.modulos.inventarios.cliente.cliInventarios;
 import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
 import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+import javax.swing.SwingWorker;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -28,14 +28,14 @@ public class lisUnidad extends javax.swing.JInternalFrame {
         initComponents();
         Init();
     }
-    
+
     ImageIcon Icon_Save = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/save-16.png"));
     ImageIcon Icon_Dele = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/delete-16.png"));
 
     Action save = new AbstractAction() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            GuardarUnidad();
+            swGuardarUnidad.execute();
         }
     };
 
@@ -45,76 +45,124 @@ public class lisUnidad extends javax.swing.JInternalFrame {
             EliminarUnidad();
         }
     };
-    
+
+    SwingWorker swObtenerUnidades = new SwingWorker() {
+
+        @Override
+        protected Object doInBackground() {
+            FabricaControles.VerCargando(pnlContenido);
+            cliInventarios cliente = new cliInventarios();
+            String json = "";
+            try {
+                json = cliente.ObtenerUnidades("");
+            } catch (Exception e) {
+                json = "[false]";
+            } finally {
+                cliente.close();
+            }
+            return json;
+        }
+
+        @Override
+        protected void done() {
+            try {
+                String json = get().toString();
+                String[] resultado = new Gson().fromJson(json, String[].class);
+
+                DefaultTableModel modelo = (DefaultTableModel) tbUnidades.getModel();
+                modelo.setRowCount(0);
+
+                List<Object[]> filas = (List<Object[]>) new Gson().fromJson(resultado[1], new TypeToken<List<Object[]>>() {
+                }.getType());
+
+                for (Object[] fila : filas) {
+                    modelo.addRow(new Object[]{((Double) fila[0]).intValue(), fila[1], fila[2], fila[3], Icon_Save, Icon_Dele});
+                }
+
+                FabricaControles.AgregarBoton(tbUnidades, save, 4);
+                FabricaControles.AgregarBoton(tbUnidades, dele, 5);
+                FabricaControles.OcultarCargando(pnlContenido);
+            } catch (Exception e) {
+            }
+        }
+    };
+
+    SwingWorker swGuardarUnidad = new SwingWorker() {
+
+        @Override
+        protected Object doInBackground() {
+            FabricaControles.VerCargando(pnlContenido);
+            cliInventarios cliente = new cliInventarios();
+            String json = "";
+            try {
+                Unidad unidad = new Unidad();
+                unidad.setIdUnidad(Utils.ObtenerValorCelda(tbUnidades, 0));
+                unidad.setAbreviacion(Utils.ObtenerValorCelda(tbUnidades, 1));
+                unidad.setDescripcion(Utils.ObtenerValorCelda(tbUnidades, 2));
+                unidad.setActivo(Utils.ObtenerValorCelda(tbUnidades, 3));
+                if (unidad.getIdUnidad() == 0) {
+                    json = cliente.RegistrarUnidad(new Gson().toJson(unidad));
+                } else {
+                    json = cliente.ActualizarUnidad(new Gson().toJson(unidad));
+                }
+            } catch (Exception e) {
+                json = "[false]";
+            } finally {
+                cliente.close();
+            }
+            return json;
+        }
+
+        @Override
+        protected void done() {
+            try {
+                FabricaControles.OcultarCargando(pnlContenido);
+                swObtenerUnidades.execute();
+            } catch (Exception e) {
+            }
+        }
+    };
+
+    SwingWorker swEliminarUnidad = new SwingWorker() {
+
+        @Override
+        protected Object doInBackground() throws Exception {
+            FabricaControles.VerCargando(pnlContenido);
+            cliInventarios cliente = new cliInventarios();
+            String json = "";
+            try {
+                int idUnidad = Utils.ObtenerValorCelda(tbUnidades, 0);
+                json = cliente.EliminarUnidad(new Gson().toJson(idUnidad));
+            } catch (Exception e) {
+                json = "[false]";
+            } finally {
+                cliente.close();
+            }
+            return json;
+        }
+
+        @Override
+        protected void done() {
+            try {
+                FabricaControles.OcultarCargando(pnlContenido);
+                swObtenerUnidades.execute();
+            } catch (Exception e) {
+            }
+        }
+    };
+
     public void Init() {
-        ObtenerUnidades();
-    }
-
-    public void ObtenerUnidades() {
-        cliInventarios cliente = new cliInventarios();
-        try {
-            String json = cliente.ObtenerUnidades("");
-            cliente.close();
-            String[] resultado = new Gson().fromJson(json, String[].class);
-
-            DefaultTableModel modelo = (DefaultTableModel) tbUnidades.getModel();
-            modelo.setRowCount(0);
-
-            List<Object[]> filas = (List<Object[]>) new Gson().fromJson(resultado[1], new TypeToken<List<Object[]>>() {
-            }.getType());
-
-            for (Object[] fila : filas) {
-                modelo.addRow(new Object[]{((Double) fila[0]).intValue(), fila[1], fila[2], fila[3], Icon_Save, Icon_Dele});
-            }
-
-            ButtonColumn btn_save = new ButtonColumn(tbUnidades, save, 4);
-            btn_save.setMnemonic(KeyEvent.VK_D);
-            ButtonColumn btn_dele = new ButtonColumn(tbUnidades, dele, 5);
-            btn_dele.setMnemonic(KeyEvent.VK_D);
-        } catch (Exception e) {
-            System.out.print(e);
-        } finally {
-            cliente.close();
-        }
-    }
-
-    public void GuardarUnidad() {
-        cliInventarios cliente = new cliInventarios();
-        try {
-            Unidad unidad = new Unidad();
-            unidad.setIdUnidad(Utils.ObtenerValorCelda(tbUnidades, 0));
-            unidad.setAbreviacion(Utils.ObtenerValorCelda(tbUnidades, 1));
-            unidad.setDescripcion(Utils.ObtenerValorCelda(tbUnidades, 2));
-            unidad.setActivo(Utils.ObtenerValorCelda(tbUnidades, 3));
-            if (unidad.getIdUnidad()== 0) {
-                cliente.RegistrarUnidad(new Gson().toJson(unidad));
-            } else {
-                cliente.ActualizarUnidad(new Gson().toJson(unidad));
-            }
-            ObtenerUnidades();
-        } catch (Exception e) {
-            System.out.print(e);
-        } finally {
-            cliente.close();
-        }
+        swObtenerUnidades.execute();
     }
 
     public void EliminarUnidad() {
         int confirmacion = JOptionPane.showConfirmDialog(null, "¿SEGURO DE CONTINUAR?", "CONFIRMACIÓN", JOptionPane.YES_NO_OPTION);
         if (confirmacion == JOptionPane.YES_OPTION) {
-            cliInventarios cliente = new cliInventarios();
-            try {
-                int idUnidad = Utils.ObtenerValorCelda(tbUnidades, 0);
-                if (idUnidad == 0) {
-                    Utils.EliminarFila(tbUnidades);
-                } else {
-                    cliente.EliminarUnidad(new Gson().toJson(idUnidad));
-                    ObtenerUnidades();
-                }
-            } catch (Exception e) {
-                System.out.print(e);
-            } finally {
-                cliente.close();
+            int idUnidad = Utils.ObtenerValorCelda(tbUnidades, 0);
+            if (idUnidad == 0) {
+                Utils.EliminarFila(tbUnidades);
+            } else {
+                swEliminarUnidad.execute();
             }
         }
     }
@@ -128,14 +176,50 @@ public class lisUnidad extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        pnlTitulo = new javax.swing.JPanel();
-        lblTitulo = new javax.swing.JLabel();
-        btnNuevo = new javax.swing.JButton();
         pnlContenido = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tbUnidades = new javax.swing.JTable();
+        pnlTitulo = new javax.swing.JPanel();
+        lblTitulo = new javax.swing.JLabel();
+        btnNuevo = new javax.swing.JButton();
 
         setClosable(true);
+
+        pnlContenido.setBackground(java.awt.Color.white);
+        pnlContenido.setBorder(null);
+
+        tbUnidades.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "IDUNIDAD", "ABREVIACION", "DESCRIPCION", "ACTIVO", "GUARDAR", "ELIMINAR"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Boolean.class, java.lang.Object.class, java.lang.Object.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, true, true, true, true, true
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tbUnidades.setRowHeight(25);
+        jScrollPane1.setViewportView(tbUnidades);
+        if (tbUnidades.getColumnModel().getColumnCount() > 0) {
+            tbUnidades.getColumnModel().getColumn(0).setMinWidth(0);
+            tbUnidades.getColumnModel().getColumn(0).setPreferredWidth(0);
+            tbUnidades.getColumnModel().getColumn(0).setMaxWidth(0);
+            tbUnidades.getColumnModel().getColumn(4).setPreferredWidth(30);
+            tbUnidades.getColumnModel().getColumn(5).setPreferredWidth(30);
+        }
 
         pnlTitulo.setBackground(new java.awt.Color(67, 100, 130));
         pnlTitulo.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -174,42 +258,6 @@ public class lisUnidad extends javax.swing.JInternalFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        pnlContenido.setBackground(java.awt.Color.white);
-        pnlContenido.setBorder(null);
-
-        tbUnidades.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "IDUNIDAD", "ABREVIACION", "DESCRIPCION", "ACTIVO", "GUARDAR", "ELIMINAR"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Boolean.class, java.lang.Object.class, java.lang.Object.class
-            };
-            boolean[] canEdit = new boolean [] {
-                false, true, true, true, true, true
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        tbUnidades.setRowHeight(25);
-        jScrollPane1.setViewportView(tbUnidades);
-        if (tbUnidades.getColumnModel().getColumnCount() > 0) {
-            tbUnidades.getColumnModel().getColumn(0).setMinWidth(0);
-            tbUnidades.getColumnModel().getColumn(0).setPreferredWidth(0);
-            tbUnidades.getColumnModel().getColumn(0).setMaxWidth(0);
-            tbUnidades.getColumnModel().getColumn(4).setPreferredWidth(30);
-            tbUnidades.getColumnModel().getColumn(5).setPreferredWidth(30);
-        }
-
         javax.swing.GroupLayout pnlContenidoLayout = new javax.swing.GroupLayout(pnlContenido);
         pnlContenido.setLayout(pnlContenidoLayout);
         pnlContenidoLayout.setHorizontalGroup(
@@ -218,12 +266,14 @@ public class lisUnidad extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 573, Short.MAX_VALUE)
                 .addContainerGap())
+            .addComponent(pnlTitulo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         pnlContenidoLayout.setVerticalGroup(
             pnlContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlContenidoLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 317, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlContenidoLayout.createSequentialGroup()
+                .addComponent(pnlTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 322, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -231,15 +281,11 @@ public class lisUnidad extends javax.swing.JInternalFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(pnlTitulo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(pnlContenido, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(pnlTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(2, 2, 2)
-                .addComponent(pnlContenido, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(pnlContenido, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();

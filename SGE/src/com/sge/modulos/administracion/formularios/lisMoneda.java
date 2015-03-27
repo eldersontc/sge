@@ -2,17 +2,17 @@ package com.sge.modulos.administracion.formularios;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.sge.base.controles.ButtonColumn;
+import com.sge.base.controles.FabricaControles;
 import com.sge.base.utils.Utils;
 import com.sge.modulos.administracion.clases.Moneda;
 import com.sge.modulos.administracion.cliente.cliAdministracion;
 import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
 import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+import javax.swing.SwingWorker;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -35,7 +35,7 @@ public class lisMoneda extends javax.swing.JInternalFrame {
     Action save = new AbstractAction() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            GuardarMoneda();
+            swGuardarMoneda.execute();
         }
     };
 
@@ -46,75 +46,123 @@ public class lisMoneda extends javax.swing.JInternalFrame {
         }
     };
 
+    SwingWorker swObtenerMonedas = new SwingWorker() {
+
+        @Override
+        protected Object doInBackground() {
+            FabricaControles.VerCargando(pnlContenido);
+            cliAdministracion cliente = new cliAdministracion();
+            String json = "";
+            try {
+                json = cliente.ObtenerMonedas("");
+            } catch (Exception e) {
+                json = "[false]";
+            } finally {
+                cliente.close();
+            }
+            return json;
+        }
+
+        @Override
+        protected void done() {
+            try {
+                String json = get().toString();
+                String[] resultado = new Gson().fromJson(json, String[].class);
+
+                DefaultTableModel modelo = (DefaultTableModel) tbMonedas.getModel();
+                modelo.setRowCount(0);
+
+                List<Object[]> filas = (List<Object[]>) new Gson().fromJson(resultado[1], new TypeToken<List<Object[]>>() {
+                }.getType());
+
+                for (Object[] fila : filas) {
+                    modelo.addRow(new Object[]{((Double) fila[0]).intValue(), fila[1], fila[2], fila[3], Icon_Save, Icon_Dele});
+                }
+
+                FabricaControles.AgregarBoton(tbMonedas, save, 4);
+                FabricaControles.AgregarBoton(tbMonedas, dele, 5);
+                FabricaControles.OcultarCargando(pnlContenido);
+            } catch (Exception e) {
+            }
+        }
+    };
+    
+    SwingWorker swGuardarMoneda = new SwingWorker() {
+
+        @Override
+        protected Object doInBackground() {
+            FabricaControles.VerCargando(pnlContenido);
+            cliAdministracion cliente = new cliAdministracion();
+            String json = "";
+            try {
+                Moneda moneda = new Moneda();
+                moneda.setIdMoneda(Utils.ObtenerValorCelda(tbMonedas, 0));
+                moneda.setSimbolo(Utils.ObtenerValorCelda(tbMonedas, 1));
+                moneda.setNombre(Utils.ObtenerValorCelda(tbMonedas, 2));
+                moneda.setActivo(Utils.ObtenerValorCelda(tbMonedas, 3));
+                if (moneda.getIdMoneda()== 0) {
+                    json = cliente.RegistrarMoneda(new Gson().toJson(moneda));
+                } else {
+                    json = cliente.ActualizarMoneda(new Gson().toJson(moneda));
+                }
+            } catch (Exception e) {
+                json = "[false]";
+            } finally {
+                cliente.close();
+            }
+            return json;
+        }
+
+        @Override
+        protected void done() {
+            try {
+                FabricaControles.OcultarCargando(pnlContenido);
+                swObtenerMonedas.execute();
+            } catch (Exception e) {
+            }
+        }
+    };
+    
+    SwingWorker swEliminarUnidad = new SwingWorker() {
+
+        @Override
+        protected Object doInBackground() throws Exception {
+            FabricaControles.VerCargando(pnlContenido);
+            cliAdministracion cliente = new cliAdministracion();
+            String json = "";
+            try {
+                int idMoneda = Utils.ObtenerValorCelda(tbMonedas, 0);
+                json = cliente.EliminarMoneda(new Gson().toJson(idMoneda));
+            } catch (Exception e) {
+                json = "[false]";
+            } finally {
+                cliente.close();
+            }
+            return json;
+        }
+
+        @Override
+        protected void done() {
+            try {
+                FabricaControles.OcultarCargando(pnlContenido);
+                swObtenerMonedas.execute();
+            } catch (Exception e) {
+            }
+        }
+    };
+    
     public void Init() {
-        ObtenerMonedas();
-    }
-
-    public void ObtenerMonedas() {
-        cliAdministracion cliente = new cliAdministracion();
-        try {
-            String json = cliente.ObtenerMonedas("");
-            cliente.close();
-            String[] resultado = new Gson().fromJson(json, String[].class);
-
-            DefaultTableModel modelo = (DefaultTableModel) tbMonedas.getModel();
-            modelo.setRowCount(0);
-
-            List<Object[]> filas = (List<Object[]>) new Gson().fromJson(resultado[1], new TypeToken<List<Object[]>>() {
-            }.getType());
-
-            for (Object[] fila : filas) {
-                modelo.addRow(new Object[]{((Double) fila[0]).intValue(), fila[1], fila[2], fila[3], Icon_Save, Icon_Dele});
-            }
-
-            ButtonColumn btn_save = new ButtonColumn(tbMonedas, save, 4);
-            btn_save.setMnemonic(KeyEvent.VK_D);
-            ButtonColumn btn_dele = new ButtonColumn(tbMonedas, dele, 5);
-            btn_dele.setMnemonic(KeyEvent.VK_D);
-        } catch (Exception e) {
-            System.out.print(e);
-        } finally {
-            cliente.close();
-        }
-    }
-
-    public void GuardarMoneda() {
-        cliAdministracion cliente = new cliAdministracion();
-        try {
-            Moneda moneda = new Moneda();
-            moneda.setIdMoneda(Utils.ObtenerValorCelda(tbMonedas, 0));
-            moneda.setSimbolo(Utils.ObtenerValorCelda(tbMonedas, 1));
-            moneda.setNombre(Utils.ObtenerValorCelda(tbMonedas, 2));
-            moneda.setActivo(Utils.ObtenerValorCelda(tbMonedas, 3));
-            if (moneda.getIdMoneda()== 0) {
-                cliente.RegistrarMoneda(new Gson().toJson(moneda));
-            } else {
-                cliente.ActualizarMoneda(new Gson().toJson(moneda));
-            }
-            ObtenerMonedas();
-        } catch (Exception e) {
-            System.out.print(e);
-        } finally {
-            cliente.close();
-        }
+        swObtenerMonedas.execute();
     }
 
     public void EliminarMoneda() {
         int confirmacion = JOptionPane.showConfirmDialog(null, "¿SEGURO DE CONTINUAR?", "CONFIRMACIÓN", JOptionPane.YES_NO_OPTION);
         if (confirmacion == JOptionPane.YES_OPTION) {
-            cliAdministracion cliente = new cliAdministracion();
-            try {
-                int idMoneda = Utils.ObtenerValorCelda(tbMonedas, 0);
-                if (idMoneda == 0) {
-                    Utils.EliminarFila(tbMonedas);
-                } else {
-                    cliente.EliminarMoneda(new Gson().toJson(idMoneda));
-                    ObtenerMonedas();
-                }
-            } catch (Exception e) {
-                System.out.print(e);
-            } finally {
-                cliente.close();
+            int idMoneda = Utils.ObtenerValorCelda(tbMonedas, 0);
+            if (idMoneda == 0) {
+                Utils.EliminarFila(tbMonedas);
+            } else {
+                swEliminarUnidad.execute();
             }
         }
     }
@@ -128,14 +176,48 @@ public class lisMoneda extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        pnlTitulo = new javax.swing.JPanel();
-        lblTitulo = new javax.swing.JLabel();
-        btnNuevo = new javax.swing.JButton();
         pnlContenido = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tbMonedas = new javax.swing.JTable();
+        pnlTitulo = new javax.swing.JPanel();
+        lblTitulo = new javax.swing.JLabel();
+        btnNuevo = new javax.swing.JButton();
 
         setClosable(true);
+
+        pnlContenido.setBackground(java.awt.Color.white);
+        pnlContenido.setBorder(null);
+
+        tbMonedas.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "IDMONEDA", "SIMBOLO", "NOMBRE", "ACTIVO", "GUARDAR", "ELIMINAR"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Boolean.class, java.lang.Object.class, java.lang.Object.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, true, true, true, true, true
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tbMonedas.setRowHeight(25);
+        jScrollPane1.setViewportView(tbMonedas);
+        if (tbMonedas.getColumnModel().getColumnCount() > 0) {
+            tbMonedas.getColumnModel().getColumn(0).setMinWidth(0);
+            tbMonedas.getColumnModel().getColumn(0).setPreferredWidth(0);
+            tbMonedas.getColumnModel().getColumn(0).setMaxWidth(0);
+        }
 
         pnlTitulo.setBackground(new java.awt.Color(67, 100, 130));
         pnlTitulo.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -174,40 +256,6 @@ public class lisMoneda extends javax.swing.JInternalFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        pnlContenido.setBackground(java.awt.Color.white);
-        pnlContenido.setBorder(null);
-
-        tbMonedas.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "IDMONEDA", "SIMBOLO", "NOMBRE", "ACTIVO", "GUARDAR", "ELIMINAR"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Boolean.class, java.lang.Object.class, java.lang.Object.class
-            };
-            boolean[] canEdit = new boolean [] {
-                false, true, true, true, true, true
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        tbMonedas.setRowHeight(25);
-        jScrollPane1.setViewportView(tbMonedas);
-        if (tbMonedas.getColumnModel().getColumnCount() > 0) {
-            tbMonedas.getColumnModel().getColumn(0).setMinWidth(0);
-            tbMonedas.getColumnModel().getColumn(0).setPreferredWidth(0);
-            tbMonedas.getColumnModel().getColumn(0).setMaxWidth(0);
-        }
-
         javax.swing.GroupLayout pnlContenidoLayout = new javax.swing.GroupLayout(pnlContenido);
         pnlContenido.setLayout(pnlContenidoLayout);
         pnlContenidoLayout.setHorizontalGroup(
@@ -216,12 +264,14 @@ public class lisMoneda extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 515, Short.MAX_VALUE)
                 .addContainerGap())
+            .addComponent(pnlTitulo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         pnlContenidoLayout.setVerticalGroup(
             pnlContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlContenidoLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 302, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlContenidoLayout.createSequentialGroup()
+                .addComponent(pnlTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 307, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -229,15 +279,11 @@ public class lisMoneda extends javax.swing.JInternalFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(pnlTitulo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(pnlContenido, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(pnlTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(2, 2, 2)
-                .addComponent(pnlContenido, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(pnlContenido, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
