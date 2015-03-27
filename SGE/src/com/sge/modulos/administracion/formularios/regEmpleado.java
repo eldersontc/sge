@@ -52,27 +52,19 @@ public class regEmpleado extends javax.swing.JInternalFrame {
     public void GuardarEmpleado() {
         cliAdministracion cliente = new cliAdministracion();
         try {
+            Empleado empleado = new Empleado();
+            empleado.setCodigo(txtCodigo.getText());
+            empleado.setNombre(txtNombre.getText());
+            empleado.setApellidoPaterno(txtApellidoPaterno.getText());
+            empleado.setApellidoMaterno(txtApellidoMaterno.getText());
+            empleado.setTipoDocumentoIdentidad(cboTipoDocumento.getSelectedItem().toString());
+            empleado.setDocumentoIdentidad(txtDocumento.getText());
+            empleado.setActivo(chkActivo.isSelected());
             if (this.idEmpleado == 0) {
-                Empleado empleado = new Empleado();
-                empleado.setCodigo(txtCodigo.getText());
-                empleado.setNombre(txtNombre.getText());
-                empleado.setApellidoPaterno(txtApellidoPaterno.getText());
-                empleado.setApellidoMaterno(txtApellidoMaterno.getText());
-                empleado.setTipoDocumentoIdentidad(cboTipoDocumento.getSelectedItem().toString());
-                empleado.setDocumentoIdentidad(txtDocumento.getText());
-                empleado.setActivo(chkActivo.isSelected());
-                cliente.RegistrarEmpleado(empleado);
+                cliente.RegistrarEmpleado(new Gson().toJson(empleado));
             } else {
-                Empleado empleado = new Empleado();
                 empleado.setIdEmpleado(this.idEmpleado);
-                empleado.setCodigo(txtCodigo.getText());
-                empleado.setNombre(txtNombre.getText());
-                empleado.setApellidoPaterno(txtApellidoPaterno.getText());
-                empleado.setApellidoMaterno(txtApellidoMaterno.getText());
-                empleado.setTipoDocumentoIdentidad(cboTipoDocumento.getSelectedItem().toString());
-                empleado.setDocumentoIdentidad(txtDocumento.getText());
-                empleado.setActivo(chkActivo.isSelected());
-                cliente.ActualizarEmpleado(empleado);
+                cliente.ActualizarEmpleado(new Gson().toJson(empleado));
             }
         } catch (Exception e) {
             System.out.print(e);

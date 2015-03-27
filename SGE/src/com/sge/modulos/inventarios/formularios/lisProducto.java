@@ -124,7 +124,7 @@ public class lisProducto extends javax.swing.JInternalFrame {
         lblTitulo.setFont(new java.awt.Font("Ubuntu", 1, 18)); // NOI18N
         lblTitulo.setForeground(java.awt.Color.white);
         lblTitulo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sge/base/imagenes/list-view-16.png"))); // NOI18N
-        lblTitulo.setText("LISTADO DE PRODUTOS");
+        lblTitulo.setText("LISTADO DE PRODUCTOS");
 
         btnNuevo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sge/base/imagenes/add-16.png"))); // NOI18N
         btnNuevo.setText("NUEVO");

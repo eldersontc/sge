@@ -51,23 +51,17 @@ public class regProveedor extends javax.swing.JInternalFrame {
     public void GuardarProveedor() {
         cliCompras cliente = new cliCompras();
         try {
+            Proveedor proveedor = new Proveedor();
+            proveedor.setRazonSocial(txtRazonSocial.getText());
+            proveedor.setNombreComercial(txtNombreComercial.getText());
+            proveedor.setTipoDocumentoIdentidad(cboTipoDocumento.getSelectedItem().toString());
+            proveedor.setDocumentoIdentidad(txtDocumento.getText());
+            proveedor.setActivo(chkActivo.isSelected());
             if (this.idProveedor == 0) {
-                Proveedor proveedor = new Proveedor();
-                proveedor.setRazonSocial(txtRazonSocial.getText());
-                proveedor.setNombreComercial(txtNombreComercial.getText());
-                proveedor.setTipoDocumentoIdentidad(cboTipoDocumento.getSelectedItem().toString());
-                proveedor.setDocumentoIdentidad(txtDocumento.getText());
-                proveedor.setActivo(chkActivo.isSelected());
-                cliente.RegistrarProveedor(proveedor);
+                cliente.RegistrarProveedor(new Gson().toJson(proveedor));
             } else {
-                Proveedor proveedor = new Proveedor();
                 proveedor.setIdProveedor(this.idProveedor);
-                proveedor.setRazonSocial(txtRazonSocial.getText());
-                proveedor.setNombreComercial(txtNombreComercial.getText());
-                proveedor.setTipoDocumentoIdentidad(cboTipoDocumento.getSelectedItem().toString());
-                proveedor.setDocumentoIdentidad(txtDocumento.getText());
-                proveedor.setActivo(chkActivo.isSelected());
-                cliente.ActualizarProveedor(proveedor);
+                cliente.ActualizarProveedor(new Gson().toJson(proveedor));
             }
         } catch (Exception e) {
             System.out.print(e);
