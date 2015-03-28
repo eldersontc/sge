@@ -45,7 +45,7 @@ public class lisEmpleado extends javax.swing.JInternalFrame {
         }
     };
 
-    SwingWorker swObtenerEmpleados = new SwingWorker() {
+    public class swObtenerEmpleados extends SwingWorker {
 
         @Override
         protected Object doInBackground() {
@@ -55,7 +55,8 @@ public class lisEmpleado extends javax.swing.JInternalFrame {
             try {
                 json = cliente.ObtenerEmpleados("");
             } catch (Exception e) {
-                json = "[false]";
+                FabricaControles.OcultarCargando(pnlContenido);
+                json = "[\"false\"]";
             } finally {
                 cliente.close();
             }
@@ -68,25 +69,27 @@ public class lisEmpleado extends javax.swing.JInternalFrame {
                 String json = get().toString();
                 String[] resultado = new Gson().fromJson(json, String[].class);
 
-                DefaultTableModel modelo = (DefaultTableModel) tbEmpleados.getModel();
-                modelo.setRowCount(0);
+                if (resultado[0].equals("true")) {
+                    DefaultTableModel modelo = (DefaultTableModel) tbEmpleados.getModel();
+                    modelo.setRowCount(0);
 
-                List<Object[]> filas = (List<Object[]>) new Gson().fromJson(resultado[1], new TypeToken<List<Object[]>>() {
-                }.getType());
+                    List<Object[]> filas = (List<Object[]>) new Gson().fromJson(resultado[1], new TypeToken<List<Object[]>>() {
+                    }.getType());
 
-                for (Object[] fila : filas) {
-                    modelo.addRow(new Object[]{((Double) fila[0]).intValue(), fila[1], fila[2], fila[6], fila[7], Icon_Edit, Icon_Dele});
+                    for (Object[] fila : filas) {
+                        modelo.addRow(new Object[]{((Double) fila[0]).intValue(), fila[1], fila[2], fila[6], fila[7], Icon_Edit, Icon_Dele});
+                    }
+
+                    FabricaControles.AgregarBoton(tbEmpleados, edit, 5);
+                    FabricaControles.AgregarBoton(tbEmpleados, dele, 6);
                 }
-
-                FabricaControles.AgregarBoton(tbEmpleados, edit, 5);
-                FabricaControles.AgregarBoton(tbEmpleados, dele, 6);
-                FabricaControles.OcultarCargando(pnlContenido);
             } catch (Exception e) {
+                FabricaControles.OcultarCargando(pnlContenido);
             }
         }
-    };
-    
-    SwingWorker swEliminarUnidad = new SwingWorker() {
+    }
+
+    public class swEliminarUnidad extends SwingWorker {
 
         @Override
         protected Object doInBackground() throws Exception {
@@ -97,7 +100,8 @@ public class lisEmpleado extends javax.swing.JInternalFrame {
                 int idEmpleado = Utils.ObtenerValorCelda(tbEmpleados, 0);
                 json = cliente.EliminarEmpleado(new Gson().toJson(idEmpleado));
             } catch (Exception e) {
-                json = "[false]";
+                FabricaControles.OcultarCargando(pnlContenido);
+                json = "[\"false\"]";
             } finally {
                 cliente.close();
             }
@@ -107,15 +111,21 @@ public class lisEmpleado extends javax.swing.JInternalFrame {
         @Override
         protected void done() {
             try {
-                FabricaControles.OcultarCargando(pnlContenido);
-                swObtenerEmpleados.execute();
+                String json = get().toString();
+                String[] resultado = new Gson().fromJson(json, String[].class);
+                if (resultado[0].equals("true")) {
+                    new swObtenerEmpleados().execute();
+                } else {
+                    FabricaControles.OcultarCargando(pnlContenido);
+                }
             } catch (Exception e) {
+                FabricaControles.OcultarCargando(pnlContenido);
             }
         }
-    };
-    
+    }
+
     public void Init() {
-        swObtenerEmpleados.execute();
+        new swObtenerEmpleados().execute();
     }
 
     public void EditarEmpleado() {
@@ -128,7 +138,7 @@ public class lisEmpleado extends javax.swing.JInternalFrame {
     public void EliminarEmpleado() {
         int confirmacion = JOptionPane.showConfirmDialog(null, "¿SEGURO DE CONTINUAR?", "CONFIRMACIÓN", JOptionPane.YES_NO_OPTION);
         if (confirmacion == JOptionPane.YES_OPTION) {
-            swEliminarUnidad.execute();
+            new swEliminarUnidad().execute();
         }
     }
 

@@ -44,8 +44,8 @@ public class lisProveedor extends javax.swing.JInternalFrame {
             EliminarProveedor();
         }
     };
-    
-    SwingWorker swObtenerProveedores = new SwingWorker() {
+
+    public class swObtenerProveedores extends SwingWorker {
 
         @Override
         protected Object doInBackground() {
@@ -55,7 +55,8 @@ public class lisProveedor extends javax.swing.JInternalFrame {
             try {
                 json = cliente.ObtenerProveedores("");
             } catch (Exception e) {
-                json = "[false]";
+                FabricaControles.OcultarCargando(pnlContenido);
+                json = "[\"false\"]";
             } finally {
                 cliente.close();
             }
@@ -68,25 +69,28 @@ public class lisProveedor extends javax.swing.JInternalFrame {
                 String json = get().toString();
                 String[] resultado = new Gson().fromJson(json, String[].class);
 
-                DefaultTableModel modelo = (DefaultTableModel) tbProveedores.getModel();
-                modelo.setRowCount(0);
+                if (resultado[0].equals("true")) {
+                    DefaultTableModel modelo = (DefaultTableModel) tbProveedores.getModel();
+                    modelo.setRowCount(0);
 
-                List<Object[]> filas = (List<Object[]>) new Gson().fromJson(resultado[1], new TypeToken<List<Object[]>>() {
-                }.getType());
+                    List<Object[]> filas = (List<Object[]>) new Gson().fromJson(resultado[1], new TypeToken<List<Object[]>>() {
+                    }.getType());
 
-                for (Object[] fila : filas) {
-                    modelo.addRow(new Object[]{((Double) fila[0]).intValue(), fila[1], fila[5], fila[6], Icon_Edit, Icon_Dele});
+                    for (Object[] fila : filas) {
+                        modelo.addRow(new Object[]{((Double) fila[0]).intValue(), fila[1], fila[5], fila[6], Icon_Edit, Icon_Dele});
+                    }
+
+                    FabricaControles.AgregarBoton(tbProveedores, edit, 4);
+                    FabricaControles.AgregarBoton(tbProveedores, dele, 5);
                 }
-
-                FabricaControles.AgregarBoton(tbProveedores, edit, 4);
-                FabricaControles.AgregarBoton(tbProveedores, dele, 5);
                 FabricaControles.OcultarCargando(pnlContenido);
             } catch (Exception e) {
+                FabricaControles.OcultarCargando(pnlContenido);
             }
         }
-    };
-    
-    SwingWorker swEliminarProveedor = new SwingWorker() {
+    }
+
+    public class swEliminarProveedor extends SwingWorker {
 
         @Override
         protected Object doInBackground() throws Exception {
@@ -97,7 +101,8 @@ public class lisProveedor extends javax.swing.JInternalFrame {
                 int idProveedor = Utils.ObtenerValorCelda(tbProveedores, 0);
                 json = cliente.EliminarProveedor(new Gson().toJson(idProveedor));
             } catch (Exception e) {
-                json = "[false]";
+                FabricaControles.OcultarCargando(pnlContenido);
+                json = "[\"false\"]";
             } finally {
                 cliente.close();
             }
@@ -107,15 +112,21 @@ public class lisProveedor extends javax.swing.JInternalFrame {
         @Override
         protected void done() {
             try {
-                FabricaControles.OcultarCargando(pnlContenido);
-                swObtenerProveedores.execute();
+                String json = get().toString();
+                String[] resultado = new Gson().fromJson(json, String[].class);
+                if (resultado[0].equals("true")) {
+                    new swObtenerProveedores().execute();
+                } else {
+                    FabricaControles.OcultarCargando(pnlContenido);
+                }
             } catch (Exception e) {
+                FabricaControles.OcultarCargando(pnlContenido);
             }
         }
-    };
-    
+    }
+
     public void Init() {
-        swObtenerProveedores.execute();
+        new swObtenerProveedores().execute();
     }
 
     public void EditarProveedor() {
@@ -128,10 +139,10 @@ public class lisProveedor extends javax.swing.JInternalFrame {
     public void EliminarProveedor() {
         int confirmacion = JOptionPane.showConfirmDialog(null, "¿SEGURO DE CONTINUAR?", "CONFIRMACIÓN", JOptionPane.YES_NO_OPTION);
         if (confirmacion == JOptionPane.YES_OPTION) {
-            swEliminarProveedor.execute();
+            new swEliminarProveedor().execute();
         }
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always

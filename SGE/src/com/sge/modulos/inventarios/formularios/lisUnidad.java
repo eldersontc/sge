@@ -35,7 +35,7 @@ public class lisUnidad extends javax.swing.JInternalFrame {
     Action save = new AbstractAction() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            swGuardarUnidad.execute();
+            new swGuardarUnidad().execute();
         }
     };
 
@@ -46,7 +46,7 @@ public class lisUnidad extends javax.swing.JInternalFrame {
         }
     };
 
-    SwingWorker swObtenerUnidades = new SwingWorker() {
+    public class swObtenerUnidades extends SwingWorker {
 
         @Override
         protected Object doInBackground() {
@@ -56,7 +56,8 @@ public class lisUnidad extends javax.swing.JInternalFrame {
             try {
                 json = cliente.ObtenerUnidades("");
             } catch (Exception e) {
-                json = "[false]";
+                FabricaControles.OcultarCargando(pnlContenido);
+                json = "[\"false\"]";
             } finally {
                 cliente.close();
             }
@@ -69,25 +70,28 @@ public class lisUnidad extends javax.swing.JInternalFrame {
                 String json = get().toString();
                 String[] resultado = new Gson().fromJson(json, String[].class);
 
-                DefaultTableModel modelo = (DefaultTableModel) tbUnidades.getModel();
-                modelo.setRowCount(0);
+                if (resultado[0].equals("true")) {
+                    DefaultTableModel modelo = (DefaultTableModel) tbUnidades.getModel();
+                    modelo.setRowCount(0);
 
-                List<Object[]> filas = (List<Object[]>) new Gson().fromJson(resultado[1], new TypeToken<List<Object[]>>() {
-                }.getType());
+                    List<Object[]> filas = (List<Object[]>) new Gson().fromJson(resultado[1].toString(), new TypeToken<List<Object[]>>() {
+                    }.getType());
 
-                for (Object[] fila : filas) {
-                    modelo.addRow(new Object[]{((Double) fila[0]).intValue(), fila[1], fila[2], fila[3], Icon_Save, Icon_Dele});
+                    for (Object[] fila : filas) {
+                        modelo.addRow(new Object[]{((Double) fila[0]).intValue(), fila[1], fila[2], fila[3], Icon_Save, Icon_Dele});
+                    }
+
+                    FabricaControles.AgregarBoton(tbUnidades, save, 4);
+                    FabricaControles.AgregarBoton(tbUnidades, dele, 5);
                 }
-
-                FabricaControles.AgregarBoton(tbUnidades, save, 4);
-                FabricaControles.AgregarBoton(tbUnidades, dele, 5);
                 FabricaControles.OcultarCargando(pnlContenido);
             } catch (Exception e) {
+                FabricaControles.OcultarCargando(pnlContenido);
             }
         }
-    };
+    }
 
-    SwingWorker swGuardarUnidad = new SwingWorker() {
+    public class swGuardarUnidad extends SwingWorker {
 
         @Override
         protected Object doInBackground() {
@@ -106,7 +110,8 @@ public class lisUnidad extends javax.swing.JInternalFrame {
                     json = cliente.ActualizarUnidad(new Gson().toJson(unidad));
                 }
             } catch (Exception e) {
-                json = "[false]";
+                FabricaControles.OcultarCargando(pnlContenido);
+                json = "[\"false\"]";
             } finally {
                 cliente.close();
             }
@@ -116,17 +121,23 @@ public class lisUnidad extends javax.swing.JInternalFrame {
         @Override
         protected void done() {
             try {
-                FabricaControles.OcultarCargando(pnlContenido);
-                swObtenerUnidades.execute();
+                String json = get().toString();
+                String[] resultado = new Gson().fromJson(json, String[].class);
+                if (resultado[0].equals("true")) {
+                    new swObtenerUnidades().execute();
+                } else {
+                    FabricaControles.OcultarCargando(pnlContenido);
+                }
             } catch (Exception e) {
+                FabricaControles.OcultarCargando(pnlContenido);
             }
         }
-    };
+    }
 
-    SwingWorker swEliminarUnidad = new SwingWorker() {
+    public class swEliminarUnidad extends SwingWorker {
 
         @Override
-        protected Object doInBackground() throws Exception {
+        protected Object doInBackground() {
             FabricaControles.VerCargando(pnlContenido);
             cliInventarios cliente = new cliInventarios();
             String json = "";
@@ -134,7 +145,8 @@ public class lisUnidad extends javax.swing.JInternalFrame {
                 int idUnidad = Utils.ObtenerValorCelda(tbUnidades, 0);
                 json = cliente.EliminarUnidad(new Gson().toJson(idUnidad));
             } catch (Exception e) {
-                json = "[false]";
+                FabricaControles.OcultarCargando(pnlContenido);
+                json = "[\"false\"]";
             } finally {
                 cliente.close();
             }
@@ -144,15 +156,21 @@ public class lisUnidad extends javax.swing.JInternalFrame {
         @Override
         protected void done() {
             try {
-                FabricaControles.OcultarCargando(pnlContenido);
-                swObtenerUnidades.execute();
+                String json = get().toString();
+                String[] resultado = new Gson().fromJson(json, String[].class);
+                if (resultado[0].equals("true")) {
+                    new swObtenerUnidades().execute();
+                } else {
+                    FabricaControles.OcultarCargando(pnlContenido);
+                }
             } catch (Exception e) {
+                FabricaControles.OcultarCargando(pnlContenido);
             }
         }
-    };
+    }
 
     public void Init() {
-        swObtenerUnidades.execute();
+        new swObtenerUnidades().execute();
     }
 
     public void EliminarUnidad() {
@@ -162,7 +180,7 @@ public class lisUnidad extends javax.swing.JInternalFrame {
             if (idUnidad == 0) {
                 Utils.EliminarFila(tbUnidades);
             } else {
-                swEliminarUnidad.execute();
+                new swEliminarUnidad().execute();
             }
         }
     }

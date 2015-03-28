@@ -56,7 +56,8 @@ public class lisUsuario extends javax.swing.JInternalFrame {
             try {
                 json = cliente.ObtenerUsuarios("");
             } catch (Exception e) {
-                json = "[false]";
+                FabricaControles.OcultarCargando(pnlContenido);
+                json = "[\"false\"]";
             } finally {
                 cliente.close();
             }
@@ -69,20 +70,23 @@ public class lisUsuario extends javax.swing.JInternalFrame {
                 String json = get().toString();
                 String[] resultado = new Gson().fromJson(json, String[].class);
 
-                DefaultTableModel modelo = (DefaultTableModel) tbUsuarios.getModel();
-                modelo.setRowCount(0);
+                if (resultado[0].equals("true")) {
+                    DefaultTableModel modelo = (DefaultTableModel) tbUsuarios.getModel();
+                    modelo.setRowCount(0);
 
-                List<Object[]> filas = (List<Object[]>) new Gson().fromJson(resultado[1], new TypeToken<List<Object[]>>() {
-                }.getType());
+                    List<Object[]> filas = (List<Object[]>) new Gson().fromJson(resultado[1], new TypeToken<List<Object[]>>() {
+                    }.getType());
 
-                for (Object[] fila : filas) {
-                    modelo.addRow(new Object[]{((Double) fila[0]).intValue(), fila[1], fila[2], fila[3], Icon_Save, Icon_Dele});
+                    for (Object[] fila : filas) {
+                        modelo.addRow(new Object[]{((Double) fila[0]).intValue(), fila[1], fila[2], fila[3], Icon_Save, Icon_Dele});
+                    }
+
+                    FabricaControles.AgregarBoton(tbUsuarios, save, 4);
+                    FabricaControles.AgregarBoton(tbUsuarios, dele, 5);
                 }
-
-                FabricaControles.AgregarBoton(tbUsuarios, save, 4);
-                FabricaControles.AgregarBoton(tbUsuarios, dele, 5);
                 FabricaControles.OcultarCargando(pnlContenido);
             } catch (Exception e) {
+                FabricaControles.OcultarCargando(pnlContenido);
             }
         }
     }
@@ -106,7 +110,8 @@ public class lisUsuario extends javax.swing.JInternalFrame {
                     json = cliente.ActualizarUsuario(new Gson().toJson(usuario));
                 }
             } catch (Exception e) {
-                json = "[false]";
+                FabricaControles.OcultarCargando(pnlContenido);
+                json = "[\"false\"]";
             } finally {
                 cliente.close();
             }
@@ -116,8 +121,15 @@ public class lisUsuario extends javax.swing.JInternalFrame {
         @Override
         protected void done() {
             try {
-                new swObtenerUsuarios().execute();
+                String json = get().toString();
+                String[] resultado = new Gson().fromJson(json, String[].class);
+                if (resultado[0].equals("true")) {
+                    new swObtenerUsuarios().execute();
+                } else {
+                    FabricaControles.OcultarCargando(pnlContenido);
+                }
             } catch (Exception e) {
+                FabricaControles.OcultarCargando(pnlContenido);
             }
         }
     }
@@ -133,7 +145,8 @@ public class lisUsuario extends javax.swing.JInternalFrame {
                 int idUsuario = Utils.ObtenerValorCelda(tbUsuarios, 0);
                 json = cliente.EliminarUsuario(new Gson().toJson(idUsuario));
             } catch (Exception e) {
-                json = "[false]";
+                FabricaControles.OcultarCargando(pnlContenido);
+                json = "[\"false\"]";
             } finally {
                 cliente.close();
             }
@@ -143,8 +156,15 @@ public class lisUsuario extends javax.swing.JInternalFrame {
         @Override
         protected void done() {
             try {
-                new swObtenerUsuarios().execute();
+                String json = get().toString();
+                String[] resultado = new Gson().fromJson(json, String[].class);
+                if (resultado[0].equals("true")) {
+                    new swObtenerUsuarios().execute();
+                } else {
+                    FabricaControles.OcultarCargando(pnlContenido);
+                }
             } catch (Exception e) {
+                FabricaControles.OcultarCargando(pnlContenido);
             }
         }
     }

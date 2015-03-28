@@ -35,7 +35,7 @@ public class lisAlmacen extends javax.swing.JInternalFrame {
     Action save = new AbstractAction() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            swGuardarAlmacen.execute();
+            new swGuardarAlmacen().execute();
         }
     };
 
@@ -46,7 +46,7 @@ public class lisAlmacen extends javax.swing.JInternalFrame {
         }
     };
 
-    SwingWorker swObtenerAlmacenes = new SwingWorker() {
+    public class swObtenerAlmacenes extends SwingWorker {
 
         @Override
         protected Object doInBackground() {
@@ -56,7 +56,8 @@ public class lisAlmacen extends javax.swing.JInternalFrame {
             try {
                 json = cliente.ObtenerAlmacenes("");
             } catch (Exception e) {
-                json = "[false]";
+                FabricaControles.OcultarCargando(pnlContenido);
+                json = "[\"false\"]";
             } finally {
                 cliente.close();
             }
@@ -69,25 +70,28 @@ public class lisAlmacen extends javax.swing.JInternalFrame {
                 String json = get().toString();
                 String[] resultado = new Gson().fromJson(json, String[].class);
 
-                DefaultTableModel modelo = (DefaultTableModel) tbAlmacenes.getModel();
-                modelo.setRowCount(0);
+                if (resultado[0].equals("true")) {
+                    DefaultTableModel modelo = (DefaultTableModel) tbAlmacenes.getModel();
+                    modelo.setRowCount(0);
 
-                List<Object[]> filas = (List<Object[]>) new Gson().fromJson(resultado[1], new TypeToken<List<Object[]>>() {
-                }.getType());
+                    List<Object[]> filas = (List<Object[]>) new Gson().fromJson(resultado[1], new TypeToken<List<Object[]>>() {
+                    }.getType());
 
-                for (Object[] fila : filas) {
-                    modelo.addRow(new Object[]{((Double) fila[0]).intValue(), fila[1], fila[2], fila[3], Icon_Save, Icon_Dele});
+                    for (Object[] fila : filas) {
+                        modelo.addRow(new Object[]{((Double) fila[0]).intValue(), fila[1], fila[2], fila[3], Icon_Save, Icon_Dele});
+                    }
+
+                    FabricaControles.AgregarBoton(tbAlmacenes, save, 4);
+                    FabricaControles.AgregarBoton(tbAlmacenes, dele, 5);
                 }
-
-                FabricaControles.AgregarBoton(tbAlmacenes, save, 4);
-                FabricaControles.AgregarBoton(tbAlmacenes, dele, 5);
                 FabricaControles.OcultarCargando(pnlContenido);
             } catch (Exception e) {
+                FabricaControles.OcultarCargando(pnlContenido);
             }
         }
-    };
+    }
 
-    SwingWorker swGuardarAlmacen = new SwingWorker() {
+    public class swGuardarAlmacen extends SwingWorker {
 
         @Override
         protected Object doInBackground() {
@@ -106,7 +110,8 @@ public class lisAlmacen extends javax.swing.JInternalFrame {
                     json = cliente.ActualizarAlmacen(new Gson().toJson(almacen));
                 }
             } catch (Exception e) {
-                json = "[false]";
+                FabricaControles.OcultarCargando(pnlContenido);
+                json = "[\"false\"]";
             } finally {
                 cliente.close();
             }
@@ -116,14 +121,20 @@ public class lisAlmacen extends javax.swing.JInternalFrame {
         @Override
         protected void done() {
             try {
-                FabricaControles.OcultarCargando(pnlContenido);
-                swObtenerAlmacenes.execute();
+                String json = get().toString();
+                String[] resultado = new Gson().fromJson(json, String[].class);
+                if (resultado[0].equals("true")) {
+                    new swObtenerAlmacenes().execute();
+                } else {
+                    FabricaControles.OcultarCargando(pnlContenido);
+                }
             } catch (Exception e) {
+                FabricaControles.OcultarCargando(pnlContenido);
             }
         }
-    };
+    }
 
-    SwingWorker swEliminarAlmacen = new SwingWorker() {
+    public class swEliminarAlmacen extends SwingWorker {
 
         @Override
         protected Object doInBackground() throws Exception {
@@ -134,7 +145,8 @@ public class lisAlmacen extends javax.swing.JInternalFrame {
                 int idAlmacen = Utils.ObtenerValorCelda(tbAlmacenes, 0);
                 json = cliente.EliminarAlmacen(new Gson().toJson(idAlmacen));
             } catch (Exception e) {
-                json = "[false]";
+                FabricaControles.OcultarCargando(pnlContenido);
+                json = "[\"false\"]";
             } finally {
                 cliente.close();
             }
@@ -144,15 +156,21 @@ public class lisAlmacen extends javax.swing.JInternalFrame {
         @Override
         protected void done() {
             try {
-                FabricaControles.OcultarCargando(pnlContenido);
-                swObtenerAlmacenes.execute();
+                String json = get().toString();
+                String[] resultado = new Gson().fromJson(json, String[].class);
+                if (resultado[0].equals("true")) {
+                    new swObtenerAlmacenes().execute();
+                } else {
+                    FabricaControles.OcultarCargando(pnlContenido);
+                }
             } catch (Exception e) {
+                FabricaControles.OcultarCargando(pnlContenido);
             }
         }
-    };
+    }
 
     public void Init() {
-        swObtenerAlmacenes.execute();
+        new swObtenerAlmacenes().execute();
     }
 
     public void EliminarAlmacen() {
@@ -162,7 +180,7 @@ public class lisAlmacen extends javax.swing.JInternalFrame {
             if (idAlmacen == 0) {
                 Utils.EliminarFila(tbAlmacenes);
             } else {
-                swEliminarAlmacen.execute();
+                new swEliminarAlmacen().execute();
             }
         }
     }

@@ -28,14 +28,14 @@ public class lisMoneda extends javax.swing.JInternalFrame {
         initComponents();
         Init();
     }
-    
+
     ImageIcon Icon_Save = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/save-16.png"));
     ImageIcon Icon_Dele = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/delete-16.png"));
 
     Action save = new AbstractAction() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            swGuardarMoneda.execute();
+            new swGuardarMoneda().execute();
         }
     };
 
@@ -46,7 +46,7 @@ public class lisMoneda extends javax.swing.JInternalFrame {
         }
     };
 
-    SwingWorker swObtenerMonedas = new SwingWorker() {
+    public class swObtenerMonedas extends SwingWorker<Object, Object> {
 
         @Override
         protected Object doInBackground() {
@@ -56,7 +56,8 @@ public class lisMoneda extends javax.swing.JInternalFrame {
             try {
                 json = cliente.ObtenerMonedas("");
             } catch (Exception e) {
-                json = "[false]";
+                FabricaControles.OcultarCargando(pnlContenido);
+                json = "[\"false\"]";
             } finally {
                 cliente.close();
             }
@@ -69,25 +70,28 @@ public class lisMoneda extends javax.swing.JInternalFrame {
                 String json = get().toString();
                 String[] resultado = new Gson().fromJson(json, String[].class);
 
-                DefaultTableModel modelo = (DefaultTableModel) tbMonedas.getModel();
-                modelo.setRowCount(0);
+                if (resultado[0].equals("true")) {
+                    DefaultTableModel modelo = (DefaultTableModel) tbMonedas.getModel();
+                    modelo.setRowCount(0);
 
-                List<Object[]> filas = (List<Object[]>) new Gson().fromJson(resultado[1], new TypeToken<List<Object[]>>() {
-                }.getType());
+                    List<Object[]> filas = (List<Object[]>) new Gson().fromJson(resultado[1], new TypeToken<List<Object[]>>() {
+                    }.getType());
 
-                for (Object[] fila : filas) {
-                    modelo.addRow(new Object[]{((Double) fila[0]).intValue(), fila[1], fila[2], fila[3], Icon_Save, Icon_Dele});
+                    for (Object[] fila : filas) {
+                        modelo.addRow(new Object[]{((Double) fila[0]).intValue(), fila[1], fila[2], fila[3], Icon_Save, Icon_Dele});
+                    }
+
+                    FabricaControles.AgregarBoton(tbMonedas, save, 4);
+                    FabricaControles.AgregarBoton(tbMonedas, dele, 5);
                 }
-
-                FabricaControles.AgregarBoton(tbMonedas, save, 4);
-                FabricaControles.AgregarBoton(tbMonedas, dele, 5);
                 FabricaControles.OcultarCargando(pnlContenido);
             } catch (Exception e) {
+                FabricaControles.OcultarCargando(pnlContenido);
             }
         }
     };
-    
-    SwingWorker swGuardarMoneda = new SwingWorker() {
+
+    public class swGuardarMoneda extends SwingWorker<Object, Object> {
 
         @Override
         protected Object doInBackground() {
@@ -100,13 +104,14 @@ public class lisMoneda extends javax.swing.JInternalFrame {
                 moneda.setSimbolo(Utils.ObtenerValorCelda(tbMonedas, 1));
                 moneda.setNombre(Utils.ObtenerValorCelda(tbMonedas, 2));
                 moneda.setActivo(Utils.ObtenerValorCelda(tbMonedas, 3));
-                if (moneda.getIdMoneda()== 0) {
+                if (moneda.getIdMoneda() == 0) {
                     json = cliente.RegistrarMoneda(new Gson().toJson(moneda));
                 } else {
                     json = cliente.ActualizarMoneda(new Gson().toJson(moneda));
                 }
             } catch (Exception e) {
-                json = "[false]";
+                FabricaControles.OcultarCargando(pnlContenido);
+                json = "[\"false\"]";
             } finally {
                 cliente.close();
             }
@@ -116,14 +121,20 @@ public class lisMoneda extends javax.swing.JInternalFrame {
         @Override
         protected void done() {
             try {
-                FabricaControles.OcultarCargando(pnlContenido);
-                swObtenerMonedas.execute();
+                String json = get().toString();
+                String[] resultado = new Gson().fromJson(json, String[].class);
+                if (resultado[0].equals("true")) {
+                    new swObtenerMonedas().execute();
+                } else {
+                    FabricaControles.OcultarCargando(pnlContenido);
+                }
             } catch (Exception e) {
+                FabricaControles.OcultarCargando(pnlContenido);
             }
         }
-    };
-    
-    SwingWorker swEliminarUnidad = new SwingWorker() {
+    }
+
+    public class swEliminarUnidad extends SwingWorker<Object, Object> {
 
         @Override
         protected Object doInBackground() throws Exception {
@@ -134,7 +145,8 @@ public class lisMoneda extends javax.swing.JInternalFrame {
                 int idMoneda = Utils.ObtenerValorCelda(tbMonedas, 0);
                 json = cliente.EliminarMoneda(new Gson().toJson(idMoneda));
             } catch (Exception e) {
-                json = "[false]";
+                FabricaControles.OcultarCargando(pnlContenido);
+                json = "[\"false\"]";
             } finally {
                 cliente.close();
             }
@@ -144,15 +156,21 @@ public class lisMoneda extends javax.swing.JInternalFrame {
         @Override
         protected void done() {
             try {
-                FabricaControles.OcultarCargando(pnlContenido);
-                swObtenerMonedas.execute();
+                String json = get().toString();
+                String[] resultado = new Gson().fromJson(json, String[].class);
+                if (resultado[0].equals("true")) {
+                    new swObtenerMonedas().execute();
+                } else {
+                    FabricaControles.OcultarCargando(pnlContenido);
+                }
             } catch (Exception e) {
+                FabricaControles.OcultarCargando(pnlContenido);
             }
         }
-    };
-    
+    }
+
     public void Init() {
-        swObtenerMonedas.execute();
+        new swObtenerMonedas().execute();
     }
 
     public void EliminarMoneda() {
@@ -162,7 +180,7 @@ public class lisMoneda extends javax.swing.JInternalFrame {
             if (idMoneda == 0) {
                 Utils.EliminarFila(tbMonedas);
             } else {
-                swEliminarUnidad.execute();
+                new swEliminarUnidad().execute();
             }
         }
     }
