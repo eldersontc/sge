@@ -256,4 +256,40 @@ public class FabricaControles {
         }
         panel.setVisible(true);
     }
+    
+    public static void VerProcesando(JPanel panel) {
+        for (Component component : panel.getParent().getComponents()) {
+            if ("panelProcesando".equals(component.getName())) {
+                return;
+            }
+        }
+        JInternalFrame frame = (JInternalFrame) panel.getParent().getParent().getParent().getParent();
+        JPanel panelProcesando = new JPanel();
+        panelProcesando.setName("panelProcesando");
+        panelProcesando.setBackground(Color.white);
+        panelProcesando.setLayout(new BorderLayout());
+        ImageIcon iconoProcesando = new ImageIcon(frame.getClass().getResource("/com/sge/base/imagenes/process-32.gif"));
+        JLabel labelProcesando = new JLabel();
+        labelProcesando.setText("Procesando...");
+        labelProcesando.setIcon(iconoProcesando);
+        labelProcesando.setHorizontalAlignment(SwingConstants.CENTER);
+        panelProcesando.add(labelProcesando, BorderLayout.CENTER);
+        frame.setLayout(new BorderLayout());
+        frame.add(panelProcesando, 0);
+        panel.setVisible(false);
+    }
+    
+    public static void OcultarProcesando(JPanel panel) {
+        Component panelProcesando = null;
+        for (Component component : panel.getParent().getComponents()) {
+            if ("panelProcesando".equals(component.getName())) {
+                panelProcesando = component;
+                break;
+            }
+        }
+        if(!(panelProcesando == null)){
+            panel.getParent().remove(panelProcesando);
+        }
+        panel.setVisible(true);
+    }
 }

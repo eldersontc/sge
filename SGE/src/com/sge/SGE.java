@@ -150,12 +150,12 @@ public class SGE extends javax.swing.JFrame {
         // TODO add your handling code here:
         //lisUsuario lista = new lisUsuario();
         //lisMoneda lista = new lisMoneda();
-        //lisProveedor lista = new lisProveedor();
+        lisProveedor lista = new lisProveedor();
         //lisEmpleado lista = new lisEmpleado();
         //regEmpleado lista = new regEmpleado();
         //lisAlmacen lista = new lisAlmacen();
         //lisUnidad lista = new lisUnidad();
-        lisProducto lista = new lisProducto();
+        //lisProducto lista = new lisProducto();
         jdpPrincipal.add(lista);
         lista.setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed

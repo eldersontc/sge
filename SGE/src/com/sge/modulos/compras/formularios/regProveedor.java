@@ -1,8 +1,10 @@
 package com.sge.modulos.compras.formularios;
 
 import com.google.gson.Gson;
+import com.sge.base.controles.FabricaControles;
 import com.sge.modulos.compras.clases.Proveedor;
 import com.sge.modulos.compras.cliente.cliCompras;
+import javax.swing.SwingWorker;
 
 /**
  *
@@ -19,54 +21,97 @@ public class regProveedor extends javax.swing.JInternalFrame {
     }
 
     int idProveedor = 0;
-    
+
     public void Init(String operacion, int idProveedor) {
         lblTitulo.setText(operacion + lblTitulo.getText());
         this.idProveedor = idProveedor;
         if (this.idProveedor > 0) {
-            ObtenerProveedor(idProveedor);
+            new swObtenerProveedor().execute();
         }
     }
 
-    public void ObtenerProveedor(int idProveedor) {
-        cliCompras cliente = new cliCompras();
-        try {
-            String json = cliente.ObtenerProveedor(new Gson().toJson(idProveedor));
-            cliente.close();
-            String[] resultado = new Gson().fromJson(json, String[].class);
-            Proveedor proveedor = new Gson().fromJson(resultado[1], Proveedor.class);
-            txtRazonSocial.setText(proveedor.getRazonSocial());
-            txtNombreComercial.setText(proveedor.getNombreComercial());
-            cboTipoDocumento.setSelectedItem(proveedor.getTipoDocumentoIdentidad());
-            txtDocumento.setText(proveedor.getDocumentoIdentidad());
-            txtFechaUltimaCompra.setText(proveedor.getFechaUltimaCompra());
-            chkActivo.setSelected(proveedor.isActivo());
-        } catch (Exception e) {
-            System.out.print(e);
-        } finally {
-            cliente.close();
-        }
-    }
+    public class swObtenerProveedor extends SwingWorker<Object, Object> {
 
-    public void GuardarProveedor() {
-        cliCompras cliente = new cliCompras();
-        try {
-            Proveedor proveedor = new Proveedor();
-            proveedor.setRazonSocial(txtRazonSocial.getText());
-            proveedor.setNombreComercial(txtNombreComercial.getText());
-            proveedor.setTipoDocumentoIdentidad(cboTipoDocumento.getSelectedItem().toString());
-            proveedor.setDocumentoIdentidad(txtDocumento.getText());
-            proveedor.setActivo(chkActivo.isSelected());
-            if (this.idProveedor == 0) {
-                cliente.RegistrarProveedor(new Gson().toJson(proveedor));
-            } else {
-                proveedor.setIdProveedor(this.idProveedor);
-                cliente.ActualizarProveedor(new Gson().toJson(proveedor));
+        @Override
+        protected Object doInBackground() {
+            FabricaControles.VerCargando(pnlContenido);
+            cliCompras cliente = new cliCompras();
+            String json = "";
+            try {
+                json = cliente.ObtenerProveedor(new Gson().toJson(idProveedor));
+            } catch (Exception e) {
+                FabricaControles.OcultarCargando(pnlContenido);
+                json = "[\"false\"]";
+            } finally {
+                cliente.close();
             }
-        } catch (Exception e) {
-            System.out.print(e);
-        } finally {
-            cliente.close();
+            return json;
+        }
+
+        @Override
+        protected void done() {
+            try {
+                String json = get().toString();
+                String[] resultado = new Gson().fromJson(json, String[].class);
+
+                if (resultado[0].equals("true")) {
+                    Proveedor proveedor = new Gson().fromJson(resultado[1], Proveedor.class);
+                    txtRazonSocial.setText(proveedor.getRazonSocial());
+                    txtNombreComercial.setText(proveedor.getNombreComercial());
+                    cboTipoDocumento.setSelectedItem(proveedor.getTipoDocumentoIdentidad());
+                    txtDocumento.setText(proveedor.getDocumentoIdentidad());
+                    txtFechaUltimaCompra.setText(proveedor.getFechaUltimaCompra());
+                    chkActivo.setSelected(proveedor.isActivo());
+                }
+                FabricaControles.OcultarCargando(pnlContenido);
+            } catch (Exception e) {
+                FabricaControles.OcultarCargando(pnlContenido);
+            }
+        }
+    }
+
+    public class swGuardarProveedor extends SwingWorker<Object, Object>{
+
+        @Override
+        protected Object doInBackground() {
+            FabricaControles.VerProcesando(pnlContenido);
+            cliCompras cliente = new cliCompras();
+            String json = "";
+            try {
+                Proveedor proveedor = new Proveedor();
+                proveedor.setRazonSocial(txtRazonSocial.getText());
+                proveedor.setNombreComercial(txtNombreComercial.getText());
+                proveedor.setTipoDocumentoIdentidad(cboTipoDocumento.getSelectedItem().toString());
+                proveedor.setDocumentoIdentidad(txtDocumento.getText());
+                proveedor.setActivo(chkActivo.isSelected());
+                if (idProveedor == 0) {
+                    json = cliente.RegistrarProveedor(new Gson().toJson(proveedor));
+                } else {
+                    proveedor.setIdProveedor(idProveedor);
+                    json = cliente.ActualizarProveedor(new Gson().toJson(proveedor));
+                }
+            } catch (Exception e) {
+                FabricaControles.OcultarProcesando(pnlContenido);
+                json = "[\"false\"]";
+            } finally{
+                cliente.close();
+            }
+            return json;
+        }
+        
+        @Override
+        protected void done() {
+            try {
+                String json = get().toString();
+                String[] resultado = new Gson().fromJson(json, String[].class);
+                if (resultado[0].equals("true")) {
+                    setVisible(false);
+                } else {
+                    FabricaControles.OcultarProcesando(pnlContenido);
+                }
+            } catch (Exception e) {
+                FabricaControles.OcultarProcesando(pnlContenido);
+            }
         }
     }
     
@@ -127,15 +172,41 @@ public class regProveedor extends javax.swing.JInternalFrame {
             }
         });
 
+        pnlTitulo.setBackground(new java.awt.Color(67, 100, 130));
+        pnlTitulo.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
+        lblTitulo.setFont(new java.awt.Font("Ubuntu", 1, 18)); // NOI18N
+        lblTitulo.setForeground(java.awt.Color.white);
+        lblTitulo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sge/base/imagenes/add-list-16.png"))); // NOI18N
+        lblTitulo.setText("PROVEEDOR");
+
+        javax.swing.GroupLayout pnlTituloLayout = new javax.swing.GroupLayout(pnlTitulo);
+        pnlTitulo.setLayout(pnlTituloLayout);
+        pnlTituloLayout.setHorizontalGroup(
+            pnlTituloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlTituloLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(308, Short.MAX_VALUE))
+        );
+        pnlTituloLayout.setVerticalGroup(
+            pnlTituloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlTituloLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblTitulo, javax.swing.GroupLayout.DEFAULT_SIZE, 26, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
         javax.swing.GroupLayout pnlContenidoLayout = new javax.swing.GroupLayout(pnlContenido);
         pnlContenido.setLayout(pnlContenidoLayout);
         pnlContenidoLayout.setHorizontalGroup(
             pnlContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(pnlTitulo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(pnlContenidoLayout.createSequentialGroup()
-                .addGap(30, 30, 30)
+                .addGap(29, 29, 29)
                 .addGroup(pnlContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(lblRazonSocial, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(lblNombreComercial, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblNombreComercial)
                     .addComponent(lblTipoDocumento)
                     .addComponent(lblDocumento)
                     .addComponent(lblFechaUltimaCompra))
@@ -155,17 +226,17 @@ public class regProveedor extends javax.swing.JInternalFrame {
                                         .addComponent(txtFechaUltimaCompra, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addComponent(chkActivo, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addComponent(txtNombreComercial, javax.swing.GroupLayout.PREFERRED_SIZE, 319, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addGap(0, 0, Short.MAX_VALUE))
+                                    .addComponent(txtNombreComercial, javax.swing.GroupLayout.PREFERRED_SIZE, 319, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                     .addGroup(pnlContenidoLayout.createSequentialGroup()
                         .addGap(18, 18, 18)
-                        .addComponent(txtRazonSocial, javax.swing.GroupLayout.PREFERRED_SIZE, 319, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(37, Short.MAX_VALUE))))
+                        .addComponent(txtRazonSocial, javax.swing.GroupLayout.PREFERRED_SIZE, 319, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         pnlContenidoLayout.setVerticalGroup(
             pnlContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlContenidoLayout.createSequentialGroup()
-                .addGap(10, 10, 10)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlContenidoLayout.createSequentialGroup()
+                .addComponent(pnlTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(pnlContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtRazonSocial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblRazonSocial))
@@ -191,47 +262,18 @@ public class regProveedor extends javax.swing.JInternalFrame {
                 .addGroup(pnlContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnAceptar)
                     .addComponent(btnCancelar))
-                .addGap(0, 18, Short.MAX_VALUE))
-        );
-
-        pnlTitulo.setBackground(new java.awt.Color(67, 100, 130));
-        pnlTitulo.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-
-        lblTitulo.setFont(new java.awt.Font("Ubuntu", 1, 18)); // NOI18N
-        lblTitulo.setForeground(java.awt.Color.white);
-        lblTitulo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sge/base/imagenes/add-list-16.png"))); // NOI18N
-        lblTitulo.setText("PROVEEDOR");
-
-        javax.swing.GroupLayout pnlTituloLayout = new javax.swing.GroupLayout(pnlTitulo);
-        pnlTitulo.setLayout(pnlTituloLayout);
-        pnlTituloLayout.setHorizontalGroup(
-            pnlTituloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlTituloLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(lblTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        pnlTituloLayout.setVerticalGroup(
-            pnlTituloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlTituloLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(lblTitulo, javax.swing.GroupLayout.DEFAULT_SIZE, 26, Short.MAX_VALUE)
-                .addContainerGap())
+                .addContainerGap(17, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(pnlTitulo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(pnlContenido, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(pnlTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(2, 2, 2)
-                .addComponent(pnlContenido, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(pnlContenido, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -244,8 +286,7 @@ public class regProveedor extends javax.swing.JInternalFrame {
 
     private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
         // TODO add your handling code here:
-        GuardarProveedor();
-        this.setVisible(false);
+        new swGuardarProveedor().execute();
     }//GEN-LAST:event_btnAceptarActionPerformed
 
 
