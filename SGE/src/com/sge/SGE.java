@@ -6,6 +6,7 @@
 package com.sge;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.sge.modulos.administracion.cliente.cliAdministracion;
 import com.sge.modulos.administracion.formularios.lisEmpleado;
 import com.sge.modulos.administracion.formularios.lisMoneda;
@@ -15,6 +16,14 @@ import com.sge.modulos.compras.formularios.lisProveedor;
 import com.sge.modulos.inventarios.formularios.lisAlmacen;
 import com.sge.modulos.inventarios.formularios.lisProducto;
 import com.sge.modulos.inventarios.formularios.lisUnidad;
+import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.List;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -29,22 +38,61 @@ public class SGE extends javax.swing.JFrame {
         initComponents();
         LlenarMenus();
     }
-    
-    public void LlenarMenus(){
-//        cliAdministracion cliente = new cliAdministracion();
-//        try {
-//            String json = cliente.ObtenerMenus(new Gson().toJson(1));
-//            Object[] resultado = new Gson().fromJson(json, Object[].class);
-//            if((boolean)resultado[0] == true){
-//                
-//            }
-//        } catch (Exception e) {
-//        } finally {
-//            cliente.close();
-//        }
+
+    public void LlenarMenus() {
+        cliAdministracion cliente = new cliAdministracion();
+        try {
+            String json = cliente.ObtenerMenus(new Gson().toJson(1));
+            String[] resultado = new Gson().fromJson(json, String[].class);
+            if (resultado[0].equals("true")) {
+                List<Object[]> menus = (List<Object[]>) new Gson().fromJson(resultado[1], new TypeToken<List<Object[]>>() {
+                }.getType());
+                JMenuBar menuBar = new JMenuBar();
+                menuBar.setPreferredSize(new java.awt.Dimension(128, 40));
+                for (Object[] itemN1 : menus) {
+                    JMenu menuN1 = new JMenu(itemN1[2].toString());
+                    menuBar.add(menuN1);
+                    for (List<Object> itemN2 : (List<List<Object>>) itemN1[3]) {
+                        if (((List<Object>) itemN2.get(3)).isEmpty()) {
+                            JMenuItem menuItemN2 = new JMenuItem(itemN2.get(2).toString());
+                            menuItemN2.addActionListener(new ActionListener() {
+                                @Override
+                                public void actionPerformed(ActionEvent e) {
+                                    ClickMenuItem(e);
+                                }
+                            });
+                            menuN1.add(menuItemN2);
+                        } else {
+                            JMenu menuN2 = new JMenu(itemN2.get(2).toString());
+                            menuN1.add(menuN2);
+                            for (List<Object> itemN3 : (List<List<Object>>)itemN2.get(3)) {
+                                JMenuItem menuItemN3 = new JMenuItem(itemN3.get(2).toString());
+                                menuItemN3.addActionListener(new ActionListener() {
+                                @Override
+                                public void actionPerformed(ActionEvent e) {
+                                    ClickMenuItem(e);
+                                }
+                            });
+                                menuN2.add(menuItemN3);
+                            }
+                        }
+                    }
+                }
+                pnlMenu.setLayout(new BorderLayout());
+                pnlMenu.add(menuBar, BorderLayout.NORTH);
+            }
+        } catch (Exception e) {
+        } finally {
+            cliente.close();
+        }
     }
+
+    private void ClickMenuItem(ActionEvent e) {                                           
+        // TODO add your handling code here:
+        JOptionPane.showMessageDialog(null, "Click!");
+    } 
     
-    public void LanzarFormulario(String menu){
+    public void LanzarFormulario(String menu) {
         switch (menu) {
             case "Usuarios":
                 lisUsuario lisUsuario = new lisUsuario();
@@ -67,7 +115,6 @@ public class SGE extends javax.swing.JFrame {
         pnlBanner = new javax.swing.JPanel();
         lblTituloBanner = new javax.swing.JLabel();
         pnlMenu = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
         jdpPrincipal = new javax.swing.JDesktopPane();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -99,28 +146,15 @@ public class SGE extends javax.swing.JFrame {
         pnlMenu.setBackground(new java.awt.Color(67, 100, 130));
         pnlMenu.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
-        jButton1.setText("jButton1");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout pnlMenuLayout = new javax.swing.GroupLayout(pnlMenu);
         pnlMenu.setLayout(pnlMenuLayout);
         pnlMenuLayout.setHorizontalGroup(
             pnlMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlMenuLayout.createSequentialGroup()
-                .addGap(40, 40, 40)
-                .addComponent(jButton1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGap(0, 396, Short.MAX_VALUE)
         );
         pnlMenuLayout.setVerticalGroup(
             pnlMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlMenuLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jButton1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGap(0, 53, Short.MAX_VALUE)
         );
 
         jdpPrincipal.setBorder(null);
@@ -145,20 +179,6 @@ public class SGE extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-        //lisUsuario lista = new lisUsuario();
-        //lisMoneda lista = new lisMoneda();
-        lisProveedor lista = new lisProveedor();
-        //lisEmpleado lista = new lisEmpleado();
-        //regEmpleado lista = new regEmpleado();
-        //lisAlmacen lista = new lisAlmacen();
-        //lisUnidad lista = new lisUnidad();
-        //lisProducto lista = new lisProducto();
-        jdpPrincipal.add(lista);
-        lista.setVisible(true);
-    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -196,7 +216,6 @@ public class SGE extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
     private javax.swing.JDesktopPane jdpPrincipal;
     private javax.swing.JLabel lblTituloBanner;
     private javax.swing.JPanel pnlBanner;
