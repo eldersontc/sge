@@ -17,7 +17,7 @@ public class ProductoDAO extends InventariosDAO {
     }
 
     public int ActualizarProducto(int idProducto, String codigo, String descripcion, boolean inventarios, boolean compras, boolean ventas, boolean activo) {
-        String sql = String.format("UPDATE Inventarios.Producto SET codigo = '%s', descripcion = '%s', inventarios = %b, compras, = %b, ventas = %b, activo = %b WHERE idProducto = %d", codigo, descripcion, inventarios, compras, ventas, activo, idProducto);
+        String sql = String.format("UPDATE Inventarios.Producto SET codigo = '%s', descripcion = '%s', inventarios = %b, compras = %b, ventas = %b, activo = %b WHERE idProducto = %d", codigo, descripcion, inventarios, compras, ventas, activo, idProducto);
         return super.Ejecutar(sql);
     }
     

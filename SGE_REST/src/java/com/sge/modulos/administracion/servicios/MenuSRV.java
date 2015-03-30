@@ -29,15 +29,15 @@ public class MenuSRV {
     @Consumes("application/json")
     @Produces("application/json")
     public String ObtenerMenus(String json) {
-        List<Object> resultado = new ArrayList<>();
+        List<String> resultado = new ArrayList<>();
         int idUsuario = new Gson().fromJson(json, int.class);
         try {
             MenuDTO menuDTO = new MenuDTO();
             List<Object[]> lista = menuDTO.ObtenerMenus(idUsuario);
-            resultado.add(true);
-            resultado.add(lista);
+            resultado.add(new Gson().toJson(true));
+            resultado.add(new Gson().toJson(lista));
         } catch (Exception e) {
-            resultado.add(false);
+            resultado.add(new Gson().toJson(false));
         }
         return new Gson().toJson(resultado);
     }
