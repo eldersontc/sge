@@ -16,7 +16,7 @@ public class MenuDTO {
         List<Object[]> lista = new ArrayList<>();
         for (Object[] menu : menus) {
             if ((int)menu[1] == idMenuPadre) {
-                lista.add(new Object[]{ menu[0], menu[1], menu[2], ObtenerSubMenus(menus, (int)menu[0]) });
+                lista.add(new Object[]{ menu[0], menu[1], menu[2], menu[3], menu[4], ObtenerSubMenus(menus, (int)menu[0]) });
             }
         }
         return lista;
@@ -26,7 +26,7 @@ public class MenuDTO {
         List<Object[]> lista = new ArrayList<>();
         for (Object[] menu : menus) {
             if ((int)menu[1] == 0) {
-                lista.add(new Object[]{ menu[0], menu[1], menu[2], ObtenerSubMenus(menus, (int)menu[0]) });
+                lista.add(new Object[]{ menu[0], menu[1], menu[2], menu[3], menu[4], ObtenerSubMenus(menus, (int)menu[0]) });
             }
         }
         return lista;
