@@ -1,8 +1,10 @@
 package com.sge.modulos.administracion.formularios;
 
 import com.google.gson.Gson;
+import com.sge.base.controles.FabricaControles;
 import com.sge.modulos.administracion.clases.Empleado;
 import com.sge.modulos.administracion.cliente.cliAdministracion;
+import javax.swing.SwingWorker;
 
 /**
  *
@@ -24,52 +26,94 @@ public class regEmpleado extends javax.swing.JInternalFrame {
         lblTitulo.setText(operacion + lblTitulo.getText());
         this.idEmpleado = idEmpleado;
         if (this.idEmpleado > 0) {
-            ObtenerEmpleado(idEmpleado);
+            new swObtenerEmpleado().execute();
         }
     }
 
-    public void ObtenerEmpleado(int idEmpleado) {
-        cliAdministracion cliente = new cliAdministracion();
-        try {
-            String json = cliente.ObtenerEmpleado(new Gson().toJson(idEmpleado));
-            cliente.close();
-            String[] resultado = new Gson().fromJson(json, String[].class);
-            Empleado empleado = new Gson().fromJson(resultado[1], Empleado.class);
-            txtCodigo.setText(empleado.getCodigo());
-            txtNombre.setText(empleado.getNombre());
-            txtApellidoPaterno.setText(empleado.getApellidoPaterno());
-            txtApellidoMaterno.setText(empleado.getApellidoMaterno());
-            cboTipoDocumento.setSelectedItem(empleado.getTipoDocumentoIdentidad());
-            txtDocumento.setText(empleado.getDocumentoIdentidad());
-            chkActivo.setSelected(empleado.isActivo());
-        } catch (Exception e) {
-            System.out.print(e);
-        } finally {
-            cliente.close();
-        }
-    }
+    public class swObtenerEmpleado extends SwingWorker<Object, Object> {
 
-    public void GuardarEmpleado() {
-        cliAdministracion cliente = new cliAdministracion();
-        try {
-            Empleado empleado = new Empleado();
-            empleado.setCodigo(txtCodigo.getText());
-            empleado.setNombre(txtNombre.getText());
-            empleado.setApellidoPaterno(txtApellidoPaterno.getText());
-            empleado.setApellidoMaterno(txtApellidoMaterno.getText());
-            empleado.setTipoDocumentoIdentidad(cboTipoDocumento.getSelectedItem().toString());
-            empleado.setDocumentoIdentidad(txtDocumento.getText());
-            empleado.setActivo(chkActivo.isSelected());
-            if (this.idEmpleado == 0) {
-                cliente.RegistrarEmpleado(new Gson().toJson(empleado));
-            } else {
-                empleado.setIdEmpleado(this.idEmpleado);
-                cliente.ActualizarEmpleado(new Gson().toJson(empleado));
+        @Override
+        protected Object doInBackground() {
+            FabricaControles.VerCargando(pnlContenido);
+            cliAdministracion cliente = new cliAdministracion();
+            String json = "";
+            try {
+                json = cliente.ObtenerEmpleado(new Gson().toJson(idEmpleado));
+            } catch (Exception e) {
+                FabricaControles.OcultarCargando(pnlContenido);
+                json = "[\"false\"]";
+            } finally {
+                cliente.close();
             }
-        } catch (Exception e) {
-            System.out.print(e);
-        } finally {
-            cliente.close();
+            return json;
+        }
+
+        @Override
+        protected void done() {
+            try {
+                String json = get().toString();
+                String[] resultado = new Gson().fromJson(json, String[].class);
+                if (resultado[0].equals("true")) {
+                    Empleado empleado = new Gson().fromJson(resultado[1], Empleado.class);
+                    txtCodigo.setText(empleado.getCodigo());
+                    txtNombre.setText(empleado.getNombre());
+                    txtApellidoPaterno.setText(empleado.getApellidoPaterno());
+                    txtApellidoMaterno.setText(empleado.getApellidoMaterno());
+                    cboTipoDocumento.setSelectedItem(empleado.getTipoDocumentoIdentidad());
+                    txtDocumento.setText(empleado.getDocumentoIdentidad());
+                    chkActivo.setSelected(empleado.isActivo());
+                }
+                FabricaControles.OcultarCargando(pnlContenido);
+            } catch (Exception e) {
+                FabricaControles.OcultarCargando(pnlContenido);
+            }
+        }
+    }
+
+    public class swGuardarEmpleado extends SwingWorker<Object, Object> {
+
+        @Override
+        protected Object doInBackground() {
+            FabricaControles.VerProcesando(pnlContenido);
+            cliAdministracion cliente = new cliAdministracion();
+            String json = "";
+            try {
+                Empleado empleado = new Empleado();
+                empleado.setCodigo(txtCodigo.getText());
+                empleado.setNombre(txtNombre.getText());
+                empleado.setApellidoPaterno(txtApellidoPaterno.getText());
+                empleado.setApellidoMaterno(txtApellidoMaterno.getText());
+                empleado.setTipoDocumentoIdentidad(cboTipoDocumento.getSelectedItem().toString());
+                empleado.setDocumentoIdentidad(txtDocumento.getText());
+                empleado.setActivo(chkActivo.isSelected());
+                if (idEmpleado == 0) {
+                    json = cliente.RegistrarEmpleado(new Gson().toJson(empleado));
+                } else {
+                    empleado.setIdEmpleado(idEmpleado);
+                    json = cliente.ActualizarEmpleado(new Gson().toJson(empleado));
+                }
+            } catch (Exception e) {
+                FabricaControles.OcultarProcesando(pnlContenido);
+                json = "[\"false\"]";
+            } finally {
+                cliente.close();
+            }
+            return json;
+        }
+
+        @Override
+        protected void done() {
+            try {
+                String json = get().toString();
+                String[] resultado = new Gson().fromJson(json, String[].class);
+                if (resultado[0].equals("true")) {
+                    setVisible(false);
+                } else {
+                    FabricaControles.OcultarProcesando(pnlContenido);
+                }
+            } catch (Exception e) {
+                FabricaControles.OcultarProcesando(pnlContenido);
+            }
         }
     }
 
@@ -82,8 +126,6 @@ public class regEmpleado extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        pnlTitulo = new javax.swing.JPanel();
-        lblTitulo = new javax.swing.JLabel();
         pnlContenido = new javax.swing.JPanel();
         lblCodigo = new javax.swing.JLabel();
         lblNombre = new javax.swing.JLabel();
@@ -100,33 +142,10 @@ public class regEmpleado extends javax.swing.JInternalFrame {
         chkActivo = new javax.swing.JCheckBox();
         btnAceptar = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
+        pnlTitulo = new javax.swing.JPanel();
+        lblTitulo = new javax.swing.JLabel();
 
         setClosable(true);
-
-        pnlTitulo.setBackground(new java.awt.Color(67, 100, 130));
-        pnlTitulo.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-
-        lblTitulo.setFont(new java.awt.Font("Ubuntu", 1, 18)); // NOI18N
-        lblTitulo.setForeground(java.awt.Color.white);
-        lblTitulo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sge/base/imagenes/add-list-16.png"))); // NOI18N
-        lblTitulo.setText("EMPLEADO");
-
-        javax.swing.GroupLayout pnlTituloLayout = new javax.swing.GroupLayout(pnlTitulo);
-        pnlTitulo.setLayout(pnlTituloLayout);
-        pnlTituloLayout.setHorizontalGroup(
-            pnlTituloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlTituloLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(lblTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        pnlTituloLayout.setVerticalGroup(
-            pnlTituloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlTituloLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(lblTitulo, javax.swing.GroupLayout.DEFAULT_SIZE, 26, Short.MAX_VALUE)
-                .addContainerGap())
-        );
 
         pnlContenido.setBackground(java.awt.Color.white);
         pnlContenido.setBorder(null);
@@ -161,12 +180,38 @@ public class regEmpleado extends javax.swing.JInternalFrame {
             }
         });
 
+        pnlTitulo.setBackground(new java.awt.Color(67, 100, 130));
+        pnlTitulo.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
+        lblTitulo.setFont(new java.awt.Font("Ubuntu", 1, 18)); // NOI18N
+        lblTitulo.setForeground(java.awt.Color.white);
+        lblTitulo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sge/base/imagenes/add-list-16.png"))); // NOI18N
+        lblTitulo.setText("EMPLEADO");
+
+        javax.swing.GroupLayout pnlTituloLayout = new javax.swing.GroupLayout(pnlTitulo);
+        pnlTitulo.setLayout(pnlTituloLayout);
+        pnlTituloLayout.setHorizontalGroup(
+            pnlTituloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlTituloLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(273, Short.MAX_VALUE))
+        );
+        pnlTituloLayout.setVerticalGroup(
+            pnlTituloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlTituloLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblTitulo, javax.swing.GroupLayout.DEFAULT_SIZE, 26, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
         javax.swing.GroupLayout pnlContenidoLayout = new javax.swing.GroupLayout(pnlContenido);
         pnlContenido.setLayout(pnlContenidoLayout);
         pnlContenidoLayout.setHorizontalGroup(
             pnlContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(pnlTitulo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(pnlContenidoLayout.createSequentialGroup()
-                .addGap(30, 30, 30)
+                .addGap(27, 27, 27)
                 .addGroup(pnlContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(pnlContenidoLayout.createSequentialGroup()
                         .addGroup(pnlContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -186,17 +231,18 @@ public class regEmpleado extends javax.swing.JInternalFrame {
                                 .addComponent(chkActivo, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(txtApellidoPaterno)
                             .addComponent(txtNombre)
-                            .addComponent(txtApellidoMaterno, javax.swing.GroupLayout.Alignment.TRAILING)))
+                            .addComponent(txtApellidoMaterno, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 277, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(pnlContenidoLayout.createSequentialGroup()
                         .addComponent(btnAceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(39, 39, 39))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         pnlContenidoLayout.setVerticalGroup(
             pnlContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlContenidoLayout.createSequentialGroup()
-                .addGap(10, 10, 10)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlContenidoLayout.createSequentialGroup()
+                .addComponent(pnlTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(pnlContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnlContenidoLayout.createSequentialGroup()
                         .addGap(10, 10, 10)
@@ -237,22 +283,18 @@ public class regEmpleado extends javax.swing.JInternalFrame {
                 .addGroup(pnlContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCancelar)
                     .addComponent(btnAceptar))
-                .addContainerGap(24, Short.MAX_VALUE))
+                .addContainerGap(21, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(pnlTitulo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(pnlContenido, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(pnlTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(2, 2, 2)
-                .addComponent(pnlContenido, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(pnlContenido, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -260,8 +302,7 @@ public class regEmpleado extends javax.swing.JInternalFrame {
 
     private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
         // TODO add your handling code here:
-        GuardarEmpleado();
-        this.setVisible(false);
+        new swGuardarEmpleado().execute();
     }//GEN-LAST:event_btnAceptarActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed

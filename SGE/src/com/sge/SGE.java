@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.sge;
 
 import com.google.gson.Gson;
@@ -11,7 +6,6 @@ import com.sge.modulos.administracion.cliente.cliAdministracion;
 import com.sge.modulos.administracion.formularios.lisEmpleado;
 import com.sge.modulos.administracion.formularios.lisMoneda;
 import com.sge.modulos.administracion.formularios.lisUsuario;
-import com.sge.modulos.administracion.formularios.regEmpleado;
 import com.sge.modulos.compras.formularios.lisProveedor;
 import com.sge.modulos.inventarios.formularios.lisAlmacen;
 import com.sge.modulos.inventarios.formularios.lisProducto;
@@ -19,11 +13,12 @@ import com.sge.modulos.inventarios.formularios.lisUnidad;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.net.URL;
 import java.util.List;
+import javax.swing.ImageIcon;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
 
 /**
  *
@@ -51,10 +46,19 @@ public class SGE extends javax.swing.JFrame {
                 menuBar.setPreferredSize(new java.awt.Dimension(128, 40));
                 for (Object[] itemN1 : menus) {
                     JMenu menuN1 = new JMenu(itemN1[2].toString());
+                    URL urlN1 = getClass().getResource("/com/sge/base/imagenes/" + itemN1[4]);
+                    if (!(urlN1 == null)) {
+                        menuN1.setIcon(new ImageIcon(urlN1));
+                    }
                     menuBar.add(menuN1);
-                    for (List<Object> itemN2 : (List<List<Object>>) itemN1[3]) {
-                        if (((List<Object>) itemN2.get(3)).isEmpty()) {
+                    for (List<Object> itemN2 : (List<List<Object>>) itemN1[5]) {
+                        if (((List<Object>) itemN2.get(5)).isEmpty()) {
                             JMenuItem menuItemN2 = new JMenuItem(itemN2.get(2).toString());
+                            menuItemN2.setName((itemN2.get(3) == null) ? "" : itemN2.get(3).toString());
+                            URL urlItemN2 = getClass().getResource("/com/sge/base/imagenes/" + itemN2.get(4));
+                            if (!(urlItemN2 == null)) {
+                                menuItemN2.setIcon(new ImageIcon(urlItemN2));
+                            }
                             menuItemN2.addActionListener(new ActionListener() {
                                 @Override
                                 public void actionPerformed(ActionEvent e) {
@@ -64,15 +68,24 @@ public class SGE extends javax.swing.JFrame {
                             menuN1.add(menuItemN2);
                         } else {
                             JMenu menuN2 = new JMenu(itemN2.get(2).toString());
+                            URL urlN2 = getClass().getResource("/com/sge/base/imagenes/" + itemN2.get(4));
+                            if (!(urlN2 == null)) {
+                                menuN2.setIcon(new ImageIcon(urlN2));
+                            }
                             menuN1.add(menuN2);
-                            for (List<Object> itemN3 : (List<List<Object>>)itemN2.get(3)) {
+                            for (List<Object> itemN3 : (List<List<Object>>) itemN2.get(5)) {
                                 JMenuItem menuItemN3 = new JMenuItem(itemN3.get(2).toString());
-                                menuItemN3.addActionListener(new ActionListener() {
-                                @Override
-                                public void actionPerformed(ActionEvent e) {
-                                    ClickMenuItem(e);
+                                menuItemN3.setName((itemN3.get(3) == null) ? "" : itemN3.get(3).toString());
+                                URL urlItemN3 = getClass().getResource("/com/sge/base/imagenes/" + itemN3.get(4));
+                                if (!(urlItemN3 == null)) {
+                                    menuItemN3.setIcon(new ImageIcon(urlItemN3));
                                 }
-                            });
+                                menuItemN3.addActionListener(new ActionListener() {
+                                    @Override
+                                    public void actionPerformed(ActionEvent e) {
+                                        ClickMenuItem(e);
+                                    }
+                                });
                                 menuN2.add(menuItemN3);
                             }
                         }
@@ -87,16 +100,48 @@ public class SGE extends javax.swing.JFrame {
         }
     }
 
-    private void ClickMenuItem(ActionEvent e) {                                           
+    private void ClickMenuItem(ActionEvent e) {
         // TODO add your handling code here:
-        JOptionPane.showMessageDialog(null, "Click!");
-    } 
-    
-    public void LanzarFormulario(String menu) {
-        switch (menu) {
-            case "Usuarios":
+        JMenuItem menuItem = (JMenuItem)e.getSource();
+        LanzarFormulario(menuItem.getName());
+    }
+
+    public void LanzarFormulario(String formulario) {
+        switch (formulario) {
+            case "lisUsuario":
                 lisUsuario lisUsuario = new lisUsuario();
-                lisUsuario.show();
+                jdpPrincipal.add(lisUsuario);
+                lisUsuario.setVisible(true);
+                break;
+            case "lisMoneda":
+                lisMoneda lisMoneda = new lisMoneda();
+                jdpPrincipal.add(lisMoneda);
+                lisMoneda.setVisible(true);
+                break;
+            case "lisEmpleado":
+                lisEmpleado lisEmpleado = new lisEmpleado();
+                jdpPrincipal.add(lisEmpleado);
+                lisEmpleado.setVisible(true);
+                break;
+            case "lisProveedor":
+                lisProveedor lisProveedor = new lisProveedor();
+                jdpPrincipal.add(lisProveedor);
+                lisProveedor.setVisible(true);
+                break;
+            case "lisAlmacen":
+                lisAlmacen lisAlmacen = new lisAlmacen();
+                jdpPrincipal.add(lisAlmacen);
+                lisAlmacen.setVisible(true);
+                break;
+            case "lisUnidad":
+                lisUnidad lisUnidad = new lisUnidad();
+                jdpPrincipal.add(lisUnidad);
+                lisUnidad.setVisible(true);
+                break;
+            case "lisProducto":
+                lisProducto lisProducto = new lisProducto();
+                jdpPrincipal.add(lisProducto);
+                lisProducto.setVisible(true);
                 break;
             default:
                 break;

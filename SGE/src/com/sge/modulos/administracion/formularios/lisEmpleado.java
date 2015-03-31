@@ -79,10 +79,10 @@ public class lisEmpleado extends javax.swing.JInternalFrame {
                     for (Object[] fila : filas) {
                         modelo.addRow(new Object[]{((Double) fila[0]).intValue(), fila[1], fila[2], fila[6], fila[7], Icon_Edit, Icon_Dele});
                     }
-
                     FabricaControles.AgregarBoton(tbEmpleados, edit, 5);
                     FabricaControles.AgregarBoton(tbEmpleados, dele, 6);
                 }
+                FabricaControles.OcultarCargando(pnlContenido);
             } catch (Exception e) {
                 FabricaControles.OcultarCargando(pnlContenido);
             }
