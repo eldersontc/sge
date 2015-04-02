@@ -7,6 +7,7 @@ import com.sge.modulos.inventarios.clases.ProductoAlmacen;
 import com.sge.modulos.inventarios.cliente.cliInventarios;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JDesktopPane;
 import javax.swing.SwingWorker;
 
 /**
@@ -74,7 +75,7 @@ public class regProducto extends javax.swing.JInternalFrame {
         }
     }
 
-    public class swGuardarProducto extends SwingWorker<Object, Object>{
+    public class swGuardarProducto extends SwingWorker<Object, Object> {
 
         @Override
         protected Object doInBackground() {
@@ -109,7 +110,7 @@ public class regProducto extends javax.swing.JInternalFrame {
             }
             return json;
         }
-        
+
         @Override
         protected void done() {
             try {
@@ -125,7 +126,7 @@ public class regProducto extends javax.swing.JInternalFrame {
             }
         }
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -236,6 +237,11 @@ public class regProducto extends javax.swing.JInternalFrame {
         }
 
         btnNuevoAlmacen.setText("NUEVO");
+        btnNuevoAlmacen.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNuevoAlmacenActionPerformed(evt);
+            }
+        });
 
         btnEliminarAlmacen.setText("ELIMINAR");
 
@@ -382,6 +388,11 @@ public class regProducto extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
         this.setVisible(false);
     }//GEN-LAST:event_btnCancelarActionPerformed
+
+    private void btnNuevoAlmacenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoAlmacenActionPerformed
+        // TODO add your handling code here:
+        FabricaControles.VerModal((JDesktopPane)this.getParent(),new lisAlmacen());
+    }//GEN-LAST:event_btnNuevoAlmacenActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

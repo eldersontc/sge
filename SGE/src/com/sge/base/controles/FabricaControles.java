@@ -6,15 +6,19 @@ import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionAdapter;
 import javax.swing.AbstractCellEditor;
 import javax.swing.Action;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JDesktopPane;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
+import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
@@ -251,12 +255,12 @@ public class FabricaControles {
                 break;
             }
         }
-        if(!(panelCargando == null)){
+        if (!(panelCargando == null)) {
             panel.getParent().remove(panelCargando);
         }
         panel.setVisible(true);
     }
-    
+
     public static void VerProcesando(JPanel panel) {
         for (Component component : panel.getParent().getComponents()) {
             if ("panelProcesando".equals(component.getName())) {
@@ -278,7 +282,7 @@ public class FabricaControles {
         frame.add(panelProcesando, 0);
         panel.setVisible(false);
     }
-    
+
     public static void OcultarProcesando(JPanel panel) {
         Component panelProcesando = null;
         for (Component component : panel.getParent().getComponents()) {
@@ -287,9 +291,44 @@ public class FabricaControles {
                 break;
             }
         }
-        if(!(panelProcesando == null)){
+        if (!(panelProcesando == null)) {
             panel.getParent().remove(panelProcesando);
         }
         panel.setVisible(true);
+    }
+
+    public static void VerModal(JDesktopPane desktop, JInternalFrame frame) {
+        desktop.add(frame);
+        frame.setLayer(JLayeredPane.MODAL_LAYER);
+        frame.pack();
+        frame.setVisible(true);
+        JPanel panelModal = new JPanel();
+        panelModal.setName("panelModal");
+        panelModal.setOpaque(false);
+        JLayeredPane layered = JLayeredPane.getLayeredPaneAbove(frame);
+        layered.setLayer(panelModal, JLayeredPane.MODAL_LAYER.intValue());
+        panelModal.setBounds(0, 0, layered.getWidth(), layered.getHeight());
+        panelModal.addMouseListener(new MouseAdapter() {
+        });
+        panelModal.addMouseMotionListener(new MouseMotionAdapter() {
+        });
+        layered.add(panelModal);
+        frame.toFront();
+        frame.addInternalFrameListener(new javax.swing.event.InternalFrameAdapter() {
+            @Override
+            public void internalFrameClosing(javax.swing.event.InternalFrameEvent evt) {
+                JLayeredPane layered = JLayeredPane.getLayeredPaneAbove(evt.getInternalFrame());
+                Component panelModal = null;
+                for (Component component : layered.getComponents()) {
+                    if ("panelModal".equals(component.getName())) {
+                        panelModal = component;
+                        break;
+                    }
+                }
+                if (panelModal != null) {
+                    layered.remove(panelModal);
+                }
+            }
+        });
     }
 }

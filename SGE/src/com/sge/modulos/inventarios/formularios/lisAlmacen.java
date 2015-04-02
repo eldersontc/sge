@@ -29,8 +29,16 @@ public class lisAlmacen extends javax.swing.JInternalFrame {
         Init();
     }
 
+    ImageIcon Icon_Sele = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/select-16.png"));
     ImageIcon Icon_Save = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/save-16.png"));
     ImageIcon Icon_Dele = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/delete-16.png"));
+
+    Action sele = new AbstractAction() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            //new swGuardarAlmacen().execute();
+        }
+    };
 
     Action save = new AbstractAction() {
         @Override
@@ -78,11 +86,12 @@ public class lisAlmacen extends javax.swing.JInternalFrame {
                     }.getType());
 
                     for (Object[] fila : filas) {
-                        modelo.addRow(new Object[]{((Double) fila[0]).intValue(), fila[1], fila[2], fila[3], Icon_Save, Icon_Dele});
+                        modelo.addRow(new Object[]{Icon_Sele, ((Double) fila[0]).intValue(), fila[1], fila[2], fila[3], Icon_Save, Icon_Dele});
                     }
 
-                    FabricaControles.AgregarBoton(tbAlmacenes, save, 4);
-                    FabricaControles.AgregarBoton(tbAlmacenes, dele, 5);
+                    FabricaControles.AgregarBoton(tbAlmacenes, sele, 0);
+                    FabricaControles.AgregarBoton(tbAlmacenes, save, 5);
+                    FabricaControles.AgregarBoton(tbAlmacenes, dele, 6);
                 }
                 FabricaControles.OcultarCargando(pnlContenido);
             } catch (Exception e) {
@@ -100,10 +109,10 @@ public class lisAlmacen extends javax.swing.JInternalFrame {
             String json = "";
             try {
                 Almacen almacen = new Almacen();
-                almacen.setIdAlmacen(Utils.ObtenerValorCelda(tbAlmacenes, 0));
-                almacen.setCodigo(Utils.ObtenerValorCelda(tbAlmacenes, 1));
-                almacen.setDescripcion(Utils.ObtenerValorCelda(tbAlmacenes, 2));
-                almacen.setActivo(Utils.ObtenerValorCelda(tbAlmacenes, 3));
+                almacen.setIdAlmacen(Utils.ObtenerValorCelda(tbAlmacenes, 1));
+                almacen.setCodigo(Utils.ObtenerValorCelda(tbAlmacenes, 2));
+                almacen.setDescripcion(Utils.ObtenerValorCelda(tbAlmacenes, 3));
+                almacen.setActivo(Utils.ObtenerValorCelda(tbAlmacenes, 4));
                 if (almacen.getIdAlmacen() == 0) {
                     json = cliente.RegistrarAlmacen(new Gson().toJson(almacen));
                 } else {
@@ -142,7 +151,7 @@ public class lisAlmacen extends javax.swing.JInternalFrame {
             cliInventarios cliente = new cliInventarios();
             String json = "";
             try {
-                int idAlmacen = Utils.ObtenerValorCelda(tbAlmacenes, 0);
+                int idAlmacen = Utils.ObtenerValorCelda(tbAlmacenes, 1);
                 json = cliente.EliminarAlmacen(new Gson().toJson(idAlmacen));
             } catch (Exception e) {
                 FabricaControles.OcultarCargando(pnlContenido);
@@ -176,7 +185,7 @@ public class lisAlmacen extends javax.swing.JInternalFrame {
     public void EliminarAlmacen() {
         int confirmacion = JOptionPane.showConfirmDialog(null, "¿SEGURO DE CONTINUAR?", "CONFIRMACIÓN", JOptionPane.YES_NO_OPTION);
         if (confirmacion == JOptionPane.YES_OPTION) {
-            int idAlmacen = Utils.ObtenerValorCelda(tbAlmacenes, 0);
+            int idAlmacen = Utils.ObtenerValorCelda(tbAlmacenes, 1);
             if (idAlmacen == 0) {
                 Utils.EliminarFila(tbAlmacenes);
             } else {
@@ -211,14 +220,14 @@ public class lisAlmacen extends javax.swing.JInternalFrame {
 
             },
             new String [] {
-                "IDALMACEN", "CODIGO", "DESCRIPCION", "ACTIVO", "GUARDAR", "ELIMINAR"
+                "ELEGIR", "IDALMACEN", "CODIGO", "DESCRIPCION", "ACTIVO", "GUARDAR", "ELIMINAR"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Boolean.class, java.lang.Object.class, java.lang.Object.class
+                java.lang.Object.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Boolean.class, java.lang.Object.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                false, true, true, true, true, true
+                true, false, true, true, true, true, true
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -232,11 +241,12 @@ public class lisAlmacen extends javax.swing.JInternalFrame {
         tbAlmacenes.setRowHeight(25);
         jScrollPane1.setViewportView(tbAlmacenes);
         if (tbAlmacenes.getColumnModel().getColumnCount() > 0) {
-            tbAlmacenes.getColumnModel().getColumn(0).setMinWidth(0);
-            tbAlmacenes.getColumnModel().getColumn(0).setPreferredWidth(0);
-            tbAlmacenes.getColumnModel().getColumn(0).setMaxWidth(0);
-            tbAlmacenes.getColumnModel().getColumn(4).setPreferredWidth(30);
+            tbAlmacenes.getColumnModel().getColumn(0).setPreferredWidth(30);
+            tbAlmacenes.getColumnModel().getColumn(1).setMinWidth(0);
+            tbAlmacenes.getColumnModel().getColumn(1).setPreferredWidth(0);
+            tbAlmacenes.getColumnModel().getColumn(1).setMaxWidth(0);
             tbAlmacenes.getColumnModel().getColumn(5).setPreferredWidth(30);
+            tbAlmacenes.getColumnModel().getColumn(6).setPreferredWidth(30);
         }
 
         pnlTitulo.setBackground(new java.awt.Color(67, 100, 130));
@@ -282,7 +292,7 @@ public class lisAlmacen extends javax.swing.JInternalFrame {
             pnlContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlContenidoLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 525, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 615, Short.MAX_VALUE)
                 .addContainerGap())
             .addComponent(pnlTitulo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
@@ -311,9 +321,8 @@ public class lisAlmacen extends javax.swing.JInternalFrame {
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
         // TODO add your handling code here:
-        Utils.AgregarFila(tbAlmacenes, new Object[]{0, "", "", false, Icon_Save, Icon_Dele});
+        Utils.AgregarFila(tbAlmacenes, new Object[]{Icon_Sele, 0, "", "", false, Icon_Save, Icon_Dele});
     }//GEN-LAST:event_btnNuevoActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnNuevo;

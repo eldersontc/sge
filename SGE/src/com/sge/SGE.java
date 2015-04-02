@@ -11,11 +11,13 @@ import com.sge.modulos.inventarios.formularios.lisAlmacen;
 import com.sge.modulos.inventarios.formularios.lisProducto;
 import com.sge.modulos.inventarios.formularios.lisUnidad;
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.URL;
 import java.util.List;
 import javax.swing.ImageIcon;
+import javax.swing.JInternalFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -175,10 +177,10 @@ public class SGE extends javax.swing.JFrame {
         pnlBanner.setLayout(pnlBannerLayout);
         pnlBannerLayout.setHorizontalGroup(
             pnlBannerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlBannerLayout.createSequentialGroup()
+            .addGroup(pnlBannerLayout.createSequentialGroup()
                 .addGap(41, 41, 41)
-                .addComponent(lblTituloBanner, javax.swing.GroupLayout.DEFAULT_SIZE, 326, Short.MAX_VALUE)
-                .addGap(33, 33, 33))
+                .addComponent(lblTituloBanner)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         pnlBannerLayout.setVerticalGroup(
             pnlBannerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
