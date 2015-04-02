@@ -297,7 +297,7 @@ public class FabricaControles {
         panel.setVisible(true);
     }
 
-    public static void VerModal(JDesktopPane desktop, JInternalFrame frame) {
+    public static void VerModal(JDesktopPane desktop, JInternalFrame frame, Action action) {
         desktop.add(frame);
         frame.setLayer(JLayeredPane.MODAL_LAYER);
         frame.pack();
@@ -328,6 +328,7 @@ public class FabricaControles {
                 if (panelModal != null) {
                     layered.remove(panelModal);
                 }
+                action.actionPerformed(new ActionEvent(evt.getSource(), 0, ""));
             }
         });
     }

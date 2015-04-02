@@ -5,8 +5,11 @@ import com.sge.base.controles.FabricaControles;
 import com.sge.modulos.inventarios.clases.Producto;
 import com.sge.modulos.inventarios.clases.ProductoAlmacen;
 import com.sge.modulos.inventarios.cliente.cliInventarios;
+import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.JDesktopPane;
 import javax.swing.SwingWorker;
 
@@ -26,6 +29,13 @@ public class regProducto extends javax.swing.JInternalFrame {
 
     int idProducto = 0;
 
+    Action selecionar = new AbstractAction() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            System.out.println("seleccionado!");
+        }
+    };
+    
     public void Init(String operacion, int idProducto) {
         lblTitulo.setText(operacion + lblTitulo.getText());
         this.idProducto = idProducto;
@@ -391,7 +401,7 @@ public class regProducto extends javax.swing.JInternalFrame {
 
     private void btnNuevoAlmacenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoAlmacenActionPerformed
         // TODO add your handling code here:
-        FabricaControles.VerModal((JDesktopPane)this.getParent(),new lisAlmacen());
+        FabricaControles.VerModal((JDesktopPane)this.getParent(),new lisAlmacen(), selecionar);
     }//GEN-LAST:event_btnNuevoAlmacenActionPerformed
 
 
