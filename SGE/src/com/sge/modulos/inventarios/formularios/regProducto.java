@@ -2,6 +2,8 @@ package com.sge.modulos.inventarios.formularios;
 
 import com.google.gson.Gson;
 import com.sge.base.controles.FabricaControles;
+import com.sge.base.utils.Utils;
+import com.sge.modulos.inventarios.clases.Almacen;
 import com.sge.modulos.inventarios.clases.Producto;
 import com.sge.modulos.inventarios.clases.ProductoAlmacen;
 import com.sge.modulos.inventarios.cliente.cliInventarios;
@@ -10,7 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
-import javax.swing.JDesktopPane;
 import javax.swing.SwingWorker;
 
 /**
@@ -32,10 +33,11 @@ public class regProducto extends javax.swing.JInternalFrame {
     Action selecionar = new AbstractAction() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            System.out.println("seleccionado!");
+            List<Almacen> seleccionados = ((lisAlmacen) e.getSource()).getSeleccionados();
+            System.out.println("xxx");
         }
     };
-    
+
     public void Init(String operacion, int idProducto) {
         lblTitulo.setText(operacion + lblTitulo.getText());
         this.idProducto = idProducto;
@@ -127,7 +129,7 @@ public class regProducto extends javax.swing.JInternalFrame {
                 String json = get().toString();
                 String[] resultado = new Gson().fromJson(json, String[].class);
                 if (resultado[0].equals("true")) {
-                    setVisible(false);
+                    setClosed(true);
                 } else {
                     FabricaControles.OcultarProcesando(pnlContenido);
                 }
@@ -365,12 +367,13 @@ public class regProducto extends javax.swing.JInternalFrame {
                     .addComponent(chkCompras)
                     .addComponent(chkVentas)
                     .addComponent(chkInventarios))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 47, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 68, Short.MAX_VALUE)
                 .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnlContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCancelar)
-                    .addComponent(btnAceptar)))
+                    .addComponent(btnAceptar))
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -381,9 +384,7 @@ public class regProducto extends javax.swing.JInternalFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(pnlContenido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 18, Short.MAX_VALUE))
+            .addComponent(pnlContenido, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -396,12 +397,12 @@ public class regProducto extends javax.swing.JInternalFrame {
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
         // TODO add your handling code here:
-        this.setVisible(false);
+        Utils.Cerrar(this);
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void btnNuevoAlmacenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoAlmacenActionPerformed
         // TODO add your handling code here:
-        FabricaControles.VerModal((JDesktopPane)this.getParent(),new lisAlmacen(), selecionar);
+        FabricaControles.VerModal(this.getDesktopPane(), new lisAlmacen(2), selecionar);
     }//GEN-LAST:event_btnNuevoAlmacenActionPerformed
 
 

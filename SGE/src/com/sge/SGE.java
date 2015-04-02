@@ -131,7 +131,7 @@ public class SGE extends javax.swing.JFrame {
                 lisProveedor.setVisible(true);
                 break;
             case "lisAlmacen":
-                lisAlmacen lisAlmacen = new lisAlmacen();
+                lisAlmacen lisAlmacen = new lisAlmacen(0);
                 jdpPrincipal.add(lisAlmacen);
                 lisAlmacen.setVisible(true);
                 break;
