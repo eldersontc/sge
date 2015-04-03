@@ -11,6 +11,10 @@ import javax.swing.table.DefaultTableModel;
  */
 public class Utils {
     
+    public static boolean FilaActiva(JTable tabla){
+        return (!(tabla.getSelectedRow() == -1));
+    }
+    
     public static <T> T ObtenerValorCelda(JTable tabla, int columna) {
         DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
         return (T) modelo.getValueAt(tabla.getSelectedRow(), columna);
@@ -24,6 +28,11 @@ public class Utils {
     public static void AgregarFila(JTable tabla, Object[] fila) {
         DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
         modelo.addRow(fila);
+    }
+    
+    public static void EliminarTodasFilas(JTable tabla) {
+        DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
+        modelo.setRowCount(0);
     }
     
     public static void EliminarFila(JTable tabla) {

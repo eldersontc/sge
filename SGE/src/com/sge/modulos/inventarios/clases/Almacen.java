@@ -14,6 +14,10 @@ public class Almacen {
     public Almacen() {
     }
 
+    public Almacen(int idAlmacen) {
+        this.idAlmacen = idAlmacen;
+    }
+
     public int getIdAlmacen() {
         return idAlmacen;
     }

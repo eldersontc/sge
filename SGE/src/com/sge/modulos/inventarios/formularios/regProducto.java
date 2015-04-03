@@ -1,6 +1,7 @@
 package com.sge.modulos.inventarios.formularios;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.sge.base.controles.FabricaControles;
 import com.sge.base.utils.Utils;
 import com.sge.modulos.inventarios.clases.Almacen;
@@ -13,6 +14,7 @@ import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.SwingWorker;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -30,11 +32,16 @@ public class regProducto extends javax.swing.JInternalFrame {
 
     int idProducto = 0;
 
+    private List<ProductoAlmacen> productoAlmacenes = new ArrayList<>();
+
     Action selecionar = new AbstractAction() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            List<Almacen> seleccionados = ((lisAlmacen) e.getSource()).getSeleccionados();
-            System.out.println("xxx");
+            List<Almacen> almacenes = ((lisAlmacen) e.getSource()).getSeleccionados();
+            for (Almacen almacen : almacenes) {
+                productoAlmacenes.add(new ProductoAlmacen(almacen));
+                Utils.AgregarFila(tbAlmacenes, new Object[]{0, almacen.getIdAlmacen(), almacen.getDescripcion(), 0, 0, 0, 0});
+            }
         }
     };
 
@@ -72,13 +79,26 @@ public class regProducto extends javax.swing.JInternalFrame {
 
                 if (resultado[0].equals("true")) {
                     Producto producto = new Gson().fromJson(resultado[1], Producto.class);
-                    ProductoAlmacen[] productoAlmacenes = new Gson().fromJson(resultado[2], ProductoAlmacen[].class);
+                    List<Object[]> productoAlmacenes = (List<Object[]>) new Gson().fromJson(resultado[2], new TypeToken<List<Object[]>>() {
+                    }.getType());
                     txtCodigo.setText(producto.getCodigo());
                     txtDescripcion.setText(producto.getDescripcion());
                     chkInventarios.setSelected(producto.isInventarios());
                     chkCompras.setSelected(producto.isCompras());
                     chkVentas.setSelected(producto.isVentas());
                     chkActivo.setSelected(producto.isActivo());
+                    for (Object[] productoAlmacen : productoAlmacenes) {
+                        Utils.AgregarFila(tbAlmacenes,
+                                new Object[]{
+                                    ((Double) productoAlmacen[0]).intValue(),
+                                    ((Double) productoAlmacen[1]).intValue(),
+                                    productoAlmacen[2],
+                                    ((Double) productoAlmacen[3]).intValue(),
+                                    ((Double) productoAlmacen[4]).intValue(),
+                                    ((Double) productoAlmacen[5]).intValue(),
+                                    ((Double) productoAlmacen[6]).intValue()
+                                });
+                    }
                 }
                 FabricaControles.OcultarCargando(pnlContenido);
             } catch (Exception e) {
@@ -103,7 +123,6 @@ public class regProducto extends javax.swing.JInternalFrame {
                 producto.setCompras(chkCompras.isSelected());
                 producto.setVentas(chkVentas.isSelected());
                 producto.setActivo(chkActivo.isSelected());
-                List<ProductoAlmacen> productoAlmacenes = new ArrayList<>();
                 if (idProducto == 0) {
                     arrayJson.add(new Gson().toJson(producto));
                     arrayJson.add(new Gson().toJson(productoAlmacenes));
@@ -218,14 +237,14 @@ public class regProducto extends javax.swing.JInternalFrame {
 
             },
             new String [] {
-                "IDPRODUCTOALMACEN", "ALMACEN", "S. FISICO", "S. COMPROMETIDO", "S. SOLICITADO", "S. DISPONIBLE"
+                "IDPRODUCTOALMACEN", "IDALMACEN", "ALMACEN", "S. FISICO", "S. COMPROMETIDO", "S. SOLICITADO", "S. DISPONIBLE"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class
+                java.lang.Integer.class, java.lang.Integer.class, java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class
             };
             boolean[] canEdit = new boolean [] {
-                false, true, true, true, true, true
+                false, false, true, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -242,10 +261,13 @@ public class regProducto extends javax.swing.JInternalFrame {
             tbAlmacenes.getColumnModel().getColumn(0).setMinWidth(0);
             tbAlmacenes.getColumnModel().getColumn(0).setPreferredWidth(0);
             tbAlmacenes.getColumnModel().getColumn(0).setMaxWidth(0);
-            tbAlmacenes.getColumnModel().getColumn(1).setPreferredWidth(200);
-            tbAlmacenes.getColumnModel().getColumn(3).setPreferredWidth(150);
-            tbAlmacenes.getColumnModel().getColumn(4).setPreferredWidth(120);
+            tbAlmacenes.getColumnModel().getColumn(1).setMinWidth(0);
+            tbAlmacenes.getColumnModel().getColumn(1).setPreferredWidth(0);
+            tbAlmacenes.getColumnModel().getColumn(1).setMaxWidth(0);
+            tbAlmacenes.getColumnModel().getColumn(2).setPreferredWidth(200);
+            tbAlmacenes.getColumnModel().getColumn(4).setPreferredWidth(150);
             tbAlmacenes.getColumnModel().getColumn(5).setPreferredWidth(120);
+            tbAlmacenes.getColumnModel().getColumn(6).setPreferredWidth(120);
         }
 
         btnNuevoAlmacen.setText("NUEVO");
@@ -256,6 +278,11 @@ public class regProducto extends javax.swing.JInternalFrame {
         });
 
         btnEliminarAlmacen.setText("ELIMINAR");
+        btnEliminarAlmacen.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarAlmacenActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout pnlAlmacenesLayout = new javax.swing.GroupLayout(pnlAlmacenes);
         pnlAlmacenes.setLayout(pnlAlmacenesLayout);
@@ -404,6 +431,20 @@ public class regProducto extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
         FabricaControles.VerModal(this.getDesktopPane(), new lisAlmacen(2), selecionar);
     }//GEN-LAST:event_btnNuevoAlmacenActionPerformed
+
+    private void btnEliminarAlmacenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarAlmacenActionPerformed
+        // TODO add your handling code here:
+        if (Utils.FilaActiva(tbAlmacenes)) {
+            int idProductoAlmacen = Utils.ObtenerValorCelda(tbAlmacenes, 0);
+            if (idProductoAlmacen == 0) {
+                int idAlmacen = Utils.ObtenerValorCelda(tbAlmacenes, 1);
+                productoAlmacenes.removeIf(p -> p.getAlmacen().getIdAlmacen() == idAlmacen);
+            } else {
+                productoAlmacenes.add(new ProductoAlmacen(idProductoAlmacen));
+            }
+            Utils.EliminarFila(tbAlmacenes);
+        }
+    }//GEN-LAST:event_btnEliminarAlmacenActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

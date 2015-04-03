@@ -10,7 +10,6 @@ import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ImageIcon;
-import javax.swing.JOptionPane;
 import javax.swing.SwingWorker;
 import javax.swing.table.DefaultTableModel;
 
@@ -68,16 +67,12 @@ public class lisProducto extends javax.swing.JInternalFrame {
             try {
                 String json = get().toString();
                 String[] resultado = new Gson().fromJson(json, String[].class);
-
                 if (resultado[0].equals("true")) {
-                    DefaultTableModel modelo = (DefaultTableModel) tbProductos.getModel();
-                    modelo.setRowCount(0);
-
+                    Utils.EliminarTodasFilas(tbProductos);
                     List<Object[]> filas = (List<Object[]>) new Gson().fromJson(resultado[1], new TypeToken<List<Object[]>>() {
                     }.getType());
-
                     for (Object[] fila : filas) {
-                        modelo.addRow(new Object[]{((Double) fila[0]).intValue(), fila[1], fila[2], fila[3], Icon_Edit, Icon_Dele});
+                        Utils.AgregarFila(tbProductos, new Object[]{((Double) fila[0]).intValue(), fila[1], fila[2], fila[3], Icon_Edit, Icon_Dele});
                     }
                     FabricaControles.AgregarBoton(tbProductos, edit, 4);
                     FabricaControles.AgregarBoton(tbProductos, dele, 5);
@@ -136,8 +131,8 @@ public class lisProducto extends javax.swing.JInternalFrame {
     }
 
     public void EliminarProducto() {
-        int confirmacion = JOptionPane.showConfirmDialog(null, "¿SEGURO DE CONTINUAR?", "CONFIRMACIÓN", JOptionPane.YES_NO_OPTION);
-        if (confirmacion == JOptionPane.YES_OPTION) {
+        int confirmacion = FabricaControles.VerConfirmacion(this);
+        if (confirmacion == 0) {
             new swEliminarProducto().execute();
         }
     }

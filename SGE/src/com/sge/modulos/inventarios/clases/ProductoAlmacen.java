@@ -17,6 +17,14 @@ public class ProductoAlmacen {
     public ProductoAlmacen() {
     }
 
+    public ProductoAlmacen(int idProductoAlmacen) {
+        this.idProductoAlmacen = idProductoAlmacen;
+    }
+
+    public ProductoAlmacen(Almacen almacen) {
+        this.almacen = almacen;
+    }
+
     public int getIdProductoAlmacen() {
         return idProductoAlmacen;
     }

@@ -6,14 +6,12 @@ import com.sge.base.controles.FabricaControles;
 import com.sge.base.utils.Utils;
 import com.sge.modulos.inventarios.clases.Almacen;
 import com.sge.modulos.inventarios.cliente.cliInventarios;
-import com.sun.media.sound.UlawCodec;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ImageIcon;
-import javax.swing.JOptionPane;
 import javax.swing.SwingWorker;
 import javax.swing.table.DefaultTableModel;
 
@@ -192,8 +190,8 @@ public class lisAlmacen extends javax.swing.JInternalFrame {
     }
 
     public void EliminarAlmacen() {
-        int confirmacion = JOptionPane.showInternalConfirmDialog(this, "¿SEGURO DE CONTINUAR?", "CONFIRMACIÓN", JOptionPane.YES_NO_OPTION);
-        if (confirmacion == JOptionPane.YES_OPTION) {
+        int confirmacion = FabricaControles.VerConfirmacion(this);
+        if (confirmacion == 0) {
             int idAlmacen = Utils.ObtenerValorCelda(tbAlmacenes, 1);
             if (idAlmacen == 0) {
                 Utils.EliminarFila(tbAlmacenes);

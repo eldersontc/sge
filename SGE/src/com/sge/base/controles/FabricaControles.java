@@ -19,6 +19,7 @@ import javax.swing.JDesktopPane;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
@@ -331,5 +332,9 @@ public class FabricaControles {
                 action.actionPerformed(new ActionEvent(evt.getSource(), 0, ""));
             }
         });
+    }
+    
+    public static int VerConfirmacion(JInternalFrame frame){
+        return JOptionPane.showInternalConfirmDialog(frame, "¿SEGURO DE CONTINUAR?", "CONFIRMACIÓN", JOptionPane.YES_NO_OPTION);
     }
 }
