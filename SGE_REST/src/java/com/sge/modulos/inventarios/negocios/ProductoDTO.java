@@ -2,8 +2,10 @@ package com.sge.modulos.inventarios.negocios;
 
 import com.sge.modulos.inventarios.accesoDatos.ProductoAlmacenDAO;
 import com.sge.modulos.inventarios.accesoDatos.ProductoDAO;
+import com.sge.modulos.inventarios.accesoDatos.ProductoUnidadDAO;
 import com.sge.modulos.inventarios.entidades.Producto;
 import com.sge.modulos.inventarios.entidades.ProductoAlmacen;
+import com.sge.modulos.inventarios.entidades.ProductoUnidad;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,6 +17,7 @@ public class ProductoDTO {
 
     ProductoDAO productoDAO;
     ProductoAlmacenDAO productoAlmacenDAO;
+    ProductoUnidadDAO productoUnidadDAO;
 
     public List<Object[]> ObtenerProductos() {
         List<Object[]> lista;
@@ -37,6 +40,10 @@ public class ProductoDTO {
             productoDAO.AbrirSesision();
             Producto producto = productoDAO.ObtenerPorId(Producto.class, idProducto);
             lista.add(producto);
+            productoUnidadDAO = new ProductoUnidadDAO();
+            productoUnidadDAO.AsignarSesion(productoDAO);
+            List<Object[]> productoUnidades = productoUnidadDAO.ObtenerProductoUnidadesPorIdProducto(idProducto);
+            lista.add(productoUnidades);
             productoAlmacenDAO = new ProductoAlmacenDAO();
             productoAlmacenDAO.AsignarSesion(productoDAO);
             List<Object[]> productoAlmacenes = productoAlmacenDAO.ObtenerProductoAlmacenesPorIdProducto(idProducto);
@@ -49,17 +56,26 @@ public class ProductoDTO {
         return lista;
     }
 
-    public boolean RegistrarProducto(Producto producto, ProductoAlmacen[] productoAlmacenes) {
+    public boolean RegistrarProducto(Producto producto, ProductoUnidad[] productoUnidades, ProductoAlmacen[] productoAlmacenes) {
         try {
             productoDAO = new ProductoDAO();
             productoDAO.IniciarTransaccion();
             productoDAO.Agregar(producto);
+
+            productoUnidadDAO = new ProductoUnidadDAO();
+            productoUnidadDAO.AsignarSesion(productoDAO);
+            for (ProductoUnidad productoUnidad : productoUnidades) {
+                productoUnidad.setProducto(producto);
+                productoUnidadDAO.Agregar(productoUnidad);
+            }
+
             productoAlmacenDAO = new ProductoAlmacenDAO();
             productoAlmacenDAO.AsignarSesion(productoDAO);
             for (ProductoAlmacen productoAlmacen : productoAlmacenes) {
                 productoAlmacen.setProducto(producto);
                 productoAlmacenDAO.Agregar(productoAlmacen);
             }
+
             productoDAO.ConfirmarTransaccion();
         } catch (Exception e) {
             productoDAO.AbortarTransaccion();
@@ -70,11 +86,27 @@ public class ProductoDTO {
         return true;
     }
 
-    public boolean ActualizarProducto(Producto producto, ProductoAlmacen[] productoAlmacenes) {
+    public boolean ActualizarProducto(Producto producto, ProductoUnidad[] productoUnidades, ProductoAlmacen[] productoAlmacenes) {
         try {
             productoDAO = new ProductoDAO();
             productoDAO.IniciarTransaccion();
             productoDAO.ActualizarProducto(producto.getIdProducto(), producto.getCodigo(), producto.getDescripcion(), producto.isInventarios(), producto.isCompras(), producto.isVentas(), producto.isActivo());
+
+            productoUnidadDAO = new ProductoUnidadDAO();
+            productoUnidadDAO.AsignarSesion(productoDAO);
+            for (ProductoUnidad productoUnidad : productoUnidades) {
+                if(productoUnidad.isAgregar()){
+                    productoUnidad.setProducto(producto);
+                    productoUnidadDAO.Agregar(productoUnidad);
+                }
+                if(productoUnidad.isActualizar()){
+                    productoUnidadDAO.ActualizarProductoUnidad(productoUnidad.getIdProductoUnidad(), productoUnidad.getFactor());
+                }
+                if(productoUnidad.isEliminar()){
+                    productoUnidadDAO.EliminarProductoUnidad(productoUnidad.getIdProductoUnidad());
+                }
+            }
+
             productoAlmacenDAO = new ProductoAlmacenDAO();
             productoAlmacenDAO.AsignarSesion(productoDAO);
             for (ProductoAlmacen productoAlmacen : productoAlmacenes) {
@@ -85,6 +117,7 @@ public class ProductoDTO {
                     productoAlmacenDAO.EliminarProductoAlmacen(productoAlmacen.getIdProductoAlmacen());
                 }
             }
+
             productoDAO.ConfirmarTransaccion();
         } catch (Exception e) {
             productoDAO.AbortarTransaccion();
@@ -100,9 +133,15 @@ public class ProductoDTO {
             productoDAO = new ProductoDAO();
             productoDAO.IniciarTransaccion();
             productoDAO.EliminarProducto(idProducto);
+
+            productoUnidadDAO = new ProductoUnidadDAO();
+            productoUnidadDAO.AsignarSesion(productoDAO);
+            productoUnidadDAO.EliminarProductoUnidadPorIdProducto(idProducto);
+
             productoAlmacenDAO = new ProductoAlmacenDAO();
             productoAlmacenDAO.AsignarSesion(productoDAO);
             productoAlmacenDAO.EliminarProductoAlmacenPorIdProducto(idProducto);
+
             productoDAO.ConfirmarTransaccion();
         } catch (Exception e) {
             productoDAO.AbortarTransaccion();

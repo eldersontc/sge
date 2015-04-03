@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.sge.modulos.inventarios.entidades.ProductoUnidad" table="ProductoUnidad" schema="Inventarios">
+        <id name="idProductoUnidad" column="idProductoUnidad">
+            <generator class="sequence">
+                <param name="sequence">Inventarios.productounidad_idproductounidad_seq</param>
+            </generator>
+        </id>
+        <many-to-one name="producto" column="idProducto" class="com.sge.modulos.inventarios.entidades.Producto"/>
+        <many-to-one name="unidad" column="idUnidad" class="com.sge.modulos.inventarios.entidades.Unidad"/>
+        <property name="factor" column="factor"/>
+    </class>
+</hibernate-mapping>
