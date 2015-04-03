@@ -12,10 +12,10 @@ import java.util.List;
  * @author elderson
  */
 public class ProductoDTO {
-    
+
     ProductoDAO productoDAO;
     ProductoAlmacenDAO productoAlmacenDAO;
-    
+
     public List<Object[]> ObtenerProductos() {
         List<Object[]> lista;
         try {
@@ -29,7 +29,7 @@ public class ProductoDTO {
         }
         return lista;
     }
-    
+
     public List<Object> ObtenerProducto(int idProducto) {
         List<Object> lista = new ArrayList<>();
         try {
@@ -48,7 +48,7 @@ public class ProductoDTO {
         }
         return lista;
     }
-    
+
     public boolean RegistrarProducto(Producto producto, ProductoAlmacen[] productoAlmacenes) {
         try {
             productoDAO = new ProductoDAO();
@@ -69,7 +69,7 @@ public class ProductoDTO {
         }
         return true;
     }
-    
+
     public boolean ActualizarProducto(Producto producto, ProductoAlmacen[] productoAlmacenes) {
         try {
             productoDAO = new ProductoDAO();
@@ -78,10 +78,12 @@ public class ProductoDTO {
             productoAlmacenDAO = new ProductoAlmacenDAO();
             productoAlmacenDAO.AsignarSesion(productoDAO);
             for (ProductoAlmacen productoAlmacen : productoAlmacenes) {
-                if(productoAlmacen.getIdProductoAlmacen() == 0)
+                if (productoAlmacen.getIdProductoAlmacen() == 0) {
+                    productoAlmacen.setProducto(producto);
                     productoAlmacenDAO.Agregar(productoAlmacen);
-                else
+                } else {
                     productoAlmacenDAO.EliminarProductoAlmacen(productoAlmacen.getIdProductoAlmacen());
+                }
             }
             productoDAO.ConfirmarTransaccion();
         } catch (Exception e) {
@@ -92,7 +94,7 @@ public class ProductoDTO {
         }
         return true;
     }
-    
+
     public boolean EliminarProducto(int idProducto) {
         try {
             productoDAO = new ProductoDAO();
