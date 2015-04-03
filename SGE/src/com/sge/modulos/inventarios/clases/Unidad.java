@@ -14,6 +14,10 @@ public class Unidad {
     public Unidad() {
     }
 
+    public Unidad(int idUnidad) {
+        this.idUnidad = idUnidad;
+    }
+
     public int getIdUnidad() {
         return idUnidad;
     }

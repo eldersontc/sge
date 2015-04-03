@@ -7,6 +7,8 @@ import com.sge.base.utils.Utils;
 import com.sge.modulos.inventarios.clases.Almacen;
 import com.sge.modulos.inventarios.clases.Producto;
 import com.sge.modulos.inventarios.clases.ProductoAlmacen;
+import com.sge.modulos.inventarios.clases.ProductoUnidad;
+import com.sge.modulos.inventarios.clases.Unidad;
 import com.sge.modulos.inventarios.cliente.cliInventarios;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
@@ -32,9 +34,20 @@ public class regProducto extends javax.swing.JInternalFrame {
 
     int idProducto = 0;
 
+    private List<ProductoUnidad> productoUnidades = new ArrayList<>();
     private List<ProductoAlmacen> productoAlmacenes = new ArrayList<>();
 
-    Action selecionar = new AbstractAction() {
+    Action sele_unidad = new AbstractAction() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            List<Unidad> unidades = ((lisUnidad) e.getSource()).getSeleccionados();
+            for (Unidad unidad : unidades) {
+                Utils.AgregarFila(tbUnidades, new Object[]{0, unidad.getIdUnidad(), unidad.getAbreviacion(), 0});
+            }
+        }
+    };
+
+    Action sele_almacen = new AbstractAction() {
         @Override
         public void actionPerformed(ActionEvent e) {
             List<Almacen> almacenes = ((lisAlmacen) e.getSource()).getSeleccionados();
@@ -51,6 +64,27 @@ public class regProducto extends javax.swing.JInternalFrame {
         if (this.idProducto > 0) {
             new swObtenerProducto().execute();
         }
+    }
+
+    public List<ProductoUnidad> getProductoUnidades() {
+        //((DefaultTableModel)tbUnidades.getModel()).fireTableDataChanged();
+        for (int i = 0; i < tbUnidades.getRowCount(); i++) {
+            int idProductoUnidad = Utils.ObtenerValorCelda(tbUnidades, i, 0);
+            if (idProductoUnidad == 0) {
+                ProductoUnidad productoUnidad = new ProductoUnidad();
+                productoUnidad.setUnidad(new Unidad(Utils.ObtenerValorCelda(tbUnidades, i, 1)));
+                productoUnidad.setFactor(Utils.ObtenerValorCelda(tbUnidades, i, 3));
+                productoUnidad.setAgregar(true);
+                productoUnidades.add(productoUnidad);
+            } else {
+                ProductoUnidad productoUnidad = new ProductoUnidad();
+                productoUnidad.setIdProductoUnidad(idProductoUnidad);
+                productoUnidad.setFactor(Utils.ObtenerValorCelda(tbUnidades, i, 3));
+                productoUnidad.setActualizar(true);
+                productoUnidades.add(productoUnidad);
+            }
+        }
+        return productoUnidades;
     }
 
     public class swObtenerProducto extends SwingWorker<Object, Object> {
@@ -79,7 +113,9 @@ public class regProducto extends javax.swing.JInternalFrame {
 
                 if (resultado[0].equals("true")) {
                     Producto producto = new Gson().fromJson(resultado[1], Producto.class);
-                    List<Object[]> productoAlmacenes = (List<Object[]>) new Gson().fromJson(resultado[2], new TypeToken<List<Object[]>>() {
+                    List<Object[]> productoUnidades = (List<Object[]>) new Gson().fromJson(resultado[2], new TypeToken<List<Object[]>>() {
+                    }.getType());
+                    List<Object[]> productoAlmacenes = (List<Object[]>) new Gson().fromJson(resultado[3], new TypeToken<List<Object[]>>() {
                     }.getType());
                     txtCodigo.setText(producto.getCodigo());
                     txtDescripcion.setText(producto.getDescripcion());
@@ -87,6 +123,15 @@ public class regProducto extends javax.swing.JInternalFrame {
                     chkCompras.setSelected(producto.isCompras());
                     chkVentas.setSelected(producto.isVentas());
                     chkActivo.setSelected(producto.isActivo());
+                    for (Object[] productoUnidad : productoUnidades) {
+                        Utils.AgregarFila(tbUnidades,
+                                new Object[]{
+                                    ((Double) productoUnidad[0]).intValue(),
+                                    ((Double) productoUnidad[1]).intValue(),
+                                    productoUnidad[2],
+                                    ((Double) productoUnidad[3]).intValue()
+                                });
+                    }
                     for (Object[] productoAlmacen : productoAlmacenes) {
                         Utils.AgregarFila(tbAlmacenes,
                                 new Object[]{
@@ -125,11 +170,13 @@ public class regProducto extends javax.swing.JInternalFrame {
                 producto.setActivo(chkActivo.isSelected());
                 if (idProducto == 0) {
                     arrayJson.add(new Gson().toJson(producto));
+                    arrayJson.add(new Gson().toJson(getProductoUnidades()));
                     arrayJson.add(new Gson().toJson(productoAlmacenes));
                     json = cliente.RegistrarProducto(new Gson().toJson(arrayJson));
                 } else {
                     producto.setIdProducto(idProducto);
                     arrayJson.add(new Gson().toJson(producto));
+                    arrayJson.add(new Gson().toJson(getProductoUnidades()));
                     arrayJson.add(new Gson().toJson(productoAlmacenes));
                     json = cliente.ActualizarProducto(new Gson().toJson(arrayJson));
                 }
@@ -177,6 +224,10 @@ public class regProducto extends javax.swing.JInternalFrame {
         btnCancelar = new javax.swing.JButton();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         pnlUnidades = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tbUnidades = new javax.swing.JTable();
+        btnNuevaUnidad = new javax.swing.JButton();
+        btnEliminarUnidad = new javax.swing.JButton();
         pnlAlmacenes = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tbAlmacenes = new javax.swing.JTable();
@@ -217,15 +268,78 @@ public class regProducto extends javax.swing.JInternalFrame {
 
         pnlUnidades.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
+        tbUnidades.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "IDPRODUCTOUNIDAD", "IDUNIDAD", "UNIDAD", "FACTOR"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.Integer.class, java.lang.String.class, java.lang.Integer.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, true, true
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tbUnidades.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
+        jScrollPane2.setViewportView(tbUnidades);
+        if (tbUnidades.getColumnModel().getColumnCount() > 0) {
+            tbUnidades.getColumnModel().getColumn(0).setMinWidth(0);
+            tbUnidades.getColumnModel().getColumn(0).setPreferredWidth(0);
+            tbUnidades.getColumnModel().getColumn(0).setMaxWidth(0);
+            tbUnidades.getColumnModel().getColumn(1).setMinWidth(0);
+            tbUnidades.getColumnModel().getColumn(1).setPreferredWidth(0);
+            tbUnidades.getColumnModel().getColumn(1).setMaxWidth(0);
+            tbUnidades.getColumnModel().getColumn(2).setPreferredWidth(200);
+        }
+
+        btnNuevaUnidad.setText("NUEVO");
+        btnNuevaUnidad.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNuevaUnidadActionPerformed(evt);
+            }
+        });
+
+        btnEliminarUnidad.setText("ELIMINAR");
+        btnEliminarUnidad.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarUnidadActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout pnlUnidadesLayout = new javax.swing.GroupLayout(pnlUnidades);
         pnlUnidades.setLayout(pnlUnidadesLayout);
         pnlUnidadesLayout.setHorizontalGroup(
             pnlUnidadesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 505, Short.MAX_VALUE)
+            .addGroup(pnlUnidadesLayout.createSequentialGroup()
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 408, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(pnlUnidadesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnEliminarUnidad, javax.swing.GroupLayout.DEFAULT_SIZE, 83, Short.MAX_VALUE)
+                    .addComponent(btnNuevaUnidad, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         pnlUnidadesLayout.setVerticalGroup(
             pnlUnidadesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 158, Short.MAX_VALUE)
+            .addGroup(pnlUnidadesLayout.createSequentialGroup()
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(pnlUnidadesLayout.createSequentialGroup()
+                .addGap(23, 23, 23)
+                .addComponent(btnNuevaUnidad)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnEliminarUnidad)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("UNIDADES", pnlUnidades);
@@ -266,8 +380,11 @@ public class regProducto extends javax.swing.JInternalFrame {
             tbAlmacenes.getColumnModel().getColumn(1).setMaxWidth(0);
             tbAlmacenes.getColumnModel().getColumn(2).setPreferredWidth(200);
             tbAlmacenes.getColumnModel().getColumn(4).setPreferredWidth(150);
+            tbAlmacenes.getColumnModel().getColumn(4).setHeaderValue("S. COMPROMETIDO");
             tbAlmacenes.getColumnModel().getColumn(5).setPreferredWidth(120);
+            tbAlmacenes.getColumnModel().getColumn(5).setHeaderValue("S. SOLICITADO");
             tbAlmacenes.getColumnModel().getColumn(6).setPreferredWidth(120);
+            tbAlmacenes.getColumnModel().getColumn(6).setHeaderValue("S. DISPONIBLE");
         }
 
         btnNuevoAlmacen.setText("NUEVO");
@@ -291,10 +408,10 @@ public class regProducto extends javax.swing.JInternalFrame {
             .addGroup(pnlAlmacenesLayout.createSequentialGroup()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 408, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(pnlAlmacenesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(btnEliminarAlmacen, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(pnlAlmacenesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnEliminarAlmacen, javax.swing.GroupLayout.DEFAULT_SIZE, 83, Short.MAX_VALUE)
                     .addComponent(btnNuevoAlmacen, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(0, 15, Short.MAX_VALUE))
+                .addContainerGap())
         );
         pnlAlmacenesLayout.setVerticalGroup(
             pnlAlmacenesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -429,7 +546,7 @@ public class regProducto extends javax.swing.JInternalFrame {
 
     private void btnNuevoAlmacenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoAlmacenActionPerformed
         // TODO add your handling code here:
-        FabricaControles.VerModal(this.getDesktopPane(), new lisAlmacen(2), selecionar);
+        FabricaControles.VerModal(this.getDesktopPane(), new lisAlmacen(2), sele_almacen);
     }//GEN-LAST:event_btnNuevoAlmacenActionPerformed
 
     private void btnEliminarAlmacenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarAlmacenActionPerformed
@@ -446,17 +563,34 @@ public class regProducto extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_btnEliminarAlmacenActionPerformed
 
+    private void btnNuevaUnidadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevaUnidadActionPerformed
+        // TODO add your handling code here:
+        FabricaControles.VerModal(this.getDesktopPane(), new lisUnidad(2), sele_unidad);
+    }//GEN-LAST:event_btnNuevaUnidadActionPerformed
+
+    private void btnEliminarUnidadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarUnidadActionPerformed
+        // TODO add your handling code here:
+        if (Utils.FilaActiva(tbUnidades)) {
+            int idProductoUnidad = Utils.ObtenerValorCelda(tbUnidades, 0);
+            productoUnidades.add(new ProductoUnidad(idProductoUnidad, true));
+            Utils.EliminarFila(tbUnidades);
+        }
+    }//GEN-LAST:event_btnEliminarUnidadActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAceptar;
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnEliminarAlmacen;
+    private javax.swing.JButton btnEliminarUnidad;
+    private javax.swing.JButton btnNuevaUnidad;
     private javax.swing.JButton btnNuevoAlmacen;
     private javax.swing.JCheckBox chkActivo;
     private javax.swing.JCheckBox chkCompras;
     private javax.swing.JCheckBox chkInventarios;
     private javax.swing.JCheckBox chkVentas;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JLabel lblCodigo;
     private javax.swing.JLabel lblNombre;
@@ -466,6 +600,7 @@ public class regProducto extends javax.swing.JInternalFrame {
     private javax.swing.JPanel pnlTitulo;
     private javax.swing.JPanel pnlUnidades;
     private javax.swing.JTable tbAlmacenes;
+    private javax.swing.JTable tbUnidades;
     private javax.swing.JTextField txtCodigo;
     private javax.swing.JTextField txtDescripcion;
     // End of variables declaration//GEN-END:variables
