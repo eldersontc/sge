@@ -67,7 +67,6 @@ public class regProducto extends javax.swing.JInternalFrame {
     }
 
     public List<ProductoUnidad> getProductoUnidades() {
-        //((DefaultTableModel)tbUnidades.getModel()).fireTableDataChanged();
         for (int i = 0; i < tbUnidades.getRowCount(); i++) {
             int idProductoUnidad = Utils.ObtenerValorCelda(tbUnidades, i, 0);
             if (idProductoUnidad == 0) {
