@@ -35,6 +35,7 @@ public class ApplicationConfig extends Application {
         resources.add(com.sge.modulos.administracion.servicios.UsuarioSRV.class);
         resources.add(com.sge.modulos.compras.servicios.ProveedorSRV.class);
         resources.add(com.sge.modulos.inventarios.servicios.AlmacenSRV.class);
+        resources.add(com.sge.modulos.inventarios.servicios.EntradaInventarioSRV.class);
         resources.add(com.sge.modulos.inventarios.servicios.ProductoSRV.class);
         resources.add(com.sge.modulos.inventarios.servicios.UnidadSRV.class);
     }

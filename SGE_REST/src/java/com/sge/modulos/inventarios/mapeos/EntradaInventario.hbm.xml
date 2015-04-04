@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.sge.modulos.inventarios.entidades.EntradaInventario" table="EntradaInventario" schema="Inventarios">
+        <id name="idEntradaInventario" column="idEntradaInventario">
+            <generator class="sequence">
+                <param name="sequence">Inventarios.entradainventario_identradainventario_seq</param>
+            </generator>
+        </id>
+        <property name="numero" column="numero"/>
+        <property name="idProveedor" column="idProveedor"/>
+        <property name="razonSocialProveedor" column="razonSocialProveedor"/>
+        <property name="idResponsable" column="idResponsable"/>
+        <property name="nombreResponsable" column="nombreResponsable"/>
+        <property name="fechaCreacion" column="fechaCreacion"/>
+        <property name="idMoneda" column="idMoneda"/>
+        <property name="simboloMoneda" column="simboloMoneda"/>
+        <property name="observacion" column="observacion"/>
+        <property name="tipoCambio" column="tipoCambio"/>
+        <property name="subTotal" column="subTotal"/>
+        <property name="porcentajeImpuesto" column="porcentajeImpuesto"/>
+        <property name="montoImpuesto" column="montoImpuesto"/>
+        <property name="total" column="total"/>
+    </class>
+</hibernate-mapping>

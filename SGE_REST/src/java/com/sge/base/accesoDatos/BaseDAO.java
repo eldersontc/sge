@@ -2,9 +2,11 @@ package com.sge.base.accesoDatos;
 
 import java.io.File;
 import java.util.List;
+import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.criterion.Restrictions;
 
 /**
  *
@@ -67,6 +69,14 @@ public class BaseDAO {
         return sesion.createSQLQuery(sql).list();
     }
 
+    public <T> T ObtenerLista(Class clase, List<Object[]> filtros) {
+        Criteria criteria = sesion.createCriteria(clase);
+        for (Object[] filtro : filtros) {
+            criteria.add(Restrictions.ilike(filtro[0].toString(), filtro[1]));
+        }
+        return (T)criteria.list();
+    }
+    
     public int Ejecutar(String sql) {
         return sesion.createSQLQuery(sql).executeUpdate();
     }
