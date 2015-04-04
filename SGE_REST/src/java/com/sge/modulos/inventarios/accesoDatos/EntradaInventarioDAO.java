@@ -11,7 +11,7 @@ public class EntradaInventarioDAO extends InventariosDAO {
     public List<Object[]> ObtenerEntradaInventarios() {
         String sql = "SELECT \n"
                 + "EntradaInventario.idEntradaInventario, EntradaInventario.numero, EntradaInventario.fechaCreacion, \n"
-                + "EntradaInventario.razonSocialProveedor, EntradaInventario.nombreEmpleado, EntradaInventario.simboloMoneda, \n"
+                + "EntradaInventario.razonSocialProveedor, EntradaInventario.nombreResponsable, EntradaInventario.simboloMoneda, \n"
                 + "EntradaInventario.total \n"
                 + "FROM \n"
                 + "Inventarios.EntradaInventario \n";

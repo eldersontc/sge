@@ -15,7 +15,6 @@
         <property name="descripcionProducto" column="descripcionProducto"/>
         <property name="idUnidad" column="idUnidad"/>
         <property name="abreviacionUnidad" column="abreviacionUnidad"/>
-        <property name="abreviacionUnidad" column="abreviacionUnidad"/>
         <property name="precio" column="precio"/>
         <property name="cantidad" column="cantidad"/>
         <property name="tipoCambio" column="tipoCambio"/>

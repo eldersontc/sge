@@ -146,5 +146,4 @@ public class EntradaInventario {
     public void setTotal(double total) {
         this.total = total;
     }
-
 }
