@@ -1,11 +1,16 @@
 package com.sge.modulos.inventarios.formularios;
 
 import com.sge.base.utils.Utils;
+import java.awt.Component;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JComboBox;
+import javax.swing.JTable;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import javax.swing.table.TableColumn;
+import javax.swing.table.TableModel;
 
 /**
  *
@@ -315,11 +320,46 @@ public class regEntradaInventario extends javax.swing.JInternalFrame {
         
         TableColumn col = tbItems.getColumnModel().getColumn(5);
         
-        col.setCellEditor(new DefaultCellEditor(combo));
         
-        Utils.AgregarFila(tbItems, new Object[]{ 0,0,"001", "producto1", 0, "1", 0,0,0 });
+        Utils.AgregarFila(tbItems, new Object[]{ 0,0,"001", "producto1", 0, new Object[]{"1","2"} , 0,0,0 });
+        
+        col.setCellEditor(new comboCell());
+        
+        tbItems.getModel().addTableModelListener(new TableModelListener() {
+
+            @Override
+            public void tableChanged(TableModelEvent e) {
+                int row = e.getFirstRow();
+                int column = e.getColumn();
+                TableModel model = (TableModel)e.getSource();
+                String columnName = model.getColumnName(column);
+                Object data = model.getValueAt(row, column);
+                if(columnName.equals("CANTIDAD"))
+                    model.setValueAt(100, row, 7);
+            }
+        });
     }//GEN-LAST:event_btnNuevoItemActionPerformed
 
+    public class comboCell extends DefaultCellEditor{
+
+        public comboCell() {
+            super(new JComboBox());
+        }
+        
+        public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column)
+        {
+            JComboBox combo = (JComboBox)super.getTableCellEditorComponent(table, value, isSelected, row, column);
+            combo.removeAllItems();
+            
+            Object[] items = (Object[])table.getModel().getValueAt(row, column); // getItemsForCell(row, column); // you'll need to implement this method yourself
+            for (Object item: items)
+            {
+                combo.addItem(item);
+            }
+            return combo;
+        }
+    }
+    
     private void btnEliminarItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarItemActionPerformed
         // TODO add your handling code here:
 //        if (Utils.FilaActiva(tbItems)) {
