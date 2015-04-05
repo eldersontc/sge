@@ -8,6 +8,7 @@ import com.sge.modulos.administracion.formularios.lisMoneda;
 import com.sge.modulos.administracion.formularios.lisUsuario;
 import com.sge.modulos.compras.formularios.lisProveedor;
 import com.sge.modulos.inventarios.formularios.lisAlmacen;
+import com.sge.modulos.inventarios.formularios.lisEntradaInventario;
 import com.sge.modulos.inventarios.formularios.lisProducto;
 import com.sge.modulos.inventarios.formularios.lisUnidad;
 import java.awt.BorderLayout;
@@ -144,6 +145,11 @@ public class SGE extends javax.swing.JFrame {
                 lisProducto lisProducto = new lisProducto();
                 jdpPrincipal.add(lisProducto);
                 lisProducto.setVisible(true);
+                break;
+            case "lisEntradaInventario":
+                lisEntradaInventario lisEntradaInventario = new lisEntradaInventario(0);
+                jdpPrincipal.add(lisEntradaInventario);
+                lisEntradaInventario.setVisible(true);
                 break;
             default:
                 break;

@@ -115,6 +115,34 @@ public class cliInventarios {
     
     ////////////////////////////////////////////////////////////////////////////
     
+    /////////////////////////// ENTRADA DE INVENTARIO //////////////////////////
+    
+    public String ObtenerEntradaInventarios(Object requestEntity) throws ClientErrorException {
+        WebTarget resource = client.target(BASE_URI).path("EntradaInventarioSRV");
+        resource = resource.path("ObtenerEntradaInventarios");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
+    }
+    
+    public String ObtenerEntradaInventario(Object requestEntity) throws ClientErrorException {
+        WebTarget resource = client.target(BASE_URI).path("EntradaInventarioSRV");
+        resource = resource.path("ObtenerEntradaInventario");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
+    }
+    
+    public String RegistrarEntradaInventario(Object requestEntity) throws ClientErrorException {
+        WebTarget resource = client.target(BASE_URI).path("EntradaInventarioSRV");
+        resource = resource.path("RegistrarEntradaInventario");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
+    }
+    
+    public String EliminarEntradaInventario(Object requestEntity) throws ClientErrorException {
+        WebTarget resource = client.target(BASE_URI).path("EntradaInventarioSRV");
+        resource = resource.path("EliminarEntradaInventario");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
+    }
+    
+    ////////////////////////////////////////////////////////////////////////////
+    
     public void close() {
         client.close();
     }

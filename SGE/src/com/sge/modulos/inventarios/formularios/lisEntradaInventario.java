@@ -4,47 +4,54 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.sge.base.controles.FabricaControles;
 import com.sge.base.utils.Utils;
+import com.sge.modulos.inventarios.clases.EntradaInventario;
 import com.sge.modulos.inventarios.cliente.cliInventarios;
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ImageIcon;
 import javax.swing.SwingWorker;
-import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author elderson
  */
-public class lisProducto extends javax.swing.JInternalFrame {
+public class lisEntradaInventario extends javax.swing.JInternalFrame {
 
     /**
-     * Creates new form lisProducto
+     * Creates new form lisEntradaInventario
      */
-    public lisProducto() {
+    public lisEntradaInventario(int modo) {
         initComponents();
-        Init();
+        Init(modo);
     }
 
-    ImageIcon Icon_Edit = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/edit-16.png"));
+    private int modo = 0;
+
+    private EntradaInventario seleccionado;
+
+    private List<EntradaInventario> seleccionados = new ArrayList<>();
+    
+    ImageIcon Icon_View = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/edit-16.png"));
     ImageIcon Icon_Dele = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/delete-16.png"));
 
-    Action edit = new AbstractAction() {
+    Action view = new AbstractAction() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            EditarProducto();
+            VerProducto();
         }
     };
 
     Action dele = new AbstractAction() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            EliminarProducto();
+            EliminarEntradaInventario();
         }
     };
-
-    public class swObtenerProductos extends SwingWorker {
+    
+    public class swObtenerEntradaInventarios extends SwingWorker {
 
         @Override
         protected Object doInBackground() {
@@ -52,7 +59,7 @@ public class lisProducto extends javax.swing.JInternalFrame {
             cliInventarios cliente = new cliInventarios();
             String json = "";
             try {
-                json = cliente.ObtenerProductos("");
+                json = cliente.ObtenerEntradaInventarios("");
             } catch (Exception e) {
                 FabricaControles.OcultarCargando(pnlContenido);
                 json = "[\"false\"]";
@@ -68,14 +75,14 @@ public class lisProducto extends javax.swing.JInternalFrame {
                 String json = get().toString();
                 String[] resultado = new Gson().fromJson(json, String[].class);
                 if (resultado[0].equals("true")) {
-                    Utils.EliminarTodasFilas(tbProductos);
+                    Utils.EliminarTodasFilas(tbEntradaInventarios);
                     List<Object[]> filas = (List<Object[]>) new Gson().fromJson(resultado[1], new TypeToken<List<Object[]>>() {
                     }.getType());
                     for (Object[] fila : filas) {
-                        Utils.AgregarFila(tbProductos, new Object[]{((Double) fila[0]).intValue(), fila[1], fila[2], fila[3], Icon_Edit, Icon_Dele});
+                        Utils.AgregarFila(tbEntradaInventarios, new Object[]{false,((Double) fila[0]).intValue(), fila[1], fila[2], fila[3], fila[4], fila[5], fila[6], Icon_View, Icon_Dele});
                     }
-                    FabricaControles.AgregarBoton(tbProductos, edit, 4);
-                    FabricaControles.AgregarBoton(tbProductos, dele, 5);
+                    FabricaControles.AgregarBoton(tbEntradaInventarios, view, 8);
+                    FabricaControles.AgregarBoton(tbEntradaInventarios, dele, 9);
                 }
                 FabricaControles.OcultarCargando(pnlContenido);
             } catch (Exception e) {
@@ -84,7 +91,7 @@ public class lisProducto extends javax.swing.JInternalFrame {
         }
     }
 
-    public class swEliminarProducto extends SwingWorker {
+    public class swEliminarEntradaInventario extends SwingWorker {
 
         @Override
         protected Object doInBackground() throws Exception {
@@ -92,8 +99,8 @@ public class lisProducto extends javax.swing.JInternalFrame {
             cliInventarios cliente = new cliInventarios();
             String json = "";
             try {
-                int idProducto = Utils.ObtenerValorCelda(tbProductos, 0);
-                json = cliente.EliminarProducto(new Gson().toJson(idProducto));
+                int idEntradaInventario = Utils.ObtenerValorCelda(tbEntradaInventarios, 1);
+                json = cliente.EliminarEntradaInventario(new Gson().toJson(idEntradaInventario));
             } catch (Exception e) {
                 FabricaControles.OcultarCargando(pnlContenido);
                 json = "[\"false\"]";
@@ -109,7 +116,7 @@ public class lisProducto extends javax.swing.JInternalFrame {
                 String json = get().toString();
                 String[] resultado = new Gson().fromJson(json, String[].class);
                 if (resultado[0].equals("true")) {
-                    new swObtenerProductos().execute();
+                    new swObtenerEntradaInventarios().execute();
                 } else {
                     FabricaControles.OcultarCargando(pnlContenido);
                 }
@@ -119,24 +126,34 @@ public class lisProducto extends javax.swing.JInternalFrame {
         }
     }
 
-    public void Init() {
-        new swObtenerProductos().execute();
+    public void Init(int modo) {
+        this.modo = modo;
+        switch (this.modo) {
+            case 0:
+                Utils.OcultarColumna(tbEntradaInventarios, 0);
+                Utils.OcultarControl(btnSeleccionar);
+                break;
+            case 1:
+                Utils.OcultarColumna(tbEntradaInventarios, 0);
+                break;
+        }
+        new swObtenerEntradaInventarios().execute();
     }
 
-    public void EditarProducto() {
-        int idProducto = Utils.ObtenerValorCelda(tbProductos, 0);
-        regProducto regProducto = new regProducto("EDITAR ", idProducto);
+    public void VerProducto() {
+        int idEntradaInventario = Utils.ObtenerValorCelda(tbEntradaInventarios, 1);
+        regProducto regProducto = new regProducto("VER ", idEntradaInventario);
         this.getParent().add(regProducto);
         regProducto.setVisible(true);
     }
 
-    public void EliminarProducto() {
+    public void EliminarEntradaInventario() {
         int confirmacion = FabricaControles.VerConfirmacion(this);
         if (confirmacion == 0) {
-            new swEliminarProducto().execute();
+            new swEliminarEntradaInventario().execute();
         }
     }
-
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -148,29 +165,30 @@ public class lisProducto extends javax.swing.JInternalFrame {
 
         pnlContenido = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tbProductos = new javax.swing.JTable();
+        tbEntradaInventarios = new javax.swing.JTable();
         pnlTitulo = new javax.swing.JPanel();
         lblTitulo = new javax.swing.JLabel();
         btnNuevo = new javax.swing.JButton();
+        btnSeleccionar = new javax.swing.JButton();
 
         setClosable(true);
 
         pnlContenido.setBackground(java.awt.Color.white);
         pnlContenido.setBorder(null);
 
-        tbProductos.setModel(new javax.swing.table.DefaultTableModel(
+        tbEntradaInventarios.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "IDPRODUCTO", "CODIGO", "DESCRIPCION", "ACTIVO", "EDITAR", "ELIMINAR"
+                "CHECK", "IDENTRADAINVENTARIO", "NUMERO", "F. CREACION", "PROVEEDOR", "RESPONSABLE", "MONEDA", "TOTAL", "VER", "ELIMINAR"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Boolean.class, java.lang.Object.class, java.lang.Object.class
+                java.lang.Boolean.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Double.class, java.lang.Object.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                false, true, true, true, true, true
+                true, false, true, true, true, true, true, true, true, true
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -181,13 +199,14 @@ public class lisProducto extends javax.swing.JInternalFrame {
                 return canEdit [columnIndex];
             }
         });
-        tbProductos.setRowHeight(25);
-        tbProductos.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        jScrollPane1.setViewportView(tbProductos);
-        if (tbProductos.getColumnModel().getColumnCount() > 0) {
-            tbProductos.getColumnModel().getColumn(0).setMinWidth(0);
-            tbProductos.getColumnModel().getColumn(0).setPreferredWidth(0);
-            tbProductos.getColumnModel().getColumn(0).setMaxWidth(0);
+        tbEntradaInventarios.setRowHeight(25);
+        tbEntradaInventarios.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jScrollPane1.setViewportView(tbEntradaInventarios);
+        if (tbEntradaInventarios.getColumnModel().getColumnCount() > 0) {
+            tbEntradaInventarios.getColumnModel().getColumn(0).setPreferredWidth(30);
+            tbEntradaInventarios.getColumnModel().getColumn(1).setMinWidth(0);
+            tbEntradaInventarios.getColumnModel().getColumn(1).setPreferredWidth(0);
+            tbEntradaInventarios.getColumnModel().getColumn(1).setMaxWidth(0);
         }
 
         pnlTitulo.setBackground(new java.awt.Color(67, 100, 130));
@@ -196,7 +215,7 @@ public class lisProducto extends javax.swing.JInternalFrame {
         lblTitulo.setFont(new java.awt.Font("Ubuntu", 1, 18)); // NOI18N
         lblTitulo.setForeground(java.awt.Color.white);
         lblTitulo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sge/base/imagenes/list-view-16.png"))); // NOI18N
-        lblTitulo.setText("LISTADO DE PRODUCTOS");
+        lblTitulo.setText("LISTADO DE ENTRADAS A INVENTARIO");
 
         btnNuevo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sge/base/imagenes/add-16.png"))); // NOI18N
         btnNuevo.setText("NUEVO");
@@ -227,23 +246,31 @@ public class lisProducto extends javax.swing.JInternalFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        btnSeleccionar.setText("SELECCIONAR");
+
         javax.swing.GroupLayout pnlContenidoLayout = new javax.swing.GroupLayout(pnlContenido);
         pnlContenido.setLayout(pnlContenidoLayout);
         pnlContenidoLayout.setHorizontalGroup(
             pnlContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(pnlTitulo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(pnlContenidoLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 486, Short.MAX_VALUE)
+                .addGroup(pnlContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 706, Short.MAX_VALUE)
+                    .addGroup(pnlContenidoLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(btnSeleccionar, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
-            .addComponent(pnlTitulo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         pnlContenidoLayout.setVerticalGroup(
             pnlContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlContenidoLayout.createSequentialGroup()
                 .addComponent(pnlTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 239, Short.MAX_VALUE)
-                .addGap(16, 16, 16))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 309, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnSeleccionar)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -262,18 +289,19 @@ public class lisProducto extends javax.swing.JInternalFrame {
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
         // TODO add your handling code here:
-        regProducto regProducto = new regProducto("NUEVO ", 0);
-        this.getParent().add(regProducto);
-        regProducto.setVisible(true);
+        regEntradaInventario regEntradaInventario = new regEntradaInventario("NUEVA ", 0);
+        this.getDesktopPane().add(regEntradaInventario);
+        regEntradaInventario.setVisible(true);
     }//GEN-LAST:event_btnNuevoActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnNuevo;
+    private javax.swing.JButton btnSeleccionar;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblTitulo;
     private javax.swing.JPanel pnlContenido;
     private javax.swing.JPanel pnlTitulo;
-    private javax.swing.JTable tbProductos;
+    private javax.swing.JTable tbEntradaInventarios;
     // End of variables declaration//GEN-END:variables
 }

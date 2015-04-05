@@ -49,16 +49,10 @@
               <Group type="102" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="jScrollPane1" pref="573" max="32767" attributes="0"/>
-                      <Group type="102" alignment="1" attributes="0">
+                      <Component id="jScrollPane1" pref="706" max="32767" attributes="0"/>
+                      <Group type="102" attributes="0">
                           <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                          <Component id="btnSeleccionar" min="-2" pref="112" max="-2" attributes="0"/>
-                      </Group>
-                      <Group type="102" alignment="0" attributes="0">
-                          <Component id="lblFiltro" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="txtFiltro" min="-2" pref="172" max="-2" attributes="0"/>
-                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                          <Component id="btnSeleccionar" min="-2" pref="124" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
@@ -70,12 +64,7 @@
               <Group type="102" alignment="1" attributes="0">
                   <Component id="pnlTitulo" min="-2" max="-2" attributes="0"/>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="lblFiltro" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="txtFiltro" alignment="3" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Component id="jScrollPane1" min="-2" pref="261" max="-2" attributes="0"/>
+                  <Component id="jScrollPane1" min="-2" pref="309" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="btnSeleccionar" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="32767" attributes="0"/>
@@ -91,16 +80,19 @@
 
           <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
           <SubComponents>
-            <Component class="javax.swing.JTable" name="tbUnidades">
+            <Component class="javax.swing.JTable" name="tbEntradaInventarios">
               <Properties>
                 <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                  <Table columnCount="7" rowCount="0">
+                  <Table columnCount="10" rowCount="0">
                     <Column editable="true" title="CHECK" type="java.lang.Boolean"/>
-                    <Column editable="false" title="IDUNIDAD" type="java.lang.Integer"/>
-                    <Column editable="true" title="ABREVIACION" type="java.lang.String"/>
-                    <Column editable="true" title="DESCRIPCION" type="java.lang.String"/>
-                    <Column editable="true" title="ACTIVO" type="java.lang.Boolean"/>
-                    <Column editable="true" title="GUARDAR" type="java.lang.Object"/>
+                    <Column editable="false" title="IDENTRADAINVENTARIO" type="java.lang.Integer"/>
+                    <Column editable="true" title="NUMERO" type="java.lang.String"/>
+                    <Column editable="true" title="F. CREACION" type="java.lang.String"/>
+                    <Column editable="true" title="PROVEEDOR" type="java.lang.String"/>
+                    <Column editable="true" title="RESPONSABLE" type="java.lang.String"/>
+                    <Column editable="true" title="MONEDA" type="java.lang.String"/>
+                    <Column editable="true" title="TOTAL" type="java.lang.Double"/>
+                    <Column editable="true" title="VER" type="java.lang.Object"/>
                     <Column editable="true" title="ELIMINAR" type="java.lang.Object"/>
                   </Table>
                 </Property>
@@ -131,12 +123,27 @@
                       <Editor/>
                       <Renderer/>
                     </Column>
-                    <Column maxWidth="-1" minWidth="-1" prefWidth="30" resizable="true">
+                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
                       <Title/>
                       <Editor/>
                       <Renderer/>
                     </Column>
-                    <Column maxWidth="-1" minWidth="-1" prefWidth="30" resizable="true">
+                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                      <Title/>
+                      <Editor/>
+                      <Renderer/>
+                    </Column>
+                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                      <Title/>
+                      <Editor/>
+                      <Renderer/>
+                    </Column>
+                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                      <Title/>
+                      <Editor/>
+                      <Renderer/>
+                    </Column>
+                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
                       <Title/>
                       <Editor/>
                       <Renderer/>
@@ -171,7 +178,7 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="lblTitulo" min="-2" pref="253" max="-2" attributes="0"/>
+                      <Component id="lblTitulo" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
                       <Component id="btnNuevo" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
@@ -203,7 +210,7 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/com/sge/base/imagenes/list-view-16.png"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="LISTADO DE UNIDADES"/>
+                <Property name="text" type="java.lang.String" value="LISTADO DE ENTRADAS A INVENTARIO"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JButton" name="btnNuevo">
@@ -223,19 +230,6 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="SELECCIONAR"/>
           </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnSeleccionarActionPerformed"/>
-          </Events>
-        </Component>
-        <Component class="javax.swing.JLabel" name="lblFiltro">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="FILTRO"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JTextField" name="txtFiltro">
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtFiltroActionPerformed"/>
-          </Events>
         </Component>
       </SubComponents>
     </Container>

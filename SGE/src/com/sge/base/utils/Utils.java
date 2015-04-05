@@ -3,7 +3,10 @@ package com.sge.base.utils;
 import java.awt.Component;
 import javax.swing.JInternalFrame;
 import javax.swing.JTable;
+import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 
 /**
  *
@@ -55,5 +58,14 @@ public class Utils {
             frame.setClosed(true);
         } catch (Exception e) {
         }
+    }
+    
+    public static void AgregarOrdenamiento(JTable tabla){
+        tabla.setRowSorter(new TableRowSorter<TableModel>(tabla.getModel()));
+    }
+    
+    public static void Filtrar(JTable tabla, String filtro){
+        TableRowSorter<TableModel> sorter = (TableRowSorter<TableModel>) tabla.getRowSorter();
+               sorter.setRowFilter(RowFilter.regexFilter(filtro));
     }
 }
