@@ -15,8 +15,6 @@ import com.sge.modulos.inventarios.clases.EntradaInventario;
 import com.sge.modulos.inventarios.clases.ItemEntradaInventario;
 import com.sge.modulos.inventarios.clases.Producto;
 import com.sge.modulos.inventarios.cliente.cliInventarios;
-import com.sun.xml.internal.stream.writers.WriterUtility;
-import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.Date;
@@ -24,15 +22,8 @@ import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.DefaultCellEditor;
-import javax.swing.JComboBox;
-import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingWorker;
-import javax.swing.event.TableModelEvent;
-import javax.swing.event.TableModelListener;
-import javax.swing.table.TableCellEditor;
-import javax.swing.table.TableColumn;
-import javax.swing.table.TableModel;
 
 /**
  *
@@ -56,6 +47,8 @@ public class regEntradaInventario extends javax.swing.JInternalFrame {
         lblTitulo.setText(operacion + lblTitulo.getText());
         this.idEntradaInventario = idEntradaInventario;
         if (this.idEntradaInventario > 0) {
+            Utils.OcultarControl(btnNuevoItem);
+            Utils.OcultarControl(btnEliminarItem);
             new swObtenerEntradaInventario().execute();
         } else {
             FabricaControles.AgregarCombo(tbItems, 7, 2);
