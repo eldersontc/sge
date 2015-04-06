@@ -24,11 +24,15 @@ public class lisMoneda extends javax.swing.JInternalFrame {
     /**
      * Creates new form lisMoneda
      */
-    public lisMoneda() {
+    public lisMoneda(int modo) {
         initComponents();
-        Init();
+        Init(modo);
     }
 
+    private int modo = 0;
+
+    private Moneda seleccionado;
+    
     ImageIcon Icon_Save = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/save-16.png"));
     ImageIcon Icon_Dele = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/delete-16.png"));
 
@@ -78,11 +82,11 @@ public class lisMoneda extends javax.swing.JInternalFrame {
                     }.getType());
 
                     for (Object[] fila : filas) {
-                        modelo.addRow(new Object[]{((Double) fila[0]).intValue(), fila[1], fila[2], fila[3], Icon_Save, Icon_Dele});
+                        modelo.addRow(new Object[]{false,((Double) fila[0]).intValue(), fila[1], fila[2], fila[3], Icon_Save, Icon_Dele});
                     }
 
-                    FabricaControles.AgregarBoton(tbMonedas, save, 4);
-                    FabricaControles.AgregarBoton(tbMonedas, dele, 5);
+                    FabricaControles.AgregarBoton(tbMonedas, save, 5);
+                    FabricaControles.AgregarBoton(tbMonedas, dele, 6);
                 }
                 FabricaControles.OcultarCargando(pnlContenido);
             } catch (Exception e) {
@@ -100,10 +104,10 @@ public class lisMoneda extends javax.swing.JInternalFrame {
             String json = "";
             try {
                 Moneda moneda = new Moneda();
-                moneda.setIdMoneda(Utils.ObtenerValorCelda(tbMonedas, 0));
-                moneda.setSimbolo(Utils.ObtenerValorCelda(tbMonedas, 1));
-                moneda.setNombre(Utils.ObtenerValorCelda(tbMonedas, 2));
-                moneda.setActivo(Utils.ObtenerValorCelda(tbMonedas, 3));
+                moneda.setIdMoneda(Utils.ObtenerValorCelda(tbMonedas, 1));
+                moneda.setSimbolo(Utils.ObtenerValorCelda(tbMonedas, 2));
+                moneda.setNombre(Utils.ObtenerValorCelda(tbMonedas, 3));
+                moneda.setActivo(Utils.ObtenerValorCelda(tbMonedas, 4));
                 if (moneda.getIdMoneda() == 0) {
                     json = cliente.RegistrarMoneda(new Gson().toJson(moneda));
                 } else {
@@ -142,7 +146,7 @@ public class lisMoneda extends javax.swing.JInternalFrame {
             cliAdministracion cliente = new cliAdministracion();
             String json = "";
             try {
-                int idMoneda = Utils.ObtenerValorCelda(tbMonedas, 0);
+                int idMoneda = Utils.ObtenerValorCelda(tbMonedas, 1);
                 json = cliente.EliminarMoneda(new Gson().toJson(idMoneda));
             } catch (Exception e) {
                 FabricaControles.OcultarCargando(pnlContenido);
@@ -169,14 +173,24 @@ public class lisMoneda extends javax.swing.JInternalFrame {
         }
     }
 
-    public void Init() {
+    public void Init(int modo) {
+        this.modo = modo;
+        switch (this.modo) {
+            case 0:
+                Utils.OcultarColumna(tbMonedas, 0);
+                Utils.OcultarControl(btnSeleccionar);
+                break;
+            case 1:
+                Utils.OcultarColumna(tbMonedas, 0);
+                break;
+        }
         new swObtenerMonedas().execute();
     }
 
     public void EliminarMoneda() {
-        int confirmacion = JOptionPane.showConfirmDialog(null, "¿SEGURO DE CONTINUAR?", "CONFIRMACIÓN", JOptionPane.YES_NO_OPTION);
-        if (confirmacion == JOptionPane.YES_OPTION) {
-            int idMoneda = Utils.ObtenerValorCelda(tbMonedas, 0);
+        int confirmacion = FabricaControles.VerConfirmacion(this);
+        if (confirmacion == 0) {
+            int idMoneda = Utils.ObtenerValorCelda(tbMonedas, 1);
             if (idMoneda == 0) {
                 Utils.EliminarFila(tbMonedas);
             } else {
@@ -185,6 +199,10 @@ public class lisMoneda extends javax.swing.JInternalFrame {
         }
     }
 
+    public Moneda getSeleccionado() {
+        return seleccionado;
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -200,6 +218,7 @@ public class lisMoneda extends javax.swing.JInternalFrame {
         pnlTitulo = new javax.swing.JPanel();
         lblTitulo = new javax.swing.JLabel();
         btnNuevo = new javax.swing.JButton();
+        btnSeleccionar = new javax.swing.JButton();
 
         setClosable(true);
 
@@ -211,14 +230,14 @@ public class lisMoneda extends javax.swing.JInternalFrame {
 
             },
             new String [] {
-                "IDMONEDA", "SIMBOLO", "NOMBRE", "ACTIVO", "GUARDAR", "ELIMINAR"
+                "CHECK", "IDMONEDA", "SIMBOLO", "NOMBRE", "ACTIVO", "GUARDAR", "ELIMINAR"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Boolean.class, java.lang.Object.class, java.lang.Object.class
+                java.lang.Boolean.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Boolean.class, java.lang.Object.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                false, true, true, true, true, true
+                true, false, true, true, true, true, true
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -230,11 +249,13 @@ public class lisMoneda extends javax.swing.JInternalFrame {
             }
         });
         tbMonedas.setRowHeight(25);
+        tbMonedas.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane1.setViewportView(tbMonedas);
         if (tbMonedas.getColumnModel().getColumnCount() > 0) {
-            tbMonedas.getColumnModel().getColumn(0).setMinWidth(0);
-            tbMonedas.getColumnModel().getColumn(0).setPreferredWidth(0);
-            tbMonedas.getColumnModel().getColumn(0).setMaxWidth(0);
+            tbMonedas.getColumnModel().getColumn(0).setPreferredWidth(30);
+            tbMonedas.getColumnModel().getColumn(1).setMinWidth(0);
+            tbMonedas.getColumnModel().getColumn(1).setPreferredWidth(0);
+            tbMonedas.getColumnModel().getColumn(1).setMaxWidth(0);
         }
 
         pnlTitulo.setBackground(new java.awt.Color(67, 100, 130));
@@ -260,7 +281,7 @@ public class lisMoneda extends javax.swing.JInternalFrame {
             .addGroup(pnlTituloLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lblTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 333, Short.MAX_VALUE)
                 .addComponent(btnNuevo)
                 .addContainerGap())
         );
@@ -274,23 +295,36 @@ public class lisMoneda extends javax.swing.JInternalFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        btnSeleccionar.setText("SELECCIONAR");
+        btnSeleccionar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSeleccionarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout pnlContenidoLayout = new javax.swing.GroupLayout(pnlContenido);
         pnlContenido.setLayout(pnlContenidoLayout);
         pnlContenidoLayout.setHorizontalGroup(
             pnlContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(pnlTitulo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(pnlContenidoLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 515, Short.MAX_VALUE)
+                .addGroup(pnlContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 648, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlContenidoLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(btnSeleccionar, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
-            .addComponent(pnlTitulo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         pnlContenidoLayout.setVerticalGroup(
             pnlContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlContenidoLayout.createSequentialGroup()
                 .addComponent(pnlTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 307, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 282, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnSeleccionar)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -309,12 +343,30 @@ public class lisMoneda extends javax.swing.JInternalFrame {
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
         // TODO add your handling code here:
-        Utils.AgregarFila(tbMonedas, new Object[]{0, "", "", false, Icon_Save, Icon_Dele});
+        Utils.AgregarFila(tbMonedas, new Object[]{false,0, "", "", false, Icon_Save, Icon_Dele});
     }//GEN-LAST:event_btnNuevoActionPerformed
+
+    private void btnSeleccionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeleccionarActionPerformed
+        // TODO add your handling code here:
+        switch (this.modo) {
+            case 1:
+            if (Utils.FilaActiva(tbMonedas)) {
+                Moneda moneda = new Moneda();
+                moneda.setIdMoneda(Utils.ObtenerValorCelda(tbMonedas, 1));
+                moneda.setSimbolo(Utils.ObtenerValorCelda(tbMonedas, 2));
+                seleccionado = moneda;
+            }
+            Utils.Cerrar(this);
+            break;
+            case 2:
+            break;
+        }
+    }//GEN-LAST:event_btnSeleccionarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnNuevo;
+    private javax.swing.JButton btnSeleccionar;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblTitulo;
     private javax.swing.JPanel pnlContenido;

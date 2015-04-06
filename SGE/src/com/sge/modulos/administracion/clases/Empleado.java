@@ -5,7 +5,7 @@ package com.sge.modulos.administracion.clases;
  * @author elderson
  */
 public class Empleado {
-    
+
     private int idEmpleado;
     private String codigo;
     private String nombre;
@@ -33,7 +33,7 @@ public class Empleado {
     public void setCodigo(String codigo) {
         this.codigo = codigo;
     }
-    
+
     public String getNombre() {
         return nombre;
     }
@@ -80,5 +80,9 @@ public class Empleado {
 
     public void setActivo(boolean activo) {
         this.activo = activo;
+    }
+
+    public String getNombreCompleto() {
+        return this.nombre + " " + this.apellidoPaterno + "" + this.apellidoMaterno;
     }
 }

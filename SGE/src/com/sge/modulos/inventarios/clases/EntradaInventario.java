@@ -15,6 +15,8 @@ public class EntradaInventario {
     private int idResponsable;
     private String nombreResponsable;
     private Date fechaCreacion;
+    private int idAlmacen;
+    private String descripcionAlmacen;
     private int idMoneda;
     private String simboloMoneda;
     private String observacion;
@@ -83,6 +85,22 @@ public class EntradaInventario {
         this.fechaCreacion = fechaCreacion;
     }
 
+    public int getIdAlmacen() {
+        return idAlmacen;
+    }
+
+    public void setIdAlmacen(int idAlmacen) {
+        this.idAlmacen = idAlmacen;
+    }
+
+    public String getDescripcionAlmacen() {
+        return descripcionAlmacen;
+    }
+
+    public void setDescripcionAlmacen(String descripcionAlmacen) {
+        this.descripcionAlmacen = descripcionAlmacen;
+    }
+    
     public int getIdMoneda() {
         return idMoneda;
     }

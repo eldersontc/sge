@@ -4,19 +4,33 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.sge.base.controles.FabricaControles;
 import com.sge.base.utils.Utils;
+import com.sge.modulos.administracion.clases.Empleado;
+import com.sge.modulos.administracion.clases.Moneda;
+import com.sge.modulos.administracion.formularios.lisEmpleado;
+import com.sge.modulos.administracion.formularios.lisMoneda;
+import com.sge.modulos.compras.clases.Proveedor;
+import com.sge.modulos.compras.formularios.lisProveedor;
+import com.sge.modulos.inventarios.clases.Almacen;
+import com.sge.modulos.inventarios.clases.EntradaInventario;
+import com.sge.modulos.inventarios.clases.ItemEntradaInventario;
 import com.sge.modulos.inventarios.clases.Producto;
 import com.sge.modulos.inventarios.cliente.cliInventarios;
+import com.sun.xml.internal.stream.writers.WriterUtility;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JComboBox;
 import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.SwingWorker;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
+import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
 
@@ -33,31 +47,56 @@ public class regEntradaInventario extends javax.swing.JInternalFrame {
         initComponents();
         Init(operacion, idEntradaInventario);
     }
-
-    int idEntradaInventario = 0;
-
+    
+    private int idEntradaInventario = 0;
+    
+    private EntradaInventario entradaInventario;
+    
     public void Init(String operacion, int idEntradaInventario) {
         lblTitulo.setText(operacion + lblTitulo.getText());
-        FabricaControles.AgregarCombo(tbItems, 6, 2);
         this.idEntradaInventario = idEntradaInventario;
         if (this.idEntradaInventario > 0) {
-            //new swObtenerProducto().execute();
+            new swObtenerEntradaInventario().execute();
+        } else {
+            FabricaControles.AgregarCombo(tbItems, 7, 2);
+            txtFechaCreacion.setValue(new Date());
+            entradaInventario = new EntradaInventario();
         }
     }
-
-    Action change = new AbstractAction() {
+    
+    Action change_item = new AbstractAction() {
         @Override
         public void actionPerformed(ActionEvent e) {
             int[] celda = (int[]) e.getSource();
             switch (celda[1]) {
-                case 0:
-
+                case 7:
+                    String unidad = Utils.ObtenerValorCelda(tbItems, celda[0], celda[1]);
+                    List<Object[]> unidades = Utils.ObtenerValorCelda(tbItems, celda[0], 6);
+                    for (Object[] item : unidades) {
+                        if (item[2].equals(unidad)) {
+                            Utils.AsignarValorCelda(tbItems, item[1], celda[0], 4);
+                            Utils.AsignarValorCelda(tbItems, item[3], celda[0], 5);
+                            break;
+                        }
+                    }
+                    break;
+                case 8:
+                    double cantidad8 = Utils.ObtenerValorCelda(tbItems, celda[0], celda[1]);
+                    double precio8 = Utils.ObtenerValorCelda(tbItems, celda[0], 9);
+                    Utils.AsignarValorCelda(tbItems, cantidad8 * precio8, celda[0], 10);
+                    CalcularTotales();
+                    break;
+                case 9:
+                    double cantidad9 = Utils.ObtenerValorCelda(tbItems, celda[0], 8);
+                    double precio9 = Utils.ObtenerValorCelda(tbItems, celda[0], celda[1]);
+                    Utils.AsignarValorCelda(tbItems, cantidad9 * precio9, celda[0], 10);
+                    CalcularTotales();
                     break;
             }
         }
     };
-
-    Action select = new AbstractAction() {
+    
+    Action select_item = new AbstractAction() {
         @Override
         public void actionPerformed(ActionEvent evt) {
             List<Producto> seleccionados = ((lisProducto) evt.getSource()).getSeleccionados();
@@ -75,15 +114,16 @@ public class regEntradaInventario extends javax.swing.JInternalFrame {
                                     producto.getIdProducto(),
                                     producto.getCodigo(),
                                     producto.getDescripcion(),
-                                    0,
+                                    ((Double)producto.getProductoUnidades().get(0)[1]).intValue(),
+                                    ((Double)producto.getProductoUnidades().get(0)[3]).intValue(),
                                     producto.getProductoUnidades(),
-                                    "",
-                                    0,
-                                    0,
-                                    0
+                                    producto.getProductoUnidades().get(0)[2],
+                                    0.0,
+                                    0.0,
+                                    0.0
                                 });
                     }
-                    FabricaControles.AgregarEventoChange(tbItems, change);
+                    FabricaControles.AgregarEventoChange(tbItems, change_item);
                 } catch (Exception e) {
                 } finally {
                     cliente.close();
@@ -91,7 +131,183 @@ public class regEntradaInventario extends javax.swing.JInternalFrame {
             }
         }
     };
+    
+    Action select_proveedor = new AbstractAction() {
+        @Override
+        public void actionPerformed(ActionEvent evt) {
+            Proveedor seleccionado = ((lisProveedor) evt.getSource()).getSeleccionado();
+            if (!(seleccionado == null)) {
+                entradaInventario.setIdProveedor(seleccionado.getIdProveedor());
+                entradaInventario.setRazonSocialProveedor(seleccionado.getRazonSocial());
+                txtProveedor.setText(seleccionado.getRazonSocial());
+            }
+        }
+    };
+    
+    Action select_responsable = new AbstractAction() {
+        @Override
+        public void actionPerformed(ActionEvent evt) {
+            Empleado seleccionado = ((lisEmpleado) evt.getSource()).getSeleccionado();
+            if (!(seleccionado == null)) {
+                entradaInventario.setIdResponsable(seleccionado.getIdEmpleado());
+                entradaInventario.setNombreResponsable(seleccionado.getNombre());
+                txtResponsable.setText(seleccionado.getNombre());
+            }
+        }
+    };
+    
+    Action select_almacen = new AbstractAction() {
+        @Override
+        public void actionPerformed(ActionEvent evt) {
+            Almacen seleccionado = ((lisAlmacen) evt.getSource()).getSeleccionado();
+            if (!(seleccionado == null)) {
+                entradaInventario.setIdAlmacen(seleccionado.getIdAlmacen());
+                entradaInventario.setDescripcionAlmacen(seleccionado.getDescripcion());
+                txtAlmacen.setText(seleccionado.getDescripcion());
+            }
+        }
+    };
+    
+    Action select_moneda = new AbstractAction() {
+        @Override
+        public void actionPerformed(ActionEvent evt) {
+            Moneda seleccionado = ((lisMoneda) evt.getSource()).getSeleccionado();
+            if (!(seleccionado == null)) {
+                entradaInventario.setIdMoneda(seleccionado.getIdMoneda());
+                entradaInventario.setSimboloMoneda(seleccionado.getSimbolo());
+                txtMoneda.setText(seleccionado.getSimbolo());
+            }
+        }
+    };
+    
+    public List<ItemEntradaInventario> getItems(){
+        List<ItemEntradaInventario> items = new ArrayList<>();
+        for (int i = 0; i < tbItems.getRowCount(); i++) {
+            ItemEntradaInventario item = new ItemEntradaInventario();
+            item.setIdProducto(Utils.ObtenerValorCelda(tbItems, i, 1));
+            item.setCodigoProducto(Utils.ObtenerValorCelda(tbItems, i, 2));
+            item.setDescripcionProducto(Utils.ObtenerValorCelda(tbItems, i, 3));
+            item.setIdUnidad(Utils.ObtenerValorCelda(tbItems, i, 4));
+            item.setFactor(Utils.ObtenerValorCelda(tbItems, i, 5));
+            item.setAbreviacionUnidad(Utils.ObtenerValorCelda(tbItems, i, 7));
+            item.setCantidad(Utils.ObtenerValorCelda(tbItems, i, 8));
+            item.setPrecio(Utils.ObtenerValorCelda(tbItems, i, 9));
+            item.setTotal(Utils.ObtenerValorCelda(tbItems, i, 10));
+            items.add(item);
+        }
+        return items;
+    }
+    
+    public void CalcularTotales() {
+        double subTotal = 0.0;
+        for (int i = 0; i < tbItems.getRowCount(); i++) {
+            double totalItem = Utils.ObtenerValorCelda(tbItems, i, 10);
+            subTotal += totalItem;
+        }
+        entradaInventario.setSubTotal(subTotal);
+        entradaInventario.setTotal(subTotal);
+        txtSubTotal.setValue(subTotal);
+        txtTotal.setValue(subTotal);
+    }
 
+    public class swObtenerEntradaInventario extends SwingWorker<Object, Object> {
+
+        @Override
+        protected Object doInBackground() {
+            FabricaControles.VerCargando(pnlContenido);
+            cliInventarios cliente = new cliInventarios();
+            String json = "";
+            try {
+                json = cliente.ObtenerEntradaInventario(new Gson().toJson(idEntradaInventario));
+            } catch (Exception e) {
+                FabricaControles.OcultarCargando(pnlContenido);
+                json = "[\"false\"]";
+            } finally {
+                cliente.close();
+            }
+            return json;
+        }
+
+        @Override
+        protected void done() {
+            try {
+                String json = get().toString();
+                String[] resultado = new Gson().fromJson(json, String[].class);
+
+                if (resultado[0].equals("true")) {
+                    EntradaInventario entradaInventario = new Gson().fromJson(resultado[1], EntradaInventario.class);
+                    List<ItemEntradaInventario> items = new Gson().fromJson(resultado[2], new TypeToken<List<ItemEntradaInventario>>() {
+                    }.getType());
+                    txtProveedor.setText(entradaInventario.getRazonSocialProveedor());
+                    txtNumero.setText(entradaInventario.getNumero());
+                    txtResponsable.setText(entradaInventario.getNombreResponsable());
+                    txtFechaCreacion.setValue(entradaInventario.getFechaCreacion());
+                    txtAlmacen.setText(entradaInventario.getDescripcionAlmacen());
+                    txtMoneda.setText(entradaInventario.getSimboloMoneda());
+                    txtSubTotal.setValue(entradaInventario.getSubTotal());
+                    txtImpuesto.setValue(entradaInventario.getMontoImpuesto());
+                    txtTotal.setValue(entradaInventario.getTotal());
+                    for (ItemEntradaInventario item : items) {
+                        Utils.AgregarFila(tbItems, 
+                                new Object[]{
+                                    item.getIdItemEntradaInventario(),
+                                    item.getIdProducto(),
+                                    item.getCodigoProducto(),
+                                    item.getDescripcionProducto(),
+                                    item.getIdUnidad(),
+                                    item.getFactor(),
+                                    null,
+                                    item.getAbreviacionUnidad(),
+                                    item.getCantidad(),
+                                    item.getPrecio(),
+                                    item.getTotal()
+                                });
+                    }
+                }
+                FabricaControles.OcultarCargando(pnlContenido);
+            } catch (Exception e) {
+                FabricaControles.OcultarCargando(pnlContenido);
+            }
+        }
+    }
+    
+    public class swGuardarEntradaInventario extends SwingWorker<Object, Object> {
+
+        @Override
+        protected Object doInBackground() {
+            FabricaControles.VerProcesando(pnlContenido);
+            cliInventarios cliente = new cliInventarios();
+            String json = "";
+            try {
+                List<String> arrayJson = new ArrayList<>();
+                arrayJson.add(new Gson().toJson(entradaInventario));
+                arrayJson.add(new Gson().toJson(getItems()));
+                json = cliente.RegistrarEntradaInventario(new Gson().toJson(arrayJson));
+            } catch (Exception e) {
+                FabricaControles.OcultarProcesando(pnlContenido);
+                json = "[\"false\"]";
+            } finally {
+                cliente.close();
+            }
+            return json;
+        }
+
+        @Override
+        protected void done() {
+            try {
+                String json = get().toString();
+                String[] resultado = new Gson().fromJson(json, String[].class);
+                if (resultado[0].equals("true")) {
+                    setClosed(true);
+                } else {
+                    FabricaControles.OcultarProcesando(pnlContenido);
+                }
+            } catch (Exception e) {
+                FabricaControles.OcultarProcesando(pnlContenido);
+            }
+        }
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -111,7 +327,19 @@ public class regEntradaInventario extends javax.swing.JInternalFrame {
         jTabbedPane1 = new javax.swing.JTabbedPane();
         pnlUnidades = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        tbItems = new javax.swing.JTable();
+        tbItems = new javax.swing.JTable(){
+            public void changeSelection(final int row, final int column, boolean toggle, boolean extend)
+            {
+                super.changeSelection(row, column, toggle, extend);
+                DefaultCellEditor cell = (DefaultCellEditor)tbItems.getCellEditor(row, column);
+                if(cell.getComponent() instanceof JTextField){
+                    tbItems.editCellAt(row, column);
+                    tbItems.transferFocus();
+                    ((JTextField)cell.getComponent()).selectAll();
+                }
+            }
+        }
+        ;
         btnNuevoItem = new javax.swing.JButton();
         btnEliminarItem = new javax.swing.JButton();
         pnlTitulo = new javax.swing.JPanel();
@@ -124,6 +352,12 @@ public class regEntradaInventario extends javax.swing.JInternalFrame {
         txtAlmacen = new javax.swing.JTextField();
         txtFechaCreacion = new javax.swing.JFormattedTextField();
         lblFechaCreacion = new javax.swing.JLabel();
+        lblSubTotal = new javax.swing.JLabel();
+        lblImpuesto = new javax.swing.JLabel();
+        lblTotal = new javax.swing.JLabel();
+        txtSubTotal = new javax.swing.JFormattedTextField();
+        txtTotal = new javax.swing.JFormattedTextField();
+        txtImpuesto = new javax.swing.JFormattedTextField();
 
         setClosable(true);
 
@@ -133,6 +367,18 @@ public class regEntradaInventario extends javax.swing.JInternalFrame {
         lblProveedor.setText("PROVEEDOR");
 
         lblNombre.setText("RESPONSABLE");
+
+        txtResponsable.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtResponsableActionPerformed(evt);
+            }
+        });
+
+        txtProveedor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtProveedorActionPerformed(evt);
+            }
+        });
 
         btnAceptar.setText("ACEPTAR");
         btnAceptar.addActionListener(new java.awt.event.ActionListener() {
@@ -157,14 +403,14 @@ public class regEntradaInventario extends javax.swing.JInternalFrame {
 
             },
             new String [] {
-                "IDITEM", "IDPRODUCTO", "CODIGO", "PRODUCTO", "IDUNIDAD", "ARRAYUNIDAD", "UNIDAD", "CANTIDAD", "PRECIO", "TOTAL"
+                "IDITEM", "IDPRODUCTO", "CODIGO", "PRODUCTO", "IDUNIDAD", "FACTOR", "ARRAYUNIDAD", "UNIDAD", "CANTIDAD", "PRECIO", "TOTAL"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Object.class, java.lang.Object.class, java.lang.Integer.class, java.lang.Double.class, java.lang.Double.class
+                java.lang.Integer.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Object.class, java.lang.Object.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, true, true, true, false, true, true, true, true
+                false, false, true, true, false, false, false, true, true, true, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -192,6 +438,9 @@ public class regEntradaInventario extends javax.swing.JInternalFrame {
             tbItems.getColumnModel().getColumn(5).setMinWidth(0);
             tbItems.getColumnModel().getColumn(5).setPreferredWidth(0);
             tbItems.getColumnModel().getColumn(5).setMaxWidth(0);
+            tbItems.getColumnModel().getColumn(6).setMinWidth(0);
+            tbItems.getColumnModel().getColumn(6).setPreferredWidth(0);
+            tbItems.getColumnModel().getColumn(6).setMaxWidth(0);
         }
 
         btnNuevoItem.setText("NUEVO");
@@ -262,6 +511,12 @@ public class regEntradaInventario extends javax.swing.JInternalFrame {
 
         lblMoneda.setText("MONEDA");
 
+        txtMoneda.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtMonedaActionPerformed(evt);
+            }
+        });
+
         lblAlmacen.setText("ALMACEN");
 
         txtAlmacen.addActionListener(new java.awt.event.ActionListener() {
@@ -274,6 +529,21 @@ public class regEntradaInventario extends javax.swing.JInternalFrame {
 
         lblFechaCreacion.setText("F. CREACION");
 
+        lblSubTotal.setText("SUBTOTAL");
+
+        lblImpuesto.setText("IMPUESTO");
+
+        lblTotal.setText("TOTAL");
+
+        txtSubTotal.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0.00"))));
+        txtSubTotal.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+
+        txtTotal.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0.00"))));
+        txtTotal.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+
+        txtImpuesto.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0.00"))));
+        txtImpuesto.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+
         javax.swing.GroupLayout pnlContenidoLayout = new javax.swing.GroupLayout(pnlContenido);
         pnlContenido.setLayout(pnlContenidoLayout);
         pnlContenidoLayout.setHorizontalGroup(
@@ -282,38 +552,57 @@ public class regEntradaInventario extends javax.swing.JInternalFrame {
             .addGroup(pnlContenidoLayout.createSequentialGroup()
                 .addGap(23, 23, 23)
                 .addGroup(pnlContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(pnlContenidoLayout.createSequentialGroup()
-                        .addComponent(btnAceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, pnlContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, pnlContenidoLayout.createSequentialGroup()
-                            .addComponent(lblProveedor)
-                            .addGap(26, 26, 26)
-                            .addComponent(txtProveedor, javax.swing.GroupLayout.PREFERRED_SIZE, 279, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(18, 18, 18)
-                            .addComponent(lblNumero, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 79, Short.MAX_VALUE)
-                            .addComponent(txtNumero, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, pnlContenidoLayout.createSequentialGroup()
-                            .addGroup(pnlContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addGroup(pnlContenidoLayout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, pnlContenidoLayout.createSequentialGroup()
+                        .addGroup(pnlContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(pnlContenidoLayout.createSequentialGroup()
+                                .addGroup(pnlContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(lblAlmacen)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(txtAlmacen, javax.swing.GroupLayout.PREFERRED_SIZE, 278, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGroup(pnlContenidoLayout.createSequentialGroup()
-                                    .addComponent(lblNombre)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(txtResponsable, javax.swing.GroupLayout.PREFERRED_SIZE, 278, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGap(18, 18, 18)
-                            .addGroup(pnlContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(lblMoneda, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(lblFechaCreacion, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(lblNombre))
+                                .addGap(24, 24, 24)
+                                .addGroup(pnlContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(txtResponsable, javax.swing.GroupLayout.DEFAULT_SIZE, 255, Short.MAX_VALUE)
+                                    .addComponent(txtAlmacen))
+                                .addGap(29, 29, 29)
+                                .addGroup(pnlContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(lblMoneda, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(lblFechaCreacion, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(pnlContenidoLayout.createSequentialGroup()
+                                .addComponent(lblProveedor)
+                                .addGap(38, 38, 38)
+                                .addComponent(txtProveedor, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(30, 30, 30)
+                                .addComponent(lblNumero, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(pnlContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(txtMoneda, javax.swing.GroupLayout.DEFAULT_SIZE, 91, Short.MAX_VALUE)
+                            .addComponent(txtFechaCreacion)
+                            .addComponent(txtNumero)))
+                    .addGroup(pnlContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(pnlContenidoLayout.createSequentialGroup()
+                            .addGap(420, 420, 420)
+                            .addComponent(lblImpuesto, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addGroup(pnlContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(txtMoneda, javax.swing.GroupLayout.DEFAULT_SIZE, 91, Short.MAX_VALUE)
-                                .addComponent(txtFechaCreacion)))))
+                            .addComponent(txtImpuesto, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(0, 0, Short.MAX_VALUE))
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlContenidoLayout.createSequentialGroup()
+                            .addGap(0, 0, Short.MAX_VALUE)
+                            .addGroup(pnlContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(pnlContenidoLayout.createSequentialGroup()
+                                        .addGap(6, 6, 6)
+                                        .addComponent(lblSubTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(txtSubTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlContenidoLayout.createSequentialGroup()
+                                        .addComponent(btnAceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlContenidoLayout.createSequentialGroup()
+                                    .addComponent(lblTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(txtTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(2, 2, 2))))))
                 .addContainerGap(31, Short.MAX_VALUE))
         );
         pnlContenidoLayout.setVerticalGroup(
@@ -340,7 +629,19 @@ public class regEntradaInventario extends javax.swing.JInternalFrame {
                     .addComponent(txtMoneda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 88, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(pnlContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblSubTotal)
+                    .addComponent(txtSubTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(pnlContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblImpuesto)
+                    .addComponent(txtImpuesto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(pnlContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblTotal)
+                    .addComponent(txtTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
                 .addGroup(pnlContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCancelar)
                     .addComponent(btnAceptar))
@@ -355,7 +656,9 @@ public class regEntradaInventario extends javax.swing.JInternalFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(pnlContenido, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(pnlContenido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         pack();
@@ -363,7 +666,11 @@ public class regEntradaInventario extends javax.swing.JInternalFrame {
 
     private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
         // TODO add your handling code here:
-//        new swGuardarProducto().execute();
+        if(this.idEntradaInventario == 0){
+            new swGuardarEntradaInventario().execute();
+        } else{
+            Utils.Cerrar(this);
+        }
     }//GEN-LAST:event_btnAceptarActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
@@ -373,22 +680,36 @@ public class regEntradaInventario extends javax.swing.JInternalFrame {
 
     private void btnNuevoItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoItemActionPerformed
         // TODO add your handling code here:
-        FabricaControles.VerModal(this.getDesktopPane(), new lisProducto(2), select);
+        FabricaControles.VerModal(this.getDesktopPane(), new lisProducto(2), select_item);
     }//GEN-LAST:event_btnNuevoItemActionPerformed
 
     private void btnEliminarItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarItemActionPerformed
         // TODO add your handling code here:
-//        if (Utils.FilaActiva(tbItems)) {
-//            int idProductoUnidad = Utils.ObtenerValorCelda(tbItems, 0);
-//            productoUnidades.add(new ProductoUnidad(idProductoUnidad, true));
-//            Utils.EliminarFila(tbItems);
-//        }
+        if (Utils.FilaActiva(tbItems)) {
+            Utils.EliminarFila(tbItems);
+            CalcularTotales();
+        }
     }//GEN-LAST:event_btnEliminarItemActionPerformed
 
     private void txtAlmacenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtAlmacenActionPerformed
         // TODO add your handling code here:
-
+        FabricaControles.VerModal(this.getDesktopPane(), new lisAlmacen(1), select_almacen);
     }//GEN-LAST:event_txtAlmacenActionPerformed
+
+    private void txtProveedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtProveedorActionPerformed
+        // TODO add your handling code here:
+        FabricaControles.VerModal(this.getDesktopPane(), new lisProveedor(1), select_proveedor);
+    }//GEN-LAST:event_txtProveedorActionPerformed
+
+    private void txtResponsableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtResponsableActionPerformed
+        // TODO add your handling code here:
+        FabricaControles.VerModal(this.getDesktopPane(), new lisEmpleado(1), select_responsable);
+    }//GEN-LAST:event_txtResponsableActionPerformed
+
+    private void txtMonedaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtMonedaActionPerformed
+        // TODO add your handling code here:
+        FabricaControles.VerModal(this.getDesktopPane(), new lisMoneda(1), select_moneda);
+    }//GEN-LAST:event_txtMonedaActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -400,20 +721,26 @@ public class regEntradaInventario extends javax.swing.JInternalFrame {
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JLabel lblAlmacen;
     private javax.swing.JLabel lblFechaCreacion;
+    private javax.swing.JLabel lblImpuesto;
     private javax.swing.JLabel lblMoneda;
     private javax.swing.JLabel lblNombre;
     private javax.swing.JLabel lblNumero;
     private javax.swing.JLabel lblProveedor;
+    private javax.swing.JLabel lblSubTotal;
     private javax.swing.JLabel lblTitulo;
+    private javax.swing.JLabel lblTotal;
     private javax.swing.JPanel pnlContenido;
     private javax.swing.JPanel pnlTitulo;
     private javax.swing.JPanel pnlUnidades;
     private javax.swing.JTable tbItems;
     private javax.swing.JTextField txtAlmacen;
     private javax.swing.JFormattedTextField txtFechaCreacion;
+    private javax.swing.JFormattedTextField txtImpuesto;
     private javax.swing.JTextField txtMoneda;
     private javax.swing.JTextField txtNumero;
     private javax.swing.JTextField txtProveedor;
     private javax.swing.JTextField txtResponsable;
+    private javax.swing.JFormattedTextField txtSubTotal;
+    private javax.swing.JFormattedTextField txtTotal;
     // End of variables declaration//GEN-END:variables
 }

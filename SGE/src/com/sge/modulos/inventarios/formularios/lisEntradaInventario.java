@@ -142,9 +142,9 @@ public class lisEntradaInventario extends javax.swing.JInternalFrame {
 
     public void VerProducto() {
         int idEntradaInventario = Utils.ObtenerValorCelda(tbEntradaInventarios, 1);
-        regProducto regProducto = new regProducto("VER ", idEntradaInventario);
-        this.getParent().add(regProducto);
-        regProducto.setVisible(true);
+        regEntradaInventario regEntradaInventario = new regEntradaInventario("VER ", idEntradaInventario);
+        this.getParent().add(regEntradaInventario);
+        regEntradaInventario.setVisible(true);
     }
 
     public void EliminarEntradaInventario() {

@@ -10,7 +10,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionAdapter;
-import java.beans.ConstructorProperties;
 import java.util.List;
 import javax.swing.AbstractCellEditor;
 import javax.swing.Action;
@@ -242,6 +241,7 @@ public class FabricaControles {
             for (Object[] item : items) {
                 combo.addItem(item[indexField]);
             }
+            combo.setSelectedItem(table.getModel().getValueAt(row, column));
             return combo;
         }
 

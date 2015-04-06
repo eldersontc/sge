@@ -4,13 +4,13 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.sge.base.controles.FabricaControles;
 import com.sge.base.utils.Utils;
+import com.sge.modulos.administracion.clases.Empleado;
 import com.sge.modulos.administracion.cliente.cliAdministracion;
 import java.awt.event.ActionEvent;
 import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ImageIcon;
-import javax.swing.JOptionPane;
 import javax.swing.SwingWorker;
 import javax.swing.table.DefaultTableModel;
 
@@ -23,11 +23,15 @@ public class lisEmpleado extends javax.swing.JInternalFrame {
     /**
      * Creates new form lisEmpleado
      */
-    public lisEmpleado() {
+    public lisEmpleado(int modo) {
         initComponents();
-        Init();
+        Init(modo);
     }
 
+    private int modo = 0;
+
+    private Empleado seleccionado;
+    
     ImageIcon Icon_Edit = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/edit-16.png"));
     ImageIcon Icon_Dele = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/delete-16.png"));
 
@@ -77,10 +81,11 @@ public class lisEmpleado extends javax.swing.JInternalFrame {
                     }.getType());
 
                     for (Object[] fila : filas) {
-                        modelo.addRow(new Object[]{((Double) fila[0]).intValue(), fila[1], fila[2], fila[6], fila[7], Icon_Edit, Icon_Dele});
+                        modelo.addRow(new Object[]{false,((Double) fila[0]).intValue(), fila[1], fila[2], fila[6], fila[7], Icon_Edit, Icon_Dele});
                     }
-                    FabricaControles.AgregarBoton(tbEmpleados, edit, 5);
-                    FabricaControles.AgregarBoton(tbEmpleados, dele, 6);
+                    FabricaControles.AgregarBoton(tbEmpleados, edit, 6);
+                    FabricaControles.AgregarBoton(tbEmpleados, dele, 7);
+                    Utils.AgregarOrdenamiento(tbEmpleados);
                 }
                 FabricaControles.OcultarCargando(pnlContenido);
             } catch (Exception e) {
@@ -97,7 +102,7 @@ public class lisEmpleado extends javax.swing.JInternalFrame {
             cliAdministracion cliente = new cliAdministracion();
             String json = "";
             try {
-                int idEmpleado = Utils.ObtenerValorCelda(tbEmpleados, 0);
+                int idEmpleado = Utils.ObtenerValorCelda(tbEmpleados, 1);
                 json = cliente.EliminarEmpleado(new Gson().toJson(idEmpleado));
             } catch (Exception e) {
                 FabricaControles.OcultarCargando(pnlContenido);
@@ -124,24 +129,38 @@ public class lisEmpleado extends javax.swing.JInternalFrame {
         }
     }
 
-    public void Init() {
+    public void Init(int modo) {
+        this.modo = modo;
+        switch (this.modo) {
+            case 0:
+                Utils.OcultarColumna(tbEmpleados, 0);
+                Utils.OcultarControl(btnSeleccionar);
+                break;
+            case 1:
+                Utils.OcultarColumna(tbEmpleados, 0);
+                break;
+        }
         new swObtenerEmpleados().execute();
     }
 
     public void EditarEmpleado() {
-        int idEmpleado = Utils.ObtenerValorCelda(tbEmpleados, 0);
+        int idEmpleado = Utils.ObtenerValorCelda(tbEmpleados, 1);
         regEmpleado regEmpleado = new regEmpleado("EDITAR ", idEmpleado);
         this.getParent().add(regEmpleado);
         regEmpleado.setVisible(true);
     }
 
     public void EliminarEmpleado() {
-        int confirmacion = JOptionPane.showConfirmDialog(null, "¿SEGURO DE CONTINUAR?", "CONFIRMACIÓN", JOptionPane.YES_NO_OPTION);
-        if (confirmacion == JOptionPane.YES_OPTION) {
+        int confirmacion = FabricaControles.VerConfirmacion(this);
+        if (confirmacion == 0) {
             new swEliminarUnidad().execute();
         }
     }
 
+    public Empleado getSeleccionado() {
+        return seleccionado;
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -157,6 +176,9 @@ public class lisEmpleado extends javax.swing.JInternalFrame {
         pnlTitulo = new javax.swing.JPanel();
         lblTitulo = new javax.swing.JLabel();
         btnNuevo = new javax.swing.JButton();
+        lblFiltro = new javax.swing.JLabel();
+        txtFiltro = new javax.swing.JTextField();
+        btnSeleccionar = new javax.swing.JButton();
 
         setClosable(true);
 
@@ -168,14 +190,14 @@ public class lisEmpleado extends javax.swing.JInternalFrame {
 
             },
             new String [] {
-                "IDEMPLEADO", "CODIGO", "NOMBRE", "DNI", "ACTIVO", "EDITAR", "ELIMINAR"
+                "CHECK", "IDEMPLEADO", "CODIGO", "NOMBRE", "DNI", "ACTIVO", "EDITAR", "ELIMINAR"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Boolean.class, java.lang.Object.class, java.lang.Object.class
+                java.lang.Boolean.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Boolean.class, java.lang.Object.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                false, true, true, true, true, true, true
+                true, false, true, true, true, true, true, true
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -187,13 +209,15 @@ public class lisEmpleado extends javax.swing.JInternalFrame {
             }
         });
         tbEmpleados.setRowHeight(25);
+        tbEmpleados.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane1.setViewportView(tbEmpleados);
         if (tbEmpleados.getColumnModel().getColumnCount() > 0) {
-            tbEmpleados.getColumnModel().getColumn(0).setMinWidth(0);
-            tbEmpleados.getColumnModel().getColumn(0).setPreferredWidth(0);
-            tbEmpleados.getColumnModel().getColumn(0).setMaxWidth(0);
-            tbEmpleados.getColumnModel().getColumn(5).setPreferredWidth(40);
-            tbEmpleados.getColumnModel().getColumn(6).setPreferredWidth(50);
+            tbEmpleados.getColumnModel().getColumn(0).setPreferredWidth(30);
+            tbEmpleados.getColumnModel().getColumn(1).setMinWidth(0);
+            tbEmpleados.getColumnModel().getColumn(1).setPreferredWidth(0);
+            tbEmpleados.getColumnModel().getColumn(1).setMaxWidth(0);
+            tbEmpleados.getColumnModel().getColumn(6).setPreferredWidth(40);
+            tbEmpleados.getColumnModel().getColumn(7).setPreferredWidth(50);
         }
 
         pnlTitulo.setBackground(new java.awt.Color(67, 100, 130));
@@ -235,23 +259,53 @@ public class lisEmpleado extends javax.swing.JInternalFrame {
 
         lblTitulo.getAccessibleContext().setAccessibleDescription("");
 
+        lblFiltro.setText("FILTRO");
+
+        txtFiltro.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtFiltroActionPerformed(evt);
+            }
+        });
+
+        btnSeleccionar.setText("SELECCIONAR");
+        btnSeleccionar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSeleccionarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout pnlContenidoLayout = new javax.swing.GroupLayout(pnlContenido);
         pnlContenido.setLayout(pnlContenidoLayout);
         pnlContenidoLayout.setHorizontalGroup(
             pnlContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(pnlTitulo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(pnlContenidoLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 556, Short.MAX_VALUE)
+                .addGroup(pnlContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 706, Short.MAX_VALUE)
+                    .addGroup(pnlContenidoLayout.createSequentialGroup()
+                        .addComponent(lblFiltro)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlContenidoLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(btnSeleccionar, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
-            .addComponent(pnlTitulo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         pnlContenidoLayout.setVerticalGroup(
             pnlContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlContenidoLayout.createSequentialGroup()
                 .addComponent(pnlTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 298, Short.MAX_VALUE)
-                .addContainerGap())
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(pnlContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblFiltro)
+                    .addComponent(txtFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 288, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnSeleccionar)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -275,13 +329,38 @@ public class lisEmpleado extends javax.swing.JInternalFrame {
         regEmpleado.setVisible(true);
     }//GEN-LAST:event_btnNuevoActionPerformed
 
+    private void txtFiltroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFiltroActionPerformed
+        // TODO add your handling code here:
+        Utils.Filtrar(tbEmpleados, txtFiltro.getText());
+    }//GEN-LAST:event_txtFiltroActionPerformed
+
+    private void btnSeleccionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeleccionarActionPerformed
+        // TODO add your handling code here:
+        switch (this.modo) {
+            case 1:
+            if (Utils.FilaActiva(tbEmpleados)) {
+                Empleado empleado = new Empleado();
+                empleado.setIdEmpleado(Utils.ObtenerValorCelda(tbEmpleados, 1));
+                empleado.setNombre(Utils.ObtenerValorCelda(tbEmpleados, 3));
+                seleccionado = empleado;
+            }
+            Utils.Cerrar(this);
+            break;
+            case 2:
+            break;
+        }
+    }//GEN-LAST:event_btnSeleccionarActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnNuevo;
+    private javax.swing.JButton btnSeleccionar;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel lblFiltro;
     private javax.swing.JLabel lblTitulo;
     private javax.swing.JPanel pnlContenido;
     private javax.swing.JPanel pnlTitulo;
     private javax.swing.JTable tbEmpleados;
+    private javax.swing.JTextField txtFiltro;
     // End of variables declaration//GEN-END:variables
 }

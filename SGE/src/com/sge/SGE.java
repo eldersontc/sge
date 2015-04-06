@@ -117,17 +117,17 @@ public class SGE extends javax.swing.JFrame {
                 lisUsuario.setVisible(true);
                 break;
             case "lisMoneda":
-                lisMoneda lisMoneda = new lisMoneda();
+                lisMoneda lisMoneda = new lisMoneda(0);
                 jdpPrincipal.add(lisMoneda);
                 lisMoneda.setVisible(true);
                 break;
             case "lisEmpleado":
-                lisEmpleado lisEmpleado = new lisEmpleado();
+                lisEmpleado lisEmpleado = new lisEmpleado(0);
                 jdpPrincipal.add(lisEmpleado);
                 lisEmpleado.setVisible(true);
                 break;
             case "lisProveedor":
-                lisProveedor lisProveedor = new lisProveedor();
+                lisProveedor lisProveedor = new lisProveedor(0);
                 jdpPrincipal.add(lisProveedor);
                 lisProveedor.setVisible(true);
                 break;

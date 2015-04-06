@@ -12,6 +12,7 @@ public class ItemEntradaInventario {
     private String codigoProducto;
     private String descripcionProducto;
     private int idUnidad;
+    private int factor;
     private String abreviacionUnidad;
     private double precio;
     private double cantidad;
@@ -69,6 +70,14 @@ public class ItemEntradaInventario {
         this.idUnidad = idUnidad;
     }
 
+    public int getFactor() {
+        return factor;
+    }
+
+    public void setFactor(int factor) {
+        this.factor = factor;
+    }
+    
     public String getAbreviacionUnidad() {
         return abreviacionUnidad;
     }
