@@ -13,6 +13,7 @@
         <property name="idProducto" column="idProducto"/>
         <property name="codigoProducto" column="codigoProducto"/>
         <property name="descripcionProducto" column="descripcionProducto"/>
+        <property name="factor" column="factor"/>
         <property name="idUnidad" column="idUnidad"/>
         <property name="abreviacionUnidad" column="abreviacionUnidad"/>
         <property name="precio" column="precio"/>

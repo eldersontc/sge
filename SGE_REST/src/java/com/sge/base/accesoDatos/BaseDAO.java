@@ -72,7 +72,7 @@ public class BaseDAO {
     public <T> T ObtenerLista(Class clase, List<Object[]> filtros) {
         Criteria criteria = sesion.createCriteria(clase);
         for (Object[] filtro : filtros) {
-            criteria.add(Restrictions.ilike(filtro[0].toString(), filtro[1]));
+            criteria.add(Restrictions.eq(filtro[0].toString(), filtro[1]));
         }
         return (T)criteria.list();
     }
