@@ -151,4 +151,22 @@ public class ProductoDTO {
         }
         return true;
     }
+    
+    public List<Producto> ObtenerProductoUnidades(Producto[] productos){
+        List<Producto> lista = new ArrayList<>();
+        try {
+            productoUnidadDAO = new ProductoUnidadDAO();
+            productoUnidadDAO.AbrirSesision();
+            for (Producto producto : productos) {
+                List<Object[]> productoUnidades = productoUnidadDAO.ObtenerProductoUnidadesPorIdProducto(producto.getIdProducto());
+                producto.setProductoUnidades(productoUnidades);
+                lista.add(producto);
+            }
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            productoUnidadDAO.CerrarSesion();
+        }
+        return lista;
+    }
 }

@@ -81,6 +81,7 @@ public class ProductoSRV {
             ProductoDTO.RegistrarProducto(producto, productoUnidades, productoAlmacenes);
             resultado.add(new Gson().toJson(true));
         } catch (Exception e) {
+            resultado.clear();
             resultado.add(new Gson().toJson(false));
         }
         return new Gson().toJson(resultado);
@@ -101,6 +102,7 @@ public class ProductoSRV {
             ProductoDTO.ActualizarProducto(producto, productoUnidades, productoAlmacenes);
             resultado.add(new Gson().toJson(true));
         } catch (Exception e) {
+            resultado.clear();
             resultado.add(new Gson().toJson(false));
         }
         return new Gson().toJson(resultado);
@@ -118,6 +120,25 @@ public class ProductoSRV {
             ProductoDTO.EliminarProducto(idProducto);
             resultado.add(new Gson().toJson(true));
         } catch (Exception e) {
+            resultado.clear();
+            resultado.add(new Gson().toJson(false));
+        }
+        return new Gson().toJson(resultado);
+    }
+    
+    @POST
+    @Path("ObtenerProductoUnidades")
+    @Consumes("application/json")
+    @Produces("application/json")
+    public String ObtenerProductoUnidades(String json) {
+        List<String> resultado = new ArrayList<>();
+        Producto[] productos = new Gson().fromJson(json, Producto[].class);
+        try {
+            ProductoDTO ProductoDTO = new ProductoDTO();
+            resultado.add(new Gson().toJson(true));
+            resultado.add(new Gson().toJson(ProductoDTO.ObtenerProductoUnidades(productos)));
+        } catch (Exception e) {
+            resultado.clear();
             resultado.add(new Gson().toJson(false));
         }
         return new Gson().toJson(resultado);
