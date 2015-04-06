@@ -142,7 +142,7 @@ public class SGE extends javax.swing.JFrame {
                 lisUnidad.setVisible(true);
                 break;
             case "lisProducto":
-                lisProducto lisProducto = new lisProducto();
+                lisProducto lisProducto = new lisProducto(0);
                 jdpPrincipal.add(lisProducto);
                 lisProducto.setVisible(true);
                 break;

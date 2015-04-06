@@ -1,9 +1,14 @@
 package com.sge.modulos.inventarios.formularios;
 
+import com.sge.base.controles.FabricaControles;
 import com.sge.base.utils.Utils;
+import com.sge.modulos.inventarios.clases.Producto;
 import java.awt.Component;
+import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JComboBox;
 import javax.swing.JTable;
@@ -35,6 +40,28 @@ public class regEntradaInventario extends javax.swing.JInternalFrame {
             //new swObtenerProducto().execute();
         }
     }
+    
+    Action change = new AbstractAction() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            int[] celda = (int[])e.getSource();
+            switch(celda[1]){
+                case 0:
+                    
+                    break;
+            }        
+        }
+    };
+    
+    Action select = new AbstractAction() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            List<Producto> productos = ((lisProducto) e.getSource()).getSeleccionados();
+            for (Producto producto : productos) {
+                //Utils.AgregarFila(tbAlmacenes, new Object[]{0, almacen.getIdAlmacen(), almacen.getDescripcion(), 0, 0, 0, 0});
+            }
+        }
+    };
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -188,7 +215,7 @@ public class regEntradaInventario extends javax.swing.JInternalFrame {
             pnlTituloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlTituloLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(lblTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(lblTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 409, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         pnlTituloLayout.setVerticalGroup(
@@ -314,52 +341,9 @@ public class regEntradaInventario extends javax.swing.JInternalFrame {
 
     private void btnNuevoItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoItemActionPerformed
         // TODO add your handling code here:
-//        FabricaControles.VerModal(this.getDesktopPane(), new lisUnidad(2), sele_unidad);
-        JComboBox combo = new JComboBox(new Object[]{"1","2"});
-        List<String> ls = new ArrayList<>();
-        
-        TableColumn col = tbItems.getColumnModel().getColumn(5);
-        
-        
-        Utils.AgregarFila(tbItems, new Object[]{ 0,0,"001", "producto1", 0, new Object[]{"1","2"} , 0,0,0 });
-        
-        col.setCellEditor(new comboCell());
-        
-        tbItems.getModel().addTableModelListener(new TableModelListener() {
-
-            @Override
-            public void tableChanged(TableModelEvent e) {
-                int row = e.getFirstRow();
-                int column = e.getColumn();
-                TableModel model = (TableModel)e.getSource();
-                String columnName = model.getColumnName(column);
-                Object data = model.getValueAt(row, column);
-                if(columnName.equals("CANTIDAD"))
-                    model.setValueAt(100, row, 7);
-            }
-        });
+        FabricaControles.VerModal(this.getDesktopPane(), new lisProducto(2), select);
     }//GEN-LAST:event_btnNuevoItemActionPerformed
 
-    public class comboCell extends DefaultCellEditor{
-
-        public comboCell() {
-            super(new JComboBox());
-        }
-        
-        public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column)
-        {
-            JComboBox combo = (JComboBox)super.getTableCellEditorComponent(table, value, isSelected, row, column);
-            combo.removeAllItems();
-            
-            Object[] items = (Object[])table.getModel().getValueAt(row, column); // getItemsForCell(row, column); // you'll need to implement this method yourself
-            for (Object item: items)
-            {
-                combo.addItem(item);
-            }
-            return combo;
-        }
-    }
-    
     private void btnEliminarItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarItemActionPerformed
         // TODO add your handling code here:
 //        if (Utils.FilaActiva(tbItems)) {
@@ -367,15 +351,6 @@ public class regEntradaInventario extends javax.swing.JInternalFrame {
 //            productoUnidades.add(new ProductoUnidad(idProductoUnidad, true));
 //            Utils.EliminarFila(tbItems);
 //        }
-        
-        Object obj = Utils.ObtenerValorCelda(tbItems, 0, 5);
-        JComboBox combo = new JComboBox(new Object[]{"a","b","c"});
-//        
-//        TableColumn col = tbItems.getColumnModel().getColumn(5);
-//        
-//        col.setCellEditor(new DefaultCellEditor(combo));
-//        
-//        Utils.AgregarFila(tbItems, new Object[]{ 0,0,"002", "producto2", 0, "a", 0,0,0 });
     }//GEN-LAST:event_btnEliminarItemActionPerformed
 
     private void txtAlmacenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtAlmacenActionPerformed

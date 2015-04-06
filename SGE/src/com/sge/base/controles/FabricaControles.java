@@ -10,11 +10,14 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionAdapter;
+import java.util.List;
 import javax.swing.AbstractCellEditor;
 import javax.swing.Action;
+import javax.swing.DefaultCellEditor;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JDesktopPane;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
@@ -26,9 +29,12 @@ import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
+import javax.swing.table.TableModel;
 
 /**
  *
@@ -220,10 +226,32 @@ public class FabricaControles {
         }
     }
 
+    public static class ComboCell extends DefaultCellEditor {
+
+        public ComboCell() {
+            super(new JComboBox());
+        }
+
+        @Override
+        public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
+            JComboBox combo = (JComboBox) super.getTableCellEditorComponent(table, value, isSelected, row, column);
+            combo.removeAllItems();
+            List<Object[]> items = (List<Object[]>) table.getModel().getValueAt(row - 1, column); // getItemsForCell(row, column); // you'll need to implement this method yourself
+            for (Object[] item : items) {
+                combo.addItem(item[1]);
+            }
+            return combo;
+        }
+    }
+
     //////////////////////////////// METODOS ///////////////////////////////////
     public static void AgregarBoton(JTable table, Action action, int column) {
         ButtonColumn btn = new ButtonColumn(table, action, column);
         btn.setMnemonic(KeyEvent.VK_ENTER);
+    }
+
+    public static void AgregarCombo(JTable table, int column) {
+        table.getColumnModel().getColumn(column).setCellEditor(new ComboCell());
     }
 
     public static void VerCargando(JPanel panel) {
@@ -333,8 +361,18 @@ public class FabricaControles {
             }
         });
     }
-    
-    public static int VerConfirmacion(JInternalFrame frame){
+
+    public static int VerConfirmacion(JInternalFrame frame) {
         return JOptionPane.showInternalConfirmDialog(frame, "¿SEGURO DE CONTINUAR?", "CONFIRMACIÓN", JOptionPane.YES_NO_OPTION);
+    }
+
+    public static void AgregarEventoChange(JTable tabla, Action action) {
+        tabla.getModel().addTableModelListener(new TableModelListener() {
+
+            @Override
+            public void tableChanged(TableModelEvent e) {
+                action.actionPerformed(new ActionEvent(new int[]{e.getFirstRow(), e.getColumn()}, 0, ""));
+            }
+        });
     }
 }
