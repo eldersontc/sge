@@ -10,6 +10,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionAdapter;
+import java.beans.ConstructorProperties;
 import java.util.List;
 import javax.swing.AbstractCellEditor;
 import javax.swing.Action;
@@ -34,7 +35,6 @@ import javax.swing.event.TableModelListener;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
-import javax.swing.table.TableModel;
 
 /**
  *
@@ -228,6 +228,8 @@ public class FabricaControles {
 
     public static class ComboCell extends DefaultCellEditor {
 
+        protected int indexField = 0;
+
         public ComboCell() {
             super(new JComboBox());
         }
@@ -236,11 +238,15 @@ public class FabricaControles {
         public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
             JComboBox combo = (JComboBox) super.getTableCellEditorComponent(table, value, isSelected, row, column);
             combo.removeAllItems();
-            List<Object[]> items = (List<Object[]>) table.getModel().getValueAt(row - 1, column); // getItemsForCell(row, column); // you'll need to implement this method yourself
+            List<Object[]> items = (List<Object[]>) table.getModel().getValueAt(row, column - 1); // getItemsForCell(row, column); // you'll need to implement this method yourself
             for (Object[] item : items) {
-                combo.addItem(item[1]);
+                combo.addItem(item[indexField]);
             }
             return combo;
+        }
+
+        public void setIndexField(int indexField) {
+            this.indexField = indexField;
         }
     }
 
@@ -250,8 +256,10 @@ public class FabricaControles {
         btn.setMnemonic(KeyEvent.VK_ENTER);
     }
 
-    public static void AgregarCombo(JTable table, int column) {
-        table.getColumnModel().getColumn(column).setCellEditor(new ComboCell());
+    public static void AgregarCombo(JTable table, int column, int indexField) {
+        ComboCell comboCell = new ComboCell();
+        comboCell.setIndexField(indexField);
+        table.getColumnModel().getColumn(column).setCellEditor(comboCell);
     }
 
     public static void VerCargando(JPanel panel) {

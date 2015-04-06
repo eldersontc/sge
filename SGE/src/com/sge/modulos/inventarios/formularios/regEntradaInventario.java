@@ -1,8 +1,11 @@
 package com.sge.modulos.inventarios.formularios;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.sge.base.controles.FabricaControles;
 import com.sge.base.utils.Utils;
 import com.sge.modulos.inventarios.clases.Producto;
+import com.sge.modulos.inventarios.cliente.cliInventarios;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
@@ -32,37 +35,63 @@ public class regEntradaInventario extends javax.swing.JInternalFrame {
     }
 
     int idEntradaInventario = 0;
-    
+
     public void Init(String operacion, int idEntradaInventario) {
         lblTitulo.setText(operacion + lblTitulo.getText());
+        FabricaControles.AgregarCombo(tbItems, 6, 2);
         this.idEntradaInventario = idEntradaInventario;
         if (this.idEntradaInventario > 0) {
             //new swObtenerProducto().execute();
         }
     }
-    
+
     Action change = new AbstractAction() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            int[] celda = (int[])e.getSource();
-            switch(celda[1]){
+            int[] celda = (int[]) e.getSource();
+            switch (celda[1]) {
                 case 0:
-                    
+
                     break;
-            }        
-        }
-    };
-    
-    Action select = new AbstractAction() {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            List<Producto> productos = ((lisProducto) e.getSource()).getSeleccionados();
-            for (Producto producto : productos) {
-                //Utils.AgregarFila(tbAlmacenes, new Object[]{0, almacen.getIdAlmacen(), almacen.getDescripcion(), 0, 0, 0, 0});
             }
         }
     };
-    
+
+    Action select = new AbstractAction() {
+        @Override
+        public void actionPerformed(ActionEvent evt) {
+            List<Producto> seleccionados = ((lisProducto) evt.getSource()).getSeleccionados();
+            if (!seleccionados.isEmpty()) {
+                cliInventarios cliente = new cliInventarios();
+                try {
+                    String json = cliente.ObtenerProductoUnidades(new Gson().toJson(seleccionados));
+                    String[] resultado = new Gson().fromJson(json, String[].class);
+                    List<Producto> productos = (List<Producto>) new Gson().fromJson(resultado[1], new TypeToken<List<Producto>>() {
+                    }.getType());
+                    for (Producto producto : productos) {
+                        Utils.AgregarFila(tbItems,
+                                new Object[]{
+                                    0,
+                                    producto.getIdProducto(),
+                                    producto.getCodigo(),
+                                    producto.getDescripcion(),
+                                    0,
+                                    producto.getProductoUnidades(),
+                                    "",
+                                    0,
+                                    0,
+                                    0
+                                });
+                    }
+                    FabricaControles.AgregarEventoChange(tbItems, change);
+                } catch (Exception e) {
+                } finally {
+                    cliente.close();
+                }
+            }
+        }
+    };
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -128,14 +157,14 @@ public class regEntradaInventario extends javax.swing.JInternalFrame {
 
             },
             new String [] {
-                "IDITEM", "IDPRODUCTO", "CODIGO", "PRODUCTO", "IDUNIDAD", "UNIDAD", "CANTIDAD", "PRECIO", "TOTAL"
+                "IDITEM", "IDPRODUCTO", "CODIGO", "PRODUCTO", "IDUNIDAD", "ARRAYUNIDAD", "UNIDAD", "CANTIDAD", "PRECIO", "TOTAL"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Object.class, java.lang.Integer.class, java.lang.Double.class, java.lang.Double.class
+                java.lang.Integer.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Object.class, java.lang.Object.class, java.lang.Integer.class, java.lang.Double.class, java.lang.Double.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, true, true, true, true, true, true, true
+                false, false, true, true, true, false, true, true, true, true
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -160,6 +189,9 @@ public class regEntradaInventario extends javax.swing.JInternalFrame {
             tbItems.getColumnModel().getColumn(4).setMinWidth(0);
             tbItems.getColumnModel().getColumn(4).setPreferredWidth(0);
             tbItems.getColumnModel().getColumn(4).setMaxWidth(0);
+            tbItems.getColumnModel().getColumn(5).setMinWidth(0);
+            tbItems.getColumnModel().getColumn(5).setPreferredWidth(0);
+            tbItems.getColumnModel().getColumn(5).setMaxWidth(0);
         }
 
         btnNuevoItem.setText("NUEVO");
@@ -355,7 +387,7 @@ public class regEntradaInventario extends javax.swing.JInternalFrame {
 
     private void txtAlmacenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtAlmacenActionPerformed
         // TODO add your handling code here:
-        
+
     }//GEN-LAST:event_txtAlmacenActionPerformed
 
 

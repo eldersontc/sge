@@ -1,5 +1,7 @@
 package com.sge.modulos.inventarios.clases;
 
+import java.util.List;
+
 /**
  *
  * @author elderson
@@ -16,6 +18,7 @@ public class Producto {
     private double costoPromedio;
     private double costoReferencia;
     private boolean activo;
+    private List<Object[]> productoUnidades;
 
     public Producto() {
     }
@@ -98,5 +101,13 @@ public class Producto {
 
     public void setVentas(boolean ventas) {
         this.ventas = ventas;
+    }
+
+    public List<Object[]> getProductoUnidades() {
+        return productoUnidades;
+    }
+
+    public void setProductoUnidades(List<Object[]> productoUnidades) {
+        this.productoUnidades = productoUnidades;
     }
 }
