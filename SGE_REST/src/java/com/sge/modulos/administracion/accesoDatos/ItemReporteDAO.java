@@ -7,7 +7,7 @@ package com.sge.modulos.administracion.accesoDatos;
 public class ItemReporteDAO extends AdministracionDAO {
 
     public int ActualizarItemReporte(int idItemReporte, String nombre, boolean asignarId, String valor) {
-        String sql = String.format("UPDATE Administracion.ItemReporte SET nombre = '%s', asignarId = '%b', valor = '%s' WHERE idItemReporte = %d", nombre, asignarId, valor, idItemReporte);
+        String sql = String.format("UPDATE Administracion.ItemReporte SET nombre = '%s', asignarId = %b, valor = '%s' WHERE idItemReporte = %d", nombre, asignarId, valor, idItemReporte);
         return super.Ejecutar(sql);
     }
     

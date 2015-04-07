@@ -59,7 +59,7 @@ public class ValorDefinidoDTO {
         try {
             valorDefinidoDAO = new ValorDefinidoDAO();
             valorDefinidoDAO.IniciarTransaccion();
-            valorDefinidoDAO.ActualizarValorDefinido(valorDefinido.getIdValorDefinido(), valorDefinido.getIdUduario(), valorDefinido.getUsuario(), valorDefinido.getEntidad(), valorDefinido.getJson(), valorDefinido.isActivo());
+            valorDefinidoDAO.ActualizarValorDefinido(valorDefinido.getIdValorDefinido(), valorDefinido.getIdUsuario(), valorDefinido.getUsuario(), valorDefinido.getEntidad(), valorDefinido.getJson(), valorDefinido.isActivo());
             valorDefinidoDAO.ConfirmarTransaccion();
         } catch (Exception e) {
             valorDefinidoDAO.AbortarTransaccion();

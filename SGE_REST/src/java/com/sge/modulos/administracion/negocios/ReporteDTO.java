@@ -58,7 +58,7 @@ public class ReporteDTO {
             itemReporteDAO = new ItemReporteDAO();
             itemReporteDAO.AsignarSesion(reporteDAO);
             for (ItemReporte item : reporte.getItems()) {
-                item.setIdItemReporte(reporte.getIdReporte());
+                item.setIdReporte(reporte.getIdReporte());
                 itemReporteDAO.Agregar(item);
             }
             reporteDAO.ConfirmarTransaccion();
@@ -80,7 +80,7 @@ public class ReporteDTO {
             itemReporteDAO.AsignarSesion(reporteDAO);
             for (ItemReporte item : reporte.getItems()) {
                 if (item.isAgregar()) {
-                    item.setIdItemReporte(reporte.getIdReporte());
+                    item.setIdReporte(reporte.getIdReporte());
                     itemReporteDAO.Agregar(item);
                 }
                 if (item.isActualizar()) {
