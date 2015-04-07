@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.sge.modulos.administracion.entidades.Reporte" table="Reporte" schema="Administracion">
+        <id name="idReporte" column="idReporte">
+            <generator class="sequence">
+                <param name="sequence">Administracion.reporte_idreporte_seq</param>
+            </generator>
+        </id>
+        <property name="nombre" column="nombre"/>
+        <property name="entidad" column="entidad"/>
+        <property name="ubicacion" column="ubicacion"/>
+        <property name="activo" column="activo"/>
+    </class>
+</hibernate-mapping>
