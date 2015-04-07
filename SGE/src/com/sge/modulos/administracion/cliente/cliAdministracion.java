@@ -125,6 +125,74 @@ public class cliAdministracion {
     
     ////////////////////////////////////////////////////////////////////////////
     
+    ////////////////////////////////// REPORTE /////////////////////////////////
+    
+    public String ObtenerReportes(Object requestEntity) throws ClientErrorException {
+        WebTarget resource = client.target(BASE_URI).path("ReporteSRV");
+        resource = resource.path("ObtenerReportes");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
+    }
+    
+    public String ObtenerReporte(Object requestEntity) throws ClientErrorException {
+        WebTarget resource = client.target(BASE_URI).path("ReporteSRV");
+        resource = resource.path("ObtenerReporte");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
+    }
+    
+    public String RegistrarReporte(Object requestEntity) throws ClientErrorException {
+        WebTarget resource = client.target(BASE_URI).path("ReporteSRV");
+        resource = resource.path("RegistrarReporte");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
+    }
+    
+    public String ActualizarReporte(Object requestEntity) throws ClientErrorException {
+        WebTarget resource = client.target(BASE_URI).path("ReporteSRV");
+        resource = resource.path("ActualizarReporte");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
+    }
+    
+    public String EliminarReporte(Object requestEntity) throws ClientErrorException {
+        WebTarget resource = client.target(BASE_URI).path("ReporteSRV");
+        resource = resource.path("EliminarReporte");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
+    }
+    
+    ////////////////////////////////////////////////////////////////////////////
+    
+    //////////////////////////// VALOR DEFINIDO ////////////////////////////////
+    
+    public String ObtenerValoresDefinidos(Object requestEntity) throws ClientErrorException {
+        WebTarget resource = client.target(BASE_URI).path("ValorDefinidoSRV");
+        resource = resource.path("ObtenerValoresDefinidos");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
+    }
+    
+    public String ObtenerValorDefinido(Object requestEntity) throws ClientErrorException {
+        WebTarget resource = client.target(BASE_URI).path("ValorDefinidoSRV");
+        resource = resource.path("ObtenerValorDefinido");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
+    }
+    
+    public String RegistrarValorDefinido(Object requestEntity) throws ClientErrorException {
+        WebTarget resource = client.target(BASE_URI).path("ValorDefinidoSRV");
+        resource = resource.path("RegistrarValorDefinido");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
+    }
+    
+    public String ActualizarValorDefinido(Object requestEntity) throws ClientErrorException {
+        WebTarget resource = client.target(BASE_URI).path("ValorDefinidoSRV");
+        resource = resource.path("ActualizarValorDefinido");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
+    }
+    
+    public String EliminarValorDefinido(Object requestEntity) throws ClientErrorException {
+        WebTarget resource = client.target(BASE_URI).path("ValorDefinidoSRV");
+        resource = resource.path("EliminarValorDefinido");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
+    }
+    
+    ////////////////////////////////////////////////////////////////////////////
+    
     public void close() {
         client.close();
     }
