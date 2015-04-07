@@ -571,7 +571,9 @@ public class regProducto extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
         if (Utils.FilaActiva(tbUnidades)) {
             int idProductoUnidad = Utils.ObtenerValorCelda(tbUnidades, 0);
-            productoUnidades.add(new ProductoUnidad(idProductoUnidad, true));
+            if (idProductoUnidad > 0) {
+                productoUnidades.add(new ProductoUnidad(idProductoUnidad, true));
+            }
             Utils.EliminarFila(tbUnidades);
         }
     }//GEN-LAST:event_btnEliminarUnidadActionPerformed

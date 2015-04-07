@@ -17,12 +17,12 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author elderson
  */
-public class lisValoresDefinidos extends javax.swing.JInternalFrame {
+public class lisValorDefinido extends javax.swing.JInternalFrame {
 
     /**
      * Creates new form lisValoresDefinidos
      */
-    public lisValoresDefinidos(int modo) {
+    public lisValorDefinido(int modo) {
         initComponents();
         Init(modo);
     }
@@ -35,14 +35,14 @@ public class lisValoresDefinidos extends javax.swing.JInternalFrame {
     Action edit = new AbstractAction() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            EditarValoresDefinidos();
+            EditarValorDefinido();
         }
     };
 
     Action dele = new AbstractAction() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            EliminarValoresDefinidos();
+            EliminarValorDefinido();
         }
     };
     
@@ -54,7 +54,7 @@ public class lisValoresDefinidos extends javax.swing.JInternalFrame {
             cliAdministracion cliente = new cliAdministracion();
             String json = "";
             try {
-                json = cliente.ObtenerEmpleados("");
+                json = cliente.ObtenerValoresDefinidos("");
             } catch (Exception e) {
                 FabricaControles.OcultarCargando(pnlContenido);
                 json = "[\"false\"]";
@@ -71,14 +71,11 @@ public class lisValoresDefinidos extends javax.swing.JInternalFrame {
                 String[] resultado = new Gson().fromJson(json, String[].class);
 
                 if (resultado[0].equals("true")) {
-                    DefaultTableModel modelo = (DefaultTableModel) tbValoresDefinidos.getModel();
-                    modelo.setRowCount(0);
-
+                    Utils.EliminarTodasFilas(tbValoresDefinidos);
                     List<Object[]> filas = (List<Object[]>) new Gson().fromJson(resultado[1], new TypeToken<List<Object[]>>() {
                     }.getType());
-
                     for (Object[] fila : filas) {
-                        modelo.addRow(new Object[]{false,((Double) fila[0]).intValue(), fila[1], fila[2], fila[3], Icon_Edit, Icon_Dele});
+                        Utils.AgregarFila(tbValoresDefinidos, new Object[]{false,((Double) fila[0]).intValue(), fila[1], fila[2], fila[3], Icon_Edit, Icon_Dele});
                     }
                     FabricaControles.AgregarBoton(tbValoresDefinidos, edit, 5);
                     FabricaControles.AgregarBoton(tbValoresDefinidos, dele, 6);
@@ -99,8 +96,8 @@ public class lisValoresDefinidos extends javax.swing.JInternalFrame {
             cliAdministracion cliente = new cliAdministracion();
             String json = "";
             try {
-                int idEmpleado = Utils.ObtenerValorCelda(tbValoresDefinidos, 1);
-                json = cliente.EliminarEmpleado(new Gson().toJson(idEmpleado));
+                int idValorDefinido = Utils.ObtenerValorCelda(tbValoresDefinidos, 1);
+                json = cliente.EliminarValorDefinido(new Gson().toJson(idValorDefinido));
             } catch (Exception e) {
                 FabricaControles.OcultarCargando(pnlContenido);
                 json = "[\"false\"]";
@@ -140,14 +137,14 @@ public class lisValoresDefinidos extends javax.swing.JInternalFrame {
         new swObtenerValoresDefinidos().execute();
     }
 
-    public void EditarValoresDefinidos() {
-        int idEmpleado = Utils.ObtenerValorCelda(tbValoresDefinidos, 1);
-        regEmpleado regEmpleado = new regEmpleado("EDITAR ", idEmpleado);
-        this.getParent().add(regEmpleado);
-        regEmpleado.setVisible(true);
+    public void EditarValorDefinido() {
+        int idValorDefinido = Utils.ObtenerValorCelda(tbValoresDefinidos, 1);
+        regValorDefinido regValorDefinido = new regValorDefinido("EDITAR ", idValorDefinido);
+        this.getParent().add(regValorDefinido);
+        regValorDefinido.setVisible(true);
     }
 
-    public void EliminarValoresDefinidos() {
+    public void EliminarValorDefinido() {
         int confirmacion = FabricaControles.VerConfirmacion(this);
         if (confirmacion == 0) {
             new swEliminarValoresDefinidos().execute();
@@ -299,9 +296,9 @@ public class lisValoresDefinidos extends javax.swing.JInternalFrame {
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
         // TODO add your handling code here:
-        regEmpleado regEmpleado = new regEmpleado("NUEVO ", 0);
-        this.getParent().add(regEmpleado);
-        regEmpleado.setVisible(true);
+        regValorDefinido regValorDefinido = new regValorDefinido("NUEVO ", 0);
+        this.getParent().add(regValorDefinido);
+        regValorDefinido.setVisible(true);
     }//GEN-LAST:event_btnNuevoActionPerformed
 
     private void txtFiltroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFiltroActionPerformed

@@ -5,7 +5,9 @@ import com.google.gson.reflect.TypeToken;
 import com.sge.modulos.administracion.cliente.cliAdministracion;
 import com.sge.modulos.administracion.formularios.lisEmpleado;
 import com.sge.modulos.administracion.formularios.lisMoneda;
+import com.sge.modulos.administracion.formularios.lisReporte;
 import com.sge.modulos.administracion.formularios.lisUsuario;
+import com.sge.modulos.administracion.formularios.lisValorDefinido;
 import com.sge.modulos.compras.formularios.lisProveedor;
 import com.sge.modulos.inventarios.formularios.lisAlmacen;
 import com.sge.modulos.inventarios.formularios.lisEntradaInventario;
@@ -140,6 +142,16 @@ public class SGE extends javax.swing.JFrame {
                 lisUsuario lisUsuario = new lisUsuario();
                 jdpPrincipal.add(lisUsuario);
                 lisUsuario.setVisible(true);
+                break;
+        case "lisReporte":
+                lisReporte lisReporte = new lisReporte(0);
+                jdpPrincipal.add(lisReporte);
+                lisReporte.setVisible(true);
+                break;
+            case "lisValorDefinido":
+                lisValorDefinido lisValorDefinido = new lisValorDefinido(0);
+                jdpPrincipal.add(lisValorDefinido);
+                lisValorDefinido.setVisible(true);
                 break;
             case "lisMoneda":
                 lisMoneda lisMoneda = new lisMoneda(0);

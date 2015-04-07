@@ -2,8 +2,12 @@ package com.sge.modulos.administracion.formularios;
 
 import com.google.gson.Gson;
 import com.sge.base.controles.FabricaControles;
+import com.sge.base.utils.Utils;
+import com.sge.modulos.administracion.clases.ItemReporte;
 import com.sge.modulos.administracion.clases.Reporte;
 import com.sge.modulos.administracion.cliente.cliAdministracion;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.SwingWorker;
 
 /**
@@ -20,7 +24,9 @@ public class regReporte extends javax.swing.JInternalFrame {
         Init(operacion, idReporte);
     }
 
-    int idReporte = 0;
+    private int idReporte = 0;
+
+    private List<ItemReporte> items = new ArrayList<>();
 
     public void Init(String operacion, int idReporte) {
         lblTitulo.setText(operacion + lblTitulo.getText());
@@ -28,6 +34,29 @@ public class regReporte extends javax.swing.JInternalFrame {
         if (this.idReporte > 0) {
             new swObtenerReporte().execute();
         }
+    }
+
+    public List<ItemReporte> getItems() {
+        for (int i = 0; i < tbItems.getRowCount(); i++) {
+            int idItemReporte = Utils.ObtenerValorCelda(tbItems, i, 0);
+            if (idItemReporte == 0) {
+                ItemReporte itemReporte = new ItemReporte();
+                itemReporte.setNombre(Utils.ObtenerValorCelda(tbItems, i, 1));
+                itemReporte.setAsignarId(Utils.ObtenerValorCelda(tbItems, i, 2));
+                itemReporte.setValor(Utils.ObtenerValorCelda(tbItems, i, 3));
+                itemReporte.setAgregar(true);
+                this.items.add(itemReporte);
+            } else {
+                ItemReporte itemReporte = new ItemReporte();
+                itemReporte.setIdItemReporte(idItemReporte);
+                itemReporte.setNombre(Utils.ObtenerValorCelda(tbItems, i, 1));
+                itemReporte.setAsignarId(Utils.ObtenerValorCelda(tbItems, i, 2));
+                itemReporte.setValor(Utils.ObtenerValorCelda(tbItems, i, 3));
+                itemReporte.setActualizar(true);
+                this.items.add(itemReporte);
+            }
+        }
+        return this.items;
     }
 
     public class swObtenerReporte extends SwingWorker<Object, Object> {
@@ -38,7 +67,7 @@ public class regReporte extends javax.swing.JInternalFrame {
             cliAdministracion cliente = new cliAdministracion();
             String json = "";
             try {
-                //json = cliente.ObtenerReporte(new Gson().toJson(idReporte));
+                json = cliente.ObtenerReporte(new Gson().toJson(idReporte));
             } catch (Exception e) {
                 FabricaControles.OcultarCargando(pnlContenido);
                 json = "[\"false\"]";
@@ -59,6 +88,15 @@ public class regReporte extends javax.swing.JInternalFrame {
                     cboEntidad.setSelectedItem(reporte.getEntidad());
                     txtUbicacion.setText(reporte.getUbicacion());
                     chkActivo.setSelected(reporte.isActivo());
+                    for (ItemReporte item : reporte.getItems()) {
+                        Utils.AgregarFila(tbItems,
+                                new Object[]{
+                                    item.getIdItemReporte(),
+                                    item.getNombre(),
+                                    item.isAsignarId(),
+                                    item.getValor()
+                                });
+                    }
                 }
                 FabricaControles.OcultarCargando(pnlContenido);
             } catch (Exception e) {
@@ -80,11 +118,12 @@ public class regReporte extends javax.swing.JInternalFrame {
                 reporte.setEntidad(cboEntidad.getSelectedItem().toString());
                 reporte.setUbicacion(txtUbicacion.getText());
                 reporte.setActivo(chkActivo.isSelected());
+                reporte.setItems(getItems());
                 if (idReporte == 0) {
-                    //json = cliente.RegistrarReporte(new Gson().toJson(reporte));
+                    json = cliente.RegistrarReporte(new Gson().toJson(reporte));
                 } else {
                     reporte.setIdReporte(idReporte);
-                    //json = cliente.ActualizarReporte(new Gson().toJson(reporte));
+                    json = cliente.ActualizarReporte(new Gson().toJson(reporte));
                 }
             } catch (Exception e) {
                 FabricaControles.OcultarProcesando(pnlContenido);
@@ -110,7 +149,7 @@ public class regReporte extends javax.swing.JInternalFrame {
             }
         }
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -135,7 +174,7 @@ public class regReporte extends javax.swing.JInternalFrame {
         jTabbedPane1 = new javax.swing.JTabbedPane();
         pnlParametros = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tbItems = new javax.swing.JTable();
         btnEliminarItem = new javax.swing.JButton();
         btnNuevoItem = new javax.swing.JButton();
 
@@ -193,27 +232,44 @@ public class regReporte extends javax.swing.JInternalFrame {
 
         lblUbicacion.setText("UBICACION");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        pnlParametros.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
+        tbItems.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "NOMBRE", "ASIGNAR ID", "VALOR"
+                "IDITEM", "NOMBRE", "ASIGNAR ID", "VALOR"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.Boolean.class, java.lang.String.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.Boolean.class, java.lang.String.class
             };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tbItems);
+        if (tbItems.getColumnModel().getColumnCount() > 0) {
+            tbItems.getColumnModel().getColumn(0).setMinWidth(0);
+            tbItems.getColumnModel().getColumn(0).setPreferredWidth(0);
+            tbItems.getColumnModel().getColumn(0).setMaxWidth(0);
+        }
 
-        btnEliminarItem.setText("ELIMiNAR");
+        btnEliminarItem.setText("ELIMINAR");
+        btnEliminarItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarItemActionPerformed(evt);
+            }
+        });
 
         btnNuevoItem.setText("NUEVO");
+        btnNuevoItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNuevoItemActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout pnlParametrosLayout = new javax.swing.GroupLayout(pnlParametros);
         pnlParametros.setLayout(pnlParametrosLayout);
@@ -267,7 +323,7 @@ public class regReporte extends javax.swing.JInternalFrame {
                                     .addComponent(chkActivo, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addComponent(txtNombre)
                                 .addComponent(txtUbicacion)))))
-                .addContainerGap(30, Short.MAX_VALUE))
+                .addContainerGap(26, Short.MAX_VALUE))
         );
         pnlContenidoLayout.setVerticalGroup(
             pnlContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -292,7 +348,7 @@ public class regReporte extends javax.swing.JInternalFrame {
                 .addGroup(pnlContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCancelar)
                     .addComponent(btnAceptar))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(24, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -311,13 +367,29 @@ public class regReporte extends javax.swing.JInternalFrame {
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
         // TODO add your handling code here:
-        this.setVisible(false);
+        Utils.Cerrar(this);
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
         // TODO add your handling code here:
-        //new swGuardarReporte().execute();
+        new swGuardarReporte().execute();
     }//GEN-LAST:event_btnAceptarActionPerformed
+
+    private void btnNuevoItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoItemActionPerformed
+        // TODO add your handling code here:
+        Utils.AgregarFila(tbItems, new Object[]{0, "", false, ""});
+    }//GEN-LAST:event_btnNuevoItemActionPerformed
+
+    private void btnEliminarItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarItemActionPerformed
+        // TODO add your handling code here:
+        if (Utils.FilaActiva(tbItems)) {
+            int idItemReporte = Utils.ObtenerValorCelda(tbItems, 0);
+            if (idItemReporte > 0) {
+                items.add(new ItemReporte(idItemReporte, true));
+            }
+            Utils.EliminarFila(tbItems);
+        }
+    }//GEN-LAST:event_btnEliminarItemActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -329,7 +401,6 @@ public class regReporte extends javax.swing.JInternalFrame {
     private javax.swing.JCheckBox chkActivo;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JLabel lblEntidad;
     private javax.swing.JLabel lblNombre;
     private javax.swing.JLabel lblTitulo;
@@ -337,6 +408,7 @@ public class regReporte extends javax.swing.JInternalFrame {
     private javax.swing.JPanel pnlContenido;
     private javax.swing.JPanel pnlParametros;
     private javax.swing.JPanel pnlTitulo;
+    private javax.swing.JTable tbItems;
     private javax.swing.JTextField txtNombre;
     private javax.swing.JTextField txtUbicacion;
     // End of variables declaration//GEN-END:variables

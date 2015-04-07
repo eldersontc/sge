@@ -12,7 +12,6 @@ import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ImageIcon;
 import javax.swing.SwingWorker;
-import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -57,7 +56,7 @@ public class lisReporte extends javax.swing.JInternalFrame {
             cliAdministracion cliente = new cliAdministracion();
             String json = "";
             try {
-                //json = cliente.ObtenerReportes("");
+                json = cliente.ObtenerReportes("");
             } catch (Exception e) {
                 FabricaControles.OcultarCargando(pnlContenido);
                 json = "[\"false\"]";
@@ -74,14 +73,11 @@ public class lisReporte extends javax.swing.JInternalFrame {
                 String[] resultado = new Gson().fromJson(json, String[].class);
 
                 if (resultado[0].equals("true")) {
-                    DefaultTableModel modelo = (DefaultTableModel) tbReportes.getModel();
-                    modelo.setRowCount(0);
-
+                    Utils.EliminarTodasFilas(tbReportes);
                     List<Object[]> filas = (List<Object[]>) new Gson().fromJson(resultado[1], new TypeToken<List<Object[]>>() {
                     }.getType());
-
                     for (Object[] fila : filas) {
-                        modelo.addRow(new Object[]{false,((Double) fila[0]).intValue(), fila[1], fila[2], fila[6], Icon_Edit, Icon_Dele});
+                        Utils.AgregarFila(tbReportes, new Object[]{false,((Double) fila[0]).intValue(), fila[1], fila[2], fila[3], Icon_Edit, Icon_Dele});
                     }
                     FabricaControles.AgregarBoton(tbReportes, edit, 5);
                     FabricaControles.AgregarBoton(tbReportes, dele, 6);
@@ -94,7 +90,7 @@ public class lisReporte extends javax.swing.JInternalFrame {
         }
     }
 
-    public class swEliminarUnidad extends SwingWorker {
+    public class swEliminarReporte extends SwingWorker {
 
         @Override
         protected Object doInBackground() throws Exception {
@@ -103,7 +99,7 @@ public class lisReporte extends javax.swing.JInternalFrame {
             String json = "";
             try {
                 int idReporte = Utils.ObtenerValorCelda(tbReportes, 1);
-                //json = cliente.EliminarReporte(new Gson().toJson(idReporte));
+                json = cliente.EliminarReporte(new Gson().toJson(idReporte));
             } catch (Exception e) {
                 FabricaControles.OcultarCargando(pnlContenido);
                 json = "[\"false\"]";
@@ -153,7 +149,7 @@ public class lisReporte extends javax.swing.JInternalFrame {
     public void EliminarReporte() {
         int confirmacion = FabricaControles.VerConfirmacion(this);
         if (confirmacion == 0) {
-            new swEliminarUnidad().execute();
+            new swEliminarReporte().execute();
         }
     }
 
@@ -179,6 +175,7 @@ public class lisReporte extends javax.swing.JInternalFrame {
         lblFiltro = new javax.swing.JLabel();
         txtFiltro = new javax.swing.JTextField();
         btnSeleccionar = new javax.swing.JButton();
+        btnRefrescar = new javax.swing.JButton();
 
         setClosable(true);
 
@@ -215,6 +212,8 @@ public class lisReporte extends javax.swing.JInternalFrame {
             tbReportes.getColumnModel().getColumn(1).setMinWidth(0);
             tbReportes.getColumnModel().getColumn(1).setPreferredWidth(0);
             tbReportes.getColumnModel().getColumn(1).setMaxWidth(0);
+            tbReportes.getColumnModel().getColumn(5).setPreferredWidth(20);
+            tbReportes.getColumnModel().getColumn(6).setPreferredWidth(20);
         }
 
         pnlTitulo.setBackground(new java.awt.Color(67, 100, 130));
@@ -240,7 +239,7 @@ public class lisReporte extends javax.swing.JInternalFrame {
             .addGroup(pnlTituloLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lblTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 405, Short.MAX_VALUE)
                 .addComponent(btnNuevo)
                 .addContainerGap())
         );
@@ -269,6 +268,14 @@ public class lisReporte extends javax.swing.JInternalFrame {
             }
         });
 
+        btnRefrescar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sge/base/imagenes/refresh-16.png"))); // NOI18N
+        btnRefrescar.setToolTipText("REFRESCAR");
+        btnRefrescar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRefrescarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout pnlContenidoLayout = new javax.swing.GroupLayout(pnlContenido);
         pnlContenido.setLayout(pnlContenidoLayout);
         pnlContenidoLayout.setHorizontalGroup(
@@ -282,6 +289,8 @@ public class lisReporte extends javax.swing.JInternalFrame {
                         .addComponent(lblFiltro)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnRefrescar, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlContenidoLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
@@ -293,9 +302,11 @@ public class lisReporte extends javax.swing.JInternalFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlContenidoLayout.createSequentialGroup()
                 .addComponent(pnlTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(pnlContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblFiltro)
-                    .addComponent(txtFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(pnlContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(pnlContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(lblFiltro)
+                        .addComponent(txtFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnRefrescar, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 288, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -346,9 +357,15 @@ public class lisReporte extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_btnSeleccionarActionPerformed
 
+    private void btnRefrescarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefrescarActionPerformed
+        // TODO add your handling code here:
+        new swObtenerReportes().execute();
+    }//GEN-LAST:event_btnRefrescarActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnNuevo;
+    private javax.swing.JButton btnRefrescar;
     private javax.swing.JButton btnSeleccionar;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblFiltro;

@@ -18,6 +18,11 @@ public class ItemReporte {
     public ItemReporte() {
     }
 
+    public ItemReporte(int idItemReporte, boolean eliminar) {
+        this.idItemReporte = idItemReporte;
+        this.eliminar = eliminar;
+    }
+    
     public int getIdItemReporte() {
         return idItemReporte;
     }

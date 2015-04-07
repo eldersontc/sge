@@ -7,7 +7,7 @@ package com.sge.modulos.administracion.clases;
 public class ValorDefinido {
     
     private int idValorDefinido;
-    private int idUduario;
+    private int idUsuario;
     private String usuario;
     private String entidad;
     private String json;
@@ -24,12 +24,12 @@ public class ValorDefinido {
         this.idValorDefinido = idValorDefinido;
     }
 
-    public int getIdUduario() {
-        return idUduario;
+    public int getIdUsuario() {
+        return idUsuario;
     }
 
-    public void setIdUduario(int idUduario) {
-        this.idUduario = idUduario;
+    public void setIdUsuario(int idUduario) {
+        this.idUsuario = idUduario;
     }
 
     public String getUsuario() {

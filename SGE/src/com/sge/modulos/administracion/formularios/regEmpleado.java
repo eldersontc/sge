@@ -2,6 +2,7 @@ package com.sge.modulos.administracion.formularios;
 
 import com.google.gson.Gson;
 import com.sge.base.controles.FabricaControles;
+import com.sge.base.utils.Utils;
 import com.sge.modulos.administracion.clases.Empleado;
 import com.sge.modulos.administracion.cliente.cliAdministracion;
 import javax.swing.SwingWorker;
@@ -307,7 +308,7 @@ public class regEmpleado extends javax.swing.JInternalFrame {
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
         // TODO add your handling code here:
-        this.setVisible(false);
+        Utils.Cerrar(this);
     }//GEN-LAST:event_btnCancelarActionPerformed
 
 
