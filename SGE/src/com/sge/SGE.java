@@ -16,12 +16,19 @@ import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.swing.ImageIcon;
 import javax.swing.JInternalFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.view.JasperViewer;
 
 /**
  *
@@ -35,6 +42,24 @@ public class SGE extends javax.swing.JFrame {
     public SGE() {
         initComponents();
         LlenarMenus();
+        //VerReporte();
+    }
+
+    public void VerReporte() {
+        try {
+            Class.forName("org.postgresql.Driver");
+            Connection cn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/sge", "postgres", "123456");
+            
+            String ruta = "/home/elderson/report1.jasper";
+            Map parametros = new HashMap();
+            parametros.put("idAlmacen", 36);
+            JasperPrint informa = JasperFillManager.fillReport(ruta, parametros, cn);
+            JasperViewer view = new JasperViewer(informa);
+            view.setTitle("xx");
+            view.setVisible(true);
+        } catch (Exception e) {
+            System.out.print("xxxx");
+        }
     }
 
     public void LlenarMenus() {
@@ -105,7 +130,7 @@ public class SGE extends javax.swing.JFrame {
 
     private void ClickMenuItem(ActionEvent e) {
         // TODO add your handling code here:
-        JMenuItem menuItem = (JMenuItem)e.getSource();
+        JMenuItem menuItem = (JMenuItem) e.getSource();
         LanzarFormulario(menuItem.getName());
     }
 
@@ -167,6 +192,7 @@ public class SGE extends javax.swing.JFrame {
 
         pnlBanner = new javax.swing.JPanel();
         lblTituloBanner = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
         pnlMenu = new javax.swing.JPanel();
         jdpPrincipal = new javax.swing.JDesktopPane();
 
@@ -179,20 +205,31 @@ public class SGE extends javax.swing.JFrame {
         lblTituloBanner.setForeground(java.awt.Color.white);
         lblTituloBanner.setText("SISTEMA DE GESTIÓN EMPRESARIAL");
 
+        jButton1.setText("jButton1");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout pnlBannerLayout = new javax.swing.GroupLayout(pnlBanner);
         pnlBanner.setLayout(pnlBannerLayout);
         pnlBannerLayout.setHorizontalGroup(
             pnlBannerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlBannerLayout.createSequentialGroup()
                 .addGap(41, 41, 41)
-                .addComponent(lblTituloBanner)
+                .addComponent(lblTituloBanner, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton1)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         pnlBannerLayout.setVerticalGroup(
             pnlBannerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlBannerLayout.createSequentialGroup()
                 .addContainerGap(24, Short.MAX_VALUE)
-                .addComponent(lblTituloBanner, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(pnlBannerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblTituloBanner, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton1))
                 .addGap(20, 20, 20))
         );
 
@@ -233,6 +270,11 @@ public class SGE extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        VerReporte();
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -269,6 +311,7 @@ public class SGE extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
     private javax.swing.JDesktopPane jdpPrincipal;
     private javax.swing.JLabel lblTituloBanner;
     private javax.swing.JPanel pnlBanner;

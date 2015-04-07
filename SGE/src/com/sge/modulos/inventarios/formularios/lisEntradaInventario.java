@@ -263,6 +263,7 @@ public class lisEntradaInventario extends javax.swing.JInternalFrame {
         lblFiltro.setText("FILTRO");
 
         btnRefrescar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sge/base/imagenes/refresh-16.png"))); // NOI18N
+        btnRefrescar.setToolTipText("REFRESCAR");
         btnRefrescar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnRefrescarActionPerformed(evt);
