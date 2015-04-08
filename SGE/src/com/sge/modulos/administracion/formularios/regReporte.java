@@ -187,7 +187,7 @@ public class regReporte extends javax.swing.JInternalFrame {
 
         lblEntidad.setText("ENTIDAD");
 
-        cboEntidad.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "ENTRADA A INVENTARIO" }));
+        cboEntidad.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "NINGUNO", "ENTRADA A INVENTARIO" }));
 
         chkActivo.setText("ACTIVO");
 

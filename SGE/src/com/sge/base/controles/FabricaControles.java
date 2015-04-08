@@ -42,6 +42,7 @@ import javax.swing.table.TableColumnModel;
 public class FabricaControles {
 
     ///////////////////////////////// CLASES ///////////////////////////////////
+    
     public static class ButtonColumn extends AbstractCellEditor
             implements TableCellRenderer, TableCellEditor, ActionListener, MouseListener {
 
@@ -251,6 +252,7 @@ public class FabricaControles {
     }
 
     //////////////////////////////// METODOS ///////////////////////////////////
+    
     public static void AgregarBoton(JTable table, Action action, int column) {
         ButtonColumn btn = new ButtonColumn(table, action, column);
         btn.setMnemonic(KeyEvent.VK_ENTER);
@@ -369,11 +371,19 @@ public class FabricaControles {
             }
         });
     }
-
-    public static int VerConfirmacion(JInternalFrame frame) {
-        return JOptionPane.showInternalConfirmDialog(frame, "¿SEGURO DE CONTINUAR?", "CONFIRMACIÓN", JOptionPane.YES_NO_OPTION);
+    
+    public static void VerModal(Component parentComponent, Component component, String title){
+        JOptionPane.showInternalMessageDialog(parentComponent, component, title, JOptionPane.QUESTION_MESSAGE);
     }
 
+    public static int VerConfirmacion(Component parentComponent) {
+        return JOptionPane.showInternalConfirmDialog(parentComponent, "¿SEGURO DE CONTINUAR?", "CONFIRMACIÓN", JOptionPane.YES_NO_OPTION);
+    }
+
+    public static void VerAdvertencia(String message, Component parentComponent){
+        JOptionPane.showInternalMessageDialog(parentComponent, message, "MENSAJE", JOptionPane.WARNING_MESSAGE);
+    }
+    
     public static void AgregarEventoChange(JTable tabla, Action action) {
         tabla.getModel().addTableModelListener(new TableModelListener() {
 
