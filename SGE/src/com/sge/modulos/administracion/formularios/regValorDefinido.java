@@ -2,8 +2,14 @@ package com.sge.modulos.administracion.formularios;
 
 import com.google.gson.Gson;
 import com.sge.base.controles.FabricaControles;
+import com.sge.base.utils.Utils;
+import com.sge.modulos.administracion.clases.Usuario;
 import com.sge.modulos.administracion.clases.ValorDefinido;
 import com.sge.modulos.administracion.cliente.cliAdministracion;
+import com.sge.modulos.inventarios.formularios.regEntradaInventario;
+import java.awt.event.ActionEvent;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.SwingWorker;
 
 /**
@@ -20,19 +26,43 @@ public class regValorDefinido extends javax.swing.JInternalFrame {
         Init(operacion, idValoresDefinidos);
     }
 
-    private int idValoresDefinidos = 0;
-    
-    private ValorDefinido valoresDefinidos;
+    private int idValorDefinido = 0;
 
-    public void Init(String operacion, int idValoresDefinidos) {
+    private ValorDefinido valorDefinido;
+
+    public void Init(String operacion, int idValorDefinido) {
         lblTitulo.setText(operacion + lblTitulo.getText());
-        this.idValoresDefinidos = idValoresDefinidos;
-        if (this.idValoresDefinidos > 0) {
-            new swObtenerValoresDefinidos().execute();
+        this.idValorDefinido = idValorDefinido;
+        if (this.idValorDefinido > 0) {
+            new swObtenerValorDefinido().execute();
+        } else{
+            valorDefinido = new ValorDefinido();
         }
     }
+
+    Action close = new AbstractAction() {
+        @Override
+        public void actionPerformed(ActionEvent evt) {
+            String json = ((regEntradaInventario) evt.getSource()).getJson();
+            if (!json.isEmpty()) {
+                valorDefinido.setJson(json);
+            }
+        }
+    };
     
-    public class swObtenerValoresDefinidos extends SwingWorker<Object, Object> {
+    Action select_usuario = new AbstractAction() {
+        @Override
+        public void actionPerformed(ActionEvent evt) {
+            Usuario seleccionado = ((lisUsuario) evt.getSource()).getSeleccionado();
+            if (!(seleccionado == null)) {
+                valorDefinido.setIdUsuario(seleccionado.getIdUsuario());
+                valorDefinido.setUsuario(seleccionado.getUsuario());
+                txtUsuario.setText(seleccionado.getUsuario());
+            }
+        }
+    };
+
+    public class swObtenerValorDefinido extends SwingWorker<Object, Object> {
 
         @Override
         protected Object doInBackground() {
@@ -40,7 +70,7 @@ public class regValorDefinido extends javax.swing.JInternalFrame {
             cliAdministracion cliente = new cliAdministracion();
             String json = "";
             try {
-                //json = cliente.ObtenerValoresDefinidos(new Gson().toJson(idValoresDefinidos));
+                json = cliente.ObtenerValorDefinido(new Gson().toJson(idValorDefinido));
             } catch (Exception e) {
                 FabricaControles.OcultarCargando(pnlContenido);
                 json = "[\"false\"]";
@@ -56,10 +86,10 @@ public class regValorDefinido extends javax.swing.JInternalFrame {
                 String json = get().toString();
                 String[] resultado = new Gson().fromJson(json, String[].class);
                 if (resultado[0].equals("true")) {
-                    ValorDefinido valoresDefinidos = new Gson().fromJson(resultado[1], ValorDefinido.class);
-                    txtUsuario.setText(valoresDefinidos.getUsuario());
-                    cboEntidad.setSelectedItem(valoresDefinidos.getEntidad());
-                    chkActivo.setSelected(valoresDefinidos.isActivo());
+                    valorDefinido = new Gson().fromJson(resultado[1], ValorDefinido.class);
+                    txtUsuario.setText(valorDefinido.getUsuario());
+                    cboEntidad.setSelectedItem(valorDefinido.getEntidad());
+                    chkActivo.setSelected(valorDefinido.isActivo());
                 }
                 FabricaControles.OcultarCargando(pnlContenido);
             } catch (Exception e) {
@@ -68,7 +98,7 @@ public class regValorDefinido extends javax.swing.JInternalFrame {
         }
     }
 
-    public class swGuardarValoresDefinidos extends SwingWorker<Object, Object> {
+    public class swGuardarValorDefinido extends SwingWorker<Object, Object> {
 
         @Override
         protected Object doInBackground() {
@@ -76,14 +106,13 @@ public class regValorDefinido extends javax.swing.JInternalFrame {
             cliAdministracion cliente = new cliAdministracion();
             String json = "";
             try {
-                ValorDefinido valoresDefinidos = new ValorDefinido();
-                valoresDefinidos.setEntidad(cboEntidad.getSelectedItem().toString());
-                valoresDefinidos.setActivo(chkActivo.isSelected());
-                if (idValoresDefinidos == 0) {
-                    //json = cliente.RegistrarValoresDefinidos(new Gson().toJson(valoresDefinidos));
+                valorDefinido.setEntidad(cboEntidad.getSelectedItem().toString());
+                valorDefinido.setActivo(chkActivo.isSelected());
+                if (idValorDefinido == 0) {
+                    json = cliente.RegistrarValorDefinido(new Gson().toJson(valorDefinido));
                 } else {
-                    valoresDefinidos.setIdValorDefinido(idValoresDefinidos);
-                    //json = cliente.ActualizarValoresDefinidos(new Gson().toJson(valoresDefinidos));
+                    valorDefinido.setIdValorDefinido(idValorDefinido);
+                    json = cliente.ActualizarValorDefinido(new Gson().toJson(valorDefinido));
                 }
             } catch (Exception e) {
                 FabricaControles.OcultarProcesando(pnlContenido);
@@ -109,7 +138,7 @@ public class regValorDefinido extends javax.swing.JInternalFrame {
             }
         }
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -139,6 +168,12 @@ public class regValorDefinido extends javax.swing.JInternalFrame {
         lblUsuario.setText("USUARIO");
 
         lblEntidad.setText("ENTIDAD");
+
+        txtUsuario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtUsuarioActionPerformed(evt);
+            }
+        });
 
         cboEntidad.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "ENTRADA A INVENTARIO" }));
 
@@ -184,6 +219,11 @@ public class regValorDefinido extends javax.swing.JInternalFrame {
         );
 
         btnEstablecerValores.setText("ESTABLECER VALORES");
+        btnEstablecerValores.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEstablecerValoresActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout pnlContenidoLayout = new javax.swing.GroupLayout(pnlContenido);
         pnlContenido.setLayout(pnlContenidoLayout);
@@ -249,13 +289,31 @@ public class regValorDefinido extends javax.swing.JInternalFrame {
 
     private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
         // TODO add your handling code here:
-        new swGuardarValoresDefinidos().execute();
+        new swGuardarValorDefinido().execute();
     }//GEN-LAST:event_btnAceptarActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
         // TODO add your handling code here:
-        this.setVisible(false);
+        Utils.Cerrar(this);
     }//GEN-LAST:event_btnCancelarActionPerformed
+
+    private void btnEstablecerValoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEstablecerValoresActionPerformed
+        // TODO add your handling code here:
+        switch (cboEntidad.getSelectedItem().toString()) {
+            case "ENTRADA A INVENTARIO":
+                if (this.idValorDefinido == 0) {
+                    FabricaControles.VerModal(this.getDesktopPane(), new regEntradaInventario(0, 0, ""), close);
+                } else {
+                    FabricaControles.VerModal(this.getDesktopPane(), new regEntradaInventario(1, 0, valorDefinido.getJson()), close);
+                }
+                break;
+        }
+    }//GEN-LAST:event_btnEstablecerValoresActionPerformed
+
+    private void txtUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUsuarioActionPerformed
+        // TODO add your handling code here:
+        FabricaControles.VerModal(this.getDesktopPane(), new lisUsuario(1), select_usuario);
+    }//GEN-LAST:event_txtUsuarioActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

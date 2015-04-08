@@ -139,7 +139,7 @@ public class SGE extends javax.swing.JFrame {
     public void LanzarFormulario(String formulario) {
         switch (formulario) {
             case "lisUsuario":
-                lisUsuario lisUsuario = new lisUsuario();
+                lisUsuario lisUsuario = new lisUsuario(0);
                 jdpPrincipal.add(lisUsuario);
                 lisUsuario.setVisible(true);
                 break;
