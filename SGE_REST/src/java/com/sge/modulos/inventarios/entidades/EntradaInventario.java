@@ -1,6 +1,8 @@
 package com.sge.modulos.inventarios.entidades;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  *
@@ -25,8 +27,10 @@ public class EntradaInventario {
     private double porcentajeImpuesto;
     private double montoImpuesto;
     private double total;
+    private List<ItemEntradaInventario> items;
 
     public EntradaInventario() {
+        items = new ArrayList<>();
     }
 
     public int getIdEntradaInventario() {
@@ -163,5 +167,13 @@ public class EntradaInventario {
 
     public void setTotal(double total) {
         this.total = total;
+    }
+
+    public List<ItemEntradaInventario> getItems() {
+        return items;
+    }
+
+    public void setItems(List<ItemEntradaInventario> items) {
+        this.items = items;
     }
 }

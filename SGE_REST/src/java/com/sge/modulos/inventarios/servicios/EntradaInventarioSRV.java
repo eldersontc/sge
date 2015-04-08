@@ -54,11 +54,9 @@ public class EntradaInventarioSRV {
         int idEntradaInventario = new Gson().fromJson(json, int.class);
         try {
             EntradaInventarioDTO entradaInventarioDTO = new EntradaInventarioDTO();
-            List<Object> lista = entradaInventarioDTO.ObtenerEntradaInventario(idEntradaInventario);
+            EntradaInventario entradaInventario = entradaInventarioDTO.ObtenerEntradaInventario(idEntradaInventario);
             resultado.add(new Gson().toJson(true));
-            for (Object item : lista) {
-                resultado.add(new Gson().toJson(item));
-            }
+            resultado.add(new Gson().toJson(entradaInventario));
         } catch (Exception e) {
             resultado.clear();
             resultado.add(new Gson().toJson(false));
@@ -74,10 +72,9 @@ public class EntradaInventarioSRV {
         List<String> resultado = new ArrayList<>();
         String[] arrayJson = new Gson().fromJson(json, String[].class);
         EntradaInventario entradaInventario = new Gson().fromJson(arrayJson[0], EntradaInventario.class);
-        ItemEntradaInventario[] items = new Gson().fromJson(arrayJson[1], ItemEntradaInventario[].class);
         try {
             EntradaInventarioDTO entradaInventarioDTO = new EntradaInventarioDTO();
-            entradaInventarioDTO.RegistrarEntradaInventario(entradaInventario, items);
+            entradaInventarioDTO.RegistrarEntradaInventario(entradaInventario);
             resultado.add(new Gson().toJson(true));
         } catch (Exception e) {
             resultado.add(new Gson().toJson(false));

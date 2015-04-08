@@ -63,10 +63,10 @@ public class ValorDefinidoSRV {
     }
     
     @POST
-    @Path("RegistrarValoresDefinidos")
+    @Path("RegistrarValorDefinido")
     @Consumes("application/json")
     @Produces("application/json")
-    public String RegistrarValoresDefinidos(String json) {
+    public String RegistrarValorDefinido(String json) {
         List<String> resultado = new ArrayList<>();
         ValorDefinido valoresDefinidos = new Gson().fromJson(json, ValorDefinido.class);
         try {
@@ -81,10 +81,10 @@ public class ValorDefinidoSRV {
     }
     
     @POST
-    @Path("ActualizarValoresDefinidos")
+    @Path("ActualizarValorDefinido")
     @Consumes("application/json")
     @Produces("application/json")
-    public String ActualizarValoresDefinidos(String json) {
+    public String ActualizarValorDefinido(String json) {
         List<String> resultado = new ArrayList<>();
         ValorDefinido valoresDefinidos = new Gson().fromJson(json, ValorDefinido.class);
         try {
@@ -99,10 +99,10 @@ public class ValorDefinidoSRV {
     }
     
     @POST
-    @Path("EliminarValoresDefinidos")
+    @Path("EliminarValorDefinido")
     @Consumes("application/json")
     @Produces("application/json")
-    public String EliminarValoresDefinidos(String json) {
+    public String EliminarValorDefinido(String json) {
         List<String> resultado = new ArrayList<>();
         int idValoresDefinidos = new Gson().fromJson(json, int.class);
         try {

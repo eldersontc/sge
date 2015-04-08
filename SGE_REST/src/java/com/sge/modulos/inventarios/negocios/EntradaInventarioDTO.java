@@ -30,28 +30,27 @@ public class EntradaInventarioDTO {
         return lista;
     }
 
-    public List<Object> ObtenerEntradaInventario(int idEntradaInventario) {
-        List<Object> lista = new ArrayList<>();
+    public EntradaInventario ObtenerEntradaInventario(int idEntradaInventario) {
+        EntradaInventario entradaInventario;
         try {
             entradaInventarioDAO = new EntradaInventarioDAO();
             entradaInventarioDAO.AbrirSesision();
-            EntradaInventario entradaInventario = entradaInventarioDAO.ObtenerPorId(EntradaInventario.class, idEntradaInventario);
-            lista.add(entradaInventario);
+            entradaInventario = entradaInventarioDAO.ObtenerPorId(EntradaInventario.class, idEntradaInventario);
             itemEntradaInventarioDAO = new ItemEntradaInventarioDAO();
             itemEntradaInventarioDAO.AsignarSesion(entradaInventarioDAO);
             List<Object[]> filtros = new ArrayList<>();
             filtros.add(new Object[]{"idEntradaInventario", idEntradaInventario});
             List<ItemEntradaInventario> items = itemEntradaInventarioDAO.ObtenerLista(ItemEntradaInventario.class, filtros);
-            lista.add(items);
+            entradaInventario.setItems(items);
         } catch (Exception e) {
             throw e;
         } finally {
             entradaInventarioDAO.CerrarSesion();
         }
-        return lista;
+        return entradaInventario;
     }
     
-    public boolean RegistrarEntradaInventario(EntradaInventario entradaInventario, ItemEntradaInventario[] items) {
+    public boolean RegistrarEntradaInventario(EntradaInventario entradaInventario) {
         try {
             entradaInventarioDAO = new EntradaInventarioDAO();
             entradaInventarioDAO.IniciarTransaccion();
@@ -59,7 +58,7 @@ public class EntradaInventarioDTO {
 
             itemEntradaInventarioDAO = new ItemEntradaInventarioDAO();
             itemEntradaInventarioDAO.AsignarSesion(entradaInventarioDAO);
-            for (ItemEntradaInventario item : items) {
+            for (ItemEntradaInventario item : entradaInventario.getItems()) {
                 item.setIdEntradaInventario(entradaInventario.getIdEntradaInventario());
                 itemEntradaInventarioDAO.Agregar(item);
             }
