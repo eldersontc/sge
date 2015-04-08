@@ -16,12 +16,12 @@ public class ReporteDTO {
     ReporteDAO reporteDAO;
     ItemReporteDAO itemReporteDAO;
 
-    public List<Object[]> ObtenerReportes() {
+    public List<Object[]> ObtenerReportes(String filtro) {
         List<Object[]> lista;
         try {
             reporteDAO = new ReporteDAO();
             reporteDAO.AbrirSesision();
-            lista = reporteDAO.ObtenerReportes();
+            lista = reporteDAO.ObtenerReportes(filtro);
         } catch (Exception e) {
             throw e;
         } finally {

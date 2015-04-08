@@ -32,8 +32,9 @@ public class ReporteSRV {
     public String ObtenerReportes(String json) {
         List<String> resultado = new ArrayList<>();
         try {
+            String filtro = new Gson().fromJson(json, String.class);
             ReporteDTO reporteDTO = new ReporteDTO();
-            List<Object[]> lista = reporteDTO.ObtenerReportes();
+            List<Object[]> lista = reporteDTO.ObtenerReportes(filtro);
             resultado.add(new Gson().toJson(true));
             resultado.add(new Gson().toJson(lista));
         } catch (Exception e) {

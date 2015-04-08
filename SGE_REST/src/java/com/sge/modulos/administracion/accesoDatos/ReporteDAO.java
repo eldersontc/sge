@@ -8,11 +8,11 @@ import java.util.List;
  */
 public class ReporteDAO extends AdministracionDAO {
 
-    public List<Object[]> ObtenerReportes() {
+    public List<Object[]> ObtenerReportes(String filtro) {
         String sql = "SELECT \n"
                 + "Reporte.idReporte, Reporte.nombre, Reporte.entidad, Reporte.activo \n"
                 + "FROM \n"
-                + "Administracion.Reporte \n";
+                + "Administracion.Reporte \n" + filtro;
         return super.ObtenerLista(sql);
     }
 
