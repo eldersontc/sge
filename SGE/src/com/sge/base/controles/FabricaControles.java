@@ -372,6 +372,41 @@ public class FabricaControles {
         });
     }
     
+    public static void VerModal(JDesktopPane desktop, JInternalFrame frame) {
+        desktop.add(frame);
+        frame.setLayer(JLayeredPane.MODAL_LAYER);
+        frame.pack();
+        frame.setVisible(true);
+        JPanel panelModal = new JPanel();
+        panelModal.setName("panelModal");
+        panelModal.setOpaque(false);
+        JLayeredPane layered = JLayeredPane.getLayeredPaneAbove(frame);
+        layered.setLayer(panelModal, JLayeredPane.MODAL_LAYER.intValue());
+        panelModal.setBounds(0, 0, layered.getWidth(), layered.getHeight());
+        panelModal.addMouseListener(new MouseAdapter() {
+        });
+        panelModal.addMouseMotionListener(new MouseMotionAdapter() {
+        });
+        layered.add(panelModal);
+        frame.toFront();
+        frame.addInternalFrameListener(new javax.swing.event.InternalFrameAdapter() {
+            @Override
+            public void internalFrameClosing(javax.swing.event.InternalFrameEvent evt) {
+                JLayeredPane layered = JLayeredPane.getLayeredPaneAbove(evt.getInternalFrame());
+                Component panelModal = null;
+                for (Component component : layered.getComponents()) {
+                    if ("panelModal".equals(component.getName())) {
+                        panelModal = component;
+                        break;
+                    }
+                }
+                if (panelModal != null) {
+                    layered.remove(panelModal);
+                }
+            }
+        });
+    }
+    
     public static void VerModal(Component parentComponent, Component component, String title){
         JOptionPane.showInternalMessageDialog(parentComponent, component, title, JOptionPane.QUESTION_MESSAGE);
     }

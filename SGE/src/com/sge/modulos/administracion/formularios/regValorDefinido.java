@@ -6,6 +6,7 @@ import com.sge.base.utils.Utils;
 import com.sge.modulos.administracion.clases.Usuario;
 import com.sge.modulos.administracion.clases.ValorDefinido;
 import com.sge.modulos.administracion.cliente.cliAdministracion;
+import com.sge.modulos.inventarios.clases.EntradaInventario;
 import com.sge.modulos.inventarios.formularios.regEntradaInventario;
 import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
@@ -35,21 +36,11 @@ public class regValorDefinido extends javax.swing.JInternalFrame {
         this.idValorDefinido = idValorDefinido;
         if (this.idValorDefinido > 0) {
             new swObtenerValorDefinido().execute();
-        } else{
+        } else {
             valorDefinido = new ValorDefinido();
         }
     }
 
-    Action close = new AbstractAction() {
-        @Override
-        public void actionPerformed(ActionEvent evt) {
-            String json = ((regEntradaInventario) evt.getSource()).getJson();
-            if (!json.isEmpty()) {
-                valorDefinido.setJson(json);
-            }
-        }
-    };
-    
     Action select_usuario = new AbstractAction() {
         @Override
         public void actionPerformed(ActionEvent evt) {
@@ -301,11 +292,24 @@ public class regValorDefinido extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
         switch (cboEntidad.getSelectedItem().toString()) {
             case "ENTRADA A INVENTARIO":
-                if (this.idValorDefinido == 0) {
-                    FabricaControles.VerModal(this.getDesktopPane(), new regEntradaInventario(0, 0, ""), close);
-                } else {
-                    FabricaControles.VerModal(this.getDesktopPane(), new regEntradaInventario(1, 0, valorDefinido.getJson()), close);
-                }
+                FabricaControles.VerModal(this.getDesktopPane(), new regEntradaInventario(0) {
+                    @Override
+                    public void Init(int idEntradaInventario) {
+                        OcultarBotones();
+                        if (valorDefinido.getJson() == null) {
+                            this.entradaInventario = new EntradaInventario();
+                        } else {
+                            this.entradaInventario = new Gson().fromJson(valorDefinido.getJson(), EntradaInventario.class);
+                            AsignarValorControles(entradaInventario);
+                        }
+                    }
+
+                    @Override
+                    public void Aceptar() {
+                        valorDefinido.setJson(new Gson().toJson(this.entradaInventario));
+                        Cerrar();
+                    }
+                });
                 break;
         }
     }//GEN-LAST:event_btnEstablecerValoresActionPerformed

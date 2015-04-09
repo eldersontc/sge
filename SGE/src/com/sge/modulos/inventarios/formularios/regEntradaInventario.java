@@ -3,7 +3,7 @@ package com.sge.modulos.inventarios.formularios;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.sge.base.controles.FabricaControles;
-import com.sge.base.utils.Utils;
+import com.sge.base.formularios.frameBase;
 import com.sge.modulos.administracion.clases.Empleado;
 import com.sge.modulos.administracion.clases.Moneda;
 import com.sge.modulos.administracion.formularios.lisEmpleado;
@@ -29,56 +29,31 @@ import javax.swing.SwingWorker;
  *
  * @author elderson
  */
-public class regEntradaInventario extends javax.swing.JInternalFrame {
+public class regEntradaInventario extends frameBase {
 
     /**
      * Creates new form regEntradaInventario
      */
-    public regEntradaInventario(int modo, int idEntradaInventario, String json) {
+    public regEntradaInventario(int idEntradaInventario) {
         initComponents();
-        Init(modo, idEntradaInventario, json);
+        Init(idEntradaInventario);
     }
 
-    private int modo = 0;
+    public int idEntradaInventario = 0;
 
-    private int idEntradaInventario = 0;
+    public EntradaInventario entradaInventario;
 
-    private String json = "";
-
-    private EntradaInventario entradaInventario;
-
-    public void Init(int modo, int idEntradaInventario, String json) {
-        this.modo = modo;
+    public void Init(int idEntradaInventario) {
         this.idEntradaInventario = idEntradaInventario;
-        this.json = json;
-        switch (this.modo) {
-            /// NUEVOS VALORES DEFINIDOS
-            case 0:
-                Utils.OcultarControl(btnNuevoItem);
-                Utils.OcultarControl(btnEliminarItem);
-                this.entradaInventario = new EntradaInventario();
-                break;
-            /// EDITAR VALORES DEFINIDOS
-            case 1:
-                Utils.OcultarControl(btnNuevoItem);
-                Utils.OcultarControl(btnEliminarItem);
-                this.entradaInventario = new Gson().fromJson(this.json, EntradaInventario.class);
-                AsignarValorControles(this.entradaInventario);
-                break;
-            /// NUEVA ENTRADA INVENTARIO
-            case 2:
-                lblTitulo.setText("NUEVA " + lblTitulo.getText());
-                FabricaControles.AgregarCombo(tbItems, 7, 2);
-                txtFechaCreacion.setValue(new Date());
-                this.entradaInventario = new EntradaInventario();
-                break;
-            /// VER ENTRADA INVENTARIO
-            case 3:
-                lblTitulo.setText("EDITAR " + lblTitulo.getText());
-                Utils.OcultarControl(btnNuevoItem);
-                Utils.OcultarControl(btnEliminarItem);
-                new swObtenerEntradaInventario().execute();
-                break;
+        if(this.idEntradaInventario == 0){
+            lblTitulo.setText("NUEVA " + lblTitulo.getText());
+            FabricaControles.AgregarCombo(tbItems, 7, 2);
+            txtFechaCreacion.setValue(new Date());
+            this.entradaInventario = new EntradaInventario();
+        } else {
+            lblTitulo.setText("VER " + lblTitulo.getText());
+            OcultarBotones();
+            new swObtenerEntradaInventario().execute();
         }
     }
 
@@ -88,26 +63,26 @@ public class regEntradaInventario extends javax.swing.JInternalFrame {
             int[] celda = (int[]) e.getSource();
             switch (celda[1]) {
                 case 7:
-                    String unidad = Utils.ObtenerValorCelda(tbItems, celda[0], celda[1]);
-                    List<Object[]> unidades = Utils.ObtenerValorCelda(tbItems, celda[0], 6);
+                    String unidad = ObtenerValorCelda(tbItems, celda[0], celda[1]);
+                    List<Object[]> unidades = ObtenerValorCelda(tbItems, celda[0], 6);
                     for (Object[] item : unidades) {
                         if (item[2].equals(unidad)) {
-                            Utils.AsignarValorCelda(tbItems, item[1], celda[0], 4);
-                            Utils.AsignarValorCelda(tbItems, item[3], celda[0], 5);
+                            AsignarValorCelda(tbItems, item[1], celda[0], 4);
+                            AsignarValorCelda(tbItems, item[3], celda[0], 5);
                             break;
                         }
                     }
                     break;
                 case 8:
-                    double cantidad8 = Utils.ObtenerValorCelda(tbItems, celda[0], celda[1]);
-                    double precio8 = Utils.ObtenerValorCelda(tbItems, celda[0], 9);
-                    Utils.AsignarValorCelda(tbItems, cantidad8 * precio8, celda[0], 10);
+                    double cantidad8 = ObtenerValorCelda(tbItems, celda[0], celda[1]);
+                    double precio8 = ObtenerValorCelda(tbItems, celda[0], 9);
+                    AsignarValorCelda(tbItems, cantidad8 * precio8, celda[0], 10);
                     CalcularTotales();
                     break;
                 case 9:
-                    double cantidad9 = Utils.ObtenerValorCelda(tbItems, celda[0], 8);
-                    double precio9 = Utils.ObtenerValorCelda(tbItems, celda[0], celda[1]);
-                    Utils.AsignarValorCelda(tbItems, cantidad9 * precio9, celda[0], 10);
+                    double cantidad9 = ObtenerValorCelda(tbItems, celda[0], 8);
+                    double precio9 = ObtenerValorCelda(tbItems, celda[0], celda[1]);
+                    AsignarValorCelda(tbItems, cantidad9 * precio9, celda[0], 10);
                     CalcularTotales();
                     break;
             }
@@ -126,7 +101,7 @@ public class regEntradaInventario extends javax.swing.JInternalFrame {
                     List<Producto> productos = (List<Producto>) new Gson().fromJson(resultado[1], new TypeToken<List<Producto>>() {
                     }.getType());
                     for (Producto producto : productos) {
-                        Utils.AgregarFila(tbItems,
+                        AgregarFila(tbItems,
                                 new Object[]{
                                     0,
                                     producto.getIdProducto(),
@@ -202,28 +177,29 @@ public class regEntradaInventario extends javax.swing.JInternalFrame {
         List<ItemEntradaInventario> items = new ArrayList<>();
         for (int i = 0; i < tbItems.getRowCount(); i++) {
             ItemEntradaInventario item = new ItemEntradaInventario();
-            item.setIdProducto(Utils.ObtenerValorCelda(tbItems, i, 1));
-            item.setCodigoProducto(Utils.ObtenerValorCelda(tbItems, i, 2));
-            item.setDescripcionProducto(Utils.ObtenerValorCelda(tbItems, i, 3));
-            item.setIdUnidad(Utils.ObtenerValorCelda(tbItems, i, 4));
-            item.setFactor(Utils.ObtenerValorCelda(tbItems, i, 5));
-            item.setAbreviacionUnidad(Utils.ObtenerValorCelda(tbItems, i, 7));
-            item.setCantidad(Utils.ObtenerValorCelda(tbItems, i, 8));
-            item.setPrecio(Utils.ObtenerValorCelda(tbItems, i, 9));
-            item.setTotal(Utils.ObtenerValorCelda(tbItems, i, 10));
+            item.setIdProducto(ObtenerValorCelda(tbItems, i, 1));
+            item.setCodigoProducto(ObtenerValorCelda(tbItems, i, 2));
+            item.setDescripcionProducto(ObtenerValorCelda(tbItems, i, 3));
+            item.setIdUnidad(ObtenerValorCelda(tbItems, i, 4));
+            item.setFactor(ObtenerValorCelda(tbItems, i, 5));
+            item.setAbreviacionUnidad(ObtenerValorCelda(tbItems, i, 7));
+            item.setCantidad(ObtenerValorCelda(tbItems, i, 8));
+            item.setPrecio(ObtenerValorCelda(tbItems, i, 9));
+            item.setTotal(ObtenerValorCelda(tbItems, i, 10));
             items.add(item);
         }
         return items;
     }
 
-    public String getJson() {
-        return this.json;
+    public void OcultarBotones(){
+        OcultarControl(btnNuevoItem);
+        OcultarControl(btnEliminarItem);
     }
-
+    
     public void CalcularTotales() {
         double subTotal = 0.0;
         for (int i = 0; i < tbItems.getRowCount(); i++) {
-            double totalItem = Utils.ObtenerValorCelda(tbItems, i, 10);
+            double totalItem = ObtenerValorCelda(tbItems, i, 10);
             subTotal += totalItem;
         }
         entradaInventario.setSubTotal(subTotal);
@@ -243,7 +219,7 @@ public class regEntradaInventario extends javax.swing.JInternalFrame {
         txtImpuesto.setValue(entradaInventario.getMontoImpuesto());
         txtTotal.setValue(entradaInventario.getTotal());
         for (ItemEntradaInventario item : entradaInventario.getItems()) {
-            Utils.AgregarFila(tbItems,
+            AgregarFila(tbItems,
                     new Object[]{
                         item.getIdItemEntradaInventario(),
                         item.getIdProducto(),
@@ -332,6 +308,20 @@ public class regEntradaInventario extends javax.swing.JInternalFrame {
         }
     }
 
+    @Override
+    public void Aceptar(){
+        if(this.idEntradaInventario == 0){
+            new swGuardarEntradaInventario().execute();
+        } else {
+            Cerrar();
+        }
+    }
+    
+    @Override
+    public void Cancelar(){
+        Cerrar();
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -690,24 +680,12 @@ public class regEntradaInventario extends javax.swing.JInternalFrame {
 
     private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
         // TODO add your handling code here:
-        switch (this.modo) {
-            case 0:
-            case 1:
-                this.json = new Gson().toJson(this.entradaInventario);
-                Utils.Cerrar(this);
-                break;
-            case 2:
-                new swGuardarEntradaInventario().execute();
-                break;
-            case 3:
-                Utils.Cerrar(this);
-                break;
-        }
+        Aceptar();
     }//GEN-LAST:event_btnAceptarActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
         // TODO add your handling code here:
-        Utils.Cerrar(this);
+        Cancelar();
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void btnNuevoItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoItemActionPerformed
@@ -717,8 +695,8 @@ public class regEntradaInventario extends javax.swing.JInternalFrame {
 
     private void btnEliminarItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarItemActionPerformed
         // TODO add your handling code here:
-        if (Utils.FilaActiva(tbItems)) {
-            Utils.EliminarFila(tbItems);
+        if (FilaActiva(tbItems)) {
+            EliminarFila(tbItems);
             CalcularTotales();
         }
     }//GEN-LAST:event_btnEliminarItemActionPerformed

@@ -42,7 +42,7 @@ public class lisEntradaInventario extends javax.swing.JInternalFrame {
     Action view = new AbstractAction() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            VerProducto();
+            VerEntradaInventario();
         }
     };
 
@@ -143,9 +143,9 @@ public class lisEntradaInventario extends javax.swing.JInternalFrame {
         new swObtenerEntradaInventarios().execute();
     }
 
-    public void VerProducto() {
+    public void VerEntradaInventario() {
         int idEntradaInventario = Utils.ObtenerValorCelda(tbEntradaInventarios, 1);
-        regEntradaInventario regEntradaInventario = new regEntradaInventario(3, idEntradaInventario, "");
+        regEntradaInventario regEntradaInventario = new regEntradaInventario(idEntradaInventario);
         this.getParent().add(regEntradaInventario);
         regEntradaInventario.setVisible(true);
     }
@@ -338,7 +338,7 @@ public class lisEntradaInventario extends javax.swing.JInternalFrame {
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
         // TODO add your handling code here:
-        regEntradaInventario regEntradaInventario = new regEntradaInventario(2, 0, "");
+        regEntradaInventario regEntradaInventario = new regEntradaInventario(0);
         this.getDesktopPane().add(regEntradaInventario);
         regEntradaInventario.setVisible(true);
     }//GEN-LAST:event_btnNuevoActionPerformed
