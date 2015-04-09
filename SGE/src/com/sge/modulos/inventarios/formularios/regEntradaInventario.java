@@ -59,7 +59,7 @@ public class regEntradaInventario extends frameBase {
         }
     }
 
-    public void AsignarValorControles(EntradaInventario entradaInventario) {
+    public void AsignarControles(EntradaInventario entradaInventario) {
         txtProveedor.setText(entradaInventario.getRazonSocialProveedor());
         txtNumero.setText(entradaInventario.getNumero());
         txtResponsable.setText(entradaInventario.getNombreResponsable());
@@ -259,7 +259,7 @@ public class regEntradaInventario extends frameBase {
                         if (resultado[0].equals("true")) {
                             ValorDefinido valorDefinido = new Gson().fromJson(resultado[1], ValorDefinido.class);
                             entradaInventario = new Gson().fromJson(valorDefinido.getJson(), EntradaInventario.class);
-                            AsignarValorControles(entradaInventario);
+                            AsignarControles(entradaInventario);
                         }
                     }
                 }
@@ -303,7 +303,7 @@ public class regEntradaInventario extends frameBase {
 
                 if (resultado[0].equals("true")) {
                     EntradaInventario entradaInventario = new Gson().fromJson(resultado[1], EntradaInventario.class);
-                    AsignarValorControles(entradaInventario);
+                    AsignarControles(entradaInventario);
                 }
                 FabricaControles.OcultarCargando(pnlContenido);
             } catch (Exception e) {

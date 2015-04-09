@@ -300,7 +300,7 @@ public class regValorDefinido extends javax.swing.JInternalFrame {
                             this.entradaInventario = new EntradaInventario();
                         } else {
                             this.entradaInventario = new Gson().fromJson(valorDefinido.getJson(), EntradaInventario.class);
-                            AsignarValorControles(entradaInventario);
+                            AsignarControles(entradaInventario);
                         }
                     }
 
