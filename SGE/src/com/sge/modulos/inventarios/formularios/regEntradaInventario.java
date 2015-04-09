@@ -2,10 +2,13 @@ package com.sge.modulos.inventarios.formularios;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.sge.base.constantes.Constantes;
 import com.sge.base.controles.FabricaControles;
 import com.sge.base.formularios.frameBase;
 import com.sge.modulos.administracion.clases.Empleado;
 import com.sge.modulos.administracion.clases.Moneda;
+import com.sge.modulos.administracion.clases.ValorDefinido;
+import com.sge.modulos.administracion.cliente.cliAdministracion;
 import com.sge.modulos.administracion.formularios.lisEmpleado;
 import com.sge.modulos.administracion.formularios.lisMoneda;
 import com.sge.modulos.compras.clases.Proveedor;
@@ -45,16 +48,78 @@ public class regEntradaInventario extends frameBase {
 
     public void Init(int idEntradaInventario) {
         this.idEntradaInventario = idEntradaInventario;
-        if(this.idEntradaInventario == 0){
+        if (this.idEntradaInventario == 0) {
             lblTitulo.setText("NUEVA " + lblTitulo.getText());
             FabricaControles.AgregarCombo(tbItems, 7, 2);
-            txtFechaCreacion.setValue(new Date());
-            this.entradaInventario = new EntradaInventario();
+            new swObtenerValoresDefinidos().execute();
         } else {
             lblTitulo.setText("VER " + lblTitulo.getText());
             OcultarBotones();
             new swObtenerEntradaInventario().execute();
         }
+    }
+
+    public void AsignarValorControles(EntradaInventario entradaInventario) {
+        txtProveedor.setText(entradaInventario.getRazonSocialProveedor());
+        txtNumero.setText(entradaInventario.getNumero());
+        txtResponsable.setText(entradaInventario.getNombreResponsable());
+        txtFechaCreacion.setValue(entradaInventario.getFechaCreacion());
+        txtAlmacen.setText(entradaInventario.getDescripcionAlmacen());
+        txtMoneda.setText(entradaInventario.getSimboloMoneda());
+        txtSubTotal.setValue(entradaInventario.getSubTotal());
+        txtImpuesto.setValue(entradaInventario.getMontoImpuesto());
+        txtTotal.setValue(entradaInventario.getTotal());
+        for (ItemEntradaInventario item : entradaInventario.getItems()) {
+            AgregarFila(tbItems,
+                    new Object[]{
+                        item.getIdItemEntradaInventario(),
+                        item.getIdProducto(),
+                        item.getCodigoProducto(),
+                        item.getDescripcionProducto(),
+                        item.getIdUnidad(),
+                        item.getFactor(),
+                        null,
+                        item.getAbreviacionUnidad(),
+                        item.getCantidad(),
+                        item.getPrecio(),
+                        item.getTotal()
+                    });
+        }
+    }
+
+    public void OcultarBotones() {
+        OcultarControl(btnNuevoItem);
+        OcultarControl(btnEliminarItem);
+    }
+
+    public void CalcularTotales() {
+        double subTotal = 0.0;
+        for (int i = 0; i < tbItems.getRowCount(); i++) {
+            double totalItem = ObtenerValorCelda(tbItems, i, 10);
+            subTotal += totalItem;
+        }
+        entradaInventario.setSubTotal(subTotal);
+        entradaInventario.setTotal(subTotal);
+        txtSubTotal.setValue(subTotal);
+        txtTotal.setValue(subTotal);
+    }
+
+    public List<ItemEntradaInventario> getItems() {
+        List<ItemEntradaInventario> items = new ArrayList<>();
+        for (int i = 0; i < tbItems.getRowCount(); i++) {
+            ItemEntradaInventario item = new ItemEntradaInventario();
+            item.setIdProducto(ObtenerValorCelda(tbItems, i, 1));
+            item.setCodigoProducto(ObtenerValorCelda(tbItems, i, 2));
+            item.setDescripcionProducto(ObtenerValorCelda(tbItems, i, 3));
+            item.setIdUnidad(ObtenerValorCelda(tbItems, i, 4));
+            item.setFactor(ObtenerValorCelda(tbItems, i, 5));
+            item.setAbreviacionUnidad(ObtenerValorCelda(tbItems, i, 7));
+            item.setCantidad(ObtenerValorCelda(tbItems, i, 8));
+            item.setPrecio(ObtenerValorCelda(tbItems, i, 9));
+            item.setTotal(ObtenerValorCelda(tbItems, i, 10));
+            items.add(item);
+        }
+        return items;
     }
 
     Action change_item = new AbstractAction() {
@@ -125,7 +190,7 @@ public class regEntradaInventario extends frameBase {
         }
     };
 
-    Action select_proveedor = new AbstractAction() {
+    Action select_prov = new AbstractAction() {
         @Override
         public void actionPerformed(ActionEvent evt) {
             Proveedor seleccionado = ((lisProveedor) evt.getSource()).getSeleccionado();
@@ -137,7 +202,7 @@ public class regEntradaInventario extends frameBase {
         }
     };
 
-    Action select_responsable = new AbstractAction() {
+    Action select_resp = new AbstractAction() {
         @Override
         public void actionPerformed(ActionEvent evt) {
             Empleado seleccionado = ((lisEmpleado) evt.getSource()).getSeleccionado();
@@ -149,7 +214,7 @@ public class regEntradaInventario extends frameBase {
         }
     };
 
-    Action select_almacen = new AbstractAction() {
+    Action select_alma = new AbstractAction() {
         @Override
         public void actionPerformed(ActionEvent evt) {
             Almacen seleccionado = ((lisAlmacen) evt.getSource()).getSeleccionado();
@@ -161,7 +226,7 @@ public class regEntradaInventario extends frameBase {
         }
     };
 
-    Action select_moneda = new AbstractAction() {
+    Action select_mone = new AbstractAction() {
         @Override
         public void actionPerformed(ActionEvent evt) {
             Moneda seleccionado = ((lisMoneda) evt.getSource()).getSeleccionado();
@@ -173,66 +238,42 @@ public class regEntradaInventario extends frameBase {
         }
     };
 
-    public List<ItemEntradaInventario> getItems() {
-        List<ItemEntradaInventario> items = new ArrayList<>();
-        for (int i = 0; i < tbItems.getRowCount(); i++) {
-            ItemEntradaInventario item = new ItemEntradaInventario();
-            item.setIdProducto(ObtenerValorCelda(tbItems, i, 1));
-            item.setCodigoProducto(ObtenerValorCelda(tbItems, i, 2));
-            item.setDescripcionProducto(ObtenerValorCelda(tbItems, i, 3));
-            item.setIdUnidad(ObtenerValorCelda(tbItems, i, 4));
-            item.setFactor(ObtenerValorCelda(tbItems, i, 5));
-            item.setAbreviacionUnidad(ObtenerValorCelda(tbItems, i, 7));
-            item.setCantidad(ObtenerValorCelda(tbItems, i, 8));
-            item.setPrecio(ObtenerValorCelda(tbItems, i, 9));
-            item.setTotal(ObtenerValorCelda(tbItems, i, 10));
-            items.add(item);
-        }
-        return items;
-    }
+    public class swObtenerValoresDefinidos extends SwingWorker<Object, Object> {
 
-    public void OcultarBotones(){
-        OcultarControl(btnNuevoItem);
-        OcultarControl(btnEliminarItem);
-    }
-    
-    public void CalcularTotales() {
-        double subTotal = 0.0;
-        for (int i = 0; i < tbItems.getRowCount(); i++) {
-            double totalItem = ObtenerValorCelda(tbItems, i, 10);
-            subTotal += totalItem;
+        @Override
+        protected Object doInBackground() {
+            FabricaControles.VerCargando(pnlContenido);
+            cliAdministracion cliente = new cliAdministracion();
+            try {
+                String json = cliente.ObtenerValoresDefinidos(new Gson().toJson(String.format("WHERE idUsuario = %d AND entidad = '%s'", 1, Constantes.ENTIDAD_ENTRADA_A_INVENTARIO)));
+                String[] resultado = new Gson().fromJson(json, String[].class);
+                if (resultado[0].equals("true")) {
+                    List<Object[]> valoresDefinidos = (List<Object[]>) new Gson().fromJson(resultado[1], new TypeToken<List<Object[]>>() {
+                    }.getType());
+                    if (valoresDefinidos.isEmpty()) {
+                        txtFechaCreacion.setValue(new Date());
+                        entradaInventario = new EntradaInventario();
+                    } else {
+                        json = cliente.ObtenerValorDefinido(new Gson().toJson(valoresDefinidos.get(0)[0]));
+                        resultado = new Gson().fromJson(json, String[].class);
+                        if (resultado[0].equals("true")) {
+                            ValorDefinido valorDefinido = new Gson().fromJson(resultado[1], ValorDefinido.class);
+                            entradaInventario = new Gson().fromJson(valorDefinido.getJson(), EntradaInventario.class);
+                            AsignarValorControles(entradaInventario);
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                FabricaControles.OcultarCargando(pnlContenido);
+            } finally {
+                cliente.close();
+            }
+            return null;
         }
-        entradaInventario.setSubTotal(subTotal);
-        entradaInventario.setTotal(subTotal);
-        txtSubTotal.setValue(subTotal);
-        txtTotal.setValue(subTotal);
-    }
 
-    public void AsignarValorControles(EntradaInventario entradaInventario) {
-        txtProveedor.setText(entradaInventario.getRazonSocialProveedor());
-        txtNumero.setText(entradaInventario.getNumero());
-        txtResponsable.setText(entradaInventario.getNombreResponsable());
-        txtFechaCreacion.setValue(entradaInventario.getFechaCreacion());
-        txtAlmacen.setText(entradaInventario.getDescripcionAlmacen());
-        txtMoneda.setText(entradaInventario.getSimboloMoneda());
-        txtSubTotal.setValue(entradaInventario.getSubTotal());
-        txtImpuesto.setValue(entradaInventario.getMontoImpuesto());
-        txtTotal.setValue(entradaInventario.getTotal());
-        for (ItemEntradaInventario item : entradaInventario.getItems()) {
-            AgregarFila(tbItems,
-                    new Object[]{
-                        item.getIdItemEntradaInventario(),
-                        item.getIdProducto(),
-                        item.getCodigoProducto(),
-                        item.getDescripcionProducto(),
-                        item.getIdUnidad(),
-                        item.getFactor(),
-                        null,
-                        item.getAbreviacionUnidad(),
-                        item.getCantidad(),
-                        item.getPrecio(),
-                        item.getTotal()
-                    });
+        @Override
+        protected void done() {
+            FabricaControles.OcultarCargando(pnlContenido);
         }
     }
 
@@ -309,19 +350,19 @@ public class regEntradaInventario extends frameBase {
     }
 
     @Override
-    public void Aceptar(){
-        if(this.idEntradaInventario == 0){
+    public void Aceptar() {
+        if (this.idEntradaInventario == 0) {
             new swGuardarEntradaInventario().execute();
         } else {
             Cerrar();
         }
     }
-    
+
     @Override
-    public void Cancelar(){
+    public void Cancelar() {
         Cerrar();
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -703,22 +744,22 @@ public class regEntradaInventario extends frameBase {
 
     private void txtAlmacenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtAlmacenActionPerformed
         // TODO add your handling code here:
-        FabricaControles.VerModal(this.getDesktopPane(), new lisAlmacen(1), select_almacen);
+        FabricaControles.VerModal(this.getDesktopPane(), new lisAlmacen(1), select_alma);
     }//GEN-LAST:event_txtAlmacenActionPerformed
 
     private void txtProveedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtProveedorActionPerformed
         // TODO add your handling code here:
-        FabricaControles.VerModal(this.getDesktopPane(), new lisProveedor(1), select_proveedor);
+        FabricaControles.VerModal(this.getDesktopPane(), new lisProveedor(1), select_prov);
     }//GEN-LAST:event_txtProveedorActionPerformed
 
     private void txtResponsableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtResponsableActionPerformed
         // TODO add your handling code here:
-        FabricaControles.VerModal(this.getDesktopPane(), new lisEmpleado(1), select_responsable);
+        FabricaControles.VerModal(this.getDesktopPane(), new lisEmpleado(1), select_resp);
     }//GEN-LAST:event_txtResponsableActionPerformed
 
     private void txtMonedaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtMonedaActionPerformed
         // TODO add your handling code here:
-        FabricaControles.VerModal(this.getDesktopPane(), new lisMoneda(1), select_moneda);
+        FabricaControles.VerModal(this.getDesktopPane(), new lisMoneda(1), select_mone);
     }//GEN-LAST:event_txtMonedaActionPerformed
 
 

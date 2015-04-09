@@ -53,7 +53,7 @@ public class lisValorDefinido extends javax.swing.JInternalFrame {
             cliAdministracion cliente = new cliAdministracion();
             String json = "";
             try {
-                json = cliente.ObtenerValoresDefinidos("");
+                json = cliente.ObtenerValoresDefinidos(new Gson().toJson(""));
             } catch (Exception e) {
                 FabricaControles.OcultarCargando(pnlContenido);
                 json = "[\"false\"]";
