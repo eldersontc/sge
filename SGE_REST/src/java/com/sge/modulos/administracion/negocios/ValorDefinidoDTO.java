@@ -12,12 +12,12 @@ public class ValorDefinidoDTO {
     
     ValorDefinidoDAO valorDefinidoDAO;
     
-    public List<Object[]> ObtenerValoresDefinidos() {
+    public List<Object[]> ObtenerValoresDefinidos(String filtro) {
         List<Object[]> lista;
         try {
             valorDefinidoDAO = new ValorDefinidoDAO();
             valorDefinidoDAO.AbrirSesision();
-            lista = valorDefinidoDAO.ObtenerValoresDefinidos();
+            lista = valorDefinidoDAO.ObtenerValoresDefinidos(filtro);
         } catch (Exception e) {
             throw e;
         } finally {
