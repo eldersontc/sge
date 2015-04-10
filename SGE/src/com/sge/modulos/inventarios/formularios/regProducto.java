@@ -354,7 +354,7 @@ public class regProducto extends javax.swing.JInternalFrame {
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.Integer.class, java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class
+                java.lang.Integer.class, java.lang.Integer.class, java.lang.String.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class
             };
             boolean[] canEdit = new boolean [] {
                 false, false, true, false, false, false, false
@@ -379,11 +379,8 @@ public class regProducto extends javax.swing.JInternalFrame {
             tbAlmacenes.getColumnModel().getColumn(1).setMaxWidth(0);
             tbAlmacenes.getColumnModel().getColumn(2).setPreferredWidth(200);
             tbAlmacenes.getColumnModel().getColumn(4).setPreferredWidth(150);
-            tbAlmacenes.getColumnModel().getColumn(4).setHeaderValue("S. COMPROMETIDO");
             tbAlmacenes.getColumnModel().getColumn(5).setPreferredWidth(120);
-            tbAlmacenes.getColumnModel().getColumn(5).setHeaderValue("S. SOLICITADO");
             tbAlmacenes.getColumnModel().getColumn(6).setPreferredWidth(120);
-            tbAlmacenes.getColumnModel().getColumn(6).setHeaderValue("S. DISPONIBLE");
         }
 
         btnNuevoAlmacen.setText("NUEVO");

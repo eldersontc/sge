@@ -9,10 +9,10 @@ public class ProductoAlmacen {
     private int idProductoAlmacen;
     private Producto producto;
     private Almacen almacen;
-    private int stockFisico;
-    private int stockComprometido;
-    private int stockSolicitado;
-    private int stockDisponible;
+    private double stockFisico;
+    private double stockComprometido;
+    private double stockSolicitado;
+    private double stockDisponible;
 
     public ProductoAlmacen() {
     }
@@ -49,31 +49,31 @@ public class ProductoAlmacen {
         this.almacen = almacen;
     }
 
-    public int getStockFisico() {
+    public double getStockFisico() {
         return stockFisico;
     }
 
-    public void setStockFisico(int stockFisico) {
+    public void setStockFisico(double stockFisico) {
         this.stockFisico = stockFisico;
     }
 
-    public int getStockComprometido() {
+    public double getStockComprometido() {
         return stockComprometido;
     }
 
-    public void setStockComprometido(int stockComprometido) {
+    public void setStockComprometido(double stockComprometido) {
         this.stockComprometido = stockComprometido;
     }
 
-    public int getStockSolicitado() {
+    public double getStockSolicitado() {
         return stockSolicitado;
     }
 
-    public void setStockSolicitado(int stockSolicitado) {
+    public void setStockSolicitado(double stockSolicitado) {
         this.stockSolicitado = stockSolicitado;
     }
 
-    public int getStockDisponible() {
+    public double getStockDisponible() {
         return stockDisponible;
     }
 

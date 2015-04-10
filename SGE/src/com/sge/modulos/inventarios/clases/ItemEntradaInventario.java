@@ -11,6 +11,7 @@ public class ItemEntradaInventario {
     private int idProducto;
     private String codigoProducto;
     private String descripcionProducto;
+    private int idAlmacen;
     private int idUnidad;
     private int factor;
     private String abreviacionUnidad;
@@ -62,6 +63,14 @@ public class ItemEntradaInventario {
         this.descripcionProducto = descripcionProducto;
     }
 
+    public int getIdAlmacen() {
+        return idAlmacen;
+    }
+
+    public void setIdAlmacen(int idAlmacen) {
+        this.idAlmacen = idAlmacen;
+    }
+    
     public int getIdUnidad() {
         return idUnidad;
     }

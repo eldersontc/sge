@@ -338,10 +338,10 @@
                             <Column editable="false" title="IDPRODUCTOALMACEN" type="java.lang.Integer"/>
                             <Column editable="false" title="IDALMACEN" type="java.lang.Integer"/>
                             <Column editable="true" title="ALMACEN" type="java.lang.String"/>
-                            <Column editable="false" title="S. FISICO" type="java.lang.Integer"/>
-                            <Column editable="false" title="S. COMPROMETIDO" type="java.lang.Integer"/>
-                            <Column editable="false" title="S. SOLICITADO" type="java.lang.Integer"/>
-                            <Column editable="false" title="S. DISPONIBLE" type="java.lang.Integer"/>
+                            <Column editable="false" title="S. FISICO" type="java.lang.Double"/>
+                            <Column editable="false" title="S. COMPROMETIDO" type="java.lang.Double"/>
+                            <Column editable="false" title="S. SOLICITADO" type="java.lang.Double"/>
+                            <Column editable="false" title="S. DISPONIBLE" type="java.lang.Double"/>
                           </Table>
                         </Property>
                         <Property name="autoResizeMode" type="int" value="0"/>
@@ -368,17 +368,17 @@
                               <Renderer/>
                             </Column>
                             <Column maxWidth="-1" minWidth="-1" prefWidth="150" resizable="true">
-                              <Title value="S. COMPROMETIDO"/>
+                              <Title/>
                               <Editor/>
                               <Renderer/>
                             </Column>
                             <Column maxWidth="-1" minWidth="-1" prefWidth="120" resizable="true">
-                              <Title value="S. SOLICITADO"/>
+                              <Title/>
                               <Editor/>
                               <Renderer/>
                             </Column>
                             <Column maxWidth="-1" minWidth="-1" prefWidth="120" resizable="true">
-                              <Title value="S. DISPONIBLE"/>
+                              <Title/>
                               <Editor/>
                               <Renderer/>
                             </Column>
