@@ -91,7 +91,7 @@ public class EntradaInventarioSRV {
         int idEntradaInventario = new Gson().fromJson(json, int.class);
         try {
             EntradaInventarioDTO entradaInventarioDTO = new EntradaInventarioDTO();
-            entradaInventarioDTO.EliminarProducto(idEntradaInventario);
+            entradaInventarioDTO.EliminarEntradaInventario(idEntradaInventario);
             resultado.add(new Gson().toJson(true));
         } catch (Exception e) {
             resultado.add(new Gson().toJson(false));

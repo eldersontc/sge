@@ -18,6 +18,11 @@ public class ProductoAlmacenDAO extends InventariosDAO {
         return super.ObtenerLista(sql);
     }
     
+    public void ActualizarStockFisico(int idProducto, int idAlmacen, double cantidad){
+        String sql = String.format("SELECT Inventarios.Sp_Actualizar_Stock_Fisico(%d, %d, %s)", idProducto, idAlmacen, cantidad);
+        super.EjecutarFuncion(sql);
+    }
+    
     public int EliminarProductoAlmacen(int idProductoAlmacen) {
         String sql = "DELETE FROM Inventarios.ProductoAlmacen WHERE idProductoAlmacen = " + idProductoAlmacen;
         return super.Ejecutar(sql);

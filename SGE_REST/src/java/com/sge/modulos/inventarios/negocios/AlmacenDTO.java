@@ -16,7 +16,7 @@ public class AlmacenDTO {
         List<Object[]> lista;
         try {
             almacenDAO = new AlmacenDAO();
-            almacenDAO.AbrirSesision();
+            almacenDAO.AbrirSesion();
             lista = almacenDAO.ObtenerAlmacenes();
         } catch (Exception e) {
             throw e;

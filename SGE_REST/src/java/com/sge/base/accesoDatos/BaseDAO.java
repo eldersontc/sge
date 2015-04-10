@@ -1,12 +1,15 @@
 package com.sge.base.accesoDatos;
 
 import java.io.File;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.jdbc.Work;
 
 /**
  *
@@ -79,6 +82,16 @@ public class BaseDAO {
     
     public int Ejecutar(String sql) {
         return sesion.createSQLQuery(sql).executeUpdate();
+    }
+    
+    public void EjecutarFuncion(String sql){
+        sesion.doWork(new Work() {
+
+            @Override
+            public void execute(Connection cnctn) throws SQLException {
+                cnctn.prepareCall(sql).executeQuery();
+            }
+        });
     }
 
     public Session getSesion() {

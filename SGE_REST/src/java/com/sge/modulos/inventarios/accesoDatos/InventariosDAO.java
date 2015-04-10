@@ -22,7 +22,7 @@ public class InventariosDAO extends BaseDAO {
         return recursos;
     }
     
-    public void AbrirSesision(){
+    public void AbrirSesion(){
         super.AbrirSesion(this.Recursos());
     }
     

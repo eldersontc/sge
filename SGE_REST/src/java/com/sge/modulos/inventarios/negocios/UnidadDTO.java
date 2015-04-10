@@ -16,7 +16,7 @@ public class UnidadDTO {
         List<Object[]> lista;
         try {
             unidadDAO = new UnidadDAO();
-            unidadDAO.AbrirSesision();
+            unidadDAO.AbrirSesion();
             lista = unidadDAO.ObtenerUnidades();
         } catch (Exception e) {
             throw e;

@@ -23,7 +23,7 @@ public class ProductoDTO {
         List<Object[]> lista;
         try {
             productoDAO = new ProductoDAO();
-            productoDAO.AbrirSesision();
+            productoDAO.AbrirSesion();
             lista = productoDAO.ObtenerProductos();
         } catch (Exception e) {
             throw e;
@@ -37,7 +37,7 @@ public class ProductoDTO {
         List<Object> lista = new ArrayList<>();
         try {
             productoDAO = new ProductoDAO();
-            productoDAO.AbrirSesision();
+            productoDAO.AbrirSesion();
             Producto producto = productoDAO.ObtenerPorId(Producto.class, idProducto);
             lista.add(producto);
             productoUnidadDAO = new ProductoUnidadDAO();
@@ -156,7 +156,7 @@ public class ProductoDTO {
         List<Producto> lista = new ArrayList<>();
         try {
             productoUnidadDAO = new ProductoUnidadDAO();
-            productoUnidadDAO.AbrirSesision();
+            productoUnidadDAO.AbrirSesion();
             for (Producto producto : productos) {
                 List<Object[]> productoUnidades = productoUnidadDAO.ObtenerProductoUnidadesPorIdProducto(producto.getIdProducto());
                 producto.setProductoUnidades(productoUnidades);
