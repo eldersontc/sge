@@ -6,7 +6,7 @@ import com.sge.base.constantes.Constantes;
 import com.sge.base.controles.FabricaControles;
 import com.sge.base.reportes.FabricaReportes;
 import com.sge.base.utils.Utils;
-import com.sge.modulos.inventarios.clases.EntradaInventario;
+import com.sge.modulos.inventarios.clases.SalidaInventario;
 import com.sge.modulos.inventarios.cliente.cliInventarios;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
@@ -20,21 +20,21 @@ import javax.swing.SwingWorker;
  *
  * @author elderson
  */
-public class lisEntradaInventario extends javax.swing.JInternalFrame {
+public class lisSalidaInventario extends javax.swing.JInternalFrame {
 
     /**
-     * Creates new form lisEntradaInventario
+     * Creates new form lisSalidaInventario
      */
-    public lisEntradaInventario(int modo) {
+    public lisSalidaInventario(int modo) {
         initComponents();
         Init(modo);
     }
 
     private int modo = 0;
 
-    private EntradaInventario seleccionado;
+    private SalidaInventario seleccionado;
 
-    private List<EntradaInventario> seleccionados = new ArrayList<>();
+    private List<SalidaInventario> seleccionados = new ArrayList<>();
     
     ImageIcon Icon_View = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/view-16.png"));
     ImageIcon Icon_Dele = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/delete-16.png"));
@@ -42,18 +42,18 @@ public class lisEntradaInventario extends javax.swing.JInternalFrame {
     Action view = new AbstractAction() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            VerEntradaInventario();
+            VerSalidaInventario();
         }
     };
 
     Action dele = new AbstractAction() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            EliminarEntradaInventario();
+            EliminarSalidaInventario();
         }
     };
     
-    public class swObtenerEntradaInventarios extends SwingWorker {
+    public class swObtenerSalidaInventarios extends SwingWorker {
 
         @Override
         protected Object doInBackground() {
@@ -61,7 +61,7 @@ public class lisEntradaInventario extends javax.swing.JInternalFrame {
             cliInventarios cliente = new cliInventarios();
             String json = "";
             try {
-                json = cliente.ObtenerEntradaInventarios("");
+                json = cliente.ObtenerSalidaInventarios("");
             } catch (Exception e) {
                 FabricaControles.OcultarCargando(pnlContenido);
                 json = "[\"false\"]";
@@ -77,15 +77,15 @@ public class lisEntradaInventario extends javax.swing.JInternalFrame {
                 String json = get().toString();
                 String[] resultado = new Gson().fromJson(json, String[].class);
                 if (resultado[0].equals("true")) {
-                    Utils.EliminarTodasFilas(tbEntradaInventarios);
+                    Utils.EliminarTodasFilas(tbSalidaInventarios);
                     List<Object[]> filas = (List<Object[]>) new Gson().fromJson(resultado[1], new TypeToken<List<Object[]>>() {
                     }.getType());
                     for (Object[] fila : filas) {
-                        Utils.AgregarFila(tbEntradaInventarios, new Object[]{false,((Double) fila[0]).intValue(), fila[1], fila[2], fila[3], fila[4], fila[5], fila[6], Icon_View, Icon_Dele});
+                        Utils.AgregarFila(tbSalidaInventarios, new Object[]{false,((Double) fila[0]).intValue(), fila[1], fila[2], fila[3], fila[4], fila[5], fila[6], Icon_View, Icon_Dele});
                     }
-                    FabricaControles.AgregarBoton(tbEntradaInventarios, view, 8);
-                    FabricaControles.AgregarBoton(tbEntradaInventarios, dele, 9);
-                    Utils.AgregarOrdenamiento(tbEntradaInventarios);
+                    FabricaControles.AgregarBoton(tbSalidaInventarios, view, 8);
+                    FabricaControles.AgregarBoton(tbSalidaInventarios, dele, 9);
+                    Utils.AgregarOrdenamiento(tbSalidaInventarios);
                 }
                 FabricaControles.OcultarCargando(pnlContenido);
             } catch (Exception e) {
@@ -94,7 +94,7 @@ public class lisEntradaInventario extends javax.swing.JInternalFrame {
         }
     }
 
-    public class swEliminarEntradaInventario extends SwingWorker {
+    public class swEliminarSalidaInventario extends SwingWorker {
 
         @Override
         protected Object doInBackground() throws Exception {
@@ -102,8 +102,8 @@ public class lisEntradaInventario extends javax.swing.JInternalFrame {
             cliInventarios cliente = new cliInventarios();
             String json = "";
             try {
-                int idEntradaInventario = Utils.ObtenerValorCelda(tbEntradaInventarios, 1);
-                json = cliente.EliminarEntradaInventario(new Gson().toJson(idEntradaInventario));
+                int idSalidaInventario = Utils.ObtenerValorCelda(tbSalidaInventarios, 1);
+                json = cliente.EliminarSalidaInventario(new Gson().toJson(idSalidaInventario));
             } catch (Exception e) {
                 FabricaControles.OcultarCargando(pnlContenido);
                 json = "[\"false\"]";
@@ -119,7 +119,7 @@ public class lisEntradaInventario extends javax.swing.JInternalFrame {
                 String json = get().toString();
                 String[] resultado = new Gson().fromJson(json, String[].class);
                 if (resultado[0].equals("true")) {
-                    new swObtenerEntradaInventarios().execute();
+                    new swObtenerSalidaInventarios().execute();
                 } else {
                     FabricaControles.OcultarCargando(pnlContenido);
                 }
@@ -133,30 +133,30 @@ public class lisEntradaInventario extends javax.swing.JInternalFrame {
         this.modo = modo;
         switch (this.modo) {
             case 0:
-                Utils.OcultarColumna(tbEntradaInventarios, 0);
+                Utils.OcultarColumna(tbSalidaInventarios, 0);
                 Utils.OcultarControl(btnSeleccionar);
                 break;
             case 1:
-                Utils.OcultarColumna(tbEntradaInventarios, 0);
+                Utils.OcultarColumna(tbSalidaInventarios, 0);
                 break;
         }
-        new swObtenerEntradaInventarios().execute();
+        new swObtenerSalidaInventarios().execute();
     }
 
-    public void VerEntradaInventario() {
-        int idEntradaInventario = Utils.ObtenerValorCelda(tbEntradaInventarios, 1);
-        regEntradaInventario regEntradaInventario = new regEntradaInventario(idEntradaInventario);
-        this.getParent().add(regEntradaInventario);
-        regEntradaInventario.setVisible(true);
+    public void VerSalidaInventario() {
+        int idSalidaInventario = Utils.ObtenerValorCelda(tbSalidaInventarios, 1);
+        regSalidaInventario regSalidaInventario = new regSalidaInventario(idSalidaInventario);
+        this.getParent().add(regSalidaInventario);
+        regSalidaInventario.setVisible(true);
     }
 
-    public void EliminarEntradaInventario() {
+    public void EliminarSalidaInventario() {
         int confirmacion = FabricaControles.VerConfirmacion(this);
         if (confirmacion == 0) {
-            new swEliminarEntradaInventario().execute();
+            new swEliminarSalidaInventario().execute();
         }
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -168,7 +168,7 @@ public class lisEntradaInventario extends javax.swing.JInternalFrame {
 
         pnlContenido = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tbEntradaInventarios = new javax.swing.JTable();
+        tbSalidaInventarios = new javax.swing.JTable();
         pnlTitulo = new javax.swing.JPanel();
         lblTitulo = new javax.swing.JLabel();
         btnNuevo = new javax.swing.JButton();
@@ -183,12 +183,12 @@ public class lisEntradaInventario extends javax.swing.JInternalFrame {
         pnlContenido.setBackground(java.awt.Color.white);
         pnlContenido.setBorder(null);
 
-        tbEntradaInventarios.setModel(new javax.swing.table.DefaultTableModel(
+        tbSalidaInventarios.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "CHECK", "IDENTRADAINVENTARIO", "NUMERO", "F. CREACION", "PROVEEDOR", "RESPONSABLE", "MONEDA", "TOTAL", "VER", "ELIMINAR"
+                "CHECK", "IDSALIDAINVENTARIO", "NUMERO", "F. CREACION", "CLIENTE", "RESPONSABLE", "MONEDA", "TOTAL", "VER", "ELIMINAR"
             }
         ) {
             Class[] types = new Class [] {
@@ -206,16 +206,15 @@ public class lisEntradaInventario extends javax.swing.JInternalFrame {
                 return canEdit [columnIndex];
             }
         });
-        tbEntradaInventarios.setRowHeight(25);
-        tbEntradaInventarios.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        jScrollPane1.setViewportView(tbEntradaInventarios);
-        if (tbEntradaInventarios.getColumnModel().getColumnCount() > 0) {
-            tbEntradaInventarios.getColumnModel().getColumn(0).setPreferredWidth(30);
-            tbEntradaInventarios.getColumnModel().getColumn(1).setMinWidth(0);
-            tbEntradaInventarios.getColumnModel().getColumn(1).setPreferredWidth(0);
-            tbEntradaInventarios.getColumnModel().getColumn(1).setMaxWidth(0);
-            tbEntradaInventarios.getColumnModel().getColumn(8).setPreferredWidth(30);
-            tbEntradaInventarios.getColumnModel().getColumn(9).setPreferredWidth(50);
+        tbSalidaInventarios.setRowHeight(25);
+        tbSalidaInventarios.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jScrollPane1.setViewportView(tbSalidaInventarios);
+        if (tbSalidaInventarios.getColumnModel().getColumnCount() > 0) {
+            tbSalidaInventarios.getColumnModel().getColumn(1).setMinWidth(0);
+            tbSalidaInventarios.getColumnModel().getColumn(1).setPreferredWidth(0);
+            tbSalidaInventarios.getColumnModel().getColumn(1).setMaxWidth(0);
+            tbSalidaInventarios.getColumnModel().getColumn(8).setPreferredWidth(40);
+            tbSalidaInventarios.getColumnModel().getColumn(9).setPreferredWidth(40);
         }
 
         pnlTitulo.setBackground(new java.awt.Color(67, 100, 130));
@@ -224,7 +223,7 @@ public class lisEntradaInventario extends javax.swing.JInternalFrame {
         lblTitulo.setFont(new java.awt.Font("Ubuntu", 1, 18)); // NOI18N
         lblTitulo.setForeground(java.awt.Color.white);
         lblTitulo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sge/base/imagenes/list-view-16.png"))); // NOI18N
-        lblTitulo.setText("LISTADO DE ENTRADAS DE INVENTARIO");
+        lblTitulo.setText("LISTADO DE SALIDAS DE INVENTARIO");
 
         btnNuevo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sge/base/imagenes/add-16.png"))); // NOI18N
         btnNuevo.setText("NUEVO");
@@ -241,7 +240,7 @@ public class lisEntradaInventario extends javax.swing.JInternalFrame {
             .addGroup(pnlTituloLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lblTitulo)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 417, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 427, Short.MAX_VALUE)
                 .addComponent(btnNuevo)
                 .addContainerGap())
         );
@@ -289,7 +288,7 @@ public class lisEntradaInventario extends javax.swing.JInternalFrame {
             .addGroup(pnlContenidoLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(pnlContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 873, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 860, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlContenidoLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btnSeleccionar, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -316,7 +315,7 @@ public class lisEntradaInventario extends javax.swing.JInternalFrame {
                     .addComponent(btnRefrescar, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnImprimir, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 331, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 315, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnSeleccionar)
                 .addGap(6, 6, 6))
@@ -338,25 +337,25 @@ public class lisEntradaInventario extends javax.swing.JInternalFrame {
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
         // TODO add your handling code here:
-        regEntradaInventario regEntradaInventario = new regEntradaInventario(0);
-        this.getDesktopPane().add(regEntradaInventario);
-        regEntradaInventario.setVisible(true);
+        regSalidaInventario regSalidaInventario = new regSalidaInventario(0);
+        this.getDesktopPane().add(regSalidaInventario);
+        regSalidaInventario.setVisible(true);
     }//GEN-LAST:event_btnNuevoActionPerformed
 
     private void txtFiltroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFiltroActionPerformed
         // TODO add your handling code here:
-        Utils.Filtrar(tbEntradaInventarios, txtFiltro.getText());
+        Utils.Filtrar(tbSalidaInventarios, txtFiltro.getText());
     }//GEN-LAST:event_txtFiltroActionPerformed
 
     private void btnRefrescarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefrescarActionPerformed
         // TODO add your handling code here:
-        new swObtenerEntradaInventarios().execute();
+        new swObtenerSalidaInventarios().execute();
     }//GEN-LAST:event_btnRefrescarActionPerformed
 
     private void btnImprimirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImprimirActionPerformed
         // TODO add your handling code here:
-        if(Utils.FilaActiva(tbEntradaInventarios)){
-            FabricaReportes.Imprimir(Constantes.ENT_INV, Utils.ObtenerValorCelda(tbEntradaInventarios, 1), pnlContenido);
+        if(Utils.FilaActiva(tbSalidaInventarios)){
+            FabricaReportes.Imprimir(Constantes.SAL_INV, Utils.ObtenerValorCelda(tbSalidaInventarios, 1), pnlContenido);
         }
     }//GEN-LAST:event_btnImprimirActionPerformed
 
@@ -371,7 +370,7 @@ public class lisEntradaInventario extends javax.swing.JInternalFrame {
     private javax.swing.JLabel lblTitulo;
     private javax.swing.JPanel pnlContenido;
     private javax.swing.JPanel pnlTitulo;
-    private javax.swing.JTable tbEntradaInventarios;
+    private javax.swing.JTable tbSalidaInventarios;
     private javax.swing.JTextField txtFiltro;
     // End of variables declaration//GEN-END:variables
 }

@@ -1,7 +1,9 @@
 package com.sge.modulos.administracion.formularios;
 
 import com.google.gson.Gson;
+import com.sge.base.constantes.Constantes;
 import com.sge.base.controles.FabricaControles;
+import com.sge.base.formularios.frameBase;
 import com.sge.base.utils.Utils;
 import com.sge.modulos.administracion.clases.Usuario;
 import com.sge.modulos.administracion.clases.ValorDefinido;
@@ -33,6 +35,7 @@ public class regValorDefinido extends javax.swing.JInternalFrame {
 
     public void Init(String operacion, int idValorDefinido) {
         lblTitulo.setText(operacion + lblTitulo.getText());
+        Utils.AgregarEntidades(cboEntidad);
         this.idValorDefinido = idValorDefinido;
         if (this.idValorDefinido > 0) {
             new swObtenerValorDefinido().execute();
@@ -166,8 +169,6 @@ public class regValorDefinido extends javax.swing.JInternalFrame {
             }
         });
 
-        cboEntidad.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "ENTRADA A INVENTARIO" }));
-
         chkActivo.setText("ACTIVO");
 
         btnAceptar.setText("ACEPTAR");
@@ -290,17 +291,21 @@ public class regValorDefinido extends javax.swing.JInternalFrame {
 
     private void btnEstablecerValoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEstablecerValoresActionPerformed
         // TODO add your handling code here:
+        Object obj = null;
+        frameBase base = ((frameBase)obj);
+        
+        
         switch (cboEntidad.getSelectedItem().toString()) {
-            case "ENTRADA A INVENTARIO":
+            case Constantes.ENT_INV:
                 FabricaControles.VerModal(this.getDesktopPane(), new regEntradaInventario(0) {
                     @Override
                     public void Init(int idEntradaInventario) {
-                        OcultarBotones();
+                        OcultarControles();
                         if (valorDefinido.getJson() == null) {
                             this.entradaInventario = new EntradaInventario();
                         } else {
                             this.entradaInventario = new Gson().fromJson(valorDefinido.getJson(), EntradaInventario.class);
-                            AsignarControles(entradaInventario);
+                            AsignarControles();
                         }
                     }
 

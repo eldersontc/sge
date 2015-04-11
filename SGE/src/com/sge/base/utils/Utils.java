@@ -1,6 +1,8 @@
 package com.sge.base.utils;
 
+import com.sge.base.constantes.Constantes;
 import java.awt.Component;
+import javax.swing.JComboBox;
 import javax.swing.JInternalFrame;
 import javax.swing.JTable;
 import javax.swing.RowFilter;
@@ -56,6 +58,12 @@ public class Utils {
 
     public static void OcultarControl(Component componet) {
         componet.setVisible(false);
+    }
+    
+    public static void AgregarEntidades(JComboBox combo){
+        for (String entidad : Constantes.getEntidades()) {
+            combo.addItem(entidad);
+        }
     }
 
     public static void Cerrar(JInternalFrame frame) {

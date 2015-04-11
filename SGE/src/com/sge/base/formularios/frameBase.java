@@ -1,85 +1,121 @@
 package com.sge.base.formularios;
 
+import com.sge.base.controles.FabricaControles;
+import com.sge.base.excepciones.Excepciones;
+import com.sge.base.utils.Utils;
 import java.awt.Component;
+import javax.swing.Action;
+import javax.swing.JInternalFrame;
+import javax.swing.JPanel;
 import javax.swing.JTable;
-import javax.swing.RowFilter;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
-import javax.swing.table.TableRowSorter;
 
 /**
  *
  * @author elderson
  */
 public class frameBase extends javax.swing.JInternalFrame {
-    
-    /////////////////////////// METODOS GENERICOS //////////////////////////////
-    
+
+    //////////////////////////////// UTILS /////////////////////////////////////
     public boolean FilaActiva(JTable tabla) {
-        return (!(tabla.getSelectedRow() == -1));
+        return Utils.FilaActiva(tabla);
     }
 
     public <T> T ObtenerValorCelda(JTable tabla, int columna) {
-        DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
-        return (T) modelo.getValueAt(tabla.getSelectedRow(), columna);
+        return Utils.ObtenerValorCelda(tabla, columna);
     }
 
     public <T> T ObtenerValorCelda(JTable tabla, int fila, int columna) {
-        DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
-        return (T) modelo.getValueAt(fila, columna);
+        return Utils.ObtenerValorCelda(tabla, fila, columna);
     }
 
     public void AsignarValorCelda(JTable tabla, Object valor, int fila, int columna) {
-        DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
-        modelo.setValueAt(valor, fila, columna);
+        Utils.AsignarValorCelda(tabla, valor, fila, columna);
     }
 
     public void AgregarFila(JTable tabla, Object[] fila) {
-        DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
-        modelo.addRow(fila);
+        Utils.AgregarFila(tabla, fila);
     }
 
     public void EliminarTodasFilas(JTable tabla) {
-        DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
-        modelo.setRowCount(0);
+        Utils.EliminarTodasFilas(tabla);
     }
 
     public void EliminarFila(JTable tabla) {
-        DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
-        modelo.removeRow(tabla.getSelectedRow());
+        Utils.EliminarFila(tabla);
     }
 
     public void OcultarColumna(JTable tabla, int columna) {
-        tabla.getColumnModel().getColumn(columna).setMinWidth(0);
-        tabla.getColumnModel().getColumn(columna).setMaxWidth(0);
-        tabla.getColumnModel().getColumn(columna).setWidth(0);
+        Utils.OcultarColumna(tabla, columna);
     }
 
     public void OcultarControl(Component componet) {
-        componet.setVisible(false);
+        Utils.OcultarControl(componet);
     }
 
     public void AgregarOrdenamiento(JTable tabla) {
-        tabla.setRowSorter(new TableRowSorter<TableModel>(tabla.getModel()));
+        Utils.AgregarOrdenamiento(tabla);
     }
 
     public void Filtrar(JTable tabla, String filtro) {
-        TableRowSorter<TableModel> sorter = (TableRowSorter<TableModel>) tabla.getRowSorter();
-        sorter.setRowFilter(RowFilter.regexFilter(filtro));
+        Utils.Filtrar(tabla, filtro);
+    }
+
+    ////////////////////////// FRABRICA DE CONTROLES ///////////////////////////
+    public void VerProcesando(JPanel panel) {
+        FabricaControles.VerProcesando(panel);
+    }
+
+    public void OcultarProcesando(JPanel panel) {
+        FabricaControles.OcultarProcesando(panel);
+    }
+
+    public void AgregarCombo(JTable table, int column, int indexField) {
+        FabricaControles.AgregarCombo(table, column, indexField);
+    }
+
+    public void AgregarEventoChange(JTable table, Action action) {
+        FabricaControles.AgregarEventoChange(table, action);
+    }
+
+    public void VerCargando(JPanel panel) {
+        FabricaControles.VerCargando(panel);
+    }
+
+    public void OcultarCargando(JPanel panel) {
+        FabricaControles.OcultarCargando(panel);
+    }
+
+    public void VerModal(JInternalFrame frame, Action action) {
+        FabricaControles.VerModal(this.getDesktopPane(), frame, action);
+    }
+
+    ////////////////////////////// EXCEPCIONES /////////////////////////////////
+    
+    public void ControlarExcepcion(String[] resultado) {
+        Excepciones.Controlar(resultado, this);
     }
     
-    public void Cerrar(){
+    //////////////////////////////// METODOS BASE //////////////////////////////
+
+    public void Cerrar() {
         try {
             this.setClosed(true);
         } catch (Exception e) {
         }
     }
-    
-    public void Aceptar(){
-        
+
+    public void Init(int id){
     }
     
-    public void Cancelar(){
-        
+    public void AsignarControles(){
+    }
+    
+    public void OcultarControles() {
+    }
+
+    public void Aceptar() {
+    }
+
+    public void Cancelar() {
     }
 }

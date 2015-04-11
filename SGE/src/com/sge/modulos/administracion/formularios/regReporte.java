@@ -30,6 +30,7 @@ public class regReporte extends javax.swing.JInternalFrame {
 
     public void Init(String operacion, int idReporte) {
         lblTitulo.setText(operacion + lblTitulo.getText());
+        Utils.AgregarEntidades(cboEntidad);
         this.idReporte = idReporte;
         if (this.idReporte > 0) {
             new swObtenerReporte().execute();
@@ -187,7 +188,7 @@ public class regReporte extends javax.swing.JInternalFrame {
 
         lblEntidad.setText("ENTIDAD");
 
-        cboEntidad.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "NINGUNO", "ENTRADA A INVENTARIO" }));
+        cboEntidad.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "NINGUNO" }));
 
         chkActivo.setText("ACTIVO");
 
