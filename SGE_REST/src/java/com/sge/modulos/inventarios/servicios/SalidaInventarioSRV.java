@@ -1,9 +1,8 @@
-
 package com.sge.modulos.inventarios.servicios;
 
 import com.google.gson.Gson;
-import com.sge.modulos.inventarios.entidades.EntradaInventario;
-import com.sge.modulos.inventarios.negocios.EntradaInventarioDTO;
+import com.sge.modulos.inventarios.entidades.SalidaInventario;
+import com.sge.modulos.inventarios.negocios.SalidaInventarioDTO;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ws.rs.Consumes;
@@ -17,24 +16,24 @@ import javax.ws.rs.core.UriInfo;
  *
  * @author elderson
  */
-@Path("EntradaInventarioSRV")
-public class EntradaInventarioSRV {
+@Path("SalidaInventarioSRV")
+public class SalidaInventarioSRV {
     
     @Context
     private UriInfo context;
 
-    public EntradaInventarioSRV() {
+    public SalidaInventarioSRV() {
     }
 
     @POST
-    @Path("ObtenerEntradaInventarios")
+    @Path("ObtenerSalidaInventarios")
     @Consumes("application/json")
     @Produces("application/json")
-    public String ObtenerEntradaInventarios(String json) {
+    public String ObtenerSalidaInventarios(String json) {
         List<String> resultado = new ArrayList<>();
         try {
-            EntradaInventarioDTO entradaInventarioDTO = new EntradaInventarioDTO();
-            List<Object[]> lista = entradaInventarioDTO.ObtenerEntradaInventarios();
+            SalidaInventarioDTO salidaInventarioDTO = new SalidaInventarioDTO();
+            List<Object[]> lista = salidaInventarioDTO.ObtenerSalidaInventarios();
             resultado.add(new Gson().toJson(true));
             resultado.add(new Gson().toJson(lista));
         } catch (Exception e) {
@@ -46,17 +45,17 @@ public class EntradaInventarioSRV {
     }
 
     @POST
-    @Path("ObtenerEntradaInventario")
+    @Path("ObtenerSalidaInventario")
     @Consumes("application/json")
     @Produces("application/json")
-    public String ObtenerEntradaInventario(String json) {
+    public String ObtenerSalidaInventario(String json) {
         List<String> resultado = new ArrayList<>();
-        int idEntradaInventario = new Gson().fromJson(json, int.class);
+        int idSalidaInventario = new Gson().fromJson(json, int.class);
         try {
-            EntradaInventarioDTO entradaInventarioDTO = new EntradaInventarioDTO();
-            EntradaInventario entradaInventario = entradaInventarioDTO.ObtenerEntradaInventario(idEntradaInventario);
+            SalidaInventarioDTO salidaInventarioDTO = new SalidaInventarioDTO();
+            SalidaInventario salidaInventario = salidaInventarioDTO.ObtenerSalidaInventario(idSalidaInventario);
             resultado.add(new Gson().toJson(true));
-            resultado.add(new Gson().toJson(entradaInventario));
+            resultado.add(new Gson().toJson(salidaInventario));
         } catch (Exception e) {
             resultado.clear();
             resultado.add(new Gson().toJson(false));
@@ -66,16 +65,16 @@ public class EntradaInventarioSRV {
     }
 
     @POST
-    @Path("RegistrarEntradaInventario")
+    @Path("RegistrarSalidaInventario")
     @Consumes("application/json")
     @Produces("application/json")
-    public String RegistrarEntradaInventario(String json) {
+    public String RegistrarSalidaInventario(String json) {
         List<String> resultado = new ArrayList<>();
         String[] arrayJson = new Gson().fromJson(json, String[].class);
-        EntradaInventario entradaInventario = new Gson().fromJson(arrayJson[0], EntradaInventario.class);
+        SalidaInventario salidaInventario = new Gson().fromJson(arrayJson[0], SalidaInventario.class);
         try {
-            EntradaInventarioDTO entradaInventarioDTO = new EntradaInventarioDTO();
-            entradaInventarioDTO.RegistrarEntradaInventario(entradaInventario);
+            SalidaInventarioDTO salidaInventarioDTO = new SalidaInventarioDTO();
+            salidaInventarioDTO.RegistrarSalidaInventario(salidaInventario);
             resultado.add(new Gson().toJson(true));
         } catch (Exception e) {
             resultado.clear();
@@ -86,15 +85,15 @@ public class EntradaInventarioSRV {
     }
 
     @POST
-    @Path("EliminarEntradaInventario")
+    @Path("EliminarSalidaInventario")
     @Consumes("application/json")
     @Produces("application/json")
-    public String EliminarEntradaInventario(String json) {
+    public String EliminarSalidaInventario(String json) {
         List<String> resultado = new ArrayList<>();
-        int idEntradaInventario = new Gson().fromJson(json, int.class);
+        int idSalidaInventario = new Gson().fromJson(json, int.class);
         try {
-            EntradaInventarioDTO entradaInventarioDTO = new EntradaInventarioDTO();
-            entradaInventarioDTO.EliminarEntradaInventario(idEntradaInventario);
+            SalidaInventarioDTO salidaInventarioDTO = new SalidaInventarioDTO();
+            salidaInventarioDTO.EliminarSalidaInventario(idSalidaInventario);
             resultado.add(new Gson().toJson(true));
         } catch (Exception e) {
             resultado.clear();

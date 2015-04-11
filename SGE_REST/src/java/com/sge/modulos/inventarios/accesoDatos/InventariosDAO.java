@@ -19,6 +19,8 @@ public class InventariosDAO extends BaseDAO {
         recursos.add("com/sge/modulos/inventarios/mapeos/ProductoUnidad.hbm.xml");
         recursos.add("com/sge/modulos/inventarios/mapeos/EntradaInventario.hbm.xml");
         recursos.add("com/sge/modulos/inventarios/mapeos/ItemEntradaInventario.hbm.xml");
+        recursos.add("com/sge/modulos/inventarios/mapeos/SalidaInventario.hbm.xml");
+        recursos.add("com/sge/modulos/inventarios/mapeos/ItemSalidaInventario.hbm.xml");
         return recursos;
     }
     
