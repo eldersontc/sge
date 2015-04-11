@@ -30,7 +30,8 @@ public class SalidaInventario {
     private List<ItemSalidaInventario> items;
 
     public SalidaInventario() {
-        items = new ArrayList<>();
+        this.fechaCreacion = new Date();
+        this.items = new ArrayList<>();
     }
 
     public int getIdSalidaInventario() {

@@ -6,8 +6,6 @@ import com.sge.base.constantes.Constantes;
 import com.sge.base.formularios.frameBase;
 import com.sge.modulos.administracion.clases.Empleado;
 import com.sge.modulos.administracion.clases.Moneda;
-import com.sge.modulos.administracion.clases.ValorDefinido;
-import com.sge.modulos.administracion.cliente.cliAdministracion;
 import com.sge.modulos.administracion.formularios.lisEmpleado;
 import com.sge.modulos.administracion.formularios.lisMoneda;
 import com.sge.modulos.compras.clases.Proveedor;
@@ -19,7 +17,6 @@ import com.sge.modulos.inventarios.clases.Producto;
 import com.sge.modulos.inventarios.cliente.cliInventarios;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -31,27 +28,26 @@ import javax.swing.SwingWorker;
  *
  * @author elderson
  */
-public class regSalidaInventario extends frameBase {
+public class regSalidaInventario extends frameBase<SalidaInventario> {
 
     /**
      * Creates new form regSalidaInventario
      */
-    public regSalidaInventario(int idSalidaInventario) {
+    public regSalidaInventario(int id) {
         initComponents();
-        Init(idSalidaInventario);
+        Init(id);
     }
 
-    public int idSalidaInventario = 0;
+    public int id = 0;
 
-    public SalidaInventario salidaInventario;
-
+    //public SalidaInventario getEntidad();
     @Override
     public void Init(int id) {
-        this.idSalidaInventario = id;
-        if (this.idSalidaInventario == 0) {
+        this.id = id;
+        if (this.id == 0) {
             lblTitulo.setText("NUEVA " + lblTitulo.getText());
             AgregarCombo(tbItems, 7, 2);
-            new swObtenerValoresDefinidos().execute();
+            ObtenerValoresDefinidos(frame, 1, Constantes.SAL_INV);
         } else {
             lblTitulo.setText("VER " + lblTitulo.getText());
             OcultarControles();
@@ -59,17 +55,18 @@ public class regSalidaInventario extends frameBase {
         }
     }
 
-    public void AsignarControles(SalidaInventario salidaInventario) {
-        //txtCliente.setText(salidaInventario.getRazonSocialProveedor());
-        txtNumero.setText(salidaInventario.getNumero());
-        txtResponsable.setText(salidaInventario.getNombreResponsable());
-        txtFechaCreacion.setValue(salidaInventario.getFechaCreacion());
-        txtAlmacen.setText(salidaInventario.getDescripcionAlmacen());
-        txtMoneda.setText(salidaInventario.getSimboloMoneda());
-        txtSubTotal.setValue(salidaInventario.getSubTotal());
-        txtImpuesto.setValue(salidaInventario.getMontoImpuesto());
-        txtTotal.setValue(salidaInventario.getTotal());
-        for (ItemSalidaInventario item : salidaInventario.getItems()) {
+    @Override
+    public void AsignarControles() {
+        txtCliente.setText(getEntidad().getRazonSocialCliente());
+        txtNumero.setText(getEntidad().getNumero());
+        txtResponsable.setText(getEntidad().getNombreResponsable());
+        txtFechaCreacion.setValue(getEntidad().getFechaCreacion());
+        txtAlmacen.setText(getEntidad().getDescripcionAlmacen());
+        txtMoneda.setText(getEntidad().getSimboloMoneda());
+        txtSubTotal.setValue(getEntidad().getSubTotal());
+        txtImpuesto.setValue(getEntidad().getMontoImpuesto());
+        txtTotal.setValue(getEntidad().getTotal());
+        for (ItemSalidaInventario item : getEntidad().getItems()) {
             AgregarFila(tbItems,
                     new Object[]{
                         item.getIdItemSalidaInventario(),
@@ -99,8 +96,8 @@ public class regSalidaInventario extends frameBase {
             double totalItem = ObtenerValorCelda(tbItems, i, 10);
             subTotal += totalItem;
         }
-        salidaInventario.setSubTotal(subTotal);
-        salidaInventario.setTotal(subTotal);
+        getEntidad().setSubTotal(subTotal);
+        getEntidad().setTotal(subTotal);
         txtSubTotal.setValue(subTotal);
         txtTotal.setValue(subTotal);
     }
@@ -196,8 +193,8 @@ public class regSalidaInventario extends frameBase {
         public void actionPerformed(ActionEvent evt) {
             Proveedor seleccionado = ((lisProveedor) evt.getSource()).getSeleccionado();
             if (!(seleccionado == null)) {
-                //salidaInventario.setIdProveedor(seleccionado.getIdProveedor());
-                //salidaInventario.setRazonSocialProveedor(seleccionado.getRazonSocial());
+                //getEntidad().setIdProveedor(seleccionado.getIdProveedor());
+                //getEntidad().setRazonSocialProveedor(seleccionado.getRazonSocial());
                 txtCliente.setText(seleccionado.getRazonSocial());
             }
         }
@@ -208,8 +205,8 @@ public class regSalidaInventario extends frameBase {
         public void actionPerformed(ActionEvent evt) {
             Empleado seleccionado = ((lisEmpleado) evt.getSource()).getSeleccionado();
             if (!(seleccionado == null)) {
-                salidaInventario.setIdResponsable(seleccionado.getIdEmpleado());
-                salidaInventario.setNombreResponsable(seleccionado.getNombre());
+                getEntidad().setIdResponsable(seleccionado.getIdEmpleado());
+                getEntidad().setNombreResponsable(seleccionado.getNombre());
                 txtResponsable.setText(seleccionado.getNombre());
             }
         }
@@ -220,8 +217,8 @@ public class regSalidaInventario extends frameBase {
         public void actionPerformed(ActionEvent evt) {
             Almacen seleccionado = ((lisAlmacen) evt.getSource()).getSeleccionado();
             if (!(seleccionado == null)) {
-                salidaInventario.setIdAlmacen(seleccionado.getIdAlmacen());
-                salidaInventario.setDescripcionAlmacen(seleccionado.getDescripcion());
+                getEntidad().setIdAlmacen(seleccionado.getIdAlmacen());
+                getEntidad().setDescripcionAlmacen(seleccionado.getDescripcion());
                 txtAlmacen.setText(seleccionado.getDescripcion());
             }
         }
@@ -232,51 +229,12 @@ public class regSalidaInventario extends frameBase {
         public void actionPerformed(ActionEvent evt) {
             Moneda seleccionado = ((lisMoneda) evt.getSource()).getSeleccionado();
             if (!(seleccionado == null)) {
-                salidaInventario.setIdMoneda(seleccionado.getIdMoneda());
-                salidaInventario.setSimboloMoneda(seleccionado.getSimbolo());
+                getEntidad().setIdMoneda(seleccionado.getIdMoneda());
+                getEntidad().setSimboloMoneda(seleccionado.getSimbolo());
                 txtMoneda.setText(seleccionado.getSimbolo());
             }
         }
     };
-
-    public class swObtenerValoresDefinidos extends SwingWorker<Object, Object> {
-
-        @Override
-        protected Object doInBackground() {
-            VerCargando(frame);
-            cliAdministracion cliente = new cliAdministracion();
-            try {
-                String json = cliente.ObtenerValoresDefinidos(new Gson().toJson(String.format("WHERE idUsuario = %d AND entidad = '%s'", 1, Constantes.SAL_INV)));
-                String[] resultado = new Gson().fromJson(json, String[].class);
-                if (resultado[0].equals("true")) {
-                    List<Object[]> valoresDefinidos = (List<Object[]>) new Gson().fromJson(resultado[1], new TypeToken<List<Object[]>>() {
-                    }.getType());
-                    if (valoresDefinidos.isEmpty()) {
-                        txtFechaCreacion.setValue(new Date());
-                        salidaInventario = new SalidaInventario();
-                    } else {
-                        json = cliente.ObtenerValorDefinido(new Gson().toJson(valoresDefinidos.get(0)[0]));
-                        resultado = new Gson().fromJson(json, String[].class);
-                        if (resultado[0].equals("true")) {
-                            ValorDefinido valorDefinido = new Gson().fromJson(resultado[1], ValorDefinido.class);
-                            salidaInventario = new Gson().fromJson(valorDefinido.getJson(), SalidaInventario.class);
-                            AsignarControles(salidaInventario);
-                        }
-                    }
-                }
-            } catch (Exception e) {
-                OcultarCargando(frame);
-            } finally {
-                cliente.close();
-            }
-            return null;
-        }
-
-        @Override
-        protected void done() {
-            OcultarCargando(frame);
-        }
-    }
 
     public class swObtenerSalidaInventario extends SwingWorker<Object, Object> {
 
@@ -286,7 +244,7 @@ public class regSalidaInventario extends frameBase {
             cliInventarios cliente = new cliInventarios();
             String json = "";
             try {
-                json = cliente.ObtenerSalidaInventario(new Gson().toJson(idSalidaInventario));
+                json = cliente.ObtenerSalidaInventario(new Gson().toJson(id));
             } catch (Exception e) {
                 OcultarCargando(frame);
                 json = "[\"false\"]";
@@ -303,8 +261,8 @@ public class regSalidaInventario extends frameBase {
                 String[] resultado = new Gson().fromJson(json, String[].class);
 
                 if (resultado[0].equals("true")) {
-                    SalidaInventario salidaInventario = new Gson().fromJson(resultado[1], SalidaInventario.class);
-                    AsignarControles(salidaInventario);
+                    setEntidad(new Gson().fromJson(resultado[1], SalidaInventario.class));
+                    AsignarControles();
                 }
                 OcultarCargando(frame);
             } catch (Exception e) {
@@ -322,8 +280,8 @@ public class regSalidaInventario extends frameBase {
             String json = "";
             try {
                 List<String> arrayJson = new ArrayList<>();
-                salidaInventario.setItems(getItems());
-                arrayJson.add(new Gson().toJson(salidaInventario));
+                getEntidad().setItems(getItems());
+                arrayJson.add(new Gson().toJson(getEntidad()));
                 json = cliente.RegistrarSalidaInventario(new Gson().toJson(arrayJson));
             } catch (Exception e) {
                 OcultarProcesando(frame);
@@ -353,7 +311,7 @@ public class regSalidaInventario extends frameBase {
 
     @Override
     public void Aceptar() {
-        if (this.idSalidaInventario == 0) {
+        if (this.id == 0) {
             new swGuardarSalidaInventario().execute();
         } else {
             Cerrar();

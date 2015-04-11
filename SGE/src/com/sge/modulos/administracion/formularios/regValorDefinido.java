@@ -295,28 +295,28 @@ public class regValorDefinido extends javax.swing.JInternalFrame {
         frameBase base = ((frameBase)obj);
         
         
-        switch (cboEntidad.getSelectedItem().toString()) {
-            case Constantes.ENT_INV:
-                FabricaControles.VerModal(this.getDesktopPane(), new regEntradaInventario(0) {
-                    @Override
-                    public void Init(int idEntradaInventario) {
-                        OcultarControles();
-                        if (valorDefinido.getJson() == null) {
-                            this.entradaInventario = new EntradaInventario();
-                        } else {
-                            this.entradaInventario = new Gson().fromJson(valorDefinido.getJson(), EntradaInventario.class);
-                            AsignarControles();
-                        }
-                    }
-
-                    @Override
-                    public void Aceptar() {
-                        valorDefinido.setJson(new Gson().toJson(this.entradaInventario));
-                        Cerrar();
-                    }
-                });
-                break;
-        }
+//        switch (cboEntidad.getSelectedItem().toString()) {
+//            case Constantes.ENT_INV:
+//                FabricaControles.VerModal(this.getDesktopPane(), new regEntradaInventario(0) {
+//                    @Override
+//                    public void Init(int idEntradaInventario) {
+//                        OcultarControles();
+//                        if (valorDefinido.getJson() == null) {
+//                            this.entradaInventario = new EntradaInventario();
+//                        } else {
+//                            this.entradaInventario = new Gson().fromJson(valorDefinido.getJson(), EntradaInventario.class);
+//                            AsignarControles();
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void Aceptar() {
+//                        valorDefinido.setJson(new Gson().toJson(this.entradaInventario));
+//                        Cerrar();
+//                    }
+//                });
+//                break;
+//        }
     }//GEN-LAST:event_btnEstablecerValoresActionPerformed
 
     private void txtUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUsuarioActionPerformed
