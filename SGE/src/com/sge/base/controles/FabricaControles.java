@@ -416,7 +416,11 @@ public class FabricaControles {
     }
 
     public static void VerAdvertencia(String message, Component parentComponent){
-        JOptionPane.showInternalMessageDialog(parentComponent, message, "MENSAJE", JOptionPane.WARNING_MESSAGE);
+        if(parentComponent instanceof JInternalFrame || parentComponent instanceof JPanel){
+            JOptionPane.showInternalMessageDialog(parentComponent, message, "MENSAJE", JOptionPane.WARNING_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(null, message, "MENSAJE", JOptionPane.WARNING_MESSAGE);
+        }
     }
     
     public static void AgregarEventoChange(JTable tabla, Action action) {

@@ -3,6 +3,7 @@ package com.sge.base.reportes;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.sge.base.controles.FabricaControles;
+import com.sge.base.excepciones.Excepciones;
 import com.sge.modulos.administracion.clases.ItemReporte;
 import com.sge.modulos.administracion.clases.Reporte;
 import com.sge.modulos.administracion.cliente.cliAdministracion;
@@ -35,7 +36,7 @@ public class FabricaReportes {
                 Class.forName("org.postgresql.Driver");
                 conexion = DriverManager.getConnection("jdbc:postgresql://localhost:5432/sge", "postgres", "123456");
             } catch (ClassNotFoundException | SQLException e) {
-                FabricaControles.VerAdvertencia(e.getMessage(), panel);
+                Excepciones.Controlar(e, panel);
             }
         }
         return conexion;
@@ -77,7 +78,8 @@ public class FabricaReportes {
                 }
             } catch (Exception e) {
                 FabricaControles.OcultarProcesando(panel);
-                FabricaControles.VerAdvertencia(e.getMessage(), panel);
+                cancel(false);
+                Excepciones.Controlar(e, panel);
             } finally {
                 cliente.close();
             }
@@ -108,7 +110,7 @@ public class FabricaReportes {
             cliAdministracion cliente = new cliAdministracion();
             try {
                 
-                String json = cliente.ObtenerReportes(new Gson().toJson(String.format("WHERE idEntidad = %d", idEntidad)));
+                String json = cliente.ObtenerReportes(new Gson().toJson(String.format("WHERE Reporte.idEntidad = %d", idEntidad)));
                 String[] resultado = new Gson().fromJson(json, String[].class);
 
                 if (resultado[0].equals("true")) {
@@ -158,7 +160,8 @@ public class FabricaReportes {
                 }
             } catch (Exception e) {
                 FabricaControles.OcultarProcesando(panel);
-                FabricaControles.VerAdvertencia(e.getMessage(), panel);
+                cancel(false);
+                Excepciones.Controlar(e, panel);
             } finally {
                 cliente.close();
             }

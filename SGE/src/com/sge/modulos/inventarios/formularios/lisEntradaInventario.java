@@ -3,6 +3,7 @@ package com.sge.modulos.inventarios.formularios;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.sge.base.controles.FabricaControles;
+import com.sge.base.excepciones.Excepciones;
 import com.sge.base.reportes.FabricaReportes;
 import com.sge.base.utils.Utils;
 import com.sge.modulos.inventarios.clases.EntradaInventario;
@@ -56,14 +57,15 @@ public class lisEntradaInventario extends javax.swing.JInternalFrame {
 
         @Override
         protected Object doInBackground() {
-            FabricaControles.VerCargando(pnlContenido);
+            FabricaControles.VerCargando(frame);
             cliInventarios cliente = new cliInventarios();
             String json = "";
             try {
                 json = cliente.ObtenerEntradaInventarios("");
             } catch (Exception e) {
-                FabricaControles.OcultarCargando(pnlContenido);
-                json = "[\"false\"]";
+                FabricaControles.OcultarCargando(frame);
+                cancel(false);
+                Excepciones.Controlar(e, frame);
             } finally {
                 cliente.close();
             }
@@ -86,9 +88,10 @@ public class lisEntradaInventario extends javax.swing.JInternalFrame {
                     FabricaControles.AgregarBoton(tbEntradaInventarios, dele, 9);
                     Utils.AgregarOrdenamiento(tbEntradaInventarios);
                 }
-                FabricaControles.OcultarCargando(pnlContenido);
+                FabricaControles.OcultarCargando(frame);
             } catch (Exception e) {
-                FabricaControles.OcultarCargando(pnlContenido);
+                FabricaControles.OcultarCargando(frame);
+                Excepciones.Controlar(e, frame);
             }
         }
     }
@@ -97,15 +100,16 @@ public class lisEntradaInventario extends javax.swing.JInternalFrame {
 
         @Override
         protected Object doInBackground() throws Exception {
-            FabricaControles.VerCargando(pnlContenido);
+            FabricaControles.VerCargando(frame);
             cliInventarios cliente = new cliInventarios();
             String json = "";
             try {
                 int idEntradaInventario = Utils.ObtenerValorCelda(tbEntradaInventarios, 1);
                 json = cliente.EliminarEntradaInventario(new Gson().toJson(idEntradaInventario));
             } catch (Exception e) {
-                FabricaControles.OcultarCargando(pnlContenido);
-                json = "[\"false\"]";
+                FabricaControles.OcultarCargando(frame);
+                cancel(false);
+                Excepciones.Controlar(e, frame);
             } finally {
                 cliente.close();
             }
@@ -120,10 +124,11 @@ public class lisEntradaInventario extends javax.swing.JInternalFrame {
                 if (resultado[0].equals("true")) {
                     new swObtenerEntradaInventarios().execute();
                 } else {
-                    FabricaControles.OcultarCargando(pnlContenido);
+                    FabricaControles.OcultarCargando(frame);
                 }
             } catch (Exception e) {
-                FabricaControles.OcultarCargando(pnlContenido);
+                FabricaControles.OcultarCargando(frame);
+                Excepciones.Controlar(e, frame);
             }
         }
     }
@@ -165,7 +170,7 @@ public class lisEntradaInventario extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        pnlContenido = new javax.swing.JPanel();
+        frame = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tbEntradaInventarios = new javax.swing.JTable();
         pnlTitulo = new javax.swing.JPanel();
@@ -179,8 +184,8 @@ public class lisEntradaInventario extends javax.swing.JInternalFrame {
 
         setClosable(true);
 
-        pnlContenido.setBackground(java.awt.Color.white);
-        pnlContenido.setBorder(null);
+        frame.setBackground(java.awt.Color.white);
+        frame.setBorder(null);
 
         tbEntradaInventarios.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -280,19 +285,19 @@ public class lisEntradaInventario extends javax.swing.JInternalFrame {
             }
         });
 
-        javax.swing.GroupLayout pnlContenidoLayout = new javax.swing.GroupLayout(pnlContenido);
-        pnlContenido.setLayout(pnlContenidoLayout);
-        pnlContenidoLayout.setHorizontalGroup(
-            pnlContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout frameLayout = new javax.swing.GroupLayout(frame);
+        frame.setLayout(frameLayout);
+        frameLayout.setHorizontalGroup(
+            frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(pnlTitulo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(pnlContenidoLayout.createSequentialGroup()
+            .addGroup(frameLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(pnlContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 873, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlContenidoLayout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, frameLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btnSeleccionar, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(pnlContenidoLayout.createSequentialGroup()
+                    .addGroup(frameLayout.createSequentialGroup()
                         .addComponent(lblFiltro)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, 331, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -303,13 +308,13 @@ public class lisEntradaInventario extends javax.swing.JInternalFrame {
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
-        pnlContenidoLayout.setVerticalGroup(
-            pnlContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlContenidoLayout.createSequentialGroup()
+        frameLayout.setVerticalGroup(
+            frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, frameLayout.createSequentialGroup()
                 .addComponent(pnlTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(pnlContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(pnlContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(lblFiltro)
                         .addComponent(txtFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(btnRefrescar, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -325,11 +330,11 @@ public class lisEntradaInventario extends javax.swing.JInternalFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(pnlContenido, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(frame, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(pnlContenido, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(frame, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -355,7 +360,7 @@ public class lisEntradaInventario extends javax.swing.JInternalFrame {
     private void btnImprimirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImprimirActionPerformed
         // TODO add your handling code here:
         if (Utils.FilaActiva(tbEntradaInventarios)) {
-            FabricaReportes.Imprimir(1, Utils.ObtenerValorCelda(tbEntradaInventarios, 1), pnlContenido);
+            FabricaReportes.Imprimir(1, Utils.ObtenerValorCelda(tbEntradaInventarios, 1), frame);
         }
     }//GEN-LAST:event_btnImprimirActionPerformed
 
@@ -365,10 +370,10 @@ public class lisEntradaInventario extends javax.swing.JInternalFrame {
     private javax.swing.JButton btnNuevo;
     private javax.swing.JButton btnRefrescar;
     private javax.swing.JButton btnSeleccionar;
+    private javax.swing.JPanel frame;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblFiltro;
     private javax.swing.JLabel lblTitulo;
-    private javax.swing.JPanel pnlContenido;
     private javax.swing.JPanel pnlTitulo;
     private javax.swing.JTable tbEntradaInventarios;
     private javax.swing.JTextField txtFiltro;

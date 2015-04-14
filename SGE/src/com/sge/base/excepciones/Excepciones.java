@@ -3,6 +3,11 @@ package com.sge.base.excepciones;
 import com.google.gson.Gson;
 import com.sge.base.controles.FabricaControles;
 import java.awt.Component;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  *
@@ -10,24 +15,83 @@ import java.awt.Component;
  */
 public class Excepciones {
 
+    private static void EscribirLog(Throwable throwable) {
+        FileWriter writer = null;
+        try {
+            writer = new FileWriter("/home/elderson/SGE_LOG.txt", true);
+            for (StackTraceElement stackTrace : throwable.getStackTrace()) {
+                DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+                writer.append(String.format("%s : %s : %s : %s \n", df.format(new Date()), stackTrace.getClassName(), stackTrace.getMethodName(), stackTrace.getLineNumber()));
+            }
+        } catch (Exception e) {
+        } finally {
+            try {
+                writer.close();
+            } catch (IOException ex) {
+            }
+        }
+    }
+
+    private static void EscribirLog(Exception exception) {
+        FileWriter writer = null;
+        try {
+            writer = new FileWriter("/home/elderson/SGE_LOG.txt", true);
+            DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+            writer.append(String.format("%s : %s : %s \n", df.format(new Date()), exception.getClass().getName(), exception.getMessage()));
+        } catch (Exception e) {
+        } finally {
+            try {
+                writer.close();
+            } catch (IOException ex) {
+            }
+        }
+    }
+
     public static void Controlar(String[] resultado, Component component) {
         try {
             if (resultado.length > 1) {
                 Exception exception = new Gson().fromJson(resultado[1], Exception.class);
                 Throwable throwable = exception.getCause();
-                while (throwable.getCause() != null) {
-                    throwable = exception.getCause();
+                if (throwable != null) {
+                    while (throwable.getCause() != null) {
+                        throwable = exception.getCause();
+                    }
+                    EscribirLog(throwable);
+                    FabricaControles.VerAdvertencia(throwable.getMessage(), component);
+                } else {
+                    EscribirLog(exception);
+                    String mensaje = "ERROR";
+                    switch (exception.getClass().getName()) {
+                        case "java.lang.ClassNotFoundException":
+                            mensaje = "CLASE NO ENCONTRADA";
+                            break;
+                    }
+                    FabricaControles.VerAdvertencia(String.format("%s : %s", mensaje, exception.getMessage()), component);
                 }
-                FabricaControles.VerAdvertencia(throwable.getMessage(), component);
-            } else {
-                FabricaControles.VerAdvertencia("SE PRODUJO UN ERROR.", component);
             }
         } catch (Exception e) {
-            FabricaControles.VerAdvertencia("SE PRODUJO UN ERROR.", component);
+            EscribirLog(e);
+            FabricaControles.VerAdvertencia(e.getMessage(), component);
         }
     }
-    
+
     public static void Controlar(Exception exception, Component component) {
-        FabricaControles.VerAdvertencia(exception.getMessage().toUpperCase(), component);
+        Throwable throwable = exception.getCause();
+        if (throwable != null) {
+            while (throwable.getCause() != null) {
+                throwable = exception.getCause();
+            }
+            EscribirLog(throwable);
+            FabricaControles.VerAdvertencia(throwable.getMessage(), component);
+        } else {
+            EscribirLog(exception);
+            String mensaje = "ERROR";
+            switch (exception.getClass().getName()) {
+                case "java.lang.ClassNotFoundException":
+                    mensaje = "CLASE NO ENCONTRADA";
+                    break;
+            }
+            FabricaControles.VerAdvertencia(String.format("%s : %s", mensaje, exception.getMessage()), component);
+        }
     }
 }

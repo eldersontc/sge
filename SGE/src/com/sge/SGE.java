@@ -2,6 +2,7 @@ package com.sge;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.sge.base.excepciones.Excepciones;
 import com.sge.modulos.administracion.cliente.cliAdministracion;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
@@ -90,6 +91,7 @@ public class SGE extends javax.swing.JFrame {
                 pnlMenu.add(menuBar, BorderLayout.NORTH);
             }
         } catch (Exception e) {
+            Excepciones.Controlar(e, this);
         } finally {
             cliente.close();
         }
@@ -105,10 +107,11 @@ public class SGE extends javax.swing.JFrame {
         try {
             Class<?> clazz = Class.forName(frameName);
             Constructor<?> constructor = clazz.getConstructor(int.class);
-            JInternalFrame frame = (JInternalFrame)constructor.newInstance(new Object[] { 0 });
+            JInternalFrame frame = (JInternalFrame) constructor.newInstance(new Object[]{0});
             jdpPrincipal.add(frame);
             frame.setVisible(true);
         } catch (Exception e) {
+            Excepciones.Controlar(e, this);
         }
     }
 

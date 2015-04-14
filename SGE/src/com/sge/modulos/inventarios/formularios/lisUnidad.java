@@ -3,6 +3,7 @@ package com.sge.modulos.inventarios.formularios;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.sge.base.controles.FabricaControles;
+import com.sge.base.excepciones.Excepciones;
 import com.sge.base.utils.Utils;
 import com.sge.modulos.inventarios.clases.Unidad;
 import com.sge.modulos.inventarios.cliente.cliInventarios;
@@ -55,14 +56,15 @@ public class lisUnidad extends javax.swing.JInternalFrame {
 
         @Override
         protected Object doInBackground() {
-            FabricaControles.VerCargando(pnlContenido);
+            FabricaControles.VerCargando(frame);
             cliInventarios cliente = new cliInventarios();
             String json = "";
             try {
                 json = cliente.ObtenerUnidades("");
             } catch (Exception e) {
-                FabricaControles.OcultarCargando(pnlContenido);
-                json = "[\"false\"]";
+                FabricaControles.OcultarCargando(frame);
+                cancel(false);
+                Excepciones.Controlar(e, frame);
             } finally {
                 cliente.close();
             }
@@ -86,9 +88,10 @@ public class lisUnidad extends javax.swing.JInternalFrame {
                     FabricaControles.AgregarBoton(tbUnidades, dele, 6);
                     Utils.AgregarOrdenamiento(tbUnidades);
                 }
-                FabricaControles.OcultarCargando(pnlContenido);
+                FabricaControles.OcultarCargando(frame);
             } catch (Exception e) {
-                FabricaControles.OcultarCargando(pnlContenido);
+                FabricaControles.OcultarCargando(frame);
+                Excepciones.Controlar(e, frame);
             }
         }
     }
@@ -97,7 +100,7 @@ public class lisUnidad extends javax.swing.JInternalFrame {
 
         @Override
         protected Object doInBackground() {
-            FabricaControles.VerCargando(pnlContenido);
+            FabricaControles.VerCargando(frame);
             cliInventarios cliente = new cliInventarios();
             String json = "";
             try {
@@ -112,8 +115,9 @@ public class lisUnidad extends javax.swing.JInternalFrame {
                     json = cliente.ActualizarUnidad(new Gson().toJson(unidad));
                 }
             } catch (Exception e) {
-                FabricaControles.OcultarCargando(pnlContenido);
-                json = "[\"false\"]";
+                FabricaControles.OcultarCargando(frame);
+                cancel(false);
+                Excepciones.Controlar(e, frame);
             } finally {
                 cliente.close();
             }
@@ -128,10 +132,11 @@ public class lisUnidad extends javax.swing.JInternalFrame {
                 if (resultado[0].equals("true")) {
                     new swObtenerUnidades().execute();
                 } else {
-                    FabricaControles.OcultarCargando(pnlContenido);
+                    FabricaControles.OcultarCargando(frame);
                 }
             } catch (Exception e) {
-                FabricaControles.OcultarCargando(pnlContenido);
+                FabricaControles.OcultarCargando(frame);
+                Excepciones.Controlar(e, frame);
             }
         }
     }
@@ -140,15 +145,16 @@ public class lisUnidad extends javax.swing.JInternalFrame {
 
         @Override
         protected Object doInBackground() {
-            FabricaControles.VerCargando(pnlContenido);
+            FabricaControles.VerCargando(frame);
             cliInventarios cliente = new cliInventarios();
             String json = "";
             try {
                 int idUnidad = Utils.ObtenerValorCelda(tbUnidades, 1);
                 json = cliente.EliminarUnidad(new Gson().toJson(idUnidad));
             } catch (Exception e) {
-                FabricaControles.OcultarCargando(pnlContenido);
-                json = "[\"false\"]";
+                FabricaControles.OcultarCargando(frame);
+                cancel(false);
+                Excepciones.Controlar(e, frame);
             } finally {
                 cliente.close();
             }
@@ -163,10 +169,11 @@ public class lisUnidad extends javax.swing.JInternalFrame {
                 if (resultado[0].equals("true")) {
                     new swObtenerUnidades().execute();
                 } else {
-                    FabricaControles.OcultarCargando(pnlContenido);
+                    FabricaControles.OcultarCargando(frame);
                 }
             } catch (Exception e) {
-                FabricaControles.OcultarCargando(pnlContenido);
+                FabricaControles.OcultarCargando(frame);
+                Excepciones.Controlar(e, frame);
             }
         }
     }
@@ -214,7 +221,7 @@ public class lisUnidad extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        pnlContenido = new javax.swing.JPanel();
+        frame = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tbUnidades = new javax.swing.JTable();
         pnlTitulo = new javax.swing.JPanel();
@@ -227,8 +234,8 @@ public class lisUnidad extends javax.swing.JInternalFrame {
 
         setClosable(true);
 
-        pnlContenido.setBackground(java.awt.Color.white);
-        pnlContenido.setBorder(null);
+        frame.setBackground(java.awt.Color.white);
+        frame.setBorder(null);
 
         tbUnidades.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -325,19 +332,19 @@ public class lisUnidad extends javax.swing.JInternalFrame {
             }
         });
 
-        javax.swing.GroupLayout pnlContenidoLayout = new javax.swing.GroupLayout(pnlContenido);
-        pnlContenido.setLayout(pnlContenidoLayout);
-        pnlContenidoLayout.setHorizontalGroup(
-            pnlContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout frameLayout = new javax.swing.GroupLayout(frame);
+        frame.setLayout(frameLayout);
+        frameLayout.setHorizontalGroup(
+            frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(pnlTitulo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(pnlContenidoLayout.createSequentialGroup()
+            .addGroup(frameLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(pnlContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 573, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlContenidoLayout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, frameLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btnSeleccionar, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(pnlContenidoLayout.createSequentialGroup()
+                    .addGroup(frameLayout.createSequentialGroup()
                         .addComponent(lblFiltro)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -346,13 +353,13 @@ public class lisUnidad extends javax.swing.JInternalFrame {
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
-        pnlContenidoLayout.setVerticalGroup(
-            pnlContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlContenidoLayout.createSequentialGroup()
+        frameLayout.setVerticalGroup(
+            frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, frameLayout.createSequentialGroup()
                 .addComponent(pnlTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(pnlContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(pnlContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(lblFiltro)
                         .addComponent(txtFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(btnRefrescar, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -367,11 +374,11 @@ public class lisUnidad extends javax.swing.JInternalFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(pnlContenido, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(frame, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(pnlContenido, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(frame, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -420,10 +427,10 @@ public class lisUnidad extends javax.swing.JInternalFrame {
     private javax.swing.JButton btnNuevo;
     private javax.swing.JButton btnRefrescar;
     private javax.swing.JButton btnSeleccionar;
+    private javax.swing.JPanel frame;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblFiltro;
     private javax.swing.JLabel lblTitulo;
-    private javax.swing.JPanel pnlContenido;
     private javax.swing.JPanel pnlTitulo;
     private javax.swing.JTable tbUnidades;
     private javax.swing.JTextField txtFiltro;

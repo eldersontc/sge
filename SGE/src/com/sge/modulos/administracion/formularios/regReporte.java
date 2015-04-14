@@ -3,6 +3,7 @@ package com.sge.modulos.administracion.formularios;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.sge.base.controles.FabricaControles;
+import com.sge.base.excepciones.Excepciones;
 import com.sge.base.utils.Utils;
 import com.sge.modulos.administracion.clases.ItemReporte;
 import com.sge.modulos.administracion.clases.Reporte;
@@ -71,7 +72,8 @@ public class regReporte extends javax.swing.JInternalFrame {
                 json = cliente.ObtenerEntidades(new Gson().toJson(""));
             } catch (Exception e) {
                 FabricaControles.OcultarCargando(frame);
-                json = "[\"false\"]";
+                cancel(false);
+                Excepciones.Controlar(e, frame);
             } finally {
                 cliente.close();
             }
@@ -99,6 +101,7 @@ public class regReporte extends javax.swing.JInternalFrame {
                 }
             } catch (Exception e) {
                 FabricaControles.OcultarCargando(frame);
+                Excepciones.Controlar(e, frame);
             }
         }
     }
@@ -114,7 +117,8 @@ public class regReporte extends javax.swing.JInternalFrame {
                 json = cliente.ObtenerReporte(new Gson().toJson(idReporte));
             } catch (Exception e) {
                 FabricaControles.OcultarCargando(frame);
-                json = "[\"false\"]";
+                cancel(false);
+                Excepciones.Controlar(e, frame);
             } finally {
                 cliente.close();
             }
@@ -145,6 +149,7 @@ public class regReporte extends javax.swing.JInternalFrame {
                 FabricaControles.OcultarCargando(frame);
             } catch (Exception e) {
                 FabricaControles.OcultarCargando(frame);
+                Excepciones.Controlar(e, frame);
             }
         }
     }
@@ -193,7 +198,8 @@ public class regReporte extends javax.swing.JInternalFrame {
                 }
             } catch (Exception e) {
                 FabricaControles.OcultarProcesando(frame);
-                json = "[\"false\"]";
+                cancel(false);
+                Excepciones.Controlar(e, frame);
             } finally {
                 cliente.close();
             }
@@ -212,6 +218,7 @@ public class regReporte extends javax.swing.JInternalFrame {
                 }
             } catch (Exception e) {
                 FabricaControles.OcultarProcesando(frame);
+                Excepciones.Controlar(e, frame);
             }
         }
     }

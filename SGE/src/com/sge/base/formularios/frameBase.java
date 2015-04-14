@@ -90,6 +90,8 @@ public class frameBase<T> extends javax.swing.JInternalFrame {
                 }
             } catch (Exception e) {
                 OcultarCargando(frame);
+                cancel(false);
+                ControlarExcepcion(e);
             } finally {
                 cliente.close();
             }
@@ -181,12 +183,17 @@ public class frameBase<T> extends javax.swing.JInternalFrame {
     public void ControlarExcepcion(String[] resultado) {
         Excepciones.Controlar(resultado, this);
     }
+    
+    public void ControlarExcepcion(Exception exception) {
+        Excepciones.Controlar(exception, this);
+    }
 
     //////////////////////////////// METODOS BASE //////////////////////////////
     public void Cerrar() {
         try {
             this.setClosed(true);
         } catch (Exception e) {
+            ControlarExcepcion(e);
         }
     }
 
@@ -211,6 +218,7 @@ public class frameBase<T> extends javax.swing.JInternalFrame {
             }
             AsignarControles();
         } catch (Exception e) {
+            ControlarExcepcion(e);
         }
     }
 

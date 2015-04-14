@@ -250,7 +250,8 @@ public class regEntradaInventario extends frameBase<EntradaInventario> {
                 json = cliente.ObtenerEntradaInventario(new Gson().toJson(id));
             } catch (Exception e) {
                 OcultarCargando(frame);
-                json = "[\"false\"]";
+                cancel(false);
+                ControlarExcepcion(e);
             } finally {
                 cliente.close();
             }
@@ -270,6 +271,7 @@ public class regEntradaInventario extends frameBase<EntradaInventario> {
                 OcultarCargando(frame);
             } catch (Exception e) {
                 OcultarCargando(frame);
+                ControlarExcepcion(e);
             }
         }
     }
@@ -288,7 +290,8 @@ public class regEntradaInventario extends frameBase<EntradaInventario> {
                 json = cliente.RegistrarEntradaInventario(new Gson().toJson(arrayJson));
             } catch (Exception e) {
                 OcultarProcesando(frame);
-                json = "[\"false\"]";
+                cancel(false);
+                ControlarExcepcion(e);
             } finally {
                 cliente.close();
             }
@@ -308,6 +311,7 @@ public class regEntradaInventario extends frameBase<EntradaInventario> {
                 }
             } catch (Exception e) {
                 OcultarProcesando(frame);
+                ControlarExcepcion(e);
             }
         }
     }

@@ -1,7 +1,7 @@
 package com.sge.base.utils;
 
+import com.sge.base.excepciones.Excepciones;
 import java.awt.Component;
-import javax.swing.JComboBox;
 import javax.swing.JInternalFrame;
 import javax.swing.JTable;
 import javax.swing.RowFilter;
@@ -63,6 +63,7 @@ public class Utils {
         try {
             frame.setClosed(true);
         } catch (Exception e) {
+            Excepciones.Controlar(e, frame);
         }
     }
 
