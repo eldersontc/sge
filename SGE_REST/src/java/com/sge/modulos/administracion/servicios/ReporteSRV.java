@@ -40,6 +40,7 @@ public class ReporteSRV {
         } catch (Exception e) {
             resultado.clear();
             resultado.add(new Gson().toJson(false));
+            resultado.add(new Gson().toJson(e));
         }
         return new Gson().toJson(resultado);
     }
@@ -59,6 +60,7 @@ public class ReporteSRV {
         } catch (Exception e) {
             resultado.clear();
             resultado.add(new Gson().toJson(false));
+            resultado.add(new Gson().toJson(e));
         }
         return new Gson().toJson(resultado);
     }
@@ -77,6 +79,7 @@ public class ReporteSRV {
         } catch (Exception e) {
             resultado.clear();
             resultado.add(new Gson().toJson(false));
+            resultado.add(new Gson().toJson(e));
         }
         return new Gson().toJson(resultado);
     }
@@ -95,6 +98,7 @@ public class ReporteSRV {
         } catch (Exception e) {
             resultado.clear();
             resultado.add(new Gson().toJson(false));
+            resultado.add(new Gson().toJson(e));
         }
         return new Gson().toJson(resultado);
     }
@@ -113,6 +117,7 @@ public class ReporteSRV {
         } catch (Exception e) {
             resultado.clear();
             resultado.add(new Gson().toJson(false));
+            resultado.add(new Gson().toJson(e));
         }
         return new Gson().toJson(resultado);
     }

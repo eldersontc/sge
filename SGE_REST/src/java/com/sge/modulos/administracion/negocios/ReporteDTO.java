@@ -75,7 +75,7 @@ public class ReporteDTO {
         try {
             reporteDAO = new ReporteDAO();
             reporteDAO.IniciarTransaccion();
-            reporteDAO.ActualizarReporte(reporte.getIdReporte(), reporte.getNombre(), reporte.getEntidad(), reporte.getUbicacion(), reporte.isActivo());
+            reporteDAO.ActualizarReporte(reporte.getIdReporte(), reporte.getNombre(), reporte.getIdEntidad(), reporte.getUbicacion(), reporte.isActivo());
             itemReporteDAO = new ItemReporteDAO();
             itemReporteDAO.AsignarSesion(reporteDAO);
             for (ItemReporte item : reporte.getItems()) {

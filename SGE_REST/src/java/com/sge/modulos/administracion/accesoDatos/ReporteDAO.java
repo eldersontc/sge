@@ -10,14 +10,15 @@ public class ReporteDAO extends AdministracionDAO {
 
     public List<Object[]> ObtenerReportes(String filtro) {
         String sql = "SELECT \n"
-                + "Reporte.idReporte, Reporte.nombre, Reporte.entidad, Reporte.activo \n"
+                + "Reporte.idReporte, Reporte.nombre, Entidad.nombre AS entidad, Reporte.activo \n"
                 + "FROM \n"
-                + "Administracion.Reporte \n" + filtro;
+                + "Administracion.Reporte AS Reporte \n"
+                + "INNER JOIN Administracion.Entidad AS Entidad ON Reporte.idEntidad = Entidad.idEntidad " + filtro;
         return super.ObtenerLista(sql);
     }
 
-    public int ActualizarReporte(int idReporte, String nombre, String entidad, String ubicacion, boolean activo) {
-        String sql = String.format("UPDATE Administracion.Reporte SET nombre = '%s', entidad = '%s', ubicacion = '%s', activo = %b WHERE idReporte = %d", nombre, entidad, ubicacion, activo, idReporte);
+    public int ActualizarReporte(int idReporte, String nombre, int idEntidad, String ubicacion, boolean activo) {
+        String sql = String.format("UPDATE Administracion.Reporte SET nombre = '%s', idEntidad = %d, ubicacion = '%s', activo = %b WHERE idReporte = %d", nombre, idEntidad, ubicacion, activo, idReporte);
         return super.Ejecutar(sql);
     }
     

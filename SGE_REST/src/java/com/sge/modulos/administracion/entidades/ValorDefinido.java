@@ -9,7 +9,7 @@ public class ValorDefinido {
     private int idValorDefinido;
     private int idUsuario;
     private String usuario;
-    private String entidad;
+    private int idEntidad;
     private String json;
     private boolean activo;
 
@@ -40,14 +40,14 @@ public class ValorDefinido {
         this.usuario = usuario;
     }
 
-    public String getEntidad() {
-        return entidad;
+    public int getIdEntidad() {
+        return idEntidad;
     }
 
-    public void setEntidad(String entidad) {
-        this.entidad = entidad;
+    public void setIdEntidad(int idEntidad) {
+        this.idEntidad = idEntidad;
     }
-
+    
     public String getJson() {
         return json;
     }

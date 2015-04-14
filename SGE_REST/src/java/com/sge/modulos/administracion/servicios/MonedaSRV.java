@@ -39,6 +39,7 @@ public class MonedaSRV {
         } catch (Exception e) {
             resultado.clear();
             resultado.add(new Gson().toJson(false));
+            resultado.add(new Gson().toJson(e));
         }
         return new Gson().toJson(resultado);
     }
@@ -55,7 +56,9 @@ public class MonedaSRV {
             monedaDTO.RegistrarMoneda(moneda);
             resultado.add(new Gson().toJson(true));
         } catch (Exception e) {
+            resultado.clear();
             resultado.add(new Gson().toJson(false));
+            resultado.add(new Gson().toJson(e));
         }
         return new Gson().toJson(resultado);
     }
@@ -72,7 +75,9 @@ public class MonedaSRV {
             monedaDTO.ActualizarMoneda(moneda);
             resultado.add(new Gson().toJson(true));
         } catch (Exception e) {
+            resultado.clear();
             resultado.add(new Gson().toJson(false));
+            resultado.add(new Gson().toJson(e));
         }
         return new Gson().toJson(resultado);
     }
@@ -89,7 +94,9 @@ public class MonedaSRV {
             monedaDTO.EliminarMoneda(idMoneda);
             resultado.add(new Gson().toJson(true));
         } catch (Exception e) {
+            resultado.clear();
             resultado.add(new Gson().toJson(false));
+            resultado.add(new Gson().toJson(e));
         }
         return new Gson().toJson(resultado);
     }

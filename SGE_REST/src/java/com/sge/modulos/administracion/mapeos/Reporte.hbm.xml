@@ -10,7 +10,7 @@
             </generator>
         </id>
         <property name="nombre" column="nombre"/>
-        <property name="entidad" column="entidad"/>
+        <property name="idEntidad" column="idEntidad"/>
         <property name="ubicacion" column="ubicacion"/>
         <property name="activo" column="activo"/>
     </class>

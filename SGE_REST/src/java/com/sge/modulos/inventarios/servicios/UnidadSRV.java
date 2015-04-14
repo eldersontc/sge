@@ -39,6 +39,7 @@ public class UnidadSRV {
         } catch (Exception e) {
             resultado.clear();
             resultado.add(new Gson().toJson(false));
+            resultado.add(new Gson().toJson(e));
         }
         return new Gson().toJson(resultado);
     }
@@ -55,7 +56,9 @@ public class UnidadSRV {
             UnidadDTO.RegistrarUnidad(unidad);
             resultado.add(new Gson().toJson(true));
         } catch (Exception e) {
+            resultado.clear();
             resultado.add(new Gson().toJson(false));
+            resultado.add(new Gson().toJson(e));
         }
         return new Gson().toJson(resultado);
     }
@@ -72,7 +75,9 @@ public class UnidadSRV {
             UnidadDTO.ActualizarUnidad(unidad);
             resultado.add(new Gson().toJson(true));
         } catch (Exception e) {
+            resultado.clear();
             resultado.add(new Gson().toJson(false));
+            resultado.add(new Gson().toJson(e));
         }
         return new Gson().toJson(resultado);
     }
@@ -89,7 +94,9 @@ public class UnidadSRV {
             UnidadDTO.EliminarUnidad(idUnidad);
             resultado.add(new Gson().toJson(true));
         } catch (Exception e) {
+            resultado.clear();
             resultado.add(new Gson().toJson(false));
+            resultado.add(new Gson().toJson(e));
         }
         return new Gson().toJson(resultado);
     }

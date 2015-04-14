@@ -40,6 +40,7 @@ public class UsuarioSRV {
         } catch (Exception e) {
             resultado.clear();
             resultado.add(new Gson().toJson(false));
+            resultado.add(new Gson().toJson(e));
         }
         return new Gson().toJson(resultado);
     }
@@ -56,7 +57,9 @@ public class UsuarioSRV {
             usuarioDTO.RegistrarUsuario(usuario);
             resultado.add(new Gson().toJson(true));
         } catch (Exception e) {
+            resultado.clear();
             resultado.add(new Gson().toJson(false));
+            resultado.add(new Gson().toJson(e));
         }
         return new Gson().toJson(resultado);
     }
@@ -73,7 +76,9 @@ public class UsuarioSRV {
             usuarioDTO.ActualizarUsuario(usuario);
             resultado.add(new Gson().toJson(true));
         } catch (Exception e) {
+            resultado.clear();
             resultado.add(new Gson().toJson(false));
+            resultado.add(new Gson().toJson(e));
         }
         return new Gson().toJson(resultado);
     }
@@ -90,7 +95,9 @@ public class UsuarioSRV {
             usuarioDTO.EliminarUsuario(idUsuario);
             resultado.add(new Gson().toJson(true));
         } catch (Exception e) {
+            resultado.clear();
             resultado.add(new Gson().toJson(false));
+            resultado.add(new Gson().toJson(e));
         }
         return new Gson().toJson(resultado);
     }

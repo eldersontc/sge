@@ -10,7 +10,7 @@ public class Reporte {
     
     private int idReporte;
     private String nombre;
-    private String entidad;
+    private int idEntidad;
     private String ubicacion;
     private boolean activo;
     private List<ItemReporte> items;
@@ -34,14 +34,14 @@ public class Reporte {
         this.nombre = nombre;
     }
 
-    public String getEntidad() {
-        return entidad;
+    public int getIdEntidad() {
+        return idEntidad;
     }
 
-    public void setEntidad(String entidad) {
-        this.entidad = entidad;
+    public void setIdEntidad(int idEntidad) {
+        this.idEntidad = idEntidad;
     }
-
+    
     public String getUbicacion() {
         return ubicacion;
     }
