@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.sge.base.controles.FabricaControles;
 import com.sge.base.excepciones.Excepciones;
+import com.sge.base.reportes.FabricaReportes;
 import com.sge.base.utils.Utils;
 import com.sge.modulos.administracion.clases.ValorDefinido;
 import com.sge.modulos.administracion.cliente.cliAdministracion;
@@ -119,7 +120,6 @@ public class frameBase<T> extends javax.swing.JInternalFrame {
 
     public void AsignarValorCelda(JTable tabla, Object valor, int fila, int columna) {
         Utils.AsignarValorCelda(tabla, valor, fila, columna);
-
     }
 
     public void AgregarFila(JTable tabla, Object[] fila) {
@@ -150,7 +150,7 @@ public class frameBase<T> extends javax.swing.JInternalFrame {
         Utils.Filtrar(tabla, filtro);
     }
 
-    ////////////////////////// FRABRICA DE CONTROLES ///////////////////////////
+    ////////////////////////// FABRICA DE CONTROLES ////////////////////////////
     public void VerProcesando(JPanel panel) {
         FabricaControles.VerProcesando(panel);
     }
@@ -161,6 +161,10 @@ public class frameBase<T> extends javax.swing.JInternalFrame {
 
     public void AgregarCombo(JTable table, int column, int indexField) {
         FabricaControles.AgregarCombo(table, column, indexField);
+    }
+
+    public void AgregarBoton(JTable table, Action action, int column) {
+        FabricaControles.AgregarBoton(table, action, column);
     }
 
     public void AgregarEventoChange(JTable table, Action action) {
@@ -179,11 +183,28 @@ public class frameBase<T> extends javax.swing.JInternalFrame {
         FabricaControles.VerModal(this.getDesktopPane(), frame, action);
     }
 
+    public void VerModal(JInternalFrame frame) {
+        FabricaControles.VerModal(this.getDesktopPane(), frame);
+    }
+
+    public int VerConfirmacion(Component parentComponent) {
+        return FabricaControles.VerConfirmacion(parentComponent);
+    }
+
+    /////////////////////////// FABRICA DE REPORTES ////////////////////////////
+    public void Imprimir(int idReporte, JPanel panel) {
+        FabricaReportes.Imprimir(idReporte, panel);
+    }
+
+    public void Imprimir(int idEntidad, int id, JPanel panel) {
+        FabricaReportes.Imprimir(idEntidad, id, panel);
+    }
+
     ////////////////////////////// EXCEPCIONES /////////////////////////////////
     public void ControlarExcepcion(String[] resultado) {
         Excepciones.Controlar(resultado, this);
     }
-    
+
     public void ControlarExcepcion(Exception exception) {
         Excepciones.Controlar(exception, this);
     }

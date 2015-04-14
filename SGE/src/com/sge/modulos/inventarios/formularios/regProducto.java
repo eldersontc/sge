@@ -2,9 +2,7 @@ package com.sge.modulos.inventarios.formularios;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.sge.base.controles.FabricaControles;
-import com.sge.base.excepciones.Excepciones;
-import com.sge.base.utils.Utils;
+import com.sge.base.formularios.frameBase;
 import com.sge.modulos.inventarios.clases.Almacen;
 import com.sge.modulos.inventarios.clases.Producto;
 import com.sge.modulos.inventarios.clases.ProductoAlmacen;
@@ -22,7 +20,7 @@ import javax.swing.SwingWorker;
  *
  * @author elderson
  */
-public class regProducto extends javax.swing.JInternalFrame {
+public class regProducto extends frameBase<Producto> {
 
     /**
      * Creates new form regProducto
@@ -42,7 +40,7 @@ public class regProducto extends javax.swing.JInternalFrame {
         public void actionPerformed(ActionEvent e) {
             List<Unidad> unidades = ((lisUnidad) e.getSource()).getSeleccionados();
             for (Unidad unidad : unidades) {
-                Utils.AgregarFila(tbUnidades, new Object[]{0, unidad.getIdUnidad(), unidad.getAbreviacion(), 0});
+                AgregarFila(tbUnidades, new Object[]{0, unidad.getIdUnidad(), unidad.getAbreviacion(), 0});
             }
         }
     };
@@ -53,7 +51,7 @@ public class regProducto extends javax.swing.JInternalFrame {
             List<Almacen> almacenes = ((lisAlmacen) e.getSource()).getSeleccionados();
             for (Almacen almacen : almacenes) {
                 productoAlmacenes.add(new ProductoAlmacen(almacen));
-                Utils.AgregarFila(tbAlmacenes, new Object[]{0, almacen.getIdAlmacen(), almacen.getDescripcion(), 0, 0, 0, 0});
+                AgregarFila(tbAlmacenes, new Object[]{0, almacen.getIdAlmacen(), almacen.getDescripcion(), 0, 0, 0, 0});
             }
         }
     };
@@ -68,17 +66,17 @@ public class regProducto extends javax.swing.JInternalFrame {
 
     public List<ProductoUnidad> getProductoUnidades() {
         for (int i = 0; i < tbUnidades.getRowCount(); i++) {
-            int idProductoUnidad = Utils.ObtenerValorCelda(tbUnidades, i, 0);
+            int idProductoUnidad = ObtenerValorCelda(tbUnidades, i, 0);
             if (idProductoUnidad == 0) {
                 ProductoUnidad productoUnidad = new ProductoUnidad();
-                productoUnidad.setUnidad(new Unidad(Utils.ObtenerValorCelda(tbUnidades, i, 1)));
-                productoUnidad.setFactor(Utils.ObtenerValorCelda(tbUnidades, i, 3));
+                productoUnidad.setUnidad(new Unidad(ObtenerValorCelda(tbUnidades, i, 1)));
+                productoUnidad.setFactor(ObtenerValorCelda(tbUnidades, i, 3));
                 productoUnidad.setAgregar(true);
                 productoUnidades.add(productoUnidad);
             } else {
                 ProductoUnidad productoUnidad = new ProductoUnidad();
                 productoUnidad.setIdProductoUnidad(idProductoUnidad);
-                productoUnidad.setFactor(Utils.ObtenerValorCelda(tbUnidades, i, 3));
+                productoUnidad.setFactor(ObtenerValorCelda(tbUnidades, i, 3));
                 productoUnidad.setActualizar(true);
                 productoUnidades.add(productoUnidad);
             }
@@ -90,15 +88,15 @@ public class regProducto extends javax.swing.JInternalFrame {
 
         @Override
         protected Object doInBackground() {
-            FabricaControles.VerCargando(frame);
+            VerCargando(frame);
             cliInventarios cliente = new cliInventarios();
             String json = "";
             try {
                 json = cliente.ObtenerProducto(new Gson().toJson(idProducto));
             } catch (Exception e) {
-                FabricaControles.OcultarCargando(frame);
+                OcultarCargando(frame);
                 cancel(false);
-                Excepciones.Controlar(e, frame);
+                ControlarExcepcion(e);
             } finally {
                 cliente.close();
             }
@@ -124,7 +122,7 @@ public class regProducto extends javax.swing.JInternalFrame {
                     chkVentas.setSelected(producto.isVentas());
                     chkActivo.setSelected(producto.isActivo());
                     for (Object[] productoUnidad : productoUnidades) {
-                        Utils.AgregarFila(tbUnidades,
+                        AgregarFila(tbUnidades,
                                 new Object[]{
                                     ((Double) productoUnidad[0]).intValue(),
                                     ((Double) productoUnidad[1]).intValue(),
@@ -133,7 +131,7 @@ public class regProducto extends javax.swing.JInternalFrame {
                                 });
                     }
                     for (Object[] productoAlmacen : productoAlmacenes) {
-                        Utils.AgregarFila(tbAlmacenes,
+                        AgregarFila(tbAlmacenes,
                                 new Object[]{
                                     ((Double) productoAlmacen[0]).intValue(),
                                     ((Double) productoAlmacen[1]).intValue(),
@@ -145,10 +143,10 @@ public class regProducto extends javax.swing.JInternalFrame {
                                 });
                     }
                 }
-                FabricaControles.OcultarCargando(frame);
+                OcultarCargando(frame);
             } catch (Exception e) {
-                FabricaControles.OcultarCargando(frame);
-                Excepciones.Controlar(e, frame);
+                OcultarCargando(frame);
+                ControlarExcepcion(e);
             }
         }
     }
@@ -157,7 +155,7 @@ public class regProducto extends javax.swing.JInternalFrame {
 
         @Override
         protected Object doInBackground() {
-            FabricaControles.VerProcesando(frame);
+            VerProcesando(frame);
             cliInventarios cliente = new cliInventarios();
             String json = "";
             try {
@@ -182,9 +180,9 @@ public class regProducto extends javax.swing.JInternalFrame {
                     json = cliente.ActualizarProducto(new Gson().toJson(arrayJson));
                 }
             } catch (Exception e) {
-                FabricaControles.OcultarProcesando(frame);
+                OcultarProcesando(frame);
                 cancel(false);
-                Excepciones.Controlar(e, frame);
+                ControlarExcepcion(e);
             } finally {
                 cliente.close();
             }
@@ -199,11 +197,11 @@ public class regProducto extends javax.swing.JInternalFrame {
                 if (resultado[0].equals("true")) {
                     setClosed(true);
                 } else {
-                    FabricaControles.OcultarProcesando(frame);
+                    OcultarProcesando(frame);
                 }
             } catch (Exception e) {
-                FabricaControles.OcultarProcesando(frame);
-                Excepciones.Controlar(e, frame);
+                OcultarProcesando(frame);
+                ControlarExcepcion(e);
             }
         }
     }
@@ -541,41 +539,41 @@ public class regProducto extends javax.swing.JInternalFrame {
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
         // TODO add your handling code here:
-        Utils.Cerrar(this);
+        Cerrar();
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void btnNuevoAlmacenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoAlmacenActionPerformed
         // TODO add your handling code here:
-        FabricaControles.VerModal(this.getDesktopPane(), new lisAlmacen(2), sele_almacen);
+        VerModal(new lisAlmacen(2), sele_almacen);
     }//GEN-LAST:event_btnNuevoAlmacenActionPerformed
 
     private void btnEliminarAlmacenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarAlmacenActionPerformed
         // TODO add your handling code here:
-        if (Utils.FilaActiva(tbAlmacenes)) {
-            int idProductoAlmacen = Utils.ObtenerValorCelda(tbAlmacenes, 0);
+        if (FilaActiva(tbAlmacenes)) {
+            int idProductoAlmacen = ObtenerValorCelda(tbAlmacenes, 0);
             if (idProductoAlmacen == 0) {
-                int idAlmacen = Utils.ObtenerValorCelda(tbAlmacenes, 1);
+                int idAlmacen = ObtenerValorCelda(tbAlmacenes, 1);
                 productoAlmacenes.removeIf(p -> p.getAlmacen().getIdAlmacen() == idAlmacen);
             } else {
                 productoAlmacenes.add(new ProductoAlmacen(idProductoAlmacen));
             }
-            Utils.EliminarFila(tbAlmacenes);
+            EliminarFila(tbAlmacenes);
         }
     }//GEN-LAST:event_btnEliminarAlmacenActionPerformed
 
     private void btnNuevaUnidadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevaUnidadActionPerformed
         // TODO add your handling code here:
-        FabricaControles.VerModal(this.getDesktopPane(), new lisUnidad(2), sele_unidad);
+        VerModal(new lisUnidad(2), sele_unidad);
     }//GEN-LAST:event_btnNuevaUnidadActionPerformed
 
     private void btnEliminarUnidadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarUnidadActionPerformed
         // TODO add your handling code here:
-        if (Utils.FilaActiva(tbUnidades)) {
-            int idProductoUnidad = Utils.ObtenerValorCelda(tbUnidades, 0);
+        if (FilaActiva(tbUnidades)) {
+            int idProductoUnidad = ObtenerValorCelda(tbUnidades, 0);
             if (idProductoUnidad > 0) {
                 productoUnidades.add(new ProductoUnidad(idProductoUnidad, true));
             }
-            Utils.EliminarFila(tbUnidades);
+            EliminarFila(tbUnidades);
         }
     }//GEN-LAST:event_btnEliminarUnidadActionPerformed
 

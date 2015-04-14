@@ -2,10 +2,7 @@ package com.sge.modulos.inventarios.formularios;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.sge.base.controles.FabricaControles;
-import com.sge.base.excepciones.Excepciones;
-import com.sge.base.reportes.FabricaReportes;
-import com.sge.base.utils.Utils;
+import com.sge.base.formularios.frameBase;
 import com.sge.modulos.inventarios.clases.EntradaInventario;
 import com.sge.modulos.inventarios.cliente.cliInventarios;
 import java.awt.event.ActionEvent;
@@ -20,7 +17,7 @@ import javax.swing.SwingWorker;
  *
  * @author elderson
  */
-public class lisEntradaInventario extends javax.swing.JInternalFrame {
+public class lisEntradaInventario extends frameBase<EntradaInventario> {
 
     /**
      * Creates new form lisEntradaInventario
@@ -57,15 +54,15 @@ public class lisEntradaInventario extends javax.swing.JInternalFrame {
 
         @Override
         protected Object doInBackground() {
-            FabricaControles.VerCargando(frame);
+            VerCargando(frame);
             cliInventarios cliente = new cliInventarios();
             String json = "";
             try {
                 json = cliente.ObtenerEntradaInventarios("");
             } catch (Exception e) {
-                FabricaControles.OcultarCargando(frame);
+                OcultarCargando(frame);
                 cancel(false);
-                Excepciones.Controlar(e, frame);
+                ControlarExcepcion(e);
             } finally {
                 cliente.close();
             }
@@ -78,20 +75,20 @@ public class lisEntradaInventario extends javax.swing.JInternalFrame {
                 String json = get().toString();
                 String[] resultado = new Gson().fromJson(json, String[].class);
                 if (resultado[0].equals("true")) {
-                    Utils.EliminarTodasFilas(tbEntradaInventarios);
+                    EliminarTodasFilas(tbEntradaInventarios);
                     List<Object[]> filas = (List<Object[]>) new Gson().fromJson(resultado[1], new TypeToken<List<Object[]>>() {
                     }.getType());
                     for (Object[] fila : filas) {
-                        Utils.AgregarFila(tbEntradaInventarios, new Object[]{false, ((Double) fila[0]).intValue(), fila[1], fila[2], fila[3], fila[4], fila[5], fila[6], Icon_View, Icon_Dele});
+                        AgregarFila(tbEntradaInventarios, new Object[]{false, ((Double) fila[0]).intValue(), fila[1], fila[2], fila[3], fila[4], fila[5], fila[6], Icon_View, Icon_Dele});
                     }
-                    FabricaControles.AgregarBoton(tbEntradaInventarios, view, 8);
-                    FabricaControles.AgregarBoton(tbEntradaInventarios, dele, 9);
-                    Utils.AgregarOrdenamiento(tbEntradaInventarios);
+                    AgregarBoton(tbEntradaInventarios, view, 8);
+                    AgregarBoton(tbEntradaInventarios, dele, 9);
+                    AgregarOrdenamiento(tbEntradaInventarios);
                 }
-                FabricaControles.OcultarCargando(frame);
+                OcultarCargando(frame);
             } catch (Exception e) {
-                FabricaControles.OcultarCargando(frame);
-                Excepciones.Controlar(e, frame);
+                OcultarCargando(frame);
+                ControlarExcepcion(e);
             }
         }
     }
@@ -100,16 +97,16 @@ public class lisEntradaInventario extends javax.swing.JInternalFrame {
 
         @Override
         protected Object doInBackground() throws Exception {
-            FabricaControles.VerCargando(frame);
+            VerCargando(frame);
             cliInventarios cliente = new cliInventarios();
             String json = "";
             try {
-                int idEntradaInventario = Utils.ObtenerValorCelda(tbEntradaInventarios, 1);
+                int idEntradaInventario = ObtenerValorCelda(tbEntradaInventarios, 1);
                 json = cliente.EliminarEntradaInventario(new Gson().toJson(idEntradaInventario));
             } catch (Exception e) {
-                FabricaControles.OcultarCargando(frame);
+                OcultarCargando(frame);
                 cancel(false);
-                Excepciones.Controlar(e, frame);
+                ControlarExcepcion(e);
             } finally {
                 cliente.close();
             }
@@ -124,11 +121,11 @@ public class lisEntradaInventario extends javax.swing.JInternalFrame {
                 if (resultado[0].equals("true")) {
                     new swObtenerEntradaInventarios().execute();
                 } else {
-                    FabricaControles.OcultarCargando(frame);
+                    OcultarCargando(frame);
                 }
             } catch (Exception e) {
-                FabricaControles.OcultarCargando(frame);
-                Excepciones.Controlar(e, frame);
+                OcultarCargando(frame);
+                ControlarExcepcion(e);
             }
         }
     }
@@ -137,25 +134,25 @@ public class lisEntradaInventario extends javax.swing.JInternalFrame {
         this.modo = modo;
         switch (this.modo) {
             case 0:
-                Utils.OcultarColumna(tbEntradaInventarios, 0);
-                Utils.OcultarControl(btnSeleccionar);
+                OcultarColumna(tbEntradaInventarios, 0);
+                OcultarControl(btnSeleccionar);
                 break;
             case 1:
-                Utils.OcultarColumna(tbEntradaInventarios, 0);
+                OcultarColumna(tbEntradaInventarios, 0);
                 break;
         }
         new swObtenerEntradaInventarios().execute();
     }
 
     public void VerEntradaInventario() {
-        int idEntradaInventario = Utils.ObtenerValorCelda(tbEntradaInventarios, 1);
+        int idEntradaInventario = ObtenerValorCelda(tbEntradaInventarios, 1);
         regEntradaInventario regEntradaInventario = new regEntradaInventario(idEntradaInventario);
         this.getParent().add(regEntradaInventario);
         regEntradaInventario.setVisible(true);
     }
 
     public void EliminarEntradaInventario() {
-        int confirmacion = FabricaControles.VerConfirmacion(this);
+        int confirmacion = VerConfirmacion(this);
         if (confirmacion == 0) {
             new swEliminarEntradaInventario().execute();
         }
@@ -349,7 +346,7 @@ public class lisEntradaInventario extends javax.swing.JInternalFrame {
 
     private void txtFiltroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFiltroActionPerformed
         // TODO add your handling code here:
-        Utils.Filtrar(tbEntradaInventarios, txtFiltro.getText());
+        Filtrar(tbEntradaInventarios, txtFiltro.getText());
     }//GEN-LAST:event_txtFiltroActionPerformed
 
     private void btnRefrescarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefrescarActionPerformed
@@ -359,8 +356,8 @@ public class lisEntradaInventario extends javax.swing.JInternalFrame {
 
     private void btnImprimirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImprimirActionPerformed
         // TODO add your handling code here:
-        if (Utils.FilaActiva(tbEntradaInventarios)) {
-            FabricaReportes.Imprimir(1, Utils.ObtenerValorCelda(tbEntradaInventarios, 1), frame);
+        if (FilaActiva(tbEntradaInventarios)) {
+            Imprimir(1, ObtenerValorCelda(tbEntradaInventarios, 1), frame);
         }
     }//GEN-LAST:event_btnImprimirActionPerformed
 

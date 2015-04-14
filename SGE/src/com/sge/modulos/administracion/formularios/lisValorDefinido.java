@@ -2,9 +2,8 @@ package com.sge.modulos.administracion.formularios;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.sge.base.controles.FabricaControles;
-import com.sge.base.excepciones.Excepciones;
-import com.sge.base.utils.Utils;
+import com.sge.base.formularios.frameBase;
+import com.sge.modulos.administracion.clases.ValorDefinido;
 import com.sge.modulos.administracion.cliente.cliAdministracion;
 import java.awt.event.ActionEvent;
 import java.util.List;
@@ -17,7 +16,7 @@ import javax.swing.SwingWorker;
  *
  * @author elderson
  */
-public class lisValorDefinido extends javax.swing.JInternalFrame {
+public class lisValorDefinido extends frameBase<ValorDefinido> {
 
     /**
      * Creates new form lisValoresDefinidos
@@ -28,7 +27,7 @@ public class lisValorDefinido extends javax.swing.JInternalFrame {
     }
 
     private int modo = 0;
-    
+
     ImageIcon Icon_Edit = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/edit-16.png"));
     ImageIcon Icon_Dele = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/delete-16.png"));
 
@@ -45,20 +44,20 @@ public class lisValorDefinido extends javax.swing.JInternalFrame {
             EliminarValorDefinido();
         }
     };
-    
+
     public class swObtenerValoresDefinidos extends SwingWorker {
 
         @Override
         protected Object doInBackground() {
-            FabricaControles.VerCargando(frame);
+            VerCargando(frame);
             cliAdministracion cliente = new cliAdministracion();
             String json = "";
             try {
                 json = cliente.ObtenerValoresDefinidos(new Gson().toJson(""));
             } catch (Exception e) {
-                FabricaControles.OcultarCargando(frame);
+                OcultarCargando(frame);
                 cancel(false);
-                Excepciones.Controlar(e, frame);
+                ControlarExcepcion(e);
             } finally {
                 cliente.close();
             }
@@ -72,20 +71,20 @@ public class lisValorDefinido extends javax.swing.JInternalFrame {
                 String[] resultado = new Gson().fromJson(json, String[].class);
 
                 if (resultado[0].equals("true")) {
-                    Utils.EliminarTodasFilas(tbValoresDefinidos);
+                    EliminarTodasFilas(tbValoresDefinidos);
                     List<Object[]> filas = (List<Object[]>) new Gson().fromJson(resultado[1], new TypeToken<List<Object[]>>() {
                     }.getType());
                     for (Object[] fila : filas) {
-                        Utils.AgregarFila(tbValoresDefinidos, new Object[]{false,((Double) fila[0]).intValue(), fila[1], fila[2], fila[3], Icon_Edit, Icon_Dele});
+                        AgregarFila(tbValoresDefinidos, new Object[]{false, ((Double) fila[0]).intValue(), fila[1], fila[2], fila[3], Icon_Edit, Icon_Dele});
                     }
-                    FabricaControles.AgregarBoton(tbValoresDefinidos, edit, 5);
-                    FabricaControles.AgregarBoton(tbValoresDefinidos, dele, 6);
-                    Utils.AgregarOrdenamiento(tbValoresDefinidos);
+                    AgregarBoton(tbValoresDefinidos, edit, 5);
+                    AgregarBoton(tbValoresDefinidos, dele, 6);
+                    AgregarOrdenamiento(tbValoresDefinidos);
                 }
-                FabricaControles.OcultarCargando(frame);
+                OcultarCargando(frame);
             } catch (Exception e) {
-                FabricaControles.OcultarCargando(frame);
-                Excepciones.Controlar(e, frame);
+                OcultarCargando(frame);
+                ControlarExcepcion(e);
             }
         }
     }
@@ -94,16 +93,16 @@ public class lisValorDefinido extends javax.swing.JInternalFrame {
 
         @Override
         protected Object doInBackground() throws Exception {
-            FabricaControles.VerCargando(frame);
+            VerCargando(frame);
             cliAdministracion cliente = new cliAdministracion();
             String json = "";
             try {
-                int idValorDefinido = Utils.ObtenerValorCelda(tbValoresDefinidos, 1);
+                int idValorDefinido = ObtenerValorCelda(tbValoresDefinidos, 1);
                 json = cliente.EliminarValorDefinido(new Gson().toJson(idValorDefinido));
             } catch (Exception e) {
-                FabricaControles.OcultarCargando(frame);
+                OcultarCargando(frame);
                 cancel(false);
-                Excepciones.Controlar(e, frame);
+                ControlarExcepcion(e);
             } finally {
                 cliente.close();
             }
@@ -118,43 +117,43 @@ public class lisValorDefinido extends javax.swing.JInternalFrame {
                 if (resultado[0].equals("true")) {
                     new swObtenerValoresDefinidos().execute();
                 } else {
-                    FabricaControles.OcultarCargando(frame);
+                    OcultarCargando(frame);
                 }
             } catch (Exception e) {
-                FabricaControles.OcultarCargando(frame);
-                Excepciones.Controlar(e, frame);
+                OcultarCargando(frame);
+                ControlarExcepcion(e);
             }
         }
     }
-    
+
     public void Init(int modo) {
         this.modo = modo;
         switch (this.modo) {
             case 0:
-                Utils.OcultarColumna(tbValoresDefinidos, 0);
-                //Utils.OcultarControl(btnSeleccionar);
+                OcultarColumna(tbValoresDefinidos, 0);
+                //OcultarControl(btnSeleccionar);
                 break;
             case 1:
-                Utils.OcultarColumna(tbValoresDefinidos, 0);
+                OcultarColumna(tbValoresDefinidos, 0);
                 break;
         }
         new swObtenerValoresDefinidos().execute();
     }
 
     public void EditarValorDefinido() {
-        int idValorDefinido = Utils.ObtenerValorCelda(tbValoresDefinidos, 1);
+        int idValorDefinido = ObtenerValorCelda(tbValoresDefinidos, 1);
         regValorDefinido regValorDefinido = new regValorDefinido("EDITAR ", idValorDefinido);
         this.getParent().add(regValorDefinido);
         regValorDefinido.setVisible(true);
     }
 
     public void EliminarValorDefinido() {
-        int confirmacion = FabricaControles.VerConfirmacion(this);
+        int confirmacion = VerConfirmacion(this);
         if (confirmacion == 0) {
             new swEliminarValoresDefinidos().execute();
         }
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -322,7 +321,7 @@ public class lisValorDefinido extends javax.swing.JInternalFrame {
 
     private void txtFiltroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFiltroActionPerformed
         // TODO add your handling code here:
-        Utils.Filtrar(tbValoresDefinidos, txtFiltro.getText());
+        Filtrar(tbValoresDefinidos, txtFiltro.getText());
     }//GEN-LAST:event_txtFiltroActionPerformed
 
     private void btnRefrescarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefrescarActionPerformed

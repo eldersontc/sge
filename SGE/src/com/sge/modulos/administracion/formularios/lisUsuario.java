@@ -3,9 +3,7 @@ package com.sge.modulos.administracion.formularios;
 import com.sge.modulos.administracion.cliente.cliAdministracion;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.sge.base.controles.FabricaControles;
-import com.sge.base.excepciones.Excepciones;
-import com.sge.base.utils.Utils;
+import com.sge.base.formularios.frameBase;
 import com.sge.modulos.administracion.clases.Usuario;
 import java.awt.event.ActionEvent;
 import java.util.List;
@@ -18,7 +16,7 @@ import javax.swing.SwingWorker;
  *
  * @author elderson
  */
-public class lisUsuario extends javax.swing.JInternalFrame {
+public class lisUsuario extends frameBase<Usuario> {
 
     /**
      * Creates new form lisUsuario
@@ -29,9 +27,9 @@ public class lisUsuario extends javax.swing.JInternalFrame {
     }
 
     private int modo;
-    
+
     private Usuario seleccionado;
-    
+
     ImageIcon Icon_Save = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/save-16.png"));
     ImageIcon Icon_Dele = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/delete-16.png"));
 
@@ -53,15 +51,15 @@ public class lisUsuario extends javax.swing.JInternalFrame {
 
         @Override
         protected Object doInBackground() throws Exception {
-            FabricaControles.VerCargando(frame);
+            VerCargando(frame);
             cliAdministracion cliente = new cliAdministracion();
             String json = "";
             try {
                 json = cliente.ObtenerUsuarios("");
             } catch (Exception e) {
-                FabricaControles.OcultarCargando(frame);
+                OcultarCargando(frame);
                 cancel(false);
-                Excepciones.Controlar(e, frame);
+                ControlarExcepcion(e);
             } finally {
                 cliente.close();
             }
@@ -75,20 +73,20 @@ public class lisUsuario extends javax.swing.JInternalFrame {
                 String[] resultado = new Gson().fromJson(json, String[].class);
 
                 if (resultado[0].equals("true")) {
-                    Utils.EliminarTodasFilas(tbUsuarios);
+                    EliminarTodasFilas(tbUsuarios);
                     List<Object[]> filas = (List<Object[]>) new Gson().fromJson(resultado[1], new TypeToken<List<Object[]>>() {
                     }.getType());
                     for (Object[] fila : filas) {
-                        Utils.AgregarFila(tbUsuarios, new Object[]{false, ((Double) fila[0]).intValue(), fila[1], fila[2], fila[3], Icon_Save, Icon_Dele});
+                        AgregarFila(tbUsuarios, new Object[]{false, ((Double) fila[0]).intValue(), fila[1], fila[2], fila[3], Icon_Save, Icon_Dele});
                     }
-                    FabricaControles.AgregarBoton(tbUsuarios, save, 5);
-                    FabricaControles.AgregarBoton(tbUsuarios, dele, 6);
-                    Utils.AgregarOrdenamiento(tbUsuarios);
+                    AgregarBoton(tbUsuarios, save, 5);
+                    AgregarBoton(tbUsuarios, dele, 6);
+                    AgregarOrdenamiento(tbUsuarios);
                 }
-                FabricaControles.OcultarCargando(frame);
+                OcultarCargando(frame);
             } catch (Exception e) {
-                FabricaControles.OcultarCargando(frame);
-                Excepciones.Controlar(e, frame);
+                OcultarCargando(frame);
+                ControlarExcepcion(e);
             }
         }
     }
@@ -97,24 +95,24 @@ public class lisUsuario extends javax.swing.JInternalFrame {
 
         @Override
         protected Object doInBackground() {
-            FabricaControles.VerCargando(frame);
+            VerCargando(frame);
             cliAdministracion cliente = new cliAdministracion();
             String json = "";
             try {
                 Usuario usuario = new Usuario();
-                usuario.setIdUsuario(Utils.ObtenerValorCelda(tbUsuarios, 1));
-                usuario.setUsuario(Utils.ObtenerValorCelda(tbUsuarios, 2));
-                usuario.setClave(Utils.ObtenerValorCelda(tbUsuarios, 3));
-                usuario.setActivo(Utils.ObtenerValorCelda(tbUsuarios, 4));
+                usuario.setIdUsuario(ObtenerValorCelda(tbUsuarios, 1));
+                usuario.setUsuario(ObtenerValorCelda(tbUsuarios, 2));
+                usuario.setClave(ObtenerValorCelda(tbUsuarios, 3));
+                usuario.setActivo(ObtenerValorCelda(tbUsuarios, 4));
                 if (usuario.getIdUsuario() == 0) {
                     json = cliente.RegistrarUsuario(new Gson().toJson(usuario));
                 } else {
                     json = cliente.ActualizarUsuario(new Gson().toJson(usuario));
                 }
             } catch (Exception e) {
-                FabricaControles.OcultarCargando(frame);
+                OcultarCargando(frame);
                 cancel(false);
-                Excepciones.Controlar(e, frame);
+                ControlarExcepcion(e);
             } finally {
                 cliente.close();
             }
@@ -129,11 +127,11 @@ public class lisUsuario extends javax.swing.JInternalFrame {
                 if (resultado[0].equals("true")) {
                     new swObtenerUsuarios().execute();
                 } else {
-                    FabricaControles.OcultarCargando(frame);
+                    OcultarCargando(frame);
                 }
             } catch (Exception e) {
-                FabricaControles.OcultarCargando(frame);
-                Excepciones.Controlar(e, frame);
+                OcultarCargando(frame);
+                ControlarExcepcion(e);
             }
         }
     }
@@ -142,16 +140,16 @@ public class lisUsuario extends javax.swing.JInternalFrame {
 
         @Override
         protected Object doInBackground() throws Exception {
-            FabricaControles.VerCargando(frame);
+            VerCargando(frame);
             cliAdministracion cliente = new cliAdministracion();
             String json = "";
             try {
-                int idUsuario = Utils.ObtenerValorCelda(tbUsuarios, 1);
+                int idUsuario = ObtenerValorCelda(tbUsuarios, 1);
                 json = cliente.EliminarUsuario(new Gson().toJson(idUsuario));
             } catch (Exception e) {
-                FabricaControles.OcultarCargando(frame);
+                OcultarCargando(frame);
                 cancel(false);
-                Excepciones.Controlar(e, frame);
+                ControlarExcepcion(e);
             } finally {
                 cliente.close();
             }
@@ -166,11 +164,11 @@ public class lisUsuario extends javax.swing.JInternalFrame {
                 if (resultado[0].equals("true")) {
                     new swObtenerUsuarios().execute();
                 } else {
-                    FabricaControles.OcultarCargando(frame);
+                    OcultarCargando(frame);
                 }
             } catch (Exception e) {
-                FabricaControles.OcultarCargando(frame);
-                Excepciones.Controlar(e, frame);
+                OcultarCargando(frame);
+                ControlarExcepcion(e);
             }
         }
     }
@@ -179,28 +177,28 @@ public class lisUsuario extends javax.swing.JInternalFrame {
         this.modo = modo;
         switch (this.modo) {
             case 0:
-                Utils.OcultarColumna(tbUsuarios, 0);
-                Utils.OcultarControl(btnSeleccionar);
+                OcultarColumna(tbUsuarios, 0);
+                OcultarControl(btnSeleccionar);
                 break;
             case 1:
-                Utils.OcultarColumna(tbUsuarios, 0);
+                OcultarColumna(tbUsuarios, 0);
                 break;
         }
         new swObtenerUsuarios().execute();
     }
 
     public void EliminarUsuario() {
-        int confirmacion = FabricaControles.VerConfirmacion(this);
+        int confirmacion = VerConfirmacion(this);
         if (confirmacion == 0) {
-            int idUsuario = Utils.ObtenerValorCelda(tbUsuarios, 1);
+            int idUsuario = ObtenerValorCelda(tbUsuarios, 1);
             if (idUsuario == 0) {
-                Utils.EliminarFila(tbUsuarios);
+                EliminarFila(tbUsuarios);
             } else {
                 new swEliminarUsuario().execute();
             }
         }
     }
-    
+
     public Usuario getSeleccionado() {
         return seleccionado;
     }
@@ -381,29 +379,29 @@ public class lisUsuario extends javax.swing.JInternalFrame {
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
         // TODO add your handling code here:
-        Utils.AgregarFila(tbUsuarios, new Object[]{false, 0, "", "", false, Icon_Save, Icon_Dele});
+        AgregarFila(tbUsuarios, new Object[]{false, 0, "", "", false, Icon_Save, Icon_Dele});
     }//GEN-LAST:event_btnNuevoActionPerformed
 
     private void btnSeleccionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeleccionarActionPerformed
         // TODO add your handling code here:
         switch (this.modo) {
             case 1:
-            if (Utils.FilaActiva(tbUsuarios)) {
-                Usuario usuario = new Usuario();
-                usuario.setIdUsuario(Utils.ObtenerValorCelda(tbUsuarios, 1));
-                usuario.setUsuario(Utils.ObtenerValorCelda(tbUsuarios, 2));
-                seleccionado = usuario;
-            }
-            Utils.Cerrar(this);
-            break;
+                if (FilaActiva(tbUsuarios)) {
+                    Usuario usuario = new Usuario();
+                    usuario.setIdUsuario(ObtenerValorCelda(tbUsuarios, 1));
+                    usuario.setUsuario(ObtenerValorCelda(tbUsuarios, 2));
+                    seleccionado = usuario;
+                }
+                Cerrar();
+                break;
             case 2:
-            break;
+                break;
         }
     }//GEN-LAST:event_btnSeleccionarActionPerformed
 
     private void txtFiltroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFiltroActionPerformed
         // TODO add your handling code here:
-        Utils.Filtrar(tbUsuarios, txtFiltro.getText());
+        Filtrar(tbUsuarios, txtFiltro.getText());
     }//GEN-LAST:event_txtFiltroActionPerformed
 
     private void btnRefrescarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefrescarActionPerformed

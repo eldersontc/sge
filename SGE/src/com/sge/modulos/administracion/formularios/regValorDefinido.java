@@ -2,9 +2,7 @@ package com.sge.modulos.administracion.formularios;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.sge.base.controles.FabricaControles;
-import com.sge.base.excepciones.Excepciones;
-import com.sge.base.utils.Utils;
+import com.sge.base.formularios.frameBase;
 import com.sge.modulos.administracion.clases.Usuario;
 import com.sge.modulos.administracion.clases.ValorDefinido;
 import com.sge.modulos.administracion.cliente.cliAdministracion;
@@ -20,7 +18,7 @@ import javax.swing.SwingWorker;
  *
  * @author elderson
  */
-public class regValorDefinido extends javax.swing.JInternalFrame {
+public class regValorDefinido extends frameBase<ValorDefinido> {
 
     /**
      * Creates new form regValoresDefinidos
@@ -58,15 +56,15 @@ public class regValorDefinido extends javax.swing.JInternalFrame {
 
         @Override
         protected Object doInBackground() {
-            FabricaControles.VerCargando(frame);
+            VerCargando(frame);
             cliAdministracion cliente = new cliAdministracion();
             String json = "";
             try {
                 json = cliente.ObtenerEntidades(new Gson().toJson(""));
             } catch (Exception e) {
-                FabricaControles.OcultarCargando(frame);
+                OcultarCargando(frame);
                 cancel(false);
-                Excepciones.Controlar(e, frame);
+                ControlarExcepcion(e);
             } finally {
                 cliente.close();
             }
@@ -88,14 +86,14 @@ public class regValorDefinido extends javax.swing.JInternalFrame {
                         new swObtenerValorDefinido().execute();
                     } else {
                         valorDefinido = new ValorDefinido();
-                        FabricaControles.OcultarCargando(frame);
+                        OcultarCargando(frame);
                     }
                 } else {
-                    FabricaControles.OcultarCargando(frame);
+                    OcultarCargando(frame);
                 }
             } catch (Exception e) {
-                FabricaControles.OcultarCargando(frame);
-                Excepciones.Controlar(e, frame);
+                OcultarCargando(frame);
+                ControlarExcepcion(e);
             }
         }
     }
@@ -104,15 +102,15 @@ public class regValorDefinido extends javax.swing.JInternalFrame {
 
         @Override
         protected Object doInBackground() {
-            FabricaControles.VerCargando(frame);
+            VerCargando(frame);
             cliAdministracion cliente = new cliAdministracion();
             String json = "[\"false\"]";
             try {
                 json = cliente.ObtenerValorDefinido(new Gson().toJson(idValorDefinido));
             } catch (Exception e) {
-                FabricaControles.OcultarCargando(frame);
+                OcultarCargando(frame);
                 cancel(false);
-                Excepciones.Controlar(e, frame);
+                ControlarExcepcion(e);
             } finally {
                 cliente.close();
             }
@@ -130,10 +128,10 @@ public class regValorDefinido extends javax.swing.JInternalFrame {
                     cboEntidad.setSelectedItem(getNombreEntidad(valorDefinido.getIdEntidad()));
                     chkActivo.setSelected(valorDefinido.isActivo());
                 }
-                FabricaControles.OcultarCargando(frame);
+                OcultarCargando(frame);
             } catch (Exception e) {
-                FabricaControles.OcultarCargando(frame);
-                Excepciones.Controlar(e, frame);
+                OcultarCargando(frame);
+                ControlarExcepcion(e);
             }
         }
     }
@@ -164,7 +162,7 @@ public class regValorDefinido extends javax.swing.JInternalFrame {
 
         @Override
         protected Object doInBackground() {
-            FabricaControles.VerProcesando(frame);
+            VerProcesando(frame);
             cliAdministracion cliente = new cliAdministracion();
             String json = "";
             try {
@@ -177,9 +175,9 @@ public class regValorDefinido extends javax.swing.JInternalFrame {
                     json = cliente.ActualizarValorDefinido(new Gson().toJson(valorDefinido));
                 }
             } catch (Exception e) {
-                FabricaControles.OcultarProcesando(frame);
+                OcultarProcesando(frame);
                 cancel(false);
-                Excepciones.Controlar(e, frame);
+                ControlarExcepcion(e);
             } finally {
                 cliente.close();
             }
@@ -194,11 +192,11 @@ public class regValorDefinido extends javax.swing.JInternalFrame {
                 if (resultado[0].equals("true")) {
                     setVisible(false);
                 } else {
-                    FabricaControles.OcultarProcesando(frame);
+                    OcultarProcesando(frame);
                 }
             } catch (Exception e) {
-                FabricaControles.OcultarProcesando(frame);
-                Excepciones.Controlar(e, frame);
+                OcultarProcesando(frame);
+                ControlarExcepcion(e);
             }
         }
     }
@@ -356,7 +354,7 @@ public class regValorDefinido extends javax.swing.JInternalFrame {
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
         // TODO add your handling code here:
-        Utils.Cerrar(this);
+        Cerrar();
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void btnEstablecerValoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEstablecerValoresActionPerformed
@@ -367,17 +365,17 @@ public class regValorDefinido extends javax.swing.JInternalFrame {
                     Class<?> clazz = Class.forName(entidad[2].toString());
                     Constructor<?> constructor = clazz.getConstructor(ValorDefinido.class);
                     JInternalFrame frame = (JInternalFrame) constructor.newInstance(new Object[]{this.valorDefinido});
-                    FabricaControles.VerModal(this.getDesktopPane(), frame);
+                    VerModal(frame);
                 }
             }
         } catch (Exception e) {
-            Excepciones.Controlar(e, this);
+            ControlarExcepcion(e);
         }
     }//GEN-LAST:event_btnEstablecerValoresActionPerformed
 
     private void txtUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUsuarioActionPerformed
         // TODO add your handling code here:
-        FabricaControles.VerModal(this.getDesktopPane(), new lisUsuario(1), select_usuario);
+        VerModal(new lisUsuario(1), select_usuario);
     }//GEN-LAST:event_txtUsuarioActionPerformed
 
 

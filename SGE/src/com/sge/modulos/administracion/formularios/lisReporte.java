@@ -2,10 +2,7 @@ package com.sge.modulos.administracion.formularios;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.sge.base.controles.FabricaControles;
-import com.sge.base.excepciones.Excepciones;
-import com.sge.base.reportes.FabricaReportes;
-import com.sge.base.utils.Utils;
+import com.sge.base.formularios.frameBase;
 import com.sge.modulos.administracion.clases.Reporte;
 import com.sge.modulos.administracion.cliente.cliAdministracion;
 import java.awt.event.ActionEvent;
@@ -19,7 +16,7 @@ import javax.swing.SwingWorker;
  *
  * @author elderson
  */
-public class lisReporte extends javax.swing.JInternalFrame {
+public class lisReporte extends frameBase<Reporte> {
 
     /**
      * Creates new form lisReporte
@@ -32,7 +29,7 @@ public class lisReporte extends javax.swing.JInternalFrame {
     private int modo = 0;
 
     private Reporte seleccionado;
-    
+
     ImageIcon Icon_Edit = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/edit-16.png"));
     ImageIcon Icon_Dele = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/delete-16.png"));
 
@@ -49,20 +46,20 @@ public class lisReporte extends javax.swing.JInternalFrame {
             EliminarReporte();
         }
     };
-    
+
     public class swObtenerReportes extends SwingWorker {
 
         @Override
         protected Object doInBackground() {
-            FabricaControles.VerCargando(frame);
+            VerCargando(frame);
             cliAdministracion cliente = new cliAdministracion();
             String json = "";
             try {
                 json = cliente.ObtenerReportes(new Gson().toJson(""));
             } catch (Exception e) {
-                FabricaControles.OcultarCargando(frame);
+                OcultarCargando(frame);
                 cancel(false);
-                Excepciones.Controlar(e, frame);
+                ControlarExcepcion(e);
             } finally {
                 cliente.close();
             }
@@ -76,20 +73,20 @@ public class lisReporte extends javax.swing.JInternalFrame {
                 String[] resultado = new Gson().fromJson(json, String[].class);
 
                 if (resultado[0].equals("true")) {
-                    Utils.EliminarTodasFilas(tbReportes);
+                    EliminarTodasFilas(tbReportes);
                     List<Object[]> filas = (List<Object[]>) new Gson().fromJson(resultado[1], new TypeToken<List<Object[]>>() {
                     }.getType());
                     for (Object[] fila : filas) {
-                        Utils.AgregarFila(tbReportes, new Object[]{false,((Double) fila[0]).intValue(), fila[1], fila[2], fila[3], Icon_Edit, Icon_Dele});
+                        AgregarFila(tbReportes, new Object[]{false, ((Double) fila[0]).intValue(), fila[1], fila[2], fila[3], Icon_Edit, Icon_Dele});
                     }
-                    FabricaControles.AgregarBoton(tbReportes, edit, 5);
-                    FabricaControles.AgregarBoton(tbReportes, dele, 6);
-                    Utils.AgregarOrdenamiento(tbReportes);
+                    AgregarBoton(tbReportes, edit, 5);
+                    AgregarBoton(tbReportes, dele, 6);
+                    AgregarOrdenamiento(tbReportes);
                 }
-                FabricaControles.OcultarCargando(frame);
+                OcultarCargando(frame);
             } catch (Exception e) {
-                FabricaControles.OcultarCargando(frame);
-                Excepciones.Controlar(e, frame);
+                OcultarCargando(frame);
+                ControlarExcepcion(e);
             }
         }
     }
@@ -98,16 +95,16 @@ public class lisReporte extends javax.swing.JInternalFrame {
 
         @Override
         protected Object doInBackground() throws Exception {
-            FabricaControles.VerCargando(frame);
+            VerCargando(frame);
             cliAdministracion cliente = new cliAdministracion();
             String json = "";
             try {
-                int idReporte = Utils.ObtenerValorCelda(tbReportes, 1);
+                int idReporte = ObtenerValorCelda(tbReportes, 1);
                 json = cliente.EliminarReporte(new Gson().toJson(idReporte));
             } catch (Exception e) {
-                FabricaControles.OcultarCargando(frame);
+                OcultarCargando(frame);
                 cancel(false);
-                Excepciones.Controlar(e, frame);
+                ControlarExcepcion(e);
             } finally {
                 cliente.close();
             }
@@ -122,11 +119,11 @@ public class lisReporte extends javax.swing.JInternalFrame {
                 if (resultado[0].equals("true")) {
                     new swObtenerReportes().execute();
                 } else {
-                    FabricaControles.OcultarCargando(frame);
+                    OcultarCargando(frame);
                 }
             } catch (Exception e) {
-                FabricaControles.OcultarCargando(frame);
-                Excepciones.Controlar(e, frame);
+                OcultarCargando(frame);
+                ControlarExcepcion(e);
             }
         }
     }
@@ -135,25 +132,25 @@ public class lisReporte extends javax.swing.JInternalFrame {
         this.modo = modo;
         switch (this.modo) {
             case 0:
-                Utils.OcultarColumna(tbReportes, 0);
-                Utils.OcultarControl(btnSeleccionar);
+                OcultarColumna(tbReportes, 0);
+                OcultarControl(btnSeleccionar);
                 break;
             case 1:
-                Utils.OcultarColumna(tbReportes, 0);
+                OcultarColumna(tbReportes, 0);
                 break;
         }
         new swObtenerReportes().execute();
     }
 
     public void EditarReporte() {
-        int idReporte = Utils.ObtenerValorCelda(tbReportes, 1);
+        int idReporte = ObtenerValorCelda(tbReportes, 1);
         regReporte regReporte = new regReporte("EDITAR ", idReporte);
         this.getParent().add(regReporte);
         regReporte.setVisible(true);
     }
 
     public void EliminarReporte() {
-        int confirmacion = FabricaControles.VerConfirmacion(this);
+        int confirmacion = VerConfirmacion(this);
         if (confirmacion == 0) {
             new swEliminarReporte().execute();
         }
@@ -162,7 +159,7 @@ public class lisReporte extends javax.swing.JInternalFrame {
     public Reporte getSeleccionado() {
         return seleccionado;
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -355,23 +352,23 @@ public class lisReporte extends javax.swing.JInternalFrame {
 
     private void txtFiltroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFiltroActionPerformed
         // TODO add your handling code here:
-        Utils.Filtrar(tbReportes, txtFiltro.getText());
+        Filtrar(tbReportes, txtFiltro.getText());
     }//GEN-LAST:event_txtFiltroActionPerformed
 
     private void btnSeleccionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeleccionarActionPerformed
         // TODO add your handling code here:
         switch (this.modo) {
             case 1:
-            if (Utils.FilaActiva(tbReportes)) {
-                Reporte reporte = new Reporte();
-                reporte.setIdReporte(Utils.ObtenerValorCelda(tbReportes, 1));
-                reporte.setNombre(Utils.ObtenerValorCelda(tbReportes, 3));
-                seleccionado = reporte;
-            }
-            Utils.Cerrar(this);
-            break;
+                if (FilaActiva(tbReportes)) {
+                    Reporte reporte = new Reporte();
+                    reporte.setIdReporte(ObtenerValorCelda(tbReportes, 1));
+                    reporte.setNombre(ObtenerValorCelda(tbReportes, 3));
+                    seleccionado = reporte;
+                }
+                Cerrar();
+                break;
             case 2:
-            break;
+                break;
         }
     }//GEN-LAST:event_btnSeleccionarActionPerformed
 
@@ -382,8 +379,8 @@ public class lisReporte extends javax.swing.JInternalFrame {
 
     private void btnImprimirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImprimirActionPerformed
         // TODO add your handling code here:
-        if(Utils.FilaActiva(tbReportes)){
-            FabricaReportes.Imprimir(Utils.ObtenerValorCelda(tbReportes, 1), frame);
+        if (FilaActiva(tbReportes)) {
+            Imprimir(ObtenerValorCelda(tbReportes, 1), frame);
         }
     }//GEN-LAST:event_btnImprimirActionPerformed
 

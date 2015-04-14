@@ -27,7 +27,6 @@ import net.sf.jasperreports.view.JasperViewer;
 public class FabricaReportes {
 
     /////////////////////////////// CONEXION ///////////////////////////////////
-    
     private static Connection conexion;
 
     public static Connection getConexion(JPanel panel) {
@@ -43,7 +42,6 @@ public class FabricaReportes {
     }
 
     ///////////////////////////////// CLASES ///////////////////////////////////
-    
     public static class swImprimirSinEntidad extends SwingWorker {
 
         private final int idReporte;
@@ -59,7 +57,7 @@ public class FabricaReportes {
             FabricaControles.VerProcesando(panel);
             cliAdministracion cliente = new cliAdministracion();
             try {
-                
+
                 String json = cliente.ObtenerReporte(new Gson().toJson(idReporte));
                 String[] resultado = new Gson().fromJson(json, String[].class);
 
@@ -109,7 +107,7 @@ public class FabricaReportes {
             FabricaControles.VerProcesando(panel);
             cliAdministracion cliente = new cliAdministracion();
             try {
-                
+
                 String json = cliente.ObtenerReportes(new Gson().toJson(String.format("WHERE Reporte.idEntidad = %d", idEntidad)));
                 String[] resultado = new Gson().fromJson(json, String[].class);
 
@@ -175,7 +173,6 @@ public class FabricaReportes {
     }
 
     //////////////////////////////// METODOS ///////////////////////////////////
-    
     public static void Imprimir(int idReporte, JPanel panel) {
         new swImprimirSinEntidad(idReporte, panel).execute();
     }

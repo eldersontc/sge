@@ -2,9 +2,7 @@ package com.sge.modulos.compras.formularios;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.sge.base.controles.FabricaControles;
-import com.sge.base.excepciones.Excepciones;
-import com.sge.base.utils.Utils;
+import com.sge.base.formularios.frameBase;
 import com.sge.modulos.compras.clases.Proveedor;
 import com.sge.modulos.compras.cliente.cliCompras;
 import java.awt.event.ActionEvent;
@@ -19,7 +17,7 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author elderson
  */
-public class lisProveedor extends javax.swing.JInternalFrame {
+public class lisProveedor extends frameBase<Proveedor> {
 
     /**
      * Creates new form lisProveedor
@@ -54,15 +52,15 @@ public class lisProveedor extends javax.swing.JInternalFrame {
 
         @Override
         protected Object doInBackground() {
-            FabricaControles.VerCargando(frame);
+            VerCargando(frame);
             cliCompras cliente = new cliCompras();
             String json = "";
             try {
                 json = cliente.ObtenerProveedores("");
             } catch (Exception e) {
-                FabricaControles.OcultarCargando(frame);
+                OcultarCargando(frame);
                 cancel(false);
-                Excepciones.Controlar(e, frame);
+                ControlarExcepcion(e);
             } finally {
                 cliente.close();
             }
@@ -86,14 +84,14 @@ public class lisProveedor extends javax.swing.JInternalFrame {
                         modelo.addRow(new Object[]{false, ((Double) fila[0]).intValue(), fila[1], fila[5], fila[6], Icon_Edit, Icon_Dele});
                     }
 
-                    FabricaControles.AgregarBoton(tbProveedores, edit, 5);
-                    FabricaControles.AgregarBoton(tbProveedores, dele, 6);
-                    Utils.AgregarOrdenamiento(tbProveedores);
+                    AgregarBoton(tbProveedores, edit, 5);
+                    AgregarBoton(tbProveedores, dele, 6);
+                    AgregarOrdenamiento(tbProveedores);
                 }
-                FabricaControles.OcultarCargando(frame);
+                OcultarCargando(frame);
             } catch (Exception e) {
-                FabricaControles.OcultarCargando(frame);
-                Excepciones.Controlar(e, frame);
+                OcultarCargando(frame);
+                ControlarExcepcion(e);
             }
         }
     }
@@ -102,16 +100,16 @@ public class lisProveedor extends javax.swing.JInternalFrame {
 
         @Override
         protected Object doInBackground() throws Exception {
-            FabricaControles.VerCargando(frame);
+            VerCargando(frame);
             cliCompras cliente = new cliCompras();
             String json = "";
             try {
-                int idProveedor = Utils.ObtenerValorCelda(tbProveedores, 1);
+                int idProveedor = ObtenerValorCelda(tbProveedores, 1);
                 json = cliente.EliminarProveedor(new Gson().toJson(idProveedor));
             } catch (Exception e) {
-                FabricaControles.OcultarCargando(frame);
+                OcultarCargando(frame);
                 cancel(false);
-                Excepciones.Controlar(e, frame);
+                ControlarExcepcion(e);
             } finally {
                 cliente.close();
             }
@@ -126,11 +124,11 @@ public class lisProveedor extends javax.swing.JInternalFrame {
                 if (resultado[0].equals("true")) {
                     new swObtenerProveedores().execute();
                 } else {
-                    FabricaControles.OcultarCargando(frame);
+                    OcultarCargando(frame);
                 }
             } catch (Exception e) {
-                FabricaControles.OcultarCargando(frame);
-                Excepciones.Controlar(e, frame);
+                OcultarCargando(frame);
+                ControlarExcepcion(e);
             }
         }
     }
@@ -139,25 +137,25 @@ public class lisProveedor extends javax.swing.JInternalFrame {
         this.modo = modo;
         switch (this.modo) {
             case 0:
-                Utils.OcultarColumna(tbProveedores, 0);
-                Utils.OcultarControl(btnSeleccionar);
+                OcultarColumna(tbProveedores, 0);
+                OcultarControl(btnSeleccionar);
                 break;
             case 1:
-                Utils.OcultarColumna(tbProveedores, 0);
+                OcultarColumna(tbProveedores, 0);
                 break;
         }
         new swObtenerProveedores().execute();
     }
 
     public void EditarProveedor() {
-        int idProveedor = Utils.ObtenerValorCelda(tbProveedores, 1);
+        int idProveedor = ObtenerValorCelda(tbProveedores, 1);
         regProveedor regProveedor = new regProveedor("EDITAR ", idProveedor);
         this.getParent().add(regProveedor);
         regProveedor.setVisible(true);
     }
 
     public void EliminarProveedor() {
-        int confirmacion = FabricaControles.VerConfirmacion(this);
+        int confirmacion = VerConfirmacion(this);
         if (confirmacion == 0) {
             new swEliminarProveedor().execute();
         }
@@ -349,20 +347,20 @@ public class lisProveedor extends javax.swing.JInternalFrame {
 
     private void txtFiltroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFiltroActionPerformed
         // TODO add your handling code here:
-        Utils.Filtrar(tbProveedores, txtFiltro.getText());
+        Filtrar(tbProveedores, txtFiltro.getText());
     }//GEN-LAST:event_txtFiltroActionPerformed
 
     private void btnSeleccionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeleccionarActionPerformed
         // TODO add your handling code here:
         switch (this.modo) {
             case 1:
-                if (Utils.FilaActiva(tbProveedores)) {
+                if (FilaActiva(tbProveedores)) {
                     Proveedor proveedor = new Proveedor();
-                    proveedor.setIdProveedor(Utils.ObtenerValorCelda(tbProveedores, 1));
-                    proveedor.setRazonSocial(Utils.ObtenerValorCelda(tbProveedores, 2));
+                    proveedor.setIdProveedor(ObtenerValorCelda(tbProveedores, 1));
+                    proveedor.setRazonSocial(ObtenerValorCelda(tbProveedores, 2));
                     seleccionado = proveedor;
                 }
-                Utils.Cerrar(this);
+                Cerrar();
                 break;
             case 2:
                 break;

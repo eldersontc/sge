@@ -2,9 +2,7 @@ package com.sge.modulos.administracion.formularios;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.sge.base.controles.FabricaControles;
-import com.sge.base.excepciones.Excepciones;
-import com.sge.base.utils.Utils;
+import com.sge.base.formularios.frameBase;
 import com.sge.modulos.administracion.clases.Moneda;
 import com.sge.modulos.administracion.cliente.cliAdministracion;
 import java.awt.event.ActionEvent;
@@ -18,7 +16,7 @@ import javax.swing.SwingWorker;
  *
  * @author elderson
  */
-public class lisMoneda extends javax.swing.JInternalFrame {
+public class lisMoneda extends frameBase<Moneda> {
 
     /**
      * Creates new form lisMoneda
@@ -31,7 +29,7 @@ public class lisMoneda extends javax.swing.JInternalFrame {
     private int modo = 0;
 
     private Moneda seleccionado;
-    
+
     ImageIcon Icon_Save = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/save-16.png"));
     ImageIcon Icon_Dele = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/delete-16.png"));
 
@@ -53,15 +51,15 @@ public class lisMoneda extends javax.swing.JInternalFrame {
 
         @Override
         protected Object doInBackground() {
-            FabricaControles.VerCargando(frame);
+            VerCargando(frame);
             cliAdministracion cliente = new cliAdministracion();
             String json = "";
             try {
                 json = cliente.ObtenerMonedas("");
             } catch (Exception e) {
-                FabricaControles.OcultarCargando(frame);
+                OcultarCargando(frame);
                 cancel(false);
-                Excepciones.Controlar(e, frame);
+                ControlarExcepcion(e);
             } finally {
                 cliente.close();
             }
@@ -75,22 +73,22 @@ public class lisMoneda extends javax.swing.JInternalFrame {
                 String[] resultado = new Gson().fromJson(json, String[].class);
 
                 if (resultado[0].equals("true")) {
-                    Utils.EliminarTodasFilas(tbMonedas);
+                    EliminarTodasFilas(tbMonedas);
                     List<Object[]> filas = (List<Object[]>) new Gson().fromJson(resultado[1], new TypeToken<List<Object[]>>() {
                     }.getType());
 
                     for (Object[] fila : filas) {
-                        Utils.AgregarFila(tbMonedas, new Object[]{false,((Double) fila[0]).intValue(), fila[1], fila[2], fila[3], Icon_Save, Icon_Dele});
+                        AgregarFila(tbMonedas, new Object[]{false, ((Double) fila[0]).intValue(), fila[1], fila[2], fila[3], Icon_Save, Icon_Dele});
                     }
 
-                    FabricaControles.AgregarBoton(tbMonedas, save, 5);
-                    FabricaControles.AgregarBoton(tbMonedas, dele, 6);
-                    Utils.AgregarOrdenamiento(tbMonedas);
+                    AgregarBoton(tbMonedas, save, 5);
+                    AgregarBoton(tbMonedas, dele, 6);
+                    AgregarOrdenamiento(tbMonedas);
                 }
-                FabricaControles.OcultarCargando(frame);
+                OcultarCargando(frame);
             } catch (Exception e) {
-                FabricaControles.OcultarCargando(frame);
-                Excepciones.Controlar(e, frame);
+                OcultarCargando(frame);
+                ControlarExcepcion(e);
             }
         }
     };
@@ -99,24 +97,24 @@ public class lisMoneda extends javax.swing.JInternalFrame {
 
         @Override
         protected Object doInBackground() {
-            FabricaControles.VerCargando(frame);
+            VerCargando(frame);
             cliAdministracion cliente = new cliAdministracion();
             String json = "";
             try {
                 Moneda moneda = new Moneda();
-                moneda.setIdMoneda(Utils.ObtenerValorCelda(tbMonedas, 1));
-                moneda.setSimbolo(Utils.ObtenerValorCelda(tbMonedas, 2));
-                moneda.setNombre(Utils.ObtenerValorCelda(tbMonedas, 3));
-                moneda.setActivo(Utils.ObtenerValorCelda(tbMonedas, 4));
+                moneda.setIdMoneda(ObtenerValorCelda(tbMonedas, 1));
+                moneda.setSimbolo(ObtenerValorCelda(tbMonedas, 2));
+                moneda.setNombre(ObtenerValorCelda(tbMonedas, 3));
+                moneda.setActivo(ObtenerValorCelda(tbMonedas, 4));
                 if (moneda.getIdMoneda() == 0) {
                     json = cliente.RegistrarMoneda(new Gson().toJson(moneda));
                 } else {
                     json = cliente.ActualizarMoneda(new Gson().toJson(moneda));
                 }
             } catch (Exception e) {
-                FabricaControles.OcultarCargando(frame);
+                OcultarCargando(frame);
                 cancel(false);
-                Excepciones.Controlar(e, frame);
+                ControlarExcepcion(e);
             } finally {
                 cliente.close();
             }
@@ -131,10 +129,10 @@ public class lisMoneda extends javax.swing.JInternalFrame {
                 if (resultado[0].equals("true")) {
                     new swObtenerMonedas().execute();
                 } else {
-                    FabricaControles.OcultarCargando(frame);
+                    OcultarCargando(frame);
                 }
             } catch (Exception e) {
-                FabricaControles.OcultarCargando(frame);
+                OcultarCargando(frame);
             }
         }
     }
@@ -143,16 +141,16 @@ public class lisMoneda extends javax.swing.JInternalFrame {
 
         @Override
         protected Object doInBackground() throws Exception {
-            FabricaControles.VerCargando(frame);
+            VerCargando(frame);
             cliAdministracion cliente = new cliAdministracion();
             String json = "";
             try {
-                int idMoneda = Utils.ObtenerValorCelda(tbMonedas, 1);
+                int idMoneda = ObtenerValorCelda(tbMonedas, 1);
                 json = cliente.EliminarMoneda(new Gson().toJson(idMoneda));
             } catch (Exception e) {
-                FabricaControles.OcultarCargando(frame);
+                OcultarCargando(frame);
                 cancel(false);
-                Excepciones.Controlar(e, frame);
+                ControlarExcepcion(e);
             } finally {
                 cliente.close();
             }
@@ -167,11 +165,11 @@ public class lisMoneda extends javax.swing.JInternalFrame {
                 if (resultado[0].equals("true")) {
                     new swObtenerMonedas().execute();
                 } else {
-                    FabricaControles.OcultarCargando(frame);
+                    OcultarCargando(frame);
                 }
             } catch (Exception e) {
-                FabricaControles.OcultarCargando(frame);
-                Excepciones.Controlar(e, frame);
+                OcultarCargando(frame);
+                ControlarExcepcion(e);
             }
         }
     }
@@ -180,22 +178,22 @@ public class lisMoneda extends javax.swing.JInternalFrame {
         this.modo = modo;
         switch (this.modo) {
             case 0:
-                Utils.OcultarColumna(tbMonedas, 0);
-                Utils.OcultarControl(btnSeleccionar);
+                OcultarColumna(tbMonedas, 0);
+                OcultarControl(btnSeleccionar);
                 break;
             case 1:
-                Utils.OcultarColumna(tbMonedas, 0);
+                OcultarColumna(tbMonedas, 0);
                 break;
         }
         new swObtenerMonedas().execute();
     }
 
     public void EliminarMoneda() {
-        int confirmacion = FabricaControles.VerConfirmacion(this);
+        int confirmacion = VerConfirmacion(this);
         if (confirmacion == 0) {
-            int idMoneda = Utils.ObtenerValorCelda(tbMonedas, 1);
+            int idMoneda = ObtenerValorCelda(tbMonedas, 1);
             if (idMoneda == 0) {
-                Utils.EliminarFila(tbMonedas);
+                EliminarFila(tbMonedas);
             } else {
                 new swEliminarUnidad().execute();
             }
@@ -205,7 +203,7 @@ public class lisMoneda extends javax.swing.JInternalFrame {
     public Moneda getSeleccionado() {
         return seleccionado;
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -380,29 +378,29 @@ public class lisMoneda extends javax.swing.JInternalFrame {
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
         // TODO add your handling code here:
-        Utils.AgregarFila(tbMonedas, new Object[]{false,0, "", "", false, Icon_Save, Icon_Dele});
+        AgregarFila(tbMonedas, new Object[]{false, 0, "", "", false, Icon_Save, Icon_Dele});
     }//GEN-LAST:event_btnNuevoActionPerformed
 
     private void btnSeleccionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeleccionarActionPerformed
         // TODO add your handling code here:
         switch (this.modo) {
             case 1:
-            if (Utils.FilaActiva(tbMonedas)) {
-                Moneda moneda = new Moneda();
-                moneda.setIdMoneda(Utils.ObtenerValorCelda(tbMonedas, 1));
-                moneda.setSimbolo(Utils.ObtenerValorCelda(tbMonedas, 2));
-                seleccionado = moneda;
-            }
-            Utils.Cerrar(this);
-            break;
+                if (FilaActiva(tbMonedas)) {
+                    Moneda moneda = new Moneda();
+                    moneda.setIdMoneda(ObtenerValorCelda(tbMonedas, 1));
+                    moneda.setSimbolo(ObtenerValorCelda(tbMonedas, 2));
+                    seleccionado = moneda;
+                }
+                Cerrar();
+                break;
             case 2:
-            break;
+                break;
         }
     }//GEN-LAST:event_btnSeleccionarActionPerformed
 
     private void txtFiltroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFiltroActionPerformed
         // TODO add your handling code here:
-        Utils.Filtrar(tbMonedas, txtFiltro.getText());
+        Filtrar(tbMonedas, txtFiltro.getText());
     }//GEN-LAST:event_txtFiltroActionPerformed
 
     private void btnRefrescarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefrescarActionPerformed

@@ -2,9 +2,7 @@ package com.sge.modulos.inventarios.formularios;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.sge.base.controles.FabricaControles;
-import com.sge.base.excepciones.Excepciones;
-import com.sge.base.utils.Utils;
+import com.sge.base.formularios.frameBase;
 import com.sge.modulos.inventarios.clases.Almacen;
 import com.sge.modulos.inventarios.cliente.cliInventarios;
 import java.awt.event.ActionEvent;
@@ -20,7 +18,7 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author elderson
  */
-public class lisAlmacen extends javax.swing.JInternalFrame {
+public class lisAlmacen extends frameBase<Almacen> {
 
     /**
      * Creates new form lisAlmacen
@@ -57,15 +55,15 @@ public class lisAlmacen extends javax.swing.JInternalFrame {
 
         @Override
         protected Object doInBackground() {
-            FabricaControles.VerCargando(frame);
+            VerCargando(frame);
             cliInventarios cliente = new cliInventarios();
             String json = "";
             try {
                 json = cliente.ObtenerAlmacenes("");
             } catch (Exception e) {
-                FabricaControles.OcultarCargando(frame);
+                OcultarCargando(frame);
                 cancel(false);
-                Excepciones.Controlar(e, frame);
+                ControlarExcepcion(e);
             } finally {
                 cliente.close();
             }
@@ -89,14 +87,14 @@ public class lisAlmacen extends javax.swing.JInternalFrame {
                         modelo.addRow(new Object[]{false, ((Double) fila[0]).intValue(), fila[1], fila[2], fila[3], Icon_Save, Icon_Dele});
                     }
 
-                    FabricaControles.AgregarBoton(tbAlmacenes, save, 5);
-                    FabricaControles.AgregarBoton(tbAlmacenes, dele, 6);
-                    Utils.AgregarOrdenamiento(tbAlmacenes);
+                    AgregarBoton(tbAlmacenes, save, 5);
+                    AgregarBoton(tbAlmacenes, dele, 6);
+                    AgregarOrdenamiento(tbAlmacenes);
                 }
-                FabricaControles.OcultarCargando(frame);
+                OcultarCargando(frame);
             } catch (Exception e) {
-                FabricaControles.OcultarCargando(frame);
-                Excepciones.Controlar(e, frame);
+                OcultarCargando(frame);
+                ControlarExcepcion(e);
             }
         }
     }
@@ -105,24 +103,24 @@ public class lisAlmacen extends javax.swing.JInternalFrame {
 
         @Override
         protected Object doInBackground() {
-            FabricaControles.VerCargando(frame);
+            VerCargando(frame);
             cliInventarios cliente = new cliInventarios();
             String json = "";
             try {
                 Almacen almacen = new Almacen();
-                almacen.setIdAlmacen(Utils.ObtenerValorCelda(tbAlmacenes, 1));
-                almacen.setCodigo(Utils.ObtenerValorCelda(tbAlmacenes, 2));
-                almacen.setDescripcion(Utils.ObtenerValorCelda(tbAlmacenes, 3));
-                almacen.setActivo(Utils.ObtenerValorCelda(tbAlmacenes, 4));
+                almacen.setIdAlmacen(ObtenerValorCelda(tbAlmacenes, 1));
+                almacen.setCodigo(ObtenerValorCelda(tbAlmacenes, 2));
+                almacen.setDescripcion(ObtenerValorCelda(tbAlmacenes, 3));
+                almacen.setActivo(ObtenerValorCelda(tbAlmacenes, 4));
                 if (almacen.getIdAlmacen() == 0) {
                     json = cliente.RegistrarAlmacen(new Gson().toJson(almacen));
                 } else {
                     json = cliente.ActualizarAlmacen(new Gson().toJson(almacen));
                 }
             } catch (Exception e) {
-                FabricaControles.OcultarCargando(frame);
+                OcultarCargando(frame);
                 cancel(false);
-                Excepciones.Controlar(e, frame);
+                ControlarExcepcion(e);
             } finally {
                 cliente.close();
             }
@@ -137,11 +135,11 @@ public class lisAlmacen extends javax.swing.JInternalFrame {
                 if (resultado[0].equals("true")) {
                     new swObtenerAlmacenes().execute();
                 } else {
-                    FabricaControles.OcultarCargando(frame);
+                    OcultarCargando(frame);
                 }
             } catch (Exception e) {
-                FabricaControles.OcultarCargando(frame);
-                Excepciones.Controlar(e, frame);
+                OcultarCargando(frame);
+                ControlarExcepcion(e);
             }
         }
     }
@@ -150,16 +148,16 @@ public class lisAlmacen extends javax.swing.JInternalFrame {
 
         @Override
         protected Object doInBackground() throws Exception {
-            FabricaControles.VerCargando(frame);
+            VerCargando(frame);
             cliInventarios cliente = new cliInventarios();
             String json = "";
             try {
-                int idAlmacen = Utils.ObtenerValorCelda(tbAlmacenes, 1);
+                int idAlmacen = ObtenerValorCelda(tbAlmacenes, 1);
                 json = cliente.EliminarAlmacen(new Gson().toJson(idAlmacen));
             } catch (Exception e) {
-                FabricaControles.OcultarCargando(frame);
+                OcultarCargando(frame);
                 cancel(false);
-                Excepciones.Controlar(e, frame);
+                ControlarExcepcion(e);
             } finally {
                 cliente.close();
             }
@@ -174,11 +172,11 @@ public class lisAlmacen extends javax.swing.JInternalFrame {
                 if (resultado[0].equals("true")) {
                     new swObtenerAlmacenes().execute();
                 } else {
-                    FabricaControles.OcultarCargando(frame);
+                    OcultarCargando(frame);
                 }
             } catch (Exception e) {
-                FabricaControles.OcultarCargando(frame);
-                Excepciones.Controlar(e, frame);
+                OcultarCargando(frame);
+                ControlarExcepcion(e);
             }
         }
     }
@@ -187,22 +185,22 @@ public class lisAlmacen extends javax.swing.JInternalFrame {
         this.modo = modo;
         switch (this.modo) {
             case 0:
-                Utils.OcultarColumna(tbAlmacenes, 0);
-                Utils.OcultarControl(btnSeleccionar);
+                OcultarColumna(tbAlmacenes, 0);
+                OcultarControl(btnSeleccionar);
                 break;
             case 1:
-                Utils.OcultarColumna(tbAlmacenes, 0);
+                OcultarColumna(tbAlmacenes, 0);
                 break;
         }
         new swObtenerAlmacenes().execute();
     }
 
     public void EliminarAlmacen() {
-        int confirmacion = FabricaControles.VerConfirmacion(this);
+        int confirmacion = VerConfirmacion(this);
         if (confirmacion == 0) {
-            int idAlmacen = Utils.ObtenerValorCelda(tbAlmacenes, 1);
+            int idAlmacen = ObtenerValorCelda(tbAlmacenes, 1);
             if (idAlmacen == 0) {
-                Utils.EliminarFila(tbAlmacenes);
+                EliminarFila(tbAlmacenes);
             } else {
                 new swEliminarAlmacen().execute();
             }
@@ -391,41 +389,41 @@ public class lisAlmacen extends javax.swing.JInternalFrame {
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
         // TODO add your handling code here:
-        Utils.AgregarFila(tbAlmacenes, new Object[]{false, 0, "", "", false, Icon_Save, Icon_Dele});
+        AgregarFila(tbAlmacenes, new Object[]{false, 0, "", "", false, Icon_Save, Icon_Dele});
     }//GEN-LAST:event_btnNuevoActionPerformed
 
     private void btnSeleccionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeleccionarActionPerformed
         // TODO add your handling code here:
         switch (this.modo) {
             case 1:
-                if (Utils.FilaActiva(tbAlmacenes)) {
+                if (FilaActiva(tbAlmacenes)) {
                     Almacen almacen = new Almacen();
-                    almacen.setIdAlmacen(Utils.ObtenerValorCelda(tbAlmacenes, 1));
-                    almacen.setDescripcion(Utils.ObtenerValorCelda(tbAlmacenes, 3));
+                    almacen.setIdAlmacen(ObtenerValorCelda(tbAlmacenes, 1));
+                    almacen.setDescripcion(ObtenerValorCelda(tbAlmacenes, 3));
                     seleccionado = almacen;
                 }
-                Utils.Cerrar(this);
+                Cerrar();
                 break;
             case 2:
                 for (int i = 0; i < tbAlmacenes.getRowCount(); i++) {
-                    boolean check = Utils.ObtenerValorCelda(tbAlmacenes, i, 0);
+                    boolean check = ObtenerValorCelda(tbAlmacenes, i, 0);
                     if (check) {
                         Almacen almacen = new Almacen();
-                        almacen.setIdAlmacen(Utils.ObtenerValorCelda(tbAlmacenes, i, 1));
-                        almacen.setCodigo(Utils.ObtenerValorCelda(tbAlmacenes, i, 2));
-                        almacen.setDescripcion(Utils.ObtenerValorCelda(tbAlmacenes, i, 3));
-                        almacen.setActivo(Utils.ObtenerValorCelda(tbAlmacenes, i, 4));
+                        almacen.setIdAlmacen(ObtenerValorCelda(tbAlmacenes, i, 1));
+                        almacen.setCodigo(ObtenerValorCelda(tbAlmacenes, i, 2));
+                        almacen.setDescripcion(ObtenerValorCelda(tbAlmacenes, i, 3));
+                        almacen.setActivo(ObtenerValorCelda(tbAlmacenes, i, 4));
                         seleccionados.add(almacen);
                     }
                 }
-                Utils.Cerrar(this);
+                Cerrar();
                 break;
         }
     }//GEN-LAST:event_btnSeleccionarActionPerformed
 
     private void txtFiltroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFiltroActionPerformed
         // TODO add your handling code here:
-        Utils.Filtrar(tbAlmacenes, txtFiltro.getText());
+        Filtrar(tbAlmacenes, txtFiltro.getText());
     }//GEN-LAST:event_txtFiltroActionPerformed
 
     private void btnRefrescarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefrescarActionPerformed

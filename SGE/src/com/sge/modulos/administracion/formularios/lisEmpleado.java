@@ -2,9 +2,7 @@ package com.sge.modulos.administracion.formularios;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.sge.base.controles.FabricaControles;
-import com.sge.base.excepciones.Excepciones;
-import com.sge.base.utils.Utils;
+import com.sge.base.formularios.frameBase;
 import com.sge.modulos.administracion.clases.Empleado;
 import com.sge.modulos.administracion.cliente.cliAdministracion;
 import java.awt.event.ActionEvent;
@@ -19,7 +17,7 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author elderson
  */
-public class lisEmpleado extends javax.swing.JInternalFrame {
+public class lisEmpleado extends frameBase<Empleado> {
 
     /**
      * Creates new form lisEmpleado
@@ -32,7 +30,7 @@ public class lisEmpleado extends javax.swing.JInternalFrame {
     private int modo = 0;
 
     private Empleado seleccionado;
-    
+
     ImageIcon Icon_Edit = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/edit-16.png"));
     ImageIcon Icon_Dele = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/delete-16.png"));
 
@@ -54,15 +52,15 @@ public class lisEmpleado extends javax.swing.JInternalFrame {
 
         @Override
         protected Object doInBackground() {
-            FabricaControles.VerCargando(frame);
+            VerCargando(frame);
             cliAdministracion cliente = new cliAdministracion();
             String json = "";
             try {
                 json = cliente.ObtenerEmpleados("");
             } catch (Exception e) {
-                FabricaControles.OcultarCargando(frame);
+                OcultarCargando(frame);
                 cancel(false);
-                Excepciones.Controlar(e, frame);
+                ControlarExcepcion(e);
             } finally {
                 cliente.close();
             }
@@ -83,16 +81,16 @@ public class lisEmpleado extends javax.swing.JInternalFrame {
                     }.getType());
 
                     for (Object[] fila : filas) {
-                        modelo.addRow(new Object[]{false,((Double) fila[0]).intValue(), fila[1], fila[2], fila[6], fila[7], Icon_Edit, Icon_Dele});
+                        modelo.addRow(new Object[]{false, ((Double) fila[0]).intValue(), fila[1], fila[2], fila[6], fila[7], Icon_Edit, Icon_Dele});
                     }
-                    FabricaControles.AgregarBoton(tbEmpleados, edit, 6);
-                    FabricaControles.AgregarBoton(tbEmpleados, dele, 7);
-                    Utils.AgregarOrdenamiento(tbEmpleados);
+                    AgregarBoton(tbEmpleados, edit, 6);
+                    AgregarBoton(tbEmpleados, dele, 7);
+                    AgregarOrdenamiento(tbEmpleados);
                 }
-                FabricaControles.OcultarCargando(frame);
+                OcultarCargando(frame);
             } catch (Exception e) {
-                FabricaControles.OcultarCargando(frame);
-                Excepciones.Controlar(e, frame);
+                OcultarCargando(frame);
+                ControlarExcepcion(e);
             }
         }
     }
@@ -101,16 +99,16 @@ public class lisEmpleado extends javax.swing.JInternalFrame {
 
         @Override
         protected Object doInBackground() throws Exception {
-            FabricaControles.VerCargando(frame);
+            VerCargando(frame);
             cliAdministracion cliente = new cliAdministracion();
             String json = "";
             try {
-                int idEmpleado = Utils.ObtenerValorCelda(tbEmpleados, 1);
+                int idEmpleado = ObtenerValorCelda(tbEmpleados, 1);
                 json = cliente.EliminarEmpleado(new Gson().toJson(idEmpleado));
             } catch (Exception e) {
-                FabricaControles.OcultarCargando(frame);
+                OcultarCargando(frame);
                 cancel(false);
-                Excepciones.Controlar(e, frame);
+                ControlarExcepcion(e);
             } finally {
                 cliente.close();
             }
@@ -125,11 +123,11 @@ public class lisEmpleado extends javax.swing.JInternalFrame {
                 if (resultado[0].equals("true")) {
                     new swObtenerEmpleados().execute();
                 } else {
-                    FabricaControles.OcultarCargando(frame);
+                    OcultarCargando(frame);
                 }
             } catch (Exception e) {
-                FabricaControles.OcultarCargando(frame);
-                Excepciones.Controlar(e, frame);
+                OcultarCargando(frame);
+                ControlarExcepcion(e);
             }
         }
     }
@@ -138,25 +136,25 @@ public class lisEmpleado extends javax.swing.JInternalFrame {
         this.modo = modo;
         switch (this.modo) {
             case 0:
-                Utils.OcultarColumna(tbEmpleados, 0);
-                Utils.OcultarControl(btnSeleccionar);
+                OcultarColumna(tbEmpleados, 0);
+                OcultarControl(btnSeleccionar);
                 break;
             case 1:
-                Utils.OcultarColumna(tbEmpleados, 0);
+                OcultarColumna(tbEmpleados, 0);
                 break;
         }
         new swObtenerEmpleados().execute();
     }
 
     public void EditarEmpleado() {
-        int idEmpleado = Utils.ObtenerValorCelda(tbEmpleados, 1);
+        int idEmpleado = ObtenerValorCelda(tbEmpleados, 1);
         regEmpleado regEmpleado = new regEmpleado("EDITAR ", idEmpleado);
         this.getParent().add(regEmpleado);
         regEmpleado.setVisible(true);
     }
 
     public void EliminarEmpleado() {
-        int confirmacion = FabricaControles.VerConfirmacion(this);
+        int confirmacion = VerConfirmacion(this);
         if (confirmacion == 0) {
             new swEliminarUnidad().execute();
         }
@@ -165,7 +163,7 @@ public class lisEmpleado extends javax.swing.JInternalFrame {
     public Empleado getSeleccionado() {
         return seleccionado;
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -349,23 +347,23 @@ public class lisEmpleado extends javax.swing.JInternalFrame {
 
     private void txtFiltroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFiltroActionPerformed
         // TODO add your handling code here:
-        Utils.Filtrar(tbEmpleados, txtFiltro.getText());
+        Filtrar(tbEmpleados, txtFiltro.getText());
     }//GEN-LAST:event_txtFiltroActionPerformed
 
     private void btnSeleccionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeleccionarActionPerformed
         // TODO add your handling code here:
         switch (this.modo) {
             case 1:
-            if (Utils.FilaActiva(tbEmpleados)) {
-                Empleado empleado = new Empleado();
-                empleado.setIdEmpleado(Utils.ObtenerValorCelda(tbEmpleados, 1));
-                empleado.setNombre(Utils.ObtenerValorCelda(tbEmpleados, 3));
-                seleccionado = empleado;
-            }
-            Utils.Cerrar(this);
-            break;
+                if (FilaActiva(tbEmpleados)) {
+                    Empleado empleado = new Empleado();
+                    empleado.setIdEmpleado(ObtenerValorCelda(tbEmpleados, 1));
+                    empleado.setNombre(ObtenerValorCelda(tbEmpleados, 3));
+                    seleccionado = empleado;
+                }
+                Cerrar();
+                break;
             case 2:
-            break;
+                break;
         }
     }//GEN-LAST:event_btnSeleccionarActionPerformed
 

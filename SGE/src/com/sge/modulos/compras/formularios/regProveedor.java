@@ -1,8 +1,7 @@
 package com.sge.modulos.compras.formularios;
 
 import com.google.gson.Gson;
-import com.sge.base.controles.FabricaControles;
-import com.sge.base.excepciones.Excepciones;
+import com.sge.base.formularios.frameBase;
 import com.sge.modulos.compras.clases.Proveedor;
 import com.sge.modulos.compras.cliente.cliCompras;
 import javax.swing.SwingWorker;
@@ -11,7 +10,7 @@ import javax.swing.SwingWorker;
  *
  * @author elderson
  */
-public class regProveedor extends javax.swing.JInternalFrame {
+public class regProveedor extends frameBase<Proveedor> {
 
     /**
      * Creates new form regProveedor
@@ -35,15 +34,15 @@ public class regProveedor extends javax.swing.JInternalFrame {
 
         @Override
         protected Object doInBackground() {
-            FabricaControles.VerCargando(frame);
+            VerCargando(frame);
             cliCompras cliente = new cliCompras();
             String json = "";
             try {
                 json = cliente.ObtenerProveedor(new Gson().toJson(idProveedor));
             } catch (Exception e) {
-                FabricaControles.OcultarCargando(frame);
+                OcultarCargando(frame);
                 cancel(false);
-                Excepciones.Controlar(e, frame);
+                ControlarExcepcion(e);
             } finally {
                 cliente.close();
             }
@@ -65,19 +64,19 @@ public class regProveedor extends javax.swing.JInternalFrame {
                     txtFechaUltimaCompra.setText(proveedor.getFechaUltimaCompra());
                     chkActivo.setSelected(proveedor.isActivo());
                 }
-                FabricaControles.OcultarCargando(frame);
+                OcultarCargando(frame);
             } catch (Exception e) {
-                FabricaControles.OcultarCargando(frame);
-                Excepciones.Controlar(e, frame);
+                OcultarCargando(frame);
+                ControlarExcepcion(e);
             }
         }
     }
 
-    public class swGuardarProveedor extends SwingWorker<Object, Object>{
+    public class swGuardarProveedor extends SwingWorker<Object, Object> {
 
         @Override
         protected Object doInBackground() {
-            FabricaControles.VerProcesando(frame);
+            VerProcesando(frame);
             cliCompras cliente = new cliCompras();
             String json = "";
             try {
@@ -94,15 +93,15 @@ public class regProveedor extends javax.swing.JInternalFrame {
                     json = cliente.ActualizarProveedor(new Gson().toJson(proveedor));
                 }
             } catch (Exception e) {
-                FabricaControles.OcultarProcesando(frame);
+                OcultarProcesando(frame);
                 cancel(false);
-                Excepciones.Controlar(e, frame);
-            } finally{
+                ControlarExcepcion(e);
+            } finally {
                 cliente.close();
             }
             return json;
         }
-        
+
         @Override
         protected void done() {
             try {
@@ -111,15 +110,15 @@ public class regProveedor extends javax.swing.JInternalFrame {
                 if (resultado[0].equals("true")) {
                     setVisible(false);
                 } else {
-                    FabricaControles.OcultarProcesando(frame);
+                    OcultarProcesando(frame);
                 }
             } catch (Exception e) {
-                FabricaControles.OcultarProcesando(frame);
-                Excepciones.Controlar(e, frame);
+                OcultarProcesando(frame);
+                ControlarExcepcion(e);
             }
         }
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always

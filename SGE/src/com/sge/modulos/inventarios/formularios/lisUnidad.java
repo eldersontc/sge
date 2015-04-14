@@ -2,9 +2,7 @@ package com.sge.modulos.inventarios.formularios;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.sge.base.controles.FabricaControles;
-import com.sge.base.excepciones.Excepciones;
-import com.sge.base.utils.Utils;
+import com.sge.base.formularios.frameBase;
 import com.sge.modulos.inventarios.clases.Unidad;
 import com.sge.modulos.inventarios.cliente.cliInventarios;
 import java.awt.event.ActionEvent;
@@ -19,7 +17,7 @@ import javax.swing.SwingWorker;
  *
  * @author elderson
  */
-public class lisUnidad extends javax.swing.JInternalFrame {
+public class lisUnidad extends frameBase<Unidad> {
 
     /**
      * Creates new form lisUnidad
@@ -56,15 +54,15 @@ public class lisUnidad extends javax.swing.JInternalFrame {
 
         @Override
         protected Object doInBackground() {
-            FabricaControles.VerCargando(frame);
+            VerCargando(frame);
             cliInventarios cliente = new cliInventarios();
             String json = "";
             try {
                 json = cliente.ObtenerUnidades("");
             } catch (Exception e) {
-                FabricaControles.OcultarCargando(frame);
+                OcultarCargando(frame);
                 cancel(false);
-                Excepciones.Controlar(e, frame);
+                ControlarExcepcion(e);
             } finally {
                 cliente.close();
             }
@@ -78,20 +76,20 @@ public class lisUnidad extends javax.swing.JInternalFrame {
                 String[] resultado = new Gson().fromJson(json, String[].class);
 
                 if (resultado[0].equals("true")) {
-                    Utils.EliminarTodasFilas(tbUnidades);
+                    EliminarTodasFilas(tbUnidades);
                     List<Object[]> filas = (List<Object[]>) new Gson().fromJson(resultado[1].toString(), new TypeToken<List<Object[]>>() {
                     }.getType());
                     for (Object[] fila : filas) {
-                        Utils.AgregarFila(tbUnidades, new Object[]{false, ((Double) fila[0]).intValue(), fila[1], fila[2], fila[3], Icon_Save, Icon_Dele});
+                        AgregarFila(tbUnidades, new Object[]{false, ((Double) fila[0]).intValue(), fila[1], fila[2], fila[3], Icon_Save, Icon_Dele});
                     }
-                    FabricaControles.AgregarBoton(tbUnidades, save, 5);
-                    FabricaControles.AgregarBoton(tbUnidades, dele, 6);
-                    Utils.AgregarOrdenamiento(tbUnidades);
+                    AgregarBoton(tbUnidades, save, 5);
+                    AgregarBoton(tbUnidades, dele, 6);
+                    AgregarOrdenamiento(tbUnidades);
                 }
-                FabricaControles.OcultarCargando(frame);
+                OcultarCargando(frame);
             } catch (Exception e) {
-                FabricaControles.OcultarCargando(frame);
-                Excepciones.Controlar(e, frame);
+                OcultarCargando(frame);
+                ControlarExcepcion(e);
             }
         }
     }
@@ -100,24 +98,24 @@ public class lisUnidad extends javax.swing.JInternalFrame {
 
         @Override
         protected Object doInBackground() {
-            FabricaControles.VerCargando(frame);
+            VerCargando(frame);
             cliInventarios cliente = new cliInventarios();
             String json = "";
             try {
                 Unidad unidad = new Unidad();
-                unidad.setIdUnidad(Utils.ObtenerValorCelda(tbUnidades, 1));
-                unidad.setAbreviacion(Utils.ObtenerValorCelda(tbUnidades, 2));
-                unidad.setDescripcion(Utils.ObtenerValorCelda(tbUnidades, 3));
-                unidad.setActivo(Utils.ObtenerValorCelda(tbUnidades, 4));
+                unidad.setIdUnidad(ObtenerValorCelda(tbUnidades, 1));
+                unidad.setAbreviacion(ObtenerValorCelda(tbUnidades, 2));
+                unidad.setDescripcion(ObtenerValorCelda(tbUnidades, 3));
+                unidad.setActivo(ObtenerValorCelda(tbUnidades, 4));
                 if (unidad.getIdUnidad() == 0) {
                     json = cliente.RegistrarUnidad(new Gson().toJson(unidad));
                 } else {
                     json = cliente.ActualizarUnidad(new Gson().toJson(unidad));
                 }
             } catch (Exception e) {
-                FabricaControles.OcultarCargando(frame);
+                OcultarCargando(frame);
                 cancel(false);
-                Excepciones.Controlar(e, frame);
+                ControlarExcepcion(e);
             } finally {
                 cliente.close();
             }
@@ -132,11 +130,11 @@ public class lisUnidad extends javax.swing.JInternalFrame {
                 if (resultado[0].equals("true")) {
                     new swObtenerUnidades().execute();
                 } else {
-                    FabricaControles.OcultarCargando(frame);
+                    OcultarCargando(frame);
                 }
             } catch (Exception e) {
-                FabricaControles.OcultarCargando(frame);
-                Excepciones.Controlar(e, frame);
+                OcultarCargando(frame);
+                ControlarExcepcion(e);
             }
         }
     }
@@ -145,16 +143,16 @@ public class lisUnidad extends javax.swing.JInternalFrame {
 
         @Override
         protected Object doInBackground() {
-            FabricaControles.VerCargando(frame);
+            VerCargando(frame);
             cliInventarios cliente = new cliInventarios();
             String json = "";
             try {
-                int idUnidad = Utils.ObtenerValorCelda(tbUnidades, 1);
+                int idUnidad = ObtenerValorCelda(tbUnidades, 1);
                 json = cliente.EliminarUnidad(new Gson().toJson(idUnidad));
             } catch (Exception e) {
-                FabricaControles.OcultarCargando(frame);
+                OcultarCargando(frame);
                 cancel(false);
-                Excepciones.Controlar(e, frame);
+                ControlarExcepcion(e);
             } finally {
                 cliente.close();
             }
@@ -169,11 +167,11 @@ public class lisUnidad extends javax.swing.JInternalFrame {
                 if (resultado[0].equals("true")) {
                     new swObtenerUnidades().execute();
                 } else {
-                    FabricaControles.OcultarCargando(frame);
+                    OcultarCargando(frame);
                 }
             } catch (Exception e) {
-                FabricaControles.OcultarCargando(frame);
-                Excepciones.Controlar(e, frame);
+                OcultarCargando(frame);
+                ControlarExcepcion(e);
             }
         }
     }
@@ -182,22 +180,22 @@ public class lisUnidad extends javax.swing.JInternalFrame {
         this.modo = modo;
         switch (this.modo) {
             case 0:
-                Utils.OcultarColumna(tbUnidades, 0);
-                Utils.OcultarControl(btnSeleccionar);
+                OcultarColumna(tbUnidades, 0);
+                OcultarControl(btnSeleccionar);
                 break;
             case 1:
-                Utils.OcultarColumna(tbUnidades, 0);
+                OcultarColumna(tbUnidades, 0);
                 break;
         }
         new swObtenerUnidades().execute();
     }
 
     public void EliminarUnidad() {
-        int confirmacion = FabricaControles.VerConfirmacion(this);
+        int confirmacion = VerConfirmacion(this);
         if (confirmacion == 0) {
-            int idUnidad = Utils.ObtenerValorCelda(tbUnidades, 1);
+            int idUnidad = ObtenerValorCelda(tbUnidades, 1);
             if (idUnidad == 0) {
-                Utils.EliminarFila(tbUnidades);
+                EliminarFila(tbUnidades);
             } else {
                 new swEliminarUnidad().execute();
             }
@@ -386,7 +384,7 @@ public class lisUnidad extends javax.swing.JInternalFrame {
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
         // TODO add your handling code here:
-        Utils.AgregarFila(tbUnidades, new Object[]{false, 0, "", "", false, Icon_Save, Icon_Dele});
+        AgregarFila(tbUnidades, new Object[]{false, 0, "", "", false, Icon_Save, Icon_Dele});
     }//GEN-LAST:event_btnNuevoActionPerformed
 
     private void btnSeleccionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeleccionarActionPerformed
@@ -397,24 +395,24 @@ public class lisUnidad extends javax.swing.JInternalFrame {
                 break;
             case 2:
                 for (int i = 0; i < tbUnidades.getRowCount(); i++) {
-                    boolean check = Utils.ObtenerValorCelda(tbUnidades, i, 0);
+                    boolean check = ObtenerValorCelda(tbUnidades, i, 0);
                     if (check) {
                         Unidad unidad = new Unidad();
-                        unidad.setIdUnidad(Utils.ObtenerValorCelda(tbUnidades, i, 1));
-                        unidad.setAbreviacion(Utils.ObtenerValorCelda(tbUnidades, i, 2));
-                        unidad.setDescripcion(Utils.ObtenerValorCelda(tbUnidades, i, 3));
-                        unidad.setActivo(Utils.ObtenerValorCelda(tbUnidades, i, 4));
+                        unidad.setIdUnidad(ObtenerValorCelda(tbUnidades, i, 1));
+                        unidad.setAbreviacion(ObtenerValorCelda(tbUnidades, i, 2));
+                        unidad.setDescripcion(ObtenerValorCelda(tbUnidades, i, 3));
+                        unidad.setActivo(ObtenerValorCelda(tbUnidades, i, 4));
                         seleccionados.add(unidad);
                     }
                 }
-                Utils.Cerrar(this);
+                Cerrar();
                 break;
         }
     }//GEN-LAST:event_btnSeleccionarActionPerformed
 
     private void txtFiltroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFiltroActionPerformed
         // TODO add your handling code here:
-        Utils.Filtrar(tbUnidades, txtFiltro.getText());
+        Filtrar(tbUnidades, txtFiltro.getText());
     }//GEN-LAST:event_txtFiltroActionPerformed
 
     private void btnRefrescarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefrescarActionPerformed

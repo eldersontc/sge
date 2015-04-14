@@ -1,9 +1,7 @@
 package com.sge.modulos.administracion.formularios;
 
 import com.google.gson.Gson;
-import com.sge.base.controles.FabricaControles;
-import com.sge.base.excepciones.Excepciones;
-import com.sge.base.utils.Utils;
+import com.sge.base.formularios.frameBase;
 import com.sge.modulos.administracion.clases.Empleado;
 import com.sge.modulos.administracion.cliente.cliAdministracion;
 import javax.swing.SwingWorker;
@@ -12,7 +10,7 @@ import javax.swing.SwingWorker;
  *
  * @author elderson
  */
-public class regEmpleado extends javax.swing.JInternalFrame {
+public class regEmpleado extends frameBase<Empleado> {
 
     /**
      * Creates new form regEmpleado
@@ -36,15 +34,15 @@ public class regEmpleado extends javax.swing.JInternalFrame {
 
         @Override
         protected Object doInBackground() {
-            FabricaControles.VerCargando(frame);
+            VerCargando(frame);
             cliAdministracion cliente = new cliAdministracion();
             String json = "";
             try {
                 json = cliente.ObtenerEmpleado(new Gson().toJson(idEmpleado));
             } catch (Exception e) {
-                FabricaControles.OcultarCargando(frame);
+                OcultarCargando(frame);
                 cancel(false);
-                Excepciones.Controlar(e, frame);
+                ControlarExcepcion(e);
             } finally {
                 cliente.close();
             }
@@ -66,10 +64,10 @@ public class regEmpleado extends javax.swing.JInternalFrame {
                     txtDocumento.setText(empleado.getDocumentoIdentidad());
                     chkActivo.setSelected(empleado.isActivo());
                 }
-                FabricaControles.OcultarCargando(frame);
+                OcultarCargando(frame);
             } catch (Exception e) {
-                FabricaControles.OcultarCargando(frame);
-                Excepciones.Controlar(e, frame);
+                OcultarCargando(frame);
+                ControlarExcepcion(e);
             }
         }
     }
@@ -78,7 +76,7 @@ public class regEmpleado extends javax.swing.JInternalFrame {
 
         @Override
         protected Object doInBackground() {
-            FabricaControles.VerProcesando(frame);
+            VerProcesando(frame);
             cliAdministracion cliente = new cliAdministracion();
             String json = "";
             try {
@@ -97,9 +95,9 @@ public class regEmpleado extends javax.swing.JInternalFrame {
                     json = cliente.ActualizarEmpleado(new Gson().toJson(empleado));
                 }
             } catch (Exception e) {
-                FabricaControles.OcultarProcesando(frame);
+                OcultarProcesando(frame);
                 cancel(false);
-                Excepciones.Controlar(e, frame);
+                ControlarExcepcion(e);
             } finally {
                 cliente.close();
             }
@@ -114,11 +112,11 @@ public class regEmpleado extends javax.swing.JInternalFrame {
                 if (resultado[0].equals("true")) {
                     setVisible(false);
                 } else {
-                    FabricaControles.OcultarProcesando(frame);
+                    OcultarProcesando(frame);
                 }
             } catch (Exception e) {
-                FabricaControles.OcultarProcesando(frame);
-                Excepciones.Controlar(e, frame);
+                OcultarProcesando(frame);
+                ControlarExcepcion(e);
             }
         }
     }
@@ -313,7 +311,7 @@ public class regEmpleado extends javax.swing.JInternalFrame {
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
         // TODO add your handling code here:
-        Utils.Cerrar(this);
+        Cerrar();
     }//GEN-LAST:event_btnCancelarActionPerformed
 
 

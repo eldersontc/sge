@@ -2,9 +2,7 @@ package com.sge.modulos.administracion.formularios;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.sge.base.controles.FabricaControles;
-import com.sge.base.excepciones.Excepciones;
-import com.sge.base.utils.Utils;
+import com.sge.base.formularios.frameBase;
 import com.sge.modulos.administracion.clases.ItemReporte;
 import com.sge.modulos.administracion.clases.Reporte;
 import com.sge.modulos.administracion.cliente.cliAdministracion;
@@ -16,7 +14,7 @@ import javax.swing.SwingWorker;
  *
  * @author elderson
  */
-public class regReporte extends javax.swing.JInternalFrame {
+public class regReporte extends frameBase<Reporte> {
 
     /**
      * Creates new form regReporte
@@ -40,20 +38,20 @@ public class regReporte extends javax.swing.JInternalFrame {
 
     public List<ItemReporte> getItems() {
         for (int i = 0; i < tbItems.getRowCount(); i++) {
-            int idItemReporte = Utils.ObtenerValorCelda(tbItems, i, 0);
+            int idItemReporte = ObtenerValorCelda(tbItems, i, 0);
             if (idItemReporte == 0) {
                 ItemReporte itemReporte = new ItemReporte();
-                itemReporte.setNombre(Utils.ObtenerValorCelda(tbItems, i, 1));
-                itemReporte.setAsignarId(Utils.ObtenerValorCelda(tbItems, i, 2));
-                itemReporte.setValor(Utils.ObtenerValorCelda(tbItems, i, 3));
+                itemReporte.setNombre(ObtenerValorCelda(tbItems, i, 1));
+                itemReporte.setAsignarId(ObtenerValorCelda(tbItems, i, 2));
+                itemReporte.setValor(ObtenerValorCelda(tbItems, i, 3));
                 itemReporte.setAgregar(true);
                 this.items.add(itemReporte);
             } else {
                 ItemReporte itemReporte = new ItemReporte();
                 itemReporte.setIdItemReporte(idItemReporte);
-                itemReporte.setNombre(Utils.ObtenerValorCelda(tbItems, i, 1));
-                itemReporte.setAsignarId(Utils.ObtenerValorCelda(tbItems, i, 2));
-                itemReporte.setValor(Utils.ObtenerValorCelda(tbItems, i, 3));
+                itemReporte.setNombre(ObtenerValorCelda(tbItems, i, 1));
+                itemReporte.setAsignarId(ObtenerValorCelda(tbItems, i, 2));
+                itemReporte.setValor(ObtenerValorCelda(tbItems, i, 3));
                 itemReporte.setActualizar(true);
                 this.items.add(itemReporte);
             }
@@ -65,15 +63,15 @@ public class regReporte extends javax.swing.JInternalFrame {
 
         @Override
         protected Object doInBackground() {
-            FabricaControles.VerCargando(frame);
+            VerCargando(frame);
             cliAdministracion cliente = new cliAdministracion();
             String json = "";
             try {
                 json = cliente.ObtenerEntidades(new Gson().toJson(""));
             } catch (Exception e) {
-                FabricaControles.OcultarCargando(frame);
+                OcultarCargando(frame);
                 cancel(false);
-                Excepciones.Controlar(e, frame);
+                ControlarExcepcion(e);
             } finally {
                 cliente.close();
             }
@@ -94,14 +92,14 @@ public class regReporte extends javax.swing.JInternalFrame {
                     if (idReporte > 0) {
                         new swObtenerReporte().execute();
                     } else {
-                        FabricaControles.OcultarCargando(frame);
+                        OcultarCargando(frame);
                     }
                 } else {
-                    FabricaControles.OcultarCargando(frame);
+                    OcultarCargando(frame);
                 }
             } catch (Exception e) {
-                FabricaControles.OcultarCargando(frame);
-                Excepciones.Controlar(e, frame);
+                OcultarCargando(frame);
+                ControlarExcepcion(e);
             }
         }
     }
@@ -110,15 +108,15 @@ public class regReporte extends javax.swing.JInternalFrame {
 
         @Override
         protected Object doInBackground() {
-            FabricaControles.VerCargando(frame);
+            VerCargando(frame);
             cliAdministracion cliente = new cliAdministracion();
             String json = "";
             try {
                 json = cliente.ObtenerReporte(new Gson().toJson(idReporte));
             } catch (Exception e) {
-                FabricaControles.OcultarCargando(frame);
+                OcultarCargando(frame);
                 cancel(false);
-                Excepciones.Controlar(e, frame);
+                ControlarExcepcion(e);
             } finally {
                 cliente.close();
             }
@@ -137,7 +135,7 @@ public class regReporte extends javax.swing.JInternalFrame {
                     txtUbicacion.setText(reporte.getUbicacion());
                     chkActivo.setSelected(reporte.isActivo());
                     for (ItemReporte item : reporte.getItems()) {
-                        Utils.AgregarFila(tbItems,
+                        AgregarFila(tbItems,
                                 new Object[]{
                                     item.getIdItemReporte(),
                                     item.getNombre(),
@@ -146,10 +144,10 @@ public class regReporte extends javax.swing.JInternalFrame {
                                 });
                     }
                 }
-                FabricaControles.OcultarCargando(frame);
+                OcultarCargando(frame);
             } catch (Exception e) {
-                FabricaControles.OcultarCargando(frame);
-                Excepciones.Controlar(e, frame);
+                OcultarCargando(frame);
+                ControlarExcepcion(e);
             }
         }
     }
@@ -180,7 +178,7 @@ public class regReporte extends javax.swing.JInternalFrame {
 
         @Override
         protected Object doInBackground() {
-            FabricaControles.VerProcesando(frame);
+            VerProcesando(frame);
             cliAdministracion cliente = new cliAdministracion();
             String json = "";
             try {
@@ -197,9 +195,9 @@ public class regReporte extends javax.swing.JInternalFrame {
                     json = cliente.ActualizarReporte(new Gson().toJson(reporte));
                 }
             } catch (Exception e) {
-                FabricaControles.OcultarProcesando(frame);
+                OcultarProcesando(frame);
                 cancel(false);
-                Excepciones.Controlar(e, frame);
+                ControlarExcepcion(e);
             } finally {
                 cliente.close();
             }
@@ -214,11 +212,11 @@ public class regReporte extends javax.swing.JInternalFrame {
                 if (resultado[0].equals("true")) {
                     setVisible(false);
                 } else {
-                    FabricaControles.OcultarProcesando(frame);
+                    OcultarProcesando(frame);
                 }
             } catch (Exception e) {
-                FabricaControles.OcultarProcesando(frame);
-                Excepciones.Controlar(e, frame);
+                OcultarProcesando(frame);
+                ControlarExcepcion(e);
             }
         }
     }
@@ -440,7 +438,7 @@ public class regReporte extends javax.swing.JInternalFrame {
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
         // TODO add your handling code here:
-        Utils.Cerrar(this);
+        Cerrar();
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
@@ -450,17 +448,17 @@ public class regReporte extends javax.swing.JInternalFrame {
 
     private void btnNuevoItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoItemActionPerformed
         // TODO add your handling code here:
-        Utils.AgregarFila(tbItems, new Object[]{0, "", false, ""});
+        AgregarFila(tbItems, new Object[]{0, "", false, ""});
     }//GEN-LAST:event_btnNuevoItemActionPerformed
 
     private void btnEliminarItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarItemActionPerformed
         // TODO add your handling code here:
-        if (Utils.FilaActiva(tbItems)) {
-            int idItemReporte = Utils.ObtenerValorCelda(tbItems, 0);
+        if (FilaActiva(tbItems)) {
+            int idItemReporte = ObtenerValorCelda(tbItems, 0);
             if (idItemReporte > 0) {
                 items.add(new ItemReporte(idItemReporte, true));
             }
-            Utils.EliminarFila(tbItems);
+            EliminarFila(tbItems);
         }
     }//GEN-LAST:event_btnEliminarItemActionPerformed
 

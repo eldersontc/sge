@@ -2,9 +2,7 @@ package com.sge.modulos.inventarios.formularios;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.sge.base.controles.FabricaControles;
-import com.sge.base.excepciones.Excepciones;
-import com.sge.base.utils.Utils;
+import com.sge.base.formularios.frameBase;
 import com.sge.modulos.inventarios.clases.Producto;
 import com.sge.modulos.inventarios.cliente.cliInventarios;
 import java.awt.event.ActionEvent;
@@ -19,7 +17,7 @@ import javax.swing.SwingWorker;
  *
  * @author elderson
  */
-public class lisProducto extends javax.swing.JInternalFrame {
+public class lisProducto extends frameBase<Producto> {
 
     /**
      * Creates new form lisProducto
@@ -34,7 +32,7 @@ public class lisProducto extends javax.swing.JInternalFrame {
     private Producto seleccionado;
 
     private List<Producto> seleccionados = new ArrayList<>();
-    
+
     ImageIcon Icon_Edit = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/edit-16.png"));
     ImageIcon Icon_Dele = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/delete-16.png"));
 
@@ -56,15 +54,15 @@ public class lisProducto extends javax.swing.JInternalFrame {
 
         @Override
         protected Object doInBackground() {
-            FabricaControles.VerCargando(frame);
+            VerCargando(frame);
             cliInventarios cliente = new cliInventarios();
             String json = "";
             try {
                 json = cliente.ObtenerProductos("");
             } catch (Exception e) {
-                FabricaControles.OcultarCargando(frame);
+                OcultarCargando(frame);
                 cancel(false);
-                Excepciones.Controlar(e, frame);
+                ControlarExcepcion(e);
             } finally {
                 cliente.close();
             }
@@ -77,20 +75,20 @@ public class lisProducto extends javax.swing.JInternalFrame {
                 String json = get().toString();
                 String[] resultado = new Gson().fromJson(json, String[].class);
                 if (resultado[0].equals("true")) {
-                    Utils.EliminarTodasFilas(tbProductos);
+                    EliminarTodasFilas(tbProductos);
                     List<Object[]> filas = (List<Object[]>) new Gson().fromJson(resultado[1], new TypeToken<List<Object[]>>() {
                     }.getType());
                     for (Object[] fila : filas) {
-                        Utils.AgregarFila(tbProductos, new Object[]{false,((Double) fila[0]).intValue(), fila[1], fila[2], fila[3], Icon_Edit, Icon_Dele});
+                        AgregarFila(tbProductos, new Object[]{false, ((Double) fila[0]).intValue(), fila[1], fila[2], fila[3], Icon_Edit, Icon_Dele});
                     }
-                    FabricaControles.AgregarBoton(tbProductos, edit, 5);
-                    FabricaControles.AgregarBoton(tbProductos, dele, 6);
-                    Utils.AgregarOrdenamiento(tbProductos);
+                    AgregarBoton(tbProductos, edit, 5);
+                    AgregarBoton(tbProductos, dele, 6);
+                    AgregarOrdenamiento(tbProductos);
                 }
-                FabricaControles.OcultarCargando(frame);
+                OcultarCargando(frame);
             } catch (Exception e) {
-                FabricaControles.OcultarCargando(frame);
-                Excepciones.Controlar(e, frame);
+                OcultarCargando(frame);
+                ControlarExcepcion(e);
             }
         }
     }
@@ -99,16 +97,16 @@ public class lisProducto extends javax.swing.JInternalFrame {
 
         @Override
         protected Object doInBackground() throws Exception {
-            FabricaControles.VerCargando(frame);
+            VerCargando(frame);
             cliInventarios cliente = new cliInventarios();
             String json = "";
             try {
-                int idProducto = Utils.ObtenerValorCelda(tbProductos, 1);
+                int idProducto = ObtenerValorCelda(tbProductos, 1);
                 json = cliente.EliminarProducto(new Gson().toJson(idProducto));
             } catch (Exception e) {
-                FabricaControles.OcultarCargando(frame);
+                OcultarCargando(frame);
                 cancel(false);
-                Excepciones.Controlar(e, frame);
+                ControlarExcepcion(e);
             } finally {
                 cliente.close();
             }
@@ -123,11 +121,11 @@ public class lisProducto extends javax.swing.JInternalFrame {
                 if (resultado[0].equals("true")) {
                     new swObtenerProductos().execute();
                 } else {
-                    FabricaControles.OcultarCargando(frame);
+                    OcultarCargando(frame);
                 }
             } catch (Exception e) {
-                FabricaControles.OcultarCargando(frame);
-                Excepciones.Controlar(e, frame);
+                OcultarCargando(frame);
+                ControlarExcepcion(e);
             }
         }
     }
@@ -136,25 +134,25 @@ public class lisProducto extends javax.swing.JInternalFrame {
         this.modo = modo;
         switch (this.modo) {
             case 0:
-                Utils.OcultarColumna(tbProductos, 0);
-                Utils.OcultarControl(btnSeleccionar);
+                OcultarColumna(tbProductos, 0);
+                OcultarControl(btnSeleccionar);
                 break;
             case 1:
-                Utils.OcultarColumna(tbProductos, 0);
+                OcultarColumna(tbProductos, 0);
                 break;
         }
         new swObtenerProductos().execute();
     }
 
     public void EditarProducto() {
-        int idProducto = Utils.ObtenerValorCelda(tbProductos, 1);
+        int idProducto = ObtenerValorCelda(tbProductos, 1);
         regProducto regProducto = new regProducto("EDITAR ", idProducto);
         this.getParent().add(regProducto);
         regProducto.setVisible(true);
     }
 
     public void EliminarProducto() {
-        int confirmacion = FabricaControles.VerConfirmacion(this);
+        int confirmacion = VerConfirmacion(this);
         if (confirmacion == 0) {
             new swEliminarProducto().execute();
         }
@@ -167,7 +165,7 @@ public class lisProducto extends javax.swing.JInternalFrame {
     public List<Producto> getSeleccionados() {
         return seleccionados;
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -347,28 +345,27 @@ public class lisProducto extends javax.swing.JInternalFrame {
 
     private void txtFiltroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFiltroActionPerformed
         // TODO add your handling code here:
-        Utils.Filtrar(tbProductos, txtFiltro.getText());
+        Filtrar(tbProductos, txtFiltro.getText());
     }//GEN-LAST:event_txtFiltroActionPerformed
 
     private void btnSeleccionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeleccionarActionPerformed
         // TODO add your handling code here:
         switch (this.modo) {
             case 1:
-
                 break;
             case 2:
                 for (int i = 0; i < tbProductos.getRowCount(); i++) {
-                    boolean check = Utils.ObtenerValorCelda(tbProductos, i, 0);
+                    boolean check = ObtenerValorCelda(tbProductos, i, 0);
                     if (check) {
                         Producto producto = new Producto();
-                        producto.setIdProducto(Utils.ObtenerValorCelda(tbProductos, i, 1));
-                        producto.setCodigo(Utils.ObtenerValorCelda(tbProductos, i, 2));
-                        producto.setDescripcion(Utils.ObtenerValorCelda(tbProductos, i, 3));
-                        producto.setActivo(Utils.ObtenerValorCelda(tbProductos, i, 4));
+                        producto.setIdProducto(ObtenerValorCelda(tbProductos, i, 1));
+                        producto.setCodigo(ObtenerValorCelda(tbProductos, i, 2));
+                        producto.setDescripcion(ObtenerValorCelda(tbProductos, i, 3));
+                        producto.setActivo(ObtenerValorCelda(tbProductos, i, 4));
                         seleccionados.add(producto);
                     }
                 }
-                Utils.Cerrar(this);
+                Cerrar();
                 break;
         }
     }//GEN-LAST:event_btnSeleccionarActionPerformed
