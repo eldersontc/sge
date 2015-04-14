@@ -2,10 +2,10 @@ package com.sge.modulos.inventarios.formularios;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.sge.base.constantes.Constantes;
 import com.sge.base.formularios.frameBase;
 import com.sge.modulos.administracion.clases.Empleado;
 import com.sge.modulos.administracion.clases.Moneda;
+import com.sge.modulos.administracion.clases.ValorDefinido;
 import com.sge.modulos.administracion.formularios.lisEmpleado;
 import com.sge.modulos.administracion.formularios.lisMoneda;
 import com.sge.modulos.compras.clases.Proveedor;
@@ -38,15 +38,19 @@ public class regEntradaInventario extends frameBase<EntradaInventario> {
         Init(id);
     }
 
+    public regEntradaInventario(ValorDefinido valorDefinido) {
+        initComponents();
+        super.Init(valorDefinido);
+    }
+
     public int id = 0;
 
-    @Override
     public void Init(int id) {
         this.id = id;
         if (this.id == 0) {
             lblTitulo.setText("NUEVA " + lblTitulo.getText());
             AgregarCombo(tbItems, 7, 2);
-            ObtenerValoresDefinidos(frame, 1, Constantes.ENT_INV);
+            ObtenerValoresDefinidos(frame, 1, 1);
         } else {
             lblTitulo.setText("VER " + lblTitulo.getText());
             OcultarControles();
@@ -308,16 +312,19 @@ public class regEntradaInventario extends frameBase<EntradaInventario> {
         }
     }
 
-    @Override
     public void Aceptar() {
-        if (this.id == 0) {
-            new swGuardarEntradaInventario().execute();
-        } else {
+        if (super.isFromJson()) {
+            setJson(new Gson().toJson(super.getEntidad()));
             Cerrar();
+        } else {
+            if (this.id == 0) {
+                new swGuardarEntradaInventario().execute();
+            } else {
+                Cerrar();
+            }
         }
     }
 
-    @Override
     public void Cancelar() {
         Cerrar();
     }

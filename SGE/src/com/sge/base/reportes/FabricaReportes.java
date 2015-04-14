@@ -92,12 +92,12 @@ public class FabricaReportes {
 
     public static class swImprimirConEntidad extends SwingWorker {
 
-        private final String entidad;
+        private final int id;
         private final int idEntidad;
         private final JPanel panel;
 
-        public swImprimirConEntidad(String entidad, int idEntidad, JPanel panel) {
-            this.entidad = entidad;
+        public swImprimirConEntidad(int idEntidad, int id, JPanel panel) {
+            this.id = id;
             this.idEntidad = idEntidad;
             this.panel = panel;
         }
@@ -108,7 +108,7 @@ public class FabricaReportes {
             cliAdministracion cliente = new cliAdministracion();
             try {
                 
-                String json = cliente.ObtenerReportes(new Gson().toJson(String.format("WHERE entidad = '%s'", entidad)));
+                String json = cliente.ObtenerReportes(new Gson().toJson(String.format("WHERE idEntidad = %d", idEntidad)));
                 String[] resultado = new Gson().fromJson(json, String[].class);
 
                 if (resultado[0].equals("true")) {
@@ -145,7 +145,7 @@ public class FabricaReportes {
                     Map parametros = new HashMap();
                     for (ItemReporte item : seleccionado.getItems()) {
                         if (item.isAsignarId()) {
-                            parametros.put(item.getNombre(), idEntidad);
+                            parametros.put(item.getNombre(), id);
                         } else {
                             parametros.put(item.getNombre(), item.getValor());
                         }
@@ -177,7 +177,7 @@ public class FabricaReportes {
         new swImprimirSinEntidad(idReporte, panel).execute();
     }
 
-    public static void Imprimir(String entidad, int idEntidad, JPanel panel) {
-        new swImprimirConEntidad(entidad, idEntidad, panel).execute();
+    public static void Imprimir(int idEntidad, int id, JPanel panel) {
+        new swImprimirConEntidad(idEntidad, id, panel).execute();
     }
 }

@@ -1,18 +1,18 @@
 package com.sge.modulos.administracion.formularios;
 
 import com.google.gson.Gson;
-import com.sge.base.constantes.Constantes;
+import com.google.gson.reflect.TypeToken;
 import com.sge.base.controles.FabricaControles;
-import com.sge.base.formularios.frameBase;
 import com.sge.base.utils.Utils;
 import com.sge.modulos.administracion.clases.Usuario;
 import com.sge.modulos.administracion.clases.ValorDefinido;
 import com.sge.modulos.administracion.cliente.cliAdministracion;
-import com.sge.modulos.inventarios.clases.EntradaInventario;
-import com.sge.modulos.inventarios.formularios.regEntradaInventario;
 import java.awt.event.ActionEvent;
+import java.lang.reflect.Constructor;
+import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
+import javax.swing.JInternalFrame;
 import javax.swing.SwingWorker;
 
 /**
@@ -33,15 +33,12 @@ public class regValorDefinido extends javax.swing.JInternalFrame {
 
     private ValorDefinido valorDefinido;
 
+    private List<Object[]> entidades;
+
     public void Init(String operacion, int idValorDefinido) {
         lblTitulo.setText(operacion + lblTitulo.getText());
-        Utils.AgregarEntidades(cboEntidad);
         this.idValorDefinido = idValorDefinido;
-        if (this.idValorDefinido > 0) {
-            new swObtenerValorDefinido().execute();
-        } else {
-            valorDefinido = new ValorDefinido();
-        }
+        new swObtenerEntidades().execute();
     }
 
     Action select_usuario = new AbstractAction() {
@@ -56,17 +53,58 @@ public class regValorDefinido extends javax.swing.JInternalFrame {
         }
     };
 
+    public class swObtenerEntidades extends SwingWorker<Object, Object> {
+
+        @Override
+        protected Object doInBackground() {
+            FabricaControles.VerCargando(frame);
+            cliAdministracion cliente = new cliAdministracion();
+            String json = "";
+            try {
+                json = cliente.ObtenerEntidades(new Gson().toJson(""));
+            } catch (Exception e) {
+                json = "[\"false\"]";
+            } finally {
+                cliente.close();
+            }
+            return json;
+        }
+
+        @Override
+        protected void done() {
+            try {
+                String json = get().toString();
+                String[] resultado = new Gson().fromJson(json, String[].class);
+                if (resultado[0].equals("true")) {
+                    entidades = (List<Object[]>) new Gson().fromJson(resultado[1], new TypeToken<List<Object[]>>() {
+                    }.getType());
+                    for (Object[] entidad : entidades) {
+                        cboEntidad.addItem(entidad[1]);
+                    }
+                    if (idValorDefinido > 0) {
+                        new swObtenerValorDefinido().execute();
+                    } else {
+                        valorDefinido = new ValorDefinido();
+                    }
+                } else {
+                    FabricaControles.OcultarCargando(frame);
+                }
+            } catch (Exception e) {
+                FabricaControles.OcultarCargando(frame);
+            }
+        }
+    }
+
     public class swObtenerValorDefinido extends SwingWorker<Object, Object> {
 
         @Override
         protected Object doInBackground() {
-            FabricaControles.VerCargando(pnlContenido);
+            FabricaControles.VerCargando(frame);
             cliAdministracion cliente = new cliAdministracion();
-            String json = "";
+            String json = "[\"false\"]";
             try {
                 json = cliente.ObtenerValorDefinido(new Gson().toJson(idValorDefinido));
             } catch (Exception e) {
-                FabricaControles.OcultarCargando(pnlContenido);
                 json = "[\"false\"]";
             } finally {
                 cliente.close();
@@ -82,25 +120,47 @@ public class regValorDefinido extends javax.swing.JInternalFrame {
                 if (resultado[0].equals("true")) {
                     valorDefinido = new Gson().fromJson(resultado[1], ValorDefinido.class);
                     txtUsuario.setText(valorDefinido.getUsuario());
-                    cboEntidad.setSelectedItem(valorDefinido.getEntidad());
+                    cboEntidad.setSelectedItem(getNombreEntidad(valorDefinido.getIdEntidad()));
                     chkActivo.setSelected(valorDefinido.isActivo());
                 }
-                FabricaControles.OcultarCargando(pnlContenido);
+                FabricaControles.OcultarCargando(frame);
             } catch (Exception e) {
-                FabricaControles.OcultarCargando(pnlContenido);
+                FabricaControles.OcultarCargando(frame);
             }
         }
+    }
+
+    public int getIdEntidad() {
+        int idEntidad = 0;
+        for (Object[] entidad : entidades) {
+            if (entidad[1].equals(cboEntidad.getSelectedItem())) {
+                idEntidad = ((Double) entidad[0]).intValue();
+                break;
+            }
+        }
+        return idEntidad;
+    }
+
+    public String getNombreEntidad(int idEntidad) {
+        String nombre = "";
+        for (Object[] entidad : entidades) {
+            if (((Double) entidad[0]).intValue() == idEntidad) {
+                nombre = entidad[1].toString();
+                break;
+            }
+        }
+        return nombre;
     }
 
     public class swGuardarValorDefinido extends SwingWorker<Object, Object> {
 
         @Override
         protected Object doInBackground() {
-            FabricaControles.VerProcesando(pnlContenido);
+            FabricaControles.VerProcesando(frame);
             cliAdministracion cliente = new cliAdministracion();
             String json = "";
             try {
-                valorDefinido.setEntidad(cboEntidad.getSelectedItem().toString());
+                valorDefinido.setIdEntidad(getIdEntidad());
                 valorDefinido.setActivo(chkActivo.isSelected());
                 if (idValorDefinido == 0) {
                     json = cliente.RegistrarValorDefinido(new Gson().toJson(valorDefinido));
@@ -109,7 +169,7 @@ public class regValorDefinido extends javax.swing.JInternalFrame {
                     json = cliente.ActualizarValorDefinido(new Gson().toJson(valorDefinido));
                 }
             } catch (Exception e) {
-                FabricaControles.OcultarProcesando(pnlContenido);
+                FabricaControles.OcultarProcesando(frame);
                 json = "[\"false\"]";
             } finally {
                 cliente.close();
@@ -125,10 +185,10 @@ public class regValorDefinido extends javax.swing.JInternalFrame {
                 if (resultado[0].equals("true")) {
                     setVisible(false);
                 } else {
-                    FabricaControles.OcultarProcesando(pnlContenido);
+                    FabricaControles.OcultarProcesando(frame);
                 }
             } catch (Exception e) {
-                FabricaControles.OcultarProcesando(pnlContenido);
+                FabricaControles.OcultarProcesando(frame);
             }
         }
     }
@@ -142,7 +202,7 @@ public class regValorDefinido extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        pnlContenido = new javax.swing.JPanel();
+        frame = new javax.swing.JPanel();
         lblUsuario = new javax.swing.JLabel();
         lblEntidad = new javax.swing.JLabel();
         txtUsuario = new javax.swing.JTextField();
@@ -156,8 +216,8 @@ public class regValorDefinido extends javax.swing.JInternalFrame {
 
         setClosable(true);
 
-        pnlContenido.setBackground(java.awt.Color.white);
-        pnlContenido.setBorder(null);
+        frame.setBackground(java.awt.Color.white);
+        frame.setBorder(null);
 
         lblUsuario.setText("USUARIO");
 
@@ -217,49 +277,49 @@ public class regValorDefinido extends javax.swing.JInternalFrame {
             }
         });
 
-        javax.swing.GroupLayout pnlContenidoLayout = new javax.swing.GroupLayout(pnlContenido);
-        pnlContenido.setLayout(pnlContenidoLayout);
-        pnlContenidoLayout.setHorizontalGroup(
-            pnlContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout frameLayout = new javax.swing.GroupLayout(frame);
+        frame.setLayout(frameLayout);
+        frameLayout.setHorizontalGroup(
+            frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(pnlTitulo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(pnlContenidoLayout.createSequentialGroup()
+            .addGroup(frameLayout.createSequentialGroup()
                 .addGap(27, 27, 27)
-                .addGroup(pnlContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(pnlContenidoLayout.createSequentialGroup()
-                        .addGroup(pnlContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(frameLayout.createSequentialGroup()
+                        .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lblUsuario)
                             .addComponent(lblEntidad))
                         .addGap(54, 54, 54)
-                        .addGroup(pnlContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(btnEstablecerValores, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(txtUsuario)
                             .addComponent(cboEntidad, 0, 263, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
                         .addComponent(chkActivo, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(pnlContenidoLayout.createSequentialGroup()
+                    .addGroup(frameLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btnAceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(22, Short.MAX_VALUE))
         );
-        pnlContenidoLayout.setVerticalGroup(
-            pnlContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlContenidoLayout.createSequentialGroup()
+        frameLayout.setVerticalGroup(
+            frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, frameLayout.createSequentialGroup()
                 .addComponent(pnlTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addGroup(pnlContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblUsuario)
                     .addComponent(txtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(chkActivo))
                 .addGap(2, 2, 2)
-                .addGroup(pnlContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblEntidad)
                     .addComponent(cboEntidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnEstablecerValores)
                 .addGap(25, 25, 25)
-                .addGroup(pnlContenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAceptar)
                     .addComponent(btnCancelar))
                 .addContainerGap(23, Short.MAX_VALUE))
@@ -269,11 +329,11 @@ public class regValorDefinido extends javax.swing.JInternalFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(pnlContenido, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(frame, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(pnlContenido, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(frame, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -291,32 +351,17 @@ public class regValorDefinido extends javax.swing.JInternalFrame {
 
     private void btnEstablecerValoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEstablecerValoresActionPerformed
         // TODO add your handling code here:
-        Object obj = null;
-        frameBase base = ((frameBase)obj);
-        
-        
-//        switch (cboEntidad.getSelectedItem().toString()) {
-//            case Constantes.ENT_INV:
-//                FabricaControles.VerModal(this.getDesktopPane(), new regEntradaInventario(0) {
-//                    @Override
-//                    public void Init(int idEntradaInventario) {
-//                        OcultarControles();
-//                        if (valorDefinido.getJson() == null) {
-//                            this.entradaInventario = new EntradaInventario();
-//                        } else {
-//                            this.entradaInventario = new Gson().fromJson(valorDefinido.getJson(), EntradaInventario.class);
-//                            AsignarControles();
-//                        }
-//                    }
-//
-//                    @Override
-//                    public void Aceptar() {
-//                        valorDefinido.setJson(new Gson().toJson(this.entradaInventario));
-//                        Cerrar();
-//                    }
-//                });
-//                break;
-//        }
+        try {
+            for (Object[] entidad : entidades) {
+                if (entidad[1].equals(cboEntidad.getSelectedItem())) {
+                    Class<?> clazz = Class.forName(entidad[2].toString());
+                    Constructor<?> constructor = clazz.getConstructor(ValorDefinido.class);
+                    JInternalFrame frame = (JInternalFrame) constructor.newInstance(new Object[]{this.valorDefinido});
+                    FabricaControles.VerModal(this.getDesktopPane(), frame);
+                }
+            }
+        } catch (Exception e) {
+        }
     }//GEN-LAST:event_btnEstablecerValoresActionPerformed
 
     private void txtUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUsuarioActionPerformed
@@ -331,10 +376,10 @@ public class regValorDefinido extends javax.swing.JInternalFrame {
     private javax.swing.JButton btnEstablecerValores;
     private javax.swing.JComboBox cboEntidad;
     private javax.swing.JCheckBox chkActivo;
+    private javax.swing.JPanel frame;
     private javax.swing.JLabel lblEntidad;
     private javax.swing.JLabel lblTitulo;
     private javax.swing.JLabel lblUsuario;
-    private javax.swing.JPanel pnlContenido;
     private javax.swing.JPanel pnlTitulo;
     private javax.swing.JTextField txtUsuario;
     // End of variables declaration//GEN-END:variables

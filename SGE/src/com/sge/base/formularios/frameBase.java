@@ -50,20 +50,20 @@ public class frameBase<T> extends javax.swing.JInternalFrame {
     }
 
     //////////////////////////////// CLASES ////////////////////////////////////
-    public void ObtenerValoresDefinidos(JPanel frame, int idUsuario, String entidad) {
-        new swObtenerValoresDefinidos(frame, idUsuario, entidad).execute();
+    public void ObtenerValoresDefinidos(JPanel frame, int idUsuario, int idEntidad) {
+        new swObtenerValoresDefinidos(frame, idUsuario, idEntidad).execute();
     }
 
     public class swObtenerValoresDefinidos extends SwingWorker<Object, Object> {
 
-        private int usuario;
-        private String entidad;
+        private int idUsuario;
+        private int idEntidad;
         private JPanel frame;
 
-        public swObtenerValoresDefinidos(JPanel frame, int usuario, String entidad) {
+        public swObtenerValoresDefinidos(JPanel frame, int idUsuario, int idEntidad) {
             this.frame = frame;
-            this.usuario = usuario;
-            this.entidad = entidad;
+            this.idUsuario = idUsuario;
+            this.idEntidad = idEntidad;
         }
 
         @Override
@@ -71,7 +71,7 @@ public class frameBase<T> extends javax.swing.JInternalFrame {
             VerCargando(frame);
             cliAdministracion cliente = new cliAdministracion();
             try {
-                String json = cliente.ObtenerValoresDefinidos(new Gson().toJson(String.format("WHERE idUsuario = %d AND entidad = '%s'", usuario, entidad)));
+                String json = cliente.ObtenerValoresDefinidos(new Gson().toJson(String.format("WHERE ValorDefinido.idUsuario = %d AND ValorDefinido.idEntidad = %d", idUsuario, idEntidad)));
                 String[] resultado = new Gson().fromJson(json, String[].class);
                 if (resultado[0].equals("true")) {
                     List<Object[]> valoresDefinidos = (List<Object[]>) new Gson().fromJson(resultado[1], new TypeToken<List<Object[]>>() {
@@ -190,18 +190,33 @@ public class frameBase<T> extends javax.swing.JInternalFrame {
         }
     }
 
-    public void Init(int id) {
+    private ValorDefinido valorDefinido;
+
+    public void setJson(String json) {
+        this.valorDefinido.setJson(json);
+    }
+
+    public boolean isFromJson() {
+        return this.valorDefinido != null;
+    }
+
+    public void Init(ValorDefinido valorDefinido) {
+        try {
+            this.valorDefinido = valorDefinido;
+            OcultarControles();
+            if (valorDefinido.getJson() == null || valorDefinido.getJson().isEmpty()) {
+                setEntidad(nuevaIntancia());
+            } else {
+                setEntidad((T) new Gson().fromJson(valorDefinido.getJson(), getClazz()));
+            }
+            AsignarControles();
+        } catch (Exception e) {
+        }
     }
 
     public void AsignarControles() {
     }
 
     public void OcultarControles() {
-    }
-
-    public void Aceptar() {
-    }
-
-    public void Cancelar() {
     }
 }

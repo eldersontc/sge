@@ -193,6 +193,16 @@ public class cliAdministracion {
     
     ////////////////////////////////////////////////////////////////////////////
     
+    ////////////////////////////////// REPORTE /////////////////////////////////
+    
+    public String ObtenerEntidades(Object requestEntity) throws ClientErrorException {
+        WebTarget resource = client.target(BASE_URI).path("EntidadSRV");
+        resource = resource.path("ObtenerEntidades");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
+    }
+    
+    ////////////////////////////////////////////////////////////////////////////
+    
     public void close() {
         client.close();
     }

@@ -1,6 +1,5 @@
 package com.sge.base.utils;
 
-import com.sge.base.constantes.Constantes;
 import java.awt.Component;
 import javax.swing.JComboBox;
 import javax.swing.JInternalFrame;
@@ -60,12 +59,6 @@ public class Utils {
         componet.setVisible(false);
     }
     
-    public static void AgregarEntidades(JComboBox combo){
-        for (String entidad : Constantes.getEntidades()) {
-            combo.addItem(entidad);
-        }
-    }
-
     public static void Cerrar(JInternalFrame frame) {
         try {
             frame.setClosed(true);

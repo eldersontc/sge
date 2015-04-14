@@ -2,7 +2,6 @@ package com.sge.modulos.inventarios.formularios;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.sge.base.constantes.Constantes;
 import com.sge.base.controles.FabricaControles;
 import com.sge.base.reportes.FabricaReportes;
 import com.sge.base.utils.Utils;
@@ -35,7 +34,7 @@ public class lisSalidaInventario extends javax.swing.JInternalFrame {
     private SalidaInventario seleccionado;
 
     private List<SalidaInventario> seleccionados = new ArrayList<>();
-    
+
     ImageIcon Icon_View = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/view-16.png"));
     ImageIcon Icon_Dele = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/delete-16.png"));
 
@@ -52,7 +51,7 @@ public class lisSalidaInventario extends javax.swing.JInternalFrame {
             EliminarSalidaInventario();
         }
     };
-    
+
     public class swObtenerSalidaInventarios extends SwingWorker {
 
         @Override
@@ -81,7 +80,7 @@ public class lisSalidaInventario extends javax.swing.JInternalFrame {
                     List<Object[]> filas = (List<Object[]>) new Gson().fromJson(resultado[1], new TypeToken<List<Object[]>>() {
                     }.getType());
                     for (Object[] fila : filas) {
-                        Utils.AgregarFila(tbSalidaInventarios, new Object[]{false,((Double) fila[0]).intValue(), fila[1], fila[2], fila[3], fila[4], fila[5], fila[6], Icon_View, Icon_Dele});
+                        Utils.AgregarFila(tbSalidaInventarios, new Object[]{false, ((Double) fila[0]).intValue(), fila[1], fila[2], fila[3], fila[4], fila[5], fila[6], Icon_View, Icon_Dele});
                     }
                     FabricaControles.AgregarBoton(tbSalidaInventarios, view, 8);
                     FabricaControles.AgregarBoton(tbSalidaInventarios, dele, 9);
@@ -354,8 +353,8 @@ public class lisSalidaInventario extends javax.swing.JInternalFrame {
 
     private void btnImprimirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImprimirActionPerformed
         // TODO add your handling code here:
-        if(Utils.FilaActiva(tbSalidaInventarios)){
-            FabricaReportes.Imprimir(Constantes.SAL_INV, Utils.ObtenerValorCelda(tbSalidaInventarios, 1), pnlContenido);
+        if (Utils.FilaActiva(tbSalidaInventarios)) {
+            FabricaReportes.Imprimir(2, Utils.ObtenerValorCelda(tbSalidaInventarios, 1), pnlContenido);
         }
     }//GEN-LAST:event_btnImprimirActionPerformed
 
