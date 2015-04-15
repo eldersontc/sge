@@ -3,6 +3,9 @@ package com.sge.base.controles;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.DisplayMode;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -337,6 +340,10 @@ public class FabricaControles {
     }
 
     public static void VerModal(JDesktopPane desktop, JInternalFrame frame, Action action) {
+        GraphicsEnvironment graphicsEnvironment = GraphicsEnvironment.getLocalGraphicsEnvironment();
+        GraphicsDevice graphicsDevice = graphicsEnvironment.getDefaultScreenDevice();
+        DisplayMode display = graphicsDevice.getDisplayMode();
+        frame.setLocation((display.getWidth() - frame.getWidth()) / 2, (display.getHeight() - frame.getHeight()) / 2);
         desktop.add(frame);
         frame.setLayer(JLayeredPane.MODAL_LAYER);
         frame.pack();
@@ -373,6 +380,10 @@ public class FabricaControles {
     }
     
     public static void VerModal(JDesktopPane desktop, JInternalFrame frame) {
+        GraphicsEnvironment graphicsEnvironment = GraphicsEnvironment.getLocalGraphicsEnvironment();
+        GraphicsDevice graphicsDevice = graphicsEnvironment.getDefaultScreenDevice();
+        DisplayMode display = graphicsDevice.getDisplayMode();
+        frame.setLocation((display.getWidth() - frame.getWidth()) / 2, (display.getHeight() - frame.getHeight()) / 2);
         desktop.add(frame);
         frame.setLayer(JLayeredPane.MODAL_LAYER);
         frame.pack();

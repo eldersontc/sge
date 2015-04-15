@@ -55,7 +55,7 @@ public class lisUsuario extends frameBase<Usuario> {
             cliAdministracion cliente = new cliAdministracion();
             String json = "";
             try {
-                json = cliente.ObtenerUsuarios("");
+                json = cliente.ObtenerUsuarios(new Gson().toJson(""));
             } catch (Exception e) {
                 OcultarCargando(frame);
                 cancel(false);

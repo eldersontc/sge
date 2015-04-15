@@ -2,7 +2,9 @@ package com.sge;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.sge.base.controles.FabricaControles;
 import com.sge.base.excepciones.Excepciones;
+import com.sge.base.formularios.frameLogin;
 import com.sge.modulos.administracion.cliente.cliAdministracion;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
@@ -10,6 +12,8 @@ import java.awt.event.ActionListener;
 import java.lang.reflect.Constructor;
 import java.net.URL;
 import java.util.List;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.ImageIcon;
 import javax.swing.JInternalFrame;
 import javax.swing.JMenu;
@@ -27,13 +31,46 @@ public class SGE extends javax.swing.JFrame {
      */
     public SGE() {
         initComponents();
-        LlenarMenus();
+        Init();
+    }
+    
+    public void Init(){
+        OcultarBanner();
+        setExtendedState(java.awt.Frame.MAXIMIZED_BOTH);
+        FabricaControles.VerModal(jdpPrincipal, new frameLogin(), close); 
     }
 
-    public void LlenarMenus() {
+    public void OcultarBanner(){
+        pnlBanner.setVisible(false);
+        pnlMenu.setVisible(false);
+        for (JInternalFrame frame : jdpPrincipal.getAllFrames()) {
+            try {
+                frame.setClosed(true);
+            } catch (Exception ex) {
+            }
+        }
+    }
+    
+    public void VerBanner(){
+        pnlBanner.setVisible(true);
+        pnlMenu.setVisible(true);
+    }
+    
+    Action close = new AbstractAction() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            Object[] usuario = ((frameLogin)e.getSource()).getUsuario();
+            if(usuario != null){
+                LlenarMenus(((Double)usuario[0]).intValue());
+                VerBanner();
+            }
+        }
+    };
+
+    public void LlenarMenus(int idUsuario) {
         cliAdministracion cliente = new cliAdministracion();
         try {
-            String json = cliente.ObtenerMenus(new Gson().toJson(1));
+            String json = cliente.ObtenerMenus(new Gson().toJson(idUsuario));
             String[] resultado = new Gson().fromJson(json, String[].class);
             if (resultado[0].equals("true")) {
                 List<Object[]> menus = (List<Object[]>) new Gson().fromJson(resultado[1], new TypeToken<List<Object[]>>() {
@@ -126,6 +163,7 @@ public class SGE extends javax.swing.JFrame {
 
         pnlBanner = new javax.swing.JPanel();
         lblTituloBanner = new javax.swing.JLabel();
+        btnSalir = new javax.swing.JButton();
         pnlMenu = new javax.swing.JPanel();
         jdpPrincipal = new javax.swing.JDesktopPane();
 
@@ -138,6 +176,14 @@ public class SGE extends javax.swing.JFrame {
         lblTituloBanner.setForeground(java.awt.Color.white);
         lblTituloBanner.setText("SISTEMA DE GESTIÓN EMPRESARIAL");
 
+        btnSalir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sge/base/imagenes/exit-16.png"))); // NOI18N
+        btnSalir.setText("SALIR");
+        btnSalir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSalirActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout pnlBannerLayout = new javax.swing.GroupLayout(pnlBanner);
         pnlBanner.setLayout(pnlBannerLayout);
         pnlBannerLayout.setHorizontalGroup(
@@ -145,13 +191,17 @@ public class SGE extends javax.swing.JFrame {
             .addGroup(pnlBannerLayout.createSequentialGroup()
                 .addGap(41, 41, 41)
                 .addComponent(lblTituloBanner, javax.swing.GroupLayout.PREFERRED_SIZE, 325, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(32, 32, 32))
         );
         pnlBannerLayout.setVerticalGroup(
             pnlBannerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlBannerLayout.createSequentialGroup()
                 .addContainerGap(24, Short.MAX_VALUE)
-                .addComponent(lblTituloBanner, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(pnlBannerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblTituloBanner, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnSalir))
                 .addGap(20, 20, 20))
         );
 
@@ -162,7 +212,7 @@ public class SGE extends javax.swing.JFrame {
         pnlMenu.setLayout(pnlMenuLayout);
         pnlMenuLayout.setHorizontalGroup(
             pnlMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 396, Short.MAX_VALUE)
+            .addGap(0, 547, Short.MAX_VALUE)
         );
         pnlMenuLayout.setVerticalGroup(
             pnlMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -186,11 +236,17 @@ public class SGE extends javax.swing.JFrame {
                 .addGap(0, 0, 0)
                 .addComponent(pnlMenu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
-                .addComponent(jdpPrincipal, javax.swing.GroupLayout.DEFAULT_SIZE, 163, Short.MAX_VALUE))
+                .addComponent(jdpPrincipal, javax.swing.GroupLayout.DEFAULT_SIZE, 176, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
+        // TODO add your handling code here:
+        OcultarBanner();
+        FabricaControles.VerModal(jdpPrincipal, new frameLogin(), close);
+    }//GEN-LAST:event_btnSalirActionPerformed
 
     /**
      * @param args the command line arguments
@@ -228,6 +284,7 @@ public class SGE extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnSalir;
     private javax.swing.JDesktopPane jdpPrincipal;
     private javax.swing.JLabel lblTituloBanner;
     private javax.swing.JPanel pnlBanner;
