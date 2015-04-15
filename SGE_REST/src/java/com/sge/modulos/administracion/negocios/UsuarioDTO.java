@@ -9,15 +9,15 @@ import java.util.List;
  * @author elderson
  */
 public class UsuarioDTO {
- 
+
     UsuarioDAO usuarioDAO;
-    
-    public List<Object[]> ObtenerUsuarios() {
+
+    public List<Object[]> ObtenerUsuarios(String filtro) {
         List<Object[]> lista;
         try {
             usuarioDAO = new UsuarioDAO();
             usuarioDAO.AbrirSesision();
-            lista = usuarioDAO.ObtenerUsuarios();
+            lista = usuarioDAO.ObtenerUsuarios(filtro);
         } catch (Exception e) {
             throw e;
         } finally {
@@ -25,7 +25,7 @@ public class UsuarioDTO {
         }
         return lista;
     }
-    
+
     public boolean RegistrarUsuario(Usuario usuario) {
         try {
             usuarioDAO = new UsuarioDAO();
@@ -40,7 +40,7 @@ public class UsuarioDTO {
         }
         return true;
     }
-    
+
     public boolean ActualizarUsuario(Usuario usuario) {
         try {
             usuarioDAO = new UsuarioDAO();
@@ -55,7 +55,7 @@ public class UsuarioDTO {
         }
         return true;
     }
-    
+
     public boolean EliminarUsuario(int idUsuario) {
         try {
             usuarioDAO = new UsuarioDAO();

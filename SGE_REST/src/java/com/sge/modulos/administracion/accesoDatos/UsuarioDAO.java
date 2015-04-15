@@ -8,11 +8,11 @@ import java.util.List;
  */
 public class UsuarioDAO extends AdministracionDAO {
 
-    public List<Object[]> ObtenerUsuarios() {
+    public List<Object[]> ObtenerUsuarios(String filtro) {
         String sql = "SELECT \n"
                 + "Usuario.idUsuario, Usuario.usuario, Usuario.clave, Usuario.activo \n"
                 + "FROM \n"
-                + "Administracion.Usuario \n";
+                + "Administracion.Usuario " + filtro;
         return super.ObtenerLista(sql);
     }
 
@@ -20,7 +20,7 @@ public class UsuarioDAO extends AdministracionDAO {
         String sql = String.format("UPDATE Administracion.Usuario SET usuario = '%s', clave = '%s', activo = %b WHERE idUsuario = %d", usuario, clave, activo, idUsuario);
         return super.Ejecutar(sql);
     }
-    
+
     public int EliminarUsuario(int idUsuario) {
         String sql = "DELETE FROM Administracion.Usuario WHERE idUsuario = " + idUsuario;
         return super.Ejecutar(sql);
