@@ -45,7 +45,6 @@ import javax.swing.table.TableColumnModel;
 public class FabricaControles {
 
     ///////////////////////////////// CLASES ///////////////////////////////////
-    
     public static class ButtonColumn extends AbstractCellEditor
             implements TableCellRenderer, TableCellEditor, ActionListener, MouseListener {
 
@@ -255,7 +254,6 @@ public class FabricaControles {
     }
 
     //////////////////////////////// METODOS ///////////////////////////////////
-    
     public static void AgregarBoton(JTable table, Action action, int column) {
         ButtonColumn btn = new ButtonColumn(table, action, column);
         btn.setMnemonic(KeyEvent.VK_ENTER);
@@ -343,7 +341,7 @@ public class FabricaControles {
         GraphicsEnvironment graphicsEnvironment = GraphicsEnvironment.getLocalGraphicsEnvironment();
         GraphicsDevice graphicsDevice = graphicsEnvironment.getDefaultScreenDevice();
         DisplayMode display = graphicsDevice.getDisplayMode();
-        frame.setLocation((display.getWidth() - frame.getWidth()) / 2, (display.getHeight() - frame.getHeight()) / 2);
+        frame.setLocation((display.getWidth() - frame.getWidth()) / 2, ((display.getHeight() - frame.getHeight()) / 2) - 80);
         desktop.add(frame);
         frame.setLayer(JLayeredPane.MODAL_LAYER);
         frame.pack();
@@ -378,12 +376,12 @@ public class FabricaControles {
             }
         });
     }
-    
+
     public static void VerModal(JDesktopPane desktop, JInternalFrame frame) {
         GraphicsEnvironment graphicsEnvironment = GraphicsEnvironment.getLocalGraphicsEnvironment();
         GraphicsDevice graphicsDevice = graphicsEnvironment.getDefaultScreenDevice();
         DisplayMode display = graphicsDevice.getDisplayMode();
-        frame.setLocation((display.getWidth() - frame.getWidth()) / 2, (display.getHeight() - frame.getHeight()) / 2);
+        frame.setLocation((display.getWidth() - frame.getWidth()) / 2, ((display.getHeight() - frame.getHeight()) / 2) - 80);
         desktop.add(frame);
         frame.setLayer(JLayeredPane.MODAL_LAYER);
         frame.pack();
@@ -417,8 +415,8 @@ public class FabricaControles {
             }
         });
     }
-    
-    public static void VerModal(Component parentComponent, Component component, String title){
+
+    public static void VerModal(Component parentComponent, Component component, String title) {
         JOptionPane.showInternalMessageDialog(parentComponent, component, title, JOptionPane.QUESTION_MESSAGE);
     }
 
@@ -426,14 +424,14 @@ public class FabricaControles {
         return JOptionPane.showInternalConfirmDialog(parentComponent, "¿SEGURO DE CONTINUAR?", "CONFIRMACIÓN", JOptionPane.YES_NO_OPTION);
     }
 
-    public static void VerAdvertencia(String message, Component parentComponent){
-        if(parentComponent instanceof JInternalFrame || parentComponent instanceof JPanel){
+    public static void VerAdvertencia(String message, Component parentComponent) {
+        if (parentComponent instanceof JInternalFrame || parentComponent instanceof JPanel) {
             JOptionPane.showInternalMessageDialog(parentComponent, message, "MENSAJE", JOptionPane.WARNING_MESSAGE);
         } else {
             JOptionPane.showMessageDialog(null, message, "MENSAJE", JOptionPane.WARNING_MESSAGE);
         }
     }
-    
+
     public static void AgregarEventoChange(JTable tabla, Action action) {
         tabla.getModel().addTableModelListener(new TableModelListener() {
 
