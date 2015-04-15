@@ -380,7 +380,7 @@ public class lisReporte extends frameBase<Reporte> {
     private void btnImprimirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImprimirActionPerformed
         // TODO add your handling code here:
         if (FilaActiva(tbReportes)) {
-            Imprimir(ObtenerValorCelda(tbReportes, 1), frame);
+            Imprimir((int)ObtenerValorCelda(tbReportes, 1), (String)ObtenerValorCelda(tbReportes, 2), frame);
         }
     }//GEN-LAST:event_btnImprimirActionPerformed
 

@@ -4,20 +4,13 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.sge.base.controles.FabricaControles;
 import com.sge.base.excepciones.Excepciones;
-import com.sge.modulos.administracion.clases.ItemReporte;
-import com.sge.modulos.administracion.clases.Reporte;
 import com.sge.modulos.administracion.cliente.cliAdministracion;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.util.HashMap;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.util.List;
-import java.util.Map;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.SwingWorker;
-import net.sf.jasperreports.engine.JasperFillManager;
-import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.view.JasperViewer;
 
 /**
@@ -26,58 +19,39 @@ import net.sf.jasperreports.view.JasperViewer;
  */
 public class FabricaReportes {
 
-    /////////////////////////////// CONEXION ///////////////////////////////////
-    private static Connection conexion;
-
-    public static Connection getConexion(JPanel panel) {
-        if (conexion == null) {
-            try {
-                Class.forName("org.postgresql.Driver");
-                conexion = DriverManager.getConnection("jdbc:postgresql://localhost:5432/sge", "postgres", "123456");
-            } catch (ClassNotFoundException | SQLException e) {
-                Excepciones.Controlar(e, panel);
-            }
-        }
-        return conexion;
-    }
-
     ///////////////////////////////// CLASES ///////////////////////////////////
     public static class swImprimirSinEntidad extends SwingWorker {
 
         private final int idReporte;
-        private final JPanel panel;
+        private final String titulo;
+        private final JPanel frame;
 
-        public swImprimirSinEntidad(int idReporte, JPanel panel) {
+        public swImprimirSinEntidad(int idReporte, String titulo, JPanel frame) {
             this.idReporte = idReporte;
-            this.panel = panel;
+            this.titulo = titulo;
+            this.frame = frame;
         }
 
         @Override
         protected Object doInBackground() throws Exception {
-            FabricaControles.VerProcesando(panel);
+            FabricaControles.VerProcesando(frame);
             cliAdministracion cliente = new cliAdministracion();
             try {
-
-                String json = cliente.ObtenerReporte(new Gson().toJson(idReporte));
+                String json = cliente.GenerarReporteSinEntidad(new Gson().toJson(idReporte));
                 String[] resultado = new Gson().fromJson(json, String[].class);
-
                 if (resultado[0].equals("true")) {
-                    Reporte reporte = new Gson().fromJson(resultado[1], Reporte.class);
-
-                    Map parametros = new HashMap();
-                    for (ItemReporte item : reporte.getItems()) {
-                        parametros.put(item.getNombre(), item.getValor());
-                    }
-
-                    JasperPrint informa = JasperFillManager.fillReport(reporte.getUbicacion(), parametros, getConexion(panel));
-                    JasperViewer view = new JasperViewer(informa, false);
-                    view.setTitle(reporte.getNombre());
+                    byte[] bytes = new Gson().fromJson(resultado[1], byte[].class);
+                    InputStream is = new ByteArrayInputStream(bytes);
+                    JasperViewer view = new JasperViewer(is, false, false);
+                    view.setTitle(titulo);
                     view.setVisible(true);
+                } else {
+                    Excepciones.Controlar(resultado, frame);
                 }
             } catch (Exception e) {
-                FabricaControles.OcultarProcesando(panel);
+                FabricaControles.OcultarProcesando(frame);
                 cancel(false);
-                Excepciones.Controlar(e, panel);
+                Excepciones.Controlar(e, frame);
             } finally {
                 cliente.close();
             }
@@ -86,7 +60,7 @@ public class FabricaReportes {
 
         @Override
         protected void done() {
-            FabricaControles.OcultarProcesando(panel);
+            FabricaControles.OcultarProcesando(frame);
         }
     }
 
@@ -94,17 +68,17 @@ public class FabricaReportes {
 
         private final int id;
         private final int idEntidad;
-        private final JPanel panel;
+        private final JPanel frame;
 
-        public swImprimirConEntidad(int idEntidad, int id, JPanel panel) {
+        public swImprimirConEntidad(int idEntidad, int id, JPanel frame) {
             this.id = id;
             this.idEntidad = idEntidad;
-            this.panel = panel;
+            this.frame = frame;
         }
 
         @Override
         protected Object doInBackground() throws Exception {
-            FabricaControles.VerProcesando(panel);
+            FabricaControles.VerProcesando(frame);
             cliAdministracion cliente = new cliAdministracion();
             try {
 
@@ -120,46 +94,46 @@ public class FabricaReportes {
                         throw new Exception("NO HAY NINGUN REPORTE!");
                     }
 
-                    Reporte seleccionado = null;
+                    String titulo = "";
+
+                    int idReporte = 0;
 
                     if (reportes.size() == 1) {
-                        json = cliente.ObtenerReporte(new Gson().toJson(reportes.get(0)[0]));
-                        resultado = new Gson().fromJson(json, String[].class);
-                        seleccionado = new Gson().fromJson(resultado[1], Reporte.class);
+                        idReporte = ((Double) reportes.get(0)[0]).intValue();
+                        titulo = reportes.get(0)[1].toString();
                     } else {
                         JComboBox combo = new JComboBox();
                         for (Object[] reporte : reportes) {
                             combo.addItem(reporte[1]);
                         }
-                        FabricaControles.VerModal(panel, combo, "SELECCIONE UN REPORTE");
+                        FabricaControles.VerModal(frame, combo, "SELECCIONE UN REPORTE");
                         for (Object[] reporte : reportes) {
                             if (reporte[1].equals(combo.getSelectedItem())) {
-                                json = cliente.ObtenerReporte(new Gson().toJson(reporte[0]));
-                                resultado = new Gson().fromJson(json, String[].class);
-                                seleccionado = new Gson().fromJson(resultado[1], Reporte.class);
+                                idReporte = ((Double) reporte[0]).intValue();
+                                titulo = reporte[1].toString();
                                 break;
                             }
                         }
                     }
 
-                    Map parametros = new HashMap();
-                    for (ItemReporte item : seleccionado.getItems()) {
-                        if (item.isAsignarId()) {
-                            parametros.put(item.getNombre(), id);
-                        } else {
-                            parametros.put(item.getNombre(), item.getValor());
-                        }
+                    json = cliente.GenerarReporteConEntidad(new Gson().toJson(new int[]{idReporte, id}));
+                    resultado = new Gson().fromJson(json, String[].class);
+                    if (resultado[0].equals("true")) {
+                        byte[] bytes = new Gson().fromJson(resultado[1], byte[].class);
+                        InputStream is = new ByteArrayInputStream(bytes);
+                        JasperViewer view = new JasperViewer(is, false, false);
+                        view.setTitle(titulo);
+                        view.setVisible(true);
+                    } else {
+                        Excepciones.Controlar(resultado, frame);
                     }
-
-                    JasperPrint informa = JasperFillManager.fillReport(seleccionado.getUbicacion(), parametros, getConexion(panel));
-                    JasperViewer view = new JasperViewer(informa, false);
-                    view.setTitle(seleccionado.getNombre());
-                    view.setVisible(true);
+                } else {
+                    Excepciones.Controlar(resultado, frame);
                 }
             } catch (Exception e) {
-                FabricaControles.OcultarProcesando(panel);
+                FabricaControles.OcultarProcesando(frame);
                 cancel(false);
-                Excepciones.Controlar(e, panel);
+                Excepciones.Controlar(e, frame);
             } finally {
                 cliente.close();
             }
@@ -168,16 +142,16 @@ public class FabricaReportes {
 
         @Override
         protected void done() {
-            FabricaControles.OcultarProcesando(panel);
+            FabricaControles.OcultarProcesando(frame);
         }
     }
 
     //////////////////////////////// METODOS ///////////////////////////////////
-    public static void Imprimir(int idReporte, JPanel panel) {
-        new swImprimirSinEntidad(idReporte, panel).execute();
+    public static void Imprimir(int idReporte, String titulo, JPanel frame) {
+        new swImprimirSinEntidad(idReporte, titulo, frame).execute();
     }
 
-    public static void Imprimir(int idEntidad, int id, JPanel panel) {
-        new swImprimirConEntidad(idEntidad, id, panel).execute();
+    public static void Imprimir(int idEntidad, int id, JPanel frame) {
+        new swImprimirConEntidad(idEntidad, id, frame).execute();
     }
 }

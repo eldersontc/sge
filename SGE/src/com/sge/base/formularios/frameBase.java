@@ -192,8 +192,8 @@ public class frameBase<T> extends javax.swing.JInternalFrame {
     }
 
     /////////////////////////// FABRICA DE REPORTES ////////////////////////////
-    public void Imprimir(int idReporte, JPanel panel) {
-        FabricaReportes.Imprimir(idReporte, panel);
+    public void Imprimir(int idReporte, String titulo, JPanel panel) {
+        FabricaReportes.Imprimir(idReporte, titulo, panel);
     }
 
     public void Imprimir(int idEntidad, int id, JPanel panel) {

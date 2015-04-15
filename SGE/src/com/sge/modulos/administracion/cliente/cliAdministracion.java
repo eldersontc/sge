@@ -157,6 +157,18 @@ public class cliAdministracion {
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
     }
     
+    public String GenerarReporteConEntidad(Object requestEntity) throws ClientErrorException {
+        WebTarget resource = client.target(BASE_URI).path("ReporteSRV");
+        resource = resource.path("GenerarReporteConEntidad");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
+    }
+    
+    public String GenerarReporteSinEntidad(Object requestEntity) throws ClientErrorException {
+        WebTarget resource = client.target(BASE_URI).path("ReporteSRV");
+        resource = resource.path("GenerarReporteSinEntidad");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
+    }
+    
     ////////////////////////////////////////////////////////////////////////////
     
     //////////////////////////// VALOR DEFINIDO ////////////////////////////////
