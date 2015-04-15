@@ -50,7 +50,7 @@ public class regSalidaInventario extends frameBase<SalidaInventario> {
         if (this.id == 0) {
             lblTitulo.setText("NUEVA " + lblTitulo.getText());
             AgregarCombo(tbItems, 7, 2);
-            ObtenerValoresDefinidos(frame, 1, 2);
+            ObtenerValoresDefinidos(frame, 2);
         } else {
             lblTitulo.setText("VER " + lblTitulo.getText());
             OcultarControles();

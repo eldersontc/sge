@@ -4,13 +4,17 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.sge.base.controles.FabricaControles;
 import com.sge.base.excepciones.Excepciones;
+import com.sge.base.formularios.frameBase;
 import com.sge.base.formularios.frameLogin;
+import com.sge.modulos.administracion.clases.Usuario;
 import com.sge.modulos.administracion.cliente.cliAdministracion;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.lang.reflect.Constructor;
 import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -33,14 +37,26 @@ public class SGE extends javax.swing.JFrame {
         initComponents();
         Init();
     }
-    
-    public void Init(){
-        OcultarBanner();
-        setExtendedState(java.awt.Frame.MAXIMIZED_BOTH);
-        FabricaControles.VerModal(jdpPrincipal, new frameLogin(), close); 
+
+    private Usuario usuario;
+
+    public void AsignarUsuario(Object[] array) {
+        usuario = new Usuario();
+        usuario.setIdUsuario(((Double) array[0]).intValue());
+        usuario.setUsuario(array[1].toString());
     }
 
-    public void OcultarBanner(){
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void Init() {
+        OcultarBanner();
+        setExtendedState(java.awt.Frame.MAXIMIZED_BOTH);
+        FabricaControles.VerModal(jdpPrincipal, new frameLogin(), close);
+    }
+
+    public void OcultarBanner() {
         pnlBanner.setVisible(false);
         pnlMenu.setVisible(false);
         for (JInternalFrame frame : jdpPrincipal.getAllFrames()) {
@@ -50,18 +66,21 @@ public class SGE extends javax.swing.JFrame {
             }
         }
     }
-    
-    public void VerBanner(){
+
+    public void VerBanner() {
         pnlBanner.setVisible(true);
         pnlMenu.setVisible(true);
+        txtUsuario.setText(getUsuario().getUsuario());
+        txtFecha.setText(new SimpleDateFormat("dd/MM/yyyy").format(new Date()));
     }
-    
+
     Action close = new AbstractAction() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            Object[] usuario = ((frameLogin)e.getSource()).getUsuario();
-            if(usuario != null){
-                LlenarMenus(((Double)usuario[0]).intValue());
+            Object[] usuario = ((frameLogin) e.getSource()).getUsuario();
+            if (usuario != null) {
+                AsignarUsuario(usuario);
+                LlenarMenus(getUsuario().getIdUsuario());
                 VerBanner();
             }
         }
@@ -144,7 +163,8 @@ public class SGE extends javax.swing.JFrame {
         try {
             Class<?> clazz = Class.forName(frameName);
             Constructor<?> constructor = clazz.getConstructor(int.class);
-            JInternalFrame frame = (JInternalFrame) constructor.newInstance(new Object[]{0});
+            frameBase frame = (frameBase) constructor.newInstance(new Object[]{0});
+            frame.setUsuario(getUsuario());
             jdpPrincipal.add(frame);
             frame.setVisible(true);
         } catch (Exception e) {
@@ -164,6 +184,11 @@ public class SGE extends javax.swing.JFrame {
         pnlBanner = new javax.swing.JPanel();
         lblTituloBanner = new javax.swing.JLabel();
         btnSalir = new javax.swing.JButton();
+        lblSeparador = new javax.swing.JLabel();
+        lblUsuario = new javax.swing.JLabel();
+        txtUsuario = new javax.swing.JLabel();
+        lblFecha = new javax.swing.JLabel();
+        txtFecha = new javax.swing.JLabel();
         pnlMenu = new javax.swing.JPanel();
         jdpPrincipal = new javax.swing.JDesktopPane();
 
@@ -172,7 +197,7 @@ public class SGE extends javax.swing.JFrame {
         pnlBanner.setBackground(new java.awt.Color(67, 100, 130));
         pnlBanner.setBorder(null);
 
-        lblTituloBanner.setFont(new java.awt.Font("Ubuntu", 1, 18)); // NOI18N
+        lblTituloBanner.setFont(new java.awt.Font("Ubuntu", 1, 20)); // NOI18N
         lblTituloBanner.setForeground(java.awt.Color.white);
         lblTituloBanner.setText("SISTEMA DE GESTIÓN EMPRESARIAL");
 
@@ -184,25 +209,62 @@ public class SGE extends javax.swing.JFrame {
             }
         });
 
+        lblSeparador.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sge/base/imagenes/reviewer-48.png"))); // NOI18N
+
+        lblUsuario.setForeground(java.awt.Color.white);
+        lblUsuario.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblUsuario.setText("USUARIO:");
+
+        txtUsuario.setForeground(java.awt.Color.white);
+        txtUsuario.setText("DEMO");
+
+        lblFecha.setForeground(java.awt.Color.white);
+        lblFecha.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblFecha.setText("FECHA:");
+
+        txtFecha.setForeground(java.awt.Color.white);
+        txtFecha.setText("DD/MM/YYYY");
+
         javax.swing.GroupLayout pnlBannerLayout = new javax.swing.GroupLayout(pnlBanner);
         pnlBanner.setLayout(pnlBannerLayout);
         pnlBannerLayout.setHorizontalGroup(
             pnlBannerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlBannerLayout.createSequentialGroup()
-                .addGap(41, 41, 41)
-                .addComponent(lblTituloBanner, javax.swing.GroupLayout.PREFERRED_SIZE, 325, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(45, 45, 45)
+                .addComponent(lblTituloBanner, javax.swing.GroupLayout.DEFAULT_SIZE, 369, Short.MAX_VALUE)
+                .addGap(37, 37, 37)
+                .addComponent(lblSeparador)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(pnlBannerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(lblUsuario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblFecha, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(pnlBannerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtFecha, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(32, 32, 32))
         );
         pnlBannerLayout.setVerticalGroup(
             pnlBannerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlBannerLayout.createSequentialGroup()
-                .addContainerGap(24, Short.MAX_VALUE)
-                .addGroup(pnlBannerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblTituloBanner, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnSalir))
-                .addGap(20, 20, 20))
+            .addGroup(pnlBannerLayout.createSequentialGroup()
+                .addContainerGap(18, Short.MAX_VALUE)
+                .addGroup(pnlBannerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(pnlBannerLayout.createSequentialGroup()
+                        .addComponent(btnSalir)
+                        .addGap(22, 22, 22))
+                    .addGroup(pnlBannerLayout.createSequentialGroup()
+                        .addGroup(pnlBannerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(txtUsuario)
+                            .addComponent(lblUsuario))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(pnlBannerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtFecha)
+                            .addComponent(lblFecha))
+                        .addGap(16, 16, 16))))
+            .addComponent(lblTituloBanner, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(lblSeparador, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pnlMenu.setBackground(new java.awt.Color(67, 100, 130));
@@ -212,7 +274,7 @@ public class SGE extends javax.swing.JFrame {
         pnlMenu.setLayout(pnlMenuLayout);
         pnlMenuLayout.setHorizontalGroup(
             pnlMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 547, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
         pnlMenuLayout.setVerticalGroup(
             pnlMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -236,7 +298,7 @@ public class SGE extends javax.swing.JFrame {
                 .addGap(0, 0, 0)
                 .addComponent(pnlMenu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
-                .addComponent(jdpPrincipal, javax.swing.GroupLayout.DEFAULT_SIZE, 176, Short.MAX_VALUE))
+                .addComponent(jdpPrincipal, javax.swing.GroupLayout.DEFAULT_SIZE, 182, Short.MAX_VALUE))
         );
 
         pack();
@@ -286,8 +348,13 @@ public class SGE extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnSalir;
     private javax.swing.JDesktopPane jdpPrincipal;
+    private javax.swing.JLabel lblFecha;
+    private javax.swing.JLabel lblSeparador;
     private javax.swing.JLabel lblTituloBanner;
+    private javax.swing.JLabel lblUsuario;
     private javax.swing.JPanel pnlBanner;
     private javax.swing.JPanel pnlMenu;
+    private javax.swing.JLabel txtFecha;
+    private javax.swing.JLabel txtUsuario;
     // End of variables declaration//GEN-END:variables
 }

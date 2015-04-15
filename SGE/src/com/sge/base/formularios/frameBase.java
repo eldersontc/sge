@@ -6,6 +6,7 @@ import com.sge.base.controles.FabricaControles;
 import com.sge.base.excepciones.Excepciones;
 import com.sge.base.reportes.FabricaReportes;
 import com.sge.base.utils.Utils;
+import com.sge.modulos.administracion.clases.Usuario;
 import com.sge.modulos.administracion.clases.ValorDefinido;
 import com.sge.modulos.administracion.cliente.cliAdministracion;
 import java.awt.Component;
@@ -27,12 +28,22 @@ public class frameBase<T> extends javax.swing.JInternalFrame {
     /////////////////////////////// VARIABLES //////////////////////////////////
     private T entidad;
 
+    private Usuario usuario;
+
     public T getEntidad() {
         return entidad;
     }
 
     public void setEntidad(T entidad) {
         this.entidad = entidad;
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
     }
 
     public Class<?> getClazz() throws ClassNotFoundException {
@@ -51,19 +62,17 @@ public class frameBase<T> extends javax.swing.JInternalFrame {
     }
 
     //////////////////////////////// CLASES ////////////////////////////////////
-    public void ObtenerValoresDefinidos(JPanel frame, int idUsuario, int idEntidad) {
-        new swObtenerValoresDefinidos(frame, idUsuario, idEntidad).execute();
+    public void ObtenerValoresDefinidos(JPanel frame, int idEntidad) {
+        new swObtenerValoresDefinidos(frame, idEntidad).execute();
     }
 
     public class swObtenerValoresDefinidos extends SwingWorker<Object, Object> {
 
-        private int idUsuario;
         private int idEntidad;
         private JPanel frame;
 
-        public swObtenerValoresDefinidos(JPanel frame, int idUsuario, int idEntidad) {
+        public swObtenerValoresDefinidos(JPanel frame, int idEntidad) {
             this.frame = frame;
-            this.idUsuario = idUsuario;
             this.idEntidad = idEntidad;
         }
 
@@ -72,7 +81,7 @@ public class frameBase<T> extends javax.swing.JInternalFrame {
             VerCargando(frame);
             cliAdministracion cliente = new cliAdministracion();
             try {
-                String json = cliente.ObtenerValoresDefinidos(new Gson().toJson(String.format("WHERE ValorDefinido.idUsuario = %d AND ValorDefinido.idEntidad = %d", idUsuario, idEntidad)));
+                String json = cliente.ObtenerValoresDefinidos(new Gson().toJson(String.format("WHERE ValorDefinido.idUsuario = %d AND ValorDefinido.idEntidad = %d", getUsuario().getIdUsuario(), idEntidad)));
                 String[] resultado = new Gson().fromJson(json, String[].class);
                 if (resultado[0].equals("true")) {
                     List<Object[]> valoresDefinidos = (List<Object[]>) new Gson().fromJson(resultado[1], new TypeToken<List<Object[]>>() {

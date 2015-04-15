@@ -340,6 +340,7 @@ public class lisEntradaInventario extends frameBase<EntradaInventario> {
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
         // TODO add your handling code here:
         regEntradaInventario regEntradaInventario = new regEntradaInventario(0);
+        regEntradaInventario.setUsuario(getUsuario());
         this.getDesktopPane().add(regEntradaInventario);
         regEntradaInventario.setVisible(true);
     }//GEN-LAST:event_btnNuevoActionPerformed
