@@ -1,5 +1,6 @@
 package com.sge.modulos.administracion.entidades;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -16,6 +17,7 @@ public class Reporte {
     private List<ItemReporte> items;
 
     public Reporte() {
+        items = new ArrayList<>();
     }
 
     public int getIdReporte() {

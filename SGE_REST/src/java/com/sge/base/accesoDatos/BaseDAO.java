@@ -9,6 +9,8 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.engine.jdbc.connections.spi.ConnectionProvider;
+import org.hibernate.engine.spi.SessionFactoryImplementor;
 import org.hibernate.jdbc.Work;
 
 /**
@@ -77,14 +79,14 @@ public class BaseDAO {
         for (Object[] filtro : filtros) {
             criteria.add(Restrictions.eq(filtro[0].toString(), filtro[1]));
         }
-        return (T)criteria.list();
+        return (T) criteria.list();
     }
-    
+
     public int Ejecutar(String sql) {
         return sesion.createSQLQuery(sql).executeUpdate();
     }
-    
-    public void EjecutarFuncion(String sql){
+
+    public void EjecutarFuncion(String sql) {
         sesion.doWork(new Work() {
 
             @Override
@@ -94,12 +96,18 @@ public class BaseDAO {
         });
     }
 
+    public Connection getConexion() throws Exception {
+        SessionFactoryImplementor sfi = (SessionFactoryImplementor) sesion.getSessionFactory();
+        ConnectionProvider cp = sfi.getConnectionProvider();
+        Connection conn = cp.getConnection();
+        return conn;
+    }
+
     public Session getSesion() {
         return sesion;
     }
-    
-    public void AsignarSesion(BaseDAO baseDAO) 
-    {
+
+    public void AsignarSesion(BaseDAO baseDAO) {
         this.sesion = baseDAO.getSesion();
     }
 }

@@ -121,4 +121,47 @@ public class ReporteSRV {
         }
         return new Gson().toJson(resultado);
     }
+    
+    //////////////////// GENERACION DE REPORTES ////////////////////////////////
+    @POST
+    @Path("GenerarReporteConEntidad")
+    @Consumes("application/json")
+    @Produces("application/json")
+    public String GenerarReporteConEntidad(String json) {
+        List<String> resultado = new ArrayList<>();
+        int[] arrayInt = new Gson().fromJson(json, int[].class);
+        int idReporte = arrayInt[0];
+        int id = arrayInt[1];
+        try {
+            ReporteDTO reporteDTO = new ReporteDTO();
+            byte[] bytes = reporteDTO.GenerarReporteConEntidad(idReporte, id);
+            resultado.add(new Gson().toJson(true));
+            resultado.add(new Gson().toJson(bytes));
+        } catch (Exception e) {
+            resultado.clear();
+            resultado.add(new Gson().toJson(false));
+            resultado.add(new Gson().toJson(e));
+        }
+        return new Gson().toJson(resultado);
+    }
+    
+    @POST
+    @Path("GenerarReporteSinEntidad")
+    @Consumes("application/json")
+    @Produces("application/json")
+    public String GenerarReporteSinEntidad(String json) {
+        List<String> resultado = new ArrayList<>();
+        int idReporte = new Gson().fromJson(json, int.class);
+        try {
+            ReporteDTO reporteDTO = new ReporteDTO();
+            byte[] bytes = reporteDTO.GenerarReporteSinEntidad(idReporte);
+            resultado.add(new Gson().toJson(true));
+            resultado.add(new Gson().toJson(bytes));
+        } catch (Exception e) {
+            resultado.clear();
+            resultado.add(new Gson().toJson(false));
+            resultado.add(new Gson().toJson(e));
+        }
+        return new Gson().toJson(resultado);
+    }
 }

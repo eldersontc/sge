@@ -4,8 +4,15 @@ import com.sge.modulos.administracion.accesoDatos.ItemReporteDAO;
 import com.sge.modulos.administracion.accesoDatos.ReporteDAO;
 import com.sge.modulos.administracion.entidades.ItemReporte;
 import com.sge.modulos.administracion.entidades.Reporte;
+import java.io.ByteArrayOutputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
 
 /**
  *
@@ -116,5 +123,56 @@ public class ReporteDTO {
             reporteDAO.CerrarSesion();
         }
         return true;
+    }
+
+    //////////////////// GENERACION DE REPORTES ////////////////////////////////
+    public byte[] GenerarReporteConEntidad(int idReporte, int id) throws Exception {
+        byte[] bytes = null;
+        try {
+            reporteDAO = new ReporteDAO();
+            reporteDAO.AbrirSesision();
+            Reporte reporte = reporteDAO.ObtenerPorId(Reporte.class, idReporte);
+            Map parametros = new HashMap();
+            for (ItemReporte item : reporte.getItems()) {
+                if (item.isAsignarId()) {
+                    parametros.put(item.getNombre(), id);
+                } else {
+                    parametros.put(item.getNombre(), item.getValor());
+                }
+            }
+            JasperPrint jasperPrint = JasperFillManager.fillReport(reporte.getUbicacion(), parametros, reporteDAO.getConexion());
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            ObjectOutputStream os = new ObjectOutputStream(out);
+            os.writeObject(jasperPrint);
+            bytes = out.toByteArray();
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            reporteDAO.CerrarSesion();
+        }
+        return bytes;
+    }
+    
+    public byte[] GenerarReporteSinEntidad(int idReporte) throws Exception {
+        byte[] bytes = null;
+        try {
+            reporteDAO = new ReporteDAO();
+            reporteDAO.AbrirSesision();
+            Reporte reporte = reporteDAO.ObtenerPorId(Reporte.class, idReporte);
+            Map parametros = new HashMap();
+            for (ItemReporte item : reporte.getItems()) {
+                parametros.put(item.getNombre(), item.getValor());
+            }
+            JasperPrint jasperPrint = JasperFillManager.fillReport(reporte.getUbicacion(), parametros, reporteDAO.getConexion());
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            ObjectOutputStream os = new ObjectOutputStream(out);
+            os.writeObject(jasperPrint);
+            bytes = out.toByteArray();
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            reporteDAO.CerrarSesion();
+        }
+        return bytes;
     }
 }
