@@ -33,7 +33,7 @@ public class FabricaReportes {
         }
 
         @Override
-        protected Object doInBackground() throws Exception {
+        protected Object doInBackground() {
             FabricaControles.VerProcesando(frame);
             cliAdministracion cliente = new cliAdministracion();
             try {
@@ -77,7 +77,7 @@ public class FabricaReportes {
         }
 
         @Override
-        protected Object doInBackground() throws Exception {
+        protected Object doInBackground() {
             FabricaControles.VerProcesando(frame);
             cliAdministracion cliente = new cliAdministracion();
             try {
