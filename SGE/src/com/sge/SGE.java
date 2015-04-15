@@ -211,6 +211,7 @@ public class SGE extends javax.swing.JFrame {
 
         lblSeparador.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sge/base/imagenes/reviewer-48.png"))); // NOI18N
 
+        lblUsuario.setFont(new java.awt.Font("Ubuntu", 1, 15)); // NOI18N
         lblUsuario.setForeground(java.awt.Color.white);
         lblUsuario.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         lblUsuario.setText("USUARIO:");
@@ -218,6 +219,7 @@ public class SGE extends javax.swing.JFrame {
         txtUsuario.setForeground(java.awt.Color.white);
         txtUsuario.setText("DEMO");
 
+        lblFecha.setFont(new java.awt.Font("Ubuntu", 1, 15)); // NOI18N
         lblFecha.setForeground(java.awt.Color.white);
         lblFecha.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         lblFecha.setText("FECHA:");
@@ -231,7 +233,7 @@ public class SGE extends javax.swing.JFrame {
             pnlBannerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlBannerLayout.createSequentialGroup()
                 .addGap(45, 45, 45)
-                .addComponent(lblTituloBanner, javax.swing.GroupLayout.DEFAULT_SIZE, 369, Short.MAX_VALUE)
+                .addComponent(lblTituloBanner, javax.swing.GroupLayout.DEFAULT_SIZE, 360, Short.MAX_VALUE)
                 .addGap(37, 37, 37)
                 .addComponent(lblSeparador)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -298,7 +300,7 @@ public class SGE extends javax.swing.JFrame {
                 .addGap(0, 0, 0)
                 .addComponent(pnlMenu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
-                .addComponent(jdpPrincipal, javax.swing.GroupLayout.DEFAULT_SIZE, 182, Short.MAX_VALUE))
+                .addComponent(jdpPrincipal, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE))
         );
 
         pack();
