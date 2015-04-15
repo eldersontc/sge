@@ -357,7 +357,7 @@ public class lisEntradaInventario extends frameBase<EntradaInventario> {
     private void btnImprimirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImprimirActionPerformed
         // TODO add your handling code here:
         if (FilaActiva(tbEntradaInventarios)) {
-            Imprimir(1, ObtenerValorCelda(tbEntradaInventarios, 1), frame);
+            ImprimirConEntidad(1, ObtenerValorCelda(tbEntradaInventarios, 1), frame);
         }
     }//GEN-LAST:event_btnImprimirActionPerformed
 

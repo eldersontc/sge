@@ -147,11 +147,11 @@ public class FabricaReportes {
     }
 
     //////////////////////////////// METODOS ///////////////////////////////////
-    public static void Imprimir(int idReporte, String titulo, JPanel frame) {
+    public static void ImprimirSinEntidad(int idReporte, String titulo, JPanel frame) {
         new swImprimirSinEntidad(idReporte, titulo, frame).execute();
     }
 
-    public static void Imprimir(int idEntidad, int id, JPanel frame) {
+    public static void ImprimirConEntidad(int idEntidad, int id, JPanel frame) {
         new swImprimirConEntidad(idEntidad, id, frame).execute();
     }
 }
