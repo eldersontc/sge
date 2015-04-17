@@ -181,7 +181,8 @@ public class lisUsuario extends frameBase<Usuario> {
                 OcultarControl(btnSeleccionar);
                 break;
             case 1:
-                OcultarColumna(tbUsuarios, 0);
+                OcultarColumnas(tbUsuarios, new int[]{0, 5, 6});
+                OcultarControl(btnNuevo);
                 break;
         }
         new swObtenerUsuarios().execute();

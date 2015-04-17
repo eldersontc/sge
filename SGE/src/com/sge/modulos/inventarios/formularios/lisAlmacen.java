@@ -189,7 +189,12 @@ public class lisAlmacen extends frameBase<Almacen> {
                 OcultarControl(btnSeleccionar);
                 break;
             case 1:
-                OcultarColumna(tbAlmacenes, 0);
+                OcultarColumnas(tbAlmacenes, new int[]{0, 5, 6});
+                OcultarControl(btnNuevo);
+                break;
+            case 2:
+                OcultarColumnas(tbAlmacenes, new int[]{5, 6});
+                OcultarControl(btnNuevo);
                 break;
         }
         new swObtenerAlmacenes().execute();

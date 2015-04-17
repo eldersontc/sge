@@ -2,6 +2,7 @@ package com.sge.modulos.inventarios.formularios;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.sge.base.controles.SearchListener;
 import com.sge.base.formularios.frameBase;
 import com.sge.modulos.administracion.clases.Empleado;
 import com.sge.modulos.administracion.clases.Moneda;
@@ -60,12 +61,12 @@ public class regEntradaInventario extends frameBase<EntradaInventario> {
 
     @Override
     public void AsignarControles() {
-        txtProveedor.setText(getEntidad().getRazonSocialProveedor());
+        schProveedor.asingValues(getEntidad().getIdProveedor(), getEntidad().getRazonSocialProveedor());
         txtNumero.setText(getEntidad().getNumero());
-        txtResponsable.setText(getEntidad().getNombreResponsable());
+        schResponsable.asingValues(getEntidad().getIdResponsable(), getEntidad().getNombreResponsable());
         txtFechaCreacion.setValue(getEntidad().getFechaCreacion());
-        txtAlmacen.setText(getEntidad().getDescripcionAlmacen());
-        txtMoneda.setText(getEntidad().getSimboloMoneda());
+        schAlmacen.asingValues(getEntidad().getIdAlmacen(), getEntidad().getDescripcionAlmacen());
+        schMoneda.asingValues(getEntidad().getIdMoneda(), getEntidad().getSimboloMoneda());
         txtSubTotal.setValue(getEntidad().getSubTotal());
         txtImpuesto.setValue(getEntidad().getMontoImpuesto());
         txtTotal.setValue(getEntidad().getTotal());
@@ -196,9 +197,7 @@ public class regEntradaInventario extends frameBase<EntradaInventario> {
         public void actionPerformed(ActionEvent evt) {
             Proveedor seleccionado = ((lisProveedor) evt.getSource()).getSeleccionado();
             if (!(seleccionado == null)) {
-                getEntidad().setIdProveedor(seleccionado.getIdProveedor());
-                getEntidad().setRazonSocialProveedor(seleccionado.getRazonSocial());
-                txtProveedor.setText(seleccionado.getRazonSocial());
+                schProveedor.asingValues(seleccionado.getIdProveedor(), seleccionado.getRazonSocial());
             }
         }
     };
@@ -208,9 +207,7 @@ public class regEntradaInventario extends frameBase<EntradaInventario> {
         public void actionPerformed(ActionEvent evt) {
             Empleado seleccionado = ((lisEmpleado) evt.getSource()).getSeleccionado();
             if (!(seleccionado == null)) {
-                getEntidad().setIdResponsable(seleccionado.getIdEmpleado());
-                getEntidad().setNombreResponsable(seleccionado.getNombre());
-                txtResponsable.setText(seleccionado.getNombre());
+                schResponsable.asingValues(seleccionado.getIdEmpleado(), seleccionado.getNombre());
             }
         }
     };
@@ -220,9 +217,7 @@ public class regEntradaInventario extends frameBase<EntradaInventario> {
         public void actionPerformed(ActionEvent evt) {
             Almacen seleccionado = ((lisAlmacen) evt.getSource()).getSeleccionado();
             if (!(seleccionado == null)) {
-                getEntidad().setIdAlmacen(seleccionado.getIdAlmacen());
-                getEntidad().setDescripcionAlmacen(seleccionado.getDescripcion());
-                txtAlmacen.setText(seleccionado.getDescripcion());
+                schAlmacen.asingValues(seleccionado.getIdAlmacen(), seleccionado.getDescripcion());
             }
         }
     };
@@ -232,9 +227,7 @@ public class regEntradaInventario extends frameBase<EntradaInventario> {
         public void actionPerformed(ActionEvent evt) {
             Moneda seleccionado = ((lisMoneda) evt.getSource()).getSeleccionado();
             if (!(seleccionado == null)) {
-                getEntidad().setIdMoneda(seleccionado.getIdMoneda());
-                getEntidad().setSimboloMoneda(seleccionado.getSimbolo());
-                txtMoneda.setText(seleccionado.getSimbolo());
+                schMoneda.asingValues(seleccionado.getIdMoneda(), seleccionado.getSimbolo());
             }
         }
     };
@@ -276,6 +269,18 @@ public class regEntradaInventario extends frameBase<EntradaInventario> {
         }
     }
 
+    private void AsignarValores(){
+        getEntidad().setIdProveedor(schProveedor.getId());
+        getEntidad().setRazonSocialProveedor(schProveedor.getText());
+        getEntidad().setIdResponsable(schResponsable.getId());
+        getEntidad().setNombreResponsable(schResponsable.getText());
+        getEntidad().setIdAlmacen(schAlmacen.getId());
+        getEntidad().setDescripcionAlmacen(schAlmacen.getText());
+        getEntidad().setIdMoneda(schMoneda.getId());
+        getEntidad().setSimboloMoneda(schMoneda.getText());
+        getEntidad().setItems(getItems());
+    }
+    
     public class swGuardarEntradaInventario extends SwingWorker<Object, Object> {
 
         @Override
@@ -285,7 +290,7 @@ public class regEntradaInventario extends frameBase<EntradaInventario> {
             String json = "";
             try {
                 List<String> arrayJson = new ArrayList<>();
-                getEntidad().setItems(getItems());
+                AsignarValores();
                 arrayJson.add(new Gson().toJson(getEntidad()));
                 json = cliente.RegistrarEntradaInventario(new Gson().toJson(arrayJson));
             } catch (Exception e) {
@@ -318,6 +323,7 @@ public class regEntradaInventario extends frameBase<EntradaInventario> {
 
     public void Aceptar() {
         if (super.isFromJson()) {
+            AsignarValores();
             setJson(new Gson().toJson(super.getEntidad()));
             Cerrar();
         } else {
@@ -345,8 +351,6 @@ public class regEntradaInventario extends frameBase<EntradaInventario> {
         frame = new javax.swing.JPanel();
         lblProveedor = new javax.swing.JLabel();
         lblNombre = new javax.swing.JLabel();
-        txtResponsable = new javax.swing.JTextField();
-        txtProveedor = new javax.swing.JTextField();
         btnAceptar = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
         jTabbedPane1 = new javax.swing.JTabbedPane();
@@ -372,9 +376,7 @@ public class regEntradaInventario extends frameBase<EntradaInventario> {
         lblNumero = new javax.swing.JLabel();
         txtNumero = new javax.swing.JTextField();
         lblMoneda = new javax.swing.JLabel();
-        txtMoneda = new javax.swing.JTextField();
         lblAlmacen = new javax.swing.JLabel();
-        txtAlmacen = new javax.swing.JTextField();
         txtFechaCreacion = new javax.swing.JFormattedTextField();
         lblFechaCreacion = new javax.swing.JLabel();
         lblSubTotal = new javax.swing.JLabel();
@@ -382,7 +384,11 @@ public class regEntradaInventario extends frameBase<EntradaInventario> {
         lblTotal = new javax.swing.JLabel();
         txtSubTotal = new javax.swing.JFormattedTextField();
         txtTotal = new javax.swing.JFormattedTextField();
+        schProveedor = new com.sge.base.controles.JSearch();
         txtImpuesto = new javax.swing.JFormattedTextField();
+        schAlmacen = new com.sge.base.controles.JSearch();
+        schResponsable = new com.sge.base.controles.JSearch();
+        schMoneda = new com.sge.base.controles.JSearch();
 
         setClosable(true);
 
@@ -392,18 +398,6 @@ public class regEntradaInventario extends frameBase<EntradaInventario> {
         lblProveedor.setText("PROVEEDOR");
 
         lblNombre.setText("RESPONSABLE");
-
-        txtResponsable.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtResponsableActionPerformed(evt);
-            }
-        });
-
-        txtProveedor.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtProveedorActionPerformed(evt);
-            }
-        });
 
         btnAceptar.setText("ACEPTAR");
         btnAceptar.addActionListener(new java.awt.event.ActionListener() {
@@ -536,19 +530,7 @@ public class regEntradaInventario extends frameBase<EntradaInventario> {
 
         lblMoneda.setText("MONEDA");
 
-        txtMoneda.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtMonedaActionPerformed(evt);
-            }
-        });
-
         lblAlmacen.setText("ALMACEN");
-
-        txtAlmacen.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtAlmacenActionPerformed(evt);
-            }
-        });
 
         txtFechaCreacion.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter()));
 
@@ -566,8 +548,36 @@ public class regEntradaInventario extends frameBase<EntradaInventario> {
         txtTotal.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0.00"))));
         txtTotal.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
 
+        schProveedor.addSearchListener(new SearchListener() {
+            @Override
+            public void Search(){
+                schProveedorSearch();
+            }
+        });
+
         txtImpuesto.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0.00"))));
         txtImpuesto.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+
+        schAlmacen.addSearchListener(new SearchListener() {
+            @Override
+            public void Search(){
+                schAlmacenSearch();
+            }
+        });
+
+        schResponsable.addSearchListener(new SearchListener() {
+            @Override
+            public void Search(){
+                schResponsableSearch();
+            }
+        });
+
+        schMoneda.addSearchListener(new SearchListener() {
+            @Override
+            public void Search(){
+                schMonedaSearch();
+            }
+        });
 
         javax.swing.GroupLayout frameLayout = new javax.swing.GroupLayout(frame);
         frame.setLayout(frameLayout);
@@ -577,56 +587,54 @@ public class regEntradaInventario extends frameBase<EntradaInventario> {
             .addGroup(frameLayout.createSequentialGroup()
                 .addGap(23, 23, 23)
                 .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, frameLayout.createSequentialGroup()
-                        .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(frameLayout.createSequentialGroup()
+                        .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, frameLayout.createSequentialGroup()
                                 .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(lblAlmacen)
-                                    .addComponent(lblNombre))
+                                    .addComponent(lblNombre)
+                                    .addComponent(lblProveedor))
                                 .addGap(24, 24, 24)
-                                .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(txtResponsable, javax.swing.GroupLayout.DEFAULT_SIZE, 255, Short.MAX_VALUE)
-                                    .addComponent(txtAlmacen))
+                                .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(schProveedor, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(schAlmacen, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(schResponsable, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(29, 29, 29)
                                 .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(lblMoneda, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(lblFechaCreacion, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(frameLayout.createSequentialGroup()
-                                .addComponent(lblProveedor)
-                                .addGap(38, 38, 38)
-                                .addComponent(txtProveedor, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(30, 30, 30)
-                                .addComponent(lblNumero, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txtMoneda, javax.swing.GroupLayout.DEFAULT_SIZE, 91, Short.MAX_VALUE)
-                            .addComponent(txtFechaCreacion)
-                            .addComponent(txtNumero)))
-                    .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(frameLayout.createSequentialGroup()
-                            .addGap(420, 420, 420)
-                            .addComponent(lblImpuesto, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(txtImpuesto, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(0, 0, Short.MAX_VALUE))
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, frameLayout.createSequentialGroup()
-                            .addGap(0, 0, Short.MAX_VALUE)
-                            .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(lblNumero, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(lblFechaCreacion, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(txtFechaCreacion, javax.swing.GroupLayout.DEFAULT_SIZE, 91, Short.MAX_VALUE)
+                                    .addComponent(txtNumero)
+                                    .addComponent(schMoneda, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, frameLayout.createSequentialGroup()
+                                .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(frameLayout.createSequentialGroup()
-                                        .addGap(6, 6, 6)
-                                        .addComponent(lblSubTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(txtSubTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, frameLayout.createSequentialGroup()
-                                        .addComponent(btnAceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, frameLayout.createSequentialGroup()
-                                    .addComponent(lblTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(txtTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(426, 426, 426)
+                                        .addComponent(lblImpuesto, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(lblSubTotal, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtSubTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtImpuesto, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(frameLayout.createSequentialGroup()
+                        .addGap(0, 6, Short.MAX_VALUE)
+                        .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblAlmacen)
+                            .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(frameLayout.createSequentialGroup()
+                                    .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addGroup(frameLayout.createSequentialGroup()
+                                            .addComponent(lblTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                            .addComponent(txtTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGroup(frameLayout.createSequentialGroup()
+                                            .addComponent(btnAceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                            .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                     .addGap(2, 2, 2))))))
                 .addContainerGap(31, Short.MAX_VALUE))
         );
@@ -635,30 +643,32 @@ public class regEntradaInventario extends frameBase<EntradaInventario> {
             .addGroup(frameLayout.createSequentialGroup()
                 .addComponent(pnlTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtProveedor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblProveedor)
-                    .addComponent(lblNumero)
-                    .addComponent(txtNumero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(3, 3, 3)
-                .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtResponsable, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblNombre)
-                    .addComponent(txtFechaCreacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblFechaCreacion))
+                .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(lblProveedor, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(lblNumero, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtNumero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(schProveedor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtAlmacen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblAlmacen)
-                    .addComponent(lblMoneda)
-                    .addComponent(txtMoneda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(lblNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtFechaCreacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(lblFechaCreacion, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(schResponsable, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(schAlmacen, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(schMoneda, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblMoneda, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblAlmacen, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
                 .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblSubTotal)
                     .addComponent(txtSubTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(8, 8, 8)
                 .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblImpuesto)
                     .addComponent(txtImpuesto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -712,25 +722,21 @@ public class regEntradaInventario extends frameBase<EntradaInventario> {
         }
     }//GEN-LAST:event_btnEliminarItemActionPerformed
 
-    private void txtAlmacenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtAlmacenActionPerformed
-        // TODO add your handling code here:
-        VerModal(new lisAlmacen(1), select_alma);
-    }//GEN-LAST:event_txtAlmacenActionPerformed
-
-    private void txtProveedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtProveedorActionPerformed
-        // TODO add your handling code here:
+    private void schProveedorSearch() {
         VerModal(new lisProveedor(1), select_prov);
-    }//GEN-LAST:event_txtProveedorActionPerformed
+    }
 
-    private void txtResponsableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtResponsableActionPerformed
-        // TODO add your handling code here:
+    private void schResponsableSearch() {
         VerModal(new lisEmpleado(1), select_resp);
-    }//GEN-LAST:event_txtResponsableActionPerformed
+    }
 
-    private void txtMonedaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtMonedaActionPerformed
-        // TODO add your handling code here:
+    private void schAlmacenSearch() {
+        VerModal(new lisAlmacen(1), select_alma);
+    }
+
+    private void schMonedaSearch() {
         VerModal(new lisMoneda(1), select_mone);
-    }//GEN-LAST:event_txtMonedaActionPerformed
+    }
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -753,14 +759,14 @@ public class regEntradaInventario extends frameBase<EntradaInventario> {
     private javax.swing.JLabel lblTotal;
     private javax.swing.JPanel pnlTitulo;
     private javax.swing.JPanel pnlUnidades;
+    private com.sge.base.controles.JSearch schAlmacen;
+    private com.sge.base.controles.JSearch schMoneda;
+    private com.sge.base.controles.JSearch schProveedor;
+    private com.sge.base.controles.JSearch schResponsable;
     private javax.swing.JTable tbItems;
-    private javax.swing.JTextField txtAlmacen;
     private javax.swing.JFormattedTextField txtFechaCreacion;
     private javax.swing.JFormattedTextField txtImpuesto;
-    private javax.swing.JTextField txtMoneda;
     private javax.swing.JTextField txtNumero;
-    private javax.swing.JTextField txtProveedor;
-    private javax.swing.JTextField txtResponsable;
     private javax.swing.JFormattedTextField txtSubTotal;
     private javax.swing.JFormattedTextField txtTotal;
     // End of variables declaration//GEN-END:variables

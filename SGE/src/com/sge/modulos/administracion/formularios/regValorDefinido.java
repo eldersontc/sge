@@ -2,6 +2,7 @@ package com.sge.modulos.administracion.formularios;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.sge.base.controles.SearchListener;
 import com.sge.base.formularios.frameBase;
 import com.sge.modulos.administracion.clases.Usuario;
 import com.sge.modulos.administracion.clases.ValorDefinido;
@@ -45,9 +46,7 @@ public class regValorDefinido extends frameBase<ValorDefinido> {
         public void actionPerformed(ActionEvent evt) {
             Usuario seleccionado = ((lisUsuario) evt.getSource()).getSeleccionado();
             if (!(seleccionado == null)) {
-                valorDefinido.setIdUsuario(seleccionado.getIdUsuario());
-                valorDefinido.setUsuario(seleccionado.getUsuario());
-                txtUsuario.setText(seleccionado.getUsuario());
+                schUsuario.asingValues(seleccionado.getIdUsuario(), seleccionado.getUsuario());
             }
         }
     };
@@ -124,7 +123,7 @@ public class regValorDefinido extends frameBase<ValorDefinido> {
                 String[] resultado = new Gson().fromJson(json, String[].class);
                 if (resultado[0].equals("true")) {
                     valorDefinido = new Gson().fromJson(resultado[1], ValorDefinido.class);
-                    txtUsuario.setText(valorDefinido.getUsuario());
+                    schUsuario.asingValues(valorDefinido.getIdUsuario(), valorDefinido.getUsuario());
                     cboEntidad.setSelectedItem(getNombreEntidad(valorDefinido.getIdEntidad()));
                     chkActivo.setSelected(valorDefinido.isActivo());
                 }
@@ -166,6 +165,8 @@ public class regValorDefinido extends frameBase<ValorDefinido> {
             cliAdministracion cliente = new cliAdministracion();
             String json = "";
             try {
+                valorDefinido.setIdUsuario(schUsuario.getId());
+                valorDefinido.setUsuario(schUsuario.getText());
                 valorDefinido.setIdEntidad(getIdEntidad());
                 valorDefinido.setActivo(chkActivo.isSelected());
                 if (idValorDefinido == 0) {
@@ -213,7 +214,6 @@ public class regValorDefinido extends frameBase<ValorDefinido> {
         frame = new javax.swing.JPanel();
         lblUsuario = new javax.swing.JLabel();
         lblEntidad = new javax.swing.JLabel();
-        txtUsuario = new javax.swing.JTextField();
         cboEntidad = new javax.swing.JComboBox();
         chkActivo = new javax.swing.JCheckBox();
         btnAceptar = new javax.swing.JButton();
@@ -221,6 +221,7 @@ public class regValorDefinido extends frameBase<ValorDefinido> {
         pnlTitulo = new javax.swing.JPanel();
         lblTitulo = new javax.swing.JLabel();
         btnEstablecerValores = new javax.swing.JButton();
+        schUsuario = new com.sge.base.controles.JSearch();
 
         setClosable(true);
 
@@ -230,12 +231,6 @@ public class regValorDefinido extends frameBase<ValorDefinido> {
         lblUsuario.setText("USUARIO");
 
         lblEntidad.setText("ENTIDAD");
-
-        txtUsuario.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtUsuarioActionPerformed(evt);
-            }
-        });
 
         chkActivo.setText("ACTIVO");
 
@@ -285,6 +280,13 @@ public class regValorDefinido extends frameBase<ValorDefinido> {
             }
         });
 
+        schUsuario.addSearchListener(new SearchListener() {
+            @Override
+            public void Search(){
+                schUsuarioSearch();
+            }
+        });
+
         javax.swing.GroupLayout frameLayout = new javax.swing.GroupLayout(frame);
         frame.setLayout(frameLayout);
         frameLayout.setHorizontalGroup(
@@ -300,8 +302,8 @@ public class regValorDefinido extends frameBase<ValorDefinido> {
                         .addGap(54, 54, 54)
                         .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(btnEstablecerValores, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(txtUsuario)
-                            .addComponent(cboEntidad, 0, 263, Short.MAX_VALUE))
+                            .addComponent(cboEntidad, 0, 263, Short.MAX_VALUE)
+                            .addComponent(schUsuario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
                         .addComponent(chkActivo, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(frameLayout.createSequentialGroup()
@@ -316,11 +318,12 @@ public class regValorDefinido extends frameBase<ValorDefinido> {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, frameLayout.createSequentialGroup()
                 .addComponent(pnlTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblUsuario)
-                    .addComponent(txtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(chkActivo))
-                .addGap(2, 2, 2)
+                .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(lblUsuario)
+                        .addComponent(chkActivo))
+                    .addComponent(schUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(4, 4, 4)
                 .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblEntidad)
                     .addComponent(cboEntidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -330,7 +333,7 @@ public class regValorDefinido extends frameBase<ValorDefinido> {
                 .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAceptar)
                     .addComponent(btnCancelar))
-                .addContainerGap(23, Short.MAX_VALUE))
+                .addContainerGap(22, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -373,11 +376,10 @@ public class regValorDefinido extends frameBase<ValorDefinido> {
         }
     }//GEN-LAST:event_btnEstablecerValoresActionPerformed
 
-    private void txtUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUsuarioActionPerformed
-        // TODO add your handling code here:
+    private void schUsuarioSearch(){
         VerModal(new lisUsuario(1), select_usuario);
-    }//GEN-LAST:event_txtUsuarioActionPerformed
-
+    }
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAceptar;
@@ -390,6 +392,6 @@ public class regValorDefinido extends frameBase<ValorDefinido> {
     private javax.swing.JLabel lblTitulo;
     private javax.swing.JLabel lblUsuario;
     private javax.swing.JPanel pnlTitulo;
-    private javax.swing.JTextField txtUsuario;
+    private com.sge.base.controles.JSearch schUsuario;
     // End of variables declaration//GEN-END:variables
 }

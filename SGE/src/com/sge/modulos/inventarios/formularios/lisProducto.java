@@ -138,7 +138,12 @@ public class lisProducto extends frameBase<Producto> {
                 OcultarControl(btnSeleccionar);
                 break;
             case 1:
-                OcultarColumna(tbProductos, 0);
+                OcultarColumnas(tbProductos, new int[]{0, 5, 6});
+                OcultarControl(btnNuevo);
+                break;
+            case 2:
+                OcultarColumnas(tbProductos, new int[]{5, 6});
+                OcultarControl(btnNuevo);
                 break;
         }
         new swObtenerProductos().execute();

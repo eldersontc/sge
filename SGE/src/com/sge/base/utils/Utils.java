@@ -55,6 +55,14 @@ public class Utils {
         tabla.getColumnModel().getColumn(columna).setWidth(0);
     }
 
+    public static void OcultarColumnas(JTable tabla, int[] columnas) {
+        for (int columna : columnas) {
+            tabla.getColumnModel().getColumn(columna).setMinWidth(0);
+            tabla.getColumnModel().getColumn(columna).setMaxWidth(0);
+            tabla.getColumnModel().getColumn(columna).setWidth(0);
+        }
+    }
+    
     public static void OcultarControl(Component componet) {
         componet.setVisible(false);
     }

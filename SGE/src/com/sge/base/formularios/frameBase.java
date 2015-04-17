@@ -146,6 +146,10 @@ public class frameBase<T> extends javax.swing.JInternalFrame {
     public void OcultarColumna(JTable tabla, int columna) {
         Utils.OcultarColumna(tabla, columna);
     }
+    
+    public void OcultarColumnas(JTable tabla, int[] columnas) {
+        Utils.OcultarColumnas(tabla, columnas);
+    }
 
     public void OcultarControl(Component componet) {
         Utils.OcultarControl(componet);

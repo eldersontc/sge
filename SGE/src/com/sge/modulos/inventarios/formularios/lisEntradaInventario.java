@@ -122,6 +122,7 @@ public class lisEntradaInventario extends frameBase<EntradaInventario> {
                     new swObtenerEntradaInventarios().execute();
                 } else {
                     OcultarCargando(frame);
+                    ControlarExcepcion(resultado);
                 }
             } catch (Exception e) {
                 OcultarCargando(frame);
@@ -138,7 +139,8 @@ public class lisEntradaInventario extends frameBase<EntradaInventario> {
                 OcultarControl(btnSeleccionar);
                 break;
             case 1:
-                OcultarColumna(tbEntradaInventarios, 0);
+                OcultarColumnas(tbEntradaInventarios, new int[]{0, 8, 9});
+                OcultarControl(btnNuevo);
                 break;
         }
         new swObtenerEntradaInventarios().execute();

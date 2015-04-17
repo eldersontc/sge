@@ -184,7 +184,12 @@ public class lisUnidad extends frameBase<Unidad> {
                 OcultarControl(btnSeleccionar);
                 break;
             case 1:
-                OcultarColumna(tbUnidades, 0);
+                OcultarColumnas(tbUnidades, new int[]{0, 5, 6});
+                OcultarControl(btnNuevo);
+                break;
+            case 2:
+                OcultarColumnas(tbUnidades, new int[]{5, 6});
+                OcultarControl(btnNuevo);
                 break;
         }
         new swObtenerUnidades().execute();

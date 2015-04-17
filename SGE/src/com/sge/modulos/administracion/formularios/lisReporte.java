@@ -136,7 +136,8 @@ public class lisReporte extends frameBase<Reporte> {
                 OcultarControl(btnSeleccionar);
                 break;
             case 1:
-                OcultarColumna(tbReportes, 0);
+                OcultarColumnas(tbReportes, new int[]{0, 5, 6});
+                OcultarControl(btnNuevo);
                 break;
         }
         new swObtenerReportes().execute();

@@ -57,8 +57,8 @@
                           <EmptySpace min="-2" pref="54" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
                               <Component id="btnEstablecerValores" max="32767" attributes="0"/>
-                              <Component id="txtUsuario" alignment="0" max="32767" attributes="0"/>
                               <Component id="cboEntidad" alignment="0" pref="263" max="32767" attributes="0"/>
+                              <Component id="schUsuario" max="32767" attributes="0"/>
                           </Group>
                           <EmptySpace pref="34" max="32767" attributes="0"/>
                           <Component id="chkActivo" min="-2" pref="108" max="-2" attributes="0"/>
@@ -79,12 +79,14 @@
               <Group type="102" alignment="1" attributes="0">
                   <Component id="pnlTitulo" min="-2" max="-2" attributes="0"/>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="lblUsuario" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="txtUsuario" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="chkActivo" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="1" attributes="0">
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="lblUsuario" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="chkActivo" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <Component id="schUsuario" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace min="-2" pref="2" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="lblEntidad" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="cboEntidad" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -96,7 +98,7 @@
                       <Component id="btnAceptar" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="btnCancelar" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="23" max="32767" attributes="0"/>
+                  <EmptySpace pref="22" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -111,11 +113,6 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="ENTIDAD"/>
           </Properties>
-        </Component>
-        <Component class="javax.swing.JTextField" name="txtUsuario">
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtUsuarioActionPerformed"/>
-          </Events>
         </Component>
         <Component class="javax.swing.JComboBox" name="cboEntidad">
           <Properties>
@@ -201,6 +198,11 @@
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnEstablecerValoresActionPerformed"/>
           </Events>
+        </Component>
+        <Component class="com.sge.base.controles.JSearch" name="schUsuario">
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="schUsuario.addSearchListener(new SearchListener() {&#xa;            @Override&#xa;            public void Search(){&#xa;                schUsuarioSearch();&#xa;            }&#xa;        });"/>
+          </AuxValues>
         </Component>
       </SubComponents>
     </Container>

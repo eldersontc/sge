@@ -81,7 +81,7 @@ public class lisEmpleado extends frameBase<Empleado> {
                     }.getType());
 
                     for (Object[] fila : filas) {
-                        modelo.addRow(new Object[]{false, ((Double) fila[0]).intValue(), fila[1], fila[2], fila[6], fila[7], Icon_Edit, Icon_Dele});
+                        modelo.addRow(new Object[]{false, ((Double) fila[0]).intValue(), fila[1], fila[2] + " " + fila[3] + " " + fila[4], fila[6], fila[7], Icon_Edit, Icon_Dele});
                     }
                     AgregarBoton(tbEmpleados, edit, 6);
                     AgregarBoton(tbEmpleados, dele, 7);
@@ -140,7 +140,8 @@ public class lisEmpleado extends frameBase<Empleado> {
                 OcultarControl(btnSeleccionar);
                 break;
             case 1:
-                OcultarColumna(tbEmpleados, 0);
+                OcultarColumnas(tbEmpleados, new int[]{0, 6, 7});
+                OcultarControl(btnNuevo);
                 break;
         }
         new swObtenerEmpleados().execute();
@@ -220,6 +221,7 @@ public class lisEmpleado extends frameBase<Empleado> {
             tbEmpleados.getColumnModel().getColumn(1).setMinWidth(0);
             tbEmpleados.getColumnModel().getColumn(1).setPreferredWidth(0);
             tbEmpleados.getColumnModel().getColumn(1).setMaxWidth(0);
+            tbEmpleados.getColumnModel().getColumn(3).setPreferredWidth(200);
             tbEmpleados.getColumnModel().getColumn(6).setPreferredWidth(40);
             tbEmpleados.getColumnModel().getColumn(7).setPreferredWidth(50);
         }
