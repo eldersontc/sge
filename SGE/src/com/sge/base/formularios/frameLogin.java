@@ -5,6 +5,7 @@ import com.google.gson.reflect.TypeToken;
 import com.sge.base.controles.FabricaControles;
 import com.sge.base.excepciones.Excepciones;
 import com.sge.modulos.administracion.cliente.cliAdministracion;
+import java.util.Date;
 import java.util.List;
 import javax.swing.SwingWorker;
 
@@ -22,11 +23,25 @@ public class frameLogin extends javax.swing.JInternalFrame {
     }
 
     private Object[] usuario;
-    
-    public Object[] getUsuario(){
+
+    public Object[] getUsuario() {
         return usuario;
     }
-    
+
+    public void setUsuario(Object[] usuario) {
+        this.usuario = usuario;
+    }
+
+    private Date fechaServidor;
+
+    public Date getFechaServidor() {
+        return fechaServidor;
+    }
+
+    public void setFechaServidor(Date fechaServidor) {
+        this.fechaServidor = fechaServidor;
+    }
+
     public class swAutenticar extends SwingWorker<Object, Object> {
 
         @Override
@@ -40,7 +55,7 @@ public class frameLogin extends javax.swing.JInternalFrame {
             } catch (Exception e) {
                 FabricaControles.OcultarProcesando(frame);
                 cancel(false);
-                Excepciones.Controlar(e,frame);
+                Excepciones.Controlar(e, frame);
             } finally {
                 cliente.close();
             }
@@ -55,11 +70,12 @@ public class frameLogin extends javax.swing.JInternalFrame {
                 if (resultado[0].equals("true")) {
                     List<Object[]> usuarios = (List<Object[]>) new Gson().fromJson(resultado[1], new TypeToken<List<Object[]>>() {
                     }.getType());
-                    if(usuarios.isEmpty()){
+                    if (usuarios.isEmpty()) {
                         throw new Exception("USUARIO NO EXISTE.");
                     } else {
-                        if(usuarios.get(0)[2].equals(txtClave.getText())){
-                            usuario = usuarios.get(0);
+                        if (usuarios.get(0)[2].equals(txtClave.getText())) {
+                            setUsuario(usuarios.get(0));
+                            setFechaServidor(new Gson().fromJson(resultado[2], Date.class));
                             setClosed(true);
                         } else {
                             throw new Exception("CLAVE INCORRECTA.");
@@ -69,11 +85,11 @@ public class frameLogin extends javax.swing.JInternalFrame {
                 FabricaControles.OcultarProcesando(frame);
             } catch (Exception e) {
                 FabricaControles.OcultarProcesando(frame);
-                Excepciones.Controlar(e,frame);
+                Excepciones.Controlar(e, frame);
             }
         }
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always

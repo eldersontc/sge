@@ -64,7 +64,7 @@ public class regEntradaInventario extends frameBase<EntradaInventario> {
         schProveedor.asingValues(getEntidad().getIdProveedor(), getEntidad().getRazonSocialProveedor());
         txtNumero.setText(getEntidad().getNumero());
         schResponsable.asingValues(getEntidad().getIdResponsable(), getEntidad().getNombreResponsable());
-        txtFechaCreacion.setValue(getEntidad().getFechaCreacion());
+        txtFechaCreacion.setValue((this.id == 0) ? super.getFechaServidor() : getEntidad().getFechaCreacion());
         schAlmacen.asingValues(getEntidad().getIdAlmacen(), getEntidad().getDescripcionAlmacen());
         schMoneda.asingValues(getEntidad().getIdMoneda(), getEntidad().getSimboloMoneda());
         txtSubTotal.setValue(getEntidad().getSubTotal());
@@ -269,7 +269,7 @@ public class regEntradaInventario extends frameBase<EntradaInventario> {
         }
     }
 
-    private void AsignarValores(){
+    private void AsignarValores() {
         getEntidad().setIdProveedor(schProveedor.getId());
         getEntidad().setRazonSocialProveedor(schProveedor.getText());
         getEntidad().setIdResponsable(schResponsable.getId());
@@ -280,7 +280,7 @@ public class regEntradaInventario extends frameBase<EntradaInventario> {
         getEntidad().setSimboloMoneda(schMoneda.getText());
         getEntidad().setItems(getItems());
     }
-    
+
     public class swGuardarEntradaInventario extends SwingWorker<Object, Object> {
 
         @Override

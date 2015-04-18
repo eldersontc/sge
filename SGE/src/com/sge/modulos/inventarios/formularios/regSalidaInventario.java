@@ -64,7 +64,7 @@ public class regSalidaInventario extends frameBase<SalidaInventario> {
         schCliente.asingValues(getEntidad().getIdCliente(), getEntidad().getRazonSocialCliente());
         txtNumero.setText(getEntidad().getNumero());
         schResponsable.asingValues(getEntidad().getIdResponsable(), getEntidad().getNombreResponsable());
-        txtFechaCreacion.setValue(getEntidad().getFechaCreacion());
+        txtFechaCreacion.setValue((this.id == 0) ? super.getFechaServidor() : getEntidad().getFechaCreacion());
         schAlmacen.asingValues(getEntidad().getIdAlmacen(), getEntidad().getDescripcionAlmacen());
         schMoneda.asingValues(getEntidad().getIdMoneda(), getEntidad().getSimboloMoneda());
         txtSubTotal.setValue(getEntidad().getSubTotal());
@@ -639,11 +639,12 @@ public class regSalidaInventario extends frameBase<SalidaInventario> {
             .addGroup(frameLayout.createSequentialGroup()
                 .addComponent(pnlTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblNumero)
-                    .addComponent(txtNumero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblCliente)
-                    .addComponent(schCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(schCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(lblNumero)
+                        .addComponent(txtNumero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(6, 6, 6)
                 .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)

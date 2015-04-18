@@ -12,6 +12,7 @@ import com.sge.modulos.administracion.cliente.cliAdministracion;
 import java.awt.Component;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.ParameterizedType;
+import java.util.Date;
 import java.util.List;
 import javax.swing.Action;
 import javax.swing.JInternalFrame;
@@ -46,6 +47,16 @@ public class frameBase<T> extends javax.swing.JInternalFrame {
         this.usuario = usuario;
     }
 
+    private Date fechaServidor;
+    
+    public Date getFechaServidor(){
+        return fechaServidor;
+    }
+    
+    public void setFechaServidor(Date fechaServidor){
+        this.fechaServidor = fechaServidor;
+    }
+    
     public Class<?> getClazz() throws ClassNotFoundException {
         String clazz = ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0].getTypeName();
         return Class.forName(clazz);
@@ -81,20 +92,14 @@ public class frameBase<T> extends javax.swing.JInternalFrame {
             VerCargando(frame);
             cliAdministracion cliente = new cliAdministracion();
             try {
-                String json = cliente.ObtenerValoresDefinidos(new Gson().toJson(String.format("WHERE ValorDefinido.idUsuario = %d AND ValorDefinido.idEntidad = %d", getUsuario().getIdUsuario(), idEntidad)));
+                String json = cliente.ObtenerValorDefinidoPorUsuarioYEntidad(new Gson().toJson(new int[]{getUsuario().getIdUsuario(), idEntidad}));
                 String[] resultado = new Gson().fromJson(json, String[].class);
                 if (resultado[0].equals("true")) {
-                    List<Object[]> valoresDefinidos = (List<Object[]>) new Gson().fromJson(resultado[1], new TypeToken<List<Object[]>>() {
-                    }.getType());
-                    if (valoresDefinidos.isEmpty()) {
-                        setEntidad(nuevaIntancia());
+                    setFechaServidor(new Gson().fromJson(resultado[1], Date.class));
+                    if(resultado[2].isEmpty()){
+                        setEntidad(nuevaIntancia());    
                     } else {
-                        json = cliente.ObtenerValorDefinido(new Gson().toJson(valoresDefinidos.get(0)[0]));
-                        resultado = new Gson().fromJson(json, String[].class);
-                        if (resultado[0].equals("true")) {
-                            ValorDefinido valorDefinido = new Gson().fromJson(resultado[1], ValorDefinido.class);
-                            setEntidad((T) new Gson().fromJson(valorDefinido.getJson(), getClazz()));
-                        }
+                        setEntidad((T) new Gson().fromJson(new Gson().fromJson(resultado[2], String.class), getClazz()));
                     }
                     AsignarControles();
                 }

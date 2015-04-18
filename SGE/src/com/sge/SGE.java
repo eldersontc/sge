@@ -39,15 +39,21 @@ public class SGE extends javax.swing.JFrame {
     }
 
     private Usuario usuario;
+    
+    private Date fechaServidor;
 
     public void AsignarUsuario(Object[] array) {
-        usuario = new Usuario();
-        usuario.setIdUsuario(((Double) array[0]).intValue());
-        usuario.setUsuario(array[1].toString());
+        this.usuario = new Usuario();
+        this.usuario.setIdUsuario(((Double) array[0]).intValue());
+        this.usuario.setUsuario(array[1].toString());
     }
 
     public Usuario getUsuario() {
         return usuario;
+    }
+    
+    public void AsignarFechaServidor(Date fechaServidor){
+        this.fechaServidor = fechaServidor;
     }
 
     public void Init() {
@@ -71,15 +77,16 @@ public class SGE extends javax.swing.JFrame {
         pnlBanner.setVisible(true);
         pnlMenu.setVisible(true);
         txtUsuario.setText(getUsuario().getUsuario());
-        txtFecha.setText(new SimpleDateFormat("dd/MM/yyyy").format(new Date()));
+        txtFecha.setText(new SimpleDateFormat("dd/MM/yyyy").format(this.fechaServidor));
     }
 
     Action close = new AbstractAction() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            Object[] usuario = ((frameLogin) e.getSource()).getUsuario();
-            if (usuario != null) {
-                AsignarUsuario(usuario);
+            frameLogin frame = ((frameLogin) e.getSource());
+            if (frame.getUsuario() != null) {
+                AsignarUsuario(frame.getUsuario());
+                AsignarFechaServidor(frame.getFechaServidor());
                 LlenarMenus(getUsuario().getIdUsuario());
                 VerBanner();
             }
