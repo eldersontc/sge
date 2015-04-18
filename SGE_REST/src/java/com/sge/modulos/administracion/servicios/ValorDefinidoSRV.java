@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.sge.modulos.administracion.entidades.ValorDefinido;
 import com.sge.modulos.administracion.negocios.ValorDefinidoDTO;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
@@ -52,11 +53,32 @@ public class ValorDefinidoSRV {
     public String ObtenerValorDefinido(String json) {
         List<String> resultado = new ArrayList<>();
         try {
-            int idValoresDefinidos = new Gson().fromJson(json, int.class);
+            int idValorDefinido = new Gson().fromJson(json, int.class);
             ValorDefinidoDTO valoresDefinidosDTO = new ValorDefinidoDTO();
-            ValorDefinido valoresDefinidos = valoresDefinidosDTO.ObtenerValorDefinido(idValoresDefinidos);
+            ValorDefinido valoresDefinidos = valoresDefinidosDTO.ObtenerValorDefinido(idValorDefinido);
             resultado.add(new Gson().toJson(true));
             resultado.add(new Gson().toJson(valoresDefinidos));
+        } catch (Exception e) {
+            resultado.clear();
+            resultado.add(new Gson().toJson(false));
+            resultado.add(new Gson().toJson(e));
+        }
+        return new Gson().toJson(resultado);
+    }
+    
+    @POST
+    @Path("ObtenerValorDefinidoPorUsuarioYEntidad")
+    @Consumes("application/json")
+    @Produces("application/json")
+    public String ObtenerValorDefinidoPorUsuarioYEntidad(String json) {
+        List<String> resultado = new ArrayList<>();
+        try {
+            int[] ids = new Gson().fromJson(json, int[].class);
+            ValorDefinidoDTO valorDefinidoDTO = new ValorDefinidoDTO();
+            ValorDefinido valorDefinido = valorDefinidoDTO.ObtenerValorDefinidoPorUsuarioYEntidad(ids[0], ids[1]);
+            resultado.add(new Gson().toJson(true));
+            resultado.add(new Gson().toJson(new Date()));
+            resultado.add(new Gson().toJson(valorDefinido == null ? "" : valorDefinido.getJson()));
         } catch (Exception e) {
             resultado.clear();
             resultado.add(new Gson().toJson(false));

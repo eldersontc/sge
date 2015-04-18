@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.sge.modulos.administracion.entidades.Usuario;
 import com.sge.modulos.administracion.negocios.UsuarioDTO;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
@@ -38,6 +39,7 @@ public class UsuarioSRV {
             List<Object[]> lista = usuarioDTO.ObtenerUsuarios(filtro);
             resultado.add(new Gson().toJson(true));
             resultado.add(new Gson().toJson(lista));
+            resultado.add(new Gson().toJson(new Date()));
         } catch (Exception e) {
             resultado.clear();
             resultado.add(new Gson().toJson(false));
