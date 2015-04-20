@@ -30,10 +30,7 @@
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" alignment="0" attributes="0">
-              <Component id="frame" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-          </Group>
+          <Component id="frame" min="-2" max="-2" attributes="0"/>
       </Group>
     </DimensionLayout>
   </Layout>
@@ -89,26 +86,14 @@
                                   </Group>
                               </Group>
                               <Group type="102" attributes="0">
-                                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                                  <Group type="103" groupAlignment="0" attributes="0">
-                                      <Group type="102" attributes="0">
-                                          <Group type="103" groupAlignment="1" attributes="0">
-                                              <Component id="btnAceptar" min="-2" pref="93" max="-2" attributes="0"/>
-                                              <Group type="102" alignment="1" attributes="0">
-                                                  <Group type="103" groupAlignment="1" attributes="0">
-                                                      <Component id="lblSubTotal" min="-2" pref="81" max="-2" attributes="0"/>
-                                                      <Component id="lblImpuesto" min="-2" pref="81" max="-2" attributes="0"/>
-                                                  </Group>
-                                                  <EmptySpace max="-2" attributes="0"/>
-                                                  <Component id="lblPorcentajeImpuesto" min="-2" pref="53" max="-2" attributes="0"/>
-                                              </Group>
-                                          </Group>
-                                          <EmptySpace type="separate" max="-2" attributes="0"/>
-                                          <Component id="btnCancelar" min="-2" pref="93" max="-2" attributes="0"/>
-                                      </Group>
-                                      <Component id="lblTotal" alignment="0" min="-2" pref="81" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="1" attributes="0">
+                                      <Component id="lblSubTotal" min="-2" pref="81" max="-2" attributes="0"/>
+                                      <Component id="lblImpuesto" min="-2" pref="81" max="-2" attributes="0"/>
+                                      <Component id="lblTotal" alignment="1" min="-2" pref="81" max="-2" attributes="0"/>
                                   </Group>
-                                  <EmptySpace min="-2" pref="3" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="lblPorcentajeImpuesto" min="-2" pref="53" max="-2" attributes="0"/>
+                                  <EmptySpace min="-2" pref="118" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                           <EmptySpace max="32767" attributes="0"/>
@@ -119,6 +104,11 @@
                               <Component id="jTabbedPane1" min="-2" pref="670" max="-2" attributes="0"/>
                               <Component id="txtImpuesto" alignment="1" min="-2" pref="94" max="-2" attributes="0"/>
                               <Component id="txtTotal" alignment="1" min="-2" pref="94" max="-2" attributes="0"/>
+                              <Group type="102" alignment="1" attributes="0">
+                                  <Component id="btnAceptar" min="-2" pref="93" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="btnCancelar" min="-2" pref="93" max="-2" attributes="0"/>
+                              </Group>
                           </Group>
                           <EmptySpace pref="29" max="32767" attributes="0"/>
                       </Group>
@@ -156,27 +146,29 @@
                           <Component id="lblMoneda" alignment="1" max="32767" attributes="0"/>
                           <Component id="lblAlmacen" alignment="1" max="32767" attributes="0"/>
                       </Group>
-                      <Component id="schMoneda" pref="43" max="32767" attributes="0"/>
+                      <Component id="schMoneda" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Component id="jTabbedPane1" min="-2" pref="280" max="-2" attributes="0"/>
-                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="jTabbedPane1" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="lblSubTotal" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="txtSubTotal" alignment="3" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="lblImpuesto" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="txtImpuesto" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="lblPorcentajeImpuesto" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="lblSubTotal" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="lblTotal" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="txtTotal" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="lblImpuesto" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="lblPorcentajeImpuesto" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <Component id="txtImpuesto" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Component id="lblTotal" min="-2" max="-2" attributes="0"/>
+                      <Component id="txtTotal" alignment="0" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="btnCancelar" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="btnAceptar" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -242,7 +234,7 @@
                 <DimensionLayout dim="0">
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="1" attributes="0">
-                          <EmptySpace pref="462" max="32767" attributes="0"/>
+                          <EmptySpace pref="458" max="32767" attributes="0"/>
                           <Component id="btnNuevoItem" min="-2" pref="94" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="btnEliminarItem" min="-2" pref="88" max="-2" attributes="0"/>
