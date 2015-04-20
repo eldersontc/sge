@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.sge.modulos.administracion.entidades.Numeracion" table="Numeracion" schema="Administracion">
+        <id name="idNumeracion" column="idNumeracion">
+            <generator class="sequence">
+                <param name="sequence">Administracion.numeracion_idnumeracion_seq</param>
+            </generator>
+        </id>
+        <property name="descripcion" column="descripcion"/>
+        <property name="idEntidad" column="idEntidad"/>
+        <property name="manual" column="manual"/>
+        <property name="serie" column="serie"/>
+        <property name="numeroActual" column="numeroActual"/>
+        <property name="longitudNumero" column="longitudNumero"/>
+        <property name="tieneImpuesto" column="tieneImpuesto"/>
+        <property name="porcentajeImpuesto" column="porcentajeImpuesto"/>
+        <property name="activo" column="activo"/>
+    </class>
+</hibernate-mapping>
