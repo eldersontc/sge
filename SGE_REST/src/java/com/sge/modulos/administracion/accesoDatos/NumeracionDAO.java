@@ -19,7 +19,7 @@ public class NumeracionDAO extends BaseDAO {
     }
 
     public int ActualizarNumeracion(int idNumeracion, String descripcion, int idEntidad, boolean manual, String serie, int numeroActual, int longitudNumero, boolean tieneImpuesto, double porcentajeImpuesto, boolean activo) {
-        String sql = String.format("UPDATE Administracion.Numeracion SET descripcion = '%s', idEntidad = %d, manual = %b, serie = '%s', numeroActual = %d, longitudNumero = %d, tieneImpuesto = %b, porcentajeImpuesto = %d, activo = %b WHERE idNumeracion = %d", descripcion, idEntidad, manual, serie, numeroActual, longitudNumero, tieneImpuesto, porcentajeImpuesto, activo, idNumeracion);
+        String sql = String.format("UPDATE Administracion.Numeracion SET descripcion = '%s', idEntidad = %d, manual = %b, serie = '%s', numeroActual = %s, longitudNumero = %s, tieneImpuesto = %b, porcentajeImpuesto = %s, activo = %b WHERE idNumeracion = %d", descripcion, idEntidad, manual, serie, numeroActual, longitudNumero, tieneImpuesto, porcentajeImpuesto, activo, idNumeracion);
         return super.Ejecutar(sql);
     }
 

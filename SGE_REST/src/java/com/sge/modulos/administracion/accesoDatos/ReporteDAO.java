@@ -11,10 +11,10 @@ public class ReporteDAO extends BaseDAO {
 
     public List<Object[]> ObtenerReportes(String filtro) {
         String sql = "SELECT \n"
-                + "Reporte.idReporte, Reporte.nombre, Entidad.nombre AS entidad, Reporte.activo \n"
+                + "Reporte.idReporte, Reporte.nombre, COALESCE(Entidad.nombre, 'NINGUNO') AS entidad, Reporte.activo \n"
                 + "FROM \n"
                 + "Administracion.Reporte AS Reporte \n"
-                + "INNER JOIN Administracion.Entidad AS Entidad ON Reporte.idEntidad = Entidad.idEntidad " + filtro;
+                + "LEFT JOIN Administracion.Entidad AS Entidad ON Reporte.idEntidad = Entidad.idEntidad " + filtro;
         return super.ObtenerLista(sql);
     }
 
