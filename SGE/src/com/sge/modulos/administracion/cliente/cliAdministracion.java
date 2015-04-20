@@ -211,11 +211,45 @@ public class cliAdministracion {
     
     ////////////////////////////////////////////////////////////////////////////
     
-    ////////////////////////////////// REPORTE /////////////////////////////////
+    ////////////////////////////////// ENTIDAD /////////////////////////////////
     
     public String ObtenerEntidades(Object requestEntity) throws ClientErrorException {
         WebTarget resource = client.target(BASE_URI).path("EntidadSRV");
         resource = resource.path("ObtenerEntidades");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
+    }
+    
+    ////////////////////////////////////////////////////////////////////////////
+    
+    /////////////////////////////// NUMERACION /////////////////////////////////
+    
+    public String ObtenerNumeraciones(Object requestEntity) throws ClientErrorException {
+        WebTarget resource = client.target(BASE_URI).path("NumeracionSRV");
+        resource = resource.path("ObtenerNumeraciones");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
+    }
+    
+    public String ObtenerNumeracion(Object requestEntity) throws ClientErrorException {
+        WebTarget resource = client.target(BASE_URI).path("NumeracionSRV");
+        resource = resource.path("ObtenerNumeracion");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
+    }
+    
+    public String RegistrarNumeracion(Object requestEntity) throws ClientErrorException {
+        WebTarget resource = client.target(BASE_URI).path("NumeracionSRV");
+        resource = resource.path("RegistrarNumeracion");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
+    }
+    
+    public String ActualizarNumeracion(Object requestEntity) throws ClientErrorException {
+        WebTarget resource = client.target(BASE_URI).path("NumeracionSRV");
+        resource = resource.path("ActualizarNumeracion");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
+    }
+    
+    public String EliminarNumeracion(Object requestEntity) throws ClientErrorException {
+        WebTarget resource = client.target(BASE_URI).path("NumeracionSRV");
+        resource = resource.path("EliminarNumeracion");
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
     }
     

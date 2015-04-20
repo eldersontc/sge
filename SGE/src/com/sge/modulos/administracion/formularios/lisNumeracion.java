@@ -3,7 +3,7 @@ package com.sge.modulos.administracion.formularios;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.sge.base.formularios.frameBase;
-import com.sge.modulos.administracion.clases.Reporte;
+import com.sge.modulos.administracion.clases.Numeracion;
 import com.sge.modulos.administracion.cliente.cliAdministracion;
 import java.awt.event.ActionEvent;
 import java.util.List;
@@ -16,19 +16,19 @@ import javax.swing.SwingWorker;
  *
  * @author elderson
  */
-public class lisReporte extends frameBase<Reporte> {
+public class lisNumeracion extends frameBase<Numeracion> {
 
     /**
-     * Creates new form lisReporte
+     * Creates new form lisNumeracion
      */
-    public lisReporte(int modo) {
+    public lisNumeracion(int modos) {
         initComponents();
         Init(modo);
     }
 
     private int modo = 0;
 
-    private Reporte seleccionado;
+    private Numeracion seleccionado;
 
     ImageIcon Icon_Edit = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/edit-16.png"));
     ImageIcon Icon_Dele = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/delete-16.png"));
@@ -36,18 +36,18 @@ public class lisReporte extends frameBase<Reporte> {
     Action edit = new AbstractAction() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            EditarReporte();
+            EditarNumeracion();
         }
     };
 
     Action dele = new AbstractAction() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            EliminarReporte();
+            EliminarNumeracion();
         }
     };
 
-    public class swObtenerReportes extends SwingWorker {
+    public class swObtenerNumeraciones extends SwingWorker {
 
         @Override
         protected Object doInBackground() {
@@ -55,7 +55,7 @@ public class lisReporte extends frameBase<Reporte> {
             cliAdministracion cliente = new cliAdministracion();
             String json = "";
             try {
-                json = cliente.ObtenerReportes(new Gson().toJson(""));
+                json = cliente.ObtenerNumeraciones(new Gson().toJson(""));
             } catch (Exception e) {
                 OcultarCargando(frame);
                 cancel(false);
@@ -73,15 +73,15 @@ public class lisReporte extends frameBase<Reporte> {
                 String[] resultado = new Gson().fromJson(json, String[].class);
 
                 if (resultado[0].equals("true")) {
-                    EliminarTodasFilas(tbReportes);
+                    EliminarTodasFilas(tbNumeraciones);
                     List<Object[]> filas = (List<Object[]>) new Gson().fromJson(resultado[1], new TypeToken<List<Object[]>>() {
                     }.getType());
                     for (Object[] fila : filas) {
-                        AgregarFila(tbReportes, new Object[]{false, ((Double) fila[0]).intValue(), fila[1], fila[2], fila[3], Icon_Edit, Icon_Dele});
+                        AgregarFila(tbNumeraciones, new Object[]{false, ((Double) fila[0]).intValue(), fila[1], fila[2], fila[3], Icon_Edit, Icon_Dele});
                     }
-                    AgregarBoton(tbReportes, edit, 5);
-                    AgregarBoton(tbReportes, dele, 6);
-                    AgregarOrdenamiento(tbReportes);
+                    AgregarBoton(tbNumeraciones, edit, 5);
+                    AgregarBoton(tbNumeraciones, dele, 6);
+                    AgregarOrdenamiento(tbNumeraciones);
                 }
                 OcultarCargando(frame);
             } catch (Exception e) {
@@ -91,7 +91,7 @@ public class lisReporte extends frameBase<Reporte> {
         }
     }
 
-    public class swEliminarReporte extends SwingWorker {
+    public class swEliminarNumeracion extends SwingWorker {
 
         @Override
         protected Object doInBackground() throws Exception {
@@ -99,8 +99,8 @@ public class lisReporte extends frameBase<Reporte> {
             cliAdministracion cliente = new cliAdministracion();
             String json = "";
             try {
-                int idReporte = ObtenerValorCelda(tbReportes, 1);
-                json = cliente.EliminarReporte(new Gson().toJson(idReporte));
+                int idNumeracion = ObtenerValorCelda(tbNumeraciones, 1);
+                json = cliente.EliminarNumeracion(new Gson().toJson(idNumeracion));
             } catch (Exception e) {
                 OcultarCargando(frame);
                 cancel(false);
@@ -117,7 +117,7 @@ public class lisReporte extends frameBase<Reporte> {
                 String json = get().toString();
                 String[] resultado = new Gson().fromJson(json, String[].class);
                 if (resultado[0].equals("true")) {
-                    new swObtenerReportes().execute();
+                    new swObtenerNumeraciones().execute();
                 } else {
                     OcultarCargando(frame);
                 }
@@ -132,35 +132,35 @@ public class lisReporte extends frameBase<Reporte> {
         this.modo = modo;
         switch (this.modo) {
             case 0:
-                OcultarColumna(tbReportes, 0);
+                OcultarColumna(tbNumeraciones, 0);
                 OcultarControl(btnSeleccionar);
                 break;
             case 1:
-                OcultarColumnas(tbReportes, new int[]{0, 5, 6});
+                OcultarColumnas(tbNumeraciones, new int[]{0, 5, 6});
                 OcultarControl(btnNuevo);
                 break;
         }
-        new swObtenerReportes().execute();
+        new swObtenerNumeraciones().execute();
     }
 
-    public void EditarReporte() {
-        int idReporte = ObtenerValorCelda(tbReportes, 1);
-        regReporte regReporte = new regReporte("EDITAR ", idReporte);
-        this.getParent().add(regReporte);
-        regReporte.setVisible(true);
+    public void EditarNumeracion() {
+        int idNumeracion = ObtenerValorCelda(tbNumeraciones, 1);
+        regNumeracion regNumeracion = new regNumeracion("EDITAR ", idNumeracion);
+        this.getParent().add(regNumeracion);
+        regNumeracion.setVisible(true);
     }
 
-    public void EliminarReporte() {
+    public void EliminarNumeracion() {
         int confirmacion = VerConfirmacion(this);
         if (confirmacion == 0) {
-            new swEliminarReporte().execute();
+            new swEliminarNumeracion().execute();
         }
     }
 
-    public Reporte getSeleccionado() {
+    public Numeracion getSeleccionado() {
         return seleccionado;
     }
-
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -172,7 +172,7 @@ public class lisReporte extends frameBase<Reporte> {
 
         frame = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tbReportes = new javax.swing.JTable();
+        tbNumeraciones = new javax.swing.JTable();
         pnlTitulo = new javax.swing.JPanel();
         lblTitulo = new javax.swing.JLabel();
         btnNuevo = new javax.swing.JButton();
@@ -180,19 +180,18 @@ public class lisReporte extends frameBase<Reporte> {
         txtFiltro = new javax.swing.JTextField();
         btnSeleccionar = new javax.swing.JButton();
         btnRefrescar = new javax.swing.JButton();
-        btnImprimir = new javax.swing.JButton();
 
         setClosable(true);
 
         frame.setBackground(java.awt.Color.white);
         frame.setBorder(null);
 
-        tbReportes.setModel(new javax.swing.table.DefaultTableModel(
+        tbNumeraciones.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "CHECK", "ID", "NOMBRE", "ENTIDAD", "ACTIVO", "EDITAR", "ELIMINAR"
+                "CHECK", "ID", "DESCRIPCION", "ENTIDAD", "ACTIVO", "EDITAR", "ELIMINAR"
             }
         ) {
             Class[] types = new Class [] {
@@ -210,15 +209,17 @@ public class lisReporte extends frameBase<Reporte> {
                 return canEdit [columnIndex];
             }
         });
-        tbReportes.setRowHeight(25);
-        tbReportes.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        jScrollPane1.setViewportView(tbReportes);
-        if (tbReportes.getColumnModel().getColumnCount() > 0) {
-            tbReportes.getColumnModel().getColumn(1).setMinWidth(0);
-            tbReportes.getColumnModel().getColumn(1).setPreferredWidth(0);
-            tbReportes.getColumnModel().getColumn(1).setMaxWidth(0);
-            tbReportes.getColumnModel().getColumn(5).setPreferredWidth(20);
-            tbReportes.getColumnModel().getColumn(6).setPreferredWidth(20);
+        tbNumeraciones.setRowHeight(25);
+        tbNumeraciones.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jScrollPane1.setViewportView(tbNumeraciones);
+        if (tbNumeraciones.getColumnModel().getColumnCount() > 0) {
+            tbNumeraciones.getColumnModel().getColumn(1).setMinWidth(0);
+            tbNumeraciones.getColumnModel().getColumn(1).setPreferredWidth(0);
+            tbNumeraciones.getColumnModel().getColumn(1).setMaxWidth(0);
+            tbNumeraciones.getColumnModel().getColumn(2).setPreferredWidth(200);
+            tbNumeraciones.getColumnModel().getColumn(3).setPreferredWidth(200);
+            tbNumeraciones.getColumnModel().getColumn(5).setPreferredWidth(100);
+            tbNumeraciones.getColumnModel().getColumn(6).setPreferredWidth(100);
         }
 
         pnlTitulo.setBackground(new java.awt.Color(67, 100, 130));
@@ -227,7 +228,7 @@ public class lisReporte extends frameBase<Reporte> {
         lblTitulo.setFont(new java.awt.Font("Ubuntu", 1, 18)); // NOI18N
         lblTitulo.setForeground(java.awt.Color.white);
         lblTitulo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sge/base/imagenes/list-view-16.png"))); // NOI18N
-        lblTitulo.setText("LISTADO DE REPORTES");
+        lblTitulo.setText("LISTADO DE NUMERACIONES");
 
         btnNuevo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sge/base/imagenes/add-16.png"))); // NOI18N
         btnNuevo.setText("NUEVO");
@@ -243,8 +244,8 @@ public class lisReporte extends frameBase<Reporte> {
             pnlTituloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlTituloLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(lblTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 405, Short.MAX_VALUE)
+                .addComponent(lblTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 299, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnNuevo)
                 .addContainerGap())
         );
@@ -281,14 +282,6 @@ public class lisReporte extends frameBase<Reporte> {
             }
         });
 
-        btnImprimir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sge/base/imagenes/imprimir.png"))); // NOI18N
-        btnImprimir.setToolTipText("REFRESCAR");
-        btnImprimir.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnImprimirActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout frameLayout = new javax.swing.GroupLayout(frame);
         frame.setLayout(frameLayout);
         frameLayout.setHorizontalGroup(
@@ -297,15 +290,13 @@ public class lisReporte extends frameBase<Reporte> {
             .addGroup(frameLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 740, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 656, Short.MAX_VALUE)
                     .addGroup(frameLayout.createSequentialGroup()
                         .addComponent(lblFiltro)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnRefrescar, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnImprimir, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, frameLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
@@ -321,8 +312,7 @@ public class lisReporte extends frameBase<Reporte> {
                     .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(lblFiltro)
                         .addComponent(txtFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(btnRefrescar, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnImprimir, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnRefrescar, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 288, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -346,48 +336,40 @@ public class lisReporte extends frameBase<Reporte> {
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
         // TODO add your handling code here:
-        regReporte regReporte = new regReporte("NUEVO ", 0);
-        this.getParent().add(regReporte);
-        regReporte.setVisible(true);
+        regNumeracion regNumeracion = new regNumeracion("NUEVO ", 0);
+        this.getParent().add(regNumeracion);
+        regNumeracion.setVisible(true);
     }//GEN-LAST:event_btnNuevoActionPerformed
 
     private void txtFiltroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFiltroActionPerformed
         // TODO add your handling code here:
-        Filtrar(tbReportes, txtFiltro.getText());
+        Filtrar(tbNumeraciones, txtFiltro.getText());
     }//GEN-LAST:event_txtFiltroActionPerformed
 
     private void btnSeleccionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeleccionarActionPerformed
         // TODO add your handling code here:
         switch (this.modo) {
             case 1:
-                if (FilaActiva(tbReportes)) {
-                    Reporte reporte = new Reporte();
-                    reporte.setIdReporte(ObtenerValorCelda(tbReportes, 1));
-                    reporte.setNombre(ObtenerValorCelda(tbReportes, 2));
-                    seleccionado = reporte;
-                }
-                Cerrar();
-                break;
+            if (FilaActiva(tbNumeraciones)) {
+                Numeracion numeracion = new Numeracion();
+                numeracion.setIdNumeracion(ObtenerValorCelda(tbNumeraciones, 1));
+                numeracion.setDescripcion(ObtenerValorCelda(tbNumeraciones, 2));
+                seleccionado = numeracion;
+            }
+            Cerrar();
+            break;
             case 2:
-                break;
+            break;
         }
     }//GEN-LAST:event_btnSeleccionarActionPerformed
 
     private void btnRefrescarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefrescarActionPerformed
         // TODO add your handling code here:
-        new swObtenerReportes().execute();
+        new swObtenerNumeraciones().execute();
     }//GEN-LAST:event_btnRefrescarActionPerformed
-
-    private void btnImprimirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImprimirActionPerformed
-        // TODO add your handling code here:
-        if (FilaActiva(tbReportes)) {
-            ImprimirSinEntidad(ObtenerValorCelda(tbReportes, 1), ObtenerValorCelda(tbReportes, 2), frame);
-        }
-    }//GEN-LAST:event_btnImprimirActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnImprimir;
     private javax.swing.JButton btnNuevo;
     private javax.swing.JButton btnRefrescar;
     private javax.swing.JButton btnSeleccionar;
@@ -396,7 +378,7 @@ public class lisReporte extends frameBase<Reporte> {
     private javax.swing.JLabel lblFiltro;
     private javax.swing.JLabel lblTitulo;
     private javax.swing.JPanel pnlTitulo;
-    private javax.swing.JTable tbReportes;
+    private javax.swing.JTable tbNumeraciones;
     private javax.swing.JTextField txtFiltro;
     // End of variables declaration//GEN-END:variables
 }
