@@ -16,7 +16,7 @@ public class EmpleadoDTO {
         List<Object[]> lista;
         try {
             empleadoDAO = new EmpleadoDAO();
-            empleadoDAO.AbrirSesision();
+            empleadoDAO.AbrirSesion();
             lista = empleadoDAO.ObtenerEmpleados();
         } catch (Exception e) {
             throw e;
@@ -30,7 +30,7 @@ public class EmpleadoDTO {
         Empleado empleado;
         try {
             empleadoDAO = new EmpleadoDAO();
-            empleadoDAO.AbrirSesision();
+            empleadoDAO.AbrirSesion();
             empleado = empleadoDAO.ObtenerPorId(Empleado.class, idEmpleado);
         } catch (Exception e) {
             throw e;

@@ -17,7 +17,7 @@ public class ValorDefinidoDTO {
         List<Object[]> lista;
         try {
             valorDefinidoDAO = new ValorDefinidoDAO();
-            valorDefinidoDAO.AbrirSesision();
+            valorDefinidoDAO.AbrirSesion();
             lista = valorDefinidoDAO.ObtenerValoresDefinidos(filtro);
         } catch (Exception e) {
             throw e;
@@ -31,7 +31,7 @@ public class ValorDefinidoDTO {
         ValorDefinido valorDefinido;
         try {
             valorDefinidoDAO = new ValorDefinidoDAO();
-            valorDefinidoDAO.AbrirSesision();
+            valorDefinidoDAO.AbrirSesion();
             valorDefinido = valorDefinidoDAO.ObtenerPorId(ValorDefinido.class, idValorDefinido);
         } catch (Exception e) {
             throw e;
@@ -45,7 +45,7 @@ public class ValorDefinidoDTO {
         ValorDefinido valorDefinido = null;
         try {
             valorDefinidoDAO = new ValorDefinidoDAO();
-            valorDefinidoDAO.AbrirSesision();
+            valorDefinidoDAO.AbrirSesion();
             List<Object[]> filtros = new ArrayList<>();
             filtros.add(new Object[]{"idUsuario", idUsuario});
             filtros.add(new Object[]{"idEntidad", idEntidad});

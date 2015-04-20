@@ -1,12 +1,13 @@
 package com.sge.modulos.administracion.accesoDatos;
 
+import com.sge.base.accesoDatos.BaseDAO;
 import java.util.List;
 
 /**
  *
  * @author elderson
  */
-public class MenuDAO extends AdministracionDAO{
+public class MenuDAO extends BaseDAO{
     
     public List<Object[]> ObtenerMenus(int idUsuario){
         String sql = "SELECT \n" +

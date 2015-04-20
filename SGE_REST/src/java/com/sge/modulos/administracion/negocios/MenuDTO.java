@@ -36,7 +36,7 @@ public class MenuDTO {
         List<Object[]> lista;
         try {
             menuDAO = new MenuDAO();
-            menuDAO.AbrirSesision();
+            menuDAO.AbrirSesion();
             lista = ObtenerMenus(menuDAO.ObtenerMenus(idUsuario));
         } catch (Exception e) {
             throw e;

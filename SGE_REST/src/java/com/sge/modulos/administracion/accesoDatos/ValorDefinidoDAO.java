@@ -1,12 +1,13 @@
 package com.sge.modulos.administracion.accesoDatos;
 
+import com.sge.base.accesoDatos.BaseDAO;
 import java.util.List;
 
 /**
  *
  * @author elderson
  */
-public class ValorDefinidoDAO extends AdministracionDAO {
+public class ValorDefinidoDAO extends BaseDAO {
 
     public List<Object[]> ObtenerValoresDefinidos(String filtro) {
         String sql = "SELECT \n"

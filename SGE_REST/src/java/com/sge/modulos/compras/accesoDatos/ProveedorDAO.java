@@ -1,12 +1,13 @@
 package com.sge.modulos.compras.accesoDatos;
 
+import com.sge.base.accesoDatos.BaseDAO;
 import java.util.List;
 
 /**
  *
  * @author elderson
  */
-public class ProveedorDAO extends ComprasDAO {
+public class ProveedorDAO extends BaseDAO {
 
     public List<Object[]> ObtenerProveedores() {
         String sql = "SELECT \n"

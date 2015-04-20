@@ -1,10 +1,12 @@
 package com.sge.modulos.administracion.accesoDatos;
 
+import com.sge.base.accesoDatos.BaseDAO;
+
 /**
  *
  * @author elderson
  */
-public class ItemReporteDAO extends AdministracionDAO {
+public class ItemReporteDAO extends BaseDAO {
 
     public int ActualizarItemReporte(int idItemReporte, String nombre, boolean asignarId, String valor) {
         String sql = String.format("UPDATE Administracion.ItemReporte SET nombre = '%s', asignarId = %b, valor = '%s' WHERE idItemReporte = %d", nombre, asignarId, valor, idItemReporte);

@@ -1,12 +1,13 @@
 package com.sge.modulos.administracion.accesoDatos;
 
+import com.sge.base.accesoDatos.BaseDAO;
 import java.util.List;
 
 /**
  *
  * @author elderson
  */
-public class MonedaDAO extends AdministracionDAO {
+public class MonedaDAO extends BaseDAO {
     
     public List<Object[]> ObtenerMonedas() {
         String sql = "SELECT \n"

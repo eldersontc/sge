@@ -16,7 +16,7 @@ public class ProveedorDTO {
         List<Object[]> lista;
         try {
             proveedorDAO = new ProveedorDAO();
-            proveedorDAO.AbrirSesision();
+            proveedorDAO.AbrirSesion();
             lista = proveedorDAO.ObtenerProveedores();
         } catch (Exception e) {
             throw e;
@@ -30,7 +30,7 @@ public class ProveedorDTO {
         Proveedor proveedor;
         try {
             proveedorDAO = new ProveedorDAO();
-            proveedorDAO.AbrirSesision();
+            proveedorDAO.AbrirSesion();
             proveedor = proveedorDAO.ObtenerPorId(Proveedor.class, idProveedor);
         } catch (Exception e) {
             throw e;

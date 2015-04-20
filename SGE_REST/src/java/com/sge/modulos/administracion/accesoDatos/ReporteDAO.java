@@ -1,12 +1,13 @@
 package com.sge.modulos.administracion.accesoDatos;
 
+import com.sge.base.accesoDatos.BaseDAO;
 import java.util.List;
 
 /**
  *
  * @author elderson
  */
-public class ReporteDAO extends AdministracionDAO {
+public class ReporteDAO extends BaseDAO {
 
     public List<Object[]> ObtenerReportes(String filtro) {
         String sql = "SELECT \n"

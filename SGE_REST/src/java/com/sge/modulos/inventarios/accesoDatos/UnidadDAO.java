@@ -1,12 +1,13 @@
 package com.sge.modulos.inventarios.accesoDatos;
 
+import com.sge.base.accesoDatos.BaseDAO;
 import java.util.List;
 
 /**
  *
  * @author elderson
  */
-public class UnidadDAO extends InventariosDAO {
+public class UnidadDAO extends BaseDAO {
 
     public List<Object[]> ObtenerUnidades() {
         String sql = "SELECT \n"

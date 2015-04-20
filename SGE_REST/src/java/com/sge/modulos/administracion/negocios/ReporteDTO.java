@@ -26,7 +26,7 @@ public class ReporteDTO {
         List<Object[]> lista;
         try {
             reporteDAO = new ReporteDAO();
-            reporteDAO.AbrirSesision();
+            reporteDAO.AbrirSesion();
             lista = reporteDAO.ObtenerReportes(filtro);
         } catch (Exception e) {
             throw e;
@@ -40,7 +40,7 @@ public class ReporteDTO {
         Reporte reporte;
         try {
             reporteDAO = new ReporteDAO();
-            reporteDAO.AbrirSesision();
+            reporteDAO.AbrirSesion();
             reporte = reporteDAO.ObtenerPorId(Reporte.class, idReporte);
             itemReporteDAO = new ItemReporteDAO();
             itemReporteDAO.AsignarSesion(reporteDAO);
@@ -129,7 +129,7 @@ public class ReporteDTO {
         byte[] bytes = null;
         try {
             reporteDAO = new ReporteDAO();
-            reporteDAO.AbrirSesision();
+            reporteDAO.AbrirSesion();
             Reporte reporte = reporteDAO.ObtenerPorId(Reporte.class, idReporte);
             Map parametros = new HashMap();
             for (ItemReporte item : reporte.getItems()) {
@@ -156,7 +156,7 @@ public class ReporteDTO {
         byte[] bytes = null;
         try {
             reporteDAO = new ReporteDAO();
-            reporteDAO.AbrirSesision();
+            reporteDAO.AbrirSesion();
             Reporte reporte = reporteDAO.ObtenerPorId(Reporte.class, idReporte);
             Map parametros = new HashMap();
             for (ItemReporte item : reporte.getItems()) {

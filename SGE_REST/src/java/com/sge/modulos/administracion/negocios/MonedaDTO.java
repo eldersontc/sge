@@ -16,7 +16,7 @@ public class MonedaDTO {
         List<Object[]> lista;
         try {
             monedaDAO = new MonedaDAO();
-            monedaDAO.AbrirSesision();
+            monedaDAO.AbrirSesion();
             lista = monedaDAO.ObtenerMonedas();
         } catch (Exception e) {
             throw e;

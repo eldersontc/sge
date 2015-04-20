@@ -16,7 +16,7 @@ public class UsuarioDTO {
         List<Object[]> lista;
         try {
             usuarioDAO = new UsuarioDAO();
-            usuarioDAO.AbrirSesision();
+            usuarioDAO.AbrirSesion();
             lista = usuarioDAO.ObtenerUsuarios(filtro);
         } catch (Exception e) {
             throw e;

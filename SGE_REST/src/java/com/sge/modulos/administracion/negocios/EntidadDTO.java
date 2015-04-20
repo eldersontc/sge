@@ -15,7 +15,7 @@ public class EntidadDTO {
         List<Object[]> lista;
         try {
             entidadDAO = new EntidadDAO();
-            entidadDAO.AbrirSesision();
+            entidadDAO.AbrirSesion();
             lista = entidadDAO.ObtenerEntidades(filtro);
         } catch (Exception e) {
             throw e;

@@ -3,9 +3,11 @@ package com.sge.base.accesoDatos;
 import java.io.File;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.criterion.Restrictions;
@@ -21,20 +23,46 @@ public class BaseDAO {
 
     private Session sesion;
     private Transaction transaccion;
+    private static SessionFactory fabricaSesiones;
 
-    @SuppressWarnings("deprecation")
-    public void AbrirSesion(List<String> recursos) {
-        try {
-            // Se lee el archivo de configuración.
+    private List<String> getRecursos(){
+        List<String> recursos = new ArrayList<>();
+        // ADMINISTRACION
+        recursos.add("com/sge/modulos/administracion/mapeos/Usuario.hbm.xml");
+        recursos.add("com/sge/modulos/administracion/mapeos/Empleado.hbm.xml");
+        recursos.add("com/sge/modulos/administracion/mapeos/Moneda.hbm.xml");
+        recursos.add("com/sge/modulos/administracion/mapeos/Reporte.hbm.xml");
+        recursos.add("com/sge/modulos/administracion/mapeos/ItemReporte.hbm.xml");
+        recursos.add("com/sge/modulos/administracion/mapeos/ValorDefinido.hbm.xml");
+        // COMPRAS
+        recursos.add("com/sge/modulos/compras/mapeos/Proveedor.hbm.xml");
+        // INVENTARIOS
+        recursos.add("com/sge/modulos/inventarios/mapeos/Almacen.hbm.xml");
+        recursos.add("com/sge/modulos/inventarios/mapeos/Unidad.hbm.xml");
+        recursos.add("com/sge/modulos/inventarios/mapeos/Producto.hbm.xml");
+        recursos.add("com/sge/modulos/inventarios/mapeos/ProductoAlmacen.hbm.xml");
+        recursos.add("com/sge/modulos/inventarios/mapeos/ProductoUnidad.hbm.xml");
+        recursos.add("com/sge/modulos/inventarios/mapeos/EntradaInventario.hbm.xml");
+        recursos.add("com/sge/modulos/inventarios/mapeos/ItemEntradaInventario.hbm.xml");
+        recursos.add("com/sge/modulos/inventarios/mapeos/SalidaInventario.hbm.xml");
+        recursos.add("com/sge/modulos/inventarios/mapeos/ItemSalidaInventario.hbm.xml");
+        
+        return recursos;
+    }
+    
+    private SessionFactory getFabricaSesiones(){
+        if(fabricaSesiones == null){
             Configuration cfg = new Configuration().configure(new File("/home/elderson/SGE_CONF/Configuracion.xml"));
-            for (String recurso : recursos) {
+            for (String recurso : getRecursos()) {
                 cfg.addResource(recurso);
             }
-            sesion = cfg.buildSessionFactory().openSession();
-        } catch (Throwable ex) {
-            System.err.println("La creación de la sesión falló." + ex);
-            throw new ExceptionInInitializerError(ex);
+            fabricaSesiones = cfg.buildSessionFactory();
         }
+        return fabricaSesiones;
+    }
+    
+    public void AbrirSesion() {
+        sesion = getFabricaSesiones().openSession();
     }
 
     public void CerrarSesion() {
@@ -43,9 +71,9 @@ public class BaseDAO {
         }
     }
 
-    public void IniciarTransaccion(List<String> recursos) {
+    public void IniciarTransaccion() {
         if (sesion == null) {
-            AbrirSesion(recursos);
+            AbrirSesion();
         }
         transaccion = sesion.beginTransaction();
     }

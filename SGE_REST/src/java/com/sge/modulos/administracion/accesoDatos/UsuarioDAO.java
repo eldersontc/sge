@@ -1,12 +1,13 @@
 package com.sge.modulos.administracion.accesoDatos;
 
+import com.sge.base.accesoDatos.BaseDAO;
 import java.util.List;
 
 /**
  *
  * @author elderson
  */
-public class UsuarioDAO extends AdministracionDAO {
+public class UsuarioDAO extends BaseDAO {
 
     public List<Object[]> ObtenerUsuarios(String filtro) {
         String sql = "SELECT \n"
