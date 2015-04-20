@@ -1,9 +1,12 @@
 package com.sge.modulos.inventarios.servicios;
 
 import com.google.gson.Gson;
+import com.sge.modulos.administracion.entidades.ValorDefinido;
+import com.sge.modulos.administracion.negocios.ValorDefinidoDTO;
 import com.sge.modulos.inventarios.entidades.SalidaInventario;
 import com.sge.modulos.inventarios.negocios.SalidaInventarioDTO;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
@@ -44,6 +47,27 @@ public class SalidaInventarioSRV {
         return new Gson().toJson(resultado);
     }
 
+    @POST
+    @Path("ObtenerValoresDefinidos")
+    @Consumes("application/json")
+    @Produces("application/json")
+    public String ObtenerValoresDefinidos(String json) {
+        List<String> resultado = new ArrayList<>();
+        try {
+            int idUsuario = new Gson().fromJson(json, int.class);
+            ValorDefinidoDTO valorDefinidoDTO = new ValorDefinidoDTO();
+            ValorDefinido valorDefinido = valorDefinidoDTO.ObtenerValorDefinidoPorUsuarioYEntidad(idUsuario, 2);
+            resultado.add(new Gson().toJson(true));
+            resultado.add(new Gson().toJson(new Date()));
+            resultado.add(valorDefinido == null ? "" : valorDefinido.getJson());
+        } catch (Exception e) {
+            resultado.clear();
+            resultado.add(new Gson().toJson(false));
+            resultado.add(new Gson().toJson(e));
+        }
+        return new Gson().toJson(resultado);
+    }
+    
     @POST
     @Path("ObtenerSalidaInventario")
     @Consumes("application/json")

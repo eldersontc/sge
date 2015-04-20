@@ -2,7 +2,6 @@ package com.sge.modulos.administracion.negocios;
 
 import com.sge.modulos.administracion.accesoDatos.NumeracionDAO;
 import com.sge.modulos.administracion.entidades.Numeracion;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -19,22 +18,6 @@ public class NumeracionDTO {
             numeracionDAO = new NumeracionDAO();
             numeracionDAO.AbrirSesion();
             lista = numeracionDAO.ObtenerNumeraciones(filtro);
-        } catch (Exception e) {
-            throw e;
-        } finally {
-            numeracionDAO.CerrarSesion();
-        }
-        return lista;
-    }
-    
-    public List<Numeracion> ObtenerNumeracionesPorEntidad(int idEntidad) {
-        List<Numeracion> lista;
-        try {
-            numeracionDAO = new NumeracionDAO();
-            numeracionDAO.AbrirSesion();
-            List<Object[]> filtros = new ArrayList<>();
-            filtros.add(new Object[]{"idEntidad", idEntidad});
-            lista = numeracionDAO.ObtenerLista(Numeracion.class, filtros);
         } catch (Exception e) {
             throw e;
         } finally {

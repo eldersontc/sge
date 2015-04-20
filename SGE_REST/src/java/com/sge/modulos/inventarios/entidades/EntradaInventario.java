@@ -12,6 +12,9 @@ public class EntradaInventario {
 
     private int idEntradaInventario;
     private String numero;
+    private int idNumeracion;
+    private String descripcionNumeracion;
+    private boolean numeracionManual;
     private int idProveedor;
     private String razonSocialProveedor;
     private int idResponsable;
@@ -49,6 +52,30 @@ public class EntradaInventario {
         this.numero = numero;
     }
 
+    public int getIdNumeracion() {
+        return idNumeracion;
+    }
+
+    public void setIdNumeracion(int idNumeracion) {
+        this.idNumeracion = idNumeracion;
+    }
+
+    public String getDescripcionNumeracion() {
+        return descripcionNumeracion;
+    }
+
+    public void setDescripcionNumeracion(String descripcionNumeracion) {
+        this.descripcionNumeracion = descripcionNumeracion;
+    }
+
+    public boolean isNumeracionManual() {
+        return numeracionManual;
+    }
+
+    public void setNumeracionManual(boolean numeracionManual) {
+        this.numeracionManual = numeracionManual;
+    }
+    
     public int getIdProveedor() {
         return idProveedor;
     }

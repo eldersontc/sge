@@ -10,6 +10,9 @@
             </generator>
         </id>
         <property name="numero" column="numero"/>
+        <property name="idNumeracion" column="idNumeracion"/>
+        <property name="descripcionNumeracion" column="descripcionNumeracion"/>
+        <property name="numeracionManual" column="numeracionManual"/>
         <property name="idCliente" column="idCliente"/>
         <property name="razonSocialCliente" column="razonSocialCliente"/>
         <property name="idResponsable" column="idResponsable"/>

@@ -67,27 +67,6 @@ public class ValorDefinidoSRV {
     }
     
     @POST
-    @Path("ObtenerValorDefinidoPorUsuarioYEntidad")
-    @Consumes("application/json")
-    @Produces("application/json")
-    public String ObtenerValorDefinidoPorUsuarioYEntidad(String json) {
-        List<String> resultado = new ArrayList<>();
-        try {
-            int[] ids = new Gson().fromJson(json, int[].class);
-            ValorDefinidoDTO valorDefinidoDTO = new ValorDefinidoDTO();
-            ValorDefinido valorDefinido = valorDefinidoDTO.ObtenerValorDefinidoPorUsuarioYEntidad(ids[0], ids[1]);
-            resultado.add(new Gson().toJson(true));
-            resultado.add(new Gson().toJson(new Date()));
-            resultado.add(new Gson().toJson(valorDefinido == null ? "" : valorDefinido.getJson()));
-        } catch (Exception e) {
-            resultado.clear();
-            resultado.add(new Gson().toJson(false));
-            resultado.add(new Gson().toJson(e));
-        }
-        return new Gson().toJson(resultado);
-    }
-    
-    @POST
     @Path("RegistrarValorDefinido")
     @Consumes("application/json")
     @Produces("application/json")
