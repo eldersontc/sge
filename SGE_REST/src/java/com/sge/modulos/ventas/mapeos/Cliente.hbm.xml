@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.sge.modulos.ventas.entidades.Cliente" table="Cliente" schema="Ventas">
+        <id name="idCliente" column="idCliente">
+            <generator class="sequence">
+                <param name="sequence">Ventas.cliente_idcliente_seq</param>
+            </generator>
+        </id>
+        <property name="razonSocial" column="razonSocial"/>
+        <property name="tipoDocumentoIdentidad" column="tipoDocumentoIdentidad"/>
+        <property name="documentoIdentidad" column="documentoIdentidad"/>
+        <property name="nombreComercial" column="nombreComercial"/>
+        <property name="fechaUltimaVenta" column="fechaUltimaVenta" insert="false"/>
+        <property name="telefono" column="telefono"/>
+        <property name="correo" column="correo"/>
+        <property name="idVendedor" column="idVendedor"/>
+        <property name="nombreVendedor" column="nombreVendedor"/>
+        <property name="activo" column="activo"/>
+    </class>
+</hibernate-mapping>

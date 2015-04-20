@@ -47,7 +47,10 @@ public class BaseDAO {
         recursos.add("com/sge/modulos/inventarios/mapeos/ItemEntradaInventario.hbm.xml");
         recursos.add("com/sge/modulos/inventarios/mapeos/SalidaInventario.hbm.xml");
         recursos.add("com/sge/modulos/inventarios/mapeos/ItemSalidaInventario.hbm.xml");
-        
+        // VENTAS
+        recursos.add("com/sge/modulos/ventas/mapeos/Cliente.hbm.xml");
+        recursos.add("com/sge/modulos/ventas/mapeos/DireccionCliente.hbm.xml");
+        recursos.add("com/sge/modulos/ventas/mapeos/ContactoCliente.hbm.xml");
         return recursos;
     }
     
