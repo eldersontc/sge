@@ -6,9 +6,12 @@ import com.sge.base.controles.SearchListener;
 import com.sge.base.formularios.frameBase;
 import com.sge.modulos.administracion.clases.Empleado;
 import com.sge.modulos.administracion.clases.Moneda;
+import com.sge.modulos.administracion.clases.Numeracion;
 import com.sge.modulos.administracion.clases.ValorDefinido;
+import com.sge.modulos.administracion.cliente.cliAdministracion;
 import com.sge.modulos.administracion.formularios.lisEmpleado;
 import com.sge.modulos.administracion.formularios.lisMoneda;
+import com.sge.modulos.administracion.formularios.lisNumeracion;
 import com.sge.modulos.compras.clases.Proveedor;
 import com.sge.modulos.compras.formularios.lisProveedor;
 import com.sge.modulos.inventarios.clases.Almacen;
@@ -18,6 +21,7 @@ import com.sge.modulos.inventarios.clases.Producto;
 import com.sge.modulos.inventarios.cliente.cliInventarios;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -51,7 +55,7 @@ public class regSalidaInventario extends frameBase<SalidaInventario> {
         if (this.id == 0) {
             lblTitulo.setText("NUEVA " + lblTitulo.getText());
             AgregarCombo(tbItems, 7, 2);
-            ObtenerValoresDefinidos(frame, 2);
+            new swObtenerValoresDefinidos().execute();
         } else {
             lblTitulo.setText("VER " + lblTitulo.getText());
             OcultarControles();
@@ -61,14 +65,17 @@ public class regSalidaInventario extends frameBase<SalidaInventario> {
 
     @Override
     public void AsignarControles() {
+        schNumeracion.asingValues(getEntidad().getIdNumeracion(), getEntidad().getDescripcionNumeracion());
         schCliente.asingValues(getEntidad().getIdCliente(), getEntidad().getRazonSocialCliente());
+        txtNumero.setEnabled(getEntidad().isNumeracionManual());
         txtNumero.setText(getEntidad().getNumero());
         schResponsable.asingValues(getEntidad().getIdResponsable(), getEntidad().getNombreResponsable());
-        txtFechaCreacion.setValue((this.id == 0) ? super.getFechaServidor() : getEntidad().getFechaCreacion());
+        txtFechaCreacion.setValue(getEntidad().getFechaCreacion());
         schAlmacen.asingValues(getEntidad().getIdAlmacen(), getEntidad().getDescripcionAlmacen());
         schMoneda.asingValues(getEntidad().getIdMoneda(), getEntidad().getSimboloMoneda());
         txtSubTotal.setValue(getEntidad().getSubTotal());
         txtImpuesto.setValue(getEntidad().getMontoImpuesto());
+        lblPorcentajeImpuesto.setText(String.format("(%s%s)", getEntidad().getPorcentajeImpuesto(), "%"));
         txtTotal.setValue(getEntidad().getTotal());
         for (ItemSalidaInventario item : getEntidad().getItems()) {
             AgregarFila(tbItems,
@@ -100,10 +107,16 @@ public class regSalidaInventario extends frameBase<SalidaInventario> {
             double totalItem = ObtenerValorCelda(tbItems, i, 10);
             subTotal += totalItem;
         }
+        
         getEntidad().setSubTotal(subTotal);
-        getEntidad().setTotal(subTotal);
+        double montoImpuesto = subTotal * (getEntidad().getPorcentajeImpuesto() / 100);
+        getEntidad().setMontoImpuesto(montoImpuesto);
+        double total = subTotal + montoImpuesto;
+        getEntidad().setTotal(total);
+        
         txtSubTotal.setValue(subTotal);
-        txtTotal.setValue(subTotal);
+        txtImpuesto.setValue(montoImpuesto);
+        txtTotal.setValue(total);
     }
 
     public List<ItemSalidaInventario> getItems() {
@@ -192,6 +205,28 @@ public class regSalidaInventario extends frameBase<SalidaInventario> {
         }
     };
 
+    Action select_nume = new AbstractAction() {
+        @Override
+        public void actionPerformed(ActionEvent evt) {
+            Numeracion seleccionado = ((lisNumeracion) evt.getSource()).getSeleccionado();
+            if (!(seleccionado == null)) {
+                cliAdministracion cliente = new cliAdministracion();
+                String json = cliente.ObtenerNumeracion(new Gson().toJson(seleccionado.getIdNumeracion()));
+                String[] resultado = new Gson().fromJson(json, String[].class);
+                if(resultado[0].equals("true")){
+                    Numeracion numeracion = new Gson().fromJson(resultado[1], Numeracion.class);
+                    schNumeracion.asingValues(numeracion.getIdNumeracion(), numeracion.getDescripcion());
+                    getEntidad().setNumeracionManual(numeracion.isManual());
+                    txtNumero.setEnabled(numeracion.isManual());
+                    if(numeracion.isTieneImpuesto()){
+                        getEntidad().setPorcentajeImpuesto(numeracion.getPorcentajeImpuesto());
+                        lblPorcentajeImpuesto.setText(String.format("(%s%s)", numeracion.getPorcentajeImpuesto(), "%"));
+                    }
+                }
+            }
+        }
+    };
+    
     Action select_clie = new AbstractAction() {
         @Override
         public void actionPerformed(ActionEvent evt) {
@@ -232,6 +267,40 @@ public class regSalidaInventario extends frameBase<SalidaInventario> {
         }
     };
 
+    public class swObtenerValoresDefinidos extends SwingWorker<Object, Object> {
+
+        @Override
+        protected Object doInBackground() {
+            VerCargando(frame);
+            cliInventarios cliente = new cliInventarios();
+            try {
+                String json = cliente.ObtenerValoresDefinidosSalidaInventario(new Gson().toJson(getUsuario().getIdUsuario()));
+                String[] resultado = new Gson().fromJson(json, String[].class);
+                if (resultado[0].equals("true")) {
+                    if(resultado[2].isEmpty()){
+                        setEntidad(new SalidaInventario());    
+                    } else {
+                        setEntidad(new Gson().fromJson(resultado[2], SalidaInventario.class));
+                    }
+                    getEntidad().setFechaCreacion(new Gson().fromJson(resultado[1], Date.class));
+                    AsignarControles();
+                }
+            } catch (Exception e) {
+                OcultarCargando(frame);
+                cancel(false);
+                ControlarExcepcion(e);
+            } finally {
+                cliente.close();
+            }
+            return null;
+        }
+
+        @Override
+        protected void done() {
+            OcultarCargando(frame);
+        }
+    }
+    
     public class swObtenerSalidaInventario extends SwingWorker<Object, Object> {
 
         @Override
@@ -270,6 +339,9 @@ public class regSalidaInventario extends frameBase<SalidaInventario> {
     }
 
     private void AsignarValores(){
+        getEntidad().setNumero(txtNumero.getText());
+        getEntidad().setIdNumeracion(schNumeracion.getId());
+        getEntidad().setDescripcionNumeracion(schNumeracion.getText());
         getEntidad().setIdCliente(schCliente.getId());
         getEntidad().setRazonSocialCliente(schCliente.getText());
         getEntidad().setIdResponsable(schResponsable.getId());
@@ -389,6 +461,8 @@ public class regSalidaInventario extends frameBase<SalidaInventario> {
         schCliente = new com.sge.base.controles.JSearch();
         schResponsable = new com.sge.base.controles.JSearch();
         schMoneda = new com.sge.base.controles.JSearch();
+        lblPorcentajeImpuesto = new javax.swing.JLabel();
+        schNumeracion = new com.sge.base.controles.JSearch();
 
         setClosable(true);
 
@@ -440,7 +514,6 @@ public class regSalidaInventario extends frameBase<SalidaInventario> {
                 return canEdit [columnIndex];
             }
         });
-        tbItems.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
         jScrollPane2.setViewportView(tbItems);
         if (tbItems.getColumnModel().getColumnCount() > 0) {
             tbItems.getColumnModel().getColumn(0).setMinWidth(0);
@@ -479,13 +552,13 @@ public class regSalidaInventario extends frameBase<SalidaInventario> {
         pnlUnidades.setLayout(pnlUnidadesLayout);
         pnlUnidadesLayout.setHorizontalGroup(
             pnlUnidadesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 601, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlUnidadesLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(462, Short.MAX_VALUE)
                 .addComponent(btnNuevoItem, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnEliminarItem, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
+            .addComponent(jScrollPane2)
         );
         pnlUnidadesLayout.setVerticalGroup(
             pnlUnidadesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -555,12 +628,18 @@ public class regSalidaInventario extends frameBase<SalidaInventario> {
             public void Search(){
                 schAlmacenSearch();
             }
+            @Override
+            public void Clear(){
+            }
         });
 
         schCliente.addSearchListener(new SearchListener() {
             @Override
             public void Search(){
                 schClienteSearch();
+            }
+            @Override
+            public void Clear(){
             }
         });
 
@@ -569,12 +648,30 @@ public class regSalidaInventario extends frameBase<SalidaInventario> {
             public void Search(){
                 schResponsableSearch();
             }
+            @Override
+            public void Clear(){
+            }
         });
 
         schMoneda.addSearchListener(new SearchListener() {
             @Override
             public void Search(){
                 schMonedaSearch();
+            }
+            @Override
+            public void Clear(){
+            }
+        });
+
+        lblPorcentajeImpuesto.setText("(%0)");
+
+        schNumeracion.addSearchListener(new SearchListener() {
+            @Override
+            public void Search(){
+                schNumeracionSearch();
+            }
+            @Override
+            public void Clear(){
             }
         });
 
@@ -585,54 +682,57 @@ public class regSalidaInventario extends frameBase<SalidaInventario> {
             .addComponent(pnlTitulo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(frameLayout.createSequentialGroup()
                 .addGap(23, 23, 23)
-                .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, frameLayout.createSequentialGroup()
-                        .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblAlmacen)
-                            .addComponent(lblCliente)
-                            .addComponent(lblNombre))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(schCliente, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(schAlmacen, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(schResponsable, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblNumero, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblMoneda, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblFechaCreacion, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txtFechaCreacion, javax.swing.GroupLayout.DEFAULT_SIZE, 91, Short.MAX_VALUE)
-                            .addComponent(txtNumero)
-                            .addComponent(schMoneda, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, frameLayout.createSequentialGroup()
-                        .addGap(420, 420, 420)
-                        .addComponent(lblImpuesto, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtImpuesto, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
+                .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(frameLayout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
                         .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(frameLayout.createSequentialGroup()
-                                    .addGap(6, 6, 6)
-                                    .addComponent(lblSubTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(txtSubTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, frameLayout.createSequentialGroup()
-                                    .addComponent(btnAceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(frameLayout.createSequentialGroup()
-                                .addComponent(lblTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, frameLayout.createSequentialGroup()
+                                .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(lblAlmacen)
+                                    .addComponent(lblCliente)
+                                    .addComponent(lblNombre))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(2, 2, 2)))))
-                .addContainerGap(31, Short.MAX_VALUE))
+                                .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(schCliente, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(schAlmacen, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(schResponsable, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(frameLayout.createSequentialGroup()
+                                        .addComponent(lblNumero, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(schNumeracion, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(lblMoneda, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(lblFechaCreacion, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(txtFechaCreacion, javax.swing.GroupLayout.DEFAULT_SIZE, 91, Short.MAX_VALUE)
+                                    .addComponent(txtNumero)
+                                    .addComponent(schMoneda, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
+                            .addGroup(frameLayout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(frameLayout.createSequentialGroup()
+                                        .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addComponent(btnAceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addGroup(frameLayout.createSequentialGroup()
+                                                .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                                    .addComponent(lblSubTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                    .addComponent(lblImpuesto, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(lblPorcentajeImpuesto, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                        .addGap(18, 18, 18)
+                                        .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(lblTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(3, 3, 3)))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(frameLayout.createSequentialGroup()
+                        .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(txtSubTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 670, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtImpuesto, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap(29, Short.MAX_VALUE))))
         );
         frameLayout.setVerticalGroup(
             frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -644,8 +744,9 @@ public class regSalidaInventario extends frameBase<SalidaInventario> {
                     .addComponent(schCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(lblNumero)
-                        .addComponent(txtNumero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(6, 6, 6)
+                        .addComponent(txtNumero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(schNumeracion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(lblNombre)
@@ -658,9 +759,9 @@ public class regSalidaInventario extends frameBase<SalidaInventario> {
                         .addComponent(schAlmacen, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(lblMoneda, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(lblAlmacen, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(schMoneda, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(18, 18, 18)
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(schMoneda, javax.swing.GroupLayout.DEFAULT_SIZE, 43, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblSubTotal)
@@ -668,23 +769,26 @@ public class regSalidaInventario extends frameBase<SalidaInventario> {
                 .addGap(8, 8, 8)
                 .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblImpuesto)
-                    .addComponent(txtImpuesto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtImpuesto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblPorcentajeImpuesto))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblTotal)
                     .addComponent(txtTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCancelar)
                     .addComponent(btnAceptar))
-                .addContainerGap())
+                .addContainerGap(24, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(frame, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(frame, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -719,6 +823,11 @@ public class regSalidaInventario extends frameBase<SalidaInventario> {
         }
     }//GEN-LAST:event_btnEliminarItemActionPerformed
 
+    private void schNumeracionSearch() {
+        String filtro = "WHERE Numeracion.idEntidad = 2";
+        VerModal(new lisNumeracion(1, filtro), select_nume);
+    }
+    
     private void schClienteSearch() {
         VerModal(new lisProveedor(1), select_clie);
     }
@@ -750,6 +859,7 @@ public class regSalidaInventario extends frameBase<SalidaInventario> {
     private javax.swing.JLabel lblMoneda;
     private javax.swing.JLabel lblNombre;
     private javax.swing.JLabel lblNumero;
+    private javax.swing.JLabel lblPorcentajeImpuesto;
     private javax.swing.JLabel lblSubTotal;
     private javax.swing.JLabel lblTitulo;
     private javax.swing.JLabel lblTotal;
@@ -758,6 +868,7 @@ public class regSalidaInventario extends frameBase<SalidaInventario> {
     private com.sge.base.controles.JSearch schAlmacen;
     private com.sge.base.controles.JSearch schCliente;
     private com.sge.base.controles.JSearch schMoneda;
+    private com.sge.base.controles.JSearch schNumeracion;
     private com.sge.base.controles.JSearch schResponsable;
     private javax.swing.JTable tbItems;
     private javax.swing.JFormattedTextField txtFechaCreacion;

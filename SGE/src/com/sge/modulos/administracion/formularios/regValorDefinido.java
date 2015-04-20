@@ -285,6 +285,9 @@ public class regValorDefinido extends frameBase<ValorDefinido> {
             public void Search(){
                 schUsuarioSearch();
             }
+            @Override
+            public void Clear(){
+            }
         });
 
         javax.swing.GroupLayout frameLayout = new javax.swing.GroupLayout(frame);

@@ -12,6 +12,9 @@ public class SalidaInventario {
     
     private int idSalidaInventario;
     private String numero;
+    private int idNumeracion;
+    private String descripcionNumeracion;
+    private boolean numeracionManual;
     private int idCliente;
     private String razonSocialCliente;
     private int idResponsable;
@@ -30,7 +33,7 @@ public class SalidaInventario {
     private List<ItemSalidaInventario> items;
 
     public SalidaInventario() {
-        this.items = new ArrayList<>();
+        items = new ArrayList<>();
     }
 
     public int getIdSalidaInventario() {
@@ -49,6 +52,30 @@ public class SalidaInventario {
         this.numero = numero;
     }
 
+    public int getIdNumeracion() {
+        return idNumeracion;
+    }
+
+    public void setIdNumeracion(int idNumeracion) {
+        this.idNumeracion = idNumeracion;
+    }
+
+    public String getDescripcionNumeracion() {
+        return descripcionNumeracion;
+    }
+
+    public void setDescripcionNumeracion(String descripcionNumeracion) {
+        this.descripcionNumeracion = descripcionNumeracion;
+    }
+
+    public boolean isNumeracionManual() {
+        return numeracionManual;
+    }
+
+    public void setNumeracionManual(boolean numeracionManual) {
+        this.numeracionManual = numeracionManual;
+    }
+    
     public int getIdCliente() {
         return idCliente;
     }

@@ -201,7 +201,7 @@
         </Component>
         <Component class="com.sge.base.controles.JSearch" name="schUsuario">
           <AuxValues>
-            <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="schUsuario.addSearchListener(new SearchListener() {&#xa;            @Override&#xa;            public void Search(){&#xa;                schUsuarioSearch();&#xa;            }&#xa;        });"/>
+            <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="schUsuario.addSearchListener(new SearchListener() {&#xa;    @Override&#xa;    public void Search(){&#xa;        schUsuarioSearch();&#xa;    }&#xa;    @Override&#xa;    public void Clear(){&#xa;    }&#xa;});"/>
           </AuxValues>
         </Component>
       </SubComponents>

@@ -1,24 +1,19 @@
 package com.sge.base.formularios;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.sge.base.controles.FabricaControles;
 import com.sge.base.excepciones.Excepciones;
 import com.sge.base.reportes.FabricaReportes;
 import com.sge.base.utils.Utils;
 import com.sge.modulos.administracion.clases.Usuario;
 import com.sge.modulos.administracion.clases.ValorDefinido;
-import com.sge.modulos.administracion.cliente.cliAdministracion;
 import java.awt.Component;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.ParameterizedType;
-import java.util.Date;
-import java.util.List;
 import javax.swing.Action;
 import javax.swing.JInternalFrame;
 import javax.swing.JPanel;
 import javax.swing.JTable;
-import javax.swing.SwingWorker;
 
 /**
  *
@@ -46,16 +41,6 @@ public class frameBase<T> extends javax.swing.JInternalFrame {
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
     }
-
-    private Date fechaServidor;
-    
-    public Date getFechaServidor(){
-        return fechaServidor;
-    }
-    
-    public void setFechaServidor(Date fechaServidor){
-        this.fechaServidor = fechaServidor;
-    }
     
     public Class<?> getClazz() throws ClassNotFoundException {
         String clazz = ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0].getTypeName();
@@ -69,53 +54,6 @@ public class frameBase<T> extends javax.swing.JInternalFrame {
             return (T) constructor.newInstance(new Object[]{});
         } catch (Exception e) {
             throw e;
-        }
-    }
-
-    //////////////////////////////// CLASES ////////////////////////////////////
-    public void ObtenerValoresDefinidos(JPanel frame, int idEntidad) {
-        new swObtenerValoresDefinidos(frame, idEntidad).execute();
-    }
-
-    public class swObtenerValoresDefinidos extends SwingWorker<Object, Object> {
-
-        private int idEntidad;
-        private JPanel frame;
-
-        public swObtenerValoresDefinidos(JPanel frame, int idEntidad) {
-            this.frame = frame;
-            this.idEntidad = idEntidad;
-        }
-
-        @Override
-        protected Object doInBackground() {
-            VerCargando(frame);
-            cliAdministracion cliente = new cliAdministracion();
-            try {
-                String json = cliente.ObtenerValorDefinidoPorUsuarioYEntidad(new Gson().toJson(new int[]{getUsuario().getIdUsuario(), idEntidad}));
-                String[] resultado = new Gson().fromJson(json, String[].class);
-                if (resultado[0].equals("true")) {
-                    setFechaServidor(new Gson().fromJson(resultado[1], Date.class));
-                    if(resultado[2].isEmpty()){
-                        setEntidad(nuevaIntancia());    
-                    } else {
-                        setEntidad((T) new Gson().fromJson(new Gson().fromJson(resultado[2], String.class), getClazz()));
-                    }
-                    AsignarControles();
-                }
-            } catch (Exception e) {
-                OcultarCargando(frame);
-                cancel(false);
-                ControlarExcepcion(e);
-            } finally {
-                cliente.close();
-            }
-            return null;
-        }
-
-        @Override
-        protected void done() {
-            OcultarCargando(frame);
         }
     }
 

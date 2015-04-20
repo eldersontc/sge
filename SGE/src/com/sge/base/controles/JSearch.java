@@ -107,6 +107,7 @@ public class JSearch extends JPanel {
         switch (menuItem.getText()) {
             case "LIMPIAR":
                 clearValues();
+                fireClearEvent();
                 break;
         }
     }
@@ -128,6 +129,15 @@ public class JSearch extends JPanel {
         }
     }
 
+    void fireClearEvent() {
+        Object[] listeners = listenerList.getListenerList();
+        for (int i = 0; i < listeners.length; i = i + 2) {
+            if (listeners[i] == SearchListener.class) {
+                ((SearchListener) listeners[i + 1]).Clear();
+            }
+        }
+    }
+    
     // Variables declaration
     private JTextField textfield;
     private JButton button;

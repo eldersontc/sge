@@ -21,12 +21,19 @@ public class lisNumeracion extends frameBase<Numeracion> {
     /**
      * Creates new form lisNumeracion
      */
-    public lisNumeracion(int modos) {
+    public lisNumeracion(int modo) {
         initComponents();
-        Init(modo);
+        Init(modo, "");
     }
 
+    public lisNumeracion(int modo, String filtro) {
+        initComponents();
+        Init(modo, filtro);
+    }
+    
     private int modo = 0;
+    
+    private String filtro = "";
 
     private Numeracion seleccionado;
 
@@ -55,7 +62,7 @@ public class lisNumeracion extends frameBase<Numeracion> {
             cliAdministracion cliente = new cliAdministracion();
             String json = "";
             try {
-                json = cliente.ObtenerNumeraciones(new Gson().toJson(""));
+                json = cliente.ObtenerNumeraciones(new Gson().toJson(filtro));
             } catch (Exception e) {
                 OcultarCargando(frame);
                 cancel(false);
@@ -128,8 +135,9 @@ public class lisNumeracion extends frameBase<Numeracion> {
         }
     }
 
-    public void Init(int modo) {
+    public void Init(int modo, String filtro) {
         this.modo = modo;
+        this.filtro = filtro;
         switch (this.modo) {
             case 0:
                 OcultarColumna(tbNumeraciones, 0);
