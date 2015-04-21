@@ -24,11 +24,14 @@ public class ApplicationConfig extends Application {
      * If required, comment out calling this method in getClasses().
      */
     private void addRestResourceClasses(Set<Class<?>> resources) {
+        resources.add(com.sge.modulos.administracion.servicios.DepartamentoSRV.class);
+        resources.add(com.sge.modulos.administracion.servicios.DistritoSRV.class);
         resources.add(com.sge.modulos.administracion.servicios.EmpleadoSRV.class);
         resources.add(com.sge.modulos.administracion.servicios.EntidadSRV.class);
         resources.add(com.sge.modulos.administracion.servicios.MenuSRV.class);
         resources.add(com.sge.modulos.administracion.servicios.MonedaSRV.class);
         resources.add(com.sge.modulos.administracion.servicios.NumeracionSRV.class);
+        resources.add(com.sge.modulos.administracion.servicios.ProvinciaSRV.class);
         resources.add(com.sge.modulos.administracion.servicios.ReporteSRV.class);
         resources.add(com.sge.modulos.administracion.servicios.UsuarioSRV.class);
         resources.add(com.sge.modulos.administracion.servicios.ValorDefinidoSRV.class);
