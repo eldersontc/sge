@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.sge.modulos.ventas.entidades.ItemPlantillaSolicitudCotizacion" table="ItemPlantillaSolicitudCotizacion" schema="Ventas">
+        <id name="idItemPlantillaSolicitudCotizacion" column="idItemPlantillaSolicitudCotizacion">
+            <generator class="sequence">
+                <param name="sequence">Ventas.itemplantillasolicitudcotizacion_iditemplantillasolicitudcotizacion_seq</param>
+            </generator>
+        </id>
+        <property name="idPlantillaSolicitudCotizacion" column="idPlantillaSolicitudCotizacion"/>
+        <property name="nombre" column="nombre"/>
+        <property name="idServicioImpresion" column="idServicioImpresion"/>
+        <property name="nombreServicioImpresion" column="nombreServicioImpresion"/>
+        <property name="idMaterial" column="idMaterial"/>
+        <property name="nombreMaterial" column="nombreMaterial"/>
+        <property name="unidadMedidaAbierta" column="unidadMedidaAbierta"/>
+        <property name="medidaAbierta" column="medidaAbierta"/>
+        <property name="medidaCerrada" column="medidaCerrada"/>
+        <property name="tiraRetira" column="tiraRetira"/>
+        <property name="grafico" column="grafico"/>
+        <property name="material" column="material"/>
+        <property name="servicioImpresion" column="servicioImpresion"/>
+        <property name="fondo" column="fondo"/>
+        <property name="tipoUnidad" column="tipoUnidad"/>
+    </class>
+</hibernate-mapping>
