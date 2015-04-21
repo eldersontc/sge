@@ -140,6 +140,18 @@ public class frameLogin extends javax.swing.JInternalFrame {
 
         lblUsuario1.setText("USUARIO");
 
+        txtUsuario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtUsuarioActionPerformed(evt);
+            }
+        });
+
+        txtClave.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtClaveActionPerformed(evt);
+            }
+        });
+
         btnIngresar.setText("INGRESAR");
         btnIngresar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -203,6 +215,16 @@ public class frameLogin extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
         new swAutenticar().execute();
     }//GEN-LAST:event_btnIngresarActionPerformed
+
+    private void txtUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUsuarioActionPerformed
+        // TODO add your handling code here:
+        new swAutenticar().execute();
+    }//GEN-LAST:event_txtUsuarioActionPerformed
+
+    private void txtClaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtClaveActionPerformed
+        // TODO add your handling code here:
+        new swAutenticar().execute();
+    }//GEN-LAST:event_txtClaveActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
