@@ -29,6 +29,11 @@ public class Utils {
         return (T) modelo.getValueAt(fila, columna);
     }
 
+    public static void AsignarValorCelda(JTable tabla, Object valor, int columna) {
+        DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
+        modelo.setValueAt(valor, tabla.getSelectedRow(), columna);
+    }
+
     public static void AsignarValorCelda(JTable tabla, Object valor, int fila, int columna) {
         DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
         modelo.setValueAt(valor, fila, columna);
@@ -62,11 +67,11 @@ public class Utils {
             tabla.getColumnModel().getColumn(columna).setWidth(0);
         }
     }
-    
+
     public static void OcultarControl(Component componet) {
         componet.setVisible(false);
     }
-    
+
     public static void Cerrar(JInternalFrame frame) {
         try {
             frame.setClosed(true);

@@ -19,9 +19,14 @@ public class Excepciones {
         FileWriter writer = null;
         try {
             writer = new FileWriter("/home/elderson/SGE_LOG.txt", true);
-            for (StackTraceElement stackTrace : throwable.getStackTrace()) {
+            if (throwable.getStackTrace().length == 0) {
                 DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
-                writer.append(String.format("%s : %s : %s : %s \n", df.format(new Date()), stackTrace.getClassName(), stackTrace.getMethodName(), stackTrace.getLineNumber()));
+                writer.append(String.format("%s : %s \n", df.format(new Date()), throwable.getMessage()));
+            } else {
+                for (StackTraceElement stackTrace : throwable.getStackTrace()) {
+                    DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+                    writer.append(String.format("%s : %s : %s : %s \n", df.format(new Date()), stackTrace.getClassName(), stackTrace.getMethodName(), stackTrace.getLineNumber()));
+                }
             }
         } catch (Exception e) {
         } finally {

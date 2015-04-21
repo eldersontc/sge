@@ -12,13 +12,13 @@ import com.sge.modulos.administracion.cliente.cliAdministracion;
 import com.sge.modulos.administracion.formularios.lisEmpleado;
 import com.sge.modulos.administracion.formularios.lisMoneda;
 import com.sge.modulos.administracion.formularios.lisNumeracion;
-import com.sge.modulos.compras.clases.Proveedor;
-import com.sge.modulos.compras.formularios.lisProveedor;
 import com.sge.modulos.inventarios.clases.Almacen;
 import com.sge.modulos.inventarios.clases.SalidaInventario;
 import com.sge.modulos.inventarios.clases.ItemSalidaInventario;
 import com.sge.modulos.inventarios.clases.Producto;
 import com.sge.modulos.inventarios.cliente.cliInventarios;
+import com.sge.modulos.ventas.clases.Cliente;
+import com.sge.modulos.ventas.formularios.lisCliente;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.Date;
@@ -230,9 +230,9 @@ public class regSalidaInventario extends frameBase<SalidaInventario> {
     Action select_clie = new AbstractAction() {
         @Override
         public void actionPerformed(ActionEvent evt) {
-            Proveedor seleccionado = ((lisProveedor) evt.getSource()).getSeleccionado();
+            Cliente seleccionado = ((lisCliente) evt.getSource()).getSeleccionado();
             if (!(seleccionado == null)) {
-                schCliente.asingValues(seleccionado.getIdProveedor(), seleccionado.getRazonSocial());
+                schCliente.asingValues(seleccionado.getIdCliente(), seleccionado.getRazonSocial());
             }
         }
     };
@@ -735,13 +735,13 @@ public class regSalidaInventario extends frameBase<SalidaInventario> {
             .addGroup(frameLayout.createSequentialGroup()
                 .addComponent(pnlTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblCliente)
-                    .addComponent(schCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(schCliente, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(lblNumero)
                         .addComponent(txtNumero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(schNumeracion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(schNumeracion, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblCliente, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -824,7 +824,7 @@ public class regSalidaInventario extends frameBase<SalidaInventario> {
     }
     
     private void schClienteSearch() {
-        VerModal(new lisProveedor(1), select_clie);
+        VerModal(new lisCliente(1), select_clie);
     }
 
     private void schResponsableSearch() {

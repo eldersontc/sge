@@ -70,6 +70,10 @@ public class frameBase<T> extends javax.swing.JInternalFrame {
         return Utils.ObtenerValorCelda(tabla, fila, columna);
     }
 
+    public void AsignarValorCelda(JTable tabla, Object valor, int columna) {
+        Utils.AsignarValorCelda(tabla, valor, columna);
+    }
+    
     public void AsignarValorCelda(JTable tabla, Object valor, int fila, int columna) {
         Utils.AsignarValorCelda(tabla, valor, fila, columna);
     }
@@ -147,6 +151,9 @@ public class frameBase<T> extends javax.swing.JInternalFrame {
         return FabricaControles.VerConfirmacion(parentComponent);
     }
 
+    public void VerAdvertencia(String message, Component parentComponent){
+        FabricaControles.VerAdvertencia(message, parentComponent);
+    }
     /////////////////////////// FABRICA DE REPORTES ////////////////////////////
     public void ImprimirSinEntidad(int idReporte, String titulo, JPanel panel) {
         FabricaReportes.ImprimirSinEntidad(idReporte, titulo, panel);

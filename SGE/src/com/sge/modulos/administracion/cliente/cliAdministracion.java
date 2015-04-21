@@ -249,6 +249,36 @@ public class cliAdministracion {
     
     ////////////////////////////////////////////////////////////////////////////
     
+    ////////////////////////////// DEPARTAMENTO ////////////////////////////////
+    
+    public String ObtenerDepartamentos(Object requestEntity) throws ClientErrorException {
+        WebTarget resource = client.target(BASE_URI).path("DepartamentoSRV");
+        resource = resource.path("ObtenerDepartamentos");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
+    }
+    
+    ////////////////////////////////////////////////////////////////////////////
+    
+    //////////////////////////////// PROVINCIA /////////////////////////////////
+    
+    public String ObtenerProvincias(Object requestEntity) throws ClientErrorException {
+        WebTarget resource = client.target(BASE_URI).path("ProvinciaSRV");
+        resource = resource.path("ObtenerProvincias");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
+    }
+    
+    ////////////////////////////////////////////////////////////////////////////
+    
+    ///////////////////////////////// DISTRITO /////////////////////////////////
+    
+    public String ObtenerDistritos(Object requestEntity) throws ClientErrorException {
+        WebTarget resource = client.target(BASE_URI).path("DistritoSRV");
+        resource = resource.path("ObtenerDistritos");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
+    }
+    
+    ////////////////////////////////////////////////////////////////////////////
+    
     public void close() {
         client.close();
     }
