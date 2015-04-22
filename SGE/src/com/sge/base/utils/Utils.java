@@ -2,12 +2,20 @@ package com.sge.base.utils;
 
 import com.sge.base.excepciones.Excepciones;
 import java.awt.Component;
+import java.util.List;
+import javax.swing.DefaultListModel;
 import javax.swing.JInternalFrame;
+import javax.swing.JList;
+import javax.swing.JTabbedPane;
 import javax.swing.JTable;
+import javax.swing.JTree;
 import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreePath;
 
 /**
  *
@@ -15,6 +23,7 @@ import javax.swing.table.TableRowSorter;
  */
 public class Utils {
 
+    ////////////////////////////////// JTABLE //////////////////////////////////
     public static boolean FilaActiva(JTable tabla) {
         return (!(tabla.getSelectedRow() == -1));
     }
@@ -68,9 +77,25 @@ public class Utils {
         }
     }
 
+    public static void AgregarOrdenamiento(JTable tabla) {
+        tabla.setRowSorter(new TableRowSorter<TableModel>(tabla.getModel()));
+    }
+
+    public static void Filtrar(JTable tabla, String filtro) {
+        TableRowSorter<TableModel> sorter = (TableRowSorter<TableModel>) tabla.getRowSorter();
+        sorter.setRowFilter(RowFilter.regexFilter(filtro));
+    }
+
+    //////////////////////////////// COMPONENT /////////////////////////////////
     public static void OcultarControl(Component componet) {
         componet.setVisible(false);
     }
+
+    public static void MostrarControl(Component componet) {
+        componet.setVisible(true);
+    }
+
+    ////////////////////////////// JINTERNALFRAME //////////////////////////////
 
     public static void Cerrar(JInternalFrame frame) {
         try {
@@ -80,12 +105,43 @@ public class Utils {
         }
     }
 
-    public static void AgregarOrdenamiento(JTable tabla) {
-        tabla.setRowSorter(new TableRowSorter<TableModel>(tabla.getModel()));
+    ////////////////////////////////// JTREE ///////////////////////////////////
+    public static void AgregarNodo(JTree tree, Object userObject) {
+        DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
+        DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
+        model.insertNodeInto(new DefaultMutableTreeNode(userObject), root, root.getChildCount());
     }
 
-    public static void Filtrar(JTable tabla, String filtro) {
-        TableRowSorter<TableModel> sorter = (TableRowSorter<TableModel>) tabla.getRowSorter();
-        sorter.setRowFilter(RowFilter.regexFilter(filtro));
+    public static void EliminarNodoActivo(JTree tree, List<?> list) {
+        DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
+        TreePath path = tree.getSelectionPath();
+        if (path != null) {
+            DefaultMutableTreeNode nodo = (DefaultMutableTreeNode) path.getLastPathComponent();
+            if (nodo.getParent() != null) {
+                model.removeNodeFromParent(nodo);
+                list.remove(nodo.getUserObject());
+            }
+        }
+    }
+
+    public static <T> T ObtenerValorNodo(TreePath path) {
+        DefaultMutableTreeNode nodo = (DefaultMutableTreeNode) path.getLastPathComponent();
+        return (T) nodo.getUserObject();
+    }
+
+    ////////////////////////////////// JLIST ///////////////////////////////////
+    public static void AgregarElemento(JList list, Object element) {
+        DefaultListModel model = (DefaultListModel) list.getModel();
+        model.addElement(element);
+    }
+
+    public static void EliminarElementoActivo(JList list) {
+        DefaultListModel model = (DefaultListModel) list.getModel();
+        model.removeElement(list.getSelectedValue());
+    }
+
+    ///////////////////////////// JTABBEDPANE //////////////////////////////////
+    public static void AsignarTitulo(JTabbedPane tabbedPane, int tab, String titulo) {
+        tabbedPane.setTitleAt(tab, titulo);
     }
 }

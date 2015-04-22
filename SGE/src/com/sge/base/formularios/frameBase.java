@@ -10,10 +10,15 @@ import com.sge.modulos.administracion.clases.ValorDefinido;
 import java.awt.Component;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.ParameterizedType;
+import java.util.List;
 import javax.swing.Action;
 import javax.swing.JInternalFrame;
+import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
 import javax.swing.JTable;
+import javax.swing.JTree;
+import javax.swing.tree.TreePath;
 
 /**
  *
@@ -41,7 +46,7 @@ public class frameBase<T> extends javax.swing.JInternalFrame {
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
     }
-    
+
     public Class<?> getClazz() throws ClassNotFoundException {
         String clazz = ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0].getTypeName();
         return Class.forName(clazz);
@@ -73,7 +78,7 @@ public class frameBase<T> extends javax.swing.JInternalFrame {
     public void AsignarValorCelda(JTable tabla, Object valor, int columna) {
         Utils.AsignarValorCelda(tabla, valor, columna);
     }
-    
+
     public void AsignarValorCelda(JTable tabla, Object valor, int fila, int columna) {
         Utils.AsignarValorCelda(tabla, valor, fila, columna);
     }
@@ -93,15 +98,19 @@ public class frameBase<T> extends javax.swing.JInternalFrame {
     public void OcultarColumna(JTable tabla, int columna) {
         Utils.OcultarColumna(tabla, columna);
     }
-    
+
     public void OcultarColumnas(JTable tabla, int[] columnas) {
         Utils.OcultarColumnas(tabla, columnas);
     }
 
-    public void OcultarControl(Component componet) {
-        Utils.OcultarControl(componet);
+    public void OcultarControl(Component component) {
+        Utils.OcultarControl(component);
     }
 
+    public void MostrarControl(Component component){
+        Utils.MostrarControl(component);
+    }
+    
     public void AgregarOrdenamiento(JTable tabla) {
         Utils.AgregarOrdenamiento(tabla);
     }
@@ -110,6 +119,29 @@ public class frameBase<T> extends javax.swing.JInternalFrame {
         Utils.Filtrar(tabla, filtro);
     }
 
+    public void AgregarNodo(JTree tree, Object userObject) {
+        Utils.AgregarNodo(tree, userObject);
+    }
+
+    public void EliminarNodoActivo(JTree tree, List<?> list) {
+        Utils.EliminarNodoActivo(tree, list);
+    }
+
+    public <T> T ObtenerValorNodo(TreePath path) {
+        return Utils.ObtenerValorNodo(path);
+    }
+
+    public void AgregarElemento(JList list, Object element) {
+        Utils.AgregarElemento(list, element);
+    }
+
+    public void EliminarElementoActivo(JList list) {
+        Utils.EliminarElementoActivo(list);
+    }
+
+    public void AsignarTitulo(JTabbedPane tabbedPane, int tab, String titulo) {
+        Utils.AsignarTitulo(tabbedPane, tab, titulo);
+    }
     ////////////////////////// FABRICA DE CONTROLES ////////////////////////////
     public void VerProcesando(JPanel panel) {
         FabricaControles.VerProcesando(panel);
@@ -151,9 +183,10 @@ public class frameBase<T> extends javax.swing.JInternalFrame {
         return FabricaControles.VerConfirmacion(parentComponent);
     }
 
-    public void VerAdvertencia(String message, Component parentComponent){
+    public void VerAdvertencia(String message, Component parentComponent) {
         FabricaControles.VerAdvertencia(message, parentComponent);
     }
+
     /////////////////////////// FABRICA DE REPORTES ////////////////////////////
     public void ImprimirSinEntidad(int idReporte, String titulo, JPanel panel) {
         FabricaReportes.ImprimirSinEntidad(idReporte, titulo, panel);

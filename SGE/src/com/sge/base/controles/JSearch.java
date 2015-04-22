@@ -80,6 +80,12 @@ public class JSearch extends JPanel {
         );
     }
 
+    @Override
+    public void setEnabled(boolean enabled) {
+        textfield.setEnabled(enabled);
+        button.setEnabled(enabled);
+    }
+    
     public String getText() {
         return textfield.getText();
     }
