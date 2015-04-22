@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.sge.modulos.ventas.entidades.Maquina" table="Maquina" schema="Ventas">
+        <id name="idMaquina" column="idMaquina">
+            <generator class="sequence">
+                <param name="sequence">Ventas.maquina_idmaquina_seq</param>
+            </generator>
+        </id>
+        <property name="descripcion" column="descripcion"/>
+        <property name="tipoMaquina" column="tipoMaquina"/>
+        <property name="cantidadCuerpos" column="cantidadCuerpos"/>
+        <property name="minimoGramaje" column="minimoGramaje"/>
+        <property name="maximoGramaje" column="maximoGramaje"/>
+        <property name="anchoMinimoPliego" column="anchoMinimoPliego"/>
+        <property name="anchoMaximoPliego" column="anchoMaximoPliego"/>
+        <property name="altoMinimoPliego" column="altoMinimoPliego"/>
+        <property name="altoMaximoPliego" column="altoMaximoPliego"/>
+        <property name="margenPinza" column="margenPinza"/>
+        <property name="margenSalida" column="margenSalida"/>
+        <property name="margenEscuadra" column="margenEscuadra"/>
+        <property name="margenContraEscuadra" column="margenContraEscuadra"/>
+        <property name="margenCalle" column="margenCalle"/>
+        <property name="minimaResolucion" column="minimaResolucion"/>
+        <property name="maximaResolucion" column="maximaResolucion"/>
+        <property name="activo" column="activo"/>
+    </class>
+</hibernate-mapping>
