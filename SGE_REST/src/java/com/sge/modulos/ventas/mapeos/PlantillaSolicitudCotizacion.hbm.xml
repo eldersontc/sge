@@ -6,7 +6,7 @@
     <class name="com.sge.modulos.ventas.entidades.PlantillaSolicitudCotizacion" table="PlantillaSolicitudCotizacion" schema="Ventas">
         <id name="idPlantillaSolicitudCotizacion" column="idPlantillaSolicitudCotizacion">
             <generator class="sequence">
-                <param name="sequence">Ventas.plantillasolicitudcotizacion_idplantillasolicitudcotizacion_seq</param>
+                <param name="sequence">ventas.plantillasolicitudcotizacion_idplantillasolicitudcotizacion_seq</param>
             </generator>
         </id>
         <property name="nombre" column="nombre"/>
