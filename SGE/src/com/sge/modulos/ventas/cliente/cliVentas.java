@@ -93,6 +93,74 @@ public class cliVentas {
     
     ////////////////////////////////////////////////////////////////////////////
     
+    ////////////////////////////////// SERVICIO ////////////////////////////////
+    
+    public String ObtenerServicios(Object requestEntity) throws ClientErrorException {
+        WebTarget resource = client.target(BASE_URI).path("ServicioSRV");
+        resource = resource.path("ObtenerServicios");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
+    }
+    
+    public String ObtenerServicio(Object requestEntity) throws ClientErrorException {
+        WebTarget resource = client.target(BASE_URI).path("ServicioSRV");
+        resource = resource.path("ObtenerServicio");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
+    }
+    
+    public String RegistrarServicio(Object requestEntity) throws ClientErrorException {
+        WebTarget resource = client.target(BASE_URI).path("ServicioSRV");
+        resource = resource.path("RegistrarServicio");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
+    }
+    
+    public String ActualizarServicio(Object requestEntity) throws ClientErrorException {
+        WebTarget resource = client.target(BASE_URI).path("ServicioSRV");
+        resource = resource.path("ActualizarServicio");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
+    }
+    
+    public String EliminarServicio(Object requestEntity) throws ClientErrorException {
+        WebTarget resource = client.target(BASE_URI).path("ServicioSRV");
+        resource = resource.path("EliminarServicio");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
+    }
+    
+    ////////////////////////////////////////////////////////////////////////////
+    
+    /////////////////////////////////// MAQUINA ////////////////////////////////
+    
+    public String ObtenerMaquinas(Object requestEntity) throws ClientErrorException {
+        WebTarget resource = client.target(BASE_URI).path("MaquinaSRV");
+        resource = resource.path("ObtenerMaquinas");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
+    }
+    
+    public String ObtenerMaquina(Object requestEntity) throws ClientErrorException {
+        WebTarget resource = client.target(BASE_URI).path("MaquinaSRV");
+        resource = resource.path("ObtenerMaquina");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
+    }
+    
+    public String RegistrarMaquina(Object requestEntity) throws ClientErrorException {
+        WebTarget resource = client.target(BASE_URI).path("MaquinaSRV");
+        resource = resource.path("RegistrarMaquina");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
+    }
+    
+    public String ActualizarMaquina(Object requestEntity) throws ClientErrorException {
+        WebTarget resource = client.target(BASE_URI).path("MaquinaSRV");
+        resource = resource.path("ActualizarMaquina");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
+    }
+    
+    public String EliminarMaquina(Object requestEntity) throws ClientErrorException {
+        WebTarget resource = client.target(BASE_URI).path("MaquinaSRV");
+        resource = resource.path("EliminarMaquina");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
+    }
+    
+    ////////////////////////////////////////////////////////////////////////////
+    
     public void close() {
         client.close();
     }
