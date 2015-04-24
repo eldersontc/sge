@@ -3,10 +3,9 @@ package com.sge.modulos.ventas.formularios;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.sge.base.formularios.frameBase;
-import com.sge.modulos.ventas.clases.Maquina;
+import com.sge.modulos.ventas.clases.PlantillaSolicitudCotizacion;
 import com.sge.modulos.ventas.cliente.cliVentas;
 import java.awt.event.ActionEvent;
-import java.util.ArrayList;
 import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -18,21 +17,19 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author elderson
  */
-public class lisMaquina extends frameBase<Maquina> {
+public class lisPlantillaSC extends frameBase<PlantillaSolicitudCotizacion> {
 
     /**
-     * Creates new form lisMaquina
+     * Creates new form lisPlantillaSolicitudCotizacion
      */
-    public lisMaquina(int modo) {
+    public lisPlantillaSC(int modo) {
         initComponents();
         Init(modo);
     }
 
     private int modo = 0;
 
-    private Maquina seleccionado;
-
-    private List<Maquina> seleccionados = new ArrayList<>();
+    private PlantillaSolicitudCotizacion seleccionado;
 
     ImageIcon Icon_Edit = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/edit-16.png"));
     ImageIcon Icon_Dele = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/delete-16.png"));
@@ -40,18 +37,18 @@ public class lisMaquina extends frameBase<Maquina> {
     Action edit = new AbstractAction() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            EditarMaquina();
+            EditarPlantillaSC();
         }
     };
 
     Action dele = new AbstractAction() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            EliminarMaquina();
+            EliminarPlantillaSC();
         }
     };
 
-    public class swObtenerMaquinas extends SwingWorker {
+    public class swObtenerPlantillasSC extends SwingWorker {
 
         @Override
         protected Object doInBackground() {
@@ -59,7 +56,7 @@ public class lisMaquina extends frameBase<Maquina> {
             cliVentas cliente = new cliVentas();
             String json = "";
             try {
-                json = cliente.ObtenerMaquinas(new Gson().toJson(""));
+                json = cliente.ObtenerPlantillasSolicitudCotizacion(new Gson().toJson(""));
             } catch (Exception e) {
                 OcultarCargando(frame);
                 cancel(false);
@@ -77,7 +74,7 @@ public class lisMaquina extends frameBase<Maquina> {
                 String[] resultado = new Gson().fromJson(json, String[].class);
 
                 if (resultado[0].equals("true")) {
-                    DefaultTableModel modelo = (DefaultTableModel) tbMaquinas.getModel();
+                    DefaultTableModel modelo = (DefaultTableModel) tbPlantillas.getModel();
                     modelo.setRowCount(0);
 
                     List<Object[]> filas = (List<Object[]>) new Gson().fromJson(resultado[1], new TypeToken<List<Object[]>>() {
@@ -87,9 +84,9 @@ public class lisMaquina extends frameBase<Maquina> {
                         modelo.addRow(new Object[]{false, ((Double) fila[0]).intValue(), fila[1], fila[2], fila[3], Icon_Edit, Icon_Dele});
                     }
 
-                    AgregarBoton(tbMaquinas, edit, 5);
-                    AgregarBoton(tbMaquinas, dele, 6);
-                    AgregarOrdenamiento(tbMaquinas);
+                    AgregarBoton(tbPlantillas, edit, 5);
+                    AgregarBoton(tbPlantillas, dele, 6);
+                    AgregarOrdenamiento(tbPlantillas);
                 }
                 OcultarCargando(frame);
             } catch (Exception e) {
@@ -99,22 +96,22 @@ public class lisMaquina extends frameBase<Maquina> {
         }
     }
 
-    public class swEliminarMaquina extends SwingWorker {
+    public class swEliminarPlantillaSC extends SwingWorker {
 
         @Override
         protected Object doInBackground() throws Exception {
             VerCargando(frame);
-            cliVentas cliente = new cliVentas();
+            cliVentas plantillaSC = new cliVentas();
             String json = "";
             try {
-                int idMaquina = ObtenerValorCelda(tbMaquinas, 1);
-                json = cliente.EliminarMaquina(new Gson().toJson(idMaquina));
+                int idPlantillaSC = ObtenerValorCelda(tbPlantillas, 1);
+                json = plantillaSC.EliminarPlantillaSolicitudCotizacion(new Gson().toJson(idPlantillaSC));
             } catch (Exception e) {
                 OcultarCargando(frame);
                 cancel(false);
                 ControlarExcepcion(e);
             } finally {
-                cliente.close();
+                plantillaSC.close();
             }
             return json;
         }
@@ -125,7 +122,7 @@ public class lisMaquina extends frameBase<Maquina> {
                 String json = get().toString();
                 String[] resultado = new Gson().fromJson(json, String[].class);
                 if (resultado[0].equals("true")) {
-                    new swObtenerMaquinas().execute();
+                    new swObtenerPlantillasSC().execute();
                 } else {
                     OcultarCargando(frame);
                 }
@@ -140,41 +137,33 @@ public class lisMaquina extends frameBase<Maquina> {
         this.modo = modo;
         switch (this.modo) {
             case 0:
-                OcultarColumna(tbMaquinas, 0);
+                OcultarColumna(tbPlantillas, 0);
                 OcultarControl(btnSeleccionar);
                 break;
             case 1:
-                OcultarColumnas(tbMaquinas, new int[]{0, 5, 6});
-                OcultarControl(btnNuevo);
-                break;
-            case 2:
-                OcultarColumnas(tbMaquinas, new int[]{5, 6});
+                OcultarColumnas(tbPlantillas, new int[]{0, 5, 6});
                 OcultarControl(btnNuevo);
                 break;
         }
-        new swObtenerMaquinas().execute();
+        new swObtenerPlantillasSC().execute();
     }
 
-    public void EditarMaquina() {
-        int idMaquina = ObtenerValorCelda(tbMaquinas, 1);
-        regMaquina regMaquina = new regMaquina("EDITAR ", idMaquina);
-        this.getParent().add(regMaquina);
-        regMaquina.setVisible(true);
+    public void EditarPlantillaSC() {
+        int idPlantillaSC = ObtenerValorCelda(tbPlantillas, 1);
+        regPlantillaSC regPlantillaSC = new regPlantillaSC("EDITAR ", idPlantillaSC);
+        this.getParent().add(regPlantillaSC);
+        regPlantillaSC.setVisible(true);
     }
 
-    public void EliminarMaquina() {
+    public void EliminarPlantillaSC() {
         int confirmacion = VerConfirmacion(this);
         if (confirmacion == 0) {
-            new swEliminarMaquina().execute();
+            new swEliminarPlantillaSC().execute();
         }
     }
 
-    public Maquina getSeleccionado() {
+    public PlantillaSolicitudCotizacion getSeleccionado() {
         return seleccionado;
-    }
-
-    public List<Maquina> getSeleccionados() {
-        return seleccionados;
     }
 
     /**
@@ -188,7 +177,7 @@ public class lisMaquina extends frameBase<Maquina> {
 
         frame = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tbMaquinas = new javax.swing.JTable();
+        tbPlantillas = new javax.swing.JTable();
         pnlTitulo = new javax.swing.JPanel();
         lblTitulo = new javax.swing.JLabel();
         btnNuevo = new javax.swing.JButton();
@@ -202,12 +191,12 @@ public class lisMaquina extends frameBase<Maquina> {
         frame.setBackground(java.awt.Color.white);
         frame.setBorder(null);
 
-        tbMaquinas.setModel(new javax.swing.table.DefaultTableModel(
+        tbPlantillas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "CHECK", "IDMAQUINA", "DESCRIPCION", "TIPO", "ACTIVO", "EDITAR", "ELIMINAR"
+                "CHECK", "IDPLANTILLA", "NOMBRE", "LINEA DE PRODUCCION", "ACTIVO", "EDITAR", "ELIMINAR"
             }
         ) {
             Class[] types = new Class [] {
@@ -225,13 +214,16 @@ public class lisMaquina extends frameBase<Maquina> {
                 return canEdit [columnIndex];
             }
         });
-        tbMaquinas.setRowHeight(25);
-        tbMaquinas.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        jScrollPane1.setViewportView(tbMaquinas);
-        if (tbMaquinas.getColumnModel().getColumnCount() > 0) {
-            tbMaquinas.getColumnModel().getColumn(1).setMinWidth(0);
-            tbMaquinas.getColumnModel().getColumn(1).setPreferredWidth(0);
-            tbMaquinas.getColumnModel().getColumn(1).setMaxWidth(0);
+        tbPlantillas.setRowHeight(25);
+        tbPlantillas.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jScrollPane1.setViewportView(tbPlantillas);
+        if (tbPlantillas.getColumnModel().getColumnCount() > 0) {
+            tbPlantillas.getColumnModel().getColumn(1).setMinWidth(0);
+            tbPlantillas.getColumnModel().getColumn(1).setPreferredWidth(0);
+            tbPlantillas.getColumnModel().getColumn(1).setMaxWidth(0);
+            tbPlantillas.getColumnModel().getColumn(2).setPreferredWidth(200);
+            tbPlantillas.getColumnModel().getColumn(5).setPreferredWidth(20);
+            tbPlantillas.getColumnModel().getColumn(6).setPreferredWidth(20);
         }
 
         pnlTitulo.setBackground(new java.awt.Color(67, 100, 130));
@@ -240,7 +232,7 @@ public class lisMaquina extends frameBase<Maquina> {
         lblTitulo.setFont(new java.awt.Font("Ubuntu", 1, 18)); // NOI18N
         lblTitulo.setForeground(java.awt.Color.white);
         lblTitulo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sge/base/imagenes/list-view-16.png"))); // NOI18N
-        lblTitulo.setText("LISTADO DE MÁQUINAS");
+        lblTitulo.setText("LISTADO DE PLANTILLAS DE SOLICITUD DE COTIZACIÓN");
 
         btnNuevo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sge/base/imagenes/add-16.png"))); // NOI18N
         btnNuevo.setText("NUEVO");
@@ -257,7 +249,7 @@ public class lisMaquina extends frameBase<Maquina> {
             .addGroup(pnlTituloLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lblTitulo)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 300, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 62, Short.MAX_VALUE)
                 .addComponent(btnNuevo)
                 .addContainerGap())
         );
@@ -302,7 +294,7 @@ public class lisMaquina extends frameBase<Maquina> {
             .addGroup(frameLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 614, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 653, Short.MAX_VALUE)
                     .addGroup(frameLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btnSeleccionar, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -326,7 +318,7 @@ public class lisMaquina extends frameBase<Maquina> {
                         .addComponent(txtFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(btnRefrescar, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 238, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 283, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnSeleccionar)
                 .addGap(9, 9, 9))
@@ -348,46 +340,36 @@ public class lisMaquina extends frameBase<Maquina> {
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
         // TODO add your handling code here:
-        regMaquina regMaquina = new regMaquina("NUEVO ", 0);
-        this.getParent().add(regMaquina);
-        regMaquina.setVisible(true);
+        regPlantillaSC regPlantillaSolicitudCotizacion = new regPlantillaSC("NUEVO ", 0);
+        this.getParent().add(regPlantillaSolicitudCotizacion);
+        regPlantillaSolicitudCotizacion.setVisible(true);
     }//GEN-LAST:event_btnNuevoActionPerformed
 
     private void btnSeleccionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeleccionarActionPerformed
         // TODO add your handling code here:
         switch (this.modo) {
             case 1:
-                if (FilaActiva(tbMaquinas)) {
-                    Maquina maquina = new Maquina();
-                    maquina.setIdMaquina(ObtenerValorCelda(tbMaquinas, 1));
-                    maquina.setDescripcion(ObtenerValorCelda(tbMaquinas, 2));
-                    seleccionado = maquina;
+                if (FilaActiva(tbPlantillas)) {
+                    PlantillaSolicitudCotizacion plantillaSC = new PlantillaSolicitudCotizacion();
+                    plantillaSC.setIdPlantillaSolicitudCotizacion(ObtenerValorCelda(tbPlantillas, 1));
+                    plantillaSC.setNombre(ObtenerValorCelda(tbPlantillas, 2));
+                    seleccionado = plantillaSC;
                 }
                 Cerrar();
                 break;
             case 2:
-                for (int i = 0; i < tbMaquinas.getRowCount(); i++) {
-                    boolean check = ObtenerValorCelda(tbMaquinas, i, 0);
-                    if (check) {
-                        Maquina maquina = new Maquina();
-                        maquina.setIdMaquina(ObtenerValorCelda(tbMaquinas, i, 1));
-                        maquina.setDescripcion(ObtenerValorCelda(tbMaquinas, i, 2));
-                        seleccionados.add(maquina);
-                    }
-                }
-                Cerrar();
                 break;
         }
     }//GEN-LAST:event_btnSeleccionarActionPerformed
 
     private void txtFiltroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFiltroActionPerformed
         // TODO add your handling code here:
-        Filtrar(tbMaquinas, txtFiltro.getText());
+        Filtrar(tbPlantillas, txtFiltro.getText());
     }//GEN-LAST:event_txtFiltroActionPerformed
 
     private void btnRefrescarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefrescarActionPerformed
         // TODO add your handling code here:
-        new swObtenerMaquinas().execute();
+        new swObtenerPlantillasSC().execute();
     }//GEN-LAST:event_btnRefrescarActionPerformed
 
 
@@ -400,7 +382,7 @@ public class lisMaquina extends frameBase<Maquina> {
     private javax.swing.JLabel lblFiltro;
     private javax.swing.JLabel lblTitulo;
     private javax.swing.JPanel pnlTitulo;
-    private javax.swing.JTable tbMaquinas;
+    private javax.swing.JTable tbPlantillas;
     private javax.swing.JTextField txtFiltro;
     // End of variables declaration//GEN-END:variables
 }

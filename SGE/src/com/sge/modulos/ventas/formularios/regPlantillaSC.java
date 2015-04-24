@@ -7,6 +7,7 @@ import com.sge.modulos.inventarios.clases.Producto;
 import com.sge.modulos.inventarios.formularios.lisProducto;
 import com.sge.modulos.ventas.clases.ItemPlantillaSolicitudCotizacion;
 import com.sge.modulos.ventas.clases.PlantillaSolicitudCotizacion;
+import com.sge.modulos.ventas.clases.Servicio;
 import com.sge.modulos.ventas.cliente.cliVentas;
 import java.awt.event.ActionEvent;
 import java.util.List;
@@ -19,12 +20,12 @@ import javax.swing.SwingWorker;
  *
  * @author elderson
  */
-public class regPlantillaSolicitudCotizacion extends frameBase<PlantillaSolicitudCotizacion> {
+public class regPlantillaSC extends frameBase<PlantillaSolicitudCotizacion> {
 
     /**
      * Creates new form regPlantillaSolicitudCotizacion
      */
-    public regPlantillaSolicitudCotizacion(String operacion, int idPlantilla) {
+    public regPlantillaSC(String operacion, int idPlantilla) {
         initComponents();
         Init(operacion, idPlantilla);
     }
@@ -33,7 +34,17 @@ public class regPlantillaSolicitudCotizacion extends frameBase<PlantillaSolicitu
 
     private ItemPlantillaSolicitudCotizacion item;
 
-    Action sele_prod = new AbstractAction() {
+    Action sele_serv = new AbstractAction() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            Servicio seleccionado = ((lisServicio) e.getSource()).getSeleccionado();
+            if (!(seleccionado == null)) {
+                schServicioImpresion.asingValues(seleccionado.getIdServicio(), seleccionado.getDescripcion());
+            }
+        }
+    };
+    
+    Action sele_mate = new AbstractAction() {
         @Override
         public void actionPerformed(ActionEvent e) {
             Producto seleccionado = ((lisProducto) e.getSource()).getSeleccionado();
@@ -533,11 +544,12 @@ public class regPlantillaSolicitudCotizacion extends frameBase<PlantillaSolicitu
     }// </editor-fold>//GEN-END:initComponents
 
     private void schServicioImpresionSearch() {
-        //VerModal(new lisEmpleado(1), sele_vend);
+        String filtro = "WHERE Servicio.servicioImpresion = TRUE";
+        VerModal(new lisServicio(1, filtro), sele_serv);
     }
 
     private void schMaterialSearch() {
-        VerModal(new lisProducto(1), sele_prod);
+        VerModal(new lisProducto(1), sele_mate);
     }
 
     private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
