@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.sge.modulos.ventas.entidades.ItemSolicitudCotizacion" table="ItemSolicitudCotizacion" schema="Ventas">
+        <id name="idItemSolicitudCotizacion" column="idItemSolicitudCotizacion">
+            <generator class="sequence">
+                <param name="sequence">ventas.itemsolicitudcotizacion_iditemsolicitudcotizacion_seq</param>
+            </generator>
+        </id>
+        <property name="idSolicitudCotizacion" column="idSolicitudCotizacion"/>
+        <property name="nombre" column="nombre"/>
+        <property name="idServicioImpresion" column="idServicioImpresion"/>
+        <property name="nombreServicioImpresion" column="nombreServicioImpresion"/>
+        <property name="idMaquina" column="idMaquina"/>
+        <property name="descripcionMaquina" column="descripcionMaquina"/>
+        <property name="idMaterial" column="idMaterial"/>
+        <property name="nombreMaterial" column="nombreMaterial"/>
+        <property name="unidadMedidaAbierta" column="unidadMedidaAbierta"/>
+        <property name="medidaAbierta" column="medidaAbierta"/>
+        <property name="medidaCerrada" column="medidaCerrada"/>
+        <property name="tiraRetira" column="tiraRetira"/>
+        <property name="grafico" column="grafico"/>
+        <property name="material" column="material"/>
+        <property name="servicioImpresion" column="servicioImpresion"/>
+        <property name="fondo" column="fondo"/>
+        <property name="tipoUnidad" column="tipoUnidad"/>
+        <property name="largoMedidaAbierta" column="largoMedidaAbierta"/>
+        <property name="altoMedidaAbierta" column="altoMedidaAbierta"/>
+        <property name="largoMedidaCerrada" column="largoMedidaCerrada"/>
+        <property name="altoMedidaCerrada" column="altoMedidaCerrada"/>
+        <property name="tiraColor" column="tiraColor"/>
+        <property name="retiraColor" column="retiraColor"/>
+        <property name="dFondo" column="dFondo"/>
+        <property name="acabados" column="acabados"/>
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.sge.modulos.ventas.entidades.SolicitudCotizacioc" table="SolicitudCotizacion" schema="Ventas">
+        <id name="idSolicitudCotizacion" column="idSolicitudCotizacion">
+            <generator class="sequence">
+                <param name="sequence">Ventas.solicitudCotizacion_idsolicitudCotizacion_seq</param>
+            </generator>
+        </id>
+        <property name="numero" column="numero"/>
+        <property name="numeracionManual" column="numeracionManual"/>
+        <property name="idNumeracion" column="idNumeracion"/>
+        <property name="descripcionNumeracion" column="descripcionNumeracion"/>
+        <property name="fechaCreacion" column="fechaCreacion"/>
+        <property name="grupo" column="grupo"/>
+        <property name="idCliente" column="idCliente"/>
+        <property name="razonSocialCliente" column="razonSocialCliente"/>
+        <property name="idMoneda" column="idMoneda"/>
+        <property name="simboloMoneda" column="simboloMoneda"/>
+        <property name="idVendedor" column="idVendedor"/>
+        <property name="nombreVendedor" column="nombreVendedor"/>
+        <property name="idFormaPago" column="idFormaPago"/>
+        <property name="descripcionFormaPago" column="descripcionFormaPago"/>
+        <property name="lineaProduccion" column="lineaProduccion"/>
+        <property name="cantidad" column="lineaProduccion"/>
+        <property name="observacion" column="lineaProduccion"/>
+        <property name="estado" column="lineaProduccion"/>
+    </class>
+</hibernate-mapping>
