@@ -24,5 +24,6 @@
         <property name="servicioImpresion" column="servicioImpresion"/>
         <property name="fondo" column="fondo"/>
         <property name="tipoUnidad" column="tipoUnidad"/>
+        <property name="nombreTipoUnidad" column="nombreTipoUnidad"/>
     </class>
 </hibernate-mapping>
