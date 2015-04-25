@@ -17,6 +17,7 @@ public class SolicitudCotizacion {
     private String descripcionNumeracion;
     private Date fechaCreacion;
     private String grupo;
+    private String descripcion;
     private int idCliente;
     private String razonSocialCliente;
     private int idMoneda;
@@ -91,6 +92,14 @@ public class SolicitudCotizacion {
         this.grupo = grupo;
     }
 
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+    
     public int getIdCliente() {
         return idCliente;
     }

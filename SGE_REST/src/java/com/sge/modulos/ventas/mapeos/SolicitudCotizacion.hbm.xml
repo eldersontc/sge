@@ -15,6 +15,7 @@
         <property name="descripcionNumeracion" column="descripcionNumeracion"/>
         <property name="fechaCreacion" column="fechaCreacion"/>
         <property name="grupo" column="grupo"/>
+        <property name="descripcion" column="descripcion"/>
         <property name="idCliente" column="idCliente"/>
         <property name="razonSocialCliente" column="razonSocialCliente"/>
         <property name="idMoneda" column="idMoneda"/>
