@@ -19,7 +19,7 @@ import javax.ws.rs.core.UriInfo;
  */
 @Path("ValorDefinidoSRV")
 public class ValorDefinidoSRV {
-    
+
     @Context
     private UriInfo context;
 
@@ -45,7 +45,7 @@ public class ValorDefinidoSRV {
         }
         return new Gson().toJson(resultado);
     }
-    
+
     @POST
     @Path("ObtenerValorDefinido")
     @Consumes("application/json")
@@ -65,7 +65,7 @@ public class ValorDefinidoSRV {
         }
         return new Gson().toJson(resultado);
     }
-    
+
     @POST
     @Path("RegistrarValorDefinido")
     @Consumes("application/json")
@@ -84,7 +84,7 @@ public class ValorDefinidoSRV {
         }
         return new Gson().toJson(resultado);
     }
-    
+
     @POST
     @Path("ActualizarValorDefinido")
     @Consumes("application/json")
@@ -103,7 +103,7 @@ public class ValorDefinidoSRV {
         }
         return new Gson().toJson(resultado);
     }
-    
+
     @POST
     @Path("EliminarValorDefinido")
     @Consumes("application/json")
@@ -115,6 +115,27 @@ public class ValorDefinidoSRV {
             ValorDefinidoDTO valoresDefinidosDTO = new ValorDefinidoDTO();
             valoresDefinidosDTO.EliminarValorDefinido(idValoresDefinidos);
             resultado.add(new Gson().toJson(true));
+        } catch (Exception e) {
+            resultado.clear();
+            resultado.add(new Gson().toJson(false));
+            resultado.add(new Gson().toJson(e));
+        }
+        return new Gson().toJson(resultado);
+    }
+
+    @POST
+    @Path("ObtenerValorDefinidoPorUsuarioYEntidad")
+    @Consumes("application/json")
+    @Produces("application/json")
+    public String ObtenerValorDefinidoPorUsuarioYEntidad(String json) {
+        List<String> resultado = new ArrayList<>();
+        try {
+            int[] ids = new Gson().fromJson(json, int[].class);
+            ValorDefinidoDTO valorDefinidoDTO = new ValorDefinidoDTO();
+            ValorDefinido valorDefinido = valorDefinidoDTO.ObtenerValorDefinidoPorUsuarioYEntidad(ids[0], ids[1]);
+            resultado.add(new Gson().toJson(true));
+            resultado.add(new Gson().toJson(new Date()));
+            resultado.add(valorDefinido == null ? "" : valorDefinido.getJson());
         } catch (Exception e) {
             resultado.clear();
             resultado.add(new Gson().toJson(false));
