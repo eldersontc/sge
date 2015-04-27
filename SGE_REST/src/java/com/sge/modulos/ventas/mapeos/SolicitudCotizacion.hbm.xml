@@ -3,7 +3,7 @@
 "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
-    <class name="com.sge.modulos.ventas.entidades.SolicitudCotizacioc" table="SolicitudCotizacion" schema="Ventas">
+    <class name="com.sge.modulos.ventas.entidades.SolicitudCotizacion" table="SolicitudCotizacion" schema="Ventas">
         <id name="idSolicitudCotizacion" column="idSolicitudCotizacion">
             <generator class="sequence">
                 <param name="sequence">Ventas.solicitudCotizacion_idsolicitudCotizacion_seq</param>
@@ -25,8 +25,8 @@
         <property name="idFormaPago" column="idFormaPago"/>
         <property name="descripcionFormaPago" column="descripcionFormaPago"/>
         <property name="lineaProduccion" column="lineaProduccion"/>
-        <property name="cantidad" column="lineaProduccion"/>
-        <property name="observacion" column="lineaProduccion"/>
-        <property name="estado" column="lineaProduccion"/>
+        <property name="cantidad" column="cantidad"/>
+        <property name="observacion" column="observacion"/>
+        <property name="estado" column="estado"/>
     </class>
 </hibernate-mapping>
