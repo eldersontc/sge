@@ -161,6 +161,40 @@ public class cliVentas {
     
     ////////////////////////////////////////////////////////////////////////////
     
+    ///////////////////// SOLICITUD COTIZACION ///////////////////////
+    
+    public String ObtenerSolicitudesCotizacion(Object requestEntity) throws ClientErrorException {
+        WebTarget resource = client.target(BASE_URI).path("SolicitudCotizacionSRV");
+        resource = resource.path("ObtenerSolicitudesCotizacion");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
+    }
+    
+    public String ObtenerSolicitudCotizacion(Object requestEntity) throws ClientErrorException {
+        WebTarget resource = client.target(BASE_URI).path("SolicitudCotizacionSRV");
+        resource = resource.path("ObtenerSolicitudCotizacion");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
+    }
+    
+    public String RegistrarSolicitudCotizacion(Object requestEntity) throws ClientErrorException {
+        WebTarget resource = client.target(BASE_URI).path("SolicitudCotizacionSRV");
+        resource = resource.path("RegistrarSolicitudCotizacion");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
+    }
+    
+    public String ActualizarSolicitudCotizacion(Object requestEntity) throws ClientErrorException {
+        WebTarget resource = client.target(BASE_URI).path("SolicitudCotizacionSRV");
+        resource = resource.path("ActualizarSolicitudCotizacion");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
+    }
+    
+    public String EliminarSolicitudCotizacion(Object requestEntity) throws ClientErrorException {
+        WebTarget resource = client.target(BASE_URI).path("SolicitudCotizacionSRV");
+        resource = resource.path("EliminarSolicitudCotizacion");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
+    }
+    
+    ////////////////////////////////////////////////////////////////////////////
+    
     public void close() {
         client.close();
     }
