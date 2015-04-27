@@ -81,6 +81,8 @@ public class frameLogin extends javax.swing.JInternalFrame {
                             throw new Exception("CLAVE INCORRECTA.");
                         }
                     }
+                } else {
+                    Excepciones.Controlar(resultado, frame);
                 }
                 FabricaControles.OcultarProcesando(frame);
             } catch (Exception e) {

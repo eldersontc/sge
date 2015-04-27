@@ -11,6 +11,8 @@ import com.sge.modulos.administracion.cliente.cliAdministracion;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.lang.reflect.Constructor;
 import java.net.URL;
 import java.text.SimpleDateFormat;
@@ -23,6 +25,8 @@ import javax.swing.JInternalFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
+import javax.swing.SwingUtilities;
 
 /**
  *
@@ -39,7 +43,7 @@ public class SGE extends javax.swing.JFrame {
     }
 
     private Usuario usuario;
-    
+
     private Date fechaServidor;
 
     public void AsignarUsuario(Object[] array) {
@@ -51,8 +55,8 @@ public class SGE extends javax.swing.JFrame {
     public Usuario getUsuario() {
         return usuario;
     }
-    
-    public void AsignarFechaServidor(Date fechaServidor){
+
+    public void AsignarFechaServidor(Date fechaServidor) {
         this.fechaServidor = fechaServidor;
     }
 
@@ -103,6 +107,26 @@ public class SGE extends javax.swing.JFrame {
                 }.getType());
                 JMenuBar menuBar = new JMenuBar();
                 menuBar.setPreferredSize(new java.awt.Dimension(128, 40));
+                menuBar.addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mouseReleased(MouseEvent evt) {
+                        if (SwingUtilities.isRightMouseButton(evt)) {
+                            if (!pnlBanner.isVisible()) {
+                                JPopupMenu popup = new JPopupMenu();
+                                popup.setLayout(new java.awt.BorderLayout());
+                                JMenuItem menuItem = new JMenuItem("VER BANNER", new ImageIcon(getClass().getResource("/com/sge/base/imagenes/visible-16.png")));
+                                menuItem.addActionListener(new ActionListener() {
+                                    @Override
+                                    public void actionPerformed(ActionEvent e) {
+                                        pnlBanner.setVisible(true);
+                                    }
+                                });
+                                popup.add(menuItem);
+                                popup.show(menuBar, evt.getPoint().x, evt.getPoint().y);
+                            }
+                        }
+                    }
+                });
                 for (Object[] itemN1 : menus) {
                     JMenu menuN1 = new JMenu(itemN1[2].toString());
                     URL urlN1 = getClass().getResource("/com/sge/base/imagenes/" + itemN1[4]);
@@ -203,6 +227,11 @@ public class SGE extends javax.swing.JFrame {
 
         pnlBanner.setBackground(new java.awt.Color(67, 100, 130));
         pnlBanner.setBorder(null);
+        pnlBanner.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                pnlBannerMouseReleased(evt);
+            }
+        });
 
         lblTituloBanner.setFont(new java.awt.Font("Ubuntu", 1, 20)); // NOI18N
         lblTituloBanner.setForeground(java.awt.Color.white);
@@ -318,6 +347,23 @@ public class SGE extends javax.swing.JFrame {
         OcultarBanner();
         FabricaControles.VerModal(jdpPrincipal, new frameLogin(), close);
     }//GEN-LAST:event_btnSalirActionPerformed
+
+    private void pnlBannerMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pnlBannerMouseReleased
+        // TODO add your handling code here:
+        if (SwingUtilities.isRightMouseButton(evt)) {
+            JPopupMenu popup = new JPopupMenu();
+            popup.setLayout(new java.awt.BorderLayout());
+            JMenuItem menuItem = new JMenuItem("OCULTAR BANNER", new ImageIcon(getClass().getResource("/com/sge/base/imagenes/invisible-16.png")));
+            menuItem.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    pnlBanner.setVisible(false);
+                }
+            });
+            popup.add(menuItem);
+            popup.show(pnlBanner, evt.getPoint().x, evt.getPoint().y);
+        }
+    }//GEN-LAST:event_pnlBannerMouseReleased
 
     /**
      * @param args the command line arguments

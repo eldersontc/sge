@@ -58,9 +58,6 @@ public class Excepciones {
                 Exception exception = new Gson().fromJson(resultado[1], Exception.class);
                 Throwable throwable = exception.getCause();
                 if (throwable != null) {
-                    while (throwable.getCause() != null) {
-                        throwable = exception.getCause();
-                    }
                     EscribirLog(throwable);
                     FabricaControles.VerAdvertencia(throwable.getMessage(), component);
                 } else {
@@ -83,9 +80,6 @@ public class Excepciones {
     public static void Controlar(Exception exception, Component component) {
         Throwable throwable = exception.getCause();
         if (throwable != null) {
-            while (throwable.getCause() != null) {
-                throwable = exception.getCause();
-            }
             EscribirLog(throwable);
             FabricaControles.VerAdvertencia(throwable.getMessage(), component);
         } else {
