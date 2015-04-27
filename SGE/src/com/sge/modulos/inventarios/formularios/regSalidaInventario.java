@@ -107,13 +107,13 @@ public class regSalidaInventario extends frameBase<SalidaInventario> {
             double totalItem = ObtenerValorCelda(tbItems, i, 10);
             subTotal += totalItem;
         }
-        
+
         getEntidad().setSubTotal(subTotal);
         double montoImpuesto = subTotal * (getEntidad().getPorcentajeImpuesto() / 100);
         getEntidad().setMontoImpuesto(montoImpuesto);
         double total = subTotal + montoImpuesto;
         getEntidad().setTotal(total);
-        
+
         txtSubTotal.setValue(subTotal);
         txtImpuesto.setValue(montoImpuesto);
         txtTotal.setValue(total);
@@ -213,12 +213,12 @@ public class regSalidaInventario extends frameBase<SalidaInventario> {
                 cliAdministracion cliente = new cliAdministracion();
                 String json = cliente.ObtenerNumeracion(new Gson().toJson(seleccionado.getIdNumeracion()));
                 String[] resultado = new Gson().fromJson(json, String[].class);
-                if(resultado[0].equals("true")){
+                if (resultado[0].equals("true")) {
                     Numeracion numeracion = new Gson().fromJson(resultado[1], Numeracion.class);
                     schNumeracion.asingValues(numeracion.getIdNumeracion(), numeracion.getDescripcion());
                     getEntidad().setNumeracionManual(numeracion.isManual());
                     txtNumero.setEnabled(numeracion.isManual());
-                    if(numeracion.isTieneImpuesto()){
+                    if (numeracion.isTieneImpuesto()) {
                         getEntidad().setPorcentajeImpuesto(numeracion.getPorcentajeImpuesto());
                         lblPorcentajeImpuesto.setText(String.format("(%s%s)", numeracion.getPorcentajeImpuesto(), "%"));
                     }
@@ -226,7 +226,7 @@ public class regSalidaInventario extends frameBase<SalidaInventario> {
             }
         }
     };
-    
+
     Action select_clie = new AbstractAction() {
         @Override
         public void actionPerformed(ActionEvent evt) {
@@ -272,13 +272,13 @@ public class regSalidaInventario extends frameBase<SalidaInventario> {
         @Override
         protected Object doInBackground() {
             VerCargando(frame);
-            cliInventarios cliente = new cliInventarios();
+            cliAdministracion cliente = new cliAdministracion();
             try {
-                String json = cliente.ObtenerValoresDefinidosSalidaInventario(new Gson().toJson(getUsuario().getIdUsuario()));
+                String json = cliente.ObtenerValorDefinidoPorUsuarioYEntidad(new Gson().toJson(new int[]{getUsuario().getIdUsuario(), 2}));
                 String[] resultado = new Gson().fromJson(json, String[].class);
                 if (resultado[0].equals("true")) {
-                    if(resultado[2].isEmpty()){
-                        setEntidad(new SalidaInventario());    
+                    if (resultado[2].isEmpty()) {
+                        setEntidad(new SalidaInventario());
                     } else {
                         setEntidad(new Gson().fromJson(resultado[2], SalidaInventario.class));
                     }
@@ -300,7 +300,7 @@ public class regSalidaInventario extends frameBase<SalidaInventario> {
             OcultarCargando(frame);
         }
     }
-    
+
     public class swObtenerSalidaInventario extends SwingWorker<Object, Object> {
 
         @Override
@@ -338,7 +338,7 @@ public class regSalidaInventario extends frameBase<SalidaInventario> {
         }
     }
 
-    private void AsignarValores(){
+    private void AsignarValores() {
         getEntidad().setNumero(txtNumero.getText());
         getEntidad().setIdNumeracion(schNumeracion.getId());
         getEntidad().setDescripcionNumeracion(schNumeracion.getText());
@@ -352,7 +352,7 @@ public class regSalidaInventario extends frameBase<SalidaInventario> {
         getEntidad().setSimboloMoneda(schMoneda.getText());
         getEntidad().setItems(getItems());
     }
-    
+
     public class swGuardarSalidaInventario extends SwingWorker<Object, Object> {
 
         @Override
@@ -822,7 +822,7 @@ public class regSalidaInventario extends frameBase<SalidaInventario> {
         String filtro = "WHERE Numeracion.idEntidad = 2";
         VerModal(new lisNumeracion(1, filtro), select_nume);
     }
-    
+
     private void schClienteSearch() {
         VerModal(new lisCliente(1), select_clie);
     }

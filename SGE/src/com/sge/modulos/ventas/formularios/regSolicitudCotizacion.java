@@ -3,13 +3,24 @@ package com.sge.modulos.ventas.formularios;
 import com.google.gson.Gson;
 import com.sge.base.controles.SearchListener;
 import com.sge.base.formularios.frameBase;
+import com.sge.modulos.administracion.clases.Empleado;
+import com.sge.modulos.administracion.clases.Moneda;
+import com.sge.modulos.administracion.clases.Numeracion;
+import com.sge.modulos.administracion.clases.ValorDefinido;
+import com.sge.modulos.administracion.cliente.cliAdministracion;
+import com.sge.modulos.administracion.formularios.lisEmpleado;
+import com.sge.modulos.administracion.formularios.lisMoneda;
+import com.sge.modulos.administracion.formularios.lisNumeracion;
 import com.sge.modulos.inventarios.clases.Producto;
 import com.sge.modulos.inventarios.formularios.lisProducto;
+import com.sge.modulos.ventas.clases.Cliente;
 import com.sge.modulos.ventas.clases.ItemSolicitudCotizacion;
+import com.sge.modulos.ventas.clases.Maquina;
 import com.sge.modulos.ventas.clases.Servicio;
 import com.sge.modulos.ventas.clases.SolicitudCotizacion;
 import com.sge.modulos.ventas.cliente.cliVentas;
 import java.awt.event.ActionEvent;
+import java.util.Date;
 import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -25,25 +36,87 @@ public class regSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
     /**
      * Creates new form regSolicitudCotizacion
      */
-    public regSolicitudCotizacion(String operacion, int idSolicitud) {
+    public regSolicitudCotizacion() {
         initComponents();
-        Init(operacion, idSolicitud);
     }
 
-    int idSolicitud = 0;
+    public regSolicitudCotizacion(int id) {
+        initComponents();
+        Init(id);
+    }
+    
+    public regSolicitudCotizacion(ValorDefinido valorDefinido) {
+        initComponents();
+        OcultarControl(tpnlItems);
+        super.Init(valorDefinido);
+    }
+
+    int id = 0;
 
     private ItemSolicitudCotizacion item;
+
+    Action sele_clie = new AbstractAction() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            Cliente seleccionado = ((lisCliente) e.getSource()).getSeleccionado();
+            if (!(seleccionado == null)) {
+                schCliente.asingValues(seleccionado.getIdCliente(), seleccionado.getRazonSocial());
+            }
+        }
+    };
+
+    Action sele_nume = new AbstractAction() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            Numeracion seleccionado = ((lisNumeracion) e.getSource()).getSeleccionado();
+            if (!(seleccionado == null)) {
+                schNumeracion.asingValues(seleccionado.getIdNumeracion(), seleccionado.getDescripcion());
+                getEntidad().setNumeracionManual(seleccionado.isManual());
+                txtNumero.setEnabled(seleccionado.isManual());
+            }
+        }
+    };
+
+    Action sele_vend = new AbstractAction() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            Empleado seleccionado = ((lisEmpleado) e.getSource()).getSeleccionado();
+            if (!(seleccionado == null)) {
+                schVendedor.asingValues(seleccionado.getIdEmpleado(), seleccionado.getNombre());
+            }
+        }
+    };
+
+    Action sele_mone = new AbstractAction() {
+        @Override
+        public void actionPerformed(ActionEvent evt) {
+            Moneda seleccionado = ((lisMoneda) evt.getSource()).getSeleccionado();
+            if (!(seleccionado == null)) {
+                schMoneda.asingValues(seleccionado.getIdMoneda(), seleccionado.getSimbolo());
+            }
+        }
+    };
+
+    Action sele_maqu = new AbstractAction() {
+        @Override
+        public void actionPerformed(ActionEvent evt) {
+            Maquina seleccionado = ((lisMaquina) evt.getSource()).getSeleccionado();
+            if (!(seleccionado == null)) {
+                schMaquina.asingValues(seleccionado.getIdMaquina(), seleccionado.getDescripcion());
+            }
+        }
+    };
 
     Action sele_serv = new AbstractAction() {
         @Override
         public void actionPerformed(ActionEvent e) {
             Servicio seleccionado = ((lisServicio) e.getSource()).getSeleccionado();
             if (!(seleccionado == null)) {
-                schMaquina.asingValues(seleccionado.getIdServicio(), seleccionado.getDescripcion());
+                schServicioImpresion.asingValues(seleccionado.getIdServicio(), seleccionado.getDescripcion());
             }
         }
     };
-    
+
     Action sele_mate = new AbstractAction() {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -53,16 +126,95 @@ public class regSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
             }
         }
     };
-    
-    public void Init(String operacion, int idSolicitud) {
-        lblTitulo.setText(operacion + lblTitulo.getText());
-        this.idSolicitud = idSolicitud;
-        if (this.idSolicitud > 0) {
-            new swObtenerSolicitud().execute();
+
+    public void Init(int id) {
+        this.id = id;
+        if (this.id == 0) {
+            lblTitulo.setText("NUEVA " + lblTitulo.getText());
+            new swObtenerValoresDefinidos().execute();
         } else {
-            setEntidad(new SolicitudCotizacion());
+            lblTitulo.setText("MODIFICAR " + lblTitulo.getText());
+            new swObtenerSolicitud().execute();
         }
         OcultarControl(tpnlItems);
+    }
+
+    private void AsignarValores() {
+        getEntidad().setIdCliente(schCliente.getId());
+        getEntidad().setRazonSocialCliente(schCliente.getText());
+        getEntidad().setIdNumeracion(schNumeracion.getId());
+        getEntidad().setDescripcionNumeracion(schNumeracion.getText());
+        getEntidad().setNumero(txtNumero.getText());
+        getEntidad().setGrupo(txtGrupo.getText());
+        getEntidad().setIdVendedor(schVendedor.getId());
+        getEntidad().setNombreVendedor(schVendedor.getText());
+        getEntidad().setIdMoneda(schMoneda.getId());
+        getEntidad().setSimboloMoneda(schMoneda.getText());
+        //getEntidad().setFechaCreacion(txtFechaCreacion.getValue());
+        getEntidad().setIdFormaPago(schFormaPago.getId());
+        getEntidad().setDescripcionFormaPago(schFormaPago.getText());
+        getEntidad().setDescripcion(txtDescripcion.getText());
+        getEntidad().setCantidad(Integer.valueOf(txtCantidad.getText()));
+        getEntidad().setLineaProduccion(cboLineaProduccion.getSelectedItem().toString());
+        getEntidad().setItems(getItems());
+    }
+    
+    @Override
+    public void AsignarControles() {
+        schCliente.asingValues(getEntidad().getIdCliente(), getEntidad().getRazonSocialCliente());
+        schNumeracion.asingValues(getEntidad().getIdNumeracion(), getEntidad().getDescripcionNumeracion());
+        txtNumero.setText(getEntidad().getNumero());
+        txtGrupo.setText(getEntidad().getGrupo());
+        schVendedor.asingValues(getEntidad().getIdVendedor(), getEntidad().getNombreVendedor());
+        schMoneda.asingValues(getEntidad().getIdMoneda(), getEntidad().getSimboloMoneda());
+        txtFechaCreacion.setValue(getEntidad().getFechaCreacion());
+        schFormaPago.asingValues(getEntidad().getIdFormaPago(), getEntidad().getDescripcionFormaPago());
+        txtDescripcion.setText(getEntidad().getDescripcion());
+        txtCantidad.setText(String.valueOf(getEntidad().getCantidad()));
+        cboLineaProduccion.setSelectedItem(getEntidad().getLineaProduccion());
+        for (ItemSolicitudCotizacion itemPlantilla : getEntidad().getItems()) {
+            AgregarElemento(lisItems, itemPlantilla);
+        }
+    }
+
+    @Override
+    public void OcultarControles() {
+        OcultarControl(btnNuevoItem);
+        OcultarControl(btnEliminarItem);
+    }
+    
+    public class swObtenerValoresDefinidos extends SwingWorker<Object, Object> {
+
+        @Override
+        protected Object doInBackground() {
+            VerCargando(frame);
+            cliAdministracion cliente = new cliAdministracion();
+            try {
+                String json = cliente.ObtenerValorDefinidoPorUsuarioYEntidad(new Gson().toJson(new int[]{getUsuario().getIdUsuario(), 3}));
+                String[] resultado = new Gson().fromJson(json, String[].class);
+                if (resultado[0].equals("true")) {
+                    if (resultado[2].isEmpty()) {
+                        setEntidad(new SolicitudCotizacion());
+                    } else {
+                        setEntidad(new Gson().fromJson(resultado[2], SolicitudCotizacion.class));
+                    }
+                    getEntidad().setFechaCreacion(new Gson().fromJson(resultado[1], Date.class));
+                    AsignarControles();
+                }
+            } catch (Exception e) {
+                OcultarCargando(frame);
+                cancel(false);
+                ControlarExcepcion(e);
+            } finally {
+                cliente.close();
+            }
+            return null;
+        }
+
+        @Override
+        protected void done() {
+            OcultarCargando(frame);
+        }
     }
 
     public class swObtenerSolicitud extends SwingWorker<Object, Object> {
@@ -72,16 +224,12 @@ public class regSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
             VerCargando(frame);
             cliVentas cliVentas = new cliVentas();
             try {
-                String json = cliVentas.ObtenerSolicitudCotizacion(new Gson().toJson(idSolicitud));
+                String json = cliVentas.ObtenerSolicitudCotizacion(new Gson().toJson(id));
                 String[] resultado = new Gson().fromJson(json, String[].class);
 
                 if (resultado[0].equals("true")) {
                     setEntidad(new Gson().fromJson(resultado[1], SolicitudCotizacion.class));
-                    txtDescripcion.setText(getEntidad().getDescripcion());
-                    cboLineaProduccion.setSelectedItem(getEntidad().getLineaProduccion());
-                    for (ItemSolicitudCotizacion itemPlantilla : getEntidad().getItems()) {
-                        AgregarElemento(lisItems, itemPlantilla);
-                    }
+                    AsignarControles();
                 }
             } catch (Exception e) {
                 OcultarCargando(frame);
@@ -118,15 +266,12 @@ public class regSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
             cliVentas cliVentas = new cliVentas();
             String json = "";
             try {
-                SolicitudCotizacion solicitud = new SolicitudCotizacion();
-                solicitud.setDescripcion(txtDescripcion.getText());
-                solicitud.setLineaProduccion(cboLineaProduccion.getSelectedItem().toString());
-                solicitud.setItems(getItems());
-                if (idSolicitud == 0) {
-                    json = cliVentas.RegistrarSolicitudCotizacion(new Gson().toJson(solicitud));
+                AsignarValores();
+                if (id == 0) {
+                    json = cliVentas.RegistrarSolicitudCotizacion(new Gson().toJson(getEntidad()));
                 } else {
-                    solicitud.setIdSolicitudCotizacion(idSolicitud);
-                    json = cliVentas.ActualizarSolicitudCotizacion(new Gson().toJson(solicitud));
+                    getEntidad().setIdSolicitudCotizacion(id);
+                    json = cliVentas.ActualizarSolicitudCotizacion(new Gson().toJson(getEntidad()));
                 }
             } catch (Exception e) {
                 OcultarProcesando(frame);
@@ -158,22 +303,39 @@ public class regSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
 
     private void AsignarControlesItem() {
         txtNombreItem.setText(this.item.getNombre());
-        chkServicioImpresion.setSelected(this.item.isServicioImpresion());
-        schMaquina.setEnabled(this.item.isServicioImpresion());
-        schMaquina.asingValues(this.item.getIdServicioImpresion(), this.item.getNombreServicioImpresion());
-        chkMaterial.setSelected(this.item.isMaterial());
-        schMaterial.setEnabled(this.item.isMaterial());
-        schMaterial.asingValues(this.item.getIdMaterial(), this.item.getNombreMaterial());
+        chkMedidaAbierta.setSelected(this.item.isMedidaAbierta());
+        txtAltoMedidaAbierta.setEnabled(this.item.isMedidaAbierta());
+        txtLargoMedidaAbierta.setEnabled(this.item.isMedidaAbierta());
+        cboUnidadMedidaAbierta.setEnabled(this.item.isMedidaAbierta());
+        txtAltoMedidaAbierta.setText(String.valueOf(this.item.getAltoMedidaAbierta()));
+        txtLargoMedidaAbierta.setText(String.valueOf(this.item.getLargoMedidaAbierta()));
+        cboUnidadMedidaAbierta.setSelectedItem(this.item.getUnidadMedidaAbierta());
+        chkMedidaCerrada.setSelected(this.item.isMedidaCerrada());
+        txtAltoMedidaCerrada.setEnabled(this.item.isMedidaCerrada());
+        txtLargoMedidaCerrada.setEnabled(this.item.isMedidaCerrada());
+        txtAltoMedidaAbierta.setText(String.valueOf(this.item.getAltoMedidaCerrada()));
+        txtLargoMedidaCerrada.setText(String.valueOf(this.item.getLargoMedidaCerrada()));
+        chkTiraRetira.setSelected(this.item.isTiraRetira());
+        txtTiraColor.setEnabled(this.item.isTiraRetira());
+        txtRetiraColor.setEnabled(this.item.isTiraRetira());
+        txtTiraColor.setText(String.valueOf(this.item.getTiraColor()));
+        txtRetiraColor.setText(String.valueOf(this.item.getRetiraColor()));
         chkTipoUnidad.setSelected(this.item.isTipoUnidad());
         cboTipoUnidad.setEnabled(this.item.isTipoUnidad());
         cboTipoUnidad.setSelectedItem(this.item.getNombreTipoUnidad());
-        chkMedidaAbierta.setSelected(this.item.isMedidaAbierta());
-        cboUnidadMedidaAbierta.setEnabled(this.item.isMedidaAbierta());
-        cboUnidadMedidaAbierta.setSelectedItem(this.item.getUnidadMedidaAbierta());
-        chkMedidaCerrada.setSelected(this.item.isMedidaCerrada());
-        chkTiraRetira.setSelected(this.item.isTiraRetira());
         chkGrafico.setSelected(this.item.isGrafico());
         chkFondo.setSelected(this.item.isFondo());
+        txtFondo.setEnabled(this.item.isFondo());
+        txtFondo.setText(String.valueOf(this.item.getdFondo()));
+        chkServicioImpresion.setSelected(this.item.isServicioImpresion());
+        schServicioImpresion.setEnabled(this.item.isServicioImpresion());
+        schMaquina.setEnabled(this.item.isServicioImpresion());
+        schServicioImpresion.asingValues(this.item.getIdServicioImpresion(), this.item.getNombreServicioImpresion());
+        schMaquina.asingValues(this.item.getIdMaquina(), this.item.getDescripcionMaquina());
+        chkMaterial.setSelected(this.item.isMaterial());
+        schMaterial.setEnabled(this.item.isMaterial());
+        schMaterial.asingValues(this.item.getIdMaterial(), this.item.getNombreMaterial());
+        txtAcabados.setText(this.item.getAcabados());
     }
 
     private void AsignarValoresItem() {
@@ -198,7 +360,7 @@ public class regSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
         this.item.setFondo(chkFondo.isSelected());
         this.item.setGrafico(chkGrafico.isSelected());
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -239,19 +401,19 @@ public class regSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
         txtAltoMedidaAbierta = new javax.swing.JTextField();
         txtLargoMedidaAbierta = new javax.swing.JTextField();
         lblAltoMedidaCerrada = new javax.swing.JLabel();
-        txtAltoMedidaAbierta1 = new javax.swing.JTextField();
+        txtAltoMedidaCerrada = new javax.swing.JTextField();
         lblLargoMedidaCerrada = new javax.swing.JLabel();
-        txtLargoMedidaAbierta1 = new javax.swing.JTextField();
+        txtLargoMedidaCerrada = new javax.swing.JTextField();
         lblTiraColor = new javax.swing.JLabel();
         txtFondo = new javax.swing.JTextField();
         lblRetiraColor = new javax.swing.JLabel();
-        txtLargoMedidaAbierta2 = new javax.swing.JTextField();
-        txtAltoMedidaAbierta3 = new javax.swing.JTextField();
+        txtRetiraColor = new javax.swing.JTextField();
+        txtTiraColor = new javax.swing.JTextField();
         lblMaquina = new javax.swing.JLabel();
-        schServicioImpresion1 = new com.sge.base.controles.JSearch();
+        schServicioImpresion = new com.sge.base.controles.JSearch();
         lblAcabados = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        txtAcabados = new javax.swing.JTextArea();
         btnNuevoItem = new javax.swing.JButton();
         btnEliminarItem = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
@@ -330,7 +492,7 @@ public class regSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
         schMaquina.addSearchListener(new SearchListener() {
             @Override
             public void Search(){
-                schServicioImpresionSearch();
+                schMaquinaSearch();
             }
             @Override
             public void Clear(){
@@ -378,10 +540,25 @@ public class regSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
         });
 
         chkMedidaCerrada.setText("MEDIDA CERRADA");
+        chkMedidaCerrada.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                chkMedidaCerradaStateChanged(evt);
+            }
+        });
 
         chkTiraRetira.setText("TIRA Y RETIRA");
+        chkTiraRetira.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                chkTiraRetiraStateChanged(evt);
+            }
+        });
 
         chkFondo.setText("FONDO");
+        chkFondo.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                chkFondoStateChanged(evt);
+            }
+        });
 
         chkGrafico.setText("GRÁFICO");
 
@@ -400,17 +577,31 @@ public class regSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
 
         lblLargoMedidaAbierta.setText("LARGO");
 
+        txtAltoMedidaAbierta.setText("0");
+
+        txtLargoMedidaAbierta.setText("0");
+
         lblAltoMedidaCerrada.setText("ALTO");
+
+        txtAltoMedidaCerrada.setText("0");
 
         lblLargoMedidaCerrada.setText("LARGO");
 
+        txtLargoMedidaCerrada.setText("0");
+
         lblTiraColor.setText("TIRA COLOR");
+
+        txtFondo.setText("0");
 
         lblRetiraColor.setText("RETIRA COLOR");
 
+        txtRetiraColor.setText("0");
+
+        txtTiraColor.setText("0");
+
         lblMaquina.setText("MAQUINA");
 
-        schMaquina.addSearchListener(new SearchListener() {
+        schServicioImpresion.addSearchListener(new SearchListener() {
             @Override
             public void Search(){
                 schServicioImpresionSearch();
@@ -422,9 +613,9 @@ public class regSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
 
         lblAcabados.setText("ACABADOS");
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane3.setViewportView(jTextArea1);
+        txtAcabados.setColumns(20);
+        txtAcabados.setRows(5);
+        jScrollPane3.setViewportView(txtAcabados);
 
         javax.swing.GroupLayout pnlItemLayout = new javax.swing.GroupLayout(pnlItem);
         pnlItem.setLayout(pnlItemLayout);
@@ -438,30 +629,29 @@ public class regSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
                     .addGroup(pnlItemLayout.createSequentialGroup()
                         .addComponent(lblAltoMedidaCerrada)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtAltoMedidaAbierta1, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtAltoMedidaCerrada, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(lblLargoMedidaCerrada)
                         .addGap(7, 7, 7)
-                        .addComponent(txtLargoMedidaAbierta1, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(pnlItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, pnlItemLayout.createSequentialGroup()
-                            .addComponent(lblNombreItem)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(txtNombreItem))
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, pnlItemLayout.createSequentialGroup()
-                            .addComponent(lblAltoMedidaAbierta)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(txtAltoMedidaAbierta, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(lblLargoMedidaAbierta)
-                            .addGap(7, 7, 7)
-                            .addComponent(txtLargoMedidaAbierta, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(cboUnidadMedidaAbierta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(txtLargoMedidaCerrada, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(pnlItemLayout.createSequentialGroup()
+                        .addComponent(lblNombreItem)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtNombreItem))
+                    .addGroup(pnlItemLayout.createSequentialGroup()
+                        .addComponent(lblAltoMedidaAbierta)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtAltoMedidaAbierta, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblLargoMedidaAbierta)
+                        .addGap(7, 7, 7)
+                        .addComponent(txtLargoMedidaAbierta, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(cboUnidadMedidaAbierta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(pnlItemLayout.createSequentialGroup()
                         .addComponent(chkServicioImpresion)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(schServicioImpresion1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(schServicioImpresion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(pnlItemLayout.createSequentialGroup()
                         .addComponent(chkTiraRetira)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -473,7 +663,7 @@ public class regSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
                             .addGroup(pnlItemLayout.createSequentialGroup()
                                 .addComponent(lblTiraColor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGap(6, 6, 6)
-                                .addComponent(txtAltoMedidaAbierta3, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(txtTiraColor, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(pnlItemLayout.createSequentialGroup()
                                 .addComponent(chkFondo, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -484,7 +674,7 @@ public class regSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
                             .addGroup(pnlItemLayout.createSequentialGroup()
                                 .addComponent(lblRetiraColor)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtLargoMedidaAbierta2, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addComponent(txtRetiraColor, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(pnlItemLayout.createSequentialGroup()
                         .addGroup(pnlItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(chkMaterial)
@@ -530,9 +720,9 @@ public class regSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(pnlItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(lblAltoMedidaCerrada)
-                                    .addComponent(txtAltoMedidaAbierta1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtAltoMedidaCerrada, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(lblLargoMedidaCerrada)
-                                    .addComponent(txtLargoMedidaAbierta1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(txtLargoMedidaCerrada, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(pnlItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(chkTiraRetira)
@@ -542,8 +732,8 @@ public class regSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
                                 .addGroup(pnlItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(lblTiraColor)
                                     .addComponent(lblRetiraColor)
-                                    .addComponent(txtLargoMedidaAbierta2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtAltoMedidaAbierta3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(txtRetiraColor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtTiraColor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGroup(pnlItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(chkFondo)
                                     .addComponent(txtFondo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -551,7 +741,7 @@ public class regSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(pnlItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(chkServicioImpresion, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(schServicioImpresion1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(schServicioImpresion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(pnlItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(schMaquina, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -591,10 +781,10 @@ public class regSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
 
         lblCliente.setText("CLIENTE");
 
-        schMaquina.addSearchListener(new SearchListener() {
+        schCliente.addSearchListener(new SearchListener() {
             @Override
             public void Search(){
-                schServicioImpresionSearch();
+                schClienteSearch();
             }
             @Override
             public void Clear(){
@@ -603,20 +793,20 @@ public class regSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
 
         lblVendedor.setText("VENDEDOR");
 
-        schMaquina.addSearchListener(new SearchListener() {
+        schVendedor.addSearchListener(new SearchListener() {
             @Override
             public void Search(){
-                schServicioImpresionSearch();
+                schVendedorSearch();
             }
             @Override
             public void Clear(){
             }
         });
 
-        schMaquina.addSearchListener(new SearchListener() {
+        schNumeracion.addSearchListener(new SearchListener() {
             @Override
             public void Search(){
-                schServicioImpresionSearch();
+                schNumeracionSearch();
             }
             @Override
             public void Clear(){
@@ -629,10 +819,10 @@ public class regSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
 
         lblFechaCreacion.setText("FECHA CREACION");
 
-        schMaquina.addSearchListener(new SearchListener() {
+        schMoneda.addSearchListener(new SearchListener() {
             @Override
             public void Search(){
-                schServicioImpresionSearch();
+                schMonedaSearch();
             }
             @Override
             public void Clear(){
@@ -643,12 +833,14 @@ public class regSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
 
         lblCantidad.setText("CANTIDAD");
 
+        txtCantidad.setText("0");
+
         lblFormaPago.setText("FORMA PAGO");
 
-        schMaquina.addSearchListener(new SearchListener() {
+        schFormaPago.addSearchListener(new SearchListener() {
             @Override
             public void Search(){
-                schServicioImpresionSearch();
+                schFormaPagoSearch();
             }
             @Override
             public void Clear(){
@@ -801,6 +993,31 @@ public class regSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void schClienteSearch() {
+        VerModal(new lisCliente(1), sele_clie);
+    }
+
+    private void schVendedorSearch() {
+        VerModal(new lisEmpleado(1), sele_vend);
+    }
+
+    private void schNumeracionSearch() {
+        String filtro = "WHERE Numeracion.idEntidad = 3";
+        VerModal(new lisNumeracion(1, filtro), sele_nume);
+    }
+
+    private void schMonedaSearch() {
+        VerModal(new lisMoneda(1), sele_mone);
+    }
+
+    private void schFormaPagoSearch() {
+
+    }
+
+    private void schMaquinaSearch() {
+        VerModal(new lisMaquina(1), sele_maqu);
+    }
+
     private void schServicioImpresionSearch() {
         String filtro = "WHERE Servicio.servicioImpresion = TRUE";
         VerModal(new lisServicio(1, filtro), sele_serv);
@@ -809,10 +1026,24 @@ public class regSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
     private void schMaterialSearch() {
         VerModal(new lisProducto(1), sele_mate);
     }
+
+    public void Aceptar() {
+        if (super.isFromJson()) {
+            AsignarValores();
+            setJson(new Gson().toJson(super.getEntidad()));
+            Cerrar();
+        } else {
+            new swGuardarSolicitud().execute();
+        }
+    }
+
+    public void Cancelar() {
+        Cerrar();
+    }
     
     private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
         // TODO add your handling code here:
-        new swGuardarSolicitud().execute();
+        Aceptar();
     }//GEN-LAST:event_btnAceptarActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
@@ -822,6 +1053,7 @@ public class regSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
 
     private void chkServicioImpresionStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chkServicioImpresionStateChanged
         // TODO add your handling code here:
+        schServicioImpresion.setEnabled(chkServicioImpresion.isSelected());
         schMaquina.setEnabled(chkServicioImpresion.isSelected());
     }//GEN-LAST:event_chkServicioImpresionStateChanged
 
@@ -837,6 +1069,8 @@ public class regSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
 
     private void chkMedidaAbiertaStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chkMedidaAbiertaStateChanged
         // TODO add your handling code here:
+        txtAltoMedidaAbierta.setEnabled(chkMedidaAbierta.isSelected());
+        txtLargoMedidaAbierta.setEnabled(chkMedidaAbierta.isSelected());
         cboUnidadMedidaAbierta.setEnabled(chkMedidaAbierta.isSelected());
     }//GEN-LAST:event_chkMedidaAbiertaStateChanged
 
@@ -857,7 +1091,7 @@ public class regSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
     private void btnEliminarItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarItemActionPerformed
         // TODO add your handling code here:
         ItemSolicitudCotizacion itemPlantilla = (ItemSolicitudCotizacion) lisItems.getSelectedValue();
-        if (idSolicitud == 0) {
+        if (id == 0) {
             getEntidad().getItems().remove(itemPlantilla);
         } else {
             itemPlantilla.setEliminar(true);
@@ -876,6 +1110,23 @@ public class regSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
             OcultarControl(tpnlItems);
         }
     }//GEN-LAST:event_lisItemsValueChanged
+
+    private void chkMedidaCerradaStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chkMedidaCerradaStateChanged
+        // TODO add your handling code here:
+        txtAltoMedidaCerrada.setEnabled(chkMedidaCerrada.isSelected());
+        txtLargoMedidaCerrada.setEnabled(chkMedidaCerrada.isSelected());
+    }//GEN-LAST:event_chkMedidaCerradaStateChanged
+
+    private void chkTiraRetiraStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chkTiraRetiraStateChanged
+        // TODO add your handling code here:
+        txtTiraColor.setEnabled(chkTiraRetira.isSelected());
+        txtRetiraColor.setEnabled(chkTiraRetira.isSelected());
+    }//GEN-LAST:event_chkTiraRetiraStateChanged
+
+    private void chkFondoStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chkFondoStateChanged
+        // TODO add your handling code here:
+        txtFondo.setEnabled(chkFondo.isSelected());
+    }//GEN-LAST:event_chkFondoStateChanged
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -898,7 +1149,6 @@ public class regSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
     private javax.swing.JPanel frame;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JLabel lblAcabados;
     private javax.swing.JLabel lblAltoMedidaAbierta;
     private javax.swing.JLabel lblAltoMedidaCerrada;
@@ -928,21 +1178,22 @@ public class regSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
     private com.sge.base.controles.JSearch schMaterial;
     private com.sge.base.controles.JSearch schMoneda;
     private com.sge.base.controles.JSearch schNumeracion;
-    private com.sge.base.controles.JSearch schServicioImpresion1;
+    private com.sge.base.controles.JSearch schServicioImpresion;
     private com.sge.base.controles.JSearch schVendedor;
     private javax.swing.JTabbedPane tpnlItems;
+    private javax.swing.JTextArea txtAcabados;
     private javax.swing.JTextField txtAltoMedidaAbierta;
-    private javax.swing.JTextField txtAltoMedidaAbierta1;
-    private javax.swing.JTextField txtAltoMedidaAbierta3;
+    private javax.swing.JTextField txtAltoMedidaCerrada;
     private javax.swing.JTextField txtCantidad;
     private javax.swing.JTextField txtDescripcion;
     private javax.swing.JFormattedTextField txtFechaCreacion;
     private javax.swing.JTextField txtFondo;
     private javax.swing.JTextField txtGrupo;
     private javax.swing.JTextField txtLargoMedidaAbierta;
-    private javax.swing.JTextField txtLargoMedidaAbierta1;
-    private javax.swing.JTextField txtLargoMedidaAbierta2;
+    private javax.swing.JTextField txtLargoMedidaCerrada;
     private javax.swing.JTextField txtNombreItem;
     private javax.swing.JTextField txtNumero;
+    private javax.swing.JTextField txtRetiraColor;
+    private javax.swing.JTextField txtTiraColor;
     // End of variables declaration//GEN-END:variables
 }

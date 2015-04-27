@@ -203,6 +203,12 @@ public class cliAdministracion {
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
     }
     
+    public String ObtenerValorDefinidoPorUsuarioYEntidad(Object requestEntity) throws ClientErrorException {
+        WebTarget resource = client.target(BASE_URI).path("ValorDefinidoSRV");
+        resource = resource.path("ObtenerValorDefinidoPorUsuarioYEntidad");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
+    }
+    
     ////////////////////////////////////////////////////////////////////////////
     
     ////////////////////////////////// ENTIDAD /////////////////////////////////

@@ -341,7 +341,7 @@ public class FabricaControles {
         GraphicsEnvironment graphicsEnvironment = GraphicsEnvironment.getLocalGraphicsEnvironment();
         GraphicsDevice graphicsDevice = graphicsEnvironment.getDefaultScreenDevice();
         DisplayMode display = graphicsDevice.getDisplayMode();
-        frame.setLocation((display.getWidth() - frame.getWidth()) / 2, ((display.getHeight() - frame.getHeight()) / 2) - 80);
+        frame.setLocation((display.getWidth() - frame.getWidth()) / 2, ((display.getHeight() - frame.getHeight()) / 2) - 40);
         desktop.add(frame);
         frame.setLayer(JLayeredPane.MODAL_LAYER);
         frame.pack();
@@ -381,7 +381,7 @@ public class FabricaControles {
         GraphicsEnvironment graphicsEnvironment = GraphicsEnvironment.getLocalGraphicsEnvironment();
         GraphicsDevice graphicsDevice = graphicsEnvironment.getDefaultScreenDevice();
         DisplayMode display = graphicsDevice.getDisplayMode();
-        frame.setLocation((display.getWidth() - frame.getWidth()) / 2, ((display.getHeight() - frame.getHeight()) / 2) - 80);
+        frame.setLocation((display.getWidth() - frame.getWidth()) / 2, ((display.getHeight() - frame.getHeight()) / 2) - 40);
         desktop.add(frame);
         frame.setLayer(JLayeredPane.MODAL_LAYER);
         frame.pack();

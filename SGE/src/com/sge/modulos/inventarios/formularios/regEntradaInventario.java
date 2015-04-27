@@ -107,13 +107,13 @@ public class regEntradaInventario extends frameBase<EntradaInventario> {
             double totalItem = ObtenerValorCelda(tbItems, i, 10);
             subTotal += totalItem;
         }
-        
+
         getEntidad().setSubTotal(subTotal);
         double montoImpuesto = subTotal * (getEntidad().getPorcentajeImpuesto() / 100);
         getEntidad().setMontoImpuesto(montoImpuesto);
         double total = subTotal + montoImpuesto;
         getEntidad().setTotal(total);
-        
+
         txtSubTotal.setValue(subTotal);
         txtImpuesto.setValue(montoImpuesto);
         txtTotal.setValue(total);
@@ -213,12 +213,12 @@ public class regEntradaInventario extends frameBase<EntradaInventario> {
                 cliAdministracion cliente = new cliAdministracion();
                 String json = cliente.ObtenerNumeracion(new Gson().toJson(seleccionado.getIdNumeracion()));
                 String[] resultado = new Gson().fromJson(json, String[].class);
-                if(resultado[0].equals("true")){
+                if (resultado[0].equals("true")) {
                     Numeracion numeracion = new Gson().fromJson(resultado[1], Numeracion.class);
                     schNumeracion.asingValues(numeracion.getIdNumeracion(), numeracion.getDescripcion());
                     getEntidad().setNumeracionManual(numeracion.isManual());
                     txtNumero.setEnabled(numeracion.isManual());
-                    if(numeracion.isTieneImpuesto()){
+                    if (numeracion.isTieneImpuesto()) {
                         getEntidad().setPorcentajeImpuesto(numeracion.getPorcentajeImpuesto());
                         lblPorcentajeImpuesto.setText(String.format("(%s%s)", numeracion.getPorcentajeImpuesto(), "%"));
                     }
@@ -226,7 +226,7 @@ public class regEntradaInventario extends frameBase<EntradaInventario> {
             }
         }
     };
-    
+
     Action select_prov = new AbstractAction() {
         @Override
         public void actionPerformed(ActionEvent evt) {
@@ -272,13 +272,13 @@ public class regEntradaInventario extends frameBase<EntradaInventario> {
         @Override
         protected Object doInBackground() {
             VerCargando(frame);
-            cliInventarios cliente = new cliInventarios();
+            cliAdministracion cliente = new cliAdministracion();
             try {
-                String json = cliente.ObtenerValoresDefinidosEntradaInventario(new Gson().toJson(getUsuario().getIdUsuario()));
+                String json = cliente.ObtenerValorDefinidoPorUsuarioYEntidad(new Gson().toJson(new int[]{1, getUsuario().getIdUsuario()}));
                 String[] resultado = new Gson().fromJson(json, String[].class);
                 if (resultado[0].equals("true")) {
-                    if(resultado[2].isEmpty()){
-                        setEntidad(new EntradaInventario());    
+                    if (resultado[2].isEmpty()) {
+                        setEntidad(new EntradaInventario());
                     } else {
                         setEntidad(new Gson().fromJson(resultado[2], EntradaInventario.class));
                     }
@@ -300,7 +300,7 @@ public class regEntradaInventario extends frameBase<EntradaInventario> {
             OcultarCargando(frame);
         }
     }
-    
+
     public class swObtenerEntradaInventario extends SwingWorker<Object, Object> {
 
         @Override
@@ -828,7 +828,7 @@ public class regEntradaInventario extends frameBase<EntradaInventario> {
         String filtro = "WHERE Numeracion.idEntidad = 1";
         VerModal(new lisNumeracion(1, filtro), select_nume);
     }
-    
+
     private void schProveedorSearch() {
         VerModal(new lisProveedor(1), select_prov);
     }

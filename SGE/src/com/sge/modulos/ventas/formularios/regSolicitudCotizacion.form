@@ -337,34 +337,32 @@
                               <Group type="102" alignment="0" attributes="0">
                                   <Component id="lblAltoMedidaCerrada" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="txtAltoMedidaAbierta1" min="-2" pref="55" max="-2" attributes="0"/>
+                                  <Component id="txtAltoMedidaCerrada" min="-2" pref="55" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Component id="lblLargoMedidaCerrada" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace min="-2" pref="7" max="-2" attributes="0"/>
-                                  <Component id="txtLargoMedidaAbierta1" min="-2" pref="52" max="-2" attributes="0"/>
+                                  <Component id="txtLargoMedidaCerrada" min="-2" pref="52" max="-2" attributes="0"/>
                               </Group>
-                              <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
-                                  <Group type="102" alignment="0" attributes="0">
-                                      <Component id="lblNombreItem" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace max="-2" attributes="0"/>
-                                      <Component id="txtNombreItem" max="32767" attributes="0"/>
-                                  </Group>
-                                  <Group type="102" alignment="0" attributes="0">
-                                      <Component id="lblAltoMedidaAbierta" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace max="-2" attributes="0"/>
-                                      <Component id="txtAltoMedidaAbierta" min="-2" pref="55" max="-2" attributes="0"/>
-                                      <EmptySpace max="-2" attributes="0"/>
-                                      <Component id="lblLargoMedidaAbierta" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace min="-2" pref="7" max="-2" attributes="0"/>
-                                      <Component id="txtLargoMedidaAbierta" min="-2" pref="52" max="-2" attributes="0"/>
-                                      <EmptySpace max="-2" attributes="0"/>
-                                      <Component id="cboUnidadMedidaAbierta" min="-2" max="-2" attributes="0"/>
-                                  </Group>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Component id="lblNombreItem" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="txtNombreItem" max="32767" attributes="0"/>
+                              </Group>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Component id="lblAltoMedidaAbierta" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="txtAltoMedidaAbierta" min="-2" pref="55" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="lblLargoMedidaAbierta" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace min="-2" pref="7" max="-2" attributes="0"/>
+                                  <Component id="txtLargoMedidaAbierta" min="-2" pref="52" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="cboUnidadMedidaAbierta" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <Group type="102" alignment="0" attributes="0">
                                   <Component id="chkServicioImpresion" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="schServicioImpresion1" max="32767" attributes="0"/>
+                                  <Component id="schServicioImpresion" max="32767" attributes="0"/>
                               </Group>
                               <Group type="102" alignment="0" attributes="0">
                                   <Component id="chkTiraRetira" min="-2" max="-2" attributes="0"/>
@@ -378,7 +376,7 @@
                                       <Group type="102" attributes="0">
                                           <Component id="lblTiraColor" max="32767" attributes="0"/>
                                           <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
-                                          <Component id="txtAltoMedidaAbierta3" min="-2" pref="55" max="-2" attributes="0"/>
+                                          <Component id="txtTiraColor" min="-2" pref="55" max="-2" attributes="0"/>
                                       </Group>
                                       <Group type="102" alignment="0" attributes="0">
                                           <Component id="chkFondo" min="-2" pref="86" max="-2" attributes="0"/>
@@ -392,7 +390,7 @@
                                       <Group type="102" attributes="0">
                                           <Component id="lblRetiraColor" min="-2" max="-2" attributes="0"/>
                                           <EmptySpace max="-2" attributes="0"/>
-                                          <Component id="txtLargoMedidaAbierta2" min="-2" pref="52" max="-2" attributes="0"/>
+                                          <Component id="txtRetiraColor" min="-2" pref="52" max="-2" attributes="0"/>
                                       </Group>
                                   </Group>
                               </Group>
@@ -452,9 +450,9 @@
                                           <EmptySpace max="-2" attributes="0"/>
                                           <Group type="103" groupAlignment="3" attributes="0">
                                               <Component id="lblAltoMedidaCerrada" alignment="3" min="-2" max="-2" attributes="0"/>
-                                              <Component id="txtAltoMedidaAbierta1" alignment="3" min="-2" max="-2" attributes="0"/>
+                                              <Component id="txtAltoMedidaCerrada" alignment="3" min="-2" max="-2" attributes="0"/>
                                               <Component id="lblLargoMedidaCerrada" alignment="3" min="-2" max="-2" attributes="0"/>
-                                              <Component id="txtLargoMedidaAbierta1" alignment="3" min="-2" max="-2" attributes="0"/>
+                                              <Component id="txtLargoMedidaCerrada" alignment="3" min="-2" max="-2" attributes="0"/>
                                           </Group>
                                           <EmptySpace max="-2" attributes="0"/>
                                           <Group type="103" groupAlignment="3" attributes="0">
@@ -466,8 +464,8 @@
                                           <Group type="103" groupAlignment="3" attributes="0">
                                               <Component id="lblTiraColor" alignment="3" min="-2" max="-2" attributes="0"/>
                                               <Component id="lblRetiraColor" alignment="3" min="-2" max="-2" attributes="0"/>
-                                              <Component id="txtLargoMedidaAbierta2" alignment="3" min="-2" max="-2" attributes="0"/>
-                                              <Component id="txtAltoMedidaAbierta3" alignment="3" min="-2" max="-2" attributes="0"/>
+                                              <Component id="txtRetiraColor" alignment="3" min="-2" max="-2" attributes="0"/>
+                                              <Component id="txtTiraColor" alignment="3" min="-2" max="-2" attributes="0"/>
                                           </Group>
                                           <Group type="103" groupAlignment="3" attributes="0">
                                               <Component id="chkFondo" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -477,7 +475,7 @@
                                           <EmptySpace max="-2" attributes="0"/>
                                           <Group type="103" groupAlignment="0" attributes="0">
                                               <Component id="chkServicioImpresion" alignment="0" min="-2" pref="29" max="-2" attributes="0"/>
-                                              <Component id="schServicioImpresion1" alignment="0" min="-2" max="-2" attributes="0"/>
+                                              <Component id="schServicioImpresion" alignment="0" min="-2" max="-2" attributes="0"/>
                                           </Group>
                                           <EmptySpace max="-2" attributes="0"/>
                                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
@@ -501,7 +499,7 @@
               <SubComponents>
                 <Component class="com.sge.base.controles.JSearch" name="schMaquina">
                   <AuxValues>
-                    <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="schMaquina.addSearchListener(new SearchListener() {&#xa;    @Override&#xa;    public void Search(){&#xa;        schServicioImpresionSearch();&#xa;    }&#xa;    @Override&#xa;    public void Clear(){&#xa;    }&#xa;});"/>
+                    <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="schMaquina.addSearchListener(new SearchListener() {&#xa;    @Override&#xa;    public void Search(){&#xa;        schMaquinaSearch();&#xa;    }&#xa;    @Override&#xa;    public void Clear(){&#xa;    }&#xa;});"/>
                   </AuxValues>
                 </Component>
                 <Component class="javax.swing.JCheckBox" name="chkServicioImpresion">
@@ -556,16 +554,25 @@
                   <Properties>
                     <Property name="text" type="java.lang.String" value="MEDIDA CERRADA"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="chkMedidaCerradaStateChanged"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JCheckBox" name="chkTiraRetira">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="TIRA Y RETIRA"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="chkTiraRetiraStateChanged"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JCheckBox" name="chkFondo">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="FONDO"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="chkFondoStateChanged"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JCheckBox" name="chkGrafico">
                   <Properties>
@@ -611,22 +618,34 @@
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JTextField" name="txtAltoMedidaAbierta">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="0"/>
+                  </Properties>
                 </Component>
                 <Component class="javax.swing.JTextField" name="txtLargoMedidaAbierta">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="0"/>
+                  </Properties>
                 </Component>
                 <Component class="javax.swing.JLabel" name="lblAltoMedidaCerrada">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="ALTO"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JTextField" name="txtAltoMedidaAbierta1">
+                <Component class="javax.swing.JTextField" name="txtAltoMedidaCerrada">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="0"/>
+                  </Properties>
                 </Component>
                 <Component class="javax.swing.JLabel" name="lblLargoMedidaCerrada">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="LARGO"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JTextField" name="txtLargoMedidaAbierta1">
+                <Component class="javax.swing.JTextField" name="txtLargoMedidaCerrada">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="0"/>
+                  </Properties>
                 </Component>
                 <Component class="javax.swing.JLabel" name="lblTiraColor">
                   <Properties>
@@ -634,24 +653,33 @@
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JTextField" name="txtFondo">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="0"/>
+                  </Properties>
                 </Component>
                 <Component class="javax.swing.JLabel" name="lblRetiraColor">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="RETIRA COLOR"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JTextField" name="txtLargoMedidaAbierta2">
+                <Component class="javax.swing.JTextField" name="txtRetiraColor">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="0"/>
+                  </Properties>
                 </Component>
-                <Component class="javax.swing.JTextField" name="txtAltoMedidaAbierta3">
+                <Component class="javax.swing.JTextField" name="txtTiraColor">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="0"/>
+                  </Properties>
                 </Component>
                 <Component class="javax.swing.JLabel" name="lblMaquina">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="MAQUINA"/>
                   </Properties>
                 </Component>
-                <Component class="com.sge.base.controles.JSearch" name="schServicioImpresion1">
+                <Component class="com.sge.base.controles.JSearch" name="schServicioImpresion">
                   <AuxValues>
-                    <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="schMaquina.addSearchListener(new SearchListener() {&#xa;    @Override&#xa;    public void Search(){&#xa;        schServicioImpresionSearch();&#xa;    }&#xa;    @Override&#xa;    public void Clear(){&#xa;    }&#xa;});"/>
+                    <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="schServicioImpresion.addSearchListener(new SearchListener() {&#xa;    @Override&#xa;    public void Search(){&#xa;        schServicioImpresionSearch();&#xa;    }&#xa;    @Override&#xa;    public void Clear(){&#xa;    }&#xa;});"/>
                   </AuxValues>
                 </Component>
                 <Component class="javax.swing.JLabel" name="lblAcabados">
@@ -666,7 +694,7 @@
 
                   <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
                   <SubComponents>
-                    <Component class="javax.swing.JTextArea" name="jTextArea1">
+                    <Component class="javax.swing.JTextArea" name="txtAcabados">
                       <Properties>
                         <Property name="columns" type="int" value="20"/>
                         <Property name="rows" type="int" value="5"/>
@@ -721,7 +749,7 @@
         </Component>
         <Component class="com.sge.base.controles.JSearch" name="schCliente">
           <AuxValues>
-            <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="schMaquina.addSearchListener(new SearchListener() {&#xa;    @Override&#xa;    public void Search(){&#xa;        schServicioImpresionSearch();&#xa;    }&#xa;    @Override&#xa;    public void Clear(){&#xa;    }&#xa;});"/>
+            <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="schCliente.addSearchListener(new SearchListener() {&#xa;    @Override&#xa;    public void Search(){&#xa;        schClienteSearch();&#xa;    }&#xa;    @Override&#xa;    public void Clear(){&#xa;    }&#xa;});"/>
           </AuxValues>
         </Component>
         <Component class="javax.swing.JLabel" name="lblVendedor">
@@ -731,12 +759,12 @@
         </Component>
         <Component class="com.sge.base.controles.JSearch" name="schVendedor">
           <AuxValues>
-            <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="schMaquina.addSearchListener(new SearchListener() {&#xa;    @Override&#xa;    public void Search(){&#xa;        schServicioImpresionSearch();&#xa;    }&#xa;    @Override&#xa;    public void Clear(){&#xa;    }&#xa;});"/>
+            <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="schVendedor.addSearchListener(new SearchListener() {&#xa;    @Override&#xa;    public void Search(){&#xa;        schVendedorSearch();&#xa;    }&#xa;    @Override&#xa;    public void Clear(){&#xa;    }&#xa;});"/>
           </AuxValues>
         </Component>
         <Component class="com.sge.base.controles.JSearch" name="schNumeracion">
           <AuxValues>
-            <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="schMaquina.addSearchListener(new SearchListener() {&#xa;    @Override&#xa;    public void Search(){&#xa;        schServicioImpresionSearch();&#xa;    }&#xa;    @Override&#xa;    public void Clear(){&#xa;    }&#xa;});"/>
+            <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="schNumeracion.addSearchListener(new SearchListener() {&#xa;    @Override&#xa;    public void Search(){&#xa;        schNumeracionSearch();&#xa;    }&#xa;    @Override&#xa;    public void Clear(){&#xa;    }&#xa;});"/>
           </AuxValues>
         </Component>
         <Component class="javax.swing.JLabel" name="lblNumero">
@@ -762,7 +790,7 @@
         </Component>
         <Component class="com.sge.base.controles.JSearch" name="schMoneda">
           <AuxValues>
-            <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="schMaquina.addSearchListener(new SearchListener() {&#xa;    @Override&#xa;    public void Search(){&#xa;        schServicioImpresionSearch();&#xa;    }&#xa;    @Override&#xa;    public void Clear(){&#xa;    }&#xa;});"/>
+            <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="schMoneda.addSearchListener(new SearchListener() {&#xa;    @Override&#xa;    public void Search(){&#xa;        schMonedaSearch();&#xa;    }&#xa;    @Override&#xa;    public void Clear(){&#xa;    }&#xa;});"/>
           </AuxValues>
         </Component>
         <Component class="javax.swing.JLabel" name="lblMoneda">
@@ -776,6 +804,9 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="txtCantidad">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="0"/>
+          </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="lblFormaPago">
           <Properties>
@@ -784,7 +815,7 @@
         </Component>
         <Component class="com.sge.base.controles.JSearch" name="schFormaPago">
           <AuxValues>
-            <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="schMaquina.addSearchListener(new SearchListener() {&#xa;    @Override&#xa;    public void Search(){&#xa;        schServicioImpresionSearch();&#xa;    }&#xa;    @Override&#xa;    public void Clear(){&#xa;    }&#xa;});"/>
+            <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="schFormaPago.addSearchListener(new SearchListener() {&#xa;    @Override&#xa;    public void Search(){&#xa;        schFormaPagoSearch();&#xa;    }&#xa;    @Override&#xa;    public void Clear(){&#xa;    }&#xa;});"/>
           </AuxValues>
         </Component>
       </SubComponents>

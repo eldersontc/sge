@@ -279,4 +279,9 @@ public class ItemSolicitudCotizacion {
     public void setEliminar(boolean eliminar) {
         this.eliminar = eliminar;
     }
+    
+    @Override
+    public String toString(){
+        return nombre;
+    }
 }

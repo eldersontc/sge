@@ -129,12 +129,6 @@ public class cliInventarios {
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
     }
     
-    public String ObtenerValoresDefinidosEntradaInventario(Object requestEntity) throws ClientErrorException {
-        WebTarget resource = client.target(BASE_URI).path("EntradaInventarioSRV");
-        resource = resource.path("ObtenerValoresDefinidos");
-        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
-    }
-    
     public String ObtenerEntradaInventario(Object requestEntity) throws ClientErrorException {
         WebTarget resource = client.target(BASE_URI).path("EntradaInventarioSRV");
         resource = resource.path("ObtenerEntradaInventario");
@@ -160,12 +154,6 @@ public class cliInventarios {
     public String ObtenerSalidaInventarios(Object requestEntity) throws ClientErrorException {
         WebTarget resource = client.target(BASE_URI).path("SalidaInventarioSRV");
         resource = resource.path("ObtenerSalidaInventarios");
-        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
-    }
-    
-    public String ObtenerValoresDefinidosSalidaInventario(Object requestEntity) throws ClientErrorException {
-        WebTarget resource = client.target(BASE_URI).path("SalidaInventarioSRV");
-        resource = resource.path("ObtenerValoresDefinidos");
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
     }
     

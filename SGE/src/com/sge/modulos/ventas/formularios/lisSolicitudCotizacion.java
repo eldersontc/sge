@@ -81,11 +81,11 @@ public class lisSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
                     }.getType());
 
                     for (Object[] fila : filas) {
-                        modelo.addRow(new Object[]{false, ((Double) fila[0]).intValue(), fila[1], fila[2], fila[3], fila[4], Icon_Edit, Icon_Dele});
+                        modelo.addRow(new Object[]{false, ((Double) fila[0]).intValue(), fila[1], fila[2], fila[3], fila[4], fila[5], Icon_Edit, Icon_Dele});
                     }
 
-                    AgregarBoton(tbSolicitudes, edit, 6);
-                    AgregarBoton(tbSolicitudes, dele, 7);
+                    AgregarBoton(tbSolicitudes, edit, 7);
+                    AgregarBoton(tbSolicitudes, dele, 8);
                     AgregarOrdenamiento(tbSolicitudes);
                 }
                 OcultarCargando(frame);
@@ -141,7 +141,7 @@ public class lisSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
                 OcultarControl(btnSeleccionar);
                 break;
             case 1:
-                OcultarColumnas(tbSolicitudes, new int[]{0, 6, 7});
+                OcultarColumnas(tbSolicitudes, new int[]{0, 7, 8});
                 OcultarControl(btnNuevo);
                 break;
         }
@@ -150,7 +150,7 @@ public class lisSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
 
     public void EditarSolicitudCotizacion() {
         int idSolicitudCotizacion = ObtenerValorCelda(tbSolicitudes, 1);
-        regSolicitudCotizacion regSolicitudCotizacion = new regSolicitudCotizacion("EDITAR ", idSolicitudCotizacion);
+        regSolicitudCotizacion regSolicitudCotizacion = new regSolicitudCotizacion(idSolicitudCotizacion);
         this.getParent().add(regSolicitudCotizacion);
         regSolicitudCotizacion.setVisible(true);
     }
@@ -337,7 +337,8 @@ public class lisSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
         // TODO add your handling code here:
-        regSolicitudCotizacion regSolicitudCotizacion = new regSolicitudCotizacion("NUEVO ", 0);
+        regSolicitudCotizacion regSolicitudCotizacion = new regSolicitudCotizacion(0);
+        regSolicitudCotizacion.setUsuario(getUsuario());
         this.getParent().add(regSolicitudCotizacion);
         regSolicitudCotizacion.setVisible(true);
     }//GEN-LAST:event_btnNuevoActionPerformed
