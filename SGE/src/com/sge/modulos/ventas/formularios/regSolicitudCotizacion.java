@@ -313,7 +313,7 @@ public class regSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
         chkMedidaCerrada.setSelected(this.item.isMedidaCerrada());
         txtAltoMedidaCerrada.setEnabled(this.item.isMedidaCerrada());
         txtLargoMedidaCerrada.setEnabled(this.item.isMedidaCerrada());
-        txtAltoMedidaAbierta.setText(String.valueOf(this.item.getAltoMedidaCerrada()));
+        txtAltoMedidaCerrada.setText(String.valueOf(this.item.getAltoMedidaCerrada()));
         txtLargoMedidaCerrada.setText(String.valueOf(this.item.getLargoMedidaCerrada()));
         chkTiraRetira.setSelected(this.item.isTiraRetira());
         txtTiraColor.setEnabled(this.item.isTiraRetira());
@@ -340,25 +340,34 @@ public class regSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
 
     private void AsignarValoresItem() {
         this.item.setNombre(txtNombreItem.getText());
-        this.item.setServicioImpresion(chkServicioImpresion.isSelected());
-        this.item.setIdServicioImpresion(schMaquina.getId());
-        this.item.setNombreServicioImpresion(schMaquina.getText());
-        this.item.setMaterial(chkMaterial.isSelected());
-        this.item.setIdMaterial(schMaterial.getId());
-        this.item.setNombreMaterial(schMaterial.getText());
-        this.item.setTipoUnidad(chkTipoUnidad.isSelected());
-        if (cboTipoUnidad.getSelectedItem() != null) {
-            this.item.setNombreTipoUnidad(cboTipoUnidad.getSelectedItem().toString());
-        }
         this.item.setMedidaAbierta(chkMedidaAbierta.isSelected());
+        this.item.setAltoMedidaAbierta(Double.parseDouble(txtAltoMedidaAbierta.getText()));
+        this.item.setLargoMedidaAbierta(Double.parseDouble(txtLargoMedidaAbierta.getText()));
         if (cboUnidadMedidaAbierta.getSelectedItem() != null) {
             this.item.setUnidadMedidaAbierta(cboUnidadMedidaAbierta.getSelectedItem().toString());
         }
         this.item.setMedidaCerrada(chkMedidaCerrada.isSelected());
+        this.item.setAltoMedidaCerrada(Double.parseDouble(txtAltoMedidaCerrada.getText()));
+        this.item.setLargoMedidaCerrada(Double.parseDouble(txtLargoMedidaCerrada.getText()));
         this.item.setTiraRetira(chkTiraRetira.isSelected());
-        this.item.setGrafico(chkGrafico.isSelected());
+        this.item.setTiraColor(Double.parseDouble(txtTiraColor.getText()));
+        this.item.setRetiraColor(Double.parseDouble(txtTiraColor.getText()));
+        this.item.setTipoUnidad(chkTipoUnidad.isSelected());
+        if (cboTipoUnidad.getSelectedItem() != null) {
+            this.item.setNombreTipoUnidad(cboTipoUnidad.getSelectedItem().toString());
+        }
         this.item.setFondo(chkFondo.isSelected());
+        this.item.setdFondo(Double.parseDouble(txtFondo.getText()));
         this.item.setGrafico(chkGrafico.isSelected());
+        this.item.setServicioImpresion(chkServicioImpresion.isSelected());
+        this.item.setIdServicioImpresion(schServicioImpresion.getId());
+        this.item.setNombreServicioImpresion(schServicioImpresion.getText());
+        this.item.setIdMaquina(schMaquina.getId());
+        this.item.setDescripcionMaquina(schMaquina.getText());
+        this.item.setMaterial(chkMaterial.isSelected());
+        this.item.setIdMaterial(schMaterial.getId());
+        this.item.setNombreMaterial(schMaterial.getText());
+        this.item.setAcabados(txtAcabados.getText());
     }
 
     /**
