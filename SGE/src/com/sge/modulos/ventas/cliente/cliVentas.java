@@ -195,6 +195,34 @@ public class cliVentas {
     
     ////////////////////////////////////////////////////////////////////////////
     
+    ///////////////////////////////// FORMA PAGO ///////////////////////////////
+    
+    public String ObtenerFormasPago(Object requestEntity) throws ClientErrorException {
+        WebTarget resource = client.target(BASE_URI).path("FormaPagoSRV");
+        resource = resource.path("ObtenerFormasPago");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
+    }
+    
+    public String RegistrarFormaPago(Object requestEntity) throws ClientErrorException {
+        WebTarget resource = client.target(BASE_URI).path("FormaPagoSRV");
+        resource = resource.path("RegistrarFormaPago");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
+    }
+    
+    public String ActualizarFormaPago(Object requestEntity) throws ClientErrorException {
+        WebTarget resource = client.target(BASE_URI).path("FormaPagoSRV");
+        resource = resource.path("ActualizarFormaPago");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
+    }
+    
+    public String EliminarFormaPago(Object requestEntity) throws ClientErrorException {
+        WebTarget resource = client.target(BASE_URI).path("FormaPagoSRV");
+        resource = resource.path("EliminarFormaPago");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
+    }
+    
+    ////////////////////////////////////////////////////////////////////////////
+    
     public void close() {
         client.close();
     }

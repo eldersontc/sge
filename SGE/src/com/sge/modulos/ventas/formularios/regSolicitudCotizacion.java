@@ -14,6 +14,7 @@ import com.sge.modulos.administracion.formularios.lisNumeracion;
 import com.sge.modulos.inventarios.clases.Producto;
 import com.sge.modulos.inventarios.formularios.lisProducto;
 import com.sge.modulos.ventas.clases.Cliente;
+import com.sge.modulos.ventas.clases.FormaPago;
 import com.sge.modulos.ventas.clases.ItemSolicitudCotizacion;
 import com.sge.modulos.ventas.clases.Maquina;
 import com.sge.modulos.ventas.clases.Servicio;
@@ -93,6 +94,16 @@ public class regSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
             Moneda seleccionado = ((lisMoneda) evt.getSource()).getSeleccionado();
             if (!(seleccionado == null)) {
                 schMoneda.asingValues(seleccionado.getIdMoneda(), seleccionado.getSimbolo());
+            }
+        }
+    };
+    
+    Action sele_form = new AbstractAction() {
+        @Override
+        public void actionPerformed(ActionEvent evt) {
+            FormaPago seleccionado = ((lisFormaPago) evt.getSource()).getSeleccionado();
+            if (!(seleccionado == null)) {
+                schFormaPago.asingValues(seleccionado.getIdFormaPago(), seleccionado.getDescripcion());
             }
         }
     };
@@ -904,9 +915,9 @@ public class regSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(schFormaPago, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(lblLineaProduccion, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(cboLineaProduccion, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(lblLineaProduccion, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(3, 3, 3)
+                                .addComponent(cboLineaProduccion, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(txtDescripcion)))
                     .addGroup(frameLayout.createSequentialGroup()
                         .addComponent(lblVendedor, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -985,7 +996,7 @@ public class regSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
                     .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(btnCancelar)
                         .addComponent(btnAceptar)))
-                .addContainerGap(26, Short.MAX_VALUE))
+                .addContainerGap(29, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -1020,7 +1031,7 @@ public class regSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
     }
 
     private void schFormaPagoSearch() {
-
+        VerModal(new lisFormaPago(1), sele_form);
     }
 
     private void schMaquinaSearch() {

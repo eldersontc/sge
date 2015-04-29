@@ -98,9 +98,9 @@
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Component id="schFormaPago" pref="0" max="32767" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="lblLineaProduccion" min="-2" pref="135" max="-2" attributes="0"/>
-                                  <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="cboLineaProduccion" min="-2" pref="173" max="-2" attributes="0"/>
+                                  <Component id="lblLineaProduccion" min="-2" pref="121" max="-2" attributes="0"/>
+                                  <EmptySpace min="-2" pref="3" max="-2" attributes="0"/>
+                                  <Component id="cboLineaProduccion" min="-2" pref="156" max="-2" attributes="0"/>
                               </Group>
                               <Component id="txtDescripcion" max="32767" attributes="0"/>
                           </Group>
@@ -207,7 +207,7 @@
                           <Component id="btnAceptar" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
-                  <EmptySpace pref="26" max="32767" attributes="0"/>
+                  <EmptySpace pref="29" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>

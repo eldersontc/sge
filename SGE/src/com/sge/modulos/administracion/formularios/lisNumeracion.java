@@ -84,10 +84,10 @@ public class lisNumeracion extends frameBase<Numeracion> {
                     List<Object[]> filas = (List<Object[]>) new Gson().fromJson(resultado[1], new TypeToken<List<Object[]>>() {
                     }.getType());
                     for (Object[] fila : filas) {
-                        AgregarFila(tbNumeraciones, new Object[]{false, ((Double) fila[0]).intValue(), fila[1], fila[2], fila[3], Icon_Edit, Icon_Dele});
+                        AgregarFila(tbNumeraciones, new Object[]{false, ((Double) fila[0]).intValue(), fila[1], fila[2], fila[3], fila[4], Icon_Edit, Icon_Dele});
                     }
-                    AgregarBoton(tbNumeraciones, edit, 5);
-                    AgregarBoton(tbNumeraciones, dele, 6);
+                    AgregarBoton(tbNumeraciones, edit, 6);
+                    AgregarBoton(tbNumeraciones, dele, 7);
                     AgregarOrdenamiento(tbNumeraciones);
                 }
                 OcultarCargando(frame);
@@ -144,7 +144,7 @@ public class lisNumeracion extends frameBase<Numeracion> {
                 OcultarControl(btnSeleccionar);
                 break;
             case 1:
-                OcultarColumnas(tbNumeraciones, new int[]{0, 5, 6});
+                OcultarColumnas(tbNumeraciones, new int[]{0, 6, 7});
                 OcultarControl(btnNuevo);
                 break;
         }
@@ -199,14 +199,14 @@ public class lisNumeracion extends frameBase<Numeracion> {
 
             },
             new String [] {
-                "CHECK", "ID", "DESCRIPCION", "ENTIDAD", "ACTIVO", "EDITAR", "ELIMINAR"
+                "CHECK", "ID", "DESCRIPCION", "ENTIDAD", "MANUAL", "ACTIVO", "EDITAR", "ELIMINAR"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Boolean.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Boolean.class, java.lang.Object.class, java.lang.Object.class
+                java.lang.Boolean.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Boolean.class, java.lang.Boolean.class, java.lang.Object.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                true, false, true, true, true, true, true
+                true, false, true, true, true, true, true, true
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -226,8 +226,10 @@ public class lisNumeracion extends frameBase<Numeracion> {
             tbNumeraciones.getColumnModel().getColumn(1).setMaxWidth(0);
             tbNumeraciones.getColumnModel().getColumn(2).setPreferredWidth(200);
             tbNumeraciones.getColumnModel().getColumn(3).setPreferredWidth(200);
+            tbNumeraciones.getColumnModel().getColumn(4).setPreferredWidth(100);
             tbNumeraciones.getColumnModel().getColumn(5).setPreferredWidth(100);
             tbNumeraciones.getColumnModel().getColumn(6).setPreferredWidth(100);
+            tbNumeraciones.getColumnModel().getColumn(7).setPreferredWidth(100);
         }
 
         pnlTitulo.setBackground(new java.awt.Color(67, 100, 130));
@@ -362,6 +364,8 @@ public class lisNumeracion extends frameBase<Numeracion> {
                 Numeracion numeracion = new Numeracion();
                 numeracion.setIdNumeracion(ObtenerValorCelda(tbNumeraciones, 1));
                 numeracion.setDescripcion(ObtenerValorCelda(tbNumeraciones, 2));
+                numeracion.setManual(ObtenerValorCelda(tbNumeraciones, 4));
+                numeracion.setActivo(ObtenerValorCelda(tbNumeraciones, 5));
                 seleccionado = numeracion;
             }
             Cerrar();
