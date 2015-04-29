@@ -11,7 +11,7 @@ public class NumeracionDAO extends BaseDAO {
 
     public List<Object[]> ObtenerNumeraciones(String filtro) {
         String sql = "SELECT \n"
-                + "Numeracion.idNumeracion, Numeracion.descripcion, Entidad.nombre as entidad, Numeracion.activo \n"
+                + "Numeracion.idNumeracion, Numeracion.descripcion, Entidad.nombre as entidad, Numeracion.manual, Numeracion.activo \n"
                 + "FROM \n"
                 + "Administracion.Numeracion AS Numeracion \n"
                 + "INNER JOIN Administracion.Entidad AS Entidad ON Numeracion.idEntidad = Entidad.idEntidad " + filtro;

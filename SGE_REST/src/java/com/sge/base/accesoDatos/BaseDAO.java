@@ -59,6 +59,7 @@ public class BaseDAO {
         recursos.add("com/sge/modulos/ventas/mapeos/ServicioMaquina.hbm.xml");
         recursos.add("com/sge/modulos/ventas/mapeos/SolicitudCotizacion.hbm.xml");
         recursos.add("com/sge/modulos/ventas/mapeos/ItemSolicitudCotizacion.hbm.xml");
+        recursos.add("com/sge/modulos/ventas/mapeos/FormaPago.hbm.xml");
         return recursos;
     }
     
