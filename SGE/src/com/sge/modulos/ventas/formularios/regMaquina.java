@@ -49,8 +49,8 @@ public class regMaquina extends frameBase<Maquina> {
                     txtGramajeMaximo.setText(String.valueOf(maquina.getMaximoGramaje()));
                     txtAltoMinimoPliego.setText(String.valueOf(maquina.getAltoMinimoPliego()));
                     txtAltoMaximoPliego.setText(String.valueOf(maquina.getAltoMaximoPliego()));
-                    txtAnchoMinimoPliego.setText(String.valueOf(maquina.getAnchoMinimoPliego()));
-                    txtAnchoMaximoPliego.setText(String.valueOf(maquina.getAnchoMaximoPliego()));
+                    txtLargoMinimoPliego.setText(String.valueOf(maquina.getLargoMinimoPliego()));
+                    txtLargoMaximoPliego.setText(String.valueOf(maquina.getLargoMaximoPliego()));
                     txtMargenPinza.setText(String.valueOf(maquina.getMargenPinza()));
                     txtMargenSalida.setText(String.valueOf(maquina.getMargenSalida()));
                     txtMargenEscuadra.setText(String.valueOf(maquina.getMargenEscuadra()));
@@ -92,8 +92,8 @@ public class regMaquina extends frameBase<Maquina> {
                 maquina.setMaximoGramaje(Integer.parseInt(txtGramajeMaximo.getText()));
                 maquina.setAltoMinimoPliego(Integer.parseInt(txtAltoMinimoPliego.getText()));
                 maquina.setAltoMaximoPliego(Integer.parseInt(txtAltoMaximoPliego.getText()));
-                maquina.setAnchoMinimoPliego(Integer.parseInt(txtAnchoMinimoPliego.getText()));
-                maquina.setAnchoMaximoPliego(Integer.parseInt(txtAnchoMaximoPliego.getText()));
+                maquina.setLargoMinimoPliego(Integer.parseInt(txtLargoMinimoPliego.getText()));
+                maquina.setLargoMaximoPliego(Integer.parseInt(txtLargoMaximoPliego.getText()));
                 maquina.setMargenPinza(Integer.parseInt(txtMargenPinza.getText()));
                 maquina.setMargenSalida(Integer.parseInt(txtMargenSalida.getText()));
                 maquina.setMargenEscuadra(Integer.parseInt(txtMargenEscuadra.getText()));
@@ -159,10 +159,10 @@ public class regMaquina extends frameBase<Maquina> {
         txtAltoMinimoPliego = new javax.swing.JTextField();
         lblAltoMaximoPliego = new javax.swing.JLabel();
         txtAltoMaximoPliego = new javax.swing.JTextField();
-        lblAnchoMinimoPliego = new javax.swing.JLabel();
-        txtAnchoMinimoPliego = new javax.swing.JTextField();
-        lblAnchoMaximoPliego = new javax.swing.JLabel();
-        txtAnchoMaximoPliego = new javax.swing.JTextField();
+        lblLargoMinimoPliego = new javax.swing.JLabel();
+        txtLargoMinimoPliego = new javax.swing.JTextField();
+        lblLargoMaximoPliego = new javax.swing.JLabel();
+        txtLargoMaximoPliego = new javax.swing.JTextField();
         tabMargenes = new javax.swing.JPanel();
         lblMargenPinza = new javax.swing.JLabel();
         txtMargenPinza = new javax.swing.JTextField();
@@ -261,13 +261,13 @@ public class regMaquina extends frameBase<Maquina> {
 
         txtAltoMaximoPliego.setText("0");
 
-        lblAnchoMinimoPliego.setText("ANCHO MÍNIMO");
+        lblLargoMinimoPliego.setText("LARGO MÍNIMO");
 
-        txtAnchoMinimoPliego.setText("0");
+        txtLargoMinimoPliego.setText("0");
 
-        lblAnchoMaximoPliego.setText("ANCHO  MÁXIMO");
+        lblLargoMaximoPliego.setText("LARGO  MÁXIMO");
 
-        txtAnchoMaximoPliego.setText("0");
+        txtLargoMaximoPliego.setText("0");
 
         javax.swing.GroupLayout tabPliegoLayout = new javax.swing.GroupLayout(tabPliego);
         tabPliego.setLayout(tabPliegoLayout);
@@ -281,20 +281,20 @@ public class regMaquina extends frameBase<Maquina> {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(txtAltoMinimoPliego, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(tabPliegoLayout.createSequentialGroup()
-                        .addComponent(lblAnchoMinimoPliego)
+                        .addComponent(lblLargoMinimoPliego)
                         .addGap(18, 18, 18)
-                        .addComponent(txtAnchoMinimoPliego, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(txtLargoMinimoPliego, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addGroup(tabPliegoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(tabPliegoLayout.createSequentialGroup()
-                        .addComponent(lblAnchoMaximoPliego)
+                        .addComponent(lblLargoMaximoPliego)
                         .addGap(18, 18, 18)
-                        .addComponent(txtAnchoMaximoPliego, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(txtLargoMaximoPliego, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(tabPliegoLayout.createSequentialGroup()
                         .addComponent(lblAltoMaximoPliego)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(txtAltoMaximoPliego, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(43, Short.MAX_VALUE))
+                .addContainerGap(55, Short.MAX_VALUE))
         );
         tabPliegoLayout.setVerticalGroup(
             tabPliegoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -307,10 +307,10 @@ public class regMaquina extends frameBase<Maquina> {
                     .addComponent(lblAltoMaximoPliego))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(tabPliegoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtAnchoMinimoPliego, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblAnchoMinimoPliego)
-                    .addComponent(txtAnchoMaximoPliego, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblAnchoMaximoPliego))
+                    .addComponent(txtLargoMinimoPliego, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblLargoMinimoPliego)
+                    .addComponent(txtLargoMaximoPliego, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblLargoMaximoPliego))
                 .addContainerGap(48, Short.MAX_VALUE))
         );
 
@@ -565,12 +565,12 @@ public class regMaquina extends frameBase<Maquina> {
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JLabel lblAltoMaximoPliego;
     private javax.swing.JLabel lblAltoMinimoPliego;
-    private javax.swing.JLabel lblAnchoMaximoPliego;
-    private javax.swing.JLabel lblAnchoMinimoPliego;
     private javax.swing.JLabel lblCanidadCuerpos;
     private javax.swing.JLabel lblDescripcion;
     private javax.swing.JLabel lblGramajeMaximo;
     private javax.swing.JLabel lblGramajeMinimo;
+    private javax.swing.JLabel lblLargoMaximoPliego;
+    private javax.swing.JLabel lblLargoMinimoPliego;
     private javax.swing.JLabel lblMargenCalle;
     private javax.swing.JLabel lblMargenContraEscuadra;
     private javax.swing.JLabel lblMargenEscuadra;
@@ -587,12 +587,12 @@ public class regMaquina extends frameBase<Maquina> {
     private javax.swing.JPanel tabResolucion;
     private javax.swing.JTextField txtAltoMaximoPliego;
     private javax.swing.JTextField txtAltoMinimoPliego;
-    private javax.swing.JTextField txtAnchoMaximoPliego;
-    private javax.swing.JTextField txtAnchoMinimoPliego;
     private javax.swing.JTextField txtCantidadCuerpos;
     private javax.swing.JTextField txtDescripcion;
     private javax.swing.JTextField txtGramajeMaximo;
     private javax.swing.JTextField txtGramajeMinimo;
+    private javax.swing.JTextField txtLargoMaximoPliego;
+    private javax.swing.JTextField txtLargoMinimoPliego;
     private javax.swing.JTextField txtMargenCalle;
     private javax.swing.JTextField txtMargenContraEscuadra;
     private javax.swing.JTextField txtMargenEscuadra;

@@ -247,17 +247,17 @@
                                   <Component id="txtAltoMinimoPliego" min="-2" pref="86" max="-2" attributes="0"/>
                               </Group>
                               <Group type="102" attributes="0">
-                                  <Component id="lblAnchoMinimoPliego" min="-2" max="-2" attributes="0"/>
+                                  <Component id="lblLargoMinimoPliego" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace type="separate" max="-2" attributes="0"/>
-                                  <Component id="txtAnchoMinimoPliego" min="-2" pref="86" max="-2" attributes="0"/>
+                                  <Component id="txtLargoMinimoPliego" min="-2" pref="86" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
                               <Group type="102" attributes="0">
-                                  <Component id="lblAnchoMaximoPliego" min="-2" max="-2" attributes="0"/>
+                                  <Component id="lblLargoMaximoPliego" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace type="separate" max="-2" attributes="0"/>
-                                  <Component id="txtAnchoMaximoPliego" min="-2" pref="86" max="-2" attributes="0"/>
+                                  <Component id="txtLargoMaximoPliego" min="-2" pref="86" max="-2" attributes="0"/>
                               </Group>
                               <Group type="102" attributes="0">
                                   <Component id="lblAltoMaximoPliego" min="-2" max="-2" attributes="0"/>
@@ -265,7 +265,7 @@
                                   <Component id="txtAltoMaximoPliego" min="-2" pref="86" max="-2" attributes="0"/>
                               </Group>
                           </Group>
-                          <EmptySpace pref="43" max="32767" attributes="0"/>
+                          <EmptySpace pref="55" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -281,10 +281,10 @@
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="txtAnchoMinimoPliego" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="lblAnchoMinimoPliego" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="txtAnchoMaximoPliego" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="lblAnchoMaximoPliego" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="txtLargoMinimoPliego" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="lblLargoMinimoPliego" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="txtLargoMaximoPliego" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="lblLargoMaximoPliego" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace pref="48" max="32767" attributes="0"/>
                       </Group>
@@ -312,22 +312,22 @@
                     <Property name="text" type="java.lang.String" value="0"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JLabel" name="lblAnchoMinimoPliego">
+                <Component class="javax.swing.JLabel" name="lblLargoMinimoPliego">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="ANCHO M&#xcd;NIMO"/>
+                    <Property name="text" type="java.lang.String" value="LARGO M&#xcd;NIMO"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JTextField" name="txtAnchoMinimoPliego">
+                <Component class="javax.swing.JTextField" name="txtLargoMinimoPliego">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="0"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JLabel" name="lblAnchoMaximoPliego">
+                <Component class="javax.swing.JLabel" name="lblLargoMaximoPliego">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="ANCHO  M&#xc1;XIMO"/>
+                    <Property name="text" type="java.lang.String" value="LARGO  M&#xc1;XIMO"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JTextField" name="txtAnchoMaximoPliego">
+                <Component class="javax.swing.JTextField" name="txtLargoMaximoPliego">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="0"/>
                   </Properties>
