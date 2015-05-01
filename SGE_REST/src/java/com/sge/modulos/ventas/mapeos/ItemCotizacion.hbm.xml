@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.sge.modulos.ventas.entidades.ItemCotizacion" table="ItemCotizacion" schema="Ventas">
+        <id name="idItemCotizacion" column="idItemCotizacion">
+            <generator class="sequence">
+                <param name="sequence">ventas.itemcotizacion_iditemcotizacion_seq</param>
+            </generator>
+        </id>
+        <property name="idCotizacion" column="idCotizacion"/>
+        <property name="nombre" column="nombre"/>
+        <property name="idServicioImpresion" column="idServicioImpresion"/>
+        <property name="nombreServicioImpresion" column="nombreServicioImpresion"/>
+        <property name="idMaquina" column="idMaquina"/>
+        <property name="descripcionMaquina" column="descripcionMaquina"/>
+        <property name="largoMaximoPliegoMaquina" column="largoMaximoPliegoMaquina"/>
+        <property name="altoMaximoPliegoMaquina" column="altoMaximoPliegoMaquina"/>
+        <property name="idMaterial" column="idMaterial"/>
+        <property name="nombreMaterial" column="nombreMaterial"/>
+        <property name="largoMaterial" column="largoMaterial"/>
+        <property name="altoMaterial" column="altoMaterial"/>
+        <property name="unidadMedidaAbierta" column="unidadMedidaAbierta"/>
+        <property name="medidaAbierta" column="medidaAbierta"/>
+        <property name="medidaCerrada" column="medidaCerrada"/>
+        <property name="tiraRetira" column="tiraRetira"/>
+        <property name="grafico" column="grafico"/>
+        <property name="material" column="material"/>
+        <property name="servicioImpresion" column="servicioImpresion"/>
+        <property name="fondo" column="fondo"/>
+        <property name="tipoUnidad" column="tipoUnidad"/>
+        <property name="nombreTipoUnidad" column="nombreTipoUnidad"/>
+        <property name="largoMedidaAbierta" column="largoMedidaAbierta"/>
+        <property name="altoMedidaAbierta" column="altoMedidaAbierta"/>
+        <property name="largoMedidaCerrada" column="largoMedidaCerrada"/>
+        <property name="altoMedidaCerrada" column="altoMedidaCerrada"/>
+        <property name="tiraColor" column="tiraColor"/>
+        <property name="retiraColor" column="retiraColor"/>
+        <property name="dFondo" column="dFondo"/>
+        <property name="largoFormatoImpresion" column="largoFormatoImpresion"/>
+        <property name="altoFormatoImpresion" column="altoFormatoImpresion"/>
+        <property name="separacionX" column="separacionX"/>
+        <property name="separacionY" column="separacionY"/>
+        <property name="graficoPrecorteGirado" column="graficoPrecorteGirado"/>
+        <property name="graficoImpresionGirado" column="graficoImpresionGirado"/>
+        <property name="cantidadPiezasPrecorte" column="cantidadPiezasPrecorte"/>
+        <property name="cantidadPiezasImpresion" column="cantidadPiezasImpresion"/>
+        <property name="idMetodoImpresion" column="idMetodoImpresion"/>
+        <property name="descripcionMetodoImpresion" column="descripcionMetodoImpresion"/>
+        <property name="cantidadPases" column="cantidadPases"/>
+        <property name="cantidadCambios" column="cantidadCambios"/>
+        <property name="cantidadMaterial" column="cantidadMaterial"/>
+        <property name="cantidadDemasia" column="cantidadDemasia"/>
+        <property name="cantidadProduccion" column="cantidadProduccion"/>
+        <property name="cantidad" column="cantidad"/>
+        <property name="cantidadPaginasSobrantes" column="cantidadPaginasSobrantes"/>
+        <property name="incluirEnPresupuesto" column="incluirEnPresupuesto"/>
+        <property name="verPrecioEnPresupuesto" column="verPrecioEnPresupuesto"/>
+        <property name="totalMaquina" column="totalMaquina"/>
+        <property name="totalMaterial" column="totalMaterial"/>
+        <property name="total" column="total"/>
+    </class>
+</hibernate-mapping>

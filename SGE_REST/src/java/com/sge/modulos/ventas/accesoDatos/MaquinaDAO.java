@@ -20,13 +20,13 @@ public class MaquinaDAO extends BaseDAO {
 
     public int ActualizarMaquina(Maquina maquina) {
         String sql = String.format("UPDATE Ventas.Maquina SET descripcion = '%s', tipoMaquina = '%s', "
-                + "cantidadCuerpos = %d, minimoGramaje = %d, maximoGramaje = %d, anchoMinimoPliego = %d, "
-                + "anchoMaximoPliego = %d, altoMinimoPliego = %d, altoMaximoPliego = %d, margenPinza = %d, "
+                + "cantidadCuerpos = %d, minimoGramaje = %d, maximoGramaje = %d, largoMinimoPliego = %d, "
+                + "largoMaximoPliego = %d, altoMinimoPliego = %d, altoMaximoPliego = %d, margenPinza = %d, "
                 + "margenSalida = %d, margenEscuadra = %d, margenContraEscuadra = %d, margenCalle = %d, "
                 + "minimaResolucion = %d, maximaResolucion = %d, activo = %b WHERE idMaquina = %d",
                 maquina.getDescripcion(), maquina.getTipoMaquina(), maquina.getCantidadCuerpos(),
-                maquina.getMinimoGramaje(), maquina.getMaximoGramaje(), maquina.getAnchoMinimoPliego(),
-                maquina.getAnchoMaximoPliego(), maquina.getAltoMinimoPliego(), maquina.getAltoMaximoPliego(),
+                maquina.getMinimoGramaje(), maquina.getMaximoGramaje(), maquina.getLargoMinimoPliego(),
+                maquina.getLargoMaximoPliego(), maquina.getAltoMinimoPliego(), maquina.getAltoMaximoPliego(),
                 maquina.getMargenPinza(), maquina.getMargenSalida(), maquina.getMargenEscuadra(),
                 maquina.getMargenContraEscuadra(), maquina.getMargenCalle(), maquina.getMinimaResolucion(),
                 maquina.getMaximaResolucion(), maquina.isActivo(), maquina.getIdMaquina());

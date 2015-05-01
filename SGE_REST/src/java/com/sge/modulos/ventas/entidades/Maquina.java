@@ -12,8 +12,8 @@ public class Maquina {
     private int cantidadCuerpos;
     private int minimoGramaje;
     private int maximoGramaje;
-    private int anchoMinimoPliego;
-    private int anchoMaximoPliego;
+    private int largoMinimoPliego;
+    private int largoMaximoPliego;
     private int altoMinimoPliego;
     private int altoMaximoPliego;
     private int margenPinza;
@@ -76,20 +76,20 @@ public class Maquina {
         this.maximoGramaje = maximoGramaje;
     }
 
-    public int getAnchoMinimoPliego() {
-        return anchoMinimoPliego;
+    public int getLargoMinimoPliego() {
+        return largoMinimoPliego;
     }
 
-    public void setAnchoMinimoPliego(int anchoMinimoPliego) {
-        this.anchoMinimoPliego = anchoMinimoPliego;
+    public void setLargoMinimoPliego(int largoMinimoPliego) {
+        this.largoMinimoPliego = largoMinimoPliego;
     }
 
-    public int getAnchoMaximoPliego() {
-        return anchoMaximoPliego;
+    public int getLargoMaximoPliego() {
+        return largoMaximoPliego;
     }
 
-    public void setAnchoMaximoPliego(int anchoMaximoPliego) {
-        this.anchoMaximoPliego = anchoMaximoPliego;
+    public void setLargoMaximoPliego(int largoMaximoPliego) {
+        this.largoMaximoPliego = largoMaximoPliego;
     }
 
     public int getAltoMinimoPliego() {

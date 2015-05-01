@@ -14,8 +14,8 @@
         <property name="cantidadCuerpos" column="cantidadCuerpos"/>
         <property name="minimoGramaje" column="minimoGramaje"/>
         <property name="maximoGramaje" column="maximoGramaje"/>
-        <property name="anchoMinimoPliego" column="anchoMinimoPliego"/>
-        <property name="anchoMaximoPliego" column="anchoMaximoPliego"/>
+        <property name="largoMinimoPliego" column="largoMinimoPliego"/>
+        <property name="largoMaximoPliego" column="largoMaximoPliego"/>
         <property name="altoMinimoPliego" column="altoMinimoPliego"/>
         <property name="altoMaximoPliego" column="altoMaximoPliego"/>
         <property name="margenPinza" column="margenPinza"/>

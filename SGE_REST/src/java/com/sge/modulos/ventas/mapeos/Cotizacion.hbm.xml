@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.sge.modulos.ventas.entidades.Cotizacion" table="Cotizacion" schema="Ventas">
+        <id name="idCotizacion" column="idCotizacion">
+            <generator class="sequence">
+                <param name="sequence">Ventas.cotizacion_idcotizacion_seq</param>
+            </generator>
+        </id>
+        <property name="numero" column="numero"/>
+        <property name="numeracionManual" column="numeracionManual"/>
+        <property name="idNumeracion" column="idNumeracion"/>
+        <property name="descripcionNumeracion" column="descripcionNumeracion"/>
+        <property name="fechaCreacion" column="fechaCreacion"/>
+        <property name="descripcion" column="descripcion"/>
+        <property name="idCliente" column="idCliente"/>
+        <property name="razonSocialCliente" column="razonSocialCliente"/>
+        <property name="idMoneda" column="idMoneda"/>
+        <property name="simboloMoneda" column="simboloMoneda"/>
+        <property name="idCotizador" column="idCotizador"/>
+        <property name="nombreCotizador" column="nombreCotizador"/>
+        <property name="idVendedor" column="idVendedor"/>
+        <property name="nombreVendedor" column="nombreVendedor"/>
+        <property name="idFormaPago" column="idFormaPago"/>
+        <property name="descripcionFormaPago" column="descripcionFormaPago"/>
+        <property name="lineaProduccion" column="lineaProduccion"/>
+        <property name="cantidad" column="cantidad"/>
+        <property name="observacion" column="observacion"/>
+        <property name="idListaPreciosMaterial" column="idListaPreciosMaterial"/>
+        <property name="descripcionListaPreciosMaterial" column="descripcionListaPreciosMaterial"/>
+        <property name="idListaPreciosMaquina" column="idListaPreciosMaquina"/>
+        <property name="descripcionListaPreciosMaquina" column="descripcionListaPreciosMaquina"/>
+        <property name="idContactoCliente" column="idContactoCliente"/>
+        <property name="nombreContactoCliente" column="nombreContactoCliente"/>
+        <property name="porcentajeUtilidad" column="porcentajeUtilidad"/>
+        <property name="subTotal" column="subTotal"/>
+        <property name="montoUtilidad" column="montoUtilidad"/>
+        <property name="total" column="total"/>
+        <property name="estado" column="estado"/>
+    </class>
+</hibernate-mapping>
