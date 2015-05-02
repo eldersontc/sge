@@ -224,12 +224,12 @@ public class regProducto extends frameBase<Producto> {
         btnAceptar = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
         jTabbedPane1 = new javax.swing.JTabbedPane();
-        pnlUnidades = new javax.swing.JPanel();
+        tabUnidades = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         tbUnidades = new javax.swing.JTable();
         btnNuevaUnidad = new javax.swing.JButton();
         btnEliminarUnidad = new javax.swing.JButton();
-        pnlAlmacenes = new javax.swing.JPanel();
+        tabAlmacenes = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tbAlmacenes = new javax.swing.JTable();
         btnNuevoAlmacen = new javax.swing.JButton();
@@ -267,7 +267,8 @@ public class regProducto extends frameBase<Producto> {
 
         jTabbedPane1.setBorder(null);
 
-        pnlUnidades.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        tabUnidades.setBackground(java.awt.Color.white);
+        tabUnidades.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         tbUnidades.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -318,24 +319,24 @@ public class regProducto extends frameBase<Producto> {
             }
         });
 
-        javax.swing.GroupLayout pnlUnidadesLayout = new javax.swing.GroupLayout(pnlUnidades);
-        pnlUnidades.setLayout(pnlUnidadesLayout);
-        pnlUnidadesLayout.setHorizontalGroup(
-            pnlUnidadesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlUnidadesLayout.createSequentialGroup()
+        javax.swing.GroupLayout tabUnidadesLayout = new javax.swing.GroupLayout(tabUnidades);
+        tabUnidades.setLayout(tabUnidadesLayout);
+        tabUnidadesLayout.setHorizontalGroup(
+            tabUnidadesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(tabUnidadesLayout.createSequentialGroup()
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 408, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(pnlUnidadesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(tabUnidadesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnEliminarUnidad, javax.swing.GroupLayout.DEFAULT_SIZE, 83, Short.MAX_VALUE)
                     .addComponent(btnNuevaUnidad, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
-        pnlUnidadesLayout.setVerticalGroup(
-            pnlUnidadesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlUnidadesLayout.createSequentialGroup()
+        tabUnidadesLayout.setVerticalGroup(
+            tabUnidadesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(tabUnidadesLayout.createSequentialGroup()
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
-            .addGroup(pnlUnidadesLayout.createSequentialGroup()
+            .addGroup(tabUnidadesLayout.createSequentialGroup()
                 .addGap(23, 23, 23)
                 .addComponent(btnNuevaUnidad)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -343,9 +344,10 @@ public class regProducto extends frameBase<Producto> {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jTabbedPane1.addTab("UNIDADES", pnlUnidades);
+        jTabbedPane1.addTab("UNIDADES", tabUnidades);
 
-        pnlAlmacenes.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        tabAlmacenes.setBackground(java.awt.Color.white);
+        tabAlmacenes.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         tbAlmacenes.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -399,24 +401,24 @@ public class regProducto extends frameBase<Producto> {
             }
         });
 
-        javax.swing.GroupLayout pnlAlmacenesLayout = new javax.swing.GroupLayout(pnlAlmacenes);
-        pnlAlmacenes.setLayout(pnlAlmacenesLayout);
-        pnlAlmacenesLayout.setHorizontalGroup(
-            pnlAlmacenesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlAlmacenesLayout.createSequentialGroup()
+        javax.swing.GroupLayout tabAlmacenesLayout = new javax.swing.GroupLayout(tabAlmacenes);
+        tabAlmacenes.setLayout(tabAlmacenesLayout);
+        tabAlmacenesLayout.setHorizontalGroup(
+            tabAlmacenesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(tabAlmacenesLayout.createSequentialGroup()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 408, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(pnlAlmacenesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(tabAlmacenesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnEliminarAlmacen, javax.swing.GroupLayout.DEFAULT_SIZE, 83, Short.MAX_VALUE)
                     .addComponent(btnNuevoAlmacen, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
-        pnlAlmacenesLayout.setVerticalGroup(
-            pnlAlmacenesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlAlmacenesLayout.createSequentialGroup()
+        tabAlmacenesLayout.setVerticalGroup(
+            tabAlmacenesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(tabAlmacenesLayout.createSequentialGroup()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
-            .addGroup(pnlAlmacenesLayout.createSequentialGroup()
+            .addGroup(tabAlmacenesLayout.createSequentialGroup()
                 .addGap(23, 23, 23)
                 .addComponent(btnNuevoAlmacen)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -424,7 +426,7 @@ public class regProducto extends frameBase<Producto> {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jTabbedPane1.addTab("ALMACENES", pnlAlmacenes);
+        jTabbedPane1.addTab("ALMACENES", tabAlmacenes);
 
         chkCompras.setText("COMPRAS");
 
@@ -596,9 +598,9 @@ public class regProducto extends frameBase<Producto> {
     private javax.swing.JLabel lblCodigo;
     private javax.swing.JLabel lblNombre;
     private javax.swing.JLabel lblTitulo;
-    private javax.swing.JPanel pnlAlmacenes;
     private javax.swing.JPanel pnlTitulo;
-    private javax.swing.JPanel pnlUnidades;
+    private javax.swing.JPanel tabAlmacenes;
+    private javax.swing.JPanel tabUnidades;
     private javax.swing.JTable tbAlmacenes;
     private javax.swing.JTable tbUnidades;
     private javax.swing.JTextField txtCodigo;
