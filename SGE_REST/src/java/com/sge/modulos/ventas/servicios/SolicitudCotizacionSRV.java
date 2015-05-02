@@ -1,9 +1,12 @@
 package com.sge.modulos.ventas.servicios;
 
 import com.google.gson.Gson;
+import com.sge.modulos.administracion.entidades.ValorDefinido;
+import com.sge.modulos.administracion.negocios.ValorDefinidoDTO;
 import com.sge.modulos.ventas.entidades.SolicitudCotizacion;
 import com.sge.modulos.ventas.negocios.SolicitudCotizacionDTO;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
@@ -114,6 +117,30 @@ public class SolicitudCotizacionSRV {
             SolicitudCotizacionDTO SolicitudCotizacionDTO = new SolicitudCotizacionDTO();
             SolicitudCotizacionDTO.EliminarSolicitudCotizacion(idSolicitudCotizacion);
             resultado.add(new Gson().toJson(true));
+        } catch (Exception e) {
+            resultado.clear();
+            resultado.add(new Gson().toJson(false));
+            resultado.add(new Gson().toJson(e));
+        }
+        return new Gson().toJson(resultado);
+    }
+    
+    @POST
+    @Path("GenerarCotizacion")
+    @Consumes("application/json")
+    @Produces("application/json")
+    public String GenerarCotizacion(String json) {
+        List<String> resultado = new ArrayList<>();
+        int[] ids = new Gson().fromJson(json, int[].class);
+        try {
+            SolicitudCotizacionDTO SolicitudCotizacionDTO = new SolicitudCotizacionDTO();
+            SolicitudCotizacion solicitudCotizacion = SolicitudCotizacionDTO.ObtenerSolicitudCotizacion(ids[0]);
+            ValorDefinidoDTO valorDefinidoDTO = new ValorDefinidoDTO();
+            ValorDefinido valorDefinido = valorDefinidoDTO.ObtenerValorDefinidoPorUsuarioYEntidad(ids[1], 4);
+            resultado.add(new Gson().toJson(true));
+            resultado.add(new Gson().toJson(new Date()));
+            resultado.add(new Gson().toJson(solicitudCotizacion));
+            resultado.add(valorDefinido == null ? "" : valorDefinido.getJson());
         } catch (Exception e) {
             resultado.clear();
             resultado.add(new Gson().toJson(false));
