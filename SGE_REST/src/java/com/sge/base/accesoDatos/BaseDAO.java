@@ -62,6 +62,10 @@ public class BaseDAO {
         recursos.add("com/sge/modulos/ventas/mapeos/FormaPago.hbm.xml");
 //        recursos.add("com/sge/modulos/ventas/mapeos/Cotizacion.hbm.xml");
 //        recursos.add("com/sge/modulos/ventas/mapeos/ItemCotizacion.hbm.xml");
+        recursos.add("com/sge/modulos/ventas/mapeos/ListaPrecioProducto.hbm.xml");
+        recursos.add("com/sge/modulos/ventas/mapeos/ItemListaPrecioProducto.hbm.xml");
+        recursos.add("com/sge/modulos/ventas/mapeos/UnidadListaPrecioProducto.hbm.xml");
+        recursos.add("com/sge/modulos/ventas/mapeos/EscalaListaPrecioProducto.hbm.xml");
         return recursos;
     }
     
