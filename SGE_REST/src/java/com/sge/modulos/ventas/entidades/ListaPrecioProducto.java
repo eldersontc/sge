@@ -1,5 +1,6 @@
 package com.sge.modulos.ventas.entidades;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -14,6 +15,7 @@ public class ListaPrecioProducto {
     private List<ItemListaPrecioProducto> items;
 
     public ListaPrecioProducto() {
+        items = new ArrayList<>();
     }
 
     public int getIdListaPrecioProducto() {

@@ -1,7 +1,5 @@
 package com.sge.modulos.ventas.entidades;
 
-import java.util.List;
-
 /**
  *
  * @author elderson
@@ -13,7 +11,6 @@ public class UnidadListaPrecioProducto {
     private int idProductoUnidad;
     private int abreviacionUnidad;
     private int factor;
-    private List<EscalaListaPrecioProducto> escalas;
 
     public UnidadListaPrecioProducto() {
     }
@@ -56,13 +53,5 @@ public class UnidadListaPrecioProducto {
 
     public void setFactor(int factor) {
         this.factor = factor;
-    }
-
-    public List<EscalaListaPrecioProducto> getEscalas() {
-        return escalas;
-    }
-
-    public void setEscalas(List<EscalaListaPrecioProducto> escalas) {
-        this.escalas = escalas;
     }
 }
