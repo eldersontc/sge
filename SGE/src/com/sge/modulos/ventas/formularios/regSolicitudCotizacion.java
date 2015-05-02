@@ -183,8 +183,8 @@ public class regSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
         txtDescripcion.setText(getEntidad().getDescripcion());
         txtCantidad.setText(String.valueOf(getEntidad().getCantidad()));
         cboLineaProduccion.setSelectedItem(getEntidad().getLineaProduccion());
-        for (ItemSolicitudCotizacion itemPlantilla : getEntidad().getItems()) {
-            AgregarElemento(lisItems, itemPlantilla);
+        for (ItemSolicitudCotizacion itemSolicitud : getEntidad().getItems()) {
+            AgregarElemento(lisItems, itemSolicitud);
         }
     }
 
