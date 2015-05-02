@@ -104,11 +104,13 @@ public class ListaPrecioProductoDTO {
         return true;
     }
     
-    public boolean RegistrarItemListaPrecioProducto(ItemListaPrecioProducto itemListaPrecio) {
+    public ItemListaPrecioProducto[] RegistrarItemsListaPrecioProducto(ItemListaPrecioProducto[] itemsListaPrecio) {
         try {
             itemListaPrecioDAO = new ItemListaPrecioProductoDAO();
             itemListaPrecioDAO.IniciarTransaccion();
-            itemListaPrecioDAO.Agregar(itemListaPrecio);
+            for (ItemListaPrecioProducto itemListaPrecio : itemsListaPrecio) {
+                itemListaPrecioDAO.Agregar(itemListaPrecio);
+            }
             itemListaPrecioDAO.ConfirmarTransaccion();
         } catch (Exception e) {
             itemListaPrecioDAO.AbortarTransaccion();
@@ -116,14 +118,16 @@ public class ListaPrecioProductoDTO {
         } finally {
             itemListaPrecioDAO.CerrarSesion();
         }
-        return true;
+        return itemsListaPrecio;
     }
     
-    public boolean RegistrarUnidadListaPrecioProducto(UnidadListaPrecioProducto unidadListaPrecio) {
+    public UnidadListaPrecioProducto[] RegistrarUnidadesListaPrecioProducto(UnidadListaPrecioProducto[] unidadesListaPrecio) {
         try {
             unidadListaPrecioDAO = new UnidadListaPrecioProductoDAO();
             unidadListaPrecioDAO.IniciarTransaccion();
-            unidadListaPrecioDAO.Agregar(unidadListaPrecio);
+            for (UnidadListaPrecioProducto unidadListaPrecio : unidadesListaPrecio) {
+                unidadListaPrecioDAO.Agregar(unidadListaPrecio);
+            }
             unidadListaPrecioDAO.ConfirmarTransaccion();
         } catch (Exception e) {
             unidadListaPrecioDAO.AbortarTransaccion();
@@ -131,7 +135,7 @@ public class ListaPrecioProductoDTO {
         } finally {
             unidadListaPrecioDAO.CerrarSesion();
         }
-        return true;
+        return unidadesListaPrecio;
     }
     
     public boolean RegistrarEscalaListaPrecioProducto(EscalaListaPrecioProducto escalaListaPrecio) {
@@ -214,11 +218,11 @@ public class ListaPrecioProductoDTO {
             itemListaPrecioDAO.EliminarItemListaPrecioProducto(idItemListaPrecioProducto);
 
             unidadListaPrecioDAO = new UnidadListaPrecioProductoDAO();
-            unidadListaPrecioDAO.AsignarSesion(listaPrecioDAO);
+            unidadListaPrecioDAO.AsignarSesion(itemListaPrecioDAO);
             unidadListaPrecioDAO.EliminarUnidadListaPrecioProductoPorIdItemListaPrecioProducto(idItemListaPrecioProducto);
             
             escalaListaPrecioDAO = new EscalaListaPrecioProductoDAO();
-            escalaListaPrecioDAO.AsignarSesion(listaPrecioDAO);
+            escalaListaPrecioDAO.AsignarSesion(itemListaPrecioDAO);
             escalaListaPrecioDAO.EliminarEscalaListaPrecioProductoPorIdItemListaPrecioProducto(idItemListaPrecioProducto);
             
             itemListaPrecioDAO.ConfirmarTransaccion();
@@ -238,7 +242,7 @@ public class ListaPrecioProductoDTO {
             unidadListaPrecioDAO.EliminarUnidadListaPrecioProducto(idUnidadListaPrecioProducto);
             
             escalaListaPrecioDAO = new EscalaListaPrecioProductoDAO();
-            escalaListaPrecioDAO.AsignarSesion(listaPrecioDAO);
+            escalaListaPrecioDAO.AsignarSesion(unidadListaPrecioDAO);
             escalaListaPrecioDAO.EliminarEscalaListaPrecioProductoPorIdUnidadListaPrecioProducto(idUnidadListaPrecioProducto);
             
             unidadListaPrecioDAO.ConfirmarTransaccion();

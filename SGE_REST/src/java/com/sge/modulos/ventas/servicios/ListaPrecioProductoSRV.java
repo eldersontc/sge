@@ -128,17 +128,17 @@ public class ListaPrecioProductoSRV {
     }
     
     @POST
-    @Path("RegistrarItemListaPrecioProducto")
+    @Path("RegistrarItemsListaPrecioProducto")
     @Consumes("application/json")
     @Produces("application/json")
-    public String RegistrarItemListaPrecioProducto(String json) {
+    public String RegistrarItemsListaPrecioProducto(String json) {
         List<String> resultado = new ArrayList<>();
-        ItemListaPrecioProducto itemListaPrecio = new Gson().fromJson(json, ItemListaPrecioProducto.class);
+        ItemListaPrecioProducto[] itemsListaPrecio = new Gson().fromJson(json, ItemListaPrecioProducto[].class);
         try {
             ListaPrecioProductoDTO listaPrecioProductoDTO = new ListaPrecioProductoDTO();
-            listaPrecioProductoDTO.RegistrarItemListaPrecioProducto(itemListaPrecio);
+            listaPrecioProductoDTO.RegistrarItemsListaPrecioProducto(itemsListaPrecio);
             resultado.add(new Gson().toJson(true));
-            resultado.add(new Gson().toJson(itemListaPrecio.getIdItemListaPrecioProducto()));
+            resultado.add(new Gson().toJson(itemsListaPrecio));
         } catch (Exception e) {
             resultado.clear();
             resultado.add(new Gson().toJson(false));
@@ -148,17 +148,17 @@ public class ListaPrecioProductoSRV {
     }
     
     @POST
-    @Path("RegistrarUnidadListaPrecioProducto")
+    @Path("RegistrarUnidadesListaPrecioProducto")
     @Consumes("application/json")
     @Produces("application/json")
-    public String RegistrarUnidadListaPrecioProducto(String json) {
+    public String RegistrarUnidadesListaPrecioProducto(String json) {
         List<String> resultado = new ArrayList<>();
-        UnidadListaPrecioProducto unidadListaPrecio = new Gson().fromJson(json, UnidadListaPrecioProducto.class);
+        UnidadListaPrecioProducto[] unidadesListaPrecio = new Gson().fromJson(json, UnidadListaPrecioProducto[].class);
         try {
             ListaPrecioProductoDTO listaPrecioProductoDTO = new ListaPrecioProductoDTO();
-            listaPrecioProductoDTO.RegistrarUnidadListaPrecioProducto(unidadListaPrecio);
+            listaPrecioProductoDTO.RegistrarUnidadesListaPrecioProducto(unidadesListaPrecio);
             resultado.add(new Gson().toJson(true));
-            resultado.add(new Gson().toJson(unidadListaPrecio.getIdUnidadListaPrecioProducto()));
+            resultado.add(new Gson().toJson(unidadesListaPrecio));
         } catch (Exception e) {
             resultado.clear();
             resultado.add(new Gson().toJson(false));

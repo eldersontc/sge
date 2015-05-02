@@ -6,7 +6,7 @@
     <class name="com.sge.modulos.ventas.entidades.ListaPrecioProducto" table="ListaPrecioProducto" schema="Ventas">
         <id name="idListaPrecioProducto" column="idListaPrecioProducto">
             <generator class="sequence">
-                <param name="sequence">ventas.listaprecioproducto_idlistaprecioproduct_seq</param>
+                <param name="sequence">ventas.listaprecioproducto_idlistaprecioproducto_seq</param>
             </generator>
         </id>
         <property name="nombre" column="nombre"/>
