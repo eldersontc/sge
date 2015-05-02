@@ -74,16 +74,12 @@ public class lisListaPrecioProducto extends frameBase<ListaPrecioProducto> {
                 String[] resultado = new Gson().fromJson(json, String[].class);
 
                 if (resultado[0].equals("true")) {
-                    DefaultTableModel modelo = (DefaultTableModel) tbListasPrecio.getModel();
-                    modelo.setRowCount(0);
-
+                    EliminarTodasFilas(tbListasPrecio);
                     List<Object[]> filas = (List<Object[]>) new Gson().fromJson(resultado[1], new TypeToken<List<Object[]>>() {
                     }.getType());
-
                     for (Object[] fila : filas) {
-                        modelo.addRow(new Object[]{false, ((Double) fila[0]).intValue(), fila[1], fila[2], Icon_Edit, Icon_Dele});
+                        AgregarFila(tbListasPrecio, new Object[]{false, ((Double) fila[0]).intValue(), fila[1], fila[2], Icon_Edit, Icon_Dele});
                     }
-
                     AgregarBoton(tbListasPrecio, edit, 4);
                     AgregarBoton(tbListasPrecio, dele, 5);
                     AgregarOrdenamiento(tbListasPrecio);
@@ -221,6 +217,7 @@ public class lisListaPrecioProducto extends frameBase<ListaPrecioProducto> {
             tbListasPrecio.getColumnModel().getColumn(1).setMinWidth(0);
             tbListasPrecio.getColumnModel().getColumn(1).setPreferredWidth(0);
             tbListasPrecio.getColumnModel().getColumn(1).setMaxWidth(0);
+            tbListasPrecio.getColumnModel().getColumn(2).setPreferredWidth(300);
         }
 
         pnlTitulo.setBackground(new java.awt.Color(67, 100, 130));

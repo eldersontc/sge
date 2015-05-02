@@ -295,15 +295,15 @@ public class cliVentas {
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
     }
     
-    public String RegistrarItemListaPrecioProducto(Object requestEntity) throws ClientErrorException {
+    public String RegistrarItemsListaPrecioProducto(Object requestEntity) throws ClientErrorException {
         WebTarget resource = client.target(BASE_URI).path("ListaPrecioProductoSRV");
-        resource = resource.path("RegistrarItemListaPrecioProducto");
+        resource = resource.path("RegistrarItemsListaPrecioProducto");
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
     }
     
-    public String RegistrarUnidadListaPrecioProducto(Object requestEntity) throws ClientErrorException {
+    public String RegistrarUnidadesListaPrecioProducto(Object requestEntity) throws ClientErrorException {
         WebTarget resource = client.target(BASE_URI).path("ListaPrecioProductoSRV");
-        resource = resource.path("RegistrarUnidadListaPrecioProducto");
+        resource = resource.path("RegistrarUnidadesListaPrecioProducto");
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
     }
     
