@@ -445,6 +445,76 @@ public class cliVentas {
     
     ////////////////////////////////////////////////////////////////////////////
     
+    ////////////////////////// LISTA PRECIO MAQUINA ////////////////////////////
+    
+    public String ObtenerListasPrecioMaquina(Object requestEntity) throws ClientErrorException {
+        WebTarget resource = client.target(BASE_URI).path("ListaPrecioMaquinaSRV");
+        resource = resource.path("ObtenerListasPrecioMaquina");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
+    }
+    
+    public String ObtenerListaPrecioMaquina(Object requestEntity) throws ClientErrorException {
+        WebTarget resource = client.target(BASE_URI).path("ListaPrecioMaquinaSRV");
+        resource = resource.path("ObtenerListaPrecioMaquina");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
+    }
+    
+    public String ObtenerEscalasListaPrecioMaquina(Object requestEntity) throws ClientErrorException {
+        WebTarget resource = client.target(BASE_URI).path("ListaPrecioMaquinaSRV");
+        resource = resource.path("ObtenerEscalasListaPrecioMaquina");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
+    }
+    
+    public String RegistrarListaPrecioMaquina(Object requestEntity) throws ClientErrorException {
+        WebTarget resource = client.target(BASE_URI).path("ListaPrecioMaquinaSRV");
+        resource = resource.path("RegistrarListaPrecioMaquina");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
+    }
+    
+    public String RegistrarItemsListaPrecioMaquina(Object requestEntity) throws ClientErrorException {
+        WebTarget resource = client.target(BASE_URI).path("ListaPrecioMaquinaSRV");
+        resource = resource.path("RegistrarItemsListaPrecioMaquina");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
+    }
+    
+    public String RegistrarEscalaListaPrecioMaquina(Object requestEntity) throws ClientErrorException {
+        WebTarget resource = client.target(BASE_URI).path("ListaPrecioMaquinaSRV");
+        resource = resource.path("RegistrarEscalaListaPrecioMaquina");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
+    }
+    
+    public String ActualizarListaPrecioMaquina(Object requestEntity) throws ClientErrorException {
+        WebTarget resource = client.target(BASE_URI).path("ListaPrecioMaquinaSRV");
+        resource = resource.path("ActualizarListaPrecioMaquina");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
+    }
+    
+    public String ActualizarEscalaListaPrecioMaquina(Object requestEntity) throws ClientErrorException {
+        WebTarget resource = client.target(BASE_URI).path("ListaPrecioMaquinaSRV");
+        resource = resource.path("ActualizarEscalaListaPrecioMaquina");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
+    }
+    
+    public String EliminarListaPrecioMaquina(Object requestEntity) throws ClientErrorException {
+        WebTarget resource = client.target(BASE_URI).path("ListaPrecioMaquinaSRV");
+        resource = resource.path("EliminarListaPrecioMaquina");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
+    }
+    
+    public String EliminarItemListaPrecioMaquina(Object requestEntity) throws ClientErrorException {
+        WebTarget resource = client.target(BASE_URI).path("ListaPrecioMaquinaSRV");
+        resource = resource.path("EliminarItemListaPrecioMaquina");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
+    }
+    
+    public String EliminarEscalaListaPrecioMaquina(Object requestEntity) throws ClientErrorException {
+        WebTarget resource = client.target(BASE_URI).path("ListaPrecioMaquinaSRV");
+        resource = resource.path("EliminarEscalaListaPrecioMaquina");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
+    }
+    
+    ////////////////////////////////////////////////////////////////////////////
+    
     public void close() {
         client.close();
     }
