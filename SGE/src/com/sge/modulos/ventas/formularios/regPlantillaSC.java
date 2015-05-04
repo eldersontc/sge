@@ -50,6 +50,8 @@ public class regPlantillaSC extends frameBase<PlantillaSolicitudCotizacion> {
             Producto seleccionado = ((lisProducto) e.getSource()).getSeleccionado();
             if (!(seleccionado == null)) {
                 schMaterial.asingValues(seleccionado.getIdProducto(), seleccionado.getDescripcion());
+                item.setAltoMaterial(seleccionado.getAlto());
+                item.setLargoMaterial(seleccionado.getLargo());
             }
         }
     };
@@ -321,6 +323,7 @@ public class regPlantillaSC extends frameBase<PlantillaSolicitudCotizacion> {
             }
             @Override
             public void Clear(){
+                schMaterialClear();
             }
         });
 
@@ -550,6 +553,11 @@ public class regPlantillaSC extends frameBase<PlantillaSolicitudCotizacion> {
 
     private void schMaterialSearch() {
         VerModal(new lisProducto(1), sele_mate);
+    }
+    
+    private void schMaterialClear() {
+        this.item.setAltoMaterial(0);
+        this.item.setLargoMaterial(0);
     }
 
     private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed

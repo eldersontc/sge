@@ -5,7 +5,7 @@ package com.sge.modulos.ventas.clases;
  * @author elderson
  */
 public class ItemPlantillaSolicitudCotizacion {
-    
+
     private int idItemPlantillaSolicitudCotizacion;
     private int idPlantillaSolicitudCotizacion;
     private String nombre;
@@ -13,6 +13,8 @@ public class ItemPlantillaSolicitudCotizacion {
     private String nombreServicioImpresion;
     private int idMaterial;
     private String nombreMaterial;
+    private double altoMaterial;
+    private double largoMaterial;
     private String nombreTipoUnidad;
     private String unidadMedidaAbierta;
     private boolean medidaAbierta;
@@ -26,7 +28,7 @@ public class ItemPlantillaSolicitudCotizacion {
     private boolean agregar;
     private boolean actualizar;
     private boolean eliminar;
-    
+
     public ItemPlantillaSolicitudCotizacion() {
     }
 
@@ -84,6 +86,22 @@ public class ItemPlantillaSolicitudCotizacion {
 
     public void setNombreMaterial(String nombreMaterial) {
         this.nombreMaterial = nombreMaterial;
+    }
+
+    public double getAltoMaterial() {
+        return altoMaterial;
+    }
+
+    public void setAltoMaterial(double altoMaterial) {
+        this.altoMaterial = altoMaterial;
+    }
+
+    public double getLargoMaterial() {
+        return largoMaterial;
+    }
+
+    public void setLargoMaterial(double largoMaterial) {
+        this.largoMaterial = largoMaterial;
     }
 
     public String getNombreTipoUnidad() {
@@ -189,9 +207,9 @@ public class ItemPlantillaSolicitudCotizacion {
     public void setEliminar(boolean eliminar) {
         this.eliminar = eliminar;
     }
-    
+
     @Override
-    public String toString(){
+    public String toString() {
         return nombre;
     }
 }
