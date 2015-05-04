@@ -2,8 +2,6 @@ package com.sge.modulos.inventarios.servicios;
 
 import com.google.gson.Gson;
 import com.sge.modulos.inventarios.entidades.Producto;
-import com.sge.modulos.inventarios.entidades.ProductoAlmacen;
-import com.sge.modulos.inventarios.entidades.ProductoUnidad;
 import com.sge.modulos.inventarios.negocios.ProductoDTO;
 import java.util.ArrayList;
 import java.util.List;
@@ -55,11 +53,9 @@ public class ProductoSRV {
         int idProducto = new Gson().fromJson(json, int.class);
         try {
             ProductoDTO ProductoDTO = new ProductoDTO();
-            List<Object> lista = ProductoDTO.ObtenerProducto(idProducto);
+            Producto producto = ProductoDTO.ObtenerProducto(idProducto);
             resultado.add(new Gson().toJson(true));
-            for (Object item : lista) {
-                resultado.add(new Gson().toJson(item));
-            }
+            resultado.add(new Gson().toJson(producto));
         } catch (Exception e) {
             resultado.clear();
             resultado.add(new Gson().toJson(false));
@@ -74,13 +70,10 @@ public class ProductoSRV {
     @Produces("application/json")
     public String RegistrarProducto(String json) {
         List<String> resultado = new ArrayList<>();
-        String[] arrayJson = new Gson().fromJson(json, String[].class);
-        Producto producto = new Gson().fromJson(arrayJson[0], Producto.class);
-        ProductoUnidad[] productoUnidades = new Gson().fromJson(arrayJson[1], ProductoUnidad[].class);
-        ProductoAlmacen[] productoAlmacenes = new Gson().fromJson(arrayJson[2], ProductoAlmacen[].class);
+        Producto producto = new Gson().fromJson(json, Producto.class);
         try {
             ProductoDTO ProductoDTO = new ProductoDTO();
-            ProductoDTO.RegistrarProducto(producto, productoUnidades, productoAlmacenes);
+            ProductoDTO.RegistrarProducto(producto);
             resultado.add(new Gson().toJson(true));
         } catch (Exception e) {
             resultado.clear();
@@ -96,13 +89,10 @@ public class ProductoSRV {
     @Produces("application/json")
     public String ActualizarProducto(String json) {
         List<String> resultado = new ArrayList<>();
-        String[] arrayJson = new Gson().fromJson(json, String[].class);
-        Producto producto = new Gson().fromJson(arrayJson[0], Producto.class);
-        ProductoUnidad[] productoUnidades = new Gson().fromJson(arrayJson[1], ProductoUnidad[].class);
-        ProductoAlmacen[] productoAlmacenes = new Gson().fromJson(arrayJson[2], ProductoAlmacen[].class);
+        Producto producto = new Gson().fromJson(json, Producto.class);
         try {
             ProductoDTO ProductoDTO = new ProductoDTO();
-            ProductoDTO.ActualizarProducto(producto, productoUnidades, productoAlmacenes);
+            ProductoDTO.ActualizarProducto(producto);
             resultado.add(new Gson().toJson(true));
         } catch (Exception e) {
             resultado.clear();
@@ -132,16 +122,36 @@ public class ProductoSRV {
     }
     
     @POST
-    @Path("ObtenerProductoUnidades")
+    @Path("ObtenerUnidadesPorProductos")
     @Consumes("application/json")
     @Produces("application/json")
-    public String ObtenerProductoUnidades(String json) {
+    public String ObtenerUnidadesPorProductos(String json) {
         List<String> resultado = new ArrayList<>();
         Producto[] productos = new Gson().fromJson(json, Producto[].class);
         try {
             ProductoDTO ProductoDTO = new ProductoDTO();
             resultado.add(new Gson().toJson(true));
-            resultado.add(new Gson().toJson(ProductoDTO.ObtenerProductoUnidades(productos)));
+            resultado.add(new Gson().toJson(ProductoDTO.ObtenerUnidadesPorProductos(productos)));
+        } catch (Exception e) {
+            resultado.clear();
+            resultado.add(new Gson().toJson(false));
+            resultado.add(new Gson().toJson(e));
+        }
+        return new Gson().toJson(resultado);
+    }
+    
+    @POST
+    @Path("ObtenerProductoUnidades")
+    @Consumes("application/json")
+    @Produces("application/json")
+    public String ObtenerProductoUnidades(String json) {
+        List<String> resultado = new ArrayList<>();
+        String filtros = new Gson().fromJson(json, String.class);
+        try {
+            ProductoDTO ProductoDTO = new ProductoDTO();
+            List<Object[]> lista = ProductoDTO.ObtenerProductoUnidades(filtros);
+            resultado.add(new Gson().toJson(true));
+            resultado.add(new Gson().toJson(lista));
         } catch (Exception e) {
             resultado.clear();
             resultado.add(new Gson().toJson(false));

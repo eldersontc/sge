@@ -17,6 +17,8 @@
         <property name="costoUltimaCompra" column="costoUltimaCompra" insert="false"/>
         <property name="costoPromedio" column="costoPromedio" insert="false"/>
         <property name="costoReferencia" column="costoReferencia" insert="false"/>
+        <property name="alto" column="alto"/>
+        <property name="largo" column="largo"/>
         <property name="activo" column="activo"/>
     </class>
 </hibernate-mapping>

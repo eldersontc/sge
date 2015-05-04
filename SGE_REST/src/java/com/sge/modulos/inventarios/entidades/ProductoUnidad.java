@@ -7,8 +7,9 @@ package com.sge.modulos.inventarios.entidades;
 public class ProductoUnidad {
     
     private int idProductoUnidad;
-    private Producto producto;
-    private Unidad unidad;
+    private int idProducto;
+    private int idUnidad;
+    private String abreviacionUnidad;
     private int factor;
     private boolean agregar;
     private boolean actualizar;
@@ -25,20 +26,28 @@ public class ProductoUnidad {
         this.idProductoUnidad = idProductoUnidad;
     }
 
-    public Producto getProducto() {
-        return producto;
+    public int getIdProducto() {
+        return idProducto;
     }
 
-    public void setProducto(Producto producto) {
-        this.producto = producto;
+    public void setIdProducto(int idProducto) {
+        this.idProducto = idProducto;
     }
 
-    public Unidad getUnidad() {
-        return unidad;
+    public int getIdUnidad() {
+        return idUnidad;
     }
 
-    public void setUnidad(Unidad unidad) {
-        this.unidad = unidad;
+    public void setIdUnidad(int idUnidad) {
+        this.idUnidad = idUnidad;
+    }
+
+    public String getAbreviacionUnidad() {
+        return abreviacionUnidad;
+    }
+
+    public void setAbreviacionUnidad(String abreviacionUnidad) {
+        this.abreviacionUnidad = abreviacionUnidad;
     }
 
     public int getFactor() {

@@ -9,8 +9,9 @@
                 <param name="sequence">Inventarios.productounidad_idproductounidad_seq</param>
             </generator>
         </id>
-        <many-to-one name="producto" column="idProducto" class="com.sge.modulos.inventarios.entidades.Producto"/>
-        <many-to-one name="unidad" column="idUnidad" class="com.sge.modulos.inventarios.entidades.Unidad"/>
+        <property name="idProducto" column="idProducto"/>
+        <property name="idUnidad" column="idUnidad"/>
+        <property name="abreviacionUnidad" column="abreviacionUnidad"/>
         <property name="factor" column="factor"/>
     </class>
 </hibernate-mapping>

@@ -48,27 +48,6 @@ public class SalidaInventarioSRV {
     }
 
     @POST
-    @Path("ObtenerValoresDefinidos")
-    @Consumes("application/json")
-    @Produces("application/json")
-    public String ObtenerValoresDefinidos(String json) {
-        List<String> resultado = new ArrayList<>();
-        try {
-            int idUsuario = new Gson().fromJson(json, int.class);
-            ValorDefinidoDTO valorDefinidoDTO = new ValorDefinidoDTO();
-            ValorDefinido valorDefinido = valorDefinidoDTO.ObtenerValorDefinidoPorUsuarioYEntidad(idUsuario, 2);
-            resultado.add(new Gson().toJson(true));
-            resultado.add(new Gson().toJson(new Date()));
-            resultado.add(valorDefinido == null ? "" : valorDefinido.getJson());
-        } catch (Exception e) {
-            resultado.clear();
-            resultado.add(new Gson().toJson(false));
-            resultado.add(new Gson().toJson(e));
-        }
-        return new Gson().toJson(resultado);
-    }
-    
-    @POST
     @Path("ObtenerSalidaInventario")
     @Consumes("application/json")
     @Produces("application/json")
@@ -94,8 +73,7 @@ public class SalidaInventarioSRV {
     @Produces("application/json")
     public String RegistrarSalidaInventario(String json) {
         List<String> resultado = new ArrayList<>();
-        String[] arrayJson = new Gson().fromJson(json, String[].class);
-        SalidaInventario salidaInventario = new Gson().fromJson(arrayJson[0], SalidaInventario.class);
+        SalidaInventario salidaInventario = new Gson().fromJson(json, SalidaInventario.class);
         try {
             SalidaInventarioDTO salidaInventarioDTO = new SalidaInventarioDTO();
             salidaInventarioDTO.RegistrarSalidaInventario(salidaInventario);

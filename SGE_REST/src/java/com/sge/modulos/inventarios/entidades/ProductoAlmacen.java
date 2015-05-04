@@ -7,8 +7,9 @@ package com.sge.modulos.inventarios.entidades;
 public class ProductoAlmacen {
  
     private int idProductoAlmacen;
-    private Producto producto;
-    private Almacen almacen;
+    private int idProducto;
+    private int idAlmacen;
+    private String descripcionAlmacen;
     private double stockFisico;
     private double stockComprometido;
     private double stockSolicitado;
@@ -21,24 +22,32 @@ public class ProductoAlmacen {
         return idProductoAlmacen;
     }
 
-    public void setIdProductoAlmacen(int idProductoAlmancen) {
-        this.idProductoAlmacen = idProductoAlmancen;
+    public void setIdProductoAlmacen(int idProductoAlmacen) {
+        this.idProductoAlmacen = idProductoAlmacen;
     }
 
-    public Producto getProducto() {
-        return producto;
+    public int getIdProducto() {
+        return idProducto;
     }
 
-    public void setProducto(Producto producto) {
-        this.producto = producto;
+    public void setIdProducto(int idProducto) {
+        this.idProducto = idProducto;
     }
 
-    public Almacen getAlmacen() {
-        return almacen;
+    public int getIdAlmacen() {
+        return idAlmacen;
     }
 
-    public void setAlmacen(Almacen almacen) {
-        this.almacen = almacen;
+    public void setIdAlmacen(int idAlmacen) {
+        this.idAlmacen = idAlmacen;
+    }
+
+    public String getDescripcionAlmacen() {
+        return descripcionAlmacen;
+    }
+
+    public void setDescripcionAlmacen(String descripcionAlmacen) {
+        this.descripcionAlmacen = descripcionAlmacen;
     }
 
     public double getStockFisico() {
@@ -69,7 +78,7 @@ public class ProductoAlmacen {
         return stockDisponible;
     }
 
-    public void setStockDisponible(int stockDisponible) {
+    public void setStockDisponible(double stockDisponible) {
         this.stockDisponible = stockDisponible;
     }
 }
