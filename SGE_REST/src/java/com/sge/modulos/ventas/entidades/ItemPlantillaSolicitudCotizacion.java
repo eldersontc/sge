@@ -13,6 +13,8 @@ public class ItemPlantillaSolicitudCotizacion {
     private String nombreServicioImpresion;
     private int idMaterial;
     private String nombreMaterial;
+    private double altoMaterial;
+    private double largoMaterial;
     private String nombreTipoUnidad;
     private String unidadMedidaAbierta;
     private boolean medidaAbierta;
@@ -86,6 +88,22 @@ public class ItemPlantillaSolicitudCotizacion {
         this.nombreMaterial = nombreMaterial;
     }
 
+    public double getAltoMaterial() {
+        return altoMaterial;
+    }
+
+    public void setAltoMaterial(double altoMaterial) {
+        this.altoMaterial = altoMaterial;
+    }
+
+    public double getLargoMaterial() {
+        return largoMaterial;
+    }
+
+    public void setLargoMaterial(double largoMaterial) {
+        this.largoMaterial = largoMaterial;
+    }
+    
     public String getNombreTipoUnidad() {
         return nombreTipoUnidad;
     }

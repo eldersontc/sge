@@ -15,6 +15,8 @@
         <property name="nombreServicioImpresion" column="nombreServicioImpresion"/>
         <property name="idMaterial" column="idMaterial"/>
         <property name="nombreMaterial" column="nombreMaterial"/>
+        <property name="altoMaterial" column="altoMaterial"/>
+        <property name="largoMaterial" column="largoMaterial"/>
         <property name="unidadMedidaAbierta" column="unidadMedidaAbierta"/>
         <property name="medidaAbierta" column="medidaAbierta"/>
         <property name="medidaCerrada" column="medidaCerrada"/>
