@@ -217,6 +217,7 @@ public class ListaPrecioProductoSRV {
             ListaPrecioProductoDTO listaPrecioProductoDTO = new ListaPrecioProductoDTO();
             listaPrecioProductoDTO.ActualizarEscalaListaPrecioProducto(escalaListaPrecio);
             resultado.add(new Gson().toJson(true));
+            resultado.add(new Gson().toJson(escalaListaPrecio.getIdEscalaListaPrecioProducto()));
         } catch (Exception e) {
             resultado.clear();
             resultado.add(new Gson().toJson(false));

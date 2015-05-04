@@ -9,7 +9,7 @@ import com.sge.base.accesoDatos.BaseDAO;
 public class EscalaListaPrecioServicioDAO extends BaseDAO {
     
     public int ActualizarEscalaListaPrecioServicio(int idEscalaListaPrecioServicio, int desde, int hasta, double precio) {
-        String sql = String.format("UPDATE Ventas.EscalaListaPrecioServicio SET desde = %d, hasta = %d, precio = %d WHERE idEscalaListaPrecioServicio = %d", desde, hasta, precio, idEscalaListaPrecioServicio);
+        String sql = String.format("UPDATE Ventas.EscalaListaPrecioServicio SET desde = %d, hasta = %d, precio = %s WHERE idEscalaListaPrecioServicio = %d", desde, hasta, precio, idEscalaListaPrecioServicio);
         return super.Ejecutar(sql);
     }
 

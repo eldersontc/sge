@@ -185,52 +185,52 @@ public class ListaPrecioServicioDTO {
     
     public boolean EliminarListaPrecioServicio(int idListaPrecioServicio) {
         try {
-            listaPrecioDAO = new ListaPrecioServicioDAO();
-            listaPrecioDAO.IniciarTransaccion();
-            listaPrecioDAO.EliminarListaPrecioServicio(idListaPrecioServicio);
-
-            itemListaPrecioDAO = new ItemListaPrecioServicioDAO();
-            itemListaPrecioDAO.AsignarSesion(listaPrecioDAO);
-            itemListaPrecioDAO.EliminarItemListaPrecioServicioPorIdListaPrecioServicio(idListaPrecioServicio);
-
-            unidadListaPrecioDAO = new UnidadListaPrecioServicioDAO();
-            unidadListaPrecioDAO.AsignarSesion(listaPrecioDAO);
-            unidadListaPrecioDAO.EliminarUnidadListaPrecioServicioPorIdListaPrecioServicio(idListaPrecioServicio);
-            
             escalaListaPrecioDAO = new EscalaListaPrecioServicioDAO();
-            escalaListaPrecioDAO.AsignarSesion(listaPrecioDAO);
+            escalaListaPrecioDAO.IniciarTransaccion();
             escalaListaPrecioDAO.EliminarEscalaListaPrecioServicioPorIdListaPrecioServicio(idListaPrecioServicio);
             
-            listaPrecioDAO.ConfirmarTransaccion();
+            unidadListaPrecioDAO = new UnidadListaPrecioServicioDAO();
+            unidadListaPrecioDAO.AsignarSesion(escalaListaPrecioDAO);
+            unidadListaPrecioDAO.EliminarUnidadListaPrecioServicioPorIdListaPrecioServicio(idListaPrecioServicio);
+            
+            itemListaPrecioDAO = new ItemListaPrecioServicioDAO();
+            itemListaPrecioDAO.AsignarSesion(escalaListaPrecioDAO);
+            itemListaPrecioDAO.EliminarItemListaPrecioServicioPorIdListaPrecioServicio(idListaPrecioServicio);
+            
+            listaPrecioDAO = new ListaPrecioServicioDAO();
+            listaPrecioDAO.AsignarSesion(escalaListaPrecioDAO);
+            listaPrecioDAO.EliminarListaPrecioServicio(idListaPrecioServicio);
+
+            escalaListaPrecioDAO.ConfirmarTransaccion();
         } catch (Exception e) {
-            listaPrecioDAO.AbortarTransaccion();
+            escalaListaPrecioDAO.AbortarTransaccion();
             throw e;
         } finally {
-            listaPrecioDAO.CerrarSesion();
+            escalaListaPrecioDAO.CerrarSesion();
         }
         return true;
     }
     
     public boolean EliminarItemListaPrecioServicio(int idItemListaPrecioServicio) {
         try {
-            itemListaPrecioDAO = new ItemListaPrecioServicioDAO();
-            itemListaPrecioDAO.IniciarTransaccion();
-            itemListaPrecioDAO.EliminarItemListaPrecioServicio(idItemListaPrecioServicio);
-
-            unidadListaPrecioDAO = new UnidadListaPrecioServicioDAO();
-            unidadListaPrecioDAO.AsignarSesion(itemListaPrecioDAO);
-            unidadListaPrecioDAO.EliminarUnidadListaPrecioServicioPorIdItemListaPrecioServicio(idItemListaPrecioServicio);
-            
             escalaListaPrecioDAO = new EscalaListaPrecioServicioDAO();
-            escalaListaPrecioDAO.AsignarSesion(itemListaPrecioDAO);
+            escalaListaPrecioDAO.IniciarTransaccion();
             escalaListaPrecioDAO.EliminarEscalaListaPrecioServicioPorIdItemListaPrecioServicio(idItemListaPrecioServicio);
             
-            itemListaPrecioDAO.ConfirmarTransaccion();
+            unidadListaPrecioDAO = new UnidadListaPrecioServicioDAO();
+            unidadListaPrecioDAO.AsignarSesion(escalaListaPrecioDAO);
+            unidadListaPrecioDAO.EliminarUnidadListaPrecioServicioPorIdItemListaPrecioServicio(idItemListaPrecioServicio);
+            
+            itemListaPrecioDAO = new ItemListaPrecioServicioDAO();
+            itemListaPrecioDAO.AsignarSesion(escalaListaPrecioDAO);
+            itemListaPrecioDAO.EliminarItemListaPrecioServicio(idItemListaPrecioServicio);
+
+            escalaListaPrecioDAO.ConfirmarTransaccion();
         } catch (Exception e) {
-            itemListaPrecioDAO.AbortarTransaccion();
+            escalaListaPrecioDAO.AbortarTransaccion();
             throw e;
         } finally {
-            itemListaPrecioDAO.CerrarSesion();
+            escalaListaPrecioDAO.CerrarSesion();
         }
         return true;
     }
