@@ -212,6 +212,12 @@ public class lisListaPrecioServicio extends frameBase<ListaPrecioServicio> {
         tbListasPrecio.setRowHeight(25);
         tbListasPrecio.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane1.setViewportView(tbListasPrecio);
+        if (tbListasPrecio.getColumnModel().getColumnCount() > 0) {
+            tbListasPrecio.getColumnModel().getColumn(1).setMinWidth(0);
+            tbListasPrecio.getColumnModel().getColumn(1).setPreferredWidth(0);
+            tbListasPrecio.getColumnModel().getColumn(1).setMaxWidth(0);
+            tbListasPrecio.getColumnModel().getColumn(2).setPreferredWidth(400);
+        }
 
         pnlTitulo.setBackground(new java.awt.Color(67, 100, 130));
         pnlTitulo.setBorder(javax.swing.BorderFactory.createEtchedBorder());

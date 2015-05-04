@@ -39,7 +39,11 @@ public class regListaPrecioServicio extends frameBase<ListaPrecioServicio> {
     public void Init(String operacion, int id) {
         lblTitulo.setText(operacion + lblTitulo.getText());
         this.id = id;
-        if (this.id > 0) {
+        if(this.id == 0){
+            OcultarControl(btnNuevoItem);
+            OcultarControl(btnNuevaUnidad);
+            OcultarControl(btnNuevaEscala);
+        } else {
             new swObtenerListaPrecio().execute();
         }
     }
@@ -101,6 +105,7 @@ public class regListaPrecioServicio extends frameBase<ListaPrecioServicio> {
             }
             String[] resultado = new Gson().fromJson(json, String[].class);
             if (resultado[0].equals("true")) {
+                AsignarValorCelda(tbEscalas, new Gson().fromJson(resultado[1], int.class), 0);
                 VerAdvertencia("GUARDADO CORRECTAMENTE!", frame);
             }
         } catch (Exception e) {
@@ -224,7 +229,7 @@ public class regListaPrecioServicio extends frameBase<ListaPrecioServicio> {
                     for (UnidadListaPrecioServicio unidad : unidades) {
                         AgregarFila(tbUnidades,
                                 new Object[]{
-                                    unidad.getIdItemListaPrecioServicio(),
+                                    unidad.getIdUnidadListaPrecioServicio(),
                                     unidad.getIdServicioUnidad(),
                                     unidad.getAbreviacionUnidad(),
                                     unidad.getFactor()
@@ -341,19 +346,19 @@ public class regListaPrecioServicio extends frameBase<ListaPrecioServicio> {
         chkActivo = new javax.swing.JCheckBox();
         txtNombre = new javax.swing.JTextField();
         lblNombre = new javax.swing.JLabel();
-        jTabbedPane1 = new javax.swing.JTabbedPane();
+        tpnlItems = new javax.swing.JTabbedPane();
         tabItems = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tbItems = new javax.swing.JTable();
         btnNuevoItem = new javax.swing.JButton();
         btnEliminarItem = new javax.swing.JButton();
-        jTabbedPane2 = new javax.swing.JTabbedPane();
+        tpnlUnidades = new javax.swing.JTabbedPane();
         tabUnidades = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         tbUnidades = new javax.swing.JTable();
         btnNuevaUnidad = new javax.swing.JButton();
         btnEliminarUnidad = new javax.swing.JButton();
-        jTabbedPane3 = new javax.swing.JTabbedPane();
+        tpnlEscalas = new javax.swing.JTabbedPane();
         tabEscalas = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
         tbEscalas = new javax.swing.JTable();
@@ -406,7 +411,7 @@ public class regListaPrecioServicio extends frameBase<ListaPrecioServicio> {
 
         lblNombre.setText("NOMBRE");
 
-        jTabbedPane1.setBorder(null);
+        tpnlItems.setBorder(null);
 
         tabItems.setBackground(java.awt.Color.white);
         tabItems.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -491,9 +496,9 @@ public class regListaPrecioServicio extends frameBase<ListaPrecioServicio> {
                 .addContainerGap(178, Short.MAX_VALUE))
         );
 
-        jTabbedPane1.addTab("SERVICIOS", tabItems);
+        tpnlItems.addTab("SERVICIOS", tabItems);
 
-        jTabbedPane2.setBorder(null);
+        tpnlUnidades.setBorder(null);
 
         tabUnidades.setBackground(java.awt.Color.white);
         tabUnidades.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -579,9 +584,9 @@ public class regListaPrecioServicio extends frameBase<ListaPrecioServicio> {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jTabbedPane2.addTab("UNIDADES", tabUnidades);
+        tpnlUnidades.addTab("UNIDADES", tabUnidades);
 
-        jTabbedPane3.setBorder(null);
+        tpnlEscalas.setBorder(null);
 
         tabEscalas.setBackground(java.awt.Color.white);
         tabEscalas.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -667,7 +672,7 @@ public class regListaPrecioServicio extends frameBase<ListaPrecioServicio> {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jTabbedPane3.addTab("ESCALAS", tabEscalas);
+        tpnlEscalas.addTab("ESCALAS", tabEscalas);
 
         javax.swing.GroupLayout frameLayout = new javax.swing.GroupLayout(frame);
         frame.setLayout(frameLayout);
@@ -687,12 +692,12 @@ public class regListaPrecioServicio extends frameBase<ListaPrecioServicio> {
                     .addGroup(frameLayout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTabbedPane1)
+                            .addComponent(tpnlItems)
                             .addGroup(frameLayout.createSequentialGroup()
-                                .addComponent(jTabbedPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 257, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(tpnlUnidades, javax.swing.GroupLayout.PREFERRED_SIZE, 257, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jTabbedPane3)
+                                    .addComponent(tpnlEscalas)
                                     .addGroup(frameLayout.createSequentialGroup()
                                         .addGap(0, 0, Short.MAX_VALUE)
                                         .addComponent(btnAceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -710,11 +715,11 @@ public class regListaPrecioServicio extends frameBase<ListaPrecioServicio> {
                     .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(chkActivo))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 301, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(tpnlItems, javax.swing.GroupLayout.PREFERRED_SIZE, 301, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jTabbedPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTabbedPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(tpnlUnidades, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(tpnlEscalas, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnCancelar)
@@ -827,9 +832,6 @@ public class regListaPrecioServicio extends frameBase<ListaPrecioServicio> {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTabbedPane jTabbedPane2;
-    private javax.swing.JTabbedPane jTabbedPane3;
     private javax.swing.JLabel lblNombre;
     private javax.swing.JLabel lblTitulo;
     private javax.swing.JPanel pnlTitulo;
@@ -839,6 +841,9 @@ public class regListaPrecioServicio extends frameBase<ListaPrecioServicio> {
     private javax.swing.JTable tbEscalas;
     private javax.swing.JTable tbItems;
     private javax.swing.JTable tbUnidades;
+    private javax.swing.JTabbedPane tpnlEscalas;
+    private javax.swing.JTabbedPane tpnlItems;
+    private javax.swing.JTabbedPane tpnlUnidades;
     private javax.swing.JTextField txtNombre;
     // End of variables declaration//GEN-END:variables
 }
