@@ -3,7 +3,9 @@ package com.sge.modulos.ventas.formularios;
 import com.google.gson.Gson;
 import com.sge.base.formularios.frameBase;
 import com.sge.modulos.inventarios.clases.Producto;
+import com.sge.modulos.inventarios.clases.ProductoUnidad;
 import com.sge.modulos.inventarios.formularios.lisProducto;
+import com.sge.modulos.inventarios.formularios.lisProductoUnidad;
 import com.sge.modulos.ventas.clases.EscalaListaPrecioProducto;
 import com.sge.modulos.ventas.clases.ItemListaPrecioProducto;
 import com.sge.modulos.ventas.clases.ListaPrecioProducto;
@@ -33,9 +35,8 @@ public class regListaPrecioProducto extends frameBase<ListaPrecioProducto> {
     int id = 0;
 
     int idItem = 0;
-
+    int idProducto = 0;
     int idUnidad = 0;
-
     int idEscala = 0;
 
     public void Init(String operacion, int id) {
@@ -84,7 +85,7 @@ public class regListaPrecioProducto extends frameBase<ListaPrecioProducto> {
         }
     }
 
-    public void GuardarEscala(){
+    public void GuardarEscala() {
         cliVentas cliente = new cliVentas();
         try {
             String json = "";
@@ -94,7 +95,7 @@ public class regListaPrecioProducto extends frameBase<ListaPrecioProducto> {
             escala.setDesde(ObtenerValorCelda(tbEscalas, 1));
             escala.setHasta(ObtenerValorCelda(tbEscalas, 2));
             escala.setPrecio(ObtenerValorCelda(tbEscalas, 3));
-            if(idEscala == 0){
+            if (idEscala == 0) {
                 json = cliente.RegistrarEscalaListaPrecioProducto(new Gson().toJson(escala));
             } else {
                 escala.setIdEscalaListaPrecioProducto(idEscala);
@@ -110,7 +111,7 @@ public class regListaPrecioProducto extends frameBase<ListaPrecioProducto> {
             cliente.close();
         }
     }
-    
+
     public void EliminarItem() {
         int confirmacion = VerConfirmacion(tabItems);
         if (confirmacion == 0) {
@@ -199,6 +200,22 @@ public class regListaPrecioProducto extends frameBase<ListaPrecioProducto> {
                 } finally {
                     cliente.close();
                 }
+            }
+        }
+    };
+
+    Action select_unid = new AbstractAction() {
+        @Override
+        public void actionPerformed(ActionEvent evt) {
+            List<ProductoUnidad> seleccionados = ((lisProductoUnidad) evt.getSource()).getSeleccionados();
+            for (ProductoUnidad seleccionado : seleccionados) {
+                AgregarFila(tbUnidades,
+                        new Object[]{
+                            0,
+                            seleccionado.getIdProductoUnidad(),
+                            seleccionado.getAbreviacionUnidad(),
+                            seleccionado.getFactor()
+                        });
             }
         }
     };
@@ -680,7 +697,7 @@ public class regListaPrecioProducto extends frameBase<ListaPrecioProducto> {
                     .addComponent(jTabbedPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jTabbedPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnCancelar)
                     .addComponent(btnAceptar))
                 .addContainerGap(23, Short.MAX_VALUE))
@@ -725,7 +742,8 @@ public class regListaPrecioProducto extends frameBase<ListaPrecioProducto> {
     private void btnNuevaUnidadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevaUnidadActionPerformed
         // TODO add your handling code here:
         if (FilaActiva(tbItems)) {
-
+            String filtro = "WHERE ProductoUnidad.idProducto = " + idProducto;
+            VerModal(new lisProductoUnidad(filtro), select_unid);
         }
     }//GEN-LAST:event_btnNuevaUnidadActionPerformed
 
@@ -745,7 +763,7 @@ public class regListaPrecioProducto extends frameBase<ListaPrecioProducto> {
 
     private void btnGuardarEscalaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarEscalaActionPerformed
         // TODO add your handling code here:
-        if(FilaActiva(tbEscalas)){
+        if (FilaActiva(tbEscalas)) {
             GuardarEscala();
         }
     }//GEN-LAST:event_btnGuardarEscalaActionPerformed
@@ -761,6 +779,7 @@ public class regListaPrecioProducto extends frameBase<ListaPrecioProducto> {
         // TODO add your handling code here:
         if (FilaActiva(tbItems)) {
             idItem = ObtenerValorCelda(tbItems, 0);
+            idProducto = ObtenerValorCelda(tbItems, 1);
             ObtenerUnidades();
         }
     }//GEN-LAST:event_tbItemsMouseClicked
