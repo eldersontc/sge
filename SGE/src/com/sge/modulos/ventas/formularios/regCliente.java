@@ -14,6 +14,9 @@ import com.sge.modulos.administracion.formularios.lisProvincia;
 import com.sge.modulos.ventas.clases.Cliente;
 import com.sge.modulos.ventas.clases.ContactoCliente;
 import com.sge.modulos.ventas.clases.DireccionCliente;
+import com.sge.modulos.ventas.clases.ListaPrecioMaquina;
+import com.sge.modulos.ventas.clases.ListaPrecioProducto;
+import com.sge.modulos.ventas.clases.ListaPrecioServicio;
 import com.sge.modulos.ventas.cliente.cliVentas;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
@@ -123,6 +126,36 @@ public class regCliente extends frameBase<Cliente> {
         }
     };
 
+    Action sele_lppr = new AbstractAction() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            ListaPrecioProducto seleccionado = ((lisListaPrecioProducto) e.getSource()).getSeleccionado();
+            if (!(seleccionado == null)) {
+                schListaPrecioProducto.asingValues(seleccionado.getIdListaPrecioProducto(), seleccionado.getNombre());
+            }
+        }
+    };
+    
+    Action sele_lpse = new AbstractAction() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            ListaPrecioServicio seleccionado = ((lisListaPrecioServicio) e.getSource()).getSeleccionado();
+            if (!(seleccionado == null)) {
+                schListaPrecioServicio.asingValues(seleccionado.getIdListaPrecioServicio(), seleccionado.getNombre());
+            }
+        }
+    };
+    
+    Action sele_lpma = new AbstractAction() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            ListaPrecioMaquina seleccionado = ((lisListaPrecioMaquina) e.getSource()).getSeleccionado();
+            if (!(seleccionado == null)) {
+                schListaPrecioMaquina.asingValues(seleccionado.getIdListaPrecioMaquina(), seleccionado.getNombre());
+            }
+        }
+    };
+    
     public void Init(String operacion, int idCliente) {
         lblTitulo.setText(operacion + lblTitulo.getText());
         this.idCliente = idCliente;
@@ -189,6 +222,9 @@ public class regCliente extends frameBase<Cliente> {
                     txtDocumento.setText(cliente.getDocumentoIdentidad());
                     txtFechaUltimaVenta.setText(cliente.getFechaUltimaVenta());
                     schVendedor.asingValues(cliente.getIdVendedor(), cliente.getNombreVendedor());
+                    schListaPrecioProducto.asingValues(cliente.getIdListaPrecioProducto(), cliente.getNombreListaPrecioProducto());
+                    schListaPrecioServicio.asingValues(cliente.getIdListaPrecioServicio(), cliente.getNombreListaPrecioServicio());
+                    schListaPrecioMaquina.asingValues(cliente.getIdListaPrecioMaquina(), cliente.getNombreListaPrecioMaquina());
                     chkActivo.setSelected(cliente.isActivo());
                     for (Object[] direccion : cliente.getDireccionesConNombres()) {
                         AgregarFila(tbDirecciones,
@@ -244,6 +280,12 @@ public class regCliente extends frameBase<Cliente> {
                 cliente.setDocumentoIdentidad(txtDocumento.getText());
                 cliente.setIdVendedor(schVendedor.getId());
                 cliente.setNombreVendedor(schVendedor.getText());
+                cliente.setIdListaPrecioProducto(schListaPrecioProducto.getId());
+                cliente.setNombreListaPrecioProducto(schListaPrecioProducto.getText());
+                cliente.setIdListaPrecioServicio(schListaPrecioServicio.getId());
+                cliente.setNombreListaPrecioServicio(schListaPrecioServicio.getText());
+                cliente.setIdListaPrecioMaquina(schListaPrecioMaquina.getId());
+                cliente.setNombreListaPrecioMaquina(schListaPrecioMaquina.getText());
                 cliente.setActivo(chkActivo.isSelected());
                 cliente.setDirecciones(getDirecciones());
                 cliente.setContactos(getContactos());
@@ -304,6 +346,13 @@ public class regCliente extends frameBase<Cliente> {
         tbContactos = new javax.swing.JTable();
         btnNuevoContacto = new javax.swing.JButton();
         btnEliminarContacto = new javax.swing.JButton();
+        tabListasPrecio = new javax.swing.JPanel();
+        schListaPrecioProducto = new com.sge.base.controles.JSearch();
+        lblListaPrecioProducto = new javax.swing.JLabel();
+        lblListaPrecioServicio = new javax.swing.JLabel();
+        schListaPrecioServicio = new com.sge.base.controles.JSearch();
+        lblListaPrecioMaquina = new javax.swing.JLabel();
+        schListaPrecioMaquina = new com.sge.base.controles.JSearch();
         pnlTitulo = new javax.swing.JPanel();
         lblTitulo = new javax.swing.JLabel();
         chkActivo = new javax.swing.JCheckBox();
@@ -504,6 +553,83 @@ public class regCliente extends frameBase<Cliente> {
 
         jTabbedPane1.addTab("CONTACTOS", pnlContactos);
 
+        tabListasPrecio.setBackground(java.awt.Color.white);
+        tabListasPrecio.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
+        schListaPrecioProducto.addSearchListener(new SearchListener() {
+            @Override
+            public void Search(){
+                schListaPrecioProductoSearch();
+            }
+            @Override
+            public void Clear(){
+            }
+        });
+
+        lblListaPrecioProducto.setText("PRODUCTO");
+
+        lblListaPrecioServicio.setText("SERVICIO");
+
+        schListaPrecioServicio.addSearchListener(new SearchListener() {
+            @Override
+            public void Search(){
+                schListaPrecioServicioSearch();
+            }
+            @Override
+            public void Clear(){
+            }
+        });
+
+        lblListaPrecioMaquina.setText("MAQUINA");
+
+        schListaPrecioMaquina.addSearchListener(new SearchListener() {
+            @Override
+            public void Search(){
+                schListaPrecioMaquinaSearch();
+            }
+            @Override
+            public void Clear(){
+            }
+        });
+
+        javax.swing.GroupLayout tabListasPrecioLayout = new javax.swing.GroupLayout(tabListasPrecio);
+        tabListasPrecio.setLayout(tabListasPrecioLayout);
+        tabListasPrecioLayout.setHorizontalGroup(
+            tabListasPrecioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(tabListasPrecioLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(tabListasPrecioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblListaPrecioProducto)
+                    .addComponent(lblListaPrecioServicio)
+                    .addComponent(lblListaPrecioMaquina)
+                    .addGroup(tabListasPrecioLayout.createSequentialGroup()
+                        .addGap(148, 148, 148)
+                        .addGroup(tabListasPrecioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(schListaPrecioProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(schListaPrecioServicio, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(schListaPrecioMaquina, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(94, Short.MAX_VALUE))
+        );
+        tabListasPrecioLayout.setVerticalGroup(
+            tabListasPrecioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(tabListasPrecioLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(tabListasPrecioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblListaPrecioProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(schListaPrecioProducto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(tabListasPrecioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblListaPrecioServicio, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(schListaPrecioServicio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(tabListasPrecioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblListaPrecioMaquina, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(schListaPrecioMaquina, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(83, Short.MAX_VALUE))
+        );
+
+        jTabbedPane1.addTab("LISTAS DE PRECIO", tabListasPrecio);
+
         pnlTitulo.setBackground(new java.awt.Color(67, 100, 130));
         pnlTitulo.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
@@ -634,7 +760,7 @@ public class regCliente extends frameBase<Cliente> {
                     .addComponent(schVendedor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(9, 9, 9)
                 .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
                 .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAceptar)
                     .addComponent(btnCancelar))
@@ -657,6 +783,18 @@ public class regCliente extends frameBase<Cliente> {
 
     private void schVendedorSearch(){
         VerModal(new lisEmpleado(1), sele_vend);
+    }
+    
+    private void schListaPrecioProductoSearch(){
+        VerModal(new lisListaPrecioProducto(1), sele_lppr);
+    }
+    
+    private void schListaPrecioServicioSearch(){
+        VerModal(new lisListaPrecioServicio(1), sele_lpse);
+    }
+    
+    private void schListaPrecioMaquinaSearch(){
+        VerModal(new lisListaPrecioMaquina(1), sele_lpma);
     }
     
     private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
@@ -723,6 +861,9 @@ public class regCliente extends frameBase<Cliente> {
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JLabel lblDocumento;
     private javax.swing.JLabel lblFechaUltimaVenta;
+    private javax.swing.JLabel lblListaPrecioMaquina;
+    private javax.swing.JLabel lblListaPrecioProducto;
+    private javax.swing.JLabel lblListaPrecioServicio;
     private javax.swing.JLabel lblNombreComercial;
     private javax.swing.JLabel lblRazonSocial;
     private javax.swing.JLabel lblTipoDocumento;
@@ -731,7 +872,11 @@ public class regCliente extends frameBase<Cliente> {
     private javax.swing.JPanel pnlContactos;
     private javax.swing.JPanel pnlDirecciones;
     private javax.swing.JPanel pnlTitulo;
+    private com.sge.base.controles.JSearch schListaPrecioMaquina;
+    private com.sge.base.controles.JSearch schListaPrecioProducto;
+    private com.sge.base.controles.JSearch schListaPrecioServicio;
     private com.sge.base.controles.JSearch schVendedor;
+    private javax.swing.JPanel tabListasPrecio;
     private javax.swing.JTable tbContactos;
     private javax.swing.JTable tbDirecciones;
     private javax.swing.JTextField txtDocumento;

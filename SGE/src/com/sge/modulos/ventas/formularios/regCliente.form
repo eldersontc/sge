@@ -141,7 +141,7 @@
                   </Group>
                   <EmptySpace min="-2" pref="9" max="-2" attributes="0"/>
                   <Component id="jTabbedPane1" min="-2" pref="231" max="-2" attributes="0"/>
-                  <EmptySpace pref="26" max="32767" attributes="0"/>
+                  <EmptySpace pref="29" max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="btnAceptar" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="btnCancelar" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -428,6 +428,103 @@
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnEliminarContactoActionPerformed"/>
                   </Events>
+                </Component>
+              </SubComponents>
+            </Container>
+            <Container class="javax.swing.JPanel" name="tabListasPrecio">
+              <Properties>
+                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="ff" green="ff" id="white" palette="1" red="ff" type="palette"/>
+                </Property>
+                <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                  <Border info="org.netbeans.modules.form.compat2.border.EtchedBorderInfo">
+                    <EtchetBorder/>
+                  </Border>
+                </Property>
+              </Properties>
+              <Constraints>
+                <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
+                  <JTabbedPaneConstraints tabName="LISTAS DE PRECIO">
+                    <Property name="tabTitle" type="java.lang.String" value="LISTAS DE PRECIO"/>
+                  </JTabbedPaneConstraints>
+                </Constraint>
+              </Constraints>
+
+              <Layout>
+                <DimensionLayout dim="0">
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" attributes="0">
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="lblListaPrecioProducto" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="lblListaPrecioServicio" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="lblListaPrecioMaquina" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Group type="102" attributes="0">
+                                  <EmptySpace min="148" pref="148" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="schListaPrecioProducto" alignment="0" min="-2" pref="255" max="-2" attributes="0"/>
+                                      <Component id="schListaPrecioServicio" alignment="0" min="-2" pref="255" max="-2" attributes="0"/>
+                                      <Component id="schListaPrecioMaquina" alignment="0" min="-2" pref="255" max="-2" attributes="0"/>
+                                  </Group>
+                              </Group>
+                          </Group>
+                          <EmptySpace pref="94" max="32767" attributes="0"/>
+                      </Group>
+                  </Group>
+                </DimensionLayout>
+                <DimensionLayout dim="1">
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="lblListaPrecioProducto" alignment="0" min="-2" pref="27" max="-2" attributes="0"/>
+                              <Component id="schListaPrecioProducto" alignment="0" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="lblListaPrecioServicio" alignment="0" min="-2" pref="27" max="-2" attributes="0"/>
+                              <Component id="schListaPrecioServicio" alignment="0" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="lblListaPrecioMaquina" alignment="0" min="-2" pref="27" max="-2" attributes="0"/>
+                              <Component id="schListaPrecioMaquina" alignment="0" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace pref="83" max="32767" attributes="0"/>
+                      </Group>
+                  </Group>
+                </DimensionLayout>
+              </Layout>
+              <SubComponents>
+                <Component class="com.sge.base.controles.JSearch" name="schListaPrecioProducto">
+                  <AuxValues>
+                    <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="schListaPrecioProducto.addSearchListener(new SearchListener() {&#xa;    @Override&#xa;    public void Search(){&#xa;        schListaPrecioProductoSearch();&#xa;    }&#xa;    @Override&#xa;    public void Clear(){&#xa;    }&#xa;});"/>
+                  </AuxValues>
+                </Component>
+                <Component class="javax.swing.JLabel" name="lblListaPrecioProducto">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="PRODUCTO"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JLabel" name="lblListaPrecioServicio">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="SERVICIO"/>
+                  </Properties>
+                </Component>
+                <Component class="com.sge.base.controles.JSearch" name="schListaPrecioServicio">
+                  <AuxValues>
+                    <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="schListaPrecioServicio.addSearchListener(new SearchListener() {&#xa;    @Override&#xa;    public void Search(){&#xa;        schListaPrecioServicioSearch();&#xa;    }&#xa;    @Override&#xa;    public void Clear(){&#xa;    }&#xa;});"/>
+                  </AuxValues>
+                </Component>
+                <Component class="javax.swing.JLabel" name="lblListaPrecioMaquina">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="MAQUINA"/>
+                  </Properties>
+                </Component>
+                <Component class="com.sge.base.controles.JSearch" name="schListaPrecioMaquina">
+                  <AuxValues>
+                    <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="schListaPrecioMaquina.addSearchListener(new SearchListener() {&#xa;    @Override&#xa;    public void Search(){&#xa;        schListaPrecioMaquinaSearch();&#xa;    }&#xa;    @Override&#xa;    public void Clear(){&#xa;    }&#xa;});"/>
+                  </AuxValues>
                 </Component>
               </SubComponents>
             </Container>
