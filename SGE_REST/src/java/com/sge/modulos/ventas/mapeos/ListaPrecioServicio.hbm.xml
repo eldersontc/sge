@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.sge.modulos.ventas.entidades.ListaPrecioServicio" table="ListaPrecioServicio" schema="Ventas">
+        <id name="idListaPrecioServicio" column="idListaPrecioServicio">
+            <generator class="sequence">
+                <param name="sequence">ventas.listaprecioservicio_idlistaprecioservicio_seq</param>
+            </generator>
+        </id>
+        <property name="nombre" column="nombre"/>
+        <property name="activo" column="activo"/>
+    </class>
+</hibernate-mapping>

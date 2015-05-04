@@ -156,4 +156,18 @@ public class ServicioDTO {
         }
         return true;
     }
+    
+    public List<Object[]> ObtenerServicioUnidades(String filtro) {
+        List<Object[]> lista = new ArrayList<>();
+        try {
+            servicioUnidadDAO = new ServicioUnidadDAO();
+            servicioUnidadDAO.AbrirSesion();
+            lista = servicioUnidadDAO.ObtenerServicioUnidades(filtro);
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            servicioUnidadDAO.CerrarSesion();
+        }
+        return lista;
+    }
 }

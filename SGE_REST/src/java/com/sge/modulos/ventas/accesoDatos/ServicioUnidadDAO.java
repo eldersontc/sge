@@ -1,6 +1,7 @@
 package com.sge.modulos.ventas.accesoDatos;
 
 import com.sge.base.accesoDatos.BaseDAO;
+import java.util.List;
 
 /**
  *
@@ -8,6 +9,15 @@ import com.sge.base.accesoDatos.BaseDAO;
  */
 public class ServicioUnidadDAO extends BaseDAO {
 
+    public List<Object[]> ObtenerServicioUnidades(String filtro) {
+        String sql = "SELECT \n"
+                + "ServicioUnidad.idServicioUnidad, ServicioUnidad.idServicio, ServicioUnidad.idUnidad, ServicioUnidad.abreviacionUnidad, \n"
+                + "ServicioUnidad.factor \n"
+                + "FROM \n"
+                + "Ventas.ServicioUnidad " + filtro;
+        return super.ObtenerLista(sql);
+    }
+    
     public int ActualizarServicioUnidad(int idServicioUnidad, int factor) {
         String sql = String.format("UPDATE Ventas.ServicioUnidad SET factor = %d WHERE idServicioUnidad = %d", factor, idServicioUnidad);
         return super.Ejecutar(sql);
