@@ -1,5 +1,6 @@
 package com.sge.modulos.inventarios.clases;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -7,7 +8,7 @@ import java.util.List;
  * @author elderson
  */
 public class Producto {
- 
+
     private int idProducto;
     private String codigo;
     private String descripcion;
@@ -17,10 +18,15 @@ public class Producto {
     private double costoUltimaCompra;
     private double costoPromedio;
     private double costoReferencia;
+    private double alto;
+    private double largo;
     private boolean activo;
-    private List<Object[]> productoUnidades;
+    private List<ProductoUnidad> unidades;
+    private List<ProductoAlmacen> almacenes;
 
     public Producto() {
+        unidades = new ArrayList<>();
+        almacenes = new ArrayList<>();
     }
 
     public int getIdProducto() {
@@ -47,38 +53,6 @@ public class Producto {
         this.descripcion = descripcion;
     }
 
-    public double getCostoUltimaCompra() {
-        return costoUltimaCompra;
-    }
-
-    public void setCostoUltimaCompra(double costoUltimaCompra) {
-        this.costoUltimaCompra = costoUltimaCompra;
-    }
-
-    public double getCostoPromedio() {
-        return costoPromedio;
-    }
-
-    public void setCostoPromedio(double costoPromedio) {
-        this.costoPromedio = costoPromedio;
-    }
-
-    public double getCostoReferencia() {
-        return costoReferencia;
-    }
-
-    public void setCostoReferencia(double costoReferencia) {
-        this.costoReferencia = costoReferencia;
-    }
-    
-    public boolean isActivo() {
-        return activo;
-    }
-
-    public void setActivo(boolean activo) {
-        this.activo = activo;
-    }
-
     public boolean isInventarios() {
         return inventarios;
     }
@@ -103,11 +77,67 @@ public class Producto {
         this.ventas = ventas;
     }
 
-    public List<Object[]> getProductoUnidades() {
-        return productoUnidades;
+    public double getCostoUltimaCompra() {
+        return costoUltimaCompra;
     }
 
-    public void setProductoUnidades(List<Object[]> productoUnidades) {
-        this.productoUnidades = productoUnidades;
+    public void setCostoUltimaCompra(double costoUltimaCompra) {
+        this.costoUltimaCompra = costoUltimaCompra;
+    }
+
+    public double getCostoPromedio() {
+        return costoPromedio;
+    }
+
+    public void setCostoPromedio(double costoPromedio) {
+        this.costoPromedio = costoPromedio;
+    }
+
+    public double getCostoReferencia() {
+        return costoReferencia;
+    }
+
+    public void setCostoReferencia(double costoReferencia) {
+        this.costoReferencia = costoReferencia;
+    }
+
+    public double getAlto() {
+        return alto;
+    }
+
+    public void setAlto(double alto) {
+        this.alto = alto;
+    }
+
+    public double getLargo() {
+        return largo;
+    }
+
+    public void setLargo(double largo) {
+        this.largo = largo;
+    }
+
+    public boolean isActivo() {
+        return activo;
+    }
+
+    public void setActivo(boolean activo) {
+        this.activo = activo;
+    }
+
+    public List<ProductoUnidad> getUnidades() {
+        return unidades;
+    }
+
+    public void setUnidades(List<ProductoUnidad> unidades) {
+        this.unidades = unidades;
+    }
+
+    public List<ProductoAlmacen> getAlmacenes() {
+        return almacenes;
+    }
+
+    public void setAlmacenes(List<ProductoAlmacen> almacenes) {
+        this.almacenes = almacenes;
     }
 }

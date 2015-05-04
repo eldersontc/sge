@@ -16,6 +16,7 @@ import com.sge.modulos.inventarios.clases.Almacen;
 import com.sge.modulos.inventarios.clases.SalidaInventario;
 import com.sge.modulos.inventarios.clases.ItemSalidaInventario;
 import com.sge.modulos.inventarios.clases.Producto;
+import com.sge.modulos.inventarios.clases.ProductoUnidad;
 import com.sge.modulos.inventarios.cliente.cliInventarios;
 import com.sge.modulos.ventas.clases.Cliente;
 import com.sge.modulos.ventas.formularios.lisCliente;
@@ -54,7 +55,7 @@ public class regSalidaInventario extends frameBase<SalidaInventario> {
         this.id = id;
         if (this.id == 0) {
             lblTitulo.setText("NUEVA " + lblTitulo.getText());
-            AgregarCombo(tbItems, 7, 2);
+            AgregarCombo(tbItems, 7);
             new swObtenerValoresDefinidos().execute();
         } else {
             lblTitulo.setText("VER " + lblTitulo.getText());
@@ -128,7 +129,7 @@ public class regSalidaInventario extends frameBase<SalidaInventario> {
             item.setDescripcionProducto(ObtenerValorCelda(tbItems, i, 3));
             item.setIdUnidad(ObtenerValorCelda(tbItems, i, 4));
             item.setFactor(ObtenerValorCelda(tbItems, i, 5));
-            item.setAbreviacionUnidad(ObtenerValorCelda(tbItems, i, 7));
+            item.setAbreviacionUnidad(ObtenerValorCelda(tbItems, i, 7).toString());
             item.setCantidad(ObtenerValorCelda(tbItems, i, 8));
             item.setPrecio(ObtenerValorCelda(tbItems, i, 9));
             item.setTotal(ObtenerValorCelda(tbItems, i, 10));
@@ -143,15 +144,9 @@ public class regSalidaInventario extends frameBase<SalidaInventario> {
             int[] celda = (int[]) e.getSource();
             switch (celda[1]) {
                 case 7:
-                    String unidad = ObtenerValorCelda(tbItems, celda[0], celda[1]);
-                    List<Object[]> unidades = ObtenerValorCelda(tbItems, celda[0], 6);
-                    for (Object[] item : unidades) {
-                        if (item[2].equals(unidad)) {
-                            AsignarValorCelda(tbItems, item[1], celda[0], 4);
-                            AsignarValorCelda(tbItems, item[3], celda[0], 5);
-                            break;
-                        }
-                    }
+                    ProductoUnidad productoUnidad = ObtenerValorCelda(tbItems, celda[0], celda[1]);
+                    AsignarValorCelda(tbItems, productoUnidad.getIdUnidad(), celda[0], 4);
+                    AsignarValorCelda(tbItems, productoUnidad.getFactor(), celda[0], 5);
                     break;
                 case 8:
                     double cantidad8 = ObtenerValorCelda(tbItems, celda[0], celda[1]);
@@ -176,7 +171,7 @@ public class regSalidaInventario extends frameBase<SalidaInventario> {
             if (!seleccionados.isEmpty()) {
                 cliInventarios cliente = new cliInventarios();
                 try {
-                    String json = cliente.ObtenerProductoUnidades(new Gson().toJson(seleccionados));
+                    String json = cliente.ObtenerUnidadesPorProductos(new Gson().toJson(seleccionados));
                     String[] resultado = new Gson().fromJson(json, String[].class);
                     List<Producto> productos = (List<Producto>) new Gson().fromJson(resultado[1], new TypeToken<List<Producto>>() {
                     }.getType());
@@ -187,10 +182,10 @@ public class regSalidaInventario extends frameBase<SalidaInventario> {
                                     producto.getIdProducto(),
                                     producto.getCodigo(),
                                     producto.getDescripcion(),
-                                    ((Double) producto.getProductoUnidades().get(0)[1]).intValue(),
-                                    ((Double) producto.getProductoUnidades().get(0)[3]).intValue(),
-                                    producto.getProductoUnidades(),
-                                    producto.getProductoUnidades().get(0)[2],
+                                    producto.getUnidades().get(0).getIdUnidad(),
+                                    producto.getUnidades().get(0).getFactor(),
+                                    producto.getUnidades(),
+                                    producto.getUnidades().get(0).getAbreviacionUnidad(),
                                     0.0,
                                     0.0,
                                     0.0
@@ -361,10 +356,8 @@ public class regSalidaInventario extends frameBase<SalidaInventario> {
             cliInventarios cliente = new cliInventarios();
             String json = "";
             try {
-                List<String> arrayJson = new ArrayList<>();
                 AsignarValores();
-                arrayJson.add(new Gson().toJson(getEntidad()));
-                json = cliente.RegistrarSalidaInventario(new Gson().toJson(arrayJson));
+                json = cliente.RegistrarSalidaInventario(new Gson().toJson(getEntidad()));
             } catch (Exception e) {
                 OcultarProcesando(frame);
                 cancel(false);
@@ -534,14 +527,14 @@ public class regSalidaInventario extends frameBase<SalidaInventario> {
             tbItems.getColumnModel().getColumn(6).setMaxWidth(0);
         }
 
-        btnNuevoItem.setText("NUEVO");
+        btnNuevoItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sge/base/imagenes/add-16.png"))); // NOI18N
         btnNuevoItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnNuevoItemActionPerformed(evt);
             }
         });
 
-        btnEliminarItem.setText("ELIMINAR");
+        btnEliminarItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sge/base/imagenes/delete-16.png"))); // NOI18N
         btnEliminarItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnEliminarItemActionPerformed(evt);
@@ -553,22 +546,22 @@ public class regSalidaInventario extends frameBase<SalidaInventario> {
         pnlUnidadesLayout.setHorizontalGroup(
             pnlUnidadesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlUnidadesLayout.createSequentialGroup()
-                .addContainerGap(458, Short.MAX_VALUE)
-                .addComponent(btnNuevoItem, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnEliminarItem, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 610, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(pnlUnidadesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btnEliminarItem, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnNuevoItem, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
-            .addComponent(jScrollPane2)
         );
         pnlUnidadesLayout.setVerticalGroup(
             pnlUnidadesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlUnidadesLayout.createSequentialGroup()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(27, 27, 27)
+                .addComponent(btnNuevoItem)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(pnlUnidadesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnEliminarItem)
-                    .addComponent(btnNuevoItem))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(btnEliminarItem)
+                .addContainerGap(136, Short.MAX_VALUE))
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
         );
 
         jTabbedPane1.addTab("ITEMS", pnlUnidades);

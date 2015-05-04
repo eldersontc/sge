@@ -45,44 +45,53 @@
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" alignment="0" attributes="0">
+              <Component id="pnlTitulo" alignment="1" max="32767" attributes="0"/>
+              <Group type="102" attributes="0">
                   <EmptySpace min="-2" pref="23" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace min="-2" pref="9" max="-2" attributes="0"/>
-                          <Component id="chkInventarios" min="-2" pref="139" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
-                          <Component id="chkCompras" min="-2" pref="103" max="-2" attributes="0"/>
-                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                          <Component id="chkVentas" min="-2" pref="91" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="1" attributes="0">
+                      <Component id="jTabbedPane1" min="-2" pref="517" max="-2" attributes="0"/>
+                      <Group type="102" alignment="1" attributes="0">
+                          <Component id="btnAceptar" min="-2" pref="93" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="btnCancelar" min="-2" pref="96" max="-2" attributes="0"/>
                       </Group>
-                      <Group type="103" alignment="0" groupAlignment="1" attributes="0">
-                          <Component id="jTabbedPane1" min="-2" pref="517" max="-2" attributes="0"/>
+                      <Group type="103" alignment="1" groupAlignment="0" attributes="0">
+                          <Component id="chkInventarios" min="-2" max="-2" attributes="0"/>
                           <Group type="102" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Component id="lblCodigo" min="-2" max="-2" attributes="0"/>
                                   <Component id="lblNombre" min="-2" max="-2" attributes="0"/>
+                                  <Component id="lblAlto" alignment="0" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace min="-2" pref="24" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                  <Group type="102" alignment="0" attributes="0">
-                                      <Component id="txtCodigo" min="-2" pref="196" max="-2" attributes="0"/>
+                                  <Group type="102" alignment="1" attributes="0">
+                                      <Component id="txtCodigo" min="-2" pref="209" max="-2" attributes="0"/>
                                       <EmptySpace max="32767" attributes="0"/>
                                       <Component id="chkActivo" min="-2" pref="91" max="-2" attributes="0"/>
                                   </Group>
                                   <Component id="txtDescripcion" min="-2" pref="399" max="-2" attributes="0"/>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <Group type="103" groupAlignment="1" attributes="0">
+                                          <Component id="chkCompras" min="-2" pref="103" max="-2" attributes="0"/>
+                                          <Group type="102" attributes="0">
+                                              <Component id="txtAlto" min="-2" pref="65" max="-2" attributes="0"/>
+                                              <EmptySpace min="-2" pref="21" max="-2" attributes="0"/>
+                                              <Component id="lblLargo" min="-2" max="-2" attributes="0"/>
+                                          </Group>
+                                      </Group>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Group type="103" groupAlignment="0" attributes="0">
+                                          <Component id="txtLargo" min="-2" pref="65" max="-2" attributes="0"/>
+                                          <Component id="chkVentas" min="-2" pref="91" max="-2" attributes="0"/>
+                                      </Group>
+                                  </Group>
                               </Group>
-                          </Group>
-                          <Group type="102" alignment="1" attributes="0">
-                              <Component id="btnAceptar" min="-2" pref="93" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="btnCancelar" min="-2" pref="96" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                   </Group>
                   <EmptySpace pref="25" max="32767" attributes="0"/>
               </Group>
-              <Component id="pnlTitulo" alignment="1" max="32767" attributes="0"/>
           </Group>
         </DimensionLayout>
         <DimensionLayout dim="1">
@@ -100,13 +109,20 @@
                       <Component id="txtDescripcion" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="lblNombre" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="txtAlto" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="txtLargo" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="lblAlto" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="lblLargo" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="chkInventarios" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="chkCompras" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="chkVentas" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="chkInventarios" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="68" max="32767" attributes="0"/>
+                  <EmptySpace min="0" pref="51" max="32767" attributes="0"/>
                   <Component id="jTabbedPane1" min="-2" pref="195" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
@@ -186,11 +202,11 @@
                 <DimensionLayout dim="0">
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
-                          <Component id="jScrollPane2" min="-2" pref="408" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="btnEliminarUnidad" alignment="0" pref="83" max="32767" attributes="0"/>
-                              <Component id="btnNuevaUnidad" alignment="0" max="32767" attributes="0"/>
+                          <Component id="jScrollPane2" pref="457" max="32767" attributes="0"/>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                              <Component id="btnNuevaUnidad" max="32767" attributes="0"/>
+                              <Component id="btnEliminarUnidad" max="32767" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                       </Group>
@@ -264,7 +280,9 @@
                 </Container>
                 <Component class="javax.swing.JButton" name="btnNuevaUnidad">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="NUEVO"/>
+                    <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                      <Image iconType="3" name="/com/sge/base/imagenes/add-16.png"/>
+                    </Property>
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnNuevaUnidadActionPerformed"/>
@@ -272,7 +290,9 @@
                 </Component>
                 <Component class="javax.swing.JButton" name="btnEliminarUnidad">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="ELIMINAR"/>
+                    <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                      <Image iconType="3" name="/com/sge/base/imagenes/delete-16.png"/>
+                    </Property>
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnEliminarUnidadActionPerformed"/>
@@ -303,11 +323,11 @@
                 <DimensionLayout dim="0">
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
-                          <Component id="jScrollPane1" min="-2" pref="408" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="btnEliminarAlmacen" pref="83" max="32767" attributes="0"/>
+                          <Component id="jScrollPane1" pref="457" max="32767" attributes="0"/>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
                               <Component id="btnNuevoAlmacen" max="32767" attributes="0"/>
+                              <Component id="btnEliminarAlmacen" max="32767" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                       </Group>
@@ -399,7 +419,9 @@
                 </Container>
                 <Component class="javax.swing.JButton" name="btnNuevoAlmacen">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="NUEVO"/>
+                    <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                      <Image iconType="3" name="/com/sge/base/imagenes/add-16.png"/>
+                    </Property>
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnNuevoAlmacenActionPerformed"/>
@@ -407,7 +429,9 @@
                 </Component>
                 <Component class="javax.swing.JButton" name="btnEliminarAlmacen">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="ELIMINAR"/>
+                    <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                      <Image iconType="3" name="/com/sge/base/imagenes/delete-16.png"/>
+                    </Property>
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnEliminarAlmacenActionPerformed"/>
@@ -481,6 +505,26 @@
             </Component>
           </SubComponents>
         </Container>
+        <Component class="javax.swing.JTextField" name="txtAlto">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="0"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JTextField" name="txtLargo">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="0"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="lblLargo">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="LARGO"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="lblAlto">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="ALTO"/>
+          </Properties>
+        </Component>
       </SubComponents>
     </Container>
   </SubComponents>

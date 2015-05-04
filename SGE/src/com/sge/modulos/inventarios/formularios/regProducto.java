@@ -1,7 +1,6 @@
 package com.sge.modulos.inventarios.formularios;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.sge.base.formularios.frameBase;
 import com.sge.modulos.inventarios.clases.Almacen;
 import com.sge.modulos.inventarios.clases.Producto;
@@ -32,15 +31,15 @@ public class regProducto extends frameBase<Producto> {
 
     int idProducto = 0;
 
-    private List<ProductoUnidad> productoUnidades = new ArrayList<>();
-    private List<ProductoAlmacen> productoAlmacenes = new ArrayList<>();
+    private List<ProductoUnidad> unidades = new ArrayList<>();
+    private List<ProductoAlmacen> almacenes = new ArrayList<>();
 
     Action sele_unidad = new AbstractAction() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            List<Unidad> unidades = ((lisUnidad) e.getSource()).getSeleccionados();
-            for (Unidad unidad : unidades) {
-                AgregarFila(tbUnidades, new Object[]{0, unidad.getIdUnidad(), unidad.getAbreviacion(), 0});
+            List<Unidad> seleccionados = ((lisUnidad) e.getSource()).getSeleccionados();
+            for (Unidad seleccionado : seleccionados) {
+                AgregarFila(tbUnidades, new Object[]{0, seleccionado.getIdUnidad(), seleccionado.getAbreviacion(), 0});
             }
         }
     };
@@ -48,10 +47,13 @@ public class regProducto extends frameBase<Producto> {
     Action sele_almacen = new AbstractAction() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            List<Almacen> almacenes = ((lisAlmacen) e.getSource()).getSeleccionados();
-            for (Almacen almacen : almacenes) {
-                productoAlmacenes.add(new ProductoAlmacen(almacen));
-                AgregarFila(tbAlmacenes, new Object[]{0, almacen.getIdAlmacen(), almacen.getDescripcion(), 0, 0, 0, 0});
+            List<Almacen> seleccionados = ((lisAlmacen) e.getSource()).getSeleccionados();
+            for (Almacen seleccionado : seleccionados) {
+                ProductoAlmacen productoAlmacen = new ProductoAlmacen();
+                productoAlmacen.setIdAlmacen(seleccionado.getIdAlmacen());
+                productoAlmacen.setDescripcionAlmacen(seleccionado.getDescripcion());
+                almacenes.add(productoAlmacen);
+                AgregarFila(tbAlmacenes, new Object[]{0, seleccionado.getIdAlmacen(), seleccionado.getDescripcion(), 0, 0, 0, 0});
             }
         }
     };
@@ -67,21 +69,19 @@ public class regProducto extends frameBase<Producto> {
     public List<ProductoUnidad> getProductoUnidades() {
         for (int i = 0; i < tbUnidades.getRowCount(); i++) {
             int idProductoUnidad = ObtenerValorCelda(tbUnidades, i, 0);
+            ProductoUnidad productoUnidad = new ProductoUnidad();
+            productoUnidad.setIdUnidad(ObtenerValorCelda(tbUnidades, i, 1));
+            productoUnidad.setAbreviacionUnidad(ObtenerValorCelda(tbUnidades, i, 2));
+            productoUnidad.setFactor(ObtenerValorCelda(tbUnidades, i, 3));
             if (idProductoUnidad == 0) {
-                ProductoUnidad productoUnidad = new ProductoUnidad();
-                productoUnidad.setUnidad(new Unidad(ObtenerValorCelda(tbUnidades, i, 1)));
-                productoUnidad.setFactor(ObtenerValorCelda(tbUnidades, i, 3));
                 productoUnidad.setAgregar(true);
-                productoUnidades.add(productoUnidad);
             } else {
-                ProductoUnidad productoUnidad = new ProductoUnidad();
                 productoUnidad.setIdProductoUnidad(idProductoUnidad);
-                productoUnidad.setFactor(ObtenerValorCelda(tbUnidades, i, 3));
                 productoUnidad.setActualizar(true);
-                productoUnidades.add(productoUnidad);
             }
+            unidades.add(productoUnidad);
         }
-        return productoUnidades;
+        return unidades;
     }
 
     public class swObtenerProducto extends SwingWorker<Object, Object> {
@@ -111,35 +111,33 @@ public class regProducto extends frameBase<Producto> {
 
                 if (resultado[0].equals("true")) {
                     Producto producto = new Gson().fromJson(resultado[1], Producto.class);
-                    List<Object[]> productoUnidades = (List<Object[]>) new Gson().fromJson(resultado[2], new TypeToken<List<Object[]>>() {
-                    }.getType());
-                    List<Object[]> productoAlmacenes = (List<Object[]>) new Gson().fromJson(resultado[3], new TypeToken<List<Object[]>>() {
-                    }.getType());
                     txtCodigo.setText(producto.getCodigo());
                     txtDescripcion.setText(producto.getDescripcion());
+                    txtAlto.setText(String.valueOf(producto.getAlto()));
+                    txtLargo.setText(String.valueOf(producto.getLargo()));
                     chkInventarios.setSelected(producto.isInventarios());
                     chkCompras.setSelected(producto.isCompras());
                     chkVentas.setSelected(producto.isVentas());
                     chkActivo.setSelected(producto.isActivo());
-                    for (Object[] productoUnidad : productoUnidades) {
+                    for (ProductoUnidad productoUnidad : producto.getUnidades()) {
                         AgregarFila(tbUnidades,
                                 new Object[]{
-                                    ((Double) productoUnidad[0]).intValue(),
-                                    ((Double) productoUnidad[1]).intValue(),
-                                    productoUnidad[2],
-                                    ((Double) productoUnidad[3]).intValue()
+                                    productoUnidad.getIdProductoUnidad(),
+                                    productoUnidad.getIdUnidad(),
+                                    productoUnidad.getAbreviacionUnidad(),
+                                    productoUnidad.getFactor()
                                 });
                     }
-                    for (Object[] productoAlmacen : productoAlmacenes) {
+                    for (ProductoAlmacen productoAlmacen : producto.getAlmacenes()) {
                         AgregarFila(tbAlmacenes,
                                 new Object[]{
-                                    ((Double) productoAlmacen[0]).intValue(),
-                                    ((Double) productoAlmacen[1]).intValue(),
-                                    productoAlmacen[2],
-                                    ((Double) productoAlmacen[3]).intValue(),
-                                    ((Double) productoAlmacen[4]).intValue(),
-                                    ((Double) productoAlmacen[5]).intValue(),
-                                    ((Double) productoAlmacen[6]).intValue()
+                                    productoAlmacen.getIdProductoAlmacen(),
+                                    productoAlmacen.getIdProducto(),
+                                    productoAlmacen.getDescripcionAlmacen(),
+                                    productoAlmacen.getStockFisico(),
+                                    productoAlmacen.getStockComprometido(),
+                                    productoAlmacen.getStockSolicitado(),
+                                    productoAlmacen.getStockDisponible()
                                 });
                     }
                 }
@@ -159,25 +157,22 @@ public class regProducto extends frameBase<Producto> {
             cliInventarios cliente = new cliInventarios();
             String json = "";
             try {
-                List<String> arrayJson = new ArrayList<>();
                 Producto producto = new Producto();
                 producto.setCodigo(txtCodigo.getText());
                 producto.setDescripcion(txtDescripcion.getText());
+                producto.setAlto(Double.parseDouble(txtAlto.getText()));
+                producto.setLargo(Double.parseDouble(txtLargo.getText()));
                 producto.setInventarios(chkInventarios.isSelected());
                 producto.setCompras(chkCompras.isSelected());
                 producto.setVentas(chkVentas.isSelected());
                 producto.setActivo(chkActivo.isSelected());
+                producto.setUnidades(getProductoUnidades());
+                producto.setAlmacenes(almacenes);
                 if (idProducto == 0) {
-                    arrayJson.add(new Gson().toJson(producto));
-                    arrayJson.add(new Gson().toJson(getProductoUnidades()));
-                    arrayJson.add(new Gson().toJson(productoAlmacenes));
-                    json = cliente.RegistrarProducto(new Gson().toJson(arrayJson));
+                    json = cliente.RegistrarProducto(new Gson().toJson(producto));
                 } else {
                     producto.setIdProducto(idProducto);
-                    arrayJson.add(new Gson().toJson(producto));
-                    arrayJson.add(new Gson().toJson(getProductoUnidades()));
-                    arrayJson.add(new Gson().toJson(productoAlmacenes));
-                    json = cliente.ActualizarProducto(new Gson().toJson(arrayJson));
+                    json = cliente.ActualizarProducto(new Gson().toJson(producto));
                 }
             } catch (Exception e) {
                 OcultarProcesando(frame);
@@ -239,6 +234,10 @@ public class regProducto extends frameBase<Producto> {
         chkInventarios = new javax.swing.JCheckBox();
         pnlTitulo = new javax.swing.JPanel();
         lblTitulo = new javax.swing.JLabel();
+        txtAlto = new javax.swing.JTextField();
+        txtLargo = new javax.swing.JTextField();
+        lblLargo = new javax.swing.JLabel();
+        lblAlto = new javax.swing.JLabel();
 
         setClosable(true);
 
@@ -305,14 +304,14 @@ public class regProducto extends frameBase<Producto> {
             tbUnidades.getColumnModel().getColumn(2).setPreferredWidth(200);
         }
 
-        btnNuevaUnidad.setText("NUEVO");
+        btnNuevaUnidad.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sge/base/imagenes/add-16.png"))); // NOI18N
         btnNuevaUnidad.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnNuevaUnidadActionPerformed(evt);
             }
         });
 
-        btnEliminarUnidad.setText("ELIMINAR");
+        btnEliminarUnidad.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sge/base/imagenes/delete-16.png"))); // NOI18N
         btnEliminarUnidad.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnEliminarUnidadActionPerformed(evt);
@@ -324,11 +323,11 @@ public class regProducto extends frameBase<Producto> {
         tabUnidadesLayout.setHorizontalGroup(
             tabUnidadesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(tabUnidadesLayout.createSequentialGroup()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 408, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(tabUnidadesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnEliminarUnidad, javax.swing.GroupLayout.DEFAULT_SIZE, 83, Short.MAX_VALUE)
-                    .addComponent(btnNuevaUnidad, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 457, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(tabUnidadesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btnNuevaUnidad, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnEliminarUnidad, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         tabUnidadesLayout.setVerticalGroup(
@@ -387,14 +386,14 @@ public class regProducto extends frameBase<Producto> {
             tbAlmacenes.getColumnModel().getColumn(6).setPreferredWidth(120);
         }
 
-        btnNuevoAlmacen.setText("NUEVO");
+        btnNuevoAlmacen.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sge/base/imagenes/add-16.png"))); // NOI18N
         btnNuevoAlmacen.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnNuevoAlmacenActionPerformed(evt);
             }
         });
 
-        btnEliminarAlmacen.setText("ELIMINAR");
+        btnEliminarAlmacen.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sge/base/imagenes/delete-16.png"))); // NOI18N
         btnEliminarAlmacen.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnEliminarAlmacenActionPerformed(evt);
@@ -406,11 +405,11 @@ public class regProducto extends frameBase<Producto> {
         tabAlmacenesLayout.setHorizontalGroup(
             tabAlmacenesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(tabAlmacenesLayout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 408, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(tabAlmacenesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnEliminarAlmacen, javax.swing.GroupLayout.DEFAULT_SIZE, 83, Short.MAX_VALUE)
-                    .addComponent(btnNuevoAlmacen, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 457, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(tabAlmacenesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btnNuevoAlmacen, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnEliminarAlmacen, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         tabAlmacenesLayout.setVerticalGroup(
@@ -459,39 +458,53 @@ public class regProducto extends frameBase<Producto> {
                 .addContainerGap())
         );
 
+        txtAlto.setText("0");
+
+        txtLargo.setText("0");
+
+        lblLargo.setText("LARGO");
+
+        lblAlto.setText("ALTO");
+
         javax.swing.GroupLayout frameLayout = new javax.swing.GroupLayout(frame);
         frame.setLayout(frameLayout);
         frameLayout.setHorizontalGroup(
             frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(pnlTitulo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(frameLayout.createSequentialGroup()
                 .addGap(23, 23, 23)
-                .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 517, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(frameLayout.createSequentialGroup()
-                        .addGap(9, 9, 9)
-                        .addComponent(chkInventarios, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(26, 26, 26)
-                        .addComponent(chkCompras, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(chkVentas, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 517, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnAceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(chkInventarios)
                         .addGroup(frameLayout.createSequentialGroup()
                             .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(lblCodigo)
-                                .addComponent(lblNombre))
+                                .addComponent(lblNombre)
+                                .addComponent(lblAlto))
                             .addGap(24, 24, 24)
                             .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addGroup(frameLayout.createSequentialGroup()
-                                    .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, frameLayout.createSequentialGroup()
+                                    .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(chkActivo, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addComponent(txtDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, 399, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGroup(frameLayout.createSequentialGroup()
-                            .addComponent(btnAceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addComponent(txtDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, 399, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(frameLayout.createSequentialGroup()
+                                    .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(chkCompras, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGroup(frameLayout.createSequentialGroup()
+                                            .addComponent(txtAlto, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addGap(21, 21, 21)
+                                            .addComponent(lblLargo)))
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(txtLargo, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(chkVentas, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)))))))
                 .addContainerGap(25, Short.MAX_VALUE))
-            .addComponent(pnlTitulo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         frameLayout.setVerticalGroup(
             frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -506,12 +519,18 @@ public class regProducto extends frameBase<Producto> {
                 .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblNombre))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtAlto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtLargo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblAlto)
+                    .addComponent(lblLargo))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(chkInventarios)
                     .addComponent(chkCompras)
-                    .addComponent(chkVentas)
-                    .addComponent(chkInventarios))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 68, Short.MAX_VALUE)
+                    .addComponent(chkVentas))
+                .addGap(0, 51, Short.MAX_VALUE)
                 .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -555,9 +574,11 @@ public class regProducto extends frameBase<Producto> {
             int idProductoAlmacen = ObtenerValorCelda(tbAlmacenes, 0);
             if (idProductoAlmacen == 0) {
                 int idAlmacen = ObtenerValorCelda(tbAlmacenes, 1);
-                productoAlmacenes.removeIf(p -> p.getAlmacen().getIdAlmacen() == idAlmacen);
+                almacenes.removeIf(p -> p.getIdAlmacen() == idAlmacen);
             } else {
-                productoAlmacenes.add(new ProductoAlmacen(idProductoAlmacen));
+                ProductoAlmacen productoAlmacen = new ProductoAlmacen();
+                productoAlmacen.setIdProductoAlmacen(idProductoAlmacen);
+                almacenes.add(productoAlmacen);
             }
             EliminarFila(tbAlmacenes);
         }
@@ -573,7 +594,10 @@ public class regProducto extends frameBase<Producto> {
         if (FilaActiva(tbUnidades)) {
             int idProductoUnidad = ObtenerValorCelda(tbUnidades, 0);
             if (idProductoUnidad > 0) {
-                productoUnidades.add(new ProductoUnidad(idProductoUnidad, true));
+                ProductoUnidad productoUnidad = new ProductoUnidad();
+                productoUnidad.setIdProductoUnidad(idProductoUnidad);
+                productoUnidad.setEliminar(true);
+                unidades.add(productoUnidad);
             }
             EliminarFila(tbUnidades);
         }
@@ -595,7 +619,9 @@ public class regProducto extends frameBase<Producto> {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JLabel lblAlto;
     private javax.swing.JLabel lblCodigo;
+    private javax.swing.JLabel lblLargo;
     private javax.swing.JLabel lblNombre;
     private javax.swing.JLabel lblTitulo;
     private javax.swing.JPanel pnlTitulo;
@@ -603,7 +629,9 @@ public class regProducto extends frameBase<Producto> {
     private javax.swing.JPanel tabUnidades;
     private javax.swing.JTable tbAlmacenes;
     private javax.swing.JTable tbUnidades;
+    private javax.swing.JTextField txtAlto;
     private javax.swing.JTextField txtCodigo;
     private javax.swing.JTextField txtDescripcion;
+    private javax.swing.JTextField txtLargo;
     // End of variables declaration//GEN-END:variables
 }

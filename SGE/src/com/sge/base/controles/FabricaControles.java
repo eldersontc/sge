@@ -230,8 +230,6 @@ public class FabricaControles {
 
     public static class ComboCell extends DefaultCellEditor {
 
-        protected int indexField = 0;
-
         public ComboCell() {
             super(new JComboBox());
         }
@@ -240,16 +238,12 @@ public class FabricaControles {
         public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
             JComboBox combo = (JComboBox) super.getTableCellEditorComponent(table, value, isSelected, row, column);
             combo.removeAllItems();
-            List<Object[]> items = (List<Object[]>) table.getModel().getValueAt(row, column - 1); // getItemsForCell(row, column); // you'll need to implement this method yourself
-            for (Object[] item : items) {
-                combo.addItem(item[indexField]);
+            List<?> items = (List<?>) table.getModel().getValueAt(row, column - 1); // getItemsForCell(row, column); // you'll need to implement this method yourself
+            for (Object item : items) {
+                combo.addItem(item);
             }
             combo.setSelectedItem(table.getModel().getValueAt(row, column));
             return combo;
-        }
-
-        public void setIndexField(int indexField) {
-            this.indexField = indexField;
         }
     }
 
@@ -259,9 +253,8 @@ public class FabricaControles {
         btn.setMnemonic(KeyEvent.VK_ENTER);
     }
 
-    public static void AgregarCombo(JTable table, int column, int indexField) {
+    public static void AgregarCombo(JTable table, int column) {
         ComboCell comboCell = new ComboCell();
-        comboCell.setIndexField(indexField);
         table.getColumnModel().getColumn(column).setCellEditor(comboCell);
     }
 

@@ -151,8 +151,8 @@ public class frameBase<T> extends javax.swing.JInternalFrame {
         FabricaControles.OcultarProcesando(panel);
     }
 
-    public void AgregarCombo(JTable table, int column, int indexField) {
-        FabricaControles.AgregarCombo(table, column, indexField);
+    public void AgregarCombo(JTable table, int column) {
+        FabricaControles.AgregarCombo(table, column);
     }
 
     public void AgregarBoton(JTable table, Action action, int column) {
