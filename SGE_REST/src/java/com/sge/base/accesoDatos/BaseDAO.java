@@ -70,6 +70,9 @@ public class BaseDAO {
         recursos.add("com/sge/modulos/ventas/mapeos/ItemListaPrecioServicio.hbm.xml");
         recursos.add("com/sge/modulos/ventas/mapeos/UnidadListaPrecioServicio.hbm.xml");
         recursos.add("com/sge/modulos/ventas/mapeos/EscalaListaPrecioServicio.hbm.xml");
+        recursos.add("com/sge/modulos/ventas/mapeos/ListaPrecioMaquina.hbm.xml");
+        recursos.add("com/sge/modulos/ventas/mapeos/ItemListaPrecioMaquina.hbm.xml");
+        recursos.add("com/sge/modulos/ventas/mapeos/EscalaListaPrecioMaquina.hbm.xml");
         return recursos;
     }
     
