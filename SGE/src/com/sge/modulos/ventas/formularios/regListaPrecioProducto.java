@@ -55,6 +55,7 @@ public class regListaPrecioProducto extends frameBase<ListaPrecioProducto> {
             if (resultado[0].equals("true")) {
                 UnidadListaPrecioProducto[] unidades = new Gson().fromJson(resultado[1], UnidadListaPrecioProducto[].class);
                 EliminarTodasFilas(tbUnidades);
+                EliminarTodasFilas(tbEscalas);
                 for (UnidadListaPrecioProducto unidad : unidades) {
                     AgregarFila(tbUnidades, new Object[]{unidad.getIdUnidadListaPrecioProducto(), unidad.getIdProductoUnidad(), unidad.getAbreviacionUnidad(), unidad.getFactor()});
                 }
@@ -103,7 +104,7 @@ public class regListaPrecioProducto extends frameBase<ListaPrecioProducto> {
             }
             String[] resultado = new Gson().fromJson(json, String[].class);
             if (resultado[0].equals("true")) {
-                VerAdvertencia("GUARDADO CORRECTAMENTE!", tabEscalas);
+                VerAdvertencia("GUARDADO CORRECTAMENTE!", frame);
             }
         } catch (Exception e) {
             ControlarExcepcion(e);
@@ -113,7 +114,7 @@ public class regListaPrecioProducto extends frameBase<ListaPrecioProducto> {
     }
 
     public void EliminarItem() {
-        int confirmacion = VerConfirmacion(tabItems);
+        int confirmacion = VerConfirmacion(frame);
         if (confirmacion == 0) {
             cliVentas cliente = new cliVentas();
             try {
@@ -132,7 +133,7 @@ public class regListaPrecioProducto extends frameBase<ListaPrecioProducto> {
     }
 
     public void EliminarUnidad() {
-        int confirmacion = VerConfirmacion(tabUnidades);
+        int confirmacion = VerConfirmacion(frame);
         if (confirmacion == 0) {
             cliVentas cliente = new cliVentas();
             try {
@@ -151,7 +152,7 @@ public class regListaPrecioProducto extends frameBase<ListaPrecioProducto> {
     }
 
     public void EliminarEscala() {
-        int confirmacion = VerConfirmacion(tabEscalas);
+        int confirmacion = VerConfirmacion(frame);
         if (confirmacion == 0) {
             cliVentas cliente = new cliVentas();
             try {
@@ -208,14 +209,35 @@ public class regListaPrecioProducto extends frameBase<ListaPrecioProducto> {
         @Override
         public void actionPerformed(ActionEvent evt) {
             List<ProductoUnidad> seleccionados = ((lisProductoUnidad) evt.getSource()).getSeleccionados();
-            for (ProductoUnidad seleccionado : seleccionados) {
-                AgregarFila(tbUnidades,
-                        new Object[]{
-                            0,
-                            seleccionado.getIdProductoUnidad(),
-                            seleccionado.getAbreviacionUnidad(),
-                            seleccionado.getFactor()
-                        });
+            if (!seleccionados.isEmpty()) {
+                List<UnidadListaPrecioProducto> unidadesListaPrecio = new ArrayList<>();
+                for (ProductoUnidad seleccionado : seleccionados) {
+                    UnidadListaPrecioProducto unidad = new UnidadListaPrecioProducto();
+                    unidad.setIdItemListaPrecioProducto(idItem);
+                    unidad.setIdProductoUnidad(seleccionado.getIdProductoUnidad());
+                    unidad.setAbreviacionUnidad(seleccionado.getAbreviacionUnidad());
+                    unidad.setFactor(seleccionado.getFactor());
+                    unidadesListaPrecio.add(unidad);
+                }
+                cliVentas cliente = new cliVentas();
+                try {
+                    String json = cliente.RegistrarUnidadesListaPrecioProducto(new Gson().toJson(unidadesListaPrecio));
+                    String[] resultado = new Gson().fromJson(json, String[].class);
+                    UnidadListaPrecioProducto[] unidades = new Gson().fromJson(resultado[1], UnidadListaPrecioProducto[].class);
+                    for (UnidadListaPrecioProducto unidad : unidades) {
+                        AgregarFila(tbUnidades,
+                                new Object[]{
+                                    unidad.getIdItemListaPrecioProducto(),
+                                    unidad.getIdProductoUnidad(),
+                                    unidad.getAbreviacionUnidad(),
+                                    unidad.getFactor()
+                                });
+                    }
+                } catch (Exception e) {
+                    ControlarExcepcion(e);
+                } finally {
+                    cliente.close();
+                }
             }
         }
     };

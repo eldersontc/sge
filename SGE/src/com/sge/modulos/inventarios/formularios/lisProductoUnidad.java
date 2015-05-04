@@ -35,7 +35,7 @@ public class lisProductoUnidad extends frameBase<ProductoUnidad> {
             cliInventarios cliente = new cliInventarios();
             String json = "";
             try {
-                json = cliente.ObtenerProductoUnidades("");
+                json = cliente.ObtenerProductoUnidades(new Gson().toJson(filtro));
             } catch (Exception e) {
                 OcultarCargando(frame);
                 cancel(false);
@@ -57,7 +57,7 @@ public class lisProductoUnidad extends frameBase<ProductoUnidad> {
                     List<Object[]> filas = (List<Object[]>) new Gson().fromJson(resultado[1].toString(), new TypeToken<List<Object[]>>() {
                     }.getType());
                     for (Object[] fila : filas) {
-                        AgregarFila(tbUnidades, new Object[]{false, ((Double) fila[0]).intValue(), ((Double) fila[1]).intValue(), fila[2], ((Double) fila[3]).intValue()});
+                        AgregarFila(tbUnidades, new Object[]{false, ((Double) fila[0]).intValue(), ((Double) fila[2]).intValue(), fila[3], ((Double) fila[4]).intValue()});
                     }
                     AgregarOrdenamiento(tbUnidades);
                 }
