@@ -454,19 +454,17 @@
                 <DimensionLayout dim="0">
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" attributes="0">
-                          <EmptySpace max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="21" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="lblListaPrecioProducto" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Component id="lblListaPrecioServicio" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Component id="lblListaPrecioMaquina" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Group type="102" attributes="0">
-                                  <EmptySpace min="148" pref="148" max="-2" attributes="0"/>
-                                  <Group type="103" groupAlignment="0" attributes="0">
-                                      <Component id="schListaPrecioProducto" alignment="0" min="-2" pref="255" max="-2" attributes="0"/>
-                                      <Component id="schListaPrecioServicio" alignment="0" min="-2" pref="255" max="-2" attributes="0"/>
-                                      <Component id="schListaPrecioMaquina" alignment="0" min="-2" pref="255" max="-2" attributes="0"/>
-                                  </Group>
-                              </Group>
+                          </Group>
+                          <EmptySpace min="-2" pref="58" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="schListaPrecioProducto" alignment="0" min="-2" pref="255" max="-2" attributes="0"/>
+                              <Component id="schListaPrecioServicio" alignment="0" min="-2" pref="255" max="-2" attributes="0"/>
+                              <Component id="schListaPrecioMaquina" alignment="0" min="-2" pref="255" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace pref="94" max="32767" attributes="0"/>
                       </Group>
