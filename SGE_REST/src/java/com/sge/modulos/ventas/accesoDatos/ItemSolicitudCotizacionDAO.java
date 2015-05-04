@@ -11,13 +11,14 @@ public class ItemSolicitudCotizacionDAO extends BaseDAO {
 
     public int ActualizarItemSolicitudCotizacion(ItemSolicitudCotizacion item) {
         String sql = String.format("UPDATE Ventas.ItemSolicitudCotizacion SET nombre = '%s', idServicioImpresion = %d, "
-                + "nombreServicioImpresion = '%s', idMaquina = %d, descripcionMaquina = '%s', idMaterial = %d, nombreMaterial = '%s', nombreTipoUnidad = '%s', "
+                + "nombreServicioImpresion = '%s', idMaquina = %d, descripcionMaquina = '%s', largoMaximoPliegoMaquina = %d, "
+                + "altoMaximoPliegoMaquina = %d, idMaterial = %d, nombreMaterial = '%s', largoMaterial = %s, altoMaterial = %s, nombreTipoUnidad = '%s', "
                 + "unidadMedidaAbierta = '%s', medidaAbierta = %b, medidaCerrada = %b, tiraRetira = %b, grafico = %b, "
                 + "material = %b, servicioImpresion = %b, fondo = %b, tipoUnidad = %b, largoMedidaAbierta = %s, "
                 + "altoMedidaAbierta = %s, largoMedidaCerrada = %s, altoMedidaCerrada = %s, tiraColor = %s, retiraColor = %s, "
                 + "dFondo = %s, acabados = '%s' WHERE idItemSolicitudCotizacion = %d",
-                item.getNombre(), item.getIdServicioImpresion(), item.getNombreServicioImpresion(), item.getIdMaquina(), item.getDescripcionMaquina(), item.getIdMaterial(),
-                item.getNombreMaterial(), item.getNombreTipoUnidad(), item.getUnidadMedidaAbierta(), item.isMedidaAbierta(),
+                item.getNombre(), item.getIdServicioImpresion(), item.getNombreServicioImpresion(), item.getIdMaquina(), item.getDescripcionMaquina(), item.getLargoMaximoPliegoMaquina(), item.getAltoMaximoPliegoMaquina(), item.getIdMaterial(),
+                item.getNombreMaterial(), item.getLargoMaterial(), item.getAltoMaterial(), item.getNombreTipoUnidad(), item.getUnidadMedidaAbierta(), item.isMedidaAbierta(),
                 item.isMedidaCerrada(), item.isTiraRetira(), item.isGrafico(), item.isMaterial(), item.isServicioImpresion(),
                 item.isFondo(), item.isTipoUnidad(), item.getLargoMedidaAbierta(), item.getAltoMedidaAbierta(),
                 item.getLargoMedidaCerrada(), item.getAltoMedidaCerrada(), item.getTiraColor(), item.getRetiraColor(),

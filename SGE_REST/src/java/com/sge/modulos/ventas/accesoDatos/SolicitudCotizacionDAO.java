@@ -21,9 +21,12 @@ public class SolicitudCotizacionDAO extends BaseDAO {
 
     public int ActualizarSolicitudCotizacion(SolicitudCotizacion solicitud) {
         String sql = String.format("UPDATE Ventas.SolicitudCotizacion SET descripcion = '%s', idCliente = %d, razonSocialCliente = '%s', "
+                + "idListaPrecioProducto = %d, nombreListaPrecioProducto = '%s', idListaPrecioServicio = %d, nombreListaPrecioServicio = '%s', idListaPrecioMaquina = %d, nombreListaPrecioMaquina = '%s', "
                 + "idMoneda = %d, simboloMoneda = '%s', idVendedor = %d, nombreVendedor = '%s', idFormaPago = %d, descripcionFormaPago = '%s', "
                 + "lineaProduccion = '%s', cantidad = %d, observacion = '%s' WHERE idSolicitudCotizacion = %d",
-                solicitud.getDescripcion(), solicitud.getIdCliente(), solicitud.getRazonSocialCliente(), solicitud.getIdMoneda(), solicitud.getSimboloMoneda(),
+                solicitud.getDescripcion(), solicitud.getIdCliente(), solicitud.getRazonSocialCliente(), solicitud.getIdListaPrecioProducto(), 
+                solicitud.getNombreListaPrecioProducto(), solicitud.getIdListaPrecioServicio(), solicitud.getNombreListaPrecioServicio(), 
+                solicitud.getIdListaPrecioMaquina(), solicitud.getNombreListaPrecioMaquina(), solicitud.getIdMoneda(), solicitud.getSimboloMoneda(),
                 solicitud.getIdVendedor(), solicitud.getNombreVendedor(), solicitud.getIdFormaPago(), solicitud.getDescripcionFormaPago(),
                 solicitud.getLineaProduccion(), solicitud.getCantidad(), solicitud.getObservacion(), solicitud.getIdSolicitudCotizacion());
         return super.Ejecutar(sql);
