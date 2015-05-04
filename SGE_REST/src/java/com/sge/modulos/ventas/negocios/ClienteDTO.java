@@ -93,7 +93,7 @@ public class ClienteDTO {
         try {
             clienteDAO = new ClienteDAO();
             clienteDAO.IniciarTransaccion();
-            clienteDAO.ActualizarCliente(cliente.getIdCliente(), cliente.getRazonSocial(), cliente.getTipoDocumentoIdentidad(), cliente.getDocumentoIdentidad(), cliente.getNombreComercial(), cliente.getTelefono(), cliente.getCorreo(), cliente.getIdVendedor(), cliente.getNombreVendedor(), cliente.isActivo());
+            clienteDAO.ActualizarCliente(cliente);
 
             contactoClienteDAO = new ContactoClienteDAO();
             contactoClienteDAO.AsignarSesion(clienteDAO);

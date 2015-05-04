@@ -1,6 +1,7 @@
 package com.sge.modulos.ventas.accesoDatos;
 
 import com.sge.base.accesoDatos.BaseDAO;
+import com.sge.modulos.ventas.entidades.Cliente;
 import java.util.List;
 
 /**
@@ -17,8 +18,15 @@ public class ClienteDAO extends BaseDAO {
         return super.ObtenerLista(sql);
     }
 
-    public int ActualizarCliente(int idCliente, String razonSocial, String tipoDocumentoIdentidad, String documentoIdentidad, String nombreComercial, String telefono, String correo, int idVendedor, String nombreVendedor, boolean activo) {
-        String sql = String.format("UPDATE Ventas.Cliente SET razonSocial = '%s', tipoDocumentoIdentidad = '%s', documentoIdentidad = '%s', nombreComercial = '%s', telefono = '%s', correo = '%s', idVendedor = %d, nombreVendedor = '%s', activo = %b WHERE idCliente = %d", razonSocial, tipoDocumentoIdentidad, documentoIdentidad, nombreComercial, telefono, correo, idVendedor, nombreVendedor, activo, idCliente);
+    public int ActualizarCliente(Cliente cliente) {
+        String sql = String.format("UPDATE Ventas.Cliente SET razonSocial = '%s', tipoDocumentoIdentidad = '%s', "
+                + "documentoIdentidad = '%s', nombreComercial = '%s', telefono = '%s', correo = '%s', idVendedor = %d, "
+                + "nombreVendedor = '%s', idListaPrecioProducto = %d, nombreListaPrecioProducto = '%s', "
+                + "idListaPrecioServicio = %d, nombreListaPrecioServicio = '%s', idListaPrecioMaquina = %d, "
+                + "nombreListaPrecioMaquina = '%s', activo = %b WHERE idCliente = %d", cliente.getRazonSocial(), cliente.getTipoDocumentoIdentidad(), 
+                cliente.getDocumentoIdentidad(), cliente.getNombreComercial(), cliente.getTelefono(), cliente.getCorreo(), cliente.getIdVendedor(), 
+                cliente.getNombreVendedor(), cliente.getIdListaPrecioProducto(), cliente.getNombreListaPrecioProducto(), cliente.getIdListaPrecioServicio(), 
+                cliente.getNombreListaPrecioServicio(), cliente.getIdListaPrecioMaquina(), cliente.getNombreListaPrecioMaquina(), cliente.isActivo(), cliente.getIdCliente());
         return super.Ejecutar(sql);
     }
 

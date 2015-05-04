@@ -18,6 +18,12 @@
         <property name="correo" column="correo"/>
         <property name="idVendedor" column="idVendedor"/>
         <property name="nombreVendedor" column="nombreVendedor"/>
+        <property name="idListaPrecioProducto" column="idListaPrecioProducto"/>
+        <property name="nombreListaPrecioProducto" column="nombreListaPrecioProducto"/>
+        <property name="idListaPrecioServicio" column="idListaPrecioServicio"/>
+        <property name="nombreListaPrecioServicio" column="nombreListaPrecioServicio"/>
+        <property name="idListaPrecioMaquina" column="idListaPrecioMaquina"/>
+        <property name="nombreListaPrecioMaquina" column="nombreListaPrecioMaquina"/>
         <property name="activo" column="activo"/>
     </class>
 </hibernate-mapping>

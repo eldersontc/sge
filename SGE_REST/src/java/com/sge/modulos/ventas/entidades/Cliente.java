@@ -19,6 +19,12 @@ public class Cliente {
     private String correo;
     private int idVendedor;
     private String nombreVendedor;
+    private int idListaPrecioProducto;
+    private String nombreListaPrecioProducto;
+    private int idListaPrecioServicio;
+    private String nombreListaPrecioServicio;
+    private int idListaPrecioMaquina;
+    private String nombreListaPrecioMaquina;
     private List<DireccionCliente> direcciones;
     private List<Object[]> direccionesConNombres;
     private List<ContactoCliente> contactos;
@@ -108,6 +114,54 @@ public class Cliente {
 
     public void setNombreVendedor(String nombreVendedor) {
         this.nombreVendedor = nombreVendedor;
+    }
+
+    public int getIdListaPrecioProducto() {
+        return idListaPrecioProducto;
+    }
+
+    public void setIdListaPrecioProducto(int idListaPrecioProducto) {
+        this.idListaPrecioProducto = idListaPrecioProducto;
+    }
+
+    public String getNombreListaPrecioProducto() {
+        return nombreListaPrecioProducto;
+    }
+
+    public void setNombreListaPrecioProducto(String nombreListaPrecioProducto) {
+        this.nombreListaPrecioProducto = nombreListaPrecioProducto;
+    }
+
+    public int getIdListaPrecioServicio() {
+        return idListaPrecioServicio;
+    }
+
+    public void setIdListaPrecioServicio(int idListaPrecioServicio) {
+        this.idListaPrecioServicio = idListaPrecioServicio;
+    }
+
+    public String getNombreListaPrecioServicio() {
+        return nombreListaPrecioServicio;
+    }
+
+    public void setNombreListaPrecioServicio(String nombreListaPrecioServicio) {
+        this.nombreListaPrecioServicio = nombreListaPrecioServicio;
+    }
+
+    public int getIdListaPrecioMaquina() {
+        return idListaPrecioMaquina;
+    }
+
+    public void setIdListaPrecioMaquina(int idListaPrecioMaquina) {
+        this.idListaPrecioMaquina = idListaPrecioMaquina;
+    }
+
+    public String getNombreListaPrecioMaquina() {
+        return nombreListaPrecioMaquina;
+    }
+
+    public void setNombreListaPrecioMaquina(String nombreListaPrecioMaquina) {
+        this.nombreListaPrecioMaquina = nombreListaPrecioMaquina;
     }
 
     public List<DireccionCliente> getDirecciones() {
