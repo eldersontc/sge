@@ -9,7 +9,7 @@ public class UnidadListaPrecioProducto {
     private int idUnidadListaPrecioProducto;
     private int idItemListaPrecioProducto;
     private int idProductoUnidad;
-    private int abreviacionUnidad;
+    private String abreviacionUnidad;
     private int factor;
 
     public UnidadListaPrecioProducto() {
@@ -39,11 +39,11 @@ public class UnidadListaPrecioProducto {
         this.idProductoUnidad = idProductoUnidad;
     }
 
-    public int getAbreviacionUnidad() {
+    public String getAbreviacionUnidad() {
         return abreviacionUnidad;
     }
 
-    public void setAbreviacionUnidad(int abreviacionUnidad) {
+    public void setAbreviacionUnidad(String abreviacionUnidad) {
         this.abreviacionUnidad = abreviacionUnidad;
     }
 
