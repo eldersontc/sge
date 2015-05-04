@@ -3,7 +3,7 @@ package com.sge.modulos.ventas.formularios;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.sge.base.formularios.frameBase;
-import com.sge.modulos.ventas.clases.ListaPrecioProducto;
+import com.sge.modulos.ventas.clases.ListaPrecioServicio;
 import com.sge.modulos.ventas.cliente.cliVentas;
 import java.awt.event.ActionEvent;
 import java.util.List;
@@ -16,19 +16,19 @@ import javax.swing.SwingWorker;
  *
  * @author elderson
  */
-public class lisListaPrecioProducto extends frameBase<ListaPrecioProducto> {
+public class lisListaPrecioServicio extends frameBase<ListaPrecioServicio> {
 
     /**
-     * Creates new form lisListaPrecioProducto
+     * Creates new form lisListaPrecioServicio
      */
-    public lisListaPrecioProducto(int modo) {
+    public lisListaPrecioServicio(int modo) {
         initComponents();
         Init(modo);
     }
 
     private int modo = 0;
 
-    private ListaPrecioProducto seleccionado;
+    private ListaPrecioServicio seleccionado;
 
     ImageIcon Icon_Edit = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/edit-16.png"));
     ImageIcon Icon_Dele = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/delete-16.png"));
@@ -36,18 +36,18 @@ public class lisListaPrecioProducto extends frameBase<ListaPrecioProducto> {
     Action edit = new AbstractAction() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            EditarListaPrecioProducto();
+            EditarListaPrecioServicio();
         }
     };
 
     Action dele = new AbstractAction() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            EliminarListaPrecioProducto();
+            EliminarListaPrecioServicio();
         }
     };
 
-    public class swObtenerListaPrecioProductos extends SwingWorker {
+    public class swObtenerListaPrecioServicios extends SwingWorker {
 
         @Override
         protected Object doInBackground() {
@@ -55,7 +55,7 @@ public class lisListaPrecioProducto extends frameBase<ListaPrecioProducto> {
             cliVentas cliente = new cliVentas();
             String json = "";
             try {
-                json = cliente.ObtenerListasPrecioProducto(new Gson().toJson(""));
+                json = cliente.ObtenerListasPrecioServicio(new Gson().toJson(""));
             } catch (Exception e) {
                 OcultarCargando(frame);
                 cancel(false);
@@ -91,7 +91,7 @@ public class lisListaPrecioProducto extends frameBase<ListaPrecioProducto> {
         }
     }
 
-    public class swEliminarListaPrecioProducto extends SwingWorker {
+    public class swEliminarListaPrecioServicio extends SwingWorker {
 
         @Override
         protected Object doInBackground() throws Exception {
@@ -99,8 +99,8 @@ public class lisListaPrecioProducto extends frameBase<ListaPrecioProducto> {
             cliVentas cliente = new cliVentas();
             String json = "";
             try {
-                int idListaPrecioProducto = ObtenerValorCelda(tbListasPrecio, 1);
-                json = cliente.EliminarListaPrecioProducto(new Gson().toJson(idListaPrecioProducto));
+                int idListaPrecioServicio = ObtenerValorCelda(tbListasPrecio, 1);
+                json = cliente.EliminarListaPrecioServicio(new Gson().toJson(idListaPrecioServicio));
             } catch (Exception e) {
                 OcultarCargando(frame);
                 cancel(false);
@@ -117,7 +117,7 @@ public class lisListaPrecioProducto extends frameBase<ListaPrecioProducto> {
                 String json = get().toString();
                 String[] resultado = new Gson().fromJson(json, String[].class);
                 if (resultado[0].equals("true")) {
-                    new swObtenerListaPrecioProductos().execute();
+                    new swObtenerListaPrecioServicios().execute();
                 } else {
                     OcultarCargando(frame);
                 }
@@ -140,27 +140,27 @@ public class lisListaPrecioProducto extends frameBase<ListaPrecioProducto> {
                 OcultarControl(btnNuevo);
                 break;
         }
-        new swObtenerListaPrecioProductos().execute();
+        new swObtenerListaPrecioServicios().execute();
     }
 
-    public void EditarListaPrecioProducto() {
-        int idListaPrecioProducto = ObtenerValorCelda(tbListasPrecio, 1);
-        regListaPrecioProducto regListaPrecioProducto = new regListaPrecioProducto("EDITAR ", idListaPrecioProducto);
-        this.getParent().add(regListaPrecioProducto);
-        regListaPrecioProducto.setVisible(true);
+    public void EditarListaPrecioServicio() {
+        int idListaPrecioServicio = ObtenerValorCelda(tbListasPrecio, 1);
+        regListaPrecioServicio regListaPrecioServicio = new regListaPrecioServicio("EDITAR ", idListaPrecioServicio);
+        this.getParent().add(regListaPrecioServicio);
+        regListaPrecioServicio.setVisible(true);
     }
 
-    public void EliminarListaPrecioProducto() {
+    public void EliminarListaPrecioServicio() {
         int confirmacion = VerConfirmacion(this);
         if (confirmacion == 0) {
-            new swEliminarListaPrecioProducto().execute();
+            new swEliminarListaPrecioServicio().execute();
         }
     }
 
-    public ListaPrecioProducto getSeleccionado() {
+    public ListaPrecioServicio getSeleccionado() {
         return seleccionado;
     }
-
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -212,12 +212,6 @@ public class lisListaPrecioProducto extends frameBase<ListaPrecioProducto> {
         tbListasPrecio.setRowHeight(25);
         tbListasPrecio.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane1.setViewportView(tbListasPrecio);
-        if (tbListasPrecio.getColumnModel().getColumnCount() > 0) {
-            tbListasPrecio.getColumnModel().getColumn(1).setMinWidth(0);
-            tbListasPrecio.getColumnModel().getColumn(1).setPreferredWidth(0);
-            tbListasPrecio.getColumnModel().getColumn(1).setMaxWidth(0);
-            tbListasPrecio.getColumnModel().getColumn(2).setPreferredWidth(300);
-        }
 
         pnlTitulo.setBackground(new java.awt.Color(67, 100, 130));
         pnlTitulo.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -225,7 +219,7 @@ public class lisListaPrecioProducto extends frameBase<ListaPrecioProducto> {
         lblTitulo.setFont(new java.awt.Font("Ubuntu", 1, 18)); // NOI18N
         lblTitulo.setForeground(java.awt.Color.white);
         lblTitulo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sge/base/imagenes/list-view-16.png"))); // NOI18N
-        lblTitulo.setText("LISTADO DE LISTAS DE PRECIO DE PRODUCTO");
+        lblTitulo.setText("LISTADO DE LISTAS DE PRECIO DE SERVICIO");
 
         btnNuevo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sge/base/imagenes/add-16.png"))); // NOI18N
         btnNuevo.setText("NUEVO");
@@ -242,7 +236,7 @@ public class lisListaPrecioProducto extends frameBase<ListaPrecioProducto> {
             .addGroup(pnlTituloLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lblTitulo)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 124, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 194, Short.MAX_VALUE)
                 .addComponent(btnNuevo)
                 .addContainerGap())
         );
@@ -287,7 +281,7 @@ public class lisListaPrecioProducto extends frameBase<ListaPrecioProducto> {
             .addGroup(frameLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 629, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 680, Short.MAX_VALUE)
                     .addGroup(frameLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btnSeleccionar, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -311,7 +305,7 @@ public class lisListaPrecioProducto extends frameBase<ListaPrecioProducto> {
                         .addComponent(txtFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(btnRefrescar, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 188, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 152, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnSeleccionar)
                 .addGap(9, 9, 9))
@@ -333,25 +327,25 @@ public class lisListaPrecioProducto extends frameBase<ListaPrecioProducto> {
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
         // TODO add your handling code here:
-        regListaPrecioProducto regListaPrecioProducto = new regListaPrecioProducto("NUEVO ", 0);
-        this.getParent().add(regListaPrecioProducto);
-        regListaPrecioProducto.setVisible(true);
+        regListaPrecioServicio regListaPrecioServicio = new regListaPrecioServicio("NUEVO ", 0);
+        this.getParent().add(regListaPrecioServicio);
+        regListaPrecioServicio.setVisible(true);
     }//GEN-LAST:event_btnNuevoActionPerformed
 
     private void btnSeleccionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeleccionarActionPerformed
         // TODO add your handling code here:
         switch (this.modo) {
             case 1:
-                if (FilaActiva(tbListasPrecio)) {
-                    ListaPrecioProducto listaPrecio = new ListaPrecioProducto();
-                    listaPrecio.setIdListaPrecioProducto(ObtenerValorCelda(tbListasPrecio, 1));
-                    listaPrecio.setNombre(ObtenerValorCelda(tbListasPrecio, 2));
-                    seleccionado = listaPrecio;
-                }
-                Cerrar();
-                break;
+            if (FilaActiva(tbListasPrecio)) {
+                ListaPrecioServicio listaPrecio = new ListaPrecioServicio();
+                listaPrecio.setIdListaPrecioServicio(ObtenerValorCelda(tbListasPrecio, 1));
+                listaPrecio.setNombre(ObtenerValorCelda(tbListasPrecio, 2));
+                seleccionado = listaPrecio;
+            }
+            Cerrar();
+            break;
             case 2:
-                break;
+            break;
         }
     }//GEN-LAST:event_btnSeleccionarActionPerformed
 
@@ -362,7 +356,7 @@ public class lisListaPrecioProducto extends frameBase<ListaPrecioProducto> {
 
     private void btnRefrescarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefrescarActionPerformed
         // TODO add your handling code here:
-        new swObtenerListaPrecioProductos().execute();
+        new swObtenerListaPrecioServicios().execute();
     }//GEN-LAST:event_btnRefrescarActionPerformed
 
 

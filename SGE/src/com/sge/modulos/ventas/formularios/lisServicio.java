@@ -6,6 +6,7 @@ import com.sge.base.formularios.frameBase;
 import com.sge.modulos.ventas.clases.Servicio;
 import com.sge.modulos.ventas.cliente.cliVentas;
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -31,12 +32,14 @@ public class lisServicio extends frameBase<Servicio> {
         initComponents();
         Init(modo, filtro);
     }
-    
+
     private int modo = 0;
-    
+
     private String filtro = "";
 
     private Servicio seleccionado;
+    
+    private List<Servicio> seleccionados = new ArrayList<>();
 
     ImageIcon Icon_Edit = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/edit-16.png"));
     ImageIcon Icon_Dele = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/delete-16.png"));
@@ -172,6 +175,10 @@ public class lisServicio extends frameBase<Servicio> {
 
     public Servicio getSeleccionado() {
         return seleccionado;
+    }
+
+    public List<Servicio> getSeleccionados() {
+        return seleccionados;
     }
     
     /**
@@ -354,17 +361,29 @@ public class lisServicio extends frameBase<Servicio> {
         // TODO add your handling code here:
         switch (this.modo) {
             case 1:
-            if (FilaActiva(tbServicios)) {
-                Servicio servicio = new Servicio();
-                servicio.setIdServicio(ObtenerValorCelda(tbServicios, 1));
-                servicio.setCodigo(ObtenerValorCelda(tbServicios, 2));
-                servicio.setDescripcion(ObtenerValorCelda(tbServicios, 3));
-                seleccionado = servicio;
-            }
-            Cerrar();
-            break;
+                if (FilaActiva(tbServicios)) {
+                    Servicio servicio = new Servicio();
+                    servicio.setIdServicio(ObtenerValorCelda(tbServicios, 1));
+                    servicio.setCodigo(ObtenerValorCelda(tbServicios, 2));
+                    servicio.setDescripcion(ObtenerValorCelda(tbServicios, 3));
+                    seleccionado = servicio;
+                }
+                Cerrar();
+                break;
             case 2:
-            break;
+                for (int i = 0; i < tbServicios.getRowCount(); i++) {
+                    boolean check = ObtenerValorCelda(tbServicios, i, 0);
+                    if (check) {
+                        Servicio servicio = new Servicio();
+                        servicio.setIdServicio(ObtenerValorCelda(tbServicios, i, 1));
+                        servicio.setCodigo(ObtenerValorCelda(tbServicios, i, 2));
+                        servicio.setDescripcion(ObtenerValorCelda(tbServicios, i, 3));
+                        servicio.setActivo(ObtenerValorCelda(tbServicios, i, 4));
+                        seleccionados.add(servicio);
+                    }
+                }
+                Cerrar();
+                break;
         }
     }//GEN-LAST:event_btnSeleccionarActionPerformed
 

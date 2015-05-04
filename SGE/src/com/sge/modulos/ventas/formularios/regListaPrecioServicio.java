@@ -2,14 +2,12 @@ package com.sge.modulos.ventas.formularios;
 
 import com.google.gson.Gson;
 import com.sge.base.formularios.frameBase;
-import com.sge.modulos.inventarios.clases.Producto;
-import com.sge.modulos.inventarios.clases.ProductoUnidad;
-import com.sge.modulos.inventarios.formularios.lisProducto;
-import com.sge.modulos.inventarios.formularios.lisProductoUnidad;
-import com.sge.modulos.ventas.clases.EscalaListaPrecioProducto;
-import com.sge.modulos.ventas.clases.ItemListaPrecioProducto;
-import com.sge.modulos.ventas.clases.ListaPrecioProducto;
-import com.sge.modulos.ventas.clases.UnidadListaPrecioProducto;
+import com.sge.modulos.ventas.clases.EscalaListaPrecioServicio;
+import com.sge.modulos.ventas.clases.ItemListaPrecioServicio;
+import com.sge.modulos.ventas.clases.ListaPrecioServicio;
+import com.sge.modulos.ventas.clases.Servicio;
+import com.sge.modulos.ventas.clases.ServicioUnidad;
+import com.sge.modulos.ventas.clases.UnidadListaPrecioServicio;
 import com.sge.modulos.ventas.cliente.cliVentas;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
@@ -22,19 +20,19 @@ import javax.swing.SwingWorker;
  *
  * @author elderson
  */
-public class regListaPrecioProducto extends frameBase<ListaPrecioProducto> {
+public class regListaPrecioServicio extends frameBase<ListaPrecioServicio> {
 
     /**
-     * Creates new form regListaPrecioProducto
+     * Creates new form regListaPrecioServicio
      */
-    public regListaPrecioProducto(String operacion, int id) {
+    public regListaPrecioServicio(String operacion, int id) {
         initComponents();
         Init(operacion, id);
     }
-
+    
     int id = 0;
     int idItem = 0;
-    int idProducto = 0;
+    int idServicio = 0;
     int idUnidad = 0;
     int idEscala = 0;
 
@@ -49,14 +47,14 @@ public class regListaPrecioProducto extends frameBase<ListaPrecioProducto> {
     public void ObtenerUnidades() {
         cliVentas cliente = new cliVentas();
         try {
-            String json = cliente.ObtenerUnidadesListaPrecioProducto(new Gson().toJson(idItem));
+            String json = cliente.ObtenerUnidadesListaPrecioServicio(new Gson().toJson(idItem));
             String[] resultado = new Gson().fromJson(json, String[].class);
             if (resultado[0].equals("true")) {
-                UnidadListaPrecioProducto[] unidades = new Gson().fromJson(resultado[1], UnidadListaPrecioProducto[].class);
+                UnidadListaPrecioServicio[] unidades = new Gson().fromJson(resultado[1], UnidadListaPrecioServicio[].class);
                 EliminarTodasFilas(tbUnidades);
                 EliminarTodasFilas(tbEscalas);
-                for (UnidadListaPrecioProducto unidad : unidades) {
-                    AgregarFila(tbUnidades, new Object[]{unidad.getIdUnidadListaPrecioProducto(), unidad.getIdProductoUnidad(), unidad.getAbreviacionUnidad(), unidad.getFactor()});
+                for (UnidadListaPrecioServicio unidad : unidades) {
+                    AgregarFila(tbUnidades, new Object[]{unidad.getIdUnidadListaPrecioServicio(), unidad.getIdServicioUnidad(), unidad.getAbreviacionUnidad(), unidad.getFactor()});
                 }
             }
         } catch (Exception e) {
@@ -69,13 +67,13 @@ public class regListaPrecioProducto extends frameBase<ListaPrecioProducto> {
     public void ObtenerEscalas() {
         cliVentas cliente = new cliVentas();
         try {
-            String json = cliente.ObtenerEscalasListaPrecioProducto(new Gson().toJson(idUnidad));
+            String json = cliente.ObtenerEscalasListaPrecioServicio(new Gson().toJson(idUnidad));
             String[] resultado = new Gson().fromJson(json, String[].class);
             if (resultado[0].equals("true")) {
-                EscalaListaPrecioProducto[] escalas = new Gson().fromJson(resultado[1], EscalaListaPrecioProducto[].class);
+                EscalaListaPrecioServicio[] escalas = new Gson().fromJson(resultado[1], EscalaListaPrecioServicio[].class);
                 EliminarTodasFilas(tbEscalas);
-                for (EscalaListaPrecioProducto escala : escalas) {
-                    AgregarFila(tbEscalas, new Object[]{escala.getIdEscalaListaPrecioProducto(), escala.getDesde(), escala.getHasta(), escala.getPrecio()});
+                for (EscalaListaPrecioServicio escala : escalas) {
+                    AgregarFila(tbEscalas, new Object[]{escala.getIdEscalaListaPrecioServicio(), escala.getDesde(), escala.getHasta(), escala.getPrecio()});
                 }
             }
         } catch (Exception e) {
@@ -90,16 +88,16 @@ public class regListaPrecioProducto extends frameBase<ListaPrecioProducto> {
         try {
             String json = "";
             int idEscala = ObtenerValorCelda(tbEscalas, 0);
-            EscalaListaPrecioProducto escala = new EscalaListaPrecioProducto();
-            escala.setIdUnidadListaPrecioProducto(idUnidad);
+            EscalaListaPrecioServicio escala = new EscalaListaPrecioServicio();
+            escala.setIdUnidadListaPrecioServicio(idUnidad);
             escala.setDesde(ObtenerValorCelda(tbEscalas, 1));
             escala.setHasta(ObtenerValorCelda(tbEscalas, 2));
             escala.setPrecio(ObtenerValorCelda(tbEscalas, 3));
             if (idEscala == 0) {
-                json = cliente.RegistrarEscalaListaPrecioProducto(new Gson().toJson(escala));
+                json = cliente.RegistrarEscalaListaPrecioServicio(new Gson().toJson(escala));
             } else {
-                escala.setIdEscalaListaPrecioProducto(idEscala);
-                json = cliente.ActualizarEscalaListaPrecioProducto(new Gson().toJson(escala));
+                escala.setIdEscalaListaPrecioServicio(idEscala);
+                json = cliente.ActualizarEscalaListaPrecioServicio(new Gson().toJson(escala));
             }
             String[] resultado = new Gson().fromJson(json, String[].class);
             if (resultado[0].equals("true")) {
@@ -118,7 +116,7 @@ public class regListaPrecioProducto extends frameBase<ListaPrecioProducto> {
             cliVentas cliente = new cliVentas();
             try {
                 int idItem = ObtenerValorCelda(tbItems, 0);
-                String json = cliente.EliminarItemListaPrecioProducto(new Gson().toJson(idItem));
+                String json = cliente.EliminarItemListaPrecioServicio(new Gson().toJson(idItem));
                 String[] resultado = new Gson().fromJson(json, String[].class);
                 if (resultado[0].equals("true")) {
                     EliminarFila(tbItems);
@@ -137,7 +135,7 @@ public class regListaPrecioProducto extends frameBase<ListaPrecioProducto> {
             cliVentas cliente = new cliVentas();
             try {
                 int idUnidad = ObtenerValorCelda(tbUnidades, 0);
-                String json = cliente.EliminarUnidadListaPrecioProducto(new Gson().toJson(idUnidad));
+                String json = cliente.EliminarUnidadListaPrecioServicio(new Gson().toJson(idUnidad));
                 String[] resultado = new Gson().fromJson(json, String[].class);
                 if (resultado[0].equals("true")) {
                     EliminarFila(tbUnidades);
@@ -156,7 +154,7 @@ public class regListaPrecioProducto extends frameBase<ListaPrecioProducto> {
             cliVentas cliente = new cliVentas();
             try {
                 int idEscala = ObtenerValorCelda(tbEscalas, 0);
-                String json = cliente.EliminarEscalaListaPrecioProducto(new Gson().toJson(idEscala));
+                String json = cliente.EliminarEscalaListaPrecioServicio(new Gson().toJson(idEscala));
                 String[] resultado = new Gson().fromJson(json, String[].class);
                 if (resultado[0].equals("true")) {
                     EliminarFila(tbEscalas);
@@ -172,27 +170,27 @@ public class regListaPrecioProducto extends frameBase<ListaPrecioProducto> {
     Action select_item = new AbstractAction() {
         @Override
         public void actionPerformed(ActionEvent evt) {
-            List<Producto> seleccionados = ((lisProducto) evt.getSource()).getSeleccionados();
+            List<Servicio> seleccionados = ((lisServicio) evt.getSource()).getSeleccionados();
             if (!seleccionados.isEmpty()) {
-                List<ItemListaPrecioProducto> itemsListaPrecio = new ArrayList<>();
-                for (Producto seleccionado : seleccionados) {
-                    ItemListaPrecioProducto item = new ItemListaPrecioProducto();
-                    item.setIdListaPrecioProducto(id);
-                    item.setIdProducto(seleccionado.getIdProducto());
-                    item.setNombreProducto(seleccionado.getDescripcion());
+                List<ItemListaPrecioServicio> itemsListaPrecio = new ArrayList<>();
+                for (Servicio seleccionado : seleccionados) {
+                    ItemListaPrecioServicio item = new ItemListaPrecioServicio();
+                    item.setIdListaPrecioServicio(id);
+                    item.setIdServicio(seleccionado.getIdServicio());
+                    item.setNombreServicio(seleccionado.getDescripcion());
                     itemsListaPrecio.add(item);
                 }
                 cliVentas cliente = new cliVentas();
                 try {
-                    String json = cliente.RegistrarItemsListaPrecioProducto(new Gson().toJson(itemsListaPrecio));
+                    String json = cliente.RegistrarItemsListaPrecioServicio(new Gson().toJson(itemsListaPrecio));
                     String[] resultado = new Gson().fromJson(json, String[].class);
-                    ItemListaPrecioProducto[] items = new Gson().fromJson(resultado[1], ItemListaPrecioProducto[].class);
-                    for (ItemListaPrecioProducto item : items) {
+                    ItemListaPrecioServicio[] items = new Gson().fromJson(resultado[1], ItemListaPrecioServicio[].class);
+                    for (ItemListaPrecioServicio item : items) {
                         AgregarFila(tbItems,
                                 new Object[]{
-                                    item.getIdItemListaPrecioProducto(),
-                                    item.getIdProducto(),
-                                    item.getNombreProducto()
+                                    item.getIdItemListaPrecioServicio(),
+                                    item.getIdServicio(),
+                                    item.getNombreServicio()
                                 });
                     }
                 } catch (Exception e) {
@@ -207,27 +205,27 @@ public class regListaPrecioProducto extends frameBase<ListaPrecioProducto> {
     Action select_unid = new AbstractAction() {
         @Override
         public void actionPerformed(ActionEvent evt) {
-            List<ProductoUnidad> seleccionados = ((lisProductoUnidad) evt.getSource()).getSeleccionados();
+            List<ServicioUnidad> seleccionados = ((lisServicioUnidad) evt.getSource()).getSeleccionados();
             if (!seleccionados.isEmpty()) {
-                List<UnidadListaPrecioProducto> unidadesListaPrecio = new ArrayList<>();
-                for (ProductoUnidad seleccionado : seleccionados) {
-                    UnidadListaPrecioProducto unidad = new UnidadListaPrecioProducto();
-                    unidad.setIdItemListaPrecioProducto(idItem);
-                    unidad.setIdProductoUnidad(seleccionado.getIdProductoUnidad());
+                List<UnidadListaPrecioServicio> unidadesListaPrecio = new ArrayList<>();
+                for (ServicioUnidad seleccionado : seleccionados) {
+                    UnidadListaPrecioServicio unidad = new UnidadListaPrecioServicio();
+                    unidad.setIdItemListaPrecioServicio(idItem);
+                    unidad.setIdServicioUnidad(seleccionado.getIdServicioUnidad());
                     unidad.setAbreviacionUnidad(seleccionado.getAbreviacionUnidad());
                     unidad.setFactor(seleccionado.getFactor());
                     unidadesListaPrecio.add(unidad);
                 }
                 cliVentas cliente = new cliVentas();
                 try {
-                    String json = cliente.RegistrarUnidadesListaPrecioProducto(new Gson().toJson(unidadesListaPrecio));
+                    String json = cliente.RegistrarUnidadesListaPrecioServicio(new Gson().toJson(unidadesListaPrecio));
                     String[] resultado = new Gson().fromJson(json, String[].class);
-                    UnidadListaPrecioProducto[] unidades = new Gson().fromJson(resultado[1], UnidadListaPrecioProducto[].class);
-                    for (UnidadListaPrecioProducto unidad : unidades) {
+                    UnidadListaPrecioServicio[] unidades = new Gson().fromJson(resultado[1], UnidadListaPrecioServicio[].class);
+                    for (UnidadListaPrecioServicio unidad : unidades) {
                         AgregarFila(tbUnidades,
                                 new Object[]{
-                                    unidad.getIdItemListaPrecioProducto(),
-                                    unidad.getIdProductoUnidad(),
+                                    unidad.getIdItemListaPrecioServicio(),
+                                    unidad.getIdServicioUnidad(),
                                     unidad.getAbreviacionUnidad(),
                                     unidad.getFactor()
                                 });
@@ -248,19 +246,19 @@ public class regListaPrecioProducto extends frameBase<ListaPrecioProducto> {
             VerCargando(frame);
             cliVentas cliVentas = new cliVentas();
             try {
-                String json = cliVentas.ObtenerListaPrecioProducto(new Gson().toJson(id));
+                String json = cliVentas.ObtenerListaPrecioServicio(new Gson().toJson(id));
                 String[] resultado = new Gson().fromJson(json, String[].class);
 
                 if (resultado[0].equals("true")) {
-                    ListaPrecioProducto listaPrecio = new Gson().fromJson(resultado[1], ListaPrecioProducto.class);
+                    ListaPrecioServicio listaPrecio = new Gson().fromJson(resultado[1], ListaPrecioServicio.class);
                     txtNombre.setText(listaPrecio.getNombre());
                     chkActivo.setSelected(listaPrecio.isActivo());
-                    for (ItemListaPrecioProducto item : listaPrecio.getItems()) {
+                    for (ItemListaPrecioServicio item : listaPrecio.getItems()) {
                         AgregarFila(tbItems,
                                 new Object[]{
-                                    item.getIdItemListaPrecioProducto(),
-                                    item.getIdProducto(),
-                                    item.getNombreProducto()
+                                    item.getIdItemListaPrecioServicio(),
+                                    item.getIdServicio(),
+                                    item.getNombreServicio()
                                 });
                     }
                 }
@@ -280,7 +278,7 @@ public class regListaPrecioProducto extends frameBase<ListaPrecioProducto> {
         }
     }
 
-    public class swGuardarListaPrecioProducto extends SwingWorker<Object, Object> {
+    public class swGuardarListaPrecioServicio extends SwingWorker<Object, Object> {
 
         @Override
         protected Object doInBackground() {
@@ -288,15 +286,15 @@ public class regListaPrecioProducto extends frameBase<ListaPrecioProducto> {
             cliVentas cliVentas = new cliVentas();
             String json = "";
             try {
-                ListaPrecioProducto listaPrecio = new ListaPrecioProducto();
+                ListaPrecioServicio listaPrecio = new ListaPrecioServicio();
                 listaPrecio.setNombre(txtNombre.getText());
 
                 listaPrecio.setActivo(chkActivo.isSelected());
                 if (id == 0) {
-                    json = cliVentas.RegistrarListaPrecioProducto(new Gson().toJson(listaPrecio));
+                    json = cliVentas.RegistrarListaPrecioServicio(new Gson().toJson(listaPrecio));
                 } else {
-                    listaPrecio.setIdListaPrecioProducto(id);
-                    json = cliVentas.ActualizarListaPrecioProducto(new Gson().toJson(listaPrecio));
+                    listaPrecio.setIdListaPrecioServicio(id);
+                    json = cliVentas.ActualizarListaPrecioServicio(new Gson().toJson(listaPrecio));
                 }
             } catch (Exception e) {
                 OcultarProcesando(frame);
@@ -388,7 +386,7 @@ public class regListaPrecioProducto extends frameBase<ListaPrecioProducto> {
         lblTitulo.setFont(new java.awt.Font("Ubuntu", 1, 18)); // NOI18N
         lblTitulo.setForeground(java.awt.Color.white);
         lblTitulo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sge/base/imagenes/add-list-16.png"))); // NOI18N
-        lblTitulo.setText("LISTA DE PRECIO DE PRODUCTO");
+        lblTitulo.setText("LISTA DE PRECIO DE SERVICIO");
 
         javax.swing.GroupLayout pnlTituloLayout = new javax.swing.GroupLayout(pnlTitulo);
         pnlTitulo.setLayout(pnlTituloLayout);
@@ -475,7 +473,7 @@ public class regListaPrecioProducto extends frameBase<ListaPrecioProducto> {
         tabItemsLayout.setHorizontalGroup(
             tabItemsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(tabItemsLayout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 666, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 665, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(tabItemsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnNuevoItem, javax.swing.GroupLayout.Alignment.TRAILING)
@@ -490,10 +488,10 @@ public class regListaPrecioProducto extends frameBase<ListaPrecioProducto> {
                 .addComponent(btnNuevoItem)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnEliminarItem)
-                .addContainerGap(174, Short.MAX_VALUE))
+                .addContainerGap(178, Short.MAX_VALUE))
         );
 
-        jTabbedPane1.addTab("PRODUCTOS", tabItems);
+        jTabbedPane1.addTab("SERVICIOS", tabItems);
 
         jTabbedPane2.setBorder(null);
 
@@ -563,7 +561,7 @@ public class regListaPrecioProducto extends frameBase<ListaPrecioProducto> {
         tabUnidadesLayout.setHorizontalGroup(
             tabUnidadesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(tabUnidadesLayout.createSequentialGroup()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 193, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 197, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(tabUnidadesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnNuevaUnidad, javax.swing.GroupLayout.Alignment.TRAILING)
@@ -572,7 +570,7 @@ public class regListaPrecioProducto extends frameBase<ListaPrecioProducto> {
         );
         tabUnidadesLayout.setVerticalGroup(
             tabUnidadesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 136, Short.MAX_VALUE)
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 140, Short.MAX_VALUE)
             .addGroup(tabUnidadesLayout.createSequentialGroup()
                 .addGap(26, 26, 26)
                 .addComponent(btnNuevaUnidad)
@@ -654,11 +652,11 @@ public class regListaPrecioProducto extends frameBase<ListaPrecioProducto> {
                     .addComponent(btnGuardarEscala)
                     .addComponent(btnEliminarEscala)
                     .addComponent(btnNuevaEscala))
-                .addContainerGap(13, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         tabEscalasLayout.setVerticalGroup(
             tabEscalasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 136, Short.MAX_VALUE)
+            .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 140, Short.MAX_VALUE)
             .addGroup(tabEscalasLayout.createSequentialGroup()
                 .addGap(27, 27, 27)
                 .addComponent(btnNuevaEscala)
@@ -721,7 +719,7 @@ public class regListaPrecioProducto extends frameBase<ListaPrecioProducto> {
                 .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnCancelar)
                     .addComponent(btnAceptar))
-                .addContainerGap(23, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -740,7 +738,7 @@ public class regListaPrecioProducto extends frameBase<ListaPrecioProducto> {
 
     private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
         // TODO add your handling code here:
-        new swGuardarListaPrecioProducto().execute();
+        new swGuardarListaPrecioServicio().execute();
     }//GEN-LAST:event_btnAceptarActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
@@ -748,25 +746,19 @@ public class regListaPrecioProducto extends frameBase<ListaPrecioProducto> {
         Cerrar();
     }//GEN-LAST:event_btnCancelarActionPerformed
 
-    private void btnNuevoItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoItemActionPerformed
-        // TODO add your handling code here:
-        VerModal(new lisProducto(2), select_item);
-    }//GEN-LAST:event_btnNuevoItemActionPerformed
-
-    private void btnNuevaEscalaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevaEscalaActionPerformed
-        // TODO add your handling code here:
-        if (FilaActiva(tbUnidades)) {
-            AgregarFila(tbEscalas, new Object[]{0, 0, 0, 0.0});
-        }
-    }//GEN-LAST:event_btnNuevaEscalaActionPerformed
-
-    private void btnNuevaUnidadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevaUnidadActionPerformed
+    private void tbItemsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbItemsMouseClicked
         // TODO add your handling code here:
         if (FilaActiva(tbItems)) {
-            String filtro = "WHERE ProductoUnidad.idProducto = " + idProducto;
-            VerModal(new lisProductoUnidad(filtro), select_unid);
+            idItem = ObtenerValorCelda(tbItems, 0);
+            idServicio = ObtenerValorCelda(tbItems, 1);
+            ObtenerUnidades();
         }
-    }//GEN-LAST:event_btnNuevaUnidadActionPerformed
+    }//GEN-LAST:event_tbItemsMouseClicked
+
+    private void btnNuevoItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoItemActionPerformed
+        // TODO add your handling code here:
+        VerModal(new lisServicio(2), select_item);
+    }//GEN-LAST:event_btnNuevoItemActionPerformed
 
     private void btnEliminarItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarItemActionPerformed
         // TODO add your handling code here:
@@ -775,12 +767,35 @@ public class regListaPrecioProducto extends frameBase<ListaPrecioProducto> {
         }
     }//GEN-LAST:event_btnEliminarItemActionPerformed
 
+    private void tbUnidadesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbUnidadesMouseClicked
+        // TODO add your handling code here:
+        if (FilaActiva(tbUnidades)) {
+            idUnidad = ObtenerValorCelda(tbUnidades, 0);
+            ObtenerEscalas();
+        }
+    }//GEN-LAST:event_tbUnidadesMouseClicked
+
+    private void btnNuevaUnidadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevaUnidadActionPerformed
+        // TODO add your handling code here:
+        if (FilaActiva(tbItems)) {
+            String filtro = "WHERE ServicioUnidad.idServicio = " + idServicio;
+            VerModal(new lisServicioUnidad(filtro), select_unid);
+        }
+    }//GEN-LAST:event_btnNuevaUnidadActionPerformed
+
     private void btnEliminarUnidadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarUnidadActionPerformed
         // TODO add your handling code here:
         if (FilaActiva(tbUnidades)) {
             EliminarUnidad();
         }
     }//GEN-LAST:event_btnEliminarUnidadActionPerformed
+
+    private void btnNuevaEscalaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevaEscalaActionPerformed
+        // TODO add your handling code here:
+        if (FilaActiva(tbUnidades)) {
+            AgregarFila(tbEscalas, new Object[]{0, 0, 0, 0.0});
+        }
+    }//GEN-LAST:event_btnNuevaEscalaActionPerformed
 
     private void btnGuardarEscalaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarEscalaActionPerformed
         // TODO add your handling code here:
@@ -796,22 +811,6 @@ public class regListaPrecioProducto extends frameBase<ListaPrecioProducto> {
         }
     }//GEN-LAST:event_btnEliminarEscalaActionPerformed
 
-    private void tbItemsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbItemsMouseClicked
-        // TODO add your handling code here:
-        if (FilaActiva(tbItems)) {
-            idItem = ObtenerValorCelda(tbItems, 0);
-            idProducto = ObtenerValorCelda(tbItems, 1);
-            ObtenerUnidades();
-        }
-    }//GEN-LAST:event_tbItemsMouseClicked
-
-    private void tbUnidadesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbUnidadesMouseClicked
-        // TODO add your handling code here:
-        if (FilaActiva(tbUnidades)) {
-            idUnidad = ObtenerValorCelda(tbUnidades, 0);
-            ObtenerEscalas();
-        }
-    }//GEN-LAST:event_tbUnidadesMouseClicked
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAceptar;
