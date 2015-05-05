@@ -15,8 +15,12 @@
         <property name="nombreServicioImpresion" column="nombreServicioImpresion"/>
         <property name="idMaquina" column="idMaquina"/>
         <property name="descripcionMaquina" column="descripcionMaquina"/>
+        <property name="largoMaximoPliegoMaquina" column="largoMaximoPliegoMaquina"/>
+        <property name="altoMaximoPliegoMaquina" column="altoMaximoPliegoMaquina"/>
         <property name="idMaterial" column="idMaterial"/>
         <property name="nombreMaterial" column="nombreMaterial"/>
+        <property name="largoMaterial" column="largoMaterial"/>
+        <property name="altoMaterial" column="altoMaterial"/>
         <property name="unidadMedidaAbierta" column="unidadMedidaAbierta"/>
         <property name="medidaAbierta" column="medidaAbierta"/>
         <property name="medidaCerrada" column="medidaCerrada"/>

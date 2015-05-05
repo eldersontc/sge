@@ -18,6 +18,12 @@
         <property name="descripcion" column="descripcion"/>
         <property name="idCliente" column="idCliente"/>
         <property name="razonSocialCliente" column="razonSocialCliente"/>
+        <property name="idListaPrecioProducto" column="idListaPrecioProducto"/>
+        <property name="nombreListaPrecioProducto" column="nombreListaPrecioProducto"/>
+        <property name="idListaPrecioServicio" column="idListaPrecioServicio"/>
+        <property name="nombreListaPrecioServicio" column="nombreListaPrecioServicio"/>
+        <property name="idListaPrecioMaquina" column="idListaPrecioMaquina"/>
+        <property name="nombreListaPrecioMaquina" column="nombreListaPrecioMaquina"/>
         <property name="idMoneda" column="idMoneda"/>
         <property name="simboloMoneda" column="simboloMoneda"/>
         <property name="idVendedor" column="idVendedor"/>

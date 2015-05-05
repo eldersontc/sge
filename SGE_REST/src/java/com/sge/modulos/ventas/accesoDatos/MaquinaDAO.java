@@ -12,7 +12,7 @@ public class MaquinaDAO extends BaseDAO {
 
     public List<Object[]> ObtenerMaquinas(String filtro) {
         String sql = "SELECT \n"
-                + "Maquina.idMaquina, Maquina.descripcion, Maquina.tipoMaquina, Maquina.activo \n"
+                + "Maquina.idMaquina, Maquina.descripcion, Maquina.tipoMaquina, Maquina.altoMaximoPliego, Maquina.largoMaximoPliego, Maquina.activo \n"
                 + "FROM \n"
                 + "Ventas.Maquina " + filtro;
         return super.ObtenerLista(sql);

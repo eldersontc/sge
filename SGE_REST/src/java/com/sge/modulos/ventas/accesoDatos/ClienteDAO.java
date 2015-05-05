@@ -12,7 +12,9 @@ public class ClienteDAO extends BaseDAO {
 
     public List<Object[]> ObtenerClientes(String filtro) {
         String sql = "SELECT \n"
-                + "Cliente.idCliente, Cliente.razonSocial, Cliente.tipoDocumentoIdentidad, Cliente.documentoIdentidad, Cliente.nombreComercial, Cliente.fechaUltimaVenta, Cliente.activo \n"
+                + "Cliente.idCliente, Cliente.razonSocial, Cliente.tipoDocumentoIdentidad, Cliente.documentoIdentidad, Cliente.nombreComercial, Cliente.fechaUltimaVenta, "
+                + "Cliente.idListaPrecioProducto, Cliente.nombreListaPrecioProducto, Cliente.idListaPrecioServicio, Cliente.nombreListaPrecioServicio, Cliente.idListaPrecioMaquina, "
+                + "Cliente.nombreListaPrecioMaquina, Cliente.activo \n"
                 + "FROM \n"
                 + "Ventas.Cliente " + filtro;
         return super.ObtenerLista(sql);
