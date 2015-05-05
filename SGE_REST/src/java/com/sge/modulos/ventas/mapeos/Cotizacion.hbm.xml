@@ -17,6 +17,12 @@
         <property name="descripcion" column="descripcion"/>
         <property name="idCliente" column="idCliente"/>
         <property name="razonSocialCliente" column="razonSocialCliente"/>
+        <property name="idListaPrecioProducto" column="idListaPrecioProducto"/>
+        <property name="nombreListaPrecioProducto" column="nombreListaPrecioProducto"/>
+        <property name="idListaPrecioServicio" column="idListaPrecioServicio"/>
+        <property name="nombreListaPrecioServicio" column="nombreListaPrecioServicio"/>
+        <property name="idListaPrecioMaquina" column="idListaPrecioMaquina"/>
+        <property name="nombreListaPrecioMaquina" column="nombreListaPrecioMaquina"/>
         <property name="idMoneda" column="idMoneda"/>
         <property name="simboloMoneda" column="simboloMoneda"/>
         <property name="idCotizador" column="idCotizador"/>
@@ -28,10 +34,6 @@
         <property name="lineaProduccion" column="lineaProduccion"/>
         <property name="cantidad" column="cantidad"/>
         <property name="observacion" column="observacion"/>
-        <property name="idListaPreciosMaterial" column="idListaPreciosMaterial"/>
-        <property name="descripcionListaPreciosMaterial" column="descripcionListaPreciosMaterial"/>
-        <property name="idListaPreciosMaquina" column="idListaPreciosMaquina"/>
-        <property name="descripcionListaPreciosMaquina" column="descripcionListaPreciosMaquina"/>
         <property name="idContactoCliente" column="idContactoCliente"/>
         <property name="nombreContactoCliente" column="nombreContactoCliente"/>
         <property name="porcentajeUtilidad" column="porcentajeUtilidad"/>

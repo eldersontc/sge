@@ -60,8 +60,6 @@ public class BaseDAO {
         recursos.add("com/sge/modulos/ventas/mapeos/SolicitudCotizacion.hbm.xml");
         recursos.add("com/sge/modulos/ventas/mapeos/ItemSolicitudCotizacion.hbm.xml");
         recursos.add("com/sge/modulos/ventas/mapeos/FormaPago.hbm.xml");
-//        recursos.add("com/sge/modulos/ventas/mapeos/Cotizacion.hbm.xml");
-//        recursos.add("com/sge/modulos/ventas/mapeos/ItemCotizacion.hbm.xml");
         recursos.add("com/sge/modulos/ventas/mapeos/ListaPrecioProducto.hbm.xml");
         recursos.add("com/sge/modulos/ventas/mapeos/ItemListaPrecioProducto.hbm.xml");
         recursos.add("com/sge/modulos/ventas/mapeos/UnidadListaPrecioProducto.hbm.xml");
@@ -73,6 +71,8 @@ public class BaseDAO {
         recursos.add("com/sge/modulos/ventas/mapeos/ListaPrecioMaquina.hbm.xml");
         recursos.add("com/sge/modulos/ventas/mapeos/ItemListaPrecioMaquina.hbm.xml");
         recursos.add("com/sge/modulos/ventas/mapeos/EscalaListaPrecioMaquina.hbm.xml");
+        recursos.add("com/sge/modulos/ventas/mapeos/Cotizacion.hbm.xml");
+        recursos.add("com/sge/modulos/ventas/mapeos/ItemCotizacion.hbm.xml");
         return recursos;
     }
     

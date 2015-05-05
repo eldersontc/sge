@@ -21,9 +21,12 @@ public class CotizacionDAO extends BaseDAO {
 
     public int ActualizarCotizacion(Cotizacion cotizacion) {
         String sql = String.format("UPDATE Ventas.Cotizacion SET descripcion = '%s', idCliente = %d, razonSocialCliente = '%s', "
+                + "idListaPrecioProducto = %d, nombreListaPrecioProducto = '%s', idListaPrecioServicio = %d, nombreListaPrecioServicio = '%s', idListaPrecioMaquina = %d, nombreListaPrecioMaquina = '%s', "
                 + "idMoneda = %d, simboloMoneda = '%s', idCotizador = %d, nombreCotizador = '%s',idVendedor = %d, nombreVendedor = '%s', idFormaPago = %d, descripcionFormaPago = '%s', "
                 + "lineaProduccion = '%s', cantidad = %d, observacion = '%s' WHERE idCotizacion = %d",
-                cotizacion.getDescripcion(), cotizacion.getIdCliente(), cotizacion.getRazonSocialCliente(), cotizacion.getIdMoneda(), cotizacion.getSimboloMoneda(),
+                cotizacion.getDescripcion(), cotizacion.getIdCliente(), cotizacion.getRazonSocialCliente(), cotizacion.getIdListaPrecioProducto(), cotizacion.getNombreListaPrecioProducto(), 
+                cotizacion.getIdListaPrecioServicio(), cotizacion.getNombreListaPrecioServicio(), cotizacion.getIdListaPrecioMaquina(), cotizacion.getNombreListaPrecioMaquina(), cotizacion.getIdMoneda(), 
+                cotizacion.getSimboloMoneda(),
                 cotizacion.getIdCotizador(), cotizacion.getNombreCotizador(), cotizacion.getIdVendedor(), cotizacion.getNombreVendedor(), cotizacion.getIdFormaPago(), cotizacion.getDescripcionFormaPago(),
                 cotizacion.getLineaProduccion(), cotizacion.getCantidad(), cotizacion.getObservacion(), cotizacion.getIdCotizacion());
         return super.Ejecutar(sql);
