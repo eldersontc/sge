@@ -159,7 +159,12 @@ public class lisSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
                     }
                     cotizacion.setIdCliente(solicitud.getIdCliente());
                     cotizacion.setRazonSocialCliente(solicitud.getRazonSocialCliente());
-                    //cotizacion.setidli
+                    cotizacion.setIdListaPrecioProducto(solicitud.getIdListaPrecioProducto());
+                    cotizacion.setNombreListaPrecioProducto(solicitud.getNombreListaPrecioProducto());
+                    cotizacion.setIdListaPrecioServicio(solicitud.getIdListaPrecioServicio());
+                    cotizacion.setNombreListaPrecioServicio(solicitud.getNombreListaPrecioServicio());
+                    cotizacion.setIdListaPrecioMaquina(solicitud.getIdListaPrecioMaquina());
+                    cotizacion.setNombreListaPrecioMaquina(solicitud.getNombreListaPrecioMaquina());
                     cotizacion.setDescripcion(solicitud.getDescripcion());
                     cotizacion.setIdMoneda(solicitud.getIdMoneda());
                     cotizacion.setSimboloMoneda(solicitud.getSimboloMoneda());
@@ -178,8 +183,12 @@ public class lisSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
                         itemCotizacion.setNombreServicioImpresion(itemSolicitud.getNombreServicioImpresion());
                         itemCotizacion.setIdMaquina(itemSolicitud.getIdMaquina());
                         itemCotizacion.setDescripcionMaquina(itemSolicitud.getDescripcionMaquina());
+                        itemCotizacion.setAltoMaximoPliegoMaquina(itemSolicitud.getAltoMaximoPliegoMaquina());
+                        itemCotizacion.setLargoMaximoPliegoMaquina(itemSolicitud.getLargoMaximoPliegoMaquina());
                         itemCotizacion.setIdMaterial(itemSolicitud.getIdMaterial());
                         itemCotizacion.setNombreMaterial(itemSolicitud.getNombreMaterial());
+                        itemCotizacion.setAltoMaterial(itemSolicitud.getAltoMaterial());
+                        itemCotizacion.setLargoMaterial(itemSolicitud.getLargoMaterial());
                         itemCotizacion.setNombreTipoUnidad(itemSolicitud.getNombreTipoUnidad());
                         itemCotizacion.setUnidadMedidaAbierta(itemSolicitud.getUnidadMedidaAbierta());
                         itemCotizacion.setMedidaAbierta(itemSolicitud.isMedidaAbierta());
@@ -378,7 +387,7 @@ public class lisSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
             }
         });
 
-        btnGenerarCotizacion.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sge/base/imagenes/refresh-16.png"))); // NOI18N
+        btnGenerarCotizacion.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sge/base/imagenes/generar-cotizacion-16.png"))); // NOI18N
         btnGenerarCotizacion.setToolTipText("GENERAR COTIZACION");
         btnGenerarCotizacion.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

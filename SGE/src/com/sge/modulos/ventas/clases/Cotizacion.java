@@ -19,6 +19,12 @@ public class Cotizacion {
     private String descripcion;
     private int idCliente;
     private String razonSocialCliente;
+    private int idListaPrecioProducto;
+    private String nombreListaPrecioProducto;
+    private int idListaPrecioServicio;
+    private String nombreListaPrecioServicio;
+    private int idListaPrecioMaquina;
+    private String nombreListaPrecioMaquina;
     private int idMoneda;
     private String simboloMoneda;
     private int idCotizador;
@@ -30,10 +36,6 @@ public class Cotizacion {
     private String lineaProduccion;
     private int cantidad;
     private String observacion;
-    private int idListaPreciosMaterial;
-    private String descripcionListaPreciosMaterial;
-    private int idListaPreciosMaquina;
-    private String descripcionListaPreciosMaquina;
     private int idContactoCliente;
     private String nombreContactoCliente;
     private double porcentajeUtilidad;
@@ -117,6 +119,54 @@ public class Cotizacion {
 
     public void setRazonSocialCliente(String razonSocialCliente) {
         this.razonSocialCliente = razonSocialCliente;
+    }
+
+    public int getIdListaPrecioProducto() {
+        return idListaPrecioProducto;
+    }
+
+    public void setIdListaPrecioProducto(int idListaPrecioProducto) {
+        this.idListaPrecioProducto = idListaPrecioProducto;
+    }
+
+    public String getNombreListaPrecioProducto() {
+        return nombreListaPrecioProducto;
+    }
+
+    public void setNombreListaPrecioProducto(String nombreListaPrecioProducto) {
+        this.nombreListaPrecioProducto = nombreListaPrecioProducto;
+    }
+
+    public int getIdListaPrecioServicio() {
+        return idListaPrecioServicio;
+    }
+
+    public void setIdListaPrecioServicio(int idListaPrecioServicio) {
+        this.idListaPrecioServicio = idListaPrecioServicio;
+    }
+
+    public String getNombreListaPrecioServicio() {
+        return nombreListaPrecioServicio;
+    }
+
+    public void setNombreListaPrecioServicio(String nombreListaPrecioServicio) {
+        this.nombreListaPrecioServicio = nombreListaPrecioServicio;
+    }
+
+    public int getIdListaPrecioMaquina() {
+        return idListaPrecioMaquina;
+    }
+
+    public void setIdListaPrecioMaquina(int idListaPrecioMaquina) {
+        this.idListaPrecioMaquina = idListaPrecioMaquina;
+    }
+
+    public String getNombreListaPrecioMaquina() {
+        return nombreListaPrecioMaquina;
+    }
+
+    public void setNombreListaPrecioMaquina(String nombreListaPrecioMaquina) {
+        this.nombreListaPrecioMaquina = nombreListaPrecioMaquina;
     }
 
     public int getIdMoneda() {
@@ -205,38 +255,6 @@ public class Cotizacion {
 
     public void setObservacion(String observacion) {
         this.observacion = observacion;
-    }
-
-    public int getIdListaPreciosMaterial() {
-        return idListaPreciosMaterial;
-    }
-
-    public void setIdListaPreciosMaterial(int idListaPreciosMaterial) {
-        this.idListaPreciosMaterial = idListaPreciosMaterial;
-    }
-
-    public String getDescripcionListaPreciosMaterial() {
-        return descripcionListaPreciosMaterial;
-    }
-
-    public void setDescripcionListaPreciosMaterial(String descripcionListaPreciosMaterial) {
-        this.descripcionListaPreciosMaterial = descripcionListaPreciosMaterial;
-    }
-
-    public int getIdListaPreciosMaquina() {
-        return idListaPreciosMaquina;
-    }
-
-    public void setIdListaPreciosMaquina(int idListaPreciosMaquina) {
-        this.idListaPreciosMaquina = idListaPreciosMaquina;
-    }
-
-    public String getDescripcionListaPreciosMaquina() {
-        return descripcionListaPreciosMaquina;
-    }
-
-    public void setDescripcionListaPreciosMaquina(String descripcionListaPreciosMaquina) {
-        this.descripcionListaPreciosMaquina = descripcionListaPreciosMaquina;
     }
 
     public int getIdContactoCliente() {
