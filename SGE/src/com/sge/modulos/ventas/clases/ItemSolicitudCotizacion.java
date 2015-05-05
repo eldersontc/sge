@@ -13,8 +13,12 @@ public class ItemSolicitudCotizacion {
     private String nombreServicioImpresion;
     private int idMaquina;
     private String descripcionMaquina;
+    private int largoMaximoPliegoMaquina;
+    private int altoMaximoPliegoMaquina;
     private int idMaterial;
     private String nombreMaterial;
+    private double largoMaterial;
+    private double altoMaterial;
     private String nombreTipoUnidad;
     private String unidadMedidaAbierta;
     private boolean medidaAbierta;
@@ -96,6 +100,22 @@ public class ItemSolicitudCotizacion {
         this.descripcionMaquina = descripcionMaquina;
     }
 
+    public int getLargoMaximoPliegoMaquina() {
+        return largoMaximoPliegoMaquina;
+    }
+
+    public void setLargoMaximoPliegoMaquina(int largoMaximoPliegoMaquina) {
+        this.largoMaximoPliegoMaquina = largoMaximoPliegoMaquina;
+    }
+
+    public int getAltoMaximoPliegoMaquina() {
+        return altoMaximoPliegoMaquina;
+    }
+
+    public void setAltoMaximoPliegoMaquina(int altoMaximoPliegoMaquina) {
+        this.altoMaximoPliegoMaquina = altoMaximoPliegoMaquina;
+    }
+
     public int getIdMaterial() {
         return idMaterial;
     }
@@ -110,6 +130,22 @@ public class ItemSolicitudCotizacion {
 
     public void setNombreMaterial(String nombreMaterial) {
         this.nombreMaterial = nombreMaterial;
+    }
+
+    public double getLargoMaterial() {
+        return largoMaterial;
+    }
+
+    public void setLargoMaterial(double largoMaterial) {
+        this.largoMaterial = largoMaterial;
+    }
+
+    public double getAltoMaterial() {
+        return altoMaterial;
+    }
+
+    public void setAltoMaterial(double altoMaterial) {
+        this.altoMaterial = altoMaterial;
     }
 
     public String getNombreTipoUnidad() {

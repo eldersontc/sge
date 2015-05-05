@@ -159,6 +159,7 @@ public class lisSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
                     }
                     cotizacion.setIdCliente(solicitud.getIdCliente());
                     cotizacion.setRazonSocialCliente(solicitud.getRazonSocialCliente());
+                    //cotizacion.setidli
                     cotizacion.setDescripcion(solicitud.getDescripcion());
                     cotizacion.setIdMoneda(solicitud.getIdMoneda());
                     cotizacion.setSimboloMoneda(solicitud.getSimboloMoneda());
@@ -312,6 +313,9 @@ public class lisSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
             tbSolicitudes.getColumnModel().getColumn(1).setMinWidth(0);
             tbSolicitudes.getColumnModel().getColumn(1).setPreferredWidth(0);
             tbSolicitudes.getColumnModel().getColumn(1).setMaxWidth(0);
+            tbSolicitudes.getColumnModel().getColumn(3).setPreferredWidth(200);
+            tbSolicitudes.getColumnModel().getColumn(5).setPreferredWidth(200);
+            tbSolicitudes.getColumnModel().getColumn(6).setPreferredWidth(200);
         }
 
         pnlTitulo.setBackground(new java.awt.Color(67, 100, 130));
@@ -337,7 +341,7 @@ public class lisSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
             .addGroup(pnlTituloLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lblTitulo)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 171, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 532, Short.MAX_VALUE)
                 .addComponent(btnNuevo)
                 .addContainerGap())
         );
@@ -390,7 +394,7 @@ public class lisSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
             .addGroup(frameLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 643, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1004, Short.MAX_VALUE)
                     .addGroup(frameLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btnSeleccionar, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))

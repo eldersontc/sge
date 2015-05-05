@@ -75,20 +75,15 @@ public class lisMaquina extends frameBase<Maquina> {
             try {
                 String json = get().toString();
                 String[] resultado = new Gson().fromJson(json, String[].class);
-
                 if (resultado[0].equals("true")) {
-                    DefaultTableModel modelo = (DefaultTableModel) tbMaquinas.getModel();
-                    modelo.setRowCount(0);
-
+                    EliminarTodasFilas(tbMaquinas);
                     List<Object[]> filas = (List<Object[]>) new Gson().fromJson(resultado[1], new TypeToken<List<Object[]>>() {
                     }.getType());
-
                     for (Object[] fila : filas) {
-                        modelo.addRow(new Object[]{false, ((Double) fila[0]).intValue(), fila[1], fila[2], fila[3], Icon_Edit, Icon_Dele});
+                        AgregarFila(tbMaquinas, new Object[]{false, ((Double) fila[0]).intValue(), fila[1], fila[2], ((Double) fila[3]).intValue(), ((Double) fila[4]).intValue(), fila[5], Icon_Edit, Icon_Dele});
                     }
-
-                    AgregarBoton(tbMaquinas, edit, 5);
-                    AgregarBoton(tbMaquinas, dele, 6);
+                    AgregarBoton(tbMaquinas, edit, 7);
+                    AgregarBoton(tbMaquinas, dele, 8);
                     AgregarOrdenamiento(tbMaquinas);
                 }
                 OcultarCargando(frame);
@@ -144,11 +139,11 @@ public class lisMaquina extends frameBase<Maquina> {
                 OcultarControl(btnSeleccionar);
                 break;
             case 1:
-                OcultarColumnas(tbMaquinas, new int[]{0, 5, 6});
+                OcultarColumnas(tbMaquinas, new int[]{0, 7, 8});
                 OcultarControl(btnNuevo);
                 break;
             case 2:
-                OcultarColumnas(tbMaquinas, new int[]{5, 6});
+                OcultarColumnas(tbMaquinas, new int[]{7, 8});
                 OcultarControl(btnNuevo);
                 break;
         }
@@ -207,14 +202,14 @@ public class lisMaquina extends frameBase<Maquina> {
 
             },
             new String [] {
-                "CHECK", "IDMAQUINA", "DESCRIPCION", "TIPO", "ACTIVO", "EDITAR", "ELIMINAR"
+                "CHECK", "IDMAQUINA", "DESCRIPCION", "TIPO", "ALTO MAX.", "LARGO MAX.", "ACTIVO", "EDITAR", "ELIMINAR"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Boolean.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Boolean.class, java.lang.Object.class, java.lang.Object.class
+                java.lang.Boolean.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Boolean.class, java.lang.Object.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                true, false, true, true, true, true, true
+                true, false, true, true, true, true, true, true, true
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -232,6 +227,7 @@ public class lisMaquina extends frameBase<Maquina> {
             tbMaquinas.getColumnModel().getColumn(1).setMinWidth(0);
             tbMaquinas.getColumnModel().getColumn(1).setPreferredWidth(0);
             tbMaquinas.getColumnModel().getColumn(1).setMaxWidth(0);
+            tbMaquinas.getColumnModel().getColumn(2).setPreferredWidth(200);
         }
 
         pnlTitulo.setBackground(new java.awt.Color(67, 100, 130));
@@ -257,7 +253,7 @@ public class lisMaquina extends frameBase<Maquina> {
             .addGroup(pnlTituloLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lblTitulo)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 300, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 481, Short.MAX_VALUE)
                 .addComponent(btnNuevo)
                 .addContainerGap())
         );
@@ -302,7 +298,7 @@ public class lisMaquina extends frameBase<Maquina> {
             .addGroup(frameLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 614, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 795, Short.MAX_VALUE)
                     .addGroup(frameLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btnSeleccionar, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -361,6 +357,8 @@ public class lisMaquina extends frameBase<Maquina> {
                     Maquina maquina = new Maquina();
                     maquina.setIdMaquina(ObtenerValorCelda(tbMaquinas, 1));
                     maquina.setDescripcion(ObtenerValorCelda(tbMaquinas, 2));
+                    maquina.setAltoMaximoPliego(ObtenerValorCelda(tbMaquinas, 4));
+                    maquina.setLargoMaximoPliego(ObtenerValorCelda(tbMaquinas, 5));
                     seleccionado = maquina;
                 }
                 Cerrar();
@@ -372,6 +370,8 @@ public class lisMaquina extends frameBase<Maquina> {
                         Maquina maquina = new Maquina();
                         maquina.setIdMaquina(ObtenerValorCelda(tbMaquinas, i, 1));
                         maquina.setDescripcion(ObtenerValorCelda(tbMaquinas, i, 2));
+                        maquina.setAltoMaximoPliego(ObtenerValorCelda(tbMaquinas, i, 4));
+                        maquina.setLargoMaximoPliego(ObtenerValorCelda(tbMaquinas, i, 5));
                         seleccionados.add(maquina);
                     }
                 }

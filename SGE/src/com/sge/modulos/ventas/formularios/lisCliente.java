@@ -72,20 +72,15 @@ public class lisCliente extends frameBase<Cliente> {
             try {
                 String json = get().toString();
                 String[] resultado = new Gson().fromJson(json, String[].class);
-
                 if (resultado[0].equals("true")) {
-                    DefaultTableModel modelo = (DefaultTableModel) tbClientes.getModel();
-                    modelo.setRowCount(0);
-
+                    EliminarTodasFilas(tbClientes);
                     List<Object[]> filas = (List<Object[]>) new Gson().fromJson(resultado[1], new TypeToken<List<Object[]>>() {
                     }.getType());
-
                     for (Object[] fila : filas) {
-                        modelo.addRow(new Object[]{false, ((Double) fila[0]).intValue(), fila[1], fila[5], fila[6], Icon_Edit, Icon_Dele});
+                        AgregarFila(tbClientes, new Object[]{false, ((Double) fila[0]).intValue(), fila[1], fila[5], ((Double) fila[6]).intValue(), fila[7], ((Double) fila[8]).intValue(), fila[9], ((Double) fila[10]).intValue(), fila[11], fila[12], Icon_Edit, Icon_Dele});
                     }
-
-                    AgregarBoton(tbClientes, edit, 5);
-                    AgregarBoton(tbClientes, dele, 6);
+                    AgregarBoton(tbClientes, edit, 11);
+                    AgregarBoton(tbClientes, dele, 12);
                     AgregarOrdenamiento(tbClientes);
                 }
                 OcultarCargando(frame);
@@ -141,7 +136,7 @@ public class lisCliente extends frameBase<Cliente> {
                 OcultarControl(btnSeleccionar);
                 break;
             case 1:
-                OcultarColumnas(tbClientes, new int[]{0, 5, 6});
+                OcultarColumnas(tbClientes, new int[]{0, 11, 12});
                 OcultarControl(btnNuevo);
                 break;
         }
@@ -165,7 +160,7 @@ public class lisCliente extends frameBase<Cliente> {
     public Cliente getSeleccionado() {
         return seleccionado;
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -196,14 +191,14 @@ public class lisCliente extends frameBase<Cliente> {
 
             },
             new String [] {
-                "CHECK", "IDCLIENTE", "RAZON SOCIAL", "F. ULTIMA VENTA", "ACTIVO", "EDITAR", "ELIMINAR"
+                "CHECK", "IDCLIENTE", "RAZON SOCIAL", "F. U. VENTA", "IDLPPRODUCTO", "L.P.PRODUCTO", "IDLPSERVICIO", "L.P.SERVICIO", "IDLPMAQUINA", "L.P.MAQUINA", "ACTIVO", "EDITAR", "ELIMINAR"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Boolean.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Boolean.class, java.lang.Object.class, java.lang.Object.class
+                java.lang.Boolean.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.Boolean.class, java.lang.Object.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                true, false, true, true, true, true, true
+                true, false, true, true, false, true, false, true, false, true, true, true, true
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -222,7 +217,16 @@ public class lisCliente extends frameBase<Cliente> {
             tbClientes.getColumnModel().getColumn(1).setPreferredWidth(0);
             tbClientes.getColumnModel().getColumn(1).setMaxWidth(0);
             tbClientes.getColumnModel().getColumn(2).setPreferredWidth(200);
-            tbClientes.getColumnModel().getColumn(3).setPreferredWidth(150);
+            tbClientes.getColumnModel().getColumn(3).setPreferredWidth(100);
+            tbClientes.getColumnModel().getColumn(4).setMinWidth(0);
+            tbClientes.getColumnModel().getColumn(4).setPreferredWidth(0);
+            tbClientes.getColumnModel().getColumn(4).setMaxWidth(0);
+            tbClientes.getColumnModel().getColumn(6).setMinWidth(0);
+            tbClientes.getColumnModel().getColumn(6).setPreferredWidth(0);
+            tbClientes.getColumnModel().getColumn(6).setMaxWidth(0);
+            tbClientes.getColumnModel().getColumn(8).setMinWidth(0);
+            tbClientes.getColumnModel().getColumn(8).setPreferredWidth(0);
+            tbClientes.getColumnModel().getColumn(8).setMaxWidth(0);
         }
 
         pnlTitulo.setBackground(new java.awt.Color(67, 100, 130));
@@ -248,7 +252,7 @@ public class lisCliente extends frameBase<Cliente> {
             .addGroup(pnlTituloLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lblTitulo)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 368, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 563, Short.MAX_VALUE)
                 .addComponent(btnNuevo)
                 .addContainerGap())
         );
@@ -293,7 +297,7 @@ public class lisCliente extends frameBase<Cliente> {
             .addGroup(frameLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 667, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 862, Short.MAX_VALUE)
                     .addGroup(frameLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btnSeleccionar, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -348,16 +352,22 @@ public class lisCliente extends frameBase<Cliente> {
         // TODO add your handling code here:
         switch (this.modo) {
             case 1:
-            if (FilaActiva(tbClientes)) {
-                Cliente cliente = new Cliente();
-                cliente.setIdCliente(ObtenerValorCelda(tbClientes, 1));
-                cliente.setRazonSocial(ObtenerValorCelda(tbClientes, 2));
-                seleccionado = cliente;
-            }
-            Cerrar();
-            break;
+                if (FilaActiva(tbClientes)) {
+                    Cliente cliente = new Cliente();
+                    cliente.setIdCliente(ObtenerValorCelda(tbClientes, 1));
+                    cliente.setRazonSocial(ObtenerValorCelda(tbClientes, 2));
+                    cliente.setIdListaPrecioProducto(ObtenerValorCelda(tbClientes, 4));
+                    cliente.setNombreListaPrecioProducto(ObtenerValorCelda(tbClientes, 5));
+                    cliente.setIdListaPrecioServicio(ObtenerValorCelda(tbClientes, 6));
+                    cliente.setNombreListaPrecioServicio(ObtenerValorCelda(tbClientes, 7));
+                    cliente.setIdListaPrecioMaquina(ObtenerValorCelda(tbClientes, 8));
+                    cliente.setNombreListaPrecioMaquina(ObtenerValorCelda(tbClientes, 9));
+                    seleccionado = cliente;
+                }
+                Cerrar();
+                break;
             case 2:
-            break;
+                break;
         }
     }//GEN-LAST:event_btnSeleccionarActionPerformed
 

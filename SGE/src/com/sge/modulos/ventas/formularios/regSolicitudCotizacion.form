@@ -122,7 +122,7 @@
                           </Group>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="tpnlItems" max="32767" attributes="0"/>
+                              <Component id="tpnlItems" pref="579" max="32767" attributes="0"/>
                               <Group type="102" alignment="0" attributes="0">
                                   <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                                   <Component id="btnAceptar" min="-2" pref="93" max="-2" attributes="0"/>
@@ -194,7 +194,7 @@
                   <EmptySpace min="-2" pref="29" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="tpnlItems" min="-2" pref="414" max="-2" attributes="0"/>
-                      <Component id="jScrollPane2" pref="415" max="32767" attributes="0"/>
+                      <Component id="jScrollPane2" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
@@ -207,7 +207,7 @@
                           <Component id="btnAceptar" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
-                  <EmptySpace pref="31" max="32767" attributes="0"/>
+                  <EmptySpace max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -495,7 +495,7 @@
               <SubComponents>
                 <Component class="com.sge.base.controles.JSearch" name="schMaquina">
                   <AuxValues>
-                    <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="schMaquina.addSearchListener(new SearchListener() {&#xa;    @Override&#xa;    public void Search(){&#xa;        schMaquinaSearch();&#xa;    }&#xa;    @Override&#xa;    public void Clear(){&#xa;    }&#xa;});"/>
+                    <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="schMaquina.addSearchListener(new SearchListener() {&#xa;    @Override&#xa;    public void Search(){&#xa;        schMaquinaSearch();&#xa;    }&#xa;    @Override&#xa;    public void Clear(){&#xa;        schMaquinaClear();&#xa;    }&#xa;});"/>
                   </AuxValues>
                 </Component>
                 <Component class="javax.swing.JCheckBox" name="chkServicioImpresion">
@@ -508,7 +508,7 @@
                 </Component>
                 <Component class="com.sge.base.controles.JSearch" name="schMaterial">
                   <AuxValues>
-                    <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="schMaterial.addSearchListener(new SearchListener() {&#xa;    @Override&#xa;    public void Search(){&#xa;        schMaterialSearch();&#xa;    }&#xa;    @Override&#xa;    public void Clear(){&#xa;    }&#xa;});"/>
+                    <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="schMaterial.addSearchListener(new SearchListener() {&#xa;    @Override&#xa;    public void Search(){&#xa;        schMaterialSearch();&#xa;    }&#xa;    @Override&#xa;    public void Clear(){&#xa;        schMaterialClear();&#xa;    }&#xa;});"/>
                   </AuxValues>
                 </Component>
                 <Component class="javax.swing.JCheckBox" name="chkMaterial">
@@ -700,6 +700,110 @@
                 </Container>
               </SubComponents>
             </Container>
+            <Container class="javax.swing.JPanel" name="tabInformacionAdicional">
+              <Properties>
+                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="ff" green="ff" id="white" palette="1" red="ff" type="palette"/>
+                </Property>
+                <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                  <Border info="org.netbeans.modules.form.compat2.border.EtchedBorderInfo">
+                    <EtchetBorder/>
+                  </Border>
+                </Property>
+              </Properties>
+              <Constraints>
+                <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
+                  <JTabbedPaneConstraints tabName="INFORMACION ADICIONAL">
+                    <Property name="tabTitle" type="java.lang.String" value="INFORMACION ADICIONAL"/>
+                  </JTabbedPaneConstraints>
+                </Constraint>
+              </Constraints>
+
+              <Layout>
+                <DimensionLayout dim="0">
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace min="-2" pref="21" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="lblListaPrecioProducto" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="lblListaPrecioServicio" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="lblListaPrecioMaquina" alignment="0" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace min="-2" pref="58" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="schListaPrecioProducto" alignment="0" min="-2" pref="255" max="-2" attributes="0"/>
+                              <Component id="schListaPrecioServicio" alignment="0" min="-2" pref="255" max="-2" attributes="0"/>
+                              <Component id="schListaPrecioMaquina" alignment="0" min="-2" pref="255" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace pref="127" max="32767" attributes="0"/>
+                      </Group>
+                  </Group>
+                </DimensionLayout>
+                <DimensionLayout dim="1">
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="lblListaPrecioProducto" alignment="0" min="-2" pref="27" max="-2" attributes="0"/>
+                              <Component id="schListaPrecioProducto" alignment="0" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="lblListaPrecioServicio" alignment="0" min="-2" pref="27" max="-2" attributes="0"/>
+                              <Component id="schListaPrecioServicio" alignment="0" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="lblListaPrecioMaquina" alignment="0" min="-2" pref="27" max="-2" attributes="0"/>
+                              <Component id="schListaPrecioMaquina" alignment="0" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace pref="262" max="32767" attributes="0"/>
+                      </Group>
+                  </Group>
+                </DimensionLayout>
+              </Layout>
+              <SubComponents>
+                <Component class="javax.swing.JLabel" name="lblListaPrecioProducto">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="L.P.PRODUCTO"/>
+                  </Properties>
+                </Component>
+                <Component class="com.sge.base.controles.JSearch" name="schListaPrecioProducto">
+                  <Properties>
+                    <Property name="enabled" type="boolean" value="false"/>
+                  </Properties>
+                  <AuxValues>
+                    <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="schListaPrecioProducto.addSearchListener(new SearchListener() {&#xa;    @Override&#xa;    public void Search(){&#xa;    }&#xa;    @Override&#xa;    public void Clear(){&#xa;    }&#xa;});"/>
+                  </AuxValues>
+                </Component>
+                <Component class="com.sge.base.controles.JSearch" name="schListaPrecioServicio">
+                  <Properties>
+                    <Property name="enabled" type="boolean" value="false"/>
+                  </Properties>
+                  <AuxValues>
+                    <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="schListaPrecioServicio.addSearchListener(new SearchListener() {&#xa;    @Override&#xa;    public void Search(){&#xa;    }&#xa;    @Override&#xa;    public void Clear(){&#xa;    }&#xa;});"/>
+                  </AuxValues>
+                </Component>
+                <Component class="javax.swing.JLabel" name="lblListaPrecioServicio">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="L.P.SERVICIO"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JLabel" name="lblListaPrecioMaquina">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="L.P.MAQUINA"/>
+                  </Properties>
+                </Component>
+                <Component class="com.sge.base.controles.JSearch" name="schListaPrecioMaquina">
+                  <Properties>
+                    <Property name="enabled" type="boolean" value="false"/>
+                  </Properties>
+                  <AuxValues>
+                    <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="schListaPrecioMaquina.addSearchListener(new SearchListener() {&#xa;    @Override&#xa;    public void Search(){&#xa;    }&#xa;    @Override&#xa;    public void Clear(){&#xa;    }&#xa;});"/>
+                  </AuxValues>
+                </Component>
+              </SubComponents>
+            </Container>
           </SubComponents>
         </Container>
         <Component class="javax.swing.JButton" name="btnNuevoItem">
@@ -745,7 +849,7 @@
         </Component>
         <Component class="com.sge.base.controles.JSearch" name="schCliente">
           <AuxValues>
-            <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="schCliente.addSearchListener(new SearchListener() {&#xa;    @Override&#xa;    public void Search(){&#xa;        schClienteSearch();&#xa;    }&#xa;    @Override&#xa;    public void Clear(){&#xa;    }&#xa;});"/>
+            <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="schCliente.addSearchListener(new SearchListener() {&#xa;    @Override&#xa;    public void Search(){&#xa;        schClienteSearch();&#xa;    }&#xa;    @Override&#xa;    public void Clear(){&#xa;        schClienteClear();&#xa;    }&#xa;});"/>
           </AuxValues>
         </Component>
         <Component class="javax.swing.JLabel" name="lblVendedor">

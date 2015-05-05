@@ -45,7 +45,7 @@ public class regSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
         initComponents();
         Init(id);
     }
-    
+
     public regSolicitudCotizacion(ValorDefinido valorDefinido) {
         initComponents();
         OcultarControl(tpnlItems);
@@ -62,6 +62,15 @@ public class regSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
             Cliente seleccionado = ((lisCliente) e.getSource()).getSeleccionado();
             if (!(seleccionado == null)) {
                 schCliente.asingValues(seleccionado.getIdCliente(), seleccionado.getRazonSocial());
+                schListaPrecioProducto.asingValues(seleccionado.getIdListaPrecioProducto(), seleccionado.getNombreListaPrecioProducto());
+                schListaPrecioServicio.asingValues(seleccionado.getIdListaPrecioServicio(), seleccionado.getNombreListaPrecioServicio());
+                schListaPrecioMaquina.asingValues(seleccionado.getIdListaPrecioMaquina(), seleccionado.getNombreListaPrecioMaquina());
+                getEntidad().setIdListaPrecioProducto(seleccionado.getIdListaPrecioProducto());
+                getEntidad().setNombreListaPrecioProducto(seleccionado.getNombreListaPrecioProducto());
+                getEntidad().setIdListaPrecioServicio(seleccionado.getIdListaPrecioServicio());
+                getEntidad().setNombreListaPrecioServicio(seleccionado.getNombreListaPrecioServicio());
+                getEntidad().setIdListaPrecioMaquina(seleccionado.getIdListaPrecioMaquina());
+                getEntidad().setNombreListaPrecioMaquina(seleccionado.getNombreListaPrecioMaquina());
             }
         }
     };
@@ -97,7 +106,7 @@ public class regSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
             }
         }
     };
-    
+
     Action sele_form = new AbstractAction() {
         @Override
         public void actionPerformed(ActionEvent evt) {
@@ -114,6 +123,8 @@ public class regSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
             Maquina seleccionado = ((lisMaquina) evt.getSource()).getSeleccionado();
             if (!(seleccionado == null)) {
                 schMaquina.asingValues(seleccionado.getIdMaquina(), seleccionado.getDescripcion());
+                item.setAltoMaximoPliegoMaquina(seleccionado.getAltoMaximoPliego());
+                item.setLargoMaximoPliegoMaquina(seleccionado.getLargoMaximoPliego());
             }
         }
     };
@@ -134,6 +145,8 @@ public class regSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
             Producto seleccionado = ((lisProducto) e.getSource()).getSeleccionado();
             if (!(seleccionado == null)) {
                 schMaterial.asingValues(seleccionado.getIdProducto(), seleccionado.getDescripcion());
+                item.setAltoMaterial(seleccionado.getAlto());
+                item.setLargoMaterial(seleccionado.getLargo());
             }
         }
     };
@@ -169,10 +182,13 @@ public class regSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
         getEntidad().setLineaProduccion(cboLineaProduccion.getSelectedItem().toString());
         getEntidad().setItems(getItems());
     }
-    
+
     @Override
     public void AsignarControles() {
         schCliente.asingValues(getEntidad().getIdCliente(), getEntidad().getRazonSocialCliente());
+        schListaPrecioProducto.asingValues(getEntidad().getIdListaPrecioProducto(), getEntidad().getNombreListaPrecioProducto());
+        schListaPrecioServicio.asingValues(getEntidad().getIdListaPrecioServicio(), getEntidad().getNombreListaPrecioServicio());
+        schListaPrecioMaquina.asingValues(getEntidad().getIdListaPrecioMaquina(), getEntidad().getNombreListaPrecioMaquina());
         schNumeracion.asingValues(getEntidad().getIdNumeracion(), getEntidad().getDescripcionNumeracion());
         txtNumero.setText(getEntidad().getNumero());
         txtGrupo.setText(getEntidad().getGrupo());
@@ -193,7 +209,7 @@ public class regSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
         OcultarControl(btnNuevoItem);
         OcultarControl(btnEliminarItem);
     }
-    
+
     public class swObtenerValoresDefinidos extends SwingWorker<Object, Object> {
 
         @Override
@@ -434,6 +450,13 @@ public class regSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
         lblAcabados = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
         txtAcabados = new javax.swing.JTextArea();
+        tabInformacionAdicional = new javax.swing.JPanel();
+        lblListaPrecioProducto = new javax.swing.JLabel();
+        schListaPrecioProducto = new com.sge.base.controles.JSearch();
+        schListaPrecioServicio = new com.sge.base.controles.JSearch();
+        lblListaPrecioServicio = new javax.swing.JLabel();
+        lblListaPrecioMaquina = new javax.swing.JLabel();
+        schListaPrecioMaquina = new com.sge.base.controles.JSearch();
         btnNuevoItem = new javax.swing.JButton();
         btnEliminarItem = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
@@ -513,6 +536,7 @@ public class regSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
             }
             @Override
             public void Clear(){
+                schMaquinaClear();
             }
         });
 
@@ -530,6 +554,7 @@ public class regSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
             }
             @Override
             public void Clear(){
+                schMaterialClear();
             }
         });
 
@@ -773,6 +798,82 @@ public class regSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
 
         tpnlItems.addTab("ITEM", pnlItem);
 
+        tabInformacionAdicional.setBackground(java.awt.Color.white);
+        tabInformacionAdicional.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
+        lblListaPrecioProducto.setText("L.P.PRODUCTO");
+
+        schListaPrecioProducto.addSearchListener(new SearchListener() {
+            @Override
+            public void Search(){
+            }
+            @Override
+            public void Clear(){
+            }
+        });
+        schListaPrecioProducto.setEnabled(false);
+
+        schListaPrecioServicio.addSearchListener(new SearchListener() {
+            @Override
+            public void Search(){
+            }
+            @Override
+            public void Clear(){
+            }
+        });
+        schListaPrecioServicio.setEnabled(false);
+
+        lblListaPrecioServicio.setText("L.P.SERVICIO");
+
+        lblListaPrecioMaquina.setText("L.P.MAQUINA");
+
+        schListaPrecioMaquina.addSearchListener(new SearchListener() {
+            @Override
+            public void Search(){
+            }
+            @Override
+            public void Clear(){
+            }
+        });
+        schListaPrecioMaquina.setEnabled(false);
+
+        javax.swing.GroupLayout tabInformacionAdicionalLayout = new javax.swing.GroupLayout(tabInformacionAdicional);
+        tabInformacionAdicional.setLayout(tabInformacionAdicionalLayout);
+        tabInformacionAdicionalLayout.setHorizontalGroup(
+            tabInformacionAdicionalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(tabInformacionAdicionalLayout.createSequentialGroup()
+                .addGap(21, 21, 21)
+                .addGroup(tabInformacionAdicionalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblListaPrecioProducto)
+                    .addComponent(lblListaPrecioServicio)
+                    .addComponent(lblListaPrecioMaquina))
+                .addGap(58, 58, 58)
+                .addGroup(tabInformacionAdicionalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(schListaPrecioProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(schListaPrecioServicio, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(schListaPrecioMaquina, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(127, Short.MAX_VALUE))
+        );
+        tabInformacionAdicionalLayout.setVerticalGroup(
+            tabInformacionAdicionalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(tabInformacionAdicionalLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(tabInformacionAdicionalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblListaPrecioProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(schListaPrecioProducto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(tabInformacionAdicionalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblListaPrecioServicio, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(schListaPrecioServicio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(tabInformacionAdicionalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblListaPrecioMaquina, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(schListaPrecioMaquina, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(262, Short.MAX_VALUE))
+        );
+
+        tpnlItems.addTab("INFORMACION ADICIONAL", tabInformacionAdicional);
+
         btnNuevoItem.setText("NUEVO");
         btnNuevoItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -805,6 +906,7 @@ public class regSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
             }
             @Override
             public void Clear(){
+                schClienteClear();
             }
         });
 
@@ -930,7 +1032,7 @@ public class regSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
                                 .addComponent(btnEliminarItem, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(tpnlItems)
+                            .addComponent(tpnlItems, javax.swing.GroupLayout.DEFAULT_SIZE, 579, Short.MAX_VALUE)
                             .addGroup(frameLayout.createSequentialGroup()
                                 .addGap(0, 0, Short.MAX_VALUE)
                                 .addComponent(btnAceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -984,7 +1086,7 @@ public class regSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
                 .addGap(29, 29, 29)
                 .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(tpnlItems, javax.swing.GroupLayout.PREFERRED_SIZE, 414, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 415, Short.MAX_VALUE))
+                    .addComponent(jScrollPane2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -993,7 +1095,7 @@ public class regSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
                     .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(btnCancelar)
                         .addComponent(btnAceptar)))
-                .addContainerGap(31, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -1012,6 +1114,18 @@ public class regSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
 
     private void schClienteSearch() {
         VerModal(new lisCliente(1), sele_clie);
+    }
+
+    private void schClienteClear() {
+        schListaPrecioProducto.asingValues(0, null);
+        schListaPrecioServicio.asingValues(0, null);
+        schListaPrecioMaquina.asingValues(0, null);
+        getEntidad().setIdListaPrecioProducto(0);
+        getEntidad().setNombreListaPrecioProducto(null);
+        getEntidad().setIdListaPrecioServicio(0);
+        getEntidad().setNombreListaPrecioServicio(null);
+        getEntidad().setIdListaPrecioMaquina(0);
+        getEntidad().setNombreListaPrecioMaquina(null);
     }
 
     private void schVendedorSearch() {
@@ -1035,6 +1149,11 @@ public class regSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
         VerModal(new lisMaquina(1), sele_maqu);
     }
 
+    private void schMaquinaClear() {
+        this.item.setAltoMaximoPliegoMaquina(0);
+        this.item.setLargoMaximoPliegoMaquina(0);
+    }
+
     private void schServicioImpresionSearch() {
         String filtro = "WHERE Servicio.servicioImpresion = TRUE";
         VerModal(new lisServicio(1, filtro), sele_serv);
@@ -1042,6 +1161,11 @@ public class regSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
 
     private void schMaterialSearch() {
         VerModal(new lisProducto(1), sele_mate);
+    }
+
+    private void schMaterialClear() {
+        this.item.setAltoMaterial(0);
+        this.item.setLargoMaterial(0);
     }
 
     public void Aceptar() {
@@ -1057,7 +1181,7 @@ public class regSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
     public void Cancelar() {
         Cerrar();
     }
-    
+
     private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
         // TODO add your handling code here:
         Aceptar();
@@ -1178,6 +1302,9 @@ public class regSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
     private javax.swing.JLabel lblLargoMedidaAbierta;
     private javax.swing.JLabel lblLargoMedidaCerrada;
     private javax.swing.JLabel lblLineaProduccion;
+    private javax.swing.JLabel lblListaPrecioMaquina;
+    private javax.swing.JLabel lblListaPrecioProducto;
+    private javax.swing.JLabel lblListaPrecioServicio;
     private javax.swing.JLabel lblMaquina;
     private javax.swing.JLabel lblMoneda;
     private javax.swing.JLabel lblNombreItem;
@@ -1191,12 +1318,16 @@ public class regSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
     private javax.swing.JPanel pnlTitulo;
     private com.sge.base.controles.JSearch schCliente;
     private com.sge.base.controles.JSearch schFormaPago;
+    private com.sge.base.controles.JSearch schListaPrecioMaquina;
+    private com.sge.base.controles.JSearch schListaPrecioProducto;
+    private com.sge.base.controles.JSearch schListaPrecioServicio;
     private com.sge.base.controles.JSearch schMaquina;
     private com.sge.base.controles.JSearch schMaterial;
     private com.sge.base.controles.JSearch schMoneda;
     private com.sge.base.controles.JSearch schNumeracion;
     private com.sge.base.controles.JSearch schServicioImpresion;
     private com.sge.base.controles.JSearch schVendedor;
+    private javax.swing.JPanel tabInformacionAdicional;
     private javax.swing.JTabbedPane tpnlItems;
     private javax.swing.JTextArea txtAcabados;
     private javax.swing.JTextField txtAltoMedidaAbierta;
