@@ -145,6 +145,8 @@ public class regProveedor extends frameBase<Proveedor> {
         pnlTitulo = new javax.swing.JPanel();
         lblTitulo = new javax.swing.JLabel();
 
+        setClosable(true);
+
         frame.setBackground(java.awt.Color.white);
         frame.setBorder(null);
 
