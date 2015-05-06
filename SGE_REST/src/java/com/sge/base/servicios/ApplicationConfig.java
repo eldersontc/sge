@@ -48,6 +48,7 @@ public class ApplicationConfig extends Application {
         resources.add(com.sge.modulos.ventas.servicios.ListaPrecioProductoSRV.class);
         resources.add(com.sge.modulos.ventas.servicios.ListaPrecioServicioSRV.class);
         resources.add(com.sge.modulos.ventas.servicios.MaquinaSRV.class);
+        resources.add(com.sge.modulos.ventas.servicios.MetodoImpresionSRV.class);
         resources.add(com.sge.modulos.ventas.servicios.PlantillaSolicitudCotizacionSRV.class);
         resources.add(com.sge.modulos.ventas.servicios.ServicioSRV.class);
         resources.add(com.sge.modulos.ventas.servicios.SolicitudCotizacionSRV.class);
