@@ -20,12 +20,16 @@ import com.sge.modulos.ventas.clases.Maquina;
 import com.sge.modulos.ventas.clases.Servicio;
 import com.sge.modulos.ventas.clases.Cotizacion;
 import com.sge.modulos.ventas.cliente.cliVentas;
+import java.awt.Color;
+import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
+import java.awt.image.BufferedImage;
 import java.util.Date;
 import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.DefaultListModel;
+import javax.swing.ImageIcon;
 import javax.swing.SwingWorker;
 
 /**
@@ -40,12 +44,12 @@ public class regCotizacion extends frameBase<Cotizacion> {
     public regCotizacion() {
         initComponents();
     }
-    
+
     public regCotizacion(int id) {
         initComponents();
         Init(id);
     }
-    
+
     public regCotizacion(ValorDefinido valorDefinido) {
         initComponents();
         OcultarControl(tpnlItems);
@@ -96,7 +100,7 @@ public class regCotizacion extends frameBase<Cotizacion> {
             }
         }
     };
-    
+
     Action sele_vend = new AbstractAction() {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -116,7 +120,7 @@ public class regCotizacion extends frameBase<Cotizacion> {
             }
         }
     };
-    
+
     Action sele_form = new AbstractAction() {
         @Override
         public void actionPerformed(ActionEvent evt) {
@@ -189,7 +193,7 @@ public class regCotizacion extends frameBase<Cotizacion> {
         getEntidad().setLineaProduccion(cboLineaProduccion.getSelectedItem().toString());
         getEntidad().setItems(getItems());
     }
-    
+
     @Override
     public void AsignarControles() {
         schCliente.asingValues(getEntidad().getIdCliente(), getEntidad().getRazonSocialCliente());
@@ -216,7 +220,7 @@ public class regCotizacion extends frameBase<Cotizacion> {
         OcultarControl(btnNuevoItem);
         OcultarControl(btnEliminarItem);
     }
-    
+
     public class swObtenerValoresDefinidos extends SwingWorker<Object, Object> {
 
         @Override
@@ -382,7 +386,7 @@ public class regCotizacion extends frameBase<Cotizacion> {
         chkMaterial.setSelected(this.item.isMaterial());
         schMaterial.setVisible(this.item.isMaterial());
         schMaterial.asingValues(this.item.getIdMaterial(), this.item.getNombreMaterial());
-        
+
     }
 
     private void AsignarValoresItem() {
@@ -413,7 +417,7 @@ public class regCotizacion extends frameBase<Cotizacion> {
         this.item.setMaterial(chkMaterial.isSelected());
         this.item.setIdMaterial(schMaterial.getId());
         this.item.setNombreMaterial(schMaterial.getText());
-        
+
     }
 
     private void schClienteSearch() {
@@ -431,11 +435,11 @@ public class regCotizacion extends frameBase<Cotizacion> {
         getEntidad().setIdListaPrecioMaquina(0);
         getEntidad().setNombreListaPrecioMaquina(null);
     }
-    
+
     private void schCotizadorSearch() {
         VerModal(new lisEmpleado(1), sele_coti);
     }
-    
+
     private void schVendedorSearch() {
         VerModal(new lisEmpleado(1), sele_vend);
     }
@@ -479,7 +483,46 @@ public class regCotizacion extends frameBase<Cotizacion> {
     public void Cancelar() {
         Cerrar();
     }
-    
+
+    public void GenerarGraficoPrecorte() throws Exception {
+
+        int altGraf = (int) this.item.getAltoMaterial() * 100;
+        int larGraf = (int) this.item.getLargoMaterial() * 100;
+        int altPiez = (int) this.item.getAltoFormatoImpresion() * 100;
+        int larPiez = (int) this.item.getLargoFormatoImpresion() * 100;
+
+        if (altGraf <= 0) {
+            throw new Exception("ALTO DE MATERIAL NO PUEDE SER 0.");
+        }
+        if (larGraf <= 0) {
+            throw new Exception("LARGO DE MATERIAL NO PUEDE SER 0.");
+        }
+        if (altPiez <= 0) {
+            throw new Exception("ALTO DE PIEZA NO PUEDE SER 0.");
+        }
+        if (larPiez <= 0) {
+            throw new Exception("LARGO DE PIEZA NO PUEDE SER 0.");
+        }
+
+        BufferedImage imagen = new BufferedImage(larGraf, altGraf, BufferedImage.TYPE_INT_RGB);
+        Graphics2D grafico = imagen.createGraphics();
+
+        grafico.setColor(Color.white);
+        grafico.fillRect(0, 0, larGraf, altGraf);
+
+        grafico.setColor(Color.black);
+        grafico.drawRect(0, 0, larGraf - 1, altGraf - 1);
+
+        for (int y = 0; y <= altGraf - altPiez; y += altPiez) {
+            for (int x = 0; x <= larGraf - larPiez; x += larPiez) {
+                grafico.setColor(Color.black);
+                grafico.drawRect(x, y, larPiez, altPiez);
+            }
+        }
+
+        lblGraficoPrecorte.setIcon(new ImageIcon(imagen));
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -533,7 +576,6 @@ public class regCotizacion extends frameBase<Cotizacion> {
         txtObservacion = new javax.swing.JTextArea();
         lblObservacion = new javax.swing.JLabel();
         tabAcabados = new javax.swing.JPanel();
-        tabGraficoPrecorte = new javax.swing.JPanel();
         tabGraficoImpresion = new javax.swing.JPanel();
         tabInformacionAdicional = new javax.swing.JPanel();
         lblListaPrecioProducto = new javax.swing.JLabel();
@@ -542,6 +584,14 @@ public class regCotizacion extends frameBase<Cotizacion> {
         lblListaPrecioServicio = new javax.swing.JLabel();
         lblListaPrecioMaquina = new javax.swing.JLabel();
         schListaPrecioMaquina = new com.sge.base.controles.JSearch();
+        tabGraficoPrecorte = new javax.swing.JPanel();
+        lblGraficoPrecorte = new javax.swing.JLabel();
+        btnGenerarGraficoPrecorte = new javax.swing.JButton();
+        btnGirarGraficoPrecorte = new javax.swing.JButton();
+        lblAltoFormatoImpresion = new javax.swing.JLabel();
+        txtAltoFormatoImpresion = new javax.swing.JTextField();
+        lblLargoFormatoImpresion = new javax.swing.JLabel();
+        txtLargoFormatoImpresion = new javax.swing.JTextField();
         btnNuevoItem = new javax.swing.JButton();
         btnEliminarItem = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
@@ -860,22 +910,6 @@ public class regCotizacion extends frameBase<Cotizacion> {
 
         tpnlItems.addTab("ACABADOS", tabAcabados);
 
-        tabGraficoPrecorte.setBackground(java.awt.Color.white);
-        tabGraficoPrecorte.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-
-        javax.swing.GroupLayout tabGraficoPrecorteLayout = new javax.swing.GroupLayout(tabGraficoPrecorte);
-        tabGraficoPrecorte.setLayout(tabGraficoPrecorteLayout);
-        tabGraficoPrecorteLayout.setHorizontalGroup(
-            tabGraficoPrecorteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 582, Short.MAX_VALUE)
-        );
-        tabGraficoPrecorteLayout.setVerticalGroup(
-            tabGraficoPrecorteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 373, Short.MAX_VALUE)
-        );
-
-        tpnlItems.addTab("GRAFICO DE PRECORTE", tabGraficoPrecorte);
-
         tabGraficoImpresion.setBackground(java.awt.Color.white);
         tabGraficoImpresion.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
@@ -967,6 +1001,75 @@ public class regCotizacion extends frameBase<Cotizacion> {
         );
 
         tpnlItems.addTab("INFORMACION ADICIONAL", tabInformacionAdicional);
+
+        tabGraficoPrecorte.setBackground(java.awt.Color.white);
+        tabGraficoPrecorte.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
+        lblGraficoPrecorte.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblGraficoPrecorte.setText("<NINGUNO>");
+
+        btnGenerarGraficoPrecorte.setText("GENERAR GRAFICO");
+        btnGenerarGraficoPrecorte.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGenerarGraficoPrecorteActionPerformed(evt);
+            }
+        });
+
+        btnGirarGraficoPrecorte.setText("GIRAR GRAFICO");
+
+        lblAltoFormatoImpresion.setText("ALTO");
+
+        txtAltoFormatoImpresion.setText("0");
+
+        lblLargoFormatoImpresion.setText("LARGO");
+
+        txtLargoFormatoImpresion.setText("0");
+
+        javax.swing.GroupLayout tabGraficoPrecorteLayout = new javax.swing.GroupLayout(tabGraficoPrecorte);
+        tabGraficoPrecorte.setLayout(tabGraficoPrecorteLayout);
+        tabGraficoPrecorteLayout.setHorizontalGroup(
+            tabGraficoPrecorteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(tabGraficoPrecorteLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(tabGraficoPrecorteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(tabGraficoPrecorteLayout.createSequentialGroup()
+                        .addComponent(lblGraficoPrecorte, javax.swing.GroupLayout.PREFERRED_SIZE, 371, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 48, Short.MAX_VALUE)
+                        .addGroup(tabGraficoPrecorteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(btnGenerarGraficoPrecorte, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnGirarGraficoPrecorte, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(tabGraficoPrecorteLayout.createSequentialGroup()
+                        .addComponent(lblAltoFormatoImpresion, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(21, 21, 21)
+                        .addComponent(txtAltoFormatoImpresion, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblLargoFormatoImpresion, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(21, 21, 21)
+                        .addComponent(txtLargoFormatoImpresion, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+        tabGraficoPrecorteLayout.setVerticalGroup(
+            tabGraficoPrecorteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(tabGraficoPrecorteLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(tabGraficoPrecorteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(tabGraficoPrecorteLayout.createSequentialGroup()
+                        .addComponent(btnGenerarGraficoPrecorte)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnGirarGraficoPrecorte))
+                    .addComponent(lblGraficoPrecorte, javax.swing.GroupLayout.PREFERRED_SIZE, 266, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(tabGraficoPrecorteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblAltoFormatoImpresion, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtAltoFormatoImpresion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(tabGraficoPrecorteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(lblLargoFormatoImpresion, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtLargoFormatoImpresion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(60, Short.MAX_VALUE))
+        );
+
+        tpnlItems.addTab("GRAFICO DE PRECORTE", tabGraficoPrecorte);
 
         btnNuevoItem.setText("NUEVO");
         btnNuevoItem.addActionListener(new java.awt.event.ActionListener() {
@@ -1185,7 +1288,7 @@ public class regCotizacion extends frameBase<Cotizacion> {
                     .addComponent(btnEliminarItem)
                     .addComponent(btnCancelar)
                     .addComponent(btnAceptar))
-                .addContainerGap(25, Short.MAX_VALUE))
+                .addContainerGap(28, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -1249,11 +1352,27 @@ public class regCotizacion extends frameBase<Cotizacion> {
         }
     }//GEN-LAST:event_lisItemsValueChanged
 
+    private void btnGenerarGraficoPrecorteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarGraficoPrecorteActionPerformed
+        // TODO add your handling code here:
+//        try {
+//            this.item.setAltoFormatoImpresion(Double.parseDouble(txtAltoFormatoImpresion.getText()));
+//            this.item.setLargoFormatoImpresion(Double.parseDouble(txtLargoFormatoImpresion.getText()));
+//            GenerarGraficoPrecorte();
+//        } catch (Exception e) {
+//            ControlarExcepcion(e);
+//        }
+        genGraficoPrecorte genGraficoPrecorte = new genGraficoPrecorte(this.item);
+        this.getDesktopPane().add(genGraficoPrecorte);
+        genGraficoPrecorte.setVisible(true);
+    }//GEN-LAST:event_btnGenerarGraficoPrecorteActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAceptar;
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnEliminarItem;
+    private javax.swing.JButton btnGenerarGraficoPrecorte;
+    private javax.swing.JButton btnGirarGraficoPrecorte;
     private javax.swing.JButton btnGuardarItem;
     private javax.swing.JButton btnNuevoItem;
     private javax.swing.JComboBox cboLineaProduccion;
@@ -1269,6 +1388,7 @@ public class regCotizacion extends frameBase<Cotizacion> {
     private javax.swing.JPanel frame;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JLabel lblAltoFormatoImpresion;
     private javax.swing.JLabel lblAltoMedidaAbierta;
     private javax.swing.JLabel lblAltoMedidaCerrada;
     private javax.swing.JLabel lblCantidad;
@@ -1276,6 +1396,8 @@ public class regCotizacion extends frameBase<Cotizacion> {
     private javax.swing.JLabel lblCotizador;
     private javax.swing.JLabel lblDescripcion;
     private javax.swing.JLabel lblFormaPago;
+    private javax.swing.JLabel lblGraficoPrecorte;
+    private javax.swing.JLabel lblLargoFormatoImpresion;
     private javax.swing.JLabel lblLargoMedidaAbierta;
     private javax.swing.JLabel lblLargoMedidaCerrada;
     private javax.swing.JLabel lblLineaProduccion;
@@ -1311,12 +1433,14 @@ public class regCotizacion extends frameBase<Cotizacion> {
     private javax.swing.JPanel tabGraficoPrecorte;
     private javax.swing.JPanel tabInformacionAdicional;
     private javax.swing.JTabbedPane tpnlItems;
+    private javax.swing.JTextField txtAltoFormatoImpresion;
     private javax.swing.JTextField txtAltoMedidaAbierta;
     private javax.swing.JTextField txtAltoMedidaCerrada;
     private javax.swing.JTextField txtCantidad;
     private javax.swing.JTextField txtDescripcion;
     private javax.swing.JFormattedTextField txtFechaCreacion;
     private javax.swing.JTextField txtFondo;
+    private javax.swing.JTextField txtLargoFormatoImpresion;
     private javax.swing.JTextField txtLargoMedidaAbierta;
     private javax.swing.JTextField txtLargoMedidaCerrada;
     private javax.swing.JTextField txtNombreItem;

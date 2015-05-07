@@ -36,8 +36,8 @@ public class ItemCotizacion {
     private double tiraColor;
     private double retiraColor;
     private double dFondo;
-    private int largoFormatoImpresion;
-    private int altoFormatoImpresion;
+    private double largoFormatoImpresion;
+    private double altoFormatoImpresion;
     private double separacionX;
     private double separacionY;
     private boolean graficoPrecorteGirado;
@@ -305,19 +305,19 @@ public class ItemCotizacion {
         this.dFondo = dFondo;
     }
 
-    public int getLargoFormatoImpresion() {
+    public double getLargoFormatoImpresion() {
         return largoFormatoImpresion;
     }
 
-    public void setLargoFormatoImpresion(int largoFormatoImpresion) {
+    public void setLargoFormatoImpresion(double largoFormatoImpresion) {
         this.largoFormatoImpresion = largoFormatoImpresion;
     }
 
-    public int getAltoFormatoImpresion() {
+    public double getAltoFormatoImpresion() {
         return altoFormatoImpresion;
     }
 
-    public void setAltoFormatoImpresion(int altoFormatoImpresion) {
+    public void setAltoFormatoImpresion(double altoFormatoImpresion) {
         this.altoFormatoImpresion = altoFormatoImpresion;
     }
 
