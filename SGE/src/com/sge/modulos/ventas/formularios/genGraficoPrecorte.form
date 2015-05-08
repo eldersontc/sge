@@ -50,26 +50,35 @@
               <Component id="pnlTitulo" alignment="1" max="32767" attributes="0"/>
               <Group type="102" attributes="0">
                   <EmptySpace min="-2" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" attributes="0">
-                          <Component id="jScrollPane1" max="32767" attributes="0"/>
-                          <EmptySpace type="unrelated" min="-2" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                              <Component id="btnGenerarGrafico" pref="47" max="32767" attributes="0"/>
-                              <Component id="btnGirarGrafico" max="32767" attributes="0"/>
+                  <Component id="jScrollPane1" max="32767" attributes="0"/>
+                  <EmptySpace type="unrelated" min="-2" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                      <Group type="102" alignment="0" attributes="0">
+                          <Component id="btnGenerarGrafico" min="-2" pref="78" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="btnGirarGrafico" max="32767" attributes="0"/>
+                      </Group>
+                      <Component id="txtMedidasMaterial" alignment="0" max="32767" attributes="0"/>
+                      <Group type="102" alignment="1" attributes="0">
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="lblLargoFormatoImpresion" max="32767" attributes="0"/>
+                                  <Component id="lblAltoFormatoImpresion" max="32767" attributes="0"/>
+                              </Group>
+                              <Component id="lblCantidadPiezas" alignment="0" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace min="21" pref="21" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="txtCantidadPiezas" min="-2" pref="68" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                                  <Component id="txtLargoFormatoImpresion" pref="68" max="32767" attributes="0"/>
+                                  <Component id="txtAltoFormatoImpresion" max="32767" attributes="0"/>
+                              </Group>
                           </Group>
                       </Group>
-                      <Group type="102" attributes="0">
-                          <Component id="lblAltoFormatoImpresion" min="-2" pref="104" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="21" max="-2" attributes="0"/>
-                          <Component id="txtAltoFormatoImpresion" min="-2" pref="77" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="lblLargoFormatoImpresion" min="-2" pref="104" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="21" max="-2" attributes="0"/>
-                          <Component id="txtLargoFormatoImpresion" min="-2" pref="77" max="-2" attributes="0"/>
-                      </Group>
+                      <Component id="btnAceptar" alignment="0" max="32767" attributes="0"/>
                   </Group>
-                  <EmptySpace min="-2" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -77,22 +86,35 @@
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
                   <Component id="pnlTitulo" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                  <EmptySpace type="unrelated" min="-2" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" attributes="0">
-                          <Component id="btnGenerarGrafico" min="-2" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="btnGenerarGrafico" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="btnGirarGrafico" alignment="0" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Component id="txtMedidasMaterial" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="txtAltoFormatoImpresion" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="lblAltoFormatoImpresion" alignment="3" min="-2" pref="29" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="txtLargoFormatoImpresion" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="lblLargoFormatoImpresion" alignment="3" min="-2" pref="29" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="txtCantidadPiezas" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="lblCantidadPiezas" alignment="3" min="-2" pref="29" max="-2" attributes="0"/>
+                          </Group>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="btnGirarGrafico" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace min="0" pref="438" max="32767" attributes="0"/>
+                          <Component id="btnAceptar" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace min="0" pref="338" max="32767" attributes="0"/>
                       </Group>
                       <Component id="jScrollPane1" max="32767" attributes="0"/>
-                  </Group>
-                  <EmptySpace type="separate" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="lblAltoFormatoImpresion" alignment="3" min="-2" pref="29" max="-2" attributes="0"/>
-                      <Component id="txtAltoFormatoImpresion" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="lblLargoFormatoImpresion" alignment="3" min="-2" pref="29" max="-2" attributes="0"/>
-                      <Component id="txtLargoFormatoImpresion" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
@@ -118,7 +140,7 @@
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="lblTitulo" min="-2" pref="318" max="-2" attributes="0"/>
-                      <EmptySpace pref="435" max="32767" attributes="0"/>
+                      <EmptySpace pref="558" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -161,6 +183,7 @@
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
               <Image iconType="3" name="/com/sge/base/imagenes/visible-16.png"/>
             </Property>
+            <Property name="text" type="java.lang.String" value="VER"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnGenerarGraficoActionPerformed"/>
@@ -171,6 +194,7 @@
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
               <Image iconType="3" name="/com/sge/base/imagenes/rotate-16.png"/>
             </Property>
+            <Property name="text" type="java.lang.String" value="GIRAR"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnGirarGraficoActionPerformed"/>
@@ -195,6 +219,30 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="0"/>
           </Properties>
+        </Component>
+        <Component class="javax.swing.JTextField" name="txtMedidasMaterial">
+          <Properties>
+            <Property name="editable" type="boolean" value="false"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="lblCantidadPiezas">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="N&#xb0; PIEZAS"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JTextField" name="txtCantidadPiezas">
+          <Properties>
+            <Property name="editable" type="boolean" value="false"/>
+            <Property name="text" type="java.lang.String" value="0"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JButton" name="btnAceptar">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="ACEPTAR"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnAceptarActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>

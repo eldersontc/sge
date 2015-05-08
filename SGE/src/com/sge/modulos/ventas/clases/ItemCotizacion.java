@@ -1,5 +1,7 @@
 package com.sge.modulos.ventas.clases;
 
+import java.awt.image.BufferedImage;
+
 /**
  *
  * @author elderson
@@ -40,6 +42,10 @@ public class ItemCotizacion {
     private double altoFormatoImpresion;
     private double separacionX;
     private double separacionY;
+    private String ubicacionGraficoPrecorte;
+    private String ubicacionGraficoImpresion;
+    private BufferedImage graficoPrecorte;
+    private BufferedImage graficoImpresion;
     private boolean graficoPrecorteGirado;
     private boolean graficoImpresionGirado;
     private int cantidadPiezasPrecorte;
@@ -335,6 +341,38 @@ public class ItemCotizacion {
 
     public void setSeparacionY(double separacionY) {
         this.separacionY = separacionY;
+    }
+
+    public String getUbicacionGraficoPrecorte() {
+        return ubicacionGraficoPrecorte;
+    }
+
+    public void setUbicacionGraficoPrecorte(String ubicacionGraficoPrecorte) {
+        this.ubicacionGraficoPrecorte = ubicacionGraficoPrecorte;
+    }
+
+    public String getUbicacionGraficoImpresion() {
+        return ubicacionGraficoImpresion;
+    }
+
+    public void setUbicacionGraficoImpresion(String ubicacionGraficoImpresion) {
+        this.ubicacionGraficoImpresion = ubicacionGraficoImpresion;
+    }
+
+    public BufferedImage getGraficoPrecorte() {
+        return graficoPrecorte;
+    }
+
+    public void setGraficoPrecorte(BufferedImage graficoPrecorte) {
+        this.graficoPrecorte = graficoPrecorte;
+    }
+
+    public BufferedImage getGraficoImpresion() {
+        return graficoImpresion;
+    }
+
+    public void setGraficoImpresion(BufferedImage graficoImpresion) {
+        this.graficoImpresion = graficoImpresion;
     }
 
     public boolean isGraficoPrecorteGirado() {
