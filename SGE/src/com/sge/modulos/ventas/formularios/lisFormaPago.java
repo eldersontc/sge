@@ -227,6 +227,7 @@ public class lisFormaPago extends frameBase<FormaPago> {
         btnRefrescar = new javax.swing.JButton();
 
         setClosable(true);
+        setToolTipText("");
 
         frame.setBackground(java.awt.Color.white);
         frame.setBorder(null);
@@ -286,8 +287,8 @@ public class lisFormaPago extends frameBase<FormaPago> {
             pnlTituloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlTituloLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(lblTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 406, Short.MAX_VALUE)
+                .addComponent(lblTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 318, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnNuevo)
                 .addContainerGap())
         );

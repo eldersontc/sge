@@ -3,15 +3,10 @@ package com.sge.modulos.ventas.formularios;
 import com.sge.base.formularios.frameBase;
 import com.sge.modulos.ventas.clases.Cotizacion;
 import com.sge.modulos.ventas.clases.ItemCotizacion;
-import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
-import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
 /**
@@ -28,113 +23,78 @@ public class genGraficoPrecorte extends frameBase<Cotizacion> {
         this.item = item;
     }
 
+    private int aGrafi = 0;
+    private int lGrafi = 0;
+    private int aPieza = 0;
+    private int lPieza = 0;
+    
     private ItemCotizacion item;
-
-    public BufferedImage scaleImage(BufferedImage img, int width, int height) {
-        int imgWidth = img.getWidth();
-        int imgHeight = img.getHeight();
-        if (imgWidth * height < imgHeight * width) {
-            width = imgWidth * height / imgHeight;
+    
+    public BufferedImage CambiarDimensiones(BufferedImage imagen, int largo, int alto) {
+        int largoImagen = imagen.getWidth();
+        int altoImagen = imagen.getHeight();
+        if (largoImagen * alto < altoImagen * largo) {
+            largo = largoImagen * alto / altoImagen;
         } else {
-            height = imgHeight * width / imgWidth;
+            alto = altoImagen * largo / largoImagen;
         }
-        BufferedImage newImage = new BufferedImage(width, height,
-                BufferedImage.TYPE_INT_RGB);
-        Graphics2D g = newImage.createGraphics();
+        BufferedImage nuevaImagen = new BufferedImage(largo, alto, BufferedImage.TYPE_INT_RGB);
+        Graphics2D grafico = nuevaImagen.createGraphics();
         try {
-            g.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
-                    RenderingHints.VALUE_INTERPOLATION_BICUBIC);
-            //g.setBackground(background);
-            g.clearRect(0, 0, width, height);
-            g.drawImage(img, 0, 0, width, height, null);
+            grafico.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
+            grafico.clearRect(0, 0, largo, alto);
+            grafico.drawImage(imagen, 0, 0, largo, alto, null);
         } finally {
-            g.dispose();
+            grafico.dispose();
         }
-        return newImage;
+        return nuevaImagen;
     }
 
-    public BufferedImage scale(BufferedImage sbi, int dWidth, int dHeight, double fWidth, double fHeight) {
-        BufferedImage dbi = null;
-        if (sbi != null) {
-            dbi = new BufferedImage(dWidth, dHeight, BufferedImage.TYPE_INT_RGB);
-            Graphics2D g = dbi.createGraphics();
-            AffineTransform at = AffineTransform.getScaleInstance(fWidth, fHeight);
-            g.drawRenderedImage(sbi, at);
+    public void GenerarGrafico() throws Exception {
+
+        if(this.item.isGraficoPrecorteGirado()){
+            aPieza = (int) (this.item.getLargoFormatoImpresion() * 10);
+            lPieza = (int) (this.item.getAltoFormatoImpresion() * 10);
+        } else {
+            aPieza = (int) (this.item.getAltoFormatoImpresion() * 10);
+            lPieza = (int) (this.item.getLargoFormatoImpresion() * 10);
         }
-        return dbi;
-    }
-
-    private static BufferedImage resizeImage(BufferedImage originalImage) {
-        BufferedImage resizedImage = new BufferedImage(500, 500, BufferedImage.TYPE_INT_RGB);
-        Graphics2D g = resizedImage.createGraphics();
-        g.drawImage(originalImage, 0, 0, 500, 500, null);
-        g.dispose();
-
-        return resizedImage;
-    }
-
-    private static BufferedImage resizeImageWithHint(BufferedImage originalImage) {
-
-        BufferedImage resizedImage = new BufferedImage(500, 500, BufferedImage.TYPE_INT_RGB);
-        Graphics2D g = resizedImage.createGraphics();
-        g.drawImage(originalImage, 0, 0, 500, 500, null);
-        g.dispose();
-        g.setComposite(AlphaComposite.Src);
-
-        g.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
-                RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-        g.setRenderingHint(RenderingHints.KEY_RENDERING,
-                RenderingHints.VALUE_RENDER_QUALITY);
-        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-                RenderingHints.VALUE_ANTIALIAS_ON);
-
-        return resizedImage;
-    }
-
-    public void GenerarGraficoPrecorte() throws Exception {
-
-        int altGraf = (int) (this.item.getAltoMaterial() * 10);
-        int larGraf = (int) (this.item.getLargoMaterial() * 10);
-        int altPiez = (int) (this.item.getAltoFormatoImpresion() * 10);
-        int larPiez = (int) (this.item.getLargoFormatoImpresion() * 10);
-
-        if (altGraf <= 0) {
+        
+        if (aGrafi <= 0) {
             throw new Exception("ALTO DE MATERIAL NO PUEDE SER 0.");
         }
-        if (larGraf <= 0) {
+        if (lGrafi <= 0) {
             throw new Exception("LARGO DE MATERIAL NO PUEDE SER 0.");
         }
-        if (altPiez <= 0) {
+        if (aPieza <= 0) {
             throw new Exception("ALTO DE PIEZA NO PUEDE SER 0.");
         }
-        if (larPiez <= 0) {
+        if (lPieza <= 0) {
             throw new Exception("LARGO DE PIEZA NO PUEDE SER 0.");
         }
 
-        BufferedImage imagen = new BufferedImage(larGraf, altGraf, BufferedImage.TYPE_INT_RGB);
+        BufferedImage imagen = new BufferedImage(lGrafi, aGrafi, BufferedImage.TYPE_INT_RGB);
         Graphics2D grafico = imagen.createGraphics();
 
-        grafico.setColor(Color.white);
-        grafico.fillRect(0, 0, larGraf, altGraf);
+        grafico.setColor(Color.WHITE);
+        grafico.fillRect(0, 0, lGrafi, aGrafi);
 
-        grafico.setColor(Color.black);
-        grafico.drawRect(0, 0, larGraf - 1, altGraf - 1);
+        grafico.setColor(Color.BLACK);
+        grafico.drawRect(0, 0, lGrafi - 1, aGrafi - 1);
 
-        for (int y = 0; y <= altGraf - altPiez; y += altPiez) {
-            for (int x = 0; x <= larGraf - larPiez; x += larPiez) {
-                grafico.setColor(Color.black);
-                grafico.drawRect(x, y, larPiez, altPiez);
+        for (int y = 0; y <= aGrafi - aPieza; y += aPieza) {
+            for (int x = 0; x <= lGrafi - lPieza; x += lPieza) {
+                grafico.setColor(Color.BLACK);
+                grafico.drawRect(x, y, lPieza, aPieza);
             }
         }
 
-        //lblGraficoPrecorte.setIcon(new ImageIcon(imagen));
-        lblGraficoPrecorte.setIcon(new ImageIcon(scaleImage(imagen, larGraf / 2, altGraf / 2)));
+        lblGraficoPrecorte.setIcon(new ImageIcon(CambiarDimensiones(imagen, lGrafi / 2, aGrafi / 2)));
+    }
 
-//        try {
-//            ImageIO.write(imagen, "jpg", new File("/home/elderson/grafico.jpg"));
-//        } catch (IOException ex) {
-//            //Logger.getLogger(JFrame02.class.getName()).log(Level.SEVERE, null, ex);
-//        }
+    public void GirarGrafico() throws Exception {
+        this.item.setGraficoPrecorteGirado(!this.item.isGraficoPrecorteGirado());
+        GenerarGrafico();
     }
 
     /**
@@ -146,17 +106,63 @@ public class genGraficoPrecorte extends frameBase<Cotizacion> {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        frame = new javax.swing.JPanel();
+        pnlTitulo = new javax.swing.JPanel();
+        lblTitulo = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        lblGraficoPrecorte = new javax.swing.JLabel();
+        btnGenerarGrafico = new javax.swing.JButton();
+        btnGirarGrafico = new javax.swing.JButton();
         lblAltoFormatoImpresion = new javax.swing.JLabel();
         txtAltoFormatoImpresion = new javax.swing.JTextField();
         lblLargoFormatoImpresion = new javax.swing.JLabel();
         txtLargoFormatoImpresion = new javax.swing.JTextField();
-        btnGirarGraficoPrecorte = new javax.swing.JButton();
-        btnGenerarGraficoPrecorte = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        lblGraficoPrecorte = new javax.swing.JLabel();
 
         setClosable(true);
         setMaximizable(true);
+        setToolTipText("");
+
+        frame.setBackground(java.awt.Color.white);
+        frame.setBorder(null);
+
+        pnlTitulo.setBackground(new java.awt.Color(67, 100, 130));
+        pnlTitulo.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
+        lblTitulo.setFont(new java.awt.Font("Ubuntu", 1, 18)); // NOI18N
+        lblTitulo.setForeground(java.awt.Color.white);
+        lblTitulo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sge/base/imagenes/details-large-view-16.png"))); // NOI18N
+        lblTitulo.setText("GRAFICO DE PRECORTE");
+
+        javax.swing.GroupLayout pnlTituloLayout = new javax.swing.GroupLayout(pnlTitulo);
+        pnlTitulo.setLayout(pnlTituloLayout);
+        pnlTituloLayout.setHorizontalGroup(
+            pnlTituloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlTituloLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 318, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(435, Short.MAX_VALUE))
+        );
+        pnlTituloLayout.setVerticalGroup(
+            pnlTituloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(lblTitulo, javax.swing.GroupLayout.DEFAULT_SIZE, 29, Short.MAX_VALUE)
+        );
+
+        lblGraficoPrecorte.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jScrollPane1.setViewportView(lblGraficoPrecorte);
+
+        btnGenerarGrafico.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sge/base/imagenes/visible-16.png"))); // NOI18N
+        btnGenerarGrafico.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGenerarGraficoActionPerformed(evt);
+            }
+        });
+
+        btnGirarGrafico.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sge/base/imagenes/rotate-16.png"))); // NOI18N
+        btnGirarGrafico.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGirarGraficoActionPerformed(evt);
+            }
+        });
 
         lblAltoFormatoImpresion.setText("ALTO");
 
@@ -166,54 +172,44 @@ public class genGraficoPrecorte extends frameBase<Cotizacion> {
 
         txtLargoFormatoImpresion.setText("0");
 
-        btnGirarGraficoPrecorte.setText("GIRAR GRAFICO");
-
-        btnGenerarGraficoPrecorte.setText("GENERAR GRAFICO");
-        btnGenerarGraficoPrecorte.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnGenerarGraficoPrecorteActionPerformed(evt);
-            }
-        });
-
-        lblGraficoPrecorte.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jScrollPane1.setViewportView(lblGraficoPrecorte);
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+        javax.swing.GroupLayout frameLayout = new javax.swing.GroupLayout(frame);
+        frame.setLayout(frameLayout);
+        frameLayout.setHorizontalGroup(
+            frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(pnlTitulo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(frameLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
+                .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(frameLayout.createSequentialGroup()
                         .addComponent(jScrollPane1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnGenerarGraficoPrecorte)
-                            .addComponent(btnGirarGraficoPrecorte, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap())
-                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(btnGenerarGrafico, javax.swing.GroupLayout.DEFAULT_SIZE, 47, Short.MAX_VALUE)
+                            .addComponent(btnGirarGrafico, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(frameLayout.createSequentialGroup()
                         .addComponent(lblAltoFormatoImpresion, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(21, 21, 21)
                         .addComponent(txtAltoFormatoImpresion, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(lblLargoFormatoImpresion, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(21, 21, 21)
-                        .addComponent(txtLargoFormatoImpresion, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 341, Short.MAX_VALUE))))
+                        .addComponent(txtLargoFormatoImpresion, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
         );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 500, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnGenerarGraficoPrecorte)
+        frameLayout.setVerticalGroup(
+            frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(frameLayout.createSequentialGroup()
+                .addComponent(pnlTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(frameLayout.createSequentialGroup()
+                        .addComponent(btnGenerarGrafico)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnGirarGraficoPrecorte)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(btnGirarGrafico)
+                        .addGap(0, 438, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1))
+                .addGap(18, 18, 18)
+                .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblAltoFormatoImpresion, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtAltoFormatoImpresion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblLargoFormatoImpresion, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -221,28 +217,53 @@ public class genGraficoPrecorte extends frameBase<Cotizacion> {
                 .addContainerGap())
         );
 
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(frame, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(frame, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnGenerarGraficoPrecorteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarGraficoPrecorteActionPerformed
+    private void btnGenerarGraficoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarGraficoActionPerformed
         // TODO add your handling code here:
         try {
             this.item.setAltoFormatoImpresion(Double.parseDouble(txtAltoFormatoImpresion.getText()));
             this.item.setLargoFormatoImpresion(Double.parseDouble(txtLargoFormatoImpresion.getText()));
-            GenerarGraficoPrecorte();
+            GenerarGrafico();
         } catch (Exception e) {
             ControlarExcepcion(e);
         }
-    }//GEN-LAST:event_btnGenerarGraficoPrecorteActionPerformed
+    }//GEN-LAST:event_btnGenerarGraficoActionPerformed
+
+    private void btnGirarGraficoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGirarGraficoActionPerformed
+        // TODO add your handling code here:
+        try {
+            this.item.setAltoFormatoImpresion(Double.parseDouble(txtAltoFormatoImpresion.getText()));
+            this.item.setLargoFormatoImpresion(Double.parseDouble(txtLargoFormatoImpresion.getText()));
+            GirarGrafico();
+        } catch (Exception e) {
+            ControlarExcepcion(e);
+        }
+    }//GEN-LAST:event_btnGirarGraficoActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnGenerarGraficoPrecorte;
-    private javax.swing.JButton btnGirarGraficoPrecorte;
+    private javax.swing.JButton btnGenerarGrafico;
+    private javax.swing.JButton btnGirarGrafico;
+    private javax.swing.JPanel frame;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblAltoFormatoImpresion;
     private javax.swing.JLabel lblGraficoPrecorte;
     private javax.swing.JLabel lblLargoFormatoImpresion;
+    private javax.swing.JLabel lblTitulo;
+    private javax.swing.JPanel pnlTitulo;
     private javax.swing.JTextField txtAltoFormatoImpresion;
     private javax.swing.JTextField txtLargoFormatoImpresion;
     // End of variables declaration//GEN-END:variables
