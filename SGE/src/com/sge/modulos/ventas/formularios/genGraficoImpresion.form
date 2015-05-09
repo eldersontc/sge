@@ -26,7 +26,7 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="frame" alignment="0" max="32767" attributes="0"/>
+          <Component id="frame" min="-2" max="-2" attributes="0"/>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
@@ -52,60 +52,58 @@
               <Component id="pnlTitulo" alignment="1" max="32767" attributes="0"/>
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace min="-2" max="-2" attributes="0"/>
-                  <Component id="jScrollPane1" max="32767" attributes="0"/>
+                  <Component id="jScrollPane1" min="-2" pref="685" max="-2" attributes="0"/>
                   <EmptySpace type="unrelated" min="-2" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Group type="102" alignment="0" attributes="0">
-                              <Component id="btnGenerarGrafico" min="-2" pref="78" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="btnGirarGrafico" max="32767" attributes="0"/>
+                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                      <Group type="102" alignment="0" attributes="0">
+                          <Component id="btnGenerarGrafico" min="-2" pref="78" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="btnGirarGrafico" max="32767" attributes="0"/>
+                      </Group>
+                      <Component id="txtMedidasMaterial" alignment="0" max="32767" attributes="0"/>
+                      <Component id="btnAceptar" alignment="0" max="32767" attributes="0"/>
+                      <Component id="jScrollPane2" alignment="0" pref="0" max="32767" attributes="0"/>
+                      <Group type="102" alignment="0" attributes="0">
+                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                              <Component id="lblCantidadPases" alignment="0" max="32767" attributes="0"/>
+                              <Component id="lblCantidadCambios" alignment="0" pref="89" max="32767" attributes="0"/>
+                              <Component id="lblAltoPieza" alignment="0" max="32767" attributes="0"/>
                           </Group>
-                          <Component id="txtMedidasMaterial" alignment="0" max="32767" attributes="0"/>
-                          <Component id="btnAceptar" alignment="0" max="32767" attributes="0"/>
-                          <Component id="jScrollPane2" alignment="0" pref="0" max="32767" attributes="0"/>
-                          <Group type="102" alignment="1" attributes="0">
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="lblAltoPieza" alignment="0" max="32767" attributes="0"/>
-                                  <Component id="lblLargoPieza" alignment="1" max="32767" attributes="0"/>
-                                  <Component id="lblSeparacionX" alignment="1" max="32767" attributes="0"/>
-                                  <Component id="lblSeparacionY" max="32767" attributes="0"/>
-                              </Group>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                  <Component id="txtSeparacionY" max="32767" attributes="0"/>
-                                  <Component id="txtSeparacionX" alignment="0" pref="68" max="32767" attributes="0"/>
-                                  <Component id="txtLargoPieza" alignment="1" max="32767" attributes="0"/>
-                                  <Component id="txtAltoPieza" alignment="1" max="32767" attributes="0"/>
-                              </Group>
-                          </Group>
-                          <Component id="jSeparator1" max="32767" attributes="0"/>
-                          <Group type="102" attributes="0">
-                              <Component id="lblCantidadPiezas" min="-2" pref="75" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="txtCantidadPiezas" min="-2" pref="68" max="-2" attributes="0"/>
-                          </Group>
-                          <Component id="lblMetodoImpresion" max="32767" attributes="0"/>
-                          <Component id="schMetodoImpresion" pref="0" max="32767" attributes="0"/>
-                          <Group type="102" alignment="1" attributes="0">
-                              <Component id="lblCantidadPases" max="32767" attributes="0"/>
-                              <EmptySpace min="-2" pref="3" max="-2" attributes="0"/>
-                              <Component id="txtCantidadPases" min="-2" pref="68" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                              <Component id="txtLargoPieza" alignment="1" pref="67" max="32767" attributes="0"/>
+                              <Component id="txtCantidadPases" max="32767" attributes="0"/>
+                              <Component id="txtCantidadCambios" max="32767" attributes="0"/>
+                              <Component id="txtAltoPieza" alignment="1" max="32767" attributes="0"/>
                           </Group>
                       </Group>
-                      <Group type="102" attributes="0">
+                      <Component id="schMetodoImpresion" max="32767" attributes="0"/>
+                      <Component id="lblMetodoImpresion" max="32767" attributes="0"/>
+                      <Component id="lblLargoPieza" alignment="0" min="-2" pref="89" max="-2" attributes="0"/>
+                      <Group type="102" alignment="0" attributes="0">
+                          <Component id="lblSeparacionY" min="-2" pref="89" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="txtSeparacionY" max="32767" attributes="0"/>
+                      </Group>
+                      <Group type="102" alignment="0" attributes="0">
+                          <Component id="lblSeparacionX" min="-2" pref="89" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="txtSeparacionX" min="-2" pref="67" max="-2" attributes="0"/>
+                      </Group>
+                      <Component id="jSeparator1" max="32767" attributes="0"/>
+                      <Group type="102" alignment="0" attributes="0">
                           <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                              <Component id="lblCantidadPiezas" pref="89" max="32767" attributes="0"/>
                               <Component id="lblTiraje" max="32767" attributes="0"/>
-                              <Component id="lblCantidadCambios" max="32767" attributes="0"/>
                           </Group>
-                          <EmptySpace min="3" pref="3" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="txtCantidadCambios" alignment="0" min="-2" pref="68" max="-2" attributes="0"/>
-                              <Component id="txtTiraje" alignment="1" min="-2" pref="68" max="-2" attributes="0"/>
+                              <Component id="txtCantidadPiezas" max="32767" attributes="0"/>
+                              <Component id="txtTiraje" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                   </Group>
-                  <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -123,45 +121,45 @@
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="txtMedidasMaterial" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
+                          <Component id="lblMetodoImpresion" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="schMetodoImpresion" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="txtAltoPieza" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="lblCantidadPases" alignment="3" min="-2" pref="29" max="-2" attributes="0"/>
+                              <Component id="txtCantidadPases" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace min="-2" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="lblCantidadCambios" alignment="3" min="-2" pref="29" max="-2" attributes="0"/>
+                              <Component id="txtCantidadCambios" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="lblAltoPieza" alignment="3" min="-2" pref="29" max="-2" attributes="0"/>
+                              <Component id="txtAltoPieza" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="txtLargoPieza" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="lblLargoPieza" alignment="3" min="-2" pref="29" max="-2" attributes="0"/>
+                              <Component id="txtLargoPieza" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="txtSeparacionX" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="lblSeparacionX" alignment="3" min="-2" pref="29" max="-2" attributes="0"/>
+                              <Component id="txtSeparacionX" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="txtSeparacionY" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="lblSeparacionY" alignment="3" min="-2" pref="29" max="-2" attributes="0"/>
+                              <Component id="txtSeparacionY" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="jSeparator1" min="-2" max="-2" attributes="0"/>
+                          <Component id="jSeparator1" min="-2" pref="6" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="lblCantidadPiezas" alignment="3" min="-2" pref="29" max="-2" attributes="0"/>
                               <Component id="txtCantidadPiezas" alignment="3" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="lblMetodoImpresion" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="schMetodoImpresion" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="txtCantidadPases" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="lblCantidadPases" alignment="3" min="-2" pref="29" max="-2" attributes="0"/>
-                          </Group>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="lblCantidadCambios" alignment="3" min="-2" pref="29" max="-2" attributes="0"/>
-                              <Component id="txtCantidadCambios" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
@@ -169,7 +167,7 @@
                               <Component id="txtTiraje" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="jScrollPane2" pref="68" max="32767" attributes="0"/>
+                          <Component id="jScrollPane2" pref="133" max="32767" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="btnAceptar" min="-2" max="-2" attributes="0"/>
                       </Group>
@@ -199,7 +197,7 @@
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="lblTitulo" min="-2" pref="318" max="-2" attributes="0"/>
-                      <EmptySpace pref="567" max="32767" attributes="0"/>
+                      <EmptySpace pref="563" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -221,7 +219,7 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/com/sge/base/imagenes/details-large-view-16.png"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="GRAFICO DE IMPRESION"/>
+                <Property name="text" type="java.lang.String" value="GR&#xc1;FICO DE IMPRESI&#xd3;N"/>
               </Properties>
             </Component>
           </SubComponents>
@@ -342,7 +340,7 @@
         </Component>
         <Component class="javax.swing.JLabel" name="lblMetodoImpresion">
           <Properties>
-            <Property name="text" type="java.lang.String" value="METODO IMPRESION"/>
+            <Property name="text" type="java.lang.String" value="M&#xc9;TODO DE IMPRESI&#xd3;N"/>
           </Properties>
         </Component>
         <Component class="com.sge.base.controles.JSearch" name="schMetodoImpresion">
