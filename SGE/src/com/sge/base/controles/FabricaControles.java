@@ -337,13 +337,12 @@ public class FabricaControles {
         frame.setLocation((display.getWidth() - frame.getWidth()) / 2, ((display.getHeight() - frame.getHeight()) / 2) - 40);
         desktop.add(frame);
         frame.setLayer(JLayeredPane.MODAL_LAYER);
-        frame.pack();
         frame.setVisible(true);
         JPanel panelModal = new JPanel();
         panelModal.setName("panelModal");
         panelModal.setOpaque(false);
         JLayeredPane layered = JLayeredPane.getLayeredPaneAbove(frame);
-        layered.setLayer(panelModal, JLayeredPane.MODAL_LAYER.intValue());
+        layered.setLayer(panelModal, JLayeredPane.MODAL_LAYER);
         panelModal.setBounds(0, 0, layered.getWidth(), layered.getHeight());
         panelModal.addMouseListener(new MouseAdapter() {
         });
@@ -377,7 +376,6 @@ public class FabricaControles {
         frame.setLocation((display.getWidth() - frame.getWidth()) / 2, ((display.getHeight() - frame.getHeight()) / 2) - 40);
         desktop.add(frame);
         frame.setLayer(JLayeredPane.MODAL_LAYER);
-        frame.pack();
         frame.setVisible(true);
         JPanel panelModal = new JPanel();
         panelModal.setName("panelModal");
