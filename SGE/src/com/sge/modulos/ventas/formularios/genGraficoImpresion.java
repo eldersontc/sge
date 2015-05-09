@@ -50,7 +50,7 @@ public class genGraficoImpresion extends frameBase<Cotizacion> {
         txtSeparacionX.setText(String.valueOf(this.item.getSeparacionX()));
         txtSeparacionY.setText(String.valueOf(this.item.getSeparacionY()));
         txtCantidadPiezas.setText(String.valueOf(this.item.getCantidadPiezasImpresion()));
-        schMetodoImpresion.asingValues(this.item.getIdMetodoImpresion(), this.item.getNombre());
+        schMetodoImpresion.asingValues(this.item.getIdMetodoImpresion(), this.item.getDescripcionMetodoImpresion());
         txtCantidadPases.setText(String.valueOf(this.item.getCantidadPases()));
         txtCantidadCambios.setText(String.valueOf(this.item.getCantidadCambios()));
         txtTiraje.setText(String.valueOf(this.item.getCantidadProduccion()));
@@ -82,6 +82,10 @@ public class genGraficoImpresion extends frameBase<Cotizacion> {
 
     public void GenerarGrafico() throws Exception {
 
+        if (this.item.getIdMetodoImpresion() == 0) {
+            throw new Exception("DEBE DE SELECCIONAR UN METODO DE IMPRESION.");
+        }
+        
         aGrafi = (int) (Math.min(this.item.getAltoFormatoImpresion(), this.item.getLargoFormatoImpresion()) * 10) / this.item.getFactorVertical();
         lGrafi = (int) (Math.max(this.item.getAltoFormatoImpresion(), this.item.getLargoFormatoImpresion()) * 10) / this.item.getFactorHorizontal();
 
@@ -96,9 +100,6 @@ public class genGraficoImpresion extends frameBase<Cotizacion> {
             lPieza = (int) (this.item.getLargoMedidaAbierta() * 10);
         }
 
-        if (this.item.getIdMetodoImpresion() == 0) {
-            throw new Exception("DEBE DE SELECCIONAR UN METODO DE IMPRESION.");
-        }
         if (aGrafi <= 0) {
             throw new Exception("ALTO DE MATERIAL NO PUEDE SER 0.");
         }
