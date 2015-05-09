@@ -393,6 +393,9 @@ public class lisMetodoImpresion extends frameBase<MetodoImpresion> {
                 metodoImpresion.setNombre(ObtenerValorCelda(tbMetodosImpresion, 2));
                 metodoImpresion.setFactorPases(ObtenerValorCelda(tbMetodosImpresion, 3));
                 metodoImpresion.setFactorCambios(ObtenerValorCelda(tbMetodosImpresion, 4));
+                metodoImpresion.setFactorHorizontal(2);
+                metodoImpresion.setFactorVertical(1);
+                metodoImpresion.setLetras("T,R");
                 metodoImpresion.setActivo(ObtenerValorCelda(tbMetodosImpresion, 5));
                 seleccionado = metodoImpresion;
             }

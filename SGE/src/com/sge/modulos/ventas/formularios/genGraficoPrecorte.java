@@ -37,11 +37,13 @@ public class genGraficoPrecorte extends frameBase<Cotizacion> {
     
     public void AsignarControles(){
         txtMedidasMaterial.setText(String.format("%s X %s CM.", this.item.getAltoMaterial(), this.item.getLargoMaterial()));
-        txtAltoFormatoImpresion.setText(String.valueOf(this.item.getAltoFormatoImpresion()));
-        txtLargoFormatoImpresion.setText(String.valueOf(this.item.getLargoFormatoImpresion()));
+        txtAltoPieza.setText(String.valueOf(this.item.getAltoFormatoImpresion()));
+        txtLargoPieza.setText(String.valueOf(this.item.getLargoFormatoImpresion()));
         txtCantidadPiezas.setText(String.valueOf(this.item.getCantidadPiezasPrecorte()));
+        txtCantidadHojasMaquina.setText(String.valueOf(this.item.getCantidadMaterial() * this.item.getCantidadPiezasPrecorte()));
+        txtOtros.setText(String.format("%s PLIEGOS DE : %s + %s = %s HJS/RESMA \n", this.item.getCantidadPliegos(), this.item.getCantidadMaterial(), this.item.getCantidadDemasia(), this.item.getCantidadMaterial() + this.item.getCantidadDemasia()));
         if(this.item.getGraficoPrecorte() != null){
-            lblGraficoPrecorte.setIcon(new ImageIcon(this.item.getGraficoPrecorte()));
+            lblGrafico.setIcon(new ImageIcon(this.item.getGraficoPrecorte()));
         }
     }
     
@@ -133,17 +135,24 @@ public class genGraficoPrecorte extends frameBase<Cotizacion> {
         pnlTitulo = new javax.swing.JPanel();
         lblTitulo = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        lblGraficoPrecorte = new javax.swing.JLabel();
+        lblGrafico = new javax.swing.JLabel();
         btnGenerarGrafico = new javax.swing.JButton();
         btnGirarGrafico = new javax.swing.JButton();
-        lblAltoFormatoImpresion = new javax.swing.JLabel();
-        txtAltoFormatoImpresion = new javax.swing.JTextField();
-        lblLargoFormatoImpresion = new javax.swing.JLabel();
-        txtLargoFormatoImpresion = new javax.swing.JTextField();
+        lblAltoPieza = new javax.swing.JLabel();
+        txtAltoPieza = new javax.swing.JTextField();
+        lblLargoPieza = new javax.swing.JLabel();
+        txtLargoPieza = new javax.swing.JTextField();
         txtMedidasMaterial = new javax.swing.JTextField();
         lblCantidadPiezas = new javax.swing.JLabel();
         txtCantidadPiezas = new javax.swing.JTextField();
         btnAceptar = new javax.swing.JButton();
+        lblDemasia = new javax.swing.JLabel();
+        txtDemasia = new javax.swing.JTextField();
+        txtCantidadHojasMaquina = new javax.swing.JTextField();
+        lblCantidadPiezas1 = new javax.swing.JLabel();
+        jSeparator1 = new javax.swing.JSeparator();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        txtOtros = new javax.swing.JTextArea();
 
         setClosable(true);
         setMaximizable(true);
@@ -174,8 +183,8 @@ public class genGraficoPrecorte extends frameBase<Cotizacion> {
             .addComponent(lblTitulo, javax.swing.GroupLayout.DEFAULT_SIZE, 29, Short.MAX_VALUE)
         );
 
-        lblGraficoPrecorte.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jScrollPane1.setViewportView(lblGraficoPrecorte);
+        lblGrafico.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jScrollPane1.setViewportView(lblGrafico);
 
         btnGenerarGrafico.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sge/base/imagenes/visible-16.png"))); // NOI18N
         btnGenerarGrafico.setText("VER");
@@ -193,13 +202,13 @@ public class genGraficoPrecorte extends frameBase<Cotizacion> {
             }
         });
 
-        lblAltoFormatoImpresion.setText("ALTO");
+        lblAltoPieza.setText("ALTO");
 
-        txtAltoFormatoImpresion.setText("0");
+        txtAltoPieza.setText("0");
 
-        lblLargoFormatoImpresion.setText("LARGO");
+        lblLargoPieza.setText("LARGO");
 
-        txtLargoFormatoImpresion.setText("0");
+        txtLargoPieza.setText("0");
 
         txtMedidasMaterial.setEditable(false);
 
@@ -215,6 +224,19 @@ public class genGraficoPrecorte extends frameBase<Cotizacion> {
             }
         });
 
+        lblDemasia.setText("DEMASIA");
+
+        txtDemasia.setText("0");
+
+        txtCantidadHojasMaquina.setEditable(false);
+        txtCantidadHojasMaquina.setText("0");
+
+        lblCantidadPiezas1.setText("HJS MAQ.");
+
+        txtOtros.setColumns(20);
+        txtOtros.setRows(5);
+        jScrollPane2.setViewportView(txtOtros);
+
         javax.swing.GroupLayout frameLayout = new javax.swing.GroupLayout(frame);
         frame.setLayout(frameLayout);
         frameLayout.setHorizontalGroup(
@@ -228,21 +250,25 @@ public class genGraficoPrecorte extends frameBase<Cotizacion> {
                     .addGroup(frameLayout.createSequentialGroup()
                         .addComponent(btnGenerarGrafico, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnGirarGrafico, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(btnGirarGrafico, javax.swing.GroupLayout.DEFAULT_SIZE, 71, Short.MAX_VALUE))
                     .addComponent(txtMedidasMaterial)
+                    .addComponent(btnAceptar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, frameLayout.createSequentialGroup()
                         .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(lblLargoFormatoImpresion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(lblAltoFormatoImpresion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addComponent(lblCantidadPiezas))
-                        .addGap(21, 21, 21)
-                        .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtCantidadPiezas, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(txtLargoFormatoImpresion, javax.swing.GroupLayout.DEFAULT_SIZE, 68, Short.MAX_VALUE)
-                                .addComponent(txtAltoFormatoImpresion))))
-                    .addComponent(btnAceptar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(lblCantidadPiezas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lblCantidadPiezas1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lblAltoPieza, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lblLargoPieza, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lblDemasia, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(txtDemasia, javax.swing.GroupLayout.DEFAULT_SIZE, 68, Short.MAX_VALUE)
+                            .addComponent(txtCantidadPiezas)
+                            .addComponent(txtLargoPieza, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(txtAltoPieza, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(txtCantidadHojasMaquina)))
+                    .addComponent(jSeparator1)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                 .addGap(18, 18, 18))
         );
         frameLayout.setVerticalGroup(
@@ -259,19 +285,31 @@ public class genGraficoPrecorte extends frameBase<Cotizacion> {
                         .addComponent(txtMedidasMaterial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txtAltoFormatoImpresion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblAltoFormatoImpresion, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(txtAltoPieza, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblAltoPieza, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txtLargoFormatoImpresion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblLargoFormatoImpresion, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addComponent(txtLargoPieza, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblLargoPieza, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtDemasia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblDemasia, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(4, 4, 4)
                         .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(txtCantidadPiezas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(lblCantidadPiezas, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtCantidadHojasMaquina, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblCantidadPiezas1, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnAceptar)
-                        .addGap(0, 338, Short.MAX_VALUE))
+                        .addGap(0, 92, Short.MAX_VALUE))
                     .addComponent(jScrollPane1))
                 .addContainerGap())
         );
@@ -293,8 +331,9 @@ public class genGraficoPrecorte extends frameBase<Cotizacion> {
     private void btnGenerarGraficoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarGraficoActionPerformed
         // TODO add your handling code here:
         try {
-            this.item.setAltoFormatoImpresion(Double.parseDouble(txtAltoFormatoImpresion.getText()));
-            this.item.setLargoFormatoImpresion(Double.parseDouble(txtLargoFormatoImpresion.getText()));
+            this.item.setAltoFormatoImpresion(Double.parseDouble(txtAltoPieza.getText()));
+            this.item.setLargoFormatoImpresion(Double.parseDouble(txtLargoPieza.getText()));
+            this.item.setCantidadDemasia(Integer.parseInt(txtDemasia.getText()));
             GenerarGrafico();
         } catch (Exception e) {
             ControlarExcepcion(e);
@@ -304,8 +343,9 @@ public class genGraficoPrecorte extends frameBase<Cotizacion> {
     private void btnGirarGraficoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGirarGraficoActionPerformed
         // TODO add your handling code here:
         try {
-            this.item.setAltoFormatoImpresion(Double.parseDouble(txtAltoFormatoImpresion.getText()));
-            this.item.setLargoFormatoImpresion(Double.parseDouble(txtLargoFormatoImpresion.getText()));
+            this.item.setAltoFormatoImpresion(Double.parseDouble(txtAltoPieza.getText()));
+            this.item.setLargoFormatoImpresion(Double.parseDouble(txtLargoPieza.getText()));
+            this.item.setCantidadDemasia(Integer.parseInt(txtDemasia.getText()));
             GirarGrafico();
         } catch (Exception e) {
             ControlarExcepcion(e);
@@ -324,15 +364,22 @@ public class genGraficoPrecorte extends frameBase<Cotizacion> {
     private javax.swing.JButton btnGirarGrafico;
     private javax.swing.JPanel frame;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JLabel lblAltoFormatoImpresion;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JLabel lblAltoPieza;
     private javax.swing.JLabel lblCantidadPiezas;
-    private javax.swing.JLabel lblGraficoPrecorte;
-    private javax.swing.JLabel lblLargoFormatoImpresion;
+    private javax.swing.JLabel lblCantidadPiezas1;
+    private javax.swing.JLabel lblDemasia;
+    private javax.swing.JLabel lblGrafico;
+    private javax.swing.JLabel lblLargoPieza;
     private javax.swing.JLabel lblTitulo;
     private javax.swing.JPanel pnlTitulo;
-    private javax.swing.JTextField txtAltoFormatoImpresion;
+    private javax.swing.JTextField txtAltoPieza;
+    private javax.swing.JTextField txtCantidadHojasMaquina;
     private javax.swing.JTextField txtCantidadPiezas;
-    private javax.swing.JTextField txtLargoFormatoImpresion;
+    private javax.swing.JTextField txtDemasia;
+    private javax.swing.JTextField txtLargoPieza;
     private javax.swing.JTextField txtMedidasMaterial;
+    private javax.swing.JTextArea txtOtros;
     // End of variables declaration//GEN-END:variables
 }

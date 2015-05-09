@@ -1246,6 +1246,7 @@ public class regCotizacion extends frameBase<Cotizacion> {
 
     private void btnGenerarGraficoImpresionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarGraficoImpresionActionPerformed
         // TODO add your handling code here:
+        VerModal(new genGraficoImpresion(this.item));
     }//GEN-LAST:event_btnGenerarGraficoImpresionActionPerformed
 
 

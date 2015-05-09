@@ -42,6 +42,7 @@ public class ItemCotizacion {
     private double altoFormatoImpresion;
     private double separacionX;
     private double separacionY;
+    private int cantidadPliegos;
     private String ubicacionGraficoPrecorte;
     private String ubicacionGraficoImpresion;
     private BufferedImage graficoPrecorte;
@@ -54,6 +55,9 @@ public class ItemCotizacion {
     private String descripcionMetodoImpresion;
     private int cantidadPases;
     private int cantidadCambios;
+    private int factorHorizontal;
+    private int factorVertical;
+    private String letras;
     private int cantidadMaterial;
     private int cantidadDemasia;
     private int cantidadProduccion;
@@ -546,5 +550,37 @@ public class ItemCotizacion {
     @Override
     public String toString(){
         return nombre;
+    }
+
+    public int getCantidadPliegos() {
+        return cantidadPliegos;
+    }
+
+    public void setCantidadPliegos(int cantidadPliegos) {
+        this.cantidadPliegos = cantidadPliegos;
+    }
+
+    public int getFactorHorizontal() {
+        return factorHorizontal;
+    }
+
+    public void setFactorHorizontal(int factorHorizontal) {
+        this.factorHorizontal = factorHorizontal;
+    }
+
+    public int getFactorVertical() {
+        return factorVertical;
+    }
+
+    public void setFactorVertical(int factorVertical) {
+        this.factorVertical = factorVertical;
+    }
+
+    public String getLetras() {
+        return letras;
+    }
+
+    public void setLetras(String letras) {
+        this.letras = letras;
     }
 }

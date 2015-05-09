@@ -10,6 +10,9 @@ public class MetodoImpresion {
     private String nombre;
     private int factorPases;
     private int factorCambios;
+    private int factorHorizontal;
+    private int factorVertical;
+    private String letras;
     private boolean activo;
 
     public MetodoImpresion() {
@@ -47,6 +50,30 @@ public class MetodoImpresion {
         this.factorCambios = factorCambios;
     }
 
+    public int getFactorHorizontal() {
+        return factorHorizontal;
+    }
+
+    public void setFactorHorizontal(int factorHorizontal) {
+        this.factorHorizontal = factorHorizontal;
+    }
+
+    public int getFactorVertical() {
+        return factorVertical;
+    }
+
+    public void setFactorVertical(int factorVertical) {
+        this.factorVertical = factorVertical;
+    }
+
+    public String getLetras() {
+        return letras;
+    }
+
+    public void setLetras(String letras) {
+        this.letras = letras;
+    }
+    
     public boolean isActivo() {
         return activo;
     }
