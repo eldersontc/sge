@@ -593,6 +593,7 @@ public class regPlantillaSC extends frameBase<PlantillaSolicitudCotizacion> {
         // TODO add your handling code here:
         AsignarValoresItem();
         lisItems.updateUI();
+        VerAdvertencia("ITEM GUARDADO!", this);
     }//GEN-LAST:event_btnGuardarItemActionPerformed
 
     private void lisItemsValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_lisItemsValueChanged

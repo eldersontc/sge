@@ -52,52 +52,28 @@
                       <Group type="102" alignment="0" attributes="0">
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="jScrollPane2" alignment="1" min="-2" pref="174" max="-2" attributes="0"/>
-                              <Group type="102" alignment="0" attributes="0">
+                              <Group type="102" alignment="1" attributes="0">
                                   <Component id="btnNuevoItem" min="-2" pref="84" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Component id="btnEliminarItem" min="-2" pref="84" max="-2" attributes="0"/>
                               </Group>
                           </Group>
-                          <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="1" attributes="0">
                               <Group type="102" attributes="0">
+                                  <EmptySpace min="-2" pref="405" max="-2" attributes="0"/>
                                   <Component id="btnAceptar" min="-2" pref="93" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Component id="btnCancelar" min="-2" pref="96" max="-2" attributes="0"/>
                               </Group>
-                              <Component id="tpnlItems" min="-2" pref="594" max="-2" attributes="0"/>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="tpnlItems" min="-2" pref="776" max="-2" attributes="0"/>
+                              </Group>
                           </Group>
-                      </Group>
-                      <Group type="102" alignment="0" attributes="0">
-                          <Component id="lblCantidad" min="-2" pref="104" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="21" max="-2" attributes="0"/>
-                          <Component id="txtCantidad" min="-2" pref="77" max="-2" attributes="0"/>
                       </Group>
                       <Group type="102" attributes="0">
                           <EmptySpace min="-2" pref="1" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                              <Group type="102" alignment="0" attributes="0">
-                                  <Component id="lblDescripcion" min="-2" pref="104" max="-2" attributes="0"/>
-                                  <EmptySpace type="separate" max="-2" attributes="0"/>
-                                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                      <Group type="102" alignment="0" attributes="0">
-                                          <Component id="txtDescripcion" min="-2" pref="350" max="-2" attributes="0"/>
-                                          <EmptySpace max="-2" attributes="0"/>
-                                          <Component id="lblMoneda" min="-2" max="-2" attributes="0"/>
-                                          <EmptySpace max="-2" attributes="0"/>
-                                          <Component id="schMoneda" min="-2" pref="93" max="-2" attributes="0"/>
-                                          <EmptySpace max="-2" attributes="0"/>
-                                          <Component id="txtFechaCreacion" min="-2" pref="118" max="-2" attributes="0"/>
-                                      </Group>
-                                      <Group type="102" alignment="0" attributes="0">
-                                          <Component id="schCotizador" min="-2" pref="350" max="-2" attributes="0"/>
-                                          <EmptySpace max="-2" attributes="0"/>
-                                          <Component id="lblFormaPago" min="-2" pref="111" max="-2" attributes="0"/>
-                                          <EmptySpace max="-2" attributes="0"/>
-                                          <Component id="schFormaPago" max="32767" attributes="0"/>
-                                      </Group>
-                                  </Group>
-                              </Group>
+                          <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="102" alignment="0" attributes="0">
                                   <Component id="lblCliente" min="-2" pref="104" max="-2" attributes="0"/>
                                   <EmptySpace type="separate" max="-2" attributes="0"/>
@@ -106,25 +82,57 @@
                                   <Component id="lblNumero" min="-2" pref="27" max="-2" attributes="0"/>
                                   <EmptySpace type="separate" max="-2" attributes="0"/>
                                   <Component id="schNumeracion" min="-2" pref="125" max="-2" attributes="0"/>
-                                  <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="txtNumero" max="32767" attributes="0"/>
                               </Group>
                               <Group type="102" alignment="0" attributes="0">
-                                  <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                                      <Component id="lblVendedor" max="32767" attributes="0"/>
-                                      <Component id="lblCotizador" alignment="1" pref="103" max="32767" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="lblCotizador" alignment="0" min="-2" pref="103" max="-2" attributes="0"/>
+                                      <Group type="102" alignment="0" attributes="0">
+                                          <Component id="lblCantidad" min="-2" pref="104" max="-2" attributes="0"/>
+                                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                                          <Component id="txtCantidad" min="-2" pref="77" max="-2" attributes="0"/>
+                                          <EmptySpace max="-2" attributes="0"/>
+                                          <Component id="lblLineaProduccion" min="-2" pref="111" max="-2" attributes="0"/>
+                                      </Group>
                                   </Group>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="cboLineaProduccion" min="-2" pref="138" max="-2" attributes="0"/>
+                              </Group>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Component id="lblDescripcion" min="-2" pref="104" max="-2" attributes="0"/>
                                   <EmptySpace type="separate" max="-2" attributes="0"/>
-                                  <Component id="schVendedor" min="-2" pref="351" max="-2" attributes="0"/>
-                                  <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="lblLineaProduccion" min="-2" pref="111" max="-2" attributes="0"/>
-                                  <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="cboLineaProduccion" max="32767" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                      <Group type="102" alignment="1" attributes="0">
+                                          <EmptySpace min="-2" pref="544" max="-2" attributes="0"/>
+                                          <Component id="txtNumero" min="-2" pref="100" max="-2" attributes="0"/>
+                                          <EmptySpace max="32767" attributes="0"/>
+                                          <Component id="lblFecha" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace max="-2" attributes="0"/>
+                                          <Component id="txtFechaCreacion" min="-2" pref="118" max="-2" attributes="0"/>
+                                      </Group>
+                                      <Group type="102" alignment="1" attributes="0">
+                                          <Component id="txtDescripcion" min="-2" pref="350" max="-2" attributes="0"/>
+                                          <EmptySpace max="-2" attributes="0"/>
+                                          <Component id="lblMoneda" min="-2" pref="80" max="-2" attributes="0"/>
+                                          <EmptySpace max="-2" attributes="0"/>
+                                          <Component id="schMoneda" min="-2" pref="78" max="-2" attributes="0"/>
+                                          <EmptySpace min="-2" pref="11" max="-2" attributes="0"/>
+                                          <Component id="lblFormaPago1" min="-2" pref="100" max="-2" attributes="0"/>
+                                          <EmptySpace max="-2" attributes="0"/>
+                                          <Component id="schFormaPago" min="-2" pref="177" max="-2" attributes="0"/>
+                                      </Group>
+                                      <Group type="102" alignment="0" attributes="0">
+                                          <Component id="schCotizador" min="-2" pref="350" max="-2" attributes="0"/>
+                                          <EmptySpace max="-2" attributes="0"/>
+                                          <Component id="lblVendedor" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace max="-2" attributes="0"/>
+                                          <Component id="schVendedor" max="32767" attributes="0"/>
+                                      </Group>
+                                  </Group>
                               </Group>
                           </Group>
                       </Group>
                   </Group>
-                  <EmptySpace min="44" pref="23" max="32767" attributes="0"/>
+                  <EmptySpace min="46" pref="14" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -140,7 +148,11 @@
                           <Component id="schNumeracion" alignment="0" max="32767" attributes="0"/>
                           <Component id="schCliente" alignment="0" max="32767" attributes="0"/>
                       </Group>
-                      <Component id="txtNumero" min="-2" max="-2" attributes="0"/>
+                      <Component id="txtFechaCreacion" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="txtNumero" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="lblFecha" alignment="3" min="-2" pref="29" max="-2" attributes="0"/>
+                      </Group>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
@@ -149,33 +161,27 @@
                           <Component id="txtDescripcion" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="lblMoneda" alignment="3" min="-2" pref="29" max="-2" attributes="0"/>
                       </Group>
-                      <Component id="txtFechaCreacion" alignment="0" min="-2" max="-2" attributes="0"/>
                       <Component id="schMoneda" min="-2" max="-2" attributes="0"/>
+                      <Component id="schFormaPago" min="-2" max="-2" attributes="0"/>
+                      <Component id="lblFormaPago1" min="-2" pref="29" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="103" alignment="1" groupAlignment="0" max="-2" attributes="0">
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
                           <Component id="schCotizador" alignment="0" max="32767" attributes="0"/>
                           <Component id="lblCotizador" alignment="0" min="-2" pref="29" max="-2" attributes="0"/>
-                          <Component id="lblFormaPago" alignment="1" min="-2" pref="29" max="-2" attributes="0"/>
+                          <Component id="lblVendedor" alignment="0" max="32767" attributes="0"/>
                       </Group>
-                      <Component id="schFormaPago" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                      <Component id="lblVendedor" max="32767" attributes="0"/>
-                      <Component id="schVendedor" max="32767" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="lblLineaProduccion" alignment="3" min="-2" pref="27" max="-2" attributes="0"/>
-                          <Component id="cboLineaProduccion" alignment="3" min="-2" max="-2" attributes="0"/>
-                      </Group>
+                      <Component id="schVendedor" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="lblCantidad" alignment="3" min="-2" pref="29" max="-2" attributes="0"/>
                       <Component id="txtCantidad" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="lblLineaProduccion" alignment="3" min="-2" pref="27" max="-2" attributes="0"/>
+                      <Component id="cboLineaProduccion" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace max="-2" attributes="0"/>
+                  <EmptySpace min="-2" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
                       <Component id="tpnlItems" max="32767" attributes="0"/>
                       <Component id="jScrollPane2" max="32767" attributes="0"/>
@@ -184,6 +190,9 @@
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="btnNuevoItem" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="btnEliminarItem" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace min="-2" pref="70" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="btnCancelar" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="btnAceptar" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
@@ -263,7 +272,7 @@
         </Component>
         <Component class="javax.swing.JLabel" name="lblDescripcion">
           <Properties>
-            <Property name="text" type="java.lang.String" value="DESCRIPCION"/>
+            <Property name="text" type="java.lang.String" value="DESCRIPCI&#xd3;N"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JComboBox" name="cboLineaProduccion">
@@ -308,124 +317,151 @@
               <Layout>
                 <DimensionLayout dim="0">
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                              <Component id="chkMedidaAbierta" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="chkMedidaCerrada" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Group type="102" alignment="0" attributes="0">
-                                  <Component id="lblAltoMedidaCerrada" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="txtAltoMedidaCerrada" min="-2" pref="55" max="-2" attributes="0"/>
-                                  <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="lblLargoMedidaCerrada" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace min="-2" pref="7" max="-2" attributes="0"/>
-                                  <Component id="txtLargoMedidaCerrada" min="-2" pref="52" max="-2" attributes="0"/>
-                              </Group>
-                              <Group type="102" alignment="0" attributes="0">
-                                  <Component id="lblNombreItem" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="txtNombreItem" max="32767" attributes="0"/>
-                              </Group>
-                              <Group type="102" alignment="0" attributes="0">
-                                  <Component id="lblAltoMedidaAbierta" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="txtAltoMedidaAbierta" min="-2" pref="55" max="-2" attributes="0"/>
-                                  <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="lblLargoMedidaAbierta" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace min="-2" pref="7" max="-2" attributes="0"/>
-                                  <Component id="txtLargoMedidaAbierta" min="-2" pref="52" max="-2" attributes="0"/>
-                                  <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="cboUnidadMedidaAbierta" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                              <Group type="102" alignment="0" attributes="0">
-                                  <Component id="chkServicioImpresion" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="schServicioImpresion" max="32767" attributes="0"/>
-                              </Group>
-                              <Group type="102" alignment="0" attributes="0">
-                                  <Component id="chkTiraRetira" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="chkTipoUnidad" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="cboTipoUnidad" min="-2" pref="88" max="-2" attributes="0"/>
-                              </Group>
-                              <Group type="102" alignment="1" attributes="0">
-                                  <Group type="103" groupAlignment="0" attributes="0">
-                                      <Group type="102" alignment="0" attributes="0">
-                                          <Component id="lblTiraColor" max="32767" attributes="0"/>
-                                          <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
-                                          <Component id="txtTiraColor" min="-2" pref="55" max="-2" attributes="0"/>
-                                      </Group>
-                                      <Group type="102" alignment="0" attributes="0">
-                                          <Component id="chkFondo" min="-2" pref="86" max="-2" attributes="0"/>
-                                          <EmptySpace max="-2" attributes="0"/>
-                                          <Component id="txtFondo" min="-2" pref="55" max="-2" attributes="0"/>
-                                      </Group>
-                                  </Group>
-                                  <EmptySpace min="23" pref="23" max="-2" attributes="0"/>
-                                  <Component id="lblRetiraColor" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="txtRetiraColor" min="-2" pref="52" max="-2" attributes="0"/>
-                              </Group>
-                              <Group type="102" alignment="0" attributes="0">
-                                  <Group type="103" groupAlignment="0" attributes="0">
-                                      <Component id="chkMaterial" alignment="0" min="-2" max="-2" attributes="0"/>
-                                      <Component id="lblMaquina" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  </Group>
-                                  <EmptySpace max="-2" attributes="0"/>
-                                  <Group type="103" groupAlignment="0" attributes="0">
-                                      <Component id="schMaquina" alignment="0" max="32767" attributes="0"/>
-                                      <Component id="schMaterial" alignment="0" max="32767" attributes="0"/>
-                                  </Group>
-                              </Group>
-                          </Group>
+                      <Group type="102" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="jScrollPane3" alignment="0" pref="213" max="32767" attributes="0"/>
                               <Group type="102" attributes="0">
-                                  <Component id="lblObservacion" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                                  <Component id="chkMedidaAbierta" min="-2" pref="146" max="-2" attributes="0"/>
+                                  <EmptySpace max="32767" attributes="0"/>
                               </Group>
-                              <Component id="btnGenerarGraficoPrecorte" max="32767" attributes="0"/>
-                              <Component id="btnGenerarGraficoImpresion" alignment="1" max="32767" attributes="0"/>
                               <Group type="102" alignment="1" attributes="0">
-                                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                                  <Component id="btnGuardarItem" min="-2" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="1" attributes="0">
+                                      <Group type="102" attributes="0">
+                                          <Group type="103" groupAlignment="1" attributes="0">
+                                              <Group type="102" alignment="1" attributes="0">
+                                                  <Component id="lblTiraColor" max="32767" attributes="0"/>
+                                                  <EmptySpace max="-2" attributes="0"/>
+                                                  <Component id="txtTiraColor" min="-2" pref="55" max="-2" attributes="0"/>
+                                                  <EmptySpace max="-2" attributes="0"/>
+                                                  <Component id="lblRetiraColor" min="-2" max="-2" attributes="0"/>
+                                                  <EmptySpace max="-2" attributes="0"/>
+                                                  <Component id="txtRetiraColor" min="-2" pref="65" max="-2" attributes="0"/>
+                                              </Group>
+                                              <Group type="102" alignment="0" attributes="0">
+                                                  <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
+                                                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                                      <Group type="102" alignment="0" attributes="0">
+                                                          <Component id="lblNombreItem" min="-2" max="-2" attributes="0"/>
+                                                          <EmptySpace max="-2" attributes="0"/>
+                                                          <Component id="txtNombreItem" max="32767" attributes="0"/>
+                                                      </Group>
+                                                      <Group type="102" alignment="0" attributes="0">
+                                                          <Component id="lblAltoMedidaAbierta" min="-2" max="-2" attributes="0"/>
+                                                          <EmptySpace max="-2" attributes="0"/>
+                                                          <Component id="txtAltoMedidaAbierta" min="-2" pref="55" max="-2" attributes="0"/>
+                                                          <EmptySpace max="-2" attributes="0"/>
+                                                          <Component id="lblLargoMedidaAbierta" min="-2" max="-2" attributes="0"/>
+                                                          <EmptySpace min="-2" pref="7" max="-2" attributes="0"/>
+                                                          <Component id="txtLargoMedidaAbierta" min="-2" pref="52" max="-2" attributes="0"/>
+                                                          <EmptySpace max="-2" attributes="0"/>
+                                                          <Component id="cboUnidadMedidaAbierta" min="-2" max="-2" attributes="0"/>
+                                                      </Group>
+                                                  </Group>
+                                                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                                              </Group>
+                                          </Group>
+                                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                          <Group type="103" groupAlignment="0" attributes="0">
+                                              <Group type="102" attributes="0">
+                                                  <Component id="btnGenerarGraficoPrecorte" min="-2" pref="188" max="-2" attributes="0"/>
+                                                  <EmptySpace max="-2" attributes="0"/>
+                                                  <Component id="btnGenerarGraficoImpresion" max="32767" attributes="0"/>
+                                              </Group>
+                                              <Group type="102" attributes="0">
+                                                  <Group type="103" groupAlignment="0" attributes="0">
+                                                      <Component id="chkMedidaCerrada" alignment="0" min="-2" pref="153" max="-2" attributes="0"/>
+                                                      <Group type="102" alignment="0" attributes="0">
+                                                          <Group type="103" groupAlignment="0" attributes="0">
+                                                              <Group type="103" alignment="0" groupAlignment="1" attributes="0">
+                                                                  <Group type="102" attributes="0">
+                                                                      <Component id="lblAltoMedidaCerrada" min="-2" max="-2" attributes="0"/>
+                                                                      <EmptySpace max="-2" attributes="0"/>
+                                                                      <Component id="txtAltoMedidaCerrada" min="-2" pref="55" max="-2" attributes="0"/>
+                                                                  </Group>
+                                                                  <Component id="txtFondo" min="-2" pref="56" max="-2" attributes="0"/>
+                                                              </Group>
+                                                              <Component id="chkFondo" alignment="0" min="-2" pref="86" max="-2" attributes="0"/>
+                                                          </Group>
+                                                          <EmptySpace max="-2" attributes="0"/>
+                                                          <Group type="103" groupAlignment="0" attributes="0">
+                                                              <Component id="lblObservacion" min="-2" max="-2" attributes="0"/>
+                                                              <Group type="102" attributes="0">
+                                                                  <Component id="lblLargoMedidaCerrada" min="-2" max="-2" attributes="0"/>
+                                                                  <EmptySpace min="-2" pref="7" max="-2" attributes="0"/>
+                                                                  <Component id="txtLargoMedidaCerrada" min="-2" pref="52" max="-2" attributes="0"/>
+                                                              </Group>
+                                                          </Group>
+                                                      </Group>
+                                                  </Group>
+                                                  <EmptySpace max="32767" attributes="0"/>
+                                                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                                      <Component id="chkTipoUnidad" max="32767" attributes="0"/>
+                                                      <Component id="cboTipoUnidad" min="-2" pref="117" max="-2" attributes="0"/>
+                                                  </Group>
+                                              </Group>
+                                          </Group>
+                                      </Group>
+                                      <Group type="102" attributes="0">
+                                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                                          <Group type="103" groupAlignment="1" attributes="0">
+                                              <Group type="102" attributes="0">
+                                                  <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                                                      <Component id="chkTiraRetira" alignment="0" min="-2" max="-2" attributes="0"/>
+                                                      <Group type="102" alignment="0" attributes="0">
+                                                          <Component id="chkServicioImpresion" min="-2" max="-2" attributes="0"/>
+                                                          <EmptySpace pref="31" max="32767" attributes="0"/>
+                                                          <Component id="schServicioImpresion" min="-2" pref="289" max="-2" attributes="0"/>
+                                                      </Group>
+                                                      <Group type="102" alignment="0" attributes="0">
+                                                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                                              <Component id="chkMaterial" pref="143" max="32767" attributes="0"/>
+                                                              <Component id="lblMaquina" max="32767" attributes="0"/>
+                                                          </Group>
+                                                          <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
+                                                          <Group type="103" groupAlignment="0" attributes="0">
+                                                              <Component id="schMaquina" max="32767" attributes="0"/>
+                                                              <Component id="schMaterial" max="32767" attributes="0"/>
+                                                          </Group>
+                                                      </Group>
+                                                  </Group>
+                                                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                                                  <Component id="jScrollPane3" min="-2" pref="262" max="-2" attributes="0"/>
+                                              </Group>
+                                              <Component id="btnGuardarItem" alignment="1" min="-2" max="-2" attributes="0"/>
+                                          </Group>
+                                      </Group>
+                                  </Group>
+                                  <EmptySpace min="-2" pref="33" max="-2" attributes="0"/>
                               </Group>
                           </Group>
-                          <EmptySpace max="-2" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
                 <DimensionLayout dim="1">
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="1" attributes="0">
-                              <Component id="schMaterial" alignment="1" min="-2" max="-2" attributes="0"/>
-                              <Group type="102" alignment="1" attributes="0">
+                              <Group type="102" attributes="0">
                                   <Group type="103" groupAlignment="3" attributes="0">
                                       <Component id="lblNombreItem" alignment="3" min="-2" max="-2" attributes="0"/>
                                       <Component id="txtNombreItem" alignment="3" min="-2" max="-2" attributes="0"/>
                                       <Component id="btnGenerarGraficoPrecorte" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  </Group>
-                                  <EmptySpace max="-2" attributes="0"/>
-                                  <Group type="103" groupAlignment="3" attributes="0">
-                                      <Component id="chkMedidaAbierta" alignment="3" min="-2" max="-2" attributes="0"/>
                                       <Component id="btnGenerarGraficoImpresion" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  </Group>
-                                  <EmptySpace min="-2" max="-2" attributes="0"/>
-                                  <Group type="103" groupAlignment="3" attributes="0">
-                                      <Component id="cboUnidadMedidaAbierta" alignment="3" min="-2" max="-2" attributes="0"/>
-                                      <Component id="lblAltoMedidaAbierta" alignment="3" min="-2" max="-2" attributes="0"/>
-                                      <Component id="txtAltoMedidaAbierta" alignment="3" min="-2" max="-2" attributes="0"/>
-                                      <Component id="lblLargoMedidaAbierta" alignment="3" min="-2" max="-2" attributes="0"/>
-                                      <Component id="txtLargoMedidaAbierta" alignment="3" min="-2" max="-2" attributes="0"/>
-                                      <Component id="lblObservacion" alignment="3" min="-2" max="-2" attributes="0"/>
                                   </Group>
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="1" attributes="0">
+                                      <Group type="102" attributes="0">
+                                          <Component id="chkMedidaAbierta" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace min="-2" max="-2" attributes="0"/>
+                                          <Group type="103" groupAlignment="3" attributes="0">
+                                              <Component id="cboUnidadMedidaAbierta" alignment="3" min="-2" max="-2" attributes="0"/>
+                                              <Component id="lblAltoMedidaAbierta" alignment="3" min="-2" max="-2" attributes="0"/>
+                                              <Component id="txtAltoMedidaAbierta" alignment="3" min="-2" max="-2" attributes="0"/>
+                                              <Component id="lblLargoMedidaAbierta" alignment="3" min="-2" max="-2" attributes="0"/>
+                                              <Component id="txtLargoMedidaAbierta" alignment="3" min="-2" max="-2" attributes="0"/>
+                                          </Group>
+                                      </Group>
                                       <Group type="102" attributes="0">
                                           <Component id="chkMedidaCerrada" min="-2" max="-2" attributes="0"/>
                                           <EmptySpace max="-2" attributes="0"/>
@@ -435,45 +471,52 @@
                                               <Component id="lblLargoMedidaCerrada" alignment="3" min="-2" max="-2" attributes="0"/>
                                               <Component id="txtLargoMedidaCerrada" alignment="3" min="-2" max="-2" attributes="0"/>
                                           </Group>
-                                          <EmptySpace max="-2" attributes="0"/>
-                                          <Group type="103" groupAlignment="3" attributes="0">
-                                              <Component id="chkTiraRetira" alignment="3" min="-2" max="-2" attributes="0"/>
-                                              <Component id="chkTipoUnidad" alignment="3" min="-2" max="-2" attributes="0"/>
-                                              <Component id="cboTipoUnidad" alignment="3" min="-2" max="-2" attributes="0"/>
-                                          </Group>
-                                          <EmptySpace max="-2" attributes="0"/>
-                                          <Group type="103" groupAlignment="3" attributes="0">
-                                              <Component id="lblTiraColor" alignment="3" min="-2" max="-2" attributes="0"/>
-                                              <Component id="lblRetiraColor" alignment="3" min="-2" max="-2" attributes="0"/>
-                                              <Component id="txtRetiraColor" alignment="3" min="-2" max="-2" attributes="0"/>
-                                              <Component id="txtTiraColor" alignment="3" min="-2" max="-2" attributes="0"/>
-                                          </Group>
-                                          <Group type="103" groupAlignment="3" attributes="0">
-                                              <Component id="chkFondo" alignment="3" min="-2" max="-2" attributes="0"/>
-                                              <Component id="txtFondo" alignment="3" min="-2" max="-2" attributes="0"/>
-                                          </Group>
-                                          <EmptySpace max="-2" attributes="0"/>
-                                          <Group type="103" groupAlignment="0" attributes="0">
-                                              <Component id="chkServicioImpresion" alignment="0" min="-2" pref="29" max="-2" attributes="0"/>
-                                              <Component id="schServicioImpresion" alignment="0" min="-2" max="-2" attributes="0"/>
-                                          </Group>
-                                          <EmptySpace max="-2" attributes="0"/>
-                                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                              <Component id="schMaquina" alignment="0" max="32767" attributes="0"/>
-                                              <Component id="lblMaquina" alignment="0" max="32767" attributes="0"/>
-                                          </Group>
-                                          <EmptySpace max="-2" attributes="0"/>
-                                          <Component id="chkMaterial" min="-2" pref="29" max="-2" attributes="0"/>
-                                      </Group>
-                                      <Group type="102" attributes="0">
-                                          <Component id="jScrollPane3" min="-2" pref="217" max="-2" attributes="0"/>
-                                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                          <Component id="btnGuardarItem" min="-2" pref="26" max="-2" attributes="0"/>
                                       </Group>
                                   </Group>
                               </Group>
+                              <Group type="102" attributes="0">
+                                  <Component id="chkTipoUnidad" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="cboTipoUnidad" min="-2" max="-2" attributes="0"/>
+                              </Group>
                           </Group>
-                          <EmptySpace max="32767" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="chkTiraRetira" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="chkFondo" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="lblObservacion" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Group type="102" attributes="0">
+                                  <Group type="103" groupAlignment="3" attributes="0">
+                                      <Component id="lblTiraColor" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="lblRetiraColor" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="txtRetiraColor" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="txtTiraColor" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="txtFondo" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="chkServicioImpresion" alignment="0" min="-2" pref="29" max="-2" attributes="0"/>
+                                      <Component id="schServicioImpresion" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                      <Component id="schMaquina" alignment="0" max="32767" attributes="0"/>
+                                      <Component id="lblMaquina" alignment="0" min="-2" pref="29" max="-2" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="schMaterial" min="-2" max="-2" attributes="0"/>
+                                      <Component id="chkMaterial" min="-2" pref="29" max="-2" attributes="0"/>
+                                  </Group>
+                              </Group>
+                              <Component id="jScrollPane3" min="-2" pref="132" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="btnGuardarItem" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace pref="22" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -487,6 +530,7 @@
                 <Component class="javax.swing.JCheckBox" name="chkServicioImpresion">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="SERV. IMPRESI&#xd3;N"/>
+                    <Property name="horizontalTextPosition" type="int" value="2"/>
                   </Properties>
                 </Component>
                 <Component class="com.sge.base.controles.JSearch" name="schMaterial">
@@ -497,6 +541,7 @@
                 <Component class="javax.swing.JCheckBox" name="chkMaterial">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="MATERIAL"/>
+                    <Property name="horizontalTextPosition" type="int" value="10"/>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JCheckBox" name="chkTipoUnidad">
@@ -630,7 +675,7 @@
                 </Component>
                 <Component class="javax.swing.JLabel" name="lblMaquina">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="MAQUINA"/>
+                    <Property name="text" type="java.lang.String" value="M&#xc1;QUINA"/>
                   </Properties>
                 </Component>
                 <Component class="com.sge.base.controles.JSearch" name="schServicioImpresion">
@@ -655,12 +700,12 @@
                 </Container>
                 <Component class="javax.swing.JLabel" name="lblObservacion">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="OBSERVACION"/>
+                    <Property name="text" type="java.lang.String" value="OBSERVACI&#xd3;N"/>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JButton" name="btnGenerarGraficoPrecorte">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="GRAFICO DE PRECORTE"/>
+                    <Property name="text" type="java.lang.String" value="GR&#xc1;FICO DE PRECORTE"/>
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnGenerarGraficoPrecorteActionPerformed"/>
@@ -668,7 +713,7 @@
                 </Component>
                 <Component class="javax.swing.JButton" name="btnGenerarGraficoImpresion">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="GRAFICO DE IMPRESION"/>
+                    <Property name="text" type="java.lang.String" value="GR&#xc1;FICO DE IMPRESI&#xd3;N"/>
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnGenerarGraficoImpresionActionPerformed"/>
@@ -698,12 +743,12 @@
               <Layout>
                 <DimensionLayout dim="0">
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <EmptySpace min="0" pref="582" max="32767" attributes="0"/>
+                      <EmptySpace min="0" pref="764" max="32767" attributes="0"/>
                   </Group>
                 </DimensionLayout>
                 <DimensionLayout dim="1">
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <EmptySpace min="0" pref="382" max="32767" attributes="0"/>
+                      <EmptySpace min="0" pref="328" max="32767" attributes="0"/>
                   </Group>
                 </DimensionLayout>
               </Layout>
@@ -743,7 +788,7 @@
                               <Component id="schListaPrecioServicio" alignment="0" min="-2" pref="255" max="-2" attributes="0"/>
                               <Component id="schListaPrecioMaquina" alignment="0" min="-2" pref="255" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace pref="142" max="32767" attributes="0"/>
+                          <EmptySpace pref="324" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -765,7 +810,7 @@
                               <Component id="lblListaPrecioMaquina" alignment="0" min="-2" pref="27" max="-2" attributes="0"/>
                               <Component id="schListaPrecioMaquina" alignment="0" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace pref="271" max="32767" attributes="0"/>
+                          <EmptySpace pref="217" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -904,9 +949,9 @@
             <Property name="text" type="java.lang.String" value="0"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JLabel" name="lblFormaPago">
+        <Component class="javax.swing.JLabel" name="lblFecha">
           <Properties>
-            <Property name="text" type="java.lang.String" value="FORMA PAGO"/>
+            <Property name="text" type="java.lang.String" value="FECHA"/>
           </Properties>
         </Component>
         <Component class="com.sge.base.controles.JSearch" name="schFormaPago">
@@ -923,6 +968,11 @@
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="schCotizador.addSearchListener(new SearchListener() {&#xa;    @Override&#xa;    public void Search(){&#xa;        schCotizadorSearch();&#xa;    }&#xa;    @Override&#xa;    public void Clear(){&#xa;    }&#xa;});"/>
           </AuxValues>
+        </Component>
+        <Component class="javax.swing.JLabel" name="lblFormaPago1">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="FORMA PAGO"/>
+          </Properties>
         </Component>
       </SubComponents>
     </Container>

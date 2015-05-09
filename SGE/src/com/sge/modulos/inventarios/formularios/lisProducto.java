@@ -358,14 +358,16 @@ public class lisProducto extends frameBase<Producto> {
         // TODO add your handling code here:
         switch (this.modo) {
             case 1:
-                seleccionado = new Producto();
-                seleccionado.setIdProducto(ObtenerValorCelda(tbProductos, 1));
-                seleccionado.setCodigo(ObtenerValorCelda(tbProductos, 2));
-                seleccionado.setDescripcion(ObtenerValorCelda(tbProductos, 3));
-                seleccionado.setAlto(ObtenerValorCelda(tbProductos, 4));
-                seleccionado.setLargo(ObtenerValorCelda(tbProductos, 5));
-                seleccionado.setActivo(ObtenerValorCelda(tbProductos, 6));
-                Cerrar();
+                if (FilaActiva(tbProductos)) {
+                    seleccionado = new Producto();
+                    seleccionado.setIdProducto(ObtenerValorCelda(tbProductos, 1));
+                    seleccionado.setCodigo(ObtenerValorCelda(tbProductos, 2));
+                    seleccionado.setDescripcion(ObtenerValorCelda(tbProductos, 3));
+                    seleccionado.setAlto(ObtenerValorCelda(tbProductos, 4));
+                    seleccionado.setLargo(ObtenerValorCelda(tbProductos, 5));
+                    seleccionado.setActivo(ObtenerValorCelda(tbProductos, 6));
+                    Cerrar();
+                }
                 break;
             case 2:
                 for (int i = 0; i < tbProductos.getRowCount(); i++) {

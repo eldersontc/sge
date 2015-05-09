@@ -792,7 +792,7 @@ public class regSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(chkMaterial, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(schMaterial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnGuardarItem, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnGuardarItem))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -1032,7 +1032,7 @@ public class regSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
                                 .addComponent(btnEliminarItem, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(tpnlItems, javax.swing.GroupLayout.DEFAULT_SIZE, 579, Short.MAX_VALUE)
+                            .addComponent(tpnlItems)
                             .addGroup(frameLayout.createSequentialGroup()
                                 .addGap(0, 0, Short.MAX_VALUE)
                                 .addComponent(btnAceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1219,6 +1219,7 @@ public class regSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
         // TODO add your handling code here:
         AsignarValoresItem();
         lisItems.updateUI();
+        VerAdvertencia("ITEM GUARDADO!", this);
     }//GEN-LAST:event_btnGuardarItemActionPerformed
 
     private void btnNuevoItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoItemActionPerformed
