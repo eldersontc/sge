@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.sge.base.formularios.frameBase;
 import com.sge.modulos.ventas.clases.MetodoImpresion;
-import com.sge.modulos.ventas.clases.MetodoImpresion;
 import com.sge.modulos.ventas.cliente.cliVentas;
 import java.awt.event.ActionEvent;
 import java.util.List;
@@ -79,11 +78,11 @@ public class lisMetodoImpresion extends frameBase<MetodoImpresion> {
                     }.getType());
 
                     for (Object[] fila : filas) {
-                        AgregarFila(tbMetodosImpresion, new Object[]{false, ((Double) fila[0]).intValue(), fila[1], ((Double) fila[2]).intValue(), ((Double) fila[3]).intValue(), fila[4], Icon_Save, Icon_Dele});
+                        AgregarFila(tbMetodosImpresion, new Object[]{false, ((Double) fila[0]).intValue(), fila[1], ((Double) fila[2]).intValue(), ((Double) fila[3]).intValue(), ((Double) fila[4]).intValue(), ((Double) fila[5]).intValue(), fila[6], fila[7], Icon_Save, Icon_Dele});
                     }
 
-                    AgregarBoton(tbMetodosImpresion, save, 6);
-                    AgregarBoton(tbMetodosImpresion, dele, 7);
+                    AgregarBoton(tbMetodosImpresion, save, 9);
+                    AgregarBoton(tbMetodosImpresion, dele, 10);
                     AgregarOrdenamiento(tbMetodosImpresion);
                 }
                 OcultarCargando(frame);
@@ -107,7 +106,10 @@ public class lisMetodoImpresion extends frameBase<MetodoImpresion> {
                 metodoImpresion.setNombre(ObtenerValorCelda(tbMetodosImpresion, 2));
                 metodoImpresion.setFactorPases(ObtenerValorCelda(tbMetodosImpresion, 3));
                 metodoImpresion.setFactorCambios(ObtenerValorCelda(tbMetodosImpresion, 4));
-                metodoImpresion.setActivo(ObtenerValorCelda(tbMetodosImpresion, 5));
+                metodoImpresion.setFactorHorizontal(ObtenerValorCelda(tbMetodosImpresion, 5));
+                metodoImpresion.setFactorVertical(ObtenerValorCelda(tbMetodosImpresion, 6));
+                metodoImpresion.setLetras(ObtenerValorCelda(tbMetodosImpresion, 7));
+                metodoImpresion.setActivo(ObtenerValorCelda(tbMetodosImpresion, 8));
                 if (metodoImpresion.getIdMetodoImpresion() == 0) {
                     json = cliente.RegistrarMetodoImpresion(new Gson().toJson(metodoImpresion));
                 } else {
@@ -184,7 +186,7 @@ public class lisMetodoImpresion extends frameBase<MetodoImpresion> {
                 OcultarControl(btnSeleccionar);
                 break;
             case 1:
-                OcultarColumnas(tbMetodosImpresion, new int[]{0, 6, 7});
+                OcultarColumnas(tbMetodosImpresion, new int[]{0, 9, 10});
                 OcultarControl(btnNuevo);
                 break;
         }
@@ -206,7 +208,7 @@ public class lisMetodoImpresion extends frameBase<MetodoImpresion> {
     public MetodoImpresion getSeleccionado() {
         return seleccionado;
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -237,14 +239,14 @@ public class lisMetodoImpresion extends frameBase<MetodoImpresion> {
 
             },
             new String [] {
-                "CHECK", "ID", "NOMBRE", "F.PASES", "F.CAMBIOS", "ACTIVO", "GUARDAR", "ELIMINAR"
+                "CHECK", "ID", "NOMBRE", "F.PASES", "F.CAMBIOS", "F.HORIZONTAL", "F.VERTICAL", "LETRAS", "ACTIVO", "GUARDAR", "ELIMINAR"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Boolean.class, java.lang.Integer.class, java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Boolean.class, java.lang.Object.class, java.lang.Object.class
+                java.lang.Boolean.class, java.lang.Integer.class, java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.String.class, java.lang.Boolean.class, java.lang.Object.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                true, false, true, true, true, true, true, true
+                true, false, true, true, true, true, true, true, true, true, true
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -334,7 +336,7 @@ public class lisMetodoImpresion extends frameBase<MetodoImpresion> {
             .addGroup(frameLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 723, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 877, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, frameLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btnSeleccionar, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -380,29 +382,29 @@ public class lisMetodoImpresion extends frameBase<MetodoImpresion> {
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
         // TODO add your handling code here:
-        AgregarFila(tbMetodosImpresion, new Object[]{false, 0, "", 0, 0, false, Icon_Save, Icon_Dele});
+        AgregarFila(tbMetodosImpresion, new Object[]{false, 0, "", 0, 0, 1, 1, "", false, Icon_Save, Icon_Dele});
     }//GEN-LAST:event_btnNuevoActionPerformed
 
     private void btnSeleccionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeleccionarActionPerformed
         // TODO add your handling code here:
         switch (this.modo) {
             case 1:
-            if (FilaActiva(tbMetodosImpresion)) {
-                MetodoImpresion metodoImpresion = new MetodoImpresion();
-                metodoImpresion.setIdMetodoImpresion(ObtenerValorCelda(tbMetodosImpresion, 1));
-                metodoImpresion.setNombre(ObtenerValorCelda(tbMetodosImpresion, 2));
-                metodoImpresion.setFactorPases(ObtenerValorCelda(tbMetodosImpresion, 3));
-                metodoImpresion.setFactorCambios(ObtenerValorCelda(tbMetodosImpresion, 4));
-                metodoImpresion.setFactorHorizontal(2);
-                metodoImpresion.setFactorVertical(1);
-                metodoImpresion.setLetras("T,R");
-                metodoImpresion.setActivo(ObtenerValorCelda(tbMetodosImpresion, 5));
-                seleccionado = metodoImpresion;
-            }
-            Cerrar();
-            break;
+                if (FilaActiva(tbMetodosImpresion)) {
+                    MetodoImpresion metodoImpresion = new MetodoImpresion();
+                    metodoImpresion.setIdMetodoImpresion(ObtenerValorCelda(tbMetodosImpresion, 1));
+                    metodoImpresion.setNombre(ObtenerValorCelda(tbMetodosImpresion, 2));
+                    metodoImpresion.setFactorPases(ObtenerValorCelda(tbMetodosImpresion, 3));
+                    metodoImpresion.setFactorCambios(ObtenerValorCelda(tbMetodosImpresion, 4));
+                    metodoImpresion.setFactorHorizontal(ObtenerValorCelda(tbMetodosImpresion, 5));
+                    metodoImpresion.setFactorVertical(ObtenerValorCelda(tbMetodosImpresion, 6));
+                    metodoImpresion.setLetras(ObtenerValorCelda(tbMetodosImpresion, 7));
+                    metodoImpresion.setActivo(ObtenerValorCelda(tbMetodosImpresion, 8));
+                    seleccionado = metodoImpresion;
+                }
+                Cerrar();
+                break;
             case 2:
-            break;
+                break;
         }
     }//GEN-LAST:event_btnSeleccionarActionPerformed
 
