@@ -45,7 +45,7 @@ public class MetodoImpresionDTO {
         try {
             metodoImpresionDAO = new MetodoImpresionDAO();
             metodoImpresionDAO.IniciarTransaccion();
-            metodoImpresionDAO.ActualizarMetodoImpresion(metodoImpresion.getIdMetodoImpresion(), metodoImpresion.getNombre(), metodoImpresion.getFactorPases(), metodoImpresion.getFactorCambios(), metodoImpresion.isActivo());
+            metodoImpresionDAO.ActualizarMetodoImpresion(metodoImpresion.getIdMetodoImpresion(), metodoImpresion.getNombre(), metodoImpresion.getFactorPases(), metodoImpresion.getFactorCambios(), metodoImpresion.getFactorHorizontal(), metodoImpresion.getFactorVertical(), metodoImpresion.getLetras(), metodoImpresion.isActivo());
             metodoImpresionDAO.ConfirmarTransaccion();
         } catch (Exception e) {
             metodoImpresionDAO.AbortarTransaccion();

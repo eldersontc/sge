@@ -12,6 +12,9 @@
         <property name="nombre" column="nombre"/>
         <property name="factorPases" column="factorPases"/>
         <property name="factorCambios" column="factorCambios"/>
+        <property name="factorHorizontal" column="factorHorizontal"/>
+        <property name="factorVertical" column="factorVertical"/>
+        <property name="letras" column="letras"/>
         <property name="activo" column="activo"/>
     </class>
 </hibernate-mapping>
