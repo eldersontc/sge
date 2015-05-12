@@ -253,6 +253,12 @@ public class cliVentas {
         resource = resource.path("EliminarCotizacion");
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
     }
+    
+    public String ObtenerEscalasMaquinaYProducto(Object requestEntity) throws ClientErrorException {
+        WebTarget resource = client.target(BASE_URI).path("CotizacionSRV");
+        resource = resource.path("ObtenerEscalasMaquinaYProducto");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
+    }
 
     ////////////////////////////////////////////////////////////////////////////
     ///////////////////////// LISTA PRECIO PRODUCTO ////////////////////////////
