@@ -36,6 +36,7 @@ public class ItemSolicitudCotizacion {
     private double tiraColor;
     private double retiraColor;
     private double dFondo;
+    private int cantidadTipoUnidad;
     private String acabados;
     private boolean agregar;
     private boolean actualizar;
@@ -284,6 +285,14 @@ public class ItemSolicitudCotizacion {
         this.dFondo = dFondo;
     }
 
+    public int getCantidadTipoUnidad() {
+        return cantidadTipoUnidad;
+    }
+
+    public void setCantidadTipoUnidad(int cantidadTipoUnidad) {
+        this.cantidadTipoUnidad = cantidadTipoUnidad;
+    }
+    
     public String getAcabados() {
         return acabados;
     }

@@ -4,6 +4,7 @@ import com.sge.base.formularios.frameBase;
 import com.sge.modulos.ventas.clases.Cotizacion;
 import com.sge.modulos.ventas.clases.ItemCotizacion;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
@@ -27,26 +28,29 @@ public class genGraficoPrecorte extends frameBase<Cotizacion> {
     private int lGrafi = 0;
     private int aPieza = 0;
     private int lPieza = 0;
+    private int separx = 0;
+    private int separy = 0;
 
     private ItemCotizacion item;
-    
-    public void Init(ItemCotizacion item){
+
+    public void Init(ItemCotizacion item) {
         this.item = item;
         AsignarControles();
     }
-    
-    public void AsignarControles(){
+
+    public void AsignarControles() {
         txtMedidasMaterial.setText(String.format("%s X %s CM.", this.item.getAltoMaterial(), this.item.getLargoMaterial()));
         txtAltoPieza.setText(String.valueOf(this.item.getAltoFormatoImpresion()));
         txtLargoPieza.setText(String.valueOf(this.item.getLargoFormatoImpresion()));
+        txtDemasia.setText(String.valueOf(this.item.getCantidadDemasia()));
         txtCantidadPiezas.setText(String.valueOf(this.item.getCantidadPiezasPrecorte()));
         txtCantidadHojasMaquina.setText(String.valueOf(this.item.getCantidadMaterial() * this.item.getCantidadPiezasPrecorte()));
-        txtOtros.setText(String.format("%s PLIEGOS DE : %s + %s = %s HJS/RESMA \n", this.item.getCantidadPliegos(), this.item.getCantidadMaterial(), this.item.getCantidadDemasia(), this.item.getCantidadMaterial() + this.item.getCantidadDemasia()));
-        if(this.item.getGraficoPrecorte() != null){
+        txtOtros.setText(String.format("%s PLIEGOS DE : %s + %s = %s HJS/RESMA \n", this.item.getCantidadPliegos(), this.item.getCantidadMaterial(), this.item.getCantidadDemasiaMaterial(), this.item.getCantidadMaterial() + this.item.getCantidadDemasiaMaterial()));
+        if (this.item.getGraficoPrecorte() != null) {
             lblGrafico.setIcon(new ImageIcon(this.item.getGraficoPrecorte()));
         }
     }
-    
+
     public BufferedImage CambiarDimensiones(BufferedImage imagen, int largo, int alto) {
         int largoImagen = imagen.getWidth();
         int altoImagen = imagen.getHeight();
@@ -114,12 +118,138 @@ public class genGraficoPrecorte extends frameBase<Cotizacion> {
         this.item.setCantidadPiezasPrecorte(cantidadPiezas);
         this.item.setGraficoPrecorte(CambiarDimensiones(imagen, lGrafi / 2, aGrafi / 2));
 
-        AsignarControles();
+        //AsignarControles();
     }
 
+    public void GenerarGraficoImpresion() throws Exception {
+
+        aGrafi = (int) (Math.min(this.item.getAltoFormatoImpresion(), this.item.getLargoFormatoImpresion()) * 10) / this.item.getFactorVertical();
+        lGrafi = (int) (Math.max(this.item.getAltoFormatoImpresion(), this.item.getLargoFormatoImpresion()) * 10) / this.item.getFactorHorizontal();
+
+        separx = (int) (this.item.getSeparacionX() * 10);
+        separy = (int) (this.item.getSeparacionY() * 10);
+
+        if (this.item.isGraficoImpresionGirado()) {
+            aPieza = (int) (this.item.getLargoMedidaAbierta() * 10);
+            lPieza = (int) (this.item.getAltoMedidaAbierta() * 10);
+        } else {
+            aPieza = (int) (this.item.getAltoMedidaAbierta() * 10);
+            lPieza = (int) (this.item.getLargoMedidaAbierta() * 10);
+        }
+
+        if (aGrafi <= 0) {
+            throw new Exception("ALTO DE MATERIAL NO PUEDE SER 0.");
+        }
+        if (lGrafi <= 0) {
+            throw new Exception("LARGO DE MATERIAL NO PUEDE SER 0.");
+        }
+        if (aPieza <= 0) {
+            throw new Exception("ALTO DE PIEZA NO PUEDE SER 0.");
+        }
+        if (lPieza <= 0) {
+            throw new Exception("LARGO DE PIEZA NO PUEDE SER 0.");
+        }
+
+        BufferedImage imagen_ = new BufferedImage(lGrafi, aGrafi, BufferedImage.TYPE_INT_RGB);
+        Graphics2D grafico_ = imagen_.createGraphics();
+
+        grafico_.setColor(Color.WHITE);
+        grafico_.fillRect(0, 0, lGrafi, aGrafi);
+
+        grafico_.setColor(Color.BLACK);
+        grafico_.drawRect(0, 0, lGrafi - 1, aGrafi - 1);
+
+        int cantidadPiezas = 0;
+        for (int y = 0; y <= aGrafi - aPieza; y += aPieza) {
+            for (int x = 0; x <= lGrafi - lPieza; x += lPieza) {
+                grafico_.setColor(Color.BLACK);
+                grafico_.drawRect(x, y, lPieza, aPieza);
+                cantidadPiezas++;
+                x += separy;
+            }
+            y += separx;
+        }
+
+        BufferedImage imagen = null;
+
+        if (this.item.getFactorHorizontal() > 1 || this.item.getFactorVertical() > 1) {
+
+            aGrafi = (int) (Math.min(this.item.getAltoFormatoImpresion(), this.item.getLargoFormatoImpresion()) * 10);
+            lGrafi = (int) (Math.max(this.item.getAltoFormatoImpresion(), this.item.getLargoFormatoImpresion()) * 10);
+
+            imagen = new BufferedImage(lGrafi, aGrafi, BufferedImage.TYPE_INT_RGB);
+            Graphics2D grafico = imagen.createGraphics();
+
+            if (this.item.getFactorHorizontal() > 1) {
+                String[] letras = this.item.getLetras().split(",");
+                for (int i = 0; i < this.item.getFactorHorizontal(); i++) {
+                    grafico.drawImage(imagen_, i * imagen_.getWidth(), 0, imagen_.getWidth(), imagen_.getHeight(), null);
+                    grafico.setFont(new Font("Arial", Font.PLAIN, 50));
+                    grafico.setColor(Color.RED);
+                    grafico.drawString(letras[i], (i * imagen_.getWidth()) + (imagen_.getWidth() / 2), imagen_.getHeight() / 2);
+                }
+                cantidadPiezas = cantidadPiezas * this.item.getFactorHorizontal();
+            }
+
+            if (this.item.getFactorVertical() > 1) {
+                String[] letras = this.item.getLetras().split(",");
+                for (int i = 0; i < this.item.getFactorVertical(); i++) {
+                    grafico.drawImage(imagen_, 0, i * imagen_.getHeight(), imagen_.getWidth(), imagen_.getHeight(), null);
+                    grafico.setFont(new Font("Arial", Font.PLAIN, 50));
+                    grafico.setColor(Color.RED);
+                    grafico.drawString(letras[i], imagen_.getWidth() / 2, (i * imagen_.getHeight()) + (imagen_.getHeight() / 2));
+                }
+                cantidadPiezas = cantidadPiezas * this.item.getFactorVertical();
+            }
+        } else {
+            imagen = imagen_;
+        }
+
+        this.item.setCantidadPiezasImpresion(cantidadPiezas);
+        this.item.setGraficoImpresion(imagen);
+
+        //AsignarControles();
+    }
+    
     public void GirarGrafico() throws Exception {
         this.item.setGraficoPrecorteGirado(!this.item.isGraficoPrecorteGirado());
         GenerarGrafico();
+    }
+
+    public void CalcularProduccion() throws Exception {
+        if (this.item.isImpresionVinil() || this.item.isImpresionBanner()) {
+            double alto = this.item.getAltoMedidaAbierta();
+            double largo = this.item.getLargoMedidaAbierta();
+            if (this.item.getUnidadMedidaAbierta().equals("MT")) {
+                alto = alto * 100;
+                largo = largo * 100;
+            }
+            this.item.setCantidadMaterial(new Double(this.item.getCantidad() * (alto * largo)).intValue());
+            this.item.setCantidadProduccion(this.item.getCantidadMaterial() + this.item.getCantidadDemasia());
+        } else {
+            double cantidadDecimal = 0;
+            if (this.item.isTipoUnidad() && this.item.getCantidadTipoUnidad() > 0) {
+                cantidadDecimal = this.item.getCantidad() / this.item.getCantidadPiezasPrecorte();
+            } else {
+                cantidadDecimal = this.item.getCantidad() / (this.item.getCantidadPiezasPrecorte() * this.item.getCantidadPiezasImpresion());
+            }
+            int cantidadEntera = new Double(cantidadDecimal).intValue();
+            this.item.setCantidadMaterial(((cantidadDecimal - cantidadEntera) > 0) ? cantidadEntera + 1 : cantidadEntera);
+            this.item.setCantidadDemasiaMaterial(new Double(this.item.getCantidadDemasia() / this.item.getCantidadPiezasPrecorte()).intValue());
+            if (this.item.getCantidadTipoUnidad() == 0) {
+                this.item.setCantidadPliegos(1);
+            } else {
+                double pliegosDecimal = this.item.getCantidadTipoUnidad() / (this.item.getCantidadPiezasImpresion() * 2);
+                int pliegosEntero = new Double(Math.floor(pliegosDecimal)).intValue();
+                double residuo = pliegosEntero - pliegosDecimal;
+                this.item.setCantidadPaginasSobrantes(0);
+                if (residuo > 0) {
+                    this.item.setCantidadPaginasSobrantes(this.item.getCantidadTipoUnidad() - (pliegosEntero * this.item.getCantidadPiezasImpresion() * 2));
+                }
+                this.item.setCantidadPliegos((pliegosEntero == 0) ? 1 : pliegosEntero);
+            }
+            this.item.setCantidadProduccion((this.item.getCantidadMaterial() + this.item.getCantidadDemasiaMaterial()) * this.item.getCantidadPiezasPrecorte() * this.item.getCantidadPases());
+        }
     }
 
     /**
@@ -335,6 +465,9 @@ public class genGraficoPrecorte extends frameBase<Cotizacion> {
             this.item.setLargoFormatoImpresion(Double.parseDouble(txtLargoPieza.getText()));
             this.item.setCantidadDemasia(Integer.parseInt(txtDemasia.getText()));
             GenerarGrafico();
+            GenerarGraficoImpresion();
+            CalcularProduccion();
+            AsignarControles();
         } catch (Exception e) {
             ControlarExcepcion(e);
         }
@@ -347,6 +480,8 @@ public class genGraficoPrecorte extends frameBase<Cotizacion> {
             this.item.setLargoFormatoImpresion(Double.parseDouble(txtLargoPieza.getText()));
             this.item.setCantidadDemasia(Integer.parseInt(txtDemasia.getText()));
             GirarGrafico();
+            CalcularProduccion();
+            AsignarControles();
         } catch (Exception e) {
             ControlarExcepcion(e);
         }

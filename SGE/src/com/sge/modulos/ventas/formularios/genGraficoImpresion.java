@@ -54,7 +54,7 @@ public class genGraficoImpresion extends frameBase<Cotizacion> {
         txtCantidadPases.setText(String.valueOf(this.item.getCantidadPases()));
         txtCantidadCambios.setText(String.valueOf(this.item.getCantidadCambios()));
         txtTiraje.setText(String.valueOf(this.item.getCantidadProduccion()));
-        txtOtros.setText(String.format("%s PLIEGOS DE : %s HJS/MAQUINA \n", this.item.getCantidadPliegos(), (this.item.getCantidadMaterial() + this.item.getCantidadDemasia()) * this.item.getCantidadPiezasPrecorte()));
+        txtOtros.setText(String.format("%s PLIEGOS DE : %s HJS/MAQUINA \n", this.item.getCantidadPliegos(), (this.item.getCantidadMaterial() + this.item.getCantidadDemasiaMaterial()) * this.item.getCantidadPiezasPrecorte()));
         if (this.item.getGraficoImpresion() != null) {
             lblGrafico.setIcon(new ImageIcon(this.item.getGraficoImpresion()));
         }
@@ -85,7 +85,7 @@ public class genGraficoImpresion extends frameBase<Cotizacion> {
         if (this.item.getIdMetodoImpresion() == 0) {
             throw new Exception("DEBE DE SELECCIONAR UN METODO DE IMPRESION.");
         }
-        
+
         aGrafi = (int) (Math.min(this.item.getAltoFormatoImpresion(), this.item.getLargoFormatoImpresion()) * 10) / this.item.getFactorVertical();
         lGrafi = (int) (Math.max(this.item.getAltoFormatoImpresion(), this.item.getLargoFormatoImpresion()) * 10) / this.item.getFactorHorizontal();
 
@@ -171,7 +171,7 @@ public class genGraficoImpresion extends frameBase<Cotizacion> {
         this.item.setCantidadPiezasImpresion(cantidadPiezas);
         this.item.setGraficoImpresion(imagen);
 
-        AsignarControles();
+        //AsignarControles();
     }
 
     public void GirarGrafico() throws Exception {
@@ -196,6 +196,42 @@ public class genGraficoImpresion extends frameBase<Cotizacion> {
             }
         }
     };
+
+    public void CalcularProduccion() {
+        if (this.item.isImpresionVinil() || this.item.isImpresionBanner()) {
+            double alto = this.item.getAltoMedidaAbierta();
+            double largo = this.item.getLargoMedidaAbierta();
+            if (this.item.getUnidadMedidaAbierta().equals("MT")) {
+                alto = alto * 100;
+                largo = largo * 100;
+            }
+            this.item.setCantidadMaterial(new Double(this.item.getCantidad() * (alto * largo)).intValue());
+            this.item.setCantidadProduccion(this.item.getCantidadMaterial() + this.item.getCantidadDemasia());
+        } else {
+            double cantidadDecimal = 0;
+            if (this.item.isTipoUnidad() && this.item.getCantidadTipoUnidad() > 0) {
+                cantidadDecimal = this.item.getCantidad() / this.item.getCantidadPiezasPrecorte();
+            } else {
+                cantidadDecimal = this.item.getCantidad() / (this.item.getCantidadPiezasPrecorte() * this.item.getCantidadPiezasImpresion());
+            }
+            int cantidadEntera = new Double(cantidadDecimal).intValue();
+            this.item.setCantidadMaterial(((cantidadDecimal - cantidadEntera) > 0) ? cantidadEntera + 1 : cantidadEntera);
+            this.item.setCantidadDemasiaMaterial(new Double(this.item.getCantidadDemasia() / this.item.getCantidadPiezasPrecorte()).intValue());
+            if (this.item.getCantidadTipoUnidad() == 0) {
+                this.item.setCantidadPliegos(1);
+            } else {
+                double pliegosDecimal = this.item.getCantidadTipoUnidad() / (this.item.getCantidadPiezasImpresion() * 2);
+                int pliegosEntero = new Double(Math.floor(pliegosDecimal)).intValue();
+                double residuo = pliegosEntero - pliegosDecimal;
+                this.item.setCantidadPaginasSobrantes(0);
+                if (residuo > 0) {
+                    this.item.setCantidadPaginasSobrantes(this.item.getCantidadTipoUnidad() - (pliegosEntero * this.item.getCantidadPiezasImpresion() * 2));
+                }
+                this.item.setCantidadPliegos((pliegosEntero == 0) ? 1 : pliegosEntero);
+            }
+            this.item.setCantidadProduccion((this.item.getCantidadMaterial() + this.item.getCantidadDemasiaMaterial()) * this.item.getCantidadPiezasPrecorte() * this.item.getCantidadPases());
+        }
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -259,7 +295,7 @@ public class genGraficoImpresion extends frameBase<Cotizacion> {
             .addGroup(pnlTituloLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lblTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 318, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(563, Short.MAX_VALUE))
+                .addContainerGap(579, Short.MAX_VALUE))
         );
         pnlTituloLayout.setVerticalGroup(
             pnlTituloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -353,7 +389,7 @@ public class genGraficoImpresion extends frameBase<Cotizacion> {
             .addComponent(pnlTitulo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(frameLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 685, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(frameLayout.createSequentialGroup()
@@ -394,7 +430,7 @@ public class genGraficoImpresion extends frameBase<Cotizacion> {
                         .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txtCantidadPiezas)
                             .addComponent(txtTiraje))))
-                .addContainerGap())
+                .addGap(20, 20, 20))
         );
         frameLayout.setVerticalGroup(
             frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -447,10 +483,10 @@ public class genGraficoImpresion extends frameBase<Cotizacion> {
                             .addComponent(lblTiraje, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtTiraje, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 133, Short.MAX_VALUE)
+                        .addComponent(jScrollPane2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnAceptar))
-                    .addComponent(jScrollPane1))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 567, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -458,7 +494,9 @@ public class genGraficoImpresion extends frameBase<Cotizacion> {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(frame, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(frame, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -480,6 +518,8 @@ public class genGraficoImpresion extends frameBase<Cotizacion> {
             this.item.setSeparacionX(Double.parseDouble(txtSeparacionX.getText()));
             this.item.setSeparacionY(Double.parseDouble(txtSeparacionY.getText()));
             GenerarGrafico();
+            CalcularProduccion();
+            AsignarControles();
         } catch (Exception e) {
             ControlarExcepcion(e);
         }
@@ -493,6 +533,8 @@ public class genGraficoImpresion extends frameBase<Cotizacion> {
             this.item.setSeparacionX(Double.parseDouble(txtSeparacionX.getText()));
             this.item.setSeparacionY(Double.parseDouble(txtSeparacionY.getText()));
             GirarGrafico();
+            CalcularProduccion();
+            AsignarControles();
         } catch (Exception e) {
             ControlarExcepcion(e);
         }

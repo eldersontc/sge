@@ -13,6 +13,8 @@ public class ItemCotizacion {
     private String nombre;
     private int idServicioImpresion;
     private String nombreServicioImpresion;
+    private boolean impresionVinil;
+    private boolean impresionBanner;
     private int idMaquina;
     private String descripcionMaquina;
     private int largoMaximoPliegoMaquina;
@@ -38,6 +40,7 @@ public class ItemCotizacion {
     private double tiraColor;
     private double retiraColor;
     private double dFondo;
+    private int cantidadTipoUnidad;
     private double largoFormatoImpresion;
     private double altoFormatoImpresion;
     private double separacionX;
@@ -60,6 +63,7 @@ public class ItemCotizacion {
     private String letras;
     private int cantidadMaterial;
     private int cantidadDemasia;
+    private int cantidadDemasiaMaterial;
     private int cantidadProduccion;
     private int cantidad;
     private int cantidadPaginasSobrantes;
@@ -113,6 +117,22 @@ public class ItemCotizacion {
 
     public void setNombreServicioImpresion(String nombreServicioImpresion) {
         this.nombreServicioImpresion = nombreServicioImpresion;
+    }
+
+    public boolean isImpresionVinil() {
+        return impresionVinil;
+    }
+
+    public void setImpresionVinil(boolean impresionVinil) {
+        this.impresionVinil = impresionVinil;
+    }
+
+    public boolean isImpresionBanner() {
+        return impresionBanner;
+    }
+
+    public void setImpresionBanner(boolean impresionBanner) {
+        this.impresionBanner = impresionBanner;
     }
 
     public int getIdMaquina() {
@@ -315,6 +335,14 @@ public class ItemCotizacion {
         this.dFondo = dFondo;
     }
 
+    public int getCantidadTipoUnidad() {
+        return cantidadTipoUnidad;
+    }
+
+    public void setCantidadTipoUnidad(int cantidadTipoUnidad) {
+        this.cantidadTipoUnidad = cantidadTipoUnidad;
+    }
+    
     public double getLargoFormatoImpresion() {
         return largoFormatoImpresion;
     }
@@ -345,6 +373,14 @@ public class ItemCotizacion {
 
     public void setSeparacionY(double separacionY) {
         this.separacionY = separacionY;
+    }
+
+    public int getCantidadPliegos() {
+        return cantidadPliegos;
+    }
+
+    public void setCantidadPliegos(int cantidadPliegos) {
+        this.cantidadPliegos = cantidadPliegos;
     }
 
     public String getUbicacionGraficoPrecorte() {
@@ -443,6 +479,30 @@ public class ItemCotizacion {
         this.cantidadCambios = cantidadCambios;
     }
 
+    public int getFactorHorizontal() {
+        return factorHorizontal;
+    }
+
+    public void setFactorHorizontal(int factorHorizontal) {
+        this.factorHorizontal = factorHorizontal;
+    }
+
+    public int getFactorVertical() {
+        return factorVertical;
+    }
+
+    public void setFactorVertical(int factorVertical) {
+        this.factorVertical = factorVertical;
+    }
+
+    public String getLetras() {
+        return letras;
+    }
+
+    public void setLetras(String letras) {
+        this.letras = letras;
+    }
+
     public int getCantidadMaterial() {
         return cantidadMaterial;
     }
@@ -459,6 +519,14 @@ public class ItemCotizacion {
         this.cantidadDemasia = cantidadDemasia;
     }
 
+    public int getCantidadDemasiaMaterial() {
+        return cantidadDemasiaMaterial;
+    }
+
+    public void setCantidadDemasiaMaterial(int cantidadDemasiaMaterial) {
+        this.cantidadDemasiaMaterial = cantidadDemasiaMaterial;
+    }
+    
     public int getCantidadProduccion() {
         return cantidadProduccion;
     }
@@ -545,42 +613,5 @@ public class ItemCotizacion {
 
     public void setEliminar(boolean eliminar) {
         this.eliminar = eliminar;
-    }
-    
-    @Override
-    public String toString(){
-        return nombre;
-    }
-
-    public int getCantidadPliegos() {
-        return cantidadPliegos;
-    }
-
-    public void setCantidadPliegos(int cantidadPliegos) {
-        this.cantidadPliegos = cantidadPliegos;
-    }
-
-    public int getFactorHorizontal() {
-        return factorHorizontal;
-    }
-
-    public void setFactorHorizontal(int factorHorizontal) {
-        this.factorHorizontal = factorHorizontal;
-    }
-
-    public int getFactorVertical() {
-        return factorVertical;
-    }
-
-    public void setFactorVertical(int factorVertical) {
-        this.factorVertical = factorVertical;
-    }
-
-    public String getLetras() {
-        return letras;
-    }
-
-    public void setLetras(String letras) {
-        this.letras = letras;
     }
 }

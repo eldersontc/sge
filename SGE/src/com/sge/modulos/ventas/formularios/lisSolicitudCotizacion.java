@@ -152,7 +152,7 @@ public class lisSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
                     Date fechaServidor = new Gson().fromJson(resultado[1], Date.class);
                     SolicitudCotizacion solicitud = new Gson().fromJson(resultado[2], SolicitudCotizacion.class);
                     Cotizacion cotizacion = null;
-                    if(resultado[3].isEmpty()){
+                    if (resultado[3].isEmpty()) {
                         cotizacion = new Cotizacion();
                     } else {
                         cotizacion = new Gson().fromJson(resultado[3], Cotizacion.class);
@@ -175,7 +175,7 @@ public class lisSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
                     cotizacion.setNombreVendedor(solicitud.getNombreVendedor());
                     cotizacion.setLineaProduccion(solicitud.getLineaProduccion());
                     cotizacion.setCantidad(solicitud.getCantidad());
-                    
+
                     for (ItemSolicitudCotizacion itemSolicitud : solicitud.getItems()) {
                         ItemCotizacion itemCotizacion = new ItemCotizacion();
                         itemCotizacion.setNombre(itemSolicitud.getNombre());
@@ -206,10 +206,18 @@ public class lisSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
                         itemCotizacion.setTiraColor(itemSolicitud.getTiraColor());
                         itemCotizacion.setRetiraColor(itemSolicitud.getRetiraColor());
                         itemCotizacion.setdFondo(itemSolicitud.getdFondo());
-//                        itemCotizacion.set
+                        itemCotizacion.setCantidadTipoUnidad(itemSolicitud.getCantidadTipoUnidad());
+                        if (itemSolicitud.isGrafico()) {
+                            itemCotizacion.setIdMetodoImpresion(4);
+                            itemCotizacion.setDescripcionMetodoImpresion("TIRA");
+                            itemCotizacion.setCantidadPases(1);
+                            itemCotizacion.setCantidadCambios(1);
+                            itemCotizacion.setFactorHorizontal(1);
+                            itemCotizacion.setFactorVertical(1);
+                        }
                         cotizacion.getItems().add(itemCotizacion);
                     }
-                    
+
                     regCotizacion regCotizacion = new regCotizacion(0);
                     regCotizacion.setUsuario(getUsuario());
                     regCotizacion.setEntidad(cotizacion);
@@ -232,7 +240,7 @@ public class lisSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
             OcultarCargando(frame);
         }
     }
-    
+
     public void Init(int modo) {
         this.modo = modo;
         switch (this.modo) {

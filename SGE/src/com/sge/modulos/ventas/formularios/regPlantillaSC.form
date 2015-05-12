@@ -62,8 +62,8 @@
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
                           <Component id="txtNombre" min="-2" pref="490" max="-2" attributes="0"/>
-                          <Group type="102" alignment="0" attributes="0">
-                              <Component id="cboLineaProduccion" min="-2" pref="108" max="-2" attributes="0"/>
+                          <Group type="102" attributes="0">
+                              <Component id="cboLineaProduccion" min="-2" pref="191" max="-2" attributes="0"/>
                               <EmptySpace max="32767" attributes="0"/>
                               <Component id="chkActivo" min="-2" max="-2" attributes="0"/>
                               <EmptySpace min="-2" pref="9" max="-2" attributes="0"/>
@@ -204,12 +204,11 @@
         <Component class="javax.swing.JComboBox" name="cboLineaProduccion">
           <Properties>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-              <StringArray count="5">
-                <StringItem index="0" value="LINEA 1"/>
-                <StringItem index="1" value="LINEA 2"/>
-                <StringItem index="2" value="LINEA 3"/>
-                <StringItem index="3" value="LINEA 4"/>
-                <StringItem index="4" value="LINEA 5"/>
+              <StringArray count="4">
+                <StringItem index="0" value="PUBLICIDAD"/>
+                <StringItem index="1" value="OFFSET"/>
+                <StringItem index="2" value="DIGITAL"/>
+                <StringItem index="3" value="OTROS"/>
               </StringArray>
             </Property>
           </Properties>
@@ -378,10 +377,12 @@
                 <Component class="javax.swing.JComboBox" name="cboTipoUnidad">
                   <Properties>
                     <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-                      <StringArray count="3">
-                        <StringItem index="0" value="TIPO UNIDAD 1"/>
-                        <StringItem index="1" value="TIPO UNIDAD 2"/>
-                        <StringItem index="2" value="TIPO UNIDAD 3"/>
+                      <StringArray count="5">
+                        <StringItem index="0" value="UNIDADES"/>
+                        <StringItem index="1" value="PAGINAS"/>
+                        <StringItem index="2" value="JUEGOS"/>
+                        <StringItem index="3" value="ORIGINALES"/>
+                        <StringItem index="4" value="OTROS"/>
                       </StringArray>
                     </Property>
                   </Properties>
@@ -417,10 +418,9 @@
                 <Component class="javax.swing.JComboBox" name="cboUnidadMedidaAbierta">
                   <Properties>
                     <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-                      <StringArray count="3">
-                        <StringItem index="0" value="UNIDAD 1"/>
-                        <StringItem index="1" value="UNIDAD 2"/>
-                        <StringItem index="2" value="UNIDAD 3"/>
+                      <StringArray count="2">
+                        <StringItem index="0" value="CM"/>
+                        <StringItem index="1" value="MT"/>
                       </StringArray>
                     </Property>
                   </Properties>

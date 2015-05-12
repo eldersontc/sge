@@ -294,7 +294,7 @@ public class regPlantillaSC extends frameBase<PlantillaSolicitudCotizacion> {
 
         lblNombre.setText("NOMBRE");
 
-        cboLineaProduccion.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "LINEA 1", "LINEA 2", "LINEA 3", "LINEA 4", "LINEA 5" }));
+        cboLineaProduccion.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "PUBLICIDAD", "OFFSET", "DIGITAL", "OTROS" }));
 
         pnlItem.setBackground(java.awt.Color.white);
         pnlItem.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -341,7 +341,7 @@ public class regPlantillaSC extends frameBase<PlantillaSolicitudCotizacion> {
             }
         });
 
-        cboTipoUnidad.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "TIPO UNIDAD 1", "TIPO UNIDAD 2", "TIPO UNIDAD 3" }));
+        cboTipoUnidad.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "UNIDADES", "PAGINAS", "JUEGOS", "ORIGINALES", "OTROS" }));
 
         chkMedidaAbierta.setText("MEDIDA ABIERTA");
         chkMedidaAbierta.addChangeListener(new javax.swing.event.ChangeListener() {
@@ -358,7 +358,7 @@ public class regPlantillaSC extends frameBase<PlantillaSolicitudCotizacion> {
 
         chkGrafico.setText("GRÁFICO");
 
-        cboUnidadMedidaAbierta.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "UNIDAD 1", "UNIDAD 2", "UNIDAD 3" }));
+        cboUnidadMedidaAbierta.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "CM", "MT" }));
 
         btnGuardarItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sge/base/imagenes/save-16.png"))); // NOI18N
         btnGuardarItem.addActionListener(new java.awt.event.ActionListener() {
@@ -492,7 +492,7 @@ public class regPlantillaSC extends frameBase<PlantillaSolicitudCotizacion> {
                     .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 490, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGroup(frameLayout.createSequentialGroup()
-                            .addComponent(cboLineaProduccion, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cboLineaProduccion, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(chkActivo)
                             .addGap(9, 9, 9)))
