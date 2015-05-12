@@ -79,10 +79,10 @@ public class lisProducto extends frameBase<Producto> {
                     List<Object[]> filas = (List<Object[]>) new Gson().fromJson(resultado[1], new TypeToken<List<Object[]>>() {
                     }.getType());
                     for (Object[] fila : filas) {
-                        AgregarFila(tbProductos, new Object[]{false, ((Double) fila[0]).intValue(), fila[1], fila[2], fila[3], fila[4], fila[5], Icon_Edit, Icon_Dele});
+                        AgregarFila(tbProductos, new Object[]{false, ((Double) fila[0]).intValue(), fila[1], fila[2], fila[3], fila[4], ((Double) fila[5]).intValue(), fila[6], fila[7], Icon_Edit, Icon_Dele});
                     }
-                    AgregarBoton(tbProductos, edit, 7);
-                    AgregarBoton(tbProductos, dele, 8);
+                    AgregarBoton(tbProductos, edit, 9);
+                    AgregarBoton(tbProductos, dele, 10);
                     AgregarOrdenamiento(tbProductos);
                 }
                 OcultarCargando(frame);
@@ -138,11 +138,11 @@ public class lisProducto extends frameBase<Producto> {
                 OcultarControl(btnSeleccionar);
                 break;
             case 1:
-                OcultarColumnas(tbProductos, new int[]{0, 7, 8});
+                OcultarColumnas(tbProductos, new int[]{0, 9, 10});
                 OcultarControl(btnNuevo);
                 break;
             case 2:
-                OcultarColumnas(tbProductos, new int[]{7, 8});
+                OcultarColumnas(tbProductos, new int[]{9, 10});
                 OcultarControl(btnNuevo);
                 break;
         }
@@ -201,14 +201,14 @@ public class lisProducto extends frameBase<Producto> {
 
             },
             new String [] {
-                "CHECK", "IDPRODUCTO", "CODIGO", "DESCRIPCION", "ALTO", "LARGO", "ACTIVO", "EDITAR", "ELIMINAR"
+                "CHECK", "IDPRODUCTO", "CODIGO", "DESCRIPCION", "ALTO", "LARGO", "IDUNIDADBASE", "UNID.BASE", "ACTIVO", "EDITAR", "ELIMINAR"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Boolean.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Double.class, java.lang.Double.class, java.lang.Boolean.class, java.lang.Object.class, java.lang.Object.class
+                java.lang.Boolean.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Double.class, java.lang.Double.class, java.lang.Integer.class, java.lang.String.class, java.lang.Boolean.class, java.lang.Object.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                true, false, true, true, true, true, true, true, true
+                true, false, true, true, true, true, true, true, true, true, true
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -228,6 +228,9 @@ public class lisProducto extends frameBase<Producto> {
             tbProductos.getColumnModel().getColumn(1).setPreferredWidth(0);
             tbProductos.getColumnModel().getColumn(1).setMaxWidth(0);
             tbProductos.getColumnModel().getColumn(3).setPreferredWidth(200);
+            tbProductos.getColumnModel().getColumn(6).setMinWidth(0);
+            tbProductos.getColumnModel().getColumn(6).setPreferredWidth(0);
+            tbProductos.getColumnModel().getColumn(6).setMaxWidth(0);
         }
 
         pnlTitulo.setBackground(new java.awt.Color(67, 100, 130));
@@ -253,7 +256,7 @@ public class lisProducto extends frameBase<Producto> {
             .addGroup(pnlTituloLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lblTitulo)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 348, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 606, Short.MAX_VALUE)
                 .addComponent(btnNuevo)
                 .addContainerGap())
         );
@@ -298,7 +301,7 @@ public class lisProducto extends frameBase<Producto> {
             .addGroup(frameLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 674, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 932, Short.MAX_VALUE)
                     .addGroup(frameLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btnSeleccionar, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -365,7 +368,9 @@ public class lisProducto extends frameBase<Producto> {
                     seleccionado.setDescripcion(ObtenerValorCelda(tbProductos, 3));
                     seleccionado.setAlto(ObtenerValorCelda(tbProductos, 4));
                     seleccionado.setLargo(ObtenerValorCelda(tbProductos, 5));
-                    seleccionado.setActivo(ObtenerValorCelda(tbProductos, 6));
+                    seleccionado.setIdUnidadBase(ObtenerValorCelda(tbProductos, 6));
+                    seleccionado.setAbreviacionUnidadBase(ObtenerValorCelda(tbProductos, 7));
+                    seleccionado.setActivo(ObtenerValorCelda(tbProductos, 8));
                     Cerrar();
                 }
                 break;
@@ -379,7 +384,9 @@ public class lisProducto extends frameBase<Producto> {
                         producto.setDescripcion(ObtenerValorCelda(tbProductos, i, 3));
                         producto.setAlto(ObtenerValorCelda(tbProductos, i, 4));
                         producto.setLargo(ObtenerValorCelda(tbProductos, i, 5));
-                        producto.setActivo(ObtenerValorCelda(tbProductos, i, 6));
+                        producto.setIdUnidadBase(ObtenerValorCelda(tbProductos, i, 6));
+                        producto.setAbreviacionUnidadBase(ObtenerValorCelda(tbProductos, i, 7));
+                        producto.setActivo(ObtenerValorCelda(tbProductos, i, 8));
                         seleccionados.add(producto);
                     }
                 }

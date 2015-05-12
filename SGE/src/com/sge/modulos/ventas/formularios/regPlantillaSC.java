@@ -52,6 +52,8 @@ public class regPlantillaSC extends frameBase<PlantillaSolicitudCotizacion> {
                 schMaterial.asingValues(seleccionado.getIdProducto(), seleccionado.getDescripcion());
                 item.setAltoMaterial(seleccionado.getAlto());
                 item.setLargoMaterial(seleccionado.getLargo());
+                item.setIdUnidadMaterial(seleccionado.getIdUnidadBase());
+                item.setAbreviacionUnidadMaterial(seleccionado.getAbreviacionUnidadBase());
             }
         }
     };
@@ -558,6 +560,8 @@ public class regPlantillaSC extends frameBase<PlantillaSolicitudCotizacion> {
     private void schMaterialClear() {
         this.item.setAltoMaterial(0);
         this.item.setLargoMaterial(0);
+        this.item.setIdUnidadMaterial(0);
+        this.item.setAbreviacionUnidadMaterial("");
     }
 
     private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed

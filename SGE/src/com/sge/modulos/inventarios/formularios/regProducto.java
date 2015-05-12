@@ -58,10 +58,28 @@ public class regProducto extends frameBase<Producto> {
         }
     };
 
+    Action change_unidad = new AbstractAction() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            int[] celda = (int[]) e.getSource();
+            switch (celda[1]) {
+                case 4:
+                    boolean base = ObtenerValorCelda(tbUnidades, celda[0], celda[1]);
+                    if (base) {
+                        getEntidad().setIdUnidadBase(ObtenerValorCelda(tbUnidades, celda[0], 1));
+                        getEntidad().setAbreviacionUnidadBase(ObtenerValorCelda(tbUnidades, celda[0], 2));
+                    }
+                    break;
+            }
+        }
+    };
+
     public void Init(String operacion, int idProducto) {
         lblTitulo.setText(operacion + lblTitulo.getText());
         this.idProducto = idProducto;
-        if (this.idProducto > 0) {
+        if (this.idProducto == 0) {
+            setEntidad(new Producto());
+        } else {
             new swObtenerProducto().execute();
         }
     }
@@ -73,6 +91,7 @@ public class regProducto extends frameBase<Producto> {
             productoUnidad.setIdUnidad(ObtenerValorCelda(tbUnidades, i, 1));
             productoUnidad.setAbreviacionUnidad(ObtenerValorCelda(tbUnidades, i, 2));
             productoUnidad.setFactor(ObtenerValorCelda(tbUnidades, i, 3));
+            productoUnidad.setBase(ObtenerValorCelda(tbUnidades, i, 4));
             if (idProductoUnidad == 0) {
                 productoUnidad.setAgregar(true);
             } else {
@@ -110,25 +129,27 @@ public class regProducto extends frameBase<Producto> {
                 String[] resultado = new Gson().fromJson(json, String[].class);
 
                 if (resultado[0].equals("true")) {
-                    Producto producto = new Gson().fromJson(resultado[1], Producto.class);
-                    txtCodigo.setText(producto.getCodigo());
-                    txtDescripcion.setText(producto.getDescripcion());
-                    txtAlto.setText(String.valueOf(producto.getAlto()));
-                    txtLargo.setText(String.valueOf(producto.getLargo()));
-                    chkInventarios.setSelected(producto.isInventarios());
-                    chkCompras.setSelected(producto.isCompras());
-                    chkVentas.setSelected(producto.isVentas());
-                    chkActivo.setSelected(producto.isActivo());
-                    for (ProductoUnidad productoUnidad : producto.getUnidades()) {
+                    setEntidad(new Gson().fromJson(resultado[1], Producto.class));
+                    txtCodigo.setText(getEntidad().getCodigo());
+                    txtDescripcion.setText(getEntidad().getDescripcion());
+                    txtAlto.setText(String.valueOf(getEntidad().getAlto()));
+                    txtLargo.setText(String.valueOf(getEntidad().getLargo()));
+                    chkInventarios.setSelected(getEntidad().isInventarios());
+                    chkCompras.setSelected(getEntidad().isCompras());
+                    chkVentas.setSelected(getEntidad().isVentas());
+                    chkActivo.setSelected(getEntidad().isActivo());
+                    for (ProductoUnidad productoUnidad : getEntidad().getUnidades()) {
                         AgregarFila(tbUnidades,
                                 new Object[]{
                                     productoUnidad.getIdProductoUnidad(),
                                     productoUnidad.getIdUnidad(),
                                     productoUnidad.getAbreviacionUnidad(),
-                                    productoUnidad.getFactor()
+                                    productoUnidad.getFactor(),
+                                    productoUnidad.isBase()
                                 });
                     }
-                    for (ProductoAlmacen productoAlmacen : producto.getAlmacenes()) {
+                    AgregarEventoChange(tbUnidades, change_unidad);
+                    for (ProductoAlmacen productoAlmacen : getEntidad().getAlmacenes()) {
                         AgregarFila(tbAlmacenes,
                                 new Object[]{
                                     productoAlmacen.getIdProductoAlmacen(),
@@ -157,22 +178,21 @@ public class regProducto extends frameBase<Producto> {
             cliInventarios cliente = new cliInventarios();
             String json = "";
             try {
-                Producto producto = new Producto();
-                producto.setCodigo(txtCodigo.getText());
-                producto.setDescripcion(txtDescripcion.getText());
-                producto.setAlto(Double.parseDouble(txtAlto.getText()));
-                producto.setLargo(Double.parseDouble(txtLargo.getText()));
-                producto.setInventarios(chkInventarios.isSelected());
-                producto.setCompras(chkCompras.isSelected());
-                producto.setVentas(chkVentas.isSelected());
-                producto.setActivo(chkActivo.isSelected());
-                producto.setUnidades(getProductoUnidades());
-                producto.setAlmacenes(almacenes);
+                getEntidad().setCodigo(txtCodigo.getText());
+                getEntidad().setDescripcion(txtDescripcion.getText());
+                getEntidad().setAlto(Double.parseDouble(txtAlto.getText()));
+                getEntidad().setLargo(Double.parseDouble(txtLargo.getText()));
+                getEntidad().setInventarios(chkInventarios.isSelected());
+                getEntidad().setCompras(chkCompras.isSelected());
+                getEntidad().setVentas(chkVentas.isSelected());
+                getEntidad().setActivo(chkActivo.isSelected());
+                getEntidad().setUnidades(getProductoUnidades());
+                getEntidad().setAlmacenes(almacenes);
                 if (idProducto == 0) {
-                    json = cliente.RegistrarProducto(new Gson().toJson(producto));
+                    json = cliente.RegistrarProducto(new Gson().toJson(getEntidad()));
                 } else {
-                    producto.setIdProducto(idProducto);
-                    json = cliente.ActualizarProducto(new Gson().toJson(producto));
+                    getEntidad().setIdProducto(idProducto);
+                    json = cliente.ActualizarProducto(new Gson().toJson(getEntidad()));
                 }
             } catch (Exception e) {
                 OcultarProcesando(frame);
@@ -274,14 +294,14 @@ public class regProducto extends frameBase<Producto> {
 
             },
             new String [] {
-                "IDPRODUCTOUNIDAD", "IDUNIDAD", "UNIDAD", "FACTOR"
+                "IDPRODUCTOUNIDAD", "IDUNIDAD", "UNIDAD", "FACTOR", "BASE"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.Integer.class, java.lang.String.class, java.lang.Integer.class
+                java.lang.Integer.class, java.lang.Integer.class, java.lang.String.class, java.lang.Integer.class, java.lang.Boolean.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, true, true
+                false, false, true, true, true
             };
 
             public Class getColumnClass(int columnIndex) {

@@ -11,6 +11,7 @@ public class ProductoUnidad {
     private int idUnidad;
     private String abreviacionUnidad;
     private int factor;
+    private boolean base;
     private boolean agregar;
     private boolean actualizar;
     private boolean eliminar;
@@ -58,6 +59,14 @@ public class ProductoUnidad {
         this.factor = factor;
     }
 
+    public boolean isBase() {
+        return base;
+    }
+
+    public void setBase(boolean base) {
+        this.base = base;
+    }
+    
     public boolean isAgregar() {
         return agregar;
     }

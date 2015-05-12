@@ -147,6 +147,8 @@ public class regSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
                 schMaterial.asingValues(seleccionado.getIdProducto(), seleccionado.getDescripcion());
                 item.setAltoMaterial(seleccionado.getAlto());
                 item.setLargoMaterial(seleccionado.getLargo());
+                item.setIdUnidadMaterial(seleccionado.getIdUnidadBase());
+                item.setAbreviacionUnidadMaterial(seleccionado.getAbreviacionUnidadBase());
             }
         }
     };
@@ -1197,6 +1199,8 @@ public class regSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
     private void schMaterialClear() {
         this.item.setAltoMaterial(0);
         this.item.setLargoMaterial(0);
+        this.item.setIdUnidadMaterial(0);
+        this.item.setAbreviacionUnidadMaterial("");
     }
 
     public void Aceptar() {

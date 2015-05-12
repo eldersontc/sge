@@ -78,16 +78,12 @@ public class lisSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
                 String[] resultado = new Gson().fromJson(json, String[].class);
 
                 if (resultado[0].equals("true")) {
-                    DefaultTableModel modelo = (DefaultTableModel) tbSolicitudes.getModel();
-                    modelo.setRowCount(0);
-
+                    EliminarTodasFilas(tbSolicitudes);
                     List<Object[]> filas = (List<Object[]>) new Gson().fromJson(resultado[1], new TypeToken<List<Object[]>>() {
                     }.getType());
-
                     for (Object[] fila : filas) {
-                        modelo.addRow(new Object[]{false, ((Double) fila[0]).intValue(), fila[1], fila[2], fila[3], fila[4], fila[5], Icon_Edit, Icon_Dele});
+                        AgregarFila(tbSolicitudes, new Object[]{false, ((Double) fila[0]).intValue(), fila[1], fila[2], fila[3], fila[4], fila[5], Icon_Edit, Icon_Dele});
                     }
-
                     AgregarBoton(tbSolicitudes, edit, 7);
                     AgregarBoton(tbSolicitudes, dele, 8);
                     AgregarOrdenamiento(tbSolicitudes);
@@ -189,6 +185,8 @@ public class lisSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
                         itemCotizacion.setNombreMaterial(itemSolicitud.getNombreMaterial());
                         itemCotizacion.setAltoMaterial(itemSolicitud.getAltoMaterial());
                         itemCotizacion.setLargoMaterial(itemSolicitud.getLargoMaterial());
+                        itemCotizacion.setIdUnidadMaterial(itemSolicitud.getIdUnidadMaterial());
+                        itemCotizacion.setAbreviacionUnidadMaterial(itemSolicitud.getAbreviacionUnidadMaterial());
                         itemCotizacion.setNombreTipoUnidad(itemSolicitud.getNombreTipoUnidad());
                         itemCotizacion.setUnidadMedidaAbierta(itemSolicitud.getUnidadMedidaAbierta());
                         itemCotizacion.setMedidaAbierta(itemSolicitud.isMedidaAbierta());

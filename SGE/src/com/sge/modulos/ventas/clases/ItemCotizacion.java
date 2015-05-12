@@ -23,6 +23,8 @@ public class ItemCotizacion {
     private String nombreMaterial;
     private double largoMaterial;
     private double altoMaterial;
+    private int idUnidadMaterial;
+    private String abreviacionUnidadMaterial;
     private String nombreTipoUnidad;
     private String unidadMedidaAbierta;
     private boolean medidaAbierta;
@@ -199,6 +201,22 @@ public class ItemCotizacion {
         this.altoMaterial = altoMaterial;
     }
 
+    public int getIdUnidadMaterial() {
+        return idUnidadMaterial;
+    }
+
+    public void setIdUnidadMaterial(int idUnidadMaterial) {
+        this.idUnidadMaterial = idUnidadMaterial;
+    }
+
+    public String getAbreviacionUnidadMaterial() {
+        return abreviacionUnidadMaterial;
+    }
+
+    public void setAbreviacionUnidadMaterial(String abreviacionUnidadMaterial) {
+        this.abreviacionUnidadMaterial = abreviacionUnidadMaterial;
+    }
+    
     public String getNombreTipoUnidad() {
         return nombreTipoUnidad;
     }
@@ -613,5 +631,10 @@ public class ItemCotizacion {
 
     public void setEliminar(boolean eliminar) {
         this.eliminar = eliminar;
+    }
+    
+    @Override
+    public String toString(){
+        return nombre;
     }
 }
