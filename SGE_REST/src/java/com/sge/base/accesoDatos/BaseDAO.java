@@ -129,6 +129,10 @@ public class BaseDAO {
         return sesion.createSQLQuery(sql).list();
     }
 
+    public <T> T ObtenerLista(String sql, Class clase) {
+        return (T)sesion.createSQLQuery(sql).addEntity(clase).list();
+    }
+    
     public <T> T ObtenerLista(Class clase, List<Object[]> filtros) {
         Criteria criteria = sesion.createCriteria(clase);
         for (Object[] filtro : filtros) {

@@ -269,4 +269,18 @@ public class ListaPrecioProductoDTO {
         }
         return true;
     }
+    
+    public List<EscalaListaPrecioProducto> ObtenerEscalasPorProducto(int idListaPrecioProducto, int idProducto, int idUnidad) {
+        List<EscalaListaPrecioProducto> escalas = null;
+        try {
+            escalaListaPrecioDAO = new EscalaListaPrecioProductoDAO();
+            escalaListaPrecioDAO.AbrirSesion();
+            escalas = escalaListaPrecioDAO.ObtenerEscalasPorProducto(idListaPrecioProducto, idProducto, idUnidad);
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            escalaListaPrecioDAO.CerrarSesion();
+        }
+        return escalas;
+    }
 }

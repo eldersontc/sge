@@ -1,12 +1,31 @@
 package com.sge.modulos.ventas.accesoDatos;
 
 import com.sge.base.accesoDatos.BaseDAO;
+import com.sge.modulos.ventas.entidades.EscalaListaPrecioMaquina;
+import java.util.List;
 
 /**
  *
  * @author elderson
  */
 public class EscalaListaPrecioMaquinaDAO extends BaseDAO {
+    
+    public List<EscalaListaPrecioMaquina> ObtenerEscalasPorMaquina(int idListaPrecioMaquina, int idMaquina){
+        String sql = String.format("SELECT \n" +
+                                    "  EscalaListaPrecioMaquina.idEscalaListaPrecioMaquina, \n" +
+                                    "  EscalaListaPrecioMaquina.idItemListaPrecioMaquina, \n" +
+                                    "  EscalaListaPrecioMaquina.desde, \n" +
+                                    "  EscalaListaPrecioMaquina.hasta, \n" +
+                                    "  EscalaListaPrecioMaquina.precio\n" +
+                                    "FROM \n" +
+                                    "  Ventas.EscalaListaPrecioMaquina AS EscalaListaPrecioMaquina INNER JOIN  \n" +
+                                    "  Ventas.ItemListaPrecioMaquina AS ItemListaPrecioMaquina \n" +
+                                    "ON EscalaListaPrecioMaquina.idItemListaPrecioMaquina = ItemListaPrecioMaquina.idItemListaPrecioMaquina\n" +
+                                    "WHERE \n" +
+                                    "  ItemListaPrecioMaquina.idListaPrecioMaquina = %d AND \n" +
+                                    "  ItemListaPrecioMaquina.idMaquina = %d", idListaPrecioMaquina, idMaquina);
+        return super.ObtenerLista(sql, EscalaListaPrecioMaquina.class);
+    }
     
     public int ActualizarEscalaListaPrecioMaquina(int idEscalaListaPrecioMaquina, int desde, int hasta, double precio) {
         String sql = String.format("UPDATE Ventas.EscalaListaPrecioMaquina SET desde = %d, hasta = %d, precio = %s WHERE idEscalaListaPrecioMaquina = %d", desde, hasta, precio, idEscalaListaPrecioMaquina);

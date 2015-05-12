@@ -1,11 +1,9 @@
 package com.sge.modulos.ventas.negocios;
 
 import com.sge.modulos.ventas.accesoDatos.EscalaListaPrecioMaquinaDAO;
-import com.sge.modulos.ventas.accesoDatos.ItemListaPrecioMaquinaDAO;
 import com.sge.modulos.ventas.accesoDatos.ListaPrecioMaquinaDAO;
 import com.sge.modulos.ventas.accesoDatos.ItemListaPrecioMaquinaDAO;
 import com.sge.modulos.ventas.entidades.EscalaListaPrecioMaquina;
-import com.sge.modulos.ventas.entidades.ItemListaPrecioMaquina;
 import com.sge.modulos.ventas.entidades.ListaPrecioMaquina;
 import com.sge.modulos.ventas.entidades.ItemListaPrecioMaquina;
 import java.util.ArrayList;
@@ -16,11 +14,11 @@ import java.util.List;
  * @author elderson
  */
 public class ListaPrecioMaquinaDTO {
-    
+
     ListaPrecioMaquinaDAO listaPrecioDAO;
     ItemListaPrecioMaquinaDAO itemListaPrecioDAO;
     EscalaListaPrecioMaquinaDAO escalaListaPrecioDAO;
-    
+
     public List<Object[]> ObtenerListasPrecio(String filtro) {
         List<Object[]> lista;
         try {
@@ -41,7 +39,7 @@ public class ListaPrecioMaquinaDTO {
             listaPrecioDAO = new ListaPrecioMaquinaDAO();
             listaPrecioDAO.AbrirSesion();
             listaPrecio = listaPrecioDAO.ObtenerPorId(ListaPrecioMaquina.class, idListaPrecioMaquina);
-            
+
             itemListaPrecioDAO = new ItemListaPrecioMaquinaDAO();
             itemListaPrecioDAO.AsignarSesion(listaPrecioDAO);
             List<Object[]> filtros = new ArrayList<>();
@@ -71,7 +69,7 @@ public class ListaPrecioMaquinaDTO {
         }
         return escalas;
     }
-    
+
     public boolean RegistrarListaPrecioMaquina(ListaPrecioMaquina listaPrecio) {
         try {
             listaPrecioDAO = new ListaPrecioMaquinaDAO();
@@ -86,7 +84,7 @@ public class ListaPrecioMaquinaDTO {
         }
         return true;
     }
-    
+
     public ItemListaPrecioMaquina[] RegistrarItemsListaPrecioMaquina(ItemListaPrecioMaquina[] itemsListaPrecio) {
         try {
             itemListaPrecioDAO = new ItemListaPrecioMaquinaDAO();
@@ -103,7 +101,7 @@ public class ListaPrecioMaquinaDTO {
         }
         return itemsListaPrecio;
     }
-    
+
     public boolean RegistrarEscalaListaPrecioMaquina(EscalaListaPrecioMaquina escalaListaPrecio) {
         try {
             escalaListaPrecioDAO = new EscalaListaPrecioMaquinaDAO();
@@ -148,7 +146,7 @@ public class ListaPrecioMaquinaDTO {
         }
         return true;
     }
-    
+
     public boolean EliminarListaPrecioMaquina(int idListaPrecioMaquina) {
         try {
             escalaListaPrecioDAO = new EscalaListaPrecioMaquinaDAO();
@@ -158,7 +156,7 @@ public class ListaPrecioMaquinaDTO {
             itemListaPrecioDAO = new ItemListaPrecioMaquinaDAO();
             itemListaPrecioDAO.AsignarSesion(escalaListaPrecioDAO);
             itemListaPrecioDAO.EliminarItemListaPrecioMaquinaPorIdListaPrecioMaquina(idListaPrecioMaquina);
-            
+
             listaPrecioDAO = new ListaPrecioMaquinaDAO();
             listaPrecioDAO.AsignarSesion(escalaListaPrecioDAO);
             listaPrecioDAO.EliminarListaPrecioMaquina(idListaPrecioMaquina);
@@ -172,17 +170,17 @@ public class ListaPrecioMaquinaDTO {
         }
         return true;
     }
-    
+
     public boolean EliminarItemListaPrecioMaquina(int idItemListaPrecioMaquina) {
         try {
             escalaListaPrecioDAO = new EscalaListaPrecioMaquinaDAO();
             escalaListaPrecioDAO.IniciarTransaccion();
             escalaListaPrecioDAO.EliminarEscalaListaPrecioMaquinaPorIdItemListaPrecioMaquina(idItemListaPrecioMaquina);
-            
+
             itemListaPrecioDAO = new ItemListaPrecioMaquinaDAO();
             itemListaPrecioDAO.AsignarSesion(escalaListaPrecioDAO);
             itemListaPrecioDAO.EliminarItemListaPrecioMaquina(idItemListaPrecioMaquina);
-            
+
             escalaListaPrecioDAO.ConfirmarTransaccion();
         } catch (Exception e) {
             escalaListaPrecioDAO.AbortarTransaccion();
@@ -192,7 +190,7 @@ public class ListaPrecioMaquinaDTO {
         }
         return true;
     }
-    
+
     public boolean EliminarEscalaListaPrecioMaquina(int idEscalaListaPrecioMaquina) {
         try {
             escalaListaPrecioDAO = new EscalaListaPrecioMaquinaDAO();
@@ -206,5 +204,19 @@ public class ListaPrecioMaquinaDTO {
             escalaListaPrecioDAO.CerrarSesion();
         }
         return true;
+    }
+
+    public List<EscalaListaPrecioMaquina> ObtenerEscalasPorMaquina(int idListaPrecioMaquina, int idMaquina) {
+        List<EscalaListaPrecioMaquina> escalas = new ArrayList<>();
+        try {
+            escalaListaPrecioDAO = new EscalaListaPrecioMaquinaDAO();
+            escalaListaPrecioDAO.AbrirSesion();
+            escalas = escalaListaPrecioDAO.ObtenerEscalasPorMaquina(idListaPrecioMaquina, idMaquina);
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            escalaListaPrecioDAO.CerrarSesion();
+        }
+        return escalas;
     }
 }
