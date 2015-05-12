@@ -16,13 +16,13 @@ public class ItemSolicitudCotizacionDAO extends BaseDAO {
                 + "unidadMedidaAbierta = '%s', medidaAbierta = %b, medidaCerrada = %b, tiraRetira = %b, grafico = %b, "
                 + "material = %b, servicioImpresion = %b, fondo = %b, tipoUnidad = %b, largoMedidaAbierta = %s, "
                 + "altoMedidaAbierta = %s, largoMedidaCerrada = %s, altoMedidaCerrada = %s, tiraColor = %s, retiraColor = %s, "
-                + "dFondo = %s, acabados = '%s' WHERE idItemSolicitudCotizacion = %d",
+                + "dFondo = %s, cantidadTipoUnidad = %d, acabados = '%s' WHERE idItemSolicitudCotizacion = %d",
                 item.getNombre(), item.getIdServicioImpresion(), item.getNombreServicioImpresion(), item.getIdMaquina(), item.getDescripcionMaquina(), item.getLargoMaximoPliegoMaquina(), item.getAltoMaximoPliegoMaquina(), item.getIdMaterial(),
                 item.getNombreMaterial(), item.getLargoMaterial(), item.getAltoMaterial(), item.getNombreTipoUnidad(), item.getUnidadMedidaAbierta(), item.isMedidaAbierta(),
                 item.isMedidaCerrada(), item.isTiraRetira(), item.isGrafico(), item.isMaterial(), item.isServicioImpresion(),
                 item.isFondo(), item.isTipoUnidad(), item.getLargoMedidaAbierta(), item.getAltoMedidaAbierta(),
                 item.getLargoMedidaCerrada(), item.getAltoMedidaCerrada(), item.getTiraColor(), item.getRetiraColor(),
-                item.getdFondo(), item.getAcabados(), item.getIdItemSolicitudCotizacion());
+                item.getdFondo(), item.getCantidadTipoUnidad(), item.getAcabados(), item.getIdItemSolicitudCotizacion());
         return super.Ejecutar(sql);
     }
 

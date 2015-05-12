@@ -38,6 +38,7 @@
         <property name="tiraColor" column="tiraColor"/>
         <property name="retiraColor" column="retiraColor"/>
         <property name="dFondo" column="dFondo"/>
+        <property name="cantidadTipoUnidad" column="cantidadTipoUnidad"/>
         <property name="acabados" column="acabados"/>
     </class>
 </hibernate-mapping>
