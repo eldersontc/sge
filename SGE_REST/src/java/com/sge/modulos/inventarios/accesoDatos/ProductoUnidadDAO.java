@@ -18,8 +18,8 @@ public class ProductoUnidadDAO extends BaseDAO {
         return super.ObtenerLista(sql);
     }
 
-    public int ActualizarProductoUnidad(int idProductoUnidad, int factor) {
-        String sql = String.format("UPDATE Inventarios.ProductoUnidad SET factor = %d WHERE idProductoUnidad = %d", factor, idProductoUnidad);
+    public int ActualizarProductoUnidad(int idProductoUnidad, int factor, boolean base) {
+        String sql = String.format("UPDATE Inventarios.ProductoUnidad SET factor = %d, base = %b WHERE idProductoUnidad = %d", factor, base, idProductoUnidad);
         return super.Ejecutar(sql);
     }
 

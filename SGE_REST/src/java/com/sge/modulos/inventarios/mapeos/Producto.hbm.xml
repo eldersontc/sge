@@ -19,6 +19,8 @@
         <property name="costoReferencia" column="costoReferencia" insert="false"/>
         <property name="alto" column="alto"/>
         <property name="largo" column="largo"/>
+        <property name="idUnidadBase" column="idUnidadBase"/>
+        <property name="abreviacionUnidadBase" column="abreviacionUnidadBase"/>
         <property name="activo" column="activo"/>
     </class>
 </hibernate-mapping>

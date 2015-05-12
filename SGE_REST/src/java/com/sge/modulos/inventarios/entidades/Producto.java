@@ -20,6 +20,8 @@ public class Producto {
     private double costoReferencia;
     private double alto;
     private double largo;
+    private int idUnidadBase;
+    private String abreviacionUnidadBase; 
     private boolean activo;
     private List<ProductoUnidad> unidades;
     private List<ProductoAlmacen> almacenes;
@@ -117,6 +119,22 @@ public class Producto {
         this.largo = largo;
     }
 
+    public int getIdUnidadBase() {
+        return idUnidadBase;
+    }
+
+    public void setIdUnidadBase(int idUnidadBase) {
+        this.idUnidadBase = idUnidadBase;
+    }
+
+    public String getAbreviacionUnidadBase() {
+        return abreviacionUnidadBase;
+    }
+
+    public void setAbreviacionUnidadBase(String abreviacionUnidadBase) {
+        this.abreviacionUnidadBase = abreviacionUnidadBase;
+    }
+    
     public boolean isActivo() {
         return activo;
     }

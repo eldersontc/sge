@@ -13,5 +13,6 @@
         <property name="idUnidad" column="idUnidad"/>
         <property name="abreviacionUnidad" column="abreviacionUnidad"/>
         <property name="factor" column="factor"/>
+        <property name="base" column="base"/>
     </class>
 </hibernate-mapping>

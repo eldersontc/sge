@@ -95,7 +95,7 @@ public class ProductoDTO {
         try {
             productoDAO = new ProductoDAO();
             productoDAO.IniciarTransaccion();
-            productoDAO.ActualizarProducto(producto.getIdProducto(), producto.getCodigo(), producto.getDescripcion(), producto.isInventarios(), producto.isCompras(), producto.isVentas(), producto.getAlto(), producto.getLargo(), producto.isActivo());
+            productoDAO.ActualizarProducto(producto.getIdProducto(), producto.getCodigo(), producto.getDescripcion(), producto.isInventarios(), producto.isCompras(), producto.isVentas(), producto.getAlto(), producto.getLargo(), producto.getIdUnidadBase(), producto.getAbreviacionUnidadBase(), producto.isActivo());
 
             productoUnidadDAO = new ProductoUnidadDAO();
             productoUnidadDAO.AsignarSesion(productoDAO);
@@ -105,7 +105,7 @@ public class ProductoDTO {
                     productoUnidadDAO.Agregar(productoUnidad);
                 }
                 if (productoUnidad.isActualizar()) {
-                    productoUnidadDAO.ActualizarProductoUnidad(productoUnidad.getIdProductoUnidad(), productoUnidad.getFactor());
+                    productoUnidadDAO.ActualizarProductoUnidad(productoUnidad.getIdProductoUnidad(), productoUnidad.getFactor(), productoUnidad.isBase());
                 }
                 if (productoUnidad.isEliminar()) {
                     productoUnidadDAO.EliminarProductoUnidad(productoUnidad.getIdProductoUnidad());
