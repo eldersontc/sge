@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.sge.modulos.ventas.entidades.ItemPresupuesto" table="ItemPresupuesto" schema="Ventas">
+        <id name="idItemPresupuesto" column="idItemPresupuesto">
+            <generator class="sequence">
+                <param name="sequence">Ventas.itempresupuesto_iditempresupuesto_seq</param>
+            </generator>
+        </id>
+        <property name="idPresupuesto" column="idPresupuesto"/>
+        <property name="idCotizacion" column="idCotizacion"/>
+        <property name="numeroCotizacion" column="numeroCotizacion"/>
+        <property name="descripcionCotizacion" column="descripcionCotizacion"/>
+        <property name="totalCotizacion" column="totalCotizacion"/>
+        <property name="recargo" column="recargo"/>
+        <property name="total" column="total"/>
+    </class>
+</hibernate-mapping>

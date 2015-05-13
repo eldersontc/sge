@@ -13,7 +13,7 @@ public class CotizacionDAO extends BaseDAO {
     public List<Object[]> ObtenerCotizaciones(String filtro) {
         String sql = "SELECT \n"
                 + "Cotizacion.idCotizacion, Cotizacion.numero, Cotizacion.descripcion, Cotizacion.fechaCreacion, \n"
-                + "Cotizacion.razonSocialCliente, Cotizacion.nombreCotizador, Cotizacion.nombreVendedor, Cotizacion.simboloMoneda \n"
+                + "Cotizacion.razonSocialCliente, Cotizacion.nombreCotizador, Cotizacion.nombreVendedor, Cotizacion.simboloMoneda, Cotizacion.total \n"
                 + "FROM \n"
                 + "Ventas.Cotizacion " + filtro;
         return super.ObtenerLista(sql);
