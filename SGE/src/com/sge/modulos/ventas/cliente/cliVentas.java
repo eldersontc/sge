@@ -253,7 +253,7 @@ public class cliVentas {
         resource = resource.path("EliminarCotizacion");
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
     }
-    
+
     public String ObtenerEscalasMaquinaYProducto(Object requestEntity) throws ClientErrorException {
         WebTarget resource = client.target(BASE_URI).path("CotizacionSRV");
         resource = resource.path("ObtenerEscalasMaquinaYProducto");
@@ -481,7 +481,7 @@ public class cliVentas {
         resource = resource.path("ActualizarItemListaPrecioMaquina");
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
     }
-    
+
     public String ActualizarEscalaListaPrecioMaquina(Object requestEntity) throws ClientErrorException {
         WebTarget resource = client.target(BASE_URI).path("ListaPrecioMaquinaSRV");
         resource = resource.path("ActualizarEscalaListaPrecioMaquina");
@@ -529,6 +529,38 @@ public class cliVentas {
     public String EliminarMetodoImpresion(Object requestEntity) throws ClientErrorException {
         WebTarget resource = client.target(BASE_URI).path("MetodoImpresionSRV");
         resource = resource.path("EliminarMetodoImpresion");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
+    }
+
+    ////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////// PRESUPUESTO ///////////////////////////////
+    public String ObtenerPresupuestos(Object requestEntity) throws ClientErrorException {
+        WebTarget resource = client.target(BASE_URI).path("PresupuestoSRV");
+        resource = resource.path("ObtenerPresupuestos");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
+    }
+
+    public String ObtenerPresupuesto(Object requestEntity) throws ClientErrorException {
+        WebTarget resource = client.target(BASE_URI).path("PresupuestoSRV");
+        resource = resource.path("ObtenerPresupuesto");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
+    }
+    
+    public String RegistrarPresupuesto(Object requestEntity) throws ClientErrorException {
+        WebTarget resource = client.target(BASE_URI).path("PresupuestoSRV");
+        resource = resource.path("RegistrarPresupuesto");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
+    }
+
+    public String ActualizarPresupuesto(Object requestEntity) throws ClientErrorException {
+        WebTarget resource = client.target(BASE_URI).path("PresupuestoSRV");
+        resource = resource.path("ActualizarPresupuesto");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
+    }
+
+    public String EliminarPresupuesto(Object requestEntity) throws ClientErrorException {
+        WebTarget resource = client.target(BASE_URI).path("PresupuestoSRV");
+        resource = resource.path("EliminarPresupuesto");
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
     }
 

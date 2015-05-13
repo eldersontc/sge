@@ -6,12 +6,12 @@ import com.sge.base.formularios.frameBase;
 import com.sge.modulos.ventas.clases.Cotizacion;
 import com.sge.modulos.ventas.cliente.cliVentas;
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ImageIcon;
 import javax.swing.SwingWorker;
-import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -30,6 +30,7 @@ public class lisCotizacion extends frameBase<Cotizacion> {
     private int modo = 0;
 
     private Cotizacion seleccionado;
+    private List<Cotizacion> seleccionados = new ArrayList<>();
 
     ImageIcon Icon_Edit = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/edit-16.png"));
     ImageIcon Icon_Dele = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/delete-16.png"));
@@ -74,18 +75,14 @@ public class lisCotizacion extends frameBase<Cotizacion> {
                 String[] resultado = new Gson().fromJson(json, String[].class);
 
                 if (resultado[0].equals("true")) {
-                    DefaultTableModel modelo = (DefaultTableModel) tbCotizaciones.getModel();
-                    modelo.setRowCount(0);
-
+                    EliminarTodasFilas(tbCotizaciones);
                     List<Object[]> filas = (List<Object[]>) new Gson().fromJson(resultado[1], new TypeToken<List<Object[]>>() {
                     }.getType());
-
                     for (Object[] fila : filas) {
-                        modelo.addRow(new Object[]{false, ((Double) fila[0]).intValue(), fila[1], fila[2], fila[3], fila[4], fila[5], fila[6], Icon_Edit, Icon_Dele});
+                        AgregarFila(tbCotizaciones, new Object[]{false, ((Double) fila[0]).intValue(), fila[1], fila[2], fila[3], fila[4], fila[5], fila[6], fila[8], Icon_Edit, Icon_Dele});
                     }
-
-                    AgregarBoton(tbCotizaciones, edit, 8);
-                    AgregarBoton(tbCotizaciones, dele, 9);
+                    AgregarBoton(tbCotizaciones, edit, 9);
+                    AgregarBoton(tbCotizaciones, dele, 10);
                     AgregarOrdenamiento(tbCotizaciones);
                 }
                 OcultarCargando(frame);
@@ -141,7 +138,11 @@ public class lisCotizacion extends frameBase<Cotizacion> {
                 OcultarControl(btnSeleccionar);
                 break;
             case 1:
-                OcultarColumnas(tbCotizaciones, new int[]{0, 8, 9});
+                OcultarColumnas(tbCotizaciones, new int[]{0, 9, 10});
+                OcultarControl(btnNuevo);
+                break;
+            case 2:
+                OcultarColumnas(tbCotizaciones, new int[]{9, 10});
                 OcultarControl(btnNuevo);
                 break;
         }
@@ -164,6 +165,10 @@ public class lisCotizacion extends frameBase<Cotizacion> {
 
     public Cotizacion getSeleccionado() {
         return seleccionado;
+    }
+
+    public List<Cotizacion> getSeleccionados() {
+        return seleccionados;
     }
     
     /**
@@ -196,14 +201,14 @@ public class lisCotizacion extends frameBase<Cotizacion> {
 
             },
             new String [] {
-                "CHECK", "ID", "NUMERO", "DESCRIPCION", "F. CREACION", "CLIENTE", "COTIZADOR", "VENDEDOR", "EDITAR", "ELIMINAR"
+                "CHECK", "ID", "NUMERO", "DESCRIPCION", "F. CREACION", "CLIENTE", "COTIZADOR", "VENDEDOR", "TOTAL", "EDITAR", "ELIMINAR"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Boolean.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class
+                java.lang.Boolean.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Double.class, java.lang.Object.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                true, false, true, true, true, true, true, true, true, true
+                true, false, true, true, true, true, true, true, true, true, true
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -351,16 +356,30 @@ public class lisCotizacion extends frameBase<Cotizacion> {
         // TODO add your handling code here:
         switch (this.modo) {
             case 1:
-            if (FilaActiva(tbCotizaciones)) {
-                Cotizacion cotizacion = new Cotizacion();
-                cotizacion.setIdCotizacion(ObtenerValorCelda(tbCotizaciones, 1));
-                cotizacion.setNumero(ObtenerValorCelda(tbCotizaciones, 2));
-                seleccionado = cotizacion;
-            }
-            Cerrar();
-            break;
+                if (FilaActiva(tbCotizaciones)) {
+                    Cotizacion cotizacion = new Cotizacion();
+                    cotizacion.setIdCotizacion(ObtenerValorCelda(tbCotizaciones, 1));
+                    cotizacion.setNumero(ObtenerValorCelda(tbCotizaciones, 2));
+                    cotizacion.setDescripcion(ObtenerValorCelda(tbCotizaciones, 3));
+                    cotizacion.setTotal(ObtenerValorCelda(tbCotizaciones, 8));
+                    seleccionado = cotizacion;
+                }
+                Cerrar();
+                break;
             case 2:
-            break;
+                for (int i = 0; i < tbCotizaciones.getRowCount(); i++) {
+                    boolean check = ObtenerValorCelda(tbCotizaciones, i, 0);
+                    if (check) {
+                        Cotizacion cotizacion = new Cotizacion();
+                        cotizacion.setIdCotizacion(ObtenerValorCelda(tbCotizaciones, i, 1));
+                        cotizacion.setNumero(ObtenerValorCelda(tbCotizaciones, i, 2));
+                        cotizacion.setDescripcion(ObtenerValorCelda(tbCotizaciones, i, 3));
+                        cotizacion.setTotal(ObtenerValorCelda(tbCotizaciones, i, 8));
+                        seleccionados.add(cotizacion);
+                    }
+                }
+                Cerrar();
+                break;
         }
     }//GEN-LAST:event_btnSeleccionarActionPerformed
 

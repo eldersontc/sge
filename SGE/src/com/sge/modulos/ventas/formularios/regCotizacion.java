@@ -23,10 +23,7 @@ import com.sge.modulos.ventas.clases.EscalaListaPrecioMaquina;
 import com.sge.modulos.ventas.clases.EscalaListaPrecioProducto;
 import com.sge.modulos.ventas.clases.ItemListaPrecioMaquina;
 import com.sge.modulos.ventas.cliente.cliVentas;
-import java.awt.Color;
-import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
-import java.awt.image.BufferedImage;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Date;
@@ -34,7 +31,6 @@ import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.DefaultListModel;
-import javax.swing.ImageIcon;
 import javax.swing.SwingWorker;
 
 /**
@@ -954,7 +950,6 @@ public class regCotizacion extends frameBase<Cotizacion> {
                                         .addComponent(lblObservacionItem)
                                         .addGap(0, 0, Short.MAX_VALUE))
                                     .addGroup(pnlItemLayout.createSequentialGroup()
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addComponent(txtCantidadItem, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(btnGenerarGraficoPrecorte, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1017,10 +1012,11 @@ public class regCotizacion extends frameBase<Cotizacion> {
                             .addComponent(lblCantidadItem)
                             .addComponent(txtCantidadItem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(pnlItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(chkMedidaAbierta)
-                            .addComponent(chkMedidaCerrada)
-                            .addComponent(chkTipoUnidad))
+                        .addGroup(pnlItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(chkTipoUnidad, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(pnlItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(chkMedidaAbierta)
+                                .addComponent(chkMedidaCerrada)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(pnlItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(cboUnidadMedidaAbierta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)

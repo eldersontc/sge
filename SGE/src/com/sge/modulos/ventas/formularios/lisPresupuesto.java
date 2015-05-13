@@ -3,7 +3,7 @@ package com.sge.modulos.ventas.formularios;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.sge.base.formularios.frameBase;
-import com.sge.modulos.ventas.clases.PlantillaSolicitudCotizacion;
+import com.sge.modulos.ventas.clases.Presupuesto;
 import com.sge.modulos.ventas.cliente.cliVentas;
 import java.awt.event.ActionEvent;
 import java.util.List;
@@ -17,19 +17,19 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author elderson
  */
-public class lisPlantillaSC extends frameBase<PlantillaSolicitudCotizacion> {
+public class lisPresupuesto extends frameBase<Presupuesto> {
 
     /**
-     * Creates new form lisPlantillaSolicitudCotizacion
+     * Creates new form lisPresupuesto
      */
-    public lisPlantillaSC(int modo) {
+    public lisPresupuesto(int modo) {
         initComponents();
         Init(modo);
     }
 
     private int modo = 0;
 
-    private PlantillaSolicitudCotizacion seleccionado;
+    private Presupuesto seleccionado;
 
     ImageIcon Icon_Edit = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/edit-16.png"));
     ImageIcon Icon_Dele = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/delete-16.png"));
@@ -37,18 +37,18 @@ public class lisPlantillaSC extends frameBase<PlantillaSolicitudCotizacion> {
     Action edit = new AbstractAction() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            EditarPlantillaSC();
+            EditarPresupuesto();
         }
     };
 
     Action dele = new AbstractAction() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            EliminarPlantillaSC();
+            EliminarPresupuesto();
         }
     };
 
-    public class swObtenerPlantillasSC extends SwingWorker {
+    public class swObtenerPresupuestos extends SwingWorker {
 
         @Override
         protected Object doInBackground() {
@@ -56,7 +56,7 @@ public class lisPlantillaSC extends frameBase<PlantillaSolicitudCotizacion> {
             cliVentas cliente = new cliVentas();
             String json = "";
             try {
-                json = cliente.ObtenerPlantillasSolicitudCotizacion(new Gson().toJson(""));
+                json = cliente.ObtenerPresupuestos(new Gson().toJson(""));
             } catch (Exception e) {
                 OcultarCargando(frame);
                 cancel(false);
@@ -74,15 +74,15 @@ public class lisPlantillaSC extends frameBase<PlantillaSolicitudCotizacion> {
                 String[] resultado = new Gson().fromJson(json, String[].class);
 
                 if (resultado[0].equals("true")) {
-                    EliminarTodasFilas(tbPlantillas);
+                    EliminarTodasFilas(tbPresupuestos);
                     List<Object[]> filas = (List<Object[]>) new Gson().fromJson(resultado[1], new TypeToken<List<Object[]>>() {
                     }.getType());
                     for (Object[] fila : filas) {
-                        AgregarFila(tbPlantillas, new Object[]{false, ((Double) fila[0]).intValue(), fila[1], fila[2], fila[3], Icon_Edit, Icon_Dele});
+                        AgregarFila(tbPresupuestos, new Object[]{false, ((Double) fila[0]).intValue(), fila[1], fila[2], fila[3], fila[4], Icon_Edit, Icon_Dele});
                     }
-                    AgregarBoton(tbPlantillas, edit, 5);
-                    AgregarBoton(tbPlantillas, dele, 6);
-                    AgregarOrdenamiento(tbPlantillas);
+                    AgregarBoton(tbPresupuestos, edit, 6);
+                    AgregarBoton(tbPresupuestos, dele, 7);
+                    AgregarOrdenamiento(tbPresupuestos);
                 }
                 OcultarCargando(frame);
             } catch (Exception e) {
@@ -92,7 +92,7 @@ public class lisPlantillaSC extends frameBase<PlantillaSolicitudCotizacion> {
         }
     }
 
-    public class swEliminarPlantillaSC extends SwingWorker {
+    public class swEliminarPresupuesto extends SwingWorker {
 
         @Override
         protected Object doInBackground() throws Exception {
@@ -100,8 +100,8 @@ public class lisPlantillaSC extends frameBase<PlantillaSolicitudCotizacion> {
             cliVentas plantillaSC = new cliVentas();
             String json = "";
             try {
-                int idPlantillaSC = ObtenerValorCelda(tbPlantillas, 1);
-                json = plantillaSC.EliminarPlantillaSolicitudCotizacion(new Gson().toJson(idPlantillaSC));
+                int idPresupuesto = ObtenerValorCelda(tbPresupuestos, 1);
+                json = plantillaSC.EliminarPresupuesto(new Gson().toJson(idPresupuesto));
             } catch (Exception e) {
                 OcultarCargando(frame);
                 cancel(false);
@@ -118,7 +118,7 @@ public class lisPlantillaSC extends frameBase<PlantillaSolicitudCotizacion> {
                 String json = get().toString();
                 String[] resultado = new Gson().fromJson(json, String[].class);
                 if (resultado[0].equals("true")) {
-                    new swObtenerPlantillasSC().execute();
+                    new swObtenerPresupuestos().execute();
                 } else {
                     OcultarCargando(frame);
                 }
@@ -133,32 +133,32 @@ public class lisPlantillaSC extends frameBase<PlantillaSolicitudCotizacion> {
         this.modo = modo;
         switch (this.modo) {
             case 0:
-                OcultarColumna(tbPlantillas, 0);
+                OcultarColumna(tbPresupuestos, 0);
                 OcultarControl(btnSeleccionar);
                 break;
             case 1:
-                OcultarColumnas(tbPlantillas, new int[]{0, 5, 6});
+                OcultarColumnas(tbPresupuestos, new int[]{0, 6, 7});
                 OcultarControl(btnNuevo);
                 break;
         }
-        new swObtenerPlantillasSC().execute();
+        new swObtenerPresupuestos().execute();
     }
 
-    public void EditarPlantillaSC() {
-        int idPlantillaSC = ObtenerValorCelda(tbPlantillas, 1);
-        regPlantillaSC regPlantillaSC = new regPlantillaSC("EDITAR ", idPlantillaSC);
-        this.getParent().add(regPlantillaSC);
-        regPlantillaSC.setVisible(true);
+    public void EditarPresupuesto() {
+        int idPresupuesto = ObtenerValorCelda(tbPresupuestos, 1);
+        regPresupuesto regPresupuesto = new regPresupuesto(idPresupuesto);
+        this.getParent().add(regPresupuesto);
+        regPresupuesto.setVisible(true);
     }
 
-    public void EliminarPlantillaSC() {
+    public void EliminarPresupuesto() {
         int confirmacion = VerConfirmacion(this);
         if (confirmacion == 0) {
-            new swEliminarPlantillaSC().execute();
+            new swEliminarPresupuesto().execute();
         }
     }
 
-    public PlantillaSolicitudCotizacion getSeleccionado() {
+    public Presupuesto getSeleccionado() {
         return seleccionado;
     }
 
@@ -173,7 +173,7 @@ public class lisPlantillaSC extends frameBase<PlantillaSolicitudCotizacion> {
 
         frame = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tbPlantillas = new javax.swing.JTable();
+        tbPresupuestos = new javax.swing.JTable();
         pnlTitulo = new javax.swing.JPanel();
         lblTitulo = new javax.swing.JLabel();
         btnNuevo = new javax.swing.JButton();
@@ -187,19 +187,19 @@ public class lisPlantillaSC extends frameBase<PlantillaSolicitudCotizacion> {
         frame.setBackground(java.awt.Color.white);
         frame.setBorder(null);
 
-        tbPlantillas.setModel(new javax.swing.table.DefaultTableModel(
+        tbPresupuestos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "CHECK", "IDPLANTILLA", "NOMBRE", "LINEA DE PRODUCCION", "ACTIVO", "EDITAR", "ELIMINAR"
+                "CHECK", "ID", "NUMERO", "F.CREACION", "CLIENTE", "TOTAL", "EDITAR", "ELIMINAR"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Boolean.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Boolean.class, java.lang.Object.class, java.lang.Object.class
+                java.lang.Boolean.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Double.class, java.lang.Object.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                true, false, true, true, true, true, true
+                true, false, true, true, true, true, true, true
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -210,16 +210,14 @@ public class lisPlantillaSC extends frameBase<PlantillaSolicitudCotizacion> {
                 return canEdit [columnIndex];
             }
         });
-        tbPlantillas.setRowHeight(25);
-        tbPlantillas.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        jScrollPane1.setViewportView(tbPlantillas);
-        if (tbPlantillas.getColumnModel().getColumnCount() > 0) {
-            tbPlantillas.getColumnModel().getColumn(1).setMinWidth(0);
-            tbPlantillas.getColumnModel().getColumn(1).setPreferredWidth(0);
-            tbPlantillas.getColumnModel().getColumn(1).setMaxWidth(0);
-            tbPlantillas.getColumnModel().getColumn(2).setPreferredWidth(200);
-            tbPlantillas.getColumnModel().getColumn(5).setPreferredWidth(20);
-            tbPlantillas.getColumnModel().getColumn(6).setPreferredWidth(20);
+        tbPresupuestos.setRowHeight(25);
+        tbPresupuestos.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jScrollPane1.setViewportView(tbPresupuestos);
+        if (tbPresupuestos.getColumnModel().getColumnCount() > 0) {
+            tbPresupuestos.getColumnModel().getColumn(1).setMinWidth(0);
+            tbPresupuestos.getColumnModel().getColumn(1).setPreferredWidth(0);
+            tbPresupuestos.getColumnModel().getColumn(1).setMaxWidth(0);
+            tbPresupuestos.getColumnModel().getColumn(4).setPreferredWidth(300);
         }
 
         pnlTitulo.setBackground(new java.awt.Color(67, 100, 130));
@@ -228,7 +226,7 @@ public class lisPlantillaSC extends frameBase<PlantillaSolicitudCotizacion> {
         lblTitulo.setFont(new java.awt.Font("Ubuntu", 1, 18)); // NOI18N
         lblTitulo.setForeground(java.awt.Color.white);
         lblTitulo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sge/base/imagenes/list-view-16.png"))); // NOI18N
-        lblTitulo.setText("LISTADO DE PLANTILLAS DE SOLICITUD DE COTIZACIÓN");
+        lblTitulo.setText("LISTADO DE PRESUPUESTOS");
 
         btnNuevo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sge/base/imagenes/add-16.png"))); // NOI18N
         btnNuevo.setText("NUEVO");
@@ -245,7 +243,7 @@ public class lisPlantillaSC extends frameBase<PlantillaSolicitudCotizacion> {
             .addGroup(pnlTituloLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lblTitulo)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 229, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 494, Short.MAX_VALUE)
                 .addComponent(btnNuevo)
                 .addContainerGap())
         );
@@ -290,7 +288,7 @@ public class lisPlantillaSC extends frameBase<PlantillaSolicitudCotizacion> {
             .addGroup(frameLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 820, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 848, Short.MAX_VALUE)
                     .addGroup(frameLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btnSeleccionar, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -314,7 +312,7 @@ public class lisPlantillaSC extends frameBase<PlantillaSolicitudCotizacion> {
                         .addComponent(txtFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(btnRefrescar, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 283, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 242, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnSeleccionar)
                 .addGap(9, 9, 9))
@@ -336,20 +334,20 @@ public class lisPlantillaSC extends frameBase<PlantillaSolicitudCotizacion> {
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
         // TODO add your handling code here:
-        regPlantillaSC regPlantillaSolicitudCotizacion = new regPlantillaSC("NUEVO ", 0);
-        this.getParent().add(regPlantillaSolicitudCotizacion);
-        regPlantillaSolicitudCotizacion.setVisible(true);
+        regPresupuesto regPresupuesto = new regPresupuesto(0);
+        this.getParent().add(regPresupuesto);
+        regPresupuesto.setVisible(true);
     }//GEN-LAST:event_btnNuevoActionPerformed
 
     private void btnSeleccionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeleccionarActionPerformed
         // TODO add your handling code here:
         switch (this.modo) {
             case 1:
-                if (FilaActiva(tbPlantillas)) {
-                    PlantillaSolicitudCotizacion plantillaSC = new PlantillaSolicitudCotizacion();
-                    plantillaSC.setIdPlantillaSolicitudCotizacion(ObtenerValorCelda(tbPlantillas, 1));
-                    plantillaSC.setNombre(ObtenerValorCelda(tbPlantillas, 2));
-                    seleccionado = plantillaSC;
+                if (FilaActiva(tbPresupuestos)) {
+                    Presupuesto presupuesto = new Presupuesto();
+                    presupuesto.setIdPresupuesto(ObtenerValorCelda(tbPresupuestos, 1));
+                    presupuesto.setNumero(ObtenerValorCelda(tbPresupuestos, 2));
+                    seleccionado = presupuesto;
                 }
                 Cerrar();
                 break;
@@ -360,12 +358,12 @@ public class lisPlantillaSC extends frameBase<PlantillaSolicitudCotizacion> {
 
     private void txtFiltroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFiltroActionPerformed
         // TODO add your handling code here:
-        Filtrar(tbPlantillas, txtFiltro.getText());
+        Filtrar(tbPresupuestos, txtFiltro.getText());
     }//GEN-LAST:event_txtFiltroActionPerformed
 
     private void btnRefrescarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefrescarActionPerformed
         // TODO add your handling code here:
-        new swObtenerPlantillasSC().execute();
+        new swObtenerPresupuestos().execute();
     }//GEN-LAST:event_btnRefrescarActionPerformed
 
 
@@ -378,7 +376,7 @@ public class lisPlantillaSC extends frameBase<PlantillaSolicitudCotizacion> {
     private javax.swing.JLabel lblFiltro;
     private javax.swing.JLabel lblTitulo;
     private javax.swing.JPanel pnlTitulo;
-    private javax.swing.JTable tbPlantillas;
+    private javax.swing.JTable tbPresupuestos;
     private javax.swing.JTextField txtFiltro;
     // End of variables declaration//GEN-END:variables
 }
