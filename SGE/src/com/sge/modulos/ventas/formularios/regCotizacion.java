@@ -21,6 +21,7 @@ import com.sge.modulos.ventas.clases.Servicio;
 import com.sge.modulos.ventas.clases.Cotizacion;
 import com.sge.modulos.ventas.clases.EscalaListaPrecioMaquina;
 import com.sge.modulos.ventas.clases.EscalaListaPrecioProducto;
+import com.sge.modulos.ventas.clases.ItemListaPrecioMaquina;
 import com.sge.modulos.ventas.cliente.cliVentas;
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -516,20 +517,27 @@ public class regCotizacion extends frameBase<Cotizacion> {
                 String[] resultado = new Gson().fromJson(json, String[].class);
 
                 if (resultado[0].equals("true")) {
-                    EscalaListaPrecioMaquina[] escalasMaquina = new Gson().fromJson(resultado[1], EscalaListaPrecioMaquina[].class);
-
-                    int cantidadMaquina = item.getCantidadProduccion();
+                    ItemListaPrecioMaquina[] itemsListaPrecioMaquina = new Gson().fromJson(resultado[1], ItemListaPrecioMaquina[].class);
+                    
+                    if(itemsListaPrecioMaquina.length == 0){
+                        VerAdvertencia("NO SE ENCONTRÓ UNA ESCALA PARA LA MÁQUINA: " + item.getDescripcionMaquina(), frame);
+                        break;
+                    }
+                    
+                    int cantidadIntMaquina = item.getCantidadProduccion() / itemsListaPrecioMaquina[0].getFactor();
+                    double cantidadDoubleMaquina = item.getCantidadProduccion() / itemsListaPrecioMaquina[0].getFactor();
                     double precioMaquina = 0;
-                    for (EscalaListaPrecioMaquina escala : escalasMaquina) {
+                    
+                    for (EscalaListaPrecioMaquina escala : itemsListaPrecioMaquina[0].getEscalas()) {
                         if (escala.getDesde() == 0 && escala.getHasta() == 0) {
                             precioMaquina = escala.getPrecio();
                             break;
                         }
-                        if (escala.getDesde() <= cantidadMaquina && escala.getHasta() >= cantidadMaquina) {
+                        if (escala.getDesde() <= cantidadIntMaquina && escala.getHasta() >= cantidadIntMaquina) {
                             precioMaquina = escala.getPrecio();
                             break;
                         }
-                        if (escala.getDesde() <= cantidadMaquina && escala.getHasta() == 0) {
+                        if (escala.getDesde() <= cantidadIntMaquina && escala.getHasta() == 0) {
                             precioMaquina = escala.getPrecio();
                             break;
                         }
@@ -539,22 +547,23 @@ public class regCotizacion extends frameBase<Cotizacion> {
                         VerAdvertencia("NO SE ENCONTRÓ UNA ESCALA PARA LA MÁQUINA: " + item.getDescripcionMaquina(), frame);
                         break;
                     } else {
+                        double totalMaquina = cantidadDoubleMaquina * precioMaquina;
                         if (item.isTiraRetira()) {
-                            double nuevoPrecioMaquina = 0;
+                            double nuevoTotalMaquina = 0;
                             if (item.getCantidadCambios() == 2) {
                                 double factorTira = item.getTiraColor() / 4;
                                 double factorRetira = item.getRetiraColor() / 4;
-                                nuevoPrecioMaquina = precioMaquina * factorTira;
-                                nuevoPrecioMaquina += precioMaquina * factorRetira;
+                                nuevoTotalMaquina = totalMaquina * factorTira;
+                                nuevoTotalMaquina += totalMaquina * factorRetira;
                             } else {
                                 double factorTira = item.getTiraColor() / 4;
                                 if (item.getCantidadPliegos() == 1) {
-                                    nuevoPrecioMaquina = precioMaquina * factorTira;
+                                    nuevoTotalMaquina = totalMaquina * factorTira;
                                 }
                             }
-                            item.setTotalMaquina(nuevoPrecioMaquina * item.getCantidadPliegos());
+                            item.setTotalMaquina(nuevoTotalMaquina * item.getCantidadPliegos());
                         } else {
-                            item.setTotalMaquina(precioMaquina * cantidadMaquina);
+                            item.setTotalMaquina(totalMaquina);
                         }
                     }
 

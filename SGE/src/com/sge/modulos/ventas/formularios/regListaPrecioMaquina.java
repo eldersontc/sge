@@ -54,6 +54,7 @@ public class regListaPrecioMaquina extends frameBase<ListaPrecioMaquina> {
                 for (EscalaListaPrecioMaquina escala : escalas) {
                     AgregarFila(tbEscalas, new Object[]{escala.getIdEscalaListaPrecioMaquina(), escala.getDesde(), escala.getHasta(), escala.getPrecio()});
                 }
+                AgregarOrdenamiento(tbEscalas);
             }
         } catch (Exception e) {
             ControlarExcepcion(e);
@@ -62,6 +63,25 @@ public class regListaPrecioMaquina extends frameBase<ListaPrecioMaquina> {
         }
     }
 
+    public void ActualizarItem() {
+        cliVentas cliente = new cliVentas();
+        try {
+            String json = "";
+            ItemListaPrecioMaquina item = new ItemListaPrecioMaquina();
+            item.setIdItemListaPrecioMaquina(ObtenerValorCelda(tbItems, 0));
+            item.setFactor(ObtenerValorCelda(tbItems, 3));
+            json = cliente.ActualizarItemListaPrecioMaquina(new Gson().toJson(item));
+            String[] resultado = new Gson().fromJson(json, String[].class);
+            if (resultado[0].equals("true")) {
+                VerAdvertencia("GUARDADO CORRECTAMENTE!", frame);
+            }
+        } catch (Exception e) {
+            ControlarExcepcion(e);
+        } finally {
+            cliente.close();
+        }
+    }
+    
     public void GuardarEscala() {
         cliVentas cliente = new cliVentas();
         try {
@@ -139,6 +159,7 @@ public class regListaPrecioMaquina extends frameBase<ListaPrecioMaquina> {
                     item.setIdListaPrecioMaquina(id);
                     item.setIdMaquina(seleccionado.getIdMaquina());
                     item.setNombreMaquina(seleccionado.getDescripcion());
+                    item.setFactor(1);
                     itemsListaPrecio.add(item);
                 }
                 cliVentas cliente = new cliVentas();
@@ -151,9 +172,11 @@ public class regListaPrecioMaquina extends frameBase<ListaPrecioMaquina> {
                                 new Object[]{
                                     item.getIdItemListaPrecioMaquina(),
                                     item.getIdMaquina(),
-                                    item.getNombreMaquina()
+                                    item.getNombreMaquina(),
+                                    item.getFactor()
                                 });
                     }
+                    AgregarOrdenamiento(tbItems);
                 } catch (Exception e) {
                     ControlarExcepcion(e);
                 } finally {
@@ -182,9 +205,11 @@ public class regListaPrecioMaquina extends frameBase<ListaPrecioMaquina> {
                                 new Object[]{
                                     item.getIdItemListaPrecioMaquina(),
                                     item.getIdMaquina(),
-                                    item.getNombreMaquina()
+                                    item.getNombreMaquina(),
+                                    item.getFactor()
                                 });
                     }
+                    AgregarOrdenamiento(tbItems);
                 }
             } catch (Exception e) {
                 OcultarCargando(frame);
@@ -271,6 +296,7 @@ public class regListaPrecioMaquina extends frameBase<ListaPrecioMaquina> {
         tbItems = new javax.swing.JTable();
         btnNuevoItem = new javax.swing.JButton();
         btnEliminarItem = new javax.swing.JButton();
+        btnGuardarItem = new javax.swing.JButton();
         tpnlEscalas = new javax.swing.JTabbedPane();
         tabEscalas = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
@@ -334,14 +360,14 @@ public class regListaPrecioMaquina extends frameBase<ListaPrecioMaquina> {
 
             },
             new String [] {
-                "ID", "IDMAQUINA", "NOMBRE"
+                "ID", "IDMAQUINA", "NOMBRE", "FACTOR"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.Integer.class, java.lang.String.class
+                java.lang.Integer.class, java.lang.Integer.class, java.lang.String.class, java.lang.Integer.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, true
+                false, false, true, true
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -368,6 +394,7 @@ public class regListaPrecioMaquina extends frameBase<ListaPrecioMaquina> {
             tbItems.getColumnModel().getColumn(1).setMinWidth(0);
             tbItems.getColumnModel().getColumn(1).setPreferredWidth(0);
             tbItems.getColumnModel().getColumn(1).setMaxWidth(0);
+            tbItems.getColumnModel().getColumn(2).setPreferredWidth(300);
         }
 
         btnNuevoItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sge/base/imagenes/add-16.png"))); // NOI18N
@@ -386,6 +413,14 @@ public class regListaPrecioMaquina extends frameBase<ListaPrecioMaquina> {
             }
         });
 
+        btnGuardarItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sge/base/imagenes/save-16.png"))); // NOI18N
+        btnGuardarItem.setToolTipText("NUEVO");
+        btnGuardarItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGuardarItemActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout tabItemsLayout = new javax.swing.GroupLayout(tabItems);
         tabItems.setLayout(tabItemsLayout);
         tabItemsLayout.setHorizontalGroup(
@@ -394,16 +429,20 @@ public class regListaPrecioMaquina extends frameBase<ListaPrecioMaquina> {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 380, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(tabItemsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnNuevoItem, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(btnEliminarItem, javax.swing.GroupLayout.Alignment.TRAILING))
+                    .addGroup(tabItemsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(btnNuevoItem, javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(btnEliminarItem, javax.swing.GroupLayout.Alignment.TRAILING))
+                    .addComponent(btnGuardarItem))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         tabItemsLayout.setVerticalGroup(
             tabItemsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 396, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
             .addGroup(tabItemsLayout.createSequentialGroup()
                 .addGap(28, 28, 28)
                 .addComponent(btnNuevoItem)
+                .addGap(9, 9, 9)
+                .addComponent(btnGuardarItem)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnEliminarItem)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -482,7 +521,7 @@ public class regListaPrecioMaquina extends frameBase<ListaPrecioMaquina> {
                     .addComponent(btnGuardarEscala)
                     .addComponent(btnEliminarEscala)
                     .addComponent(btnNuevaEscala))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(13, Short.MAX_VALUE))
         );
         tabEscalasLayout.setVerticalGroup(
             tabEscalasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -494,7 +533,7 @@ public class regListaPrecioMaquina extends frameBase<ListaPrecioMaquina> {
                 .addComponent(btnGuardarEscala)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnEliminarEscala)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(118, Short.MAX_VALUE))
         );
 
         tpnlEscalas.addTab("ESCALAS", tabEscalas);
@@ -598,6 +637,7 @@ public class regListaPrecioMaquina extends frameBase<ListaPrecioMaquina> {
         // TODO add your handling code here:
         if (FilaActiva(tbItems)) {
             AgregarFila(tbEscalas, new Object[]{0, 0, 0, 0.0});
+            AgregarOrdenamiento(tbEscalas);
         }
     }//GEN-LAST:event_btnNuevaEscalaActionPerformed
 
@@ -615,6 +655,13 @@ public class regListaPrecioMaquina extends frameBase<ListaPrecioMaquina> {
         }
     }//GEN-LAST:event_btnEliminarEscalaActionPerformed
 
+    private void btnGuardarItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarItemActionPerformed
+        // TODO add your handling code here:
+        if (FilaActiva(tbItems)) {
+            ActualizarItem();
+        }
+    }//GEN-LAST:event_btnGuardarItemActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAceptar;
@@ -622,6 +669,7 @@ public class regListaPrecioMaquina extends frameBase<ListaPrecioMaquina> {
     private javax.swing.JButton btnEliminarEscala;
     private javax.swing.JButton btnEliminarItem;
     private javax.swing.JButton btnGuardarEscala;
+    private javax.swing.JButton btnGuardarItem;
     private javax.swing.JButton btnNuevaEscala;
     private javax.swing.JButton btnNuevoItem;
     private javax.swing.JCheckBox chkActivo;
