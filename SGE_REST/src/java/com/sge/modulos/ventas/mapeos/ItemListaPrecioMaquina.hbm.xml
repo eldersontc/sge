@@ -12,5 +12,6 @@
         <property name="idListaPrecioMaquina" column="idListaPrecioMaquina"/>
         <property name="idMaquina" column="idMaquina"/>
         <property name="nombreMaquina" column="nombreMaquina"/>
+        <property name="factor" column="factor"/>
     </class>
 </hibernate-mapping>

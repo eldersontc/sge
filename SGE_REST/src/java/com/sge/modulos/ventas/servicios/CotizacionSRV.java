@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.sge.modulos.ventas.entidades.Cotizacion;
 import com.sge.modulos.ventas.entidades.EscalaListaPrecioMaquina;
 import com.sge.modulos.ventas.entidades.EscalaListaPrecioProducto;
+import com.sge.modulos.ventas.entidades.ItemListaPrecioMaquina;
 import com.sge.modulos.ventas.negocios.CotizacionDTO;
 import com.sge.modulos.ventas.negocios.ListaPrecioMaquinaDTO;
 import com.sge.modulos.ventas.negocios.ListaPrecioProductoDTO;
@@ -135,11 +136,11 @@ public class CotizacionSRV {
         try {
             int[] ids = new Gson().fromJson(json, int[].class);
             ListaPrecioMaquinaDTO listaPrecioMaquinaDTO = new ListaPrecioMaquinaDTO();
-            List<EscalaListaPrecioMaquina> escalasMaquina = listaPrecioMaquinaDTO.ObtenerEscalasPorMaquina(ids[0], ids[1]);
+            List<ItemListaPrecioMaquina> itemsMaquina = listaPrecioMaquinaDTO.ObtenerEscalasPorMaquina(ids[0], ids[1]);
             ListaPrecioProductoDTO listaPrecioProductoDTO = new ListaPrecioProductoDTO();
             List<EscalaListaPrecioProducto> escalasProducto = listaPrecioProductoDTO.ObtenerEscalasPorProducto(ids[2], ids[3], ids[4]);
             resultado.add(new Gson().toJson(true));
-            resultado.add(new Gson().toJson(escalasMaquina));
+            resultado.add(new Gson().toJson(itemsMaquina));
             resultado.add(new Gson().toJson(escalasProducto));
         } catch (Exception e) {
             resultado.clear();

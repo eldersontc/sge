@@ -166,6 +166,25 @@ public class ListaPrecioMaquinaSRV {
     }
     
     @POST
+    @Path("ActualizarItemListaPrecioMaquina")
+    @Consumes("application/json")
+    @Produces("application/json")
+    public String ActualizarItemListaPrecioMaquina(String json) {
+        List<String> resultado = new ArrayList<>();
+        ItemListaPrecioMaquina itemListaPrecio = new Gson().fromJson(json, ItemListaPrecioMaquina.class);
+        try {
+            ListaPrecioMaquinaDTO listaPrecioMaquinaDTO = new ListaPrecioMaquinaDTO();
+            listaPrecioMaquinaDTO.ActualizarItemListaPrecioMaquina(itemListaPrecio);
+            resultado.add(new Gson().toJson(true));
+        } catch (Exception e) {
+            resultado.clear();
+            resultado.add(new Gson().toJson(false));
+            resultado.add(new Gson().toJson(e));
+        }
+        return new Gson().toJson(resultado);
+    }
+    
+    @POST
     @Path("ActualizarEscalaListaPrecioMaquina")
     @Consumes("application/json")
     @Produces("application/json")

@@ -132,6 +132,21 @@ public class ListaPrecioMaquinaDTO {
         return true;
     }
 
+    public boolean ActualizarItemListaPrecioMaquina(ItemListaPrecioMaquina itemListaPrecio) {
+        try {
+            itemListaPrecioDAO = new ItemListaPrecioMaquinaDAO();
+            itemListaPrecioDAO.IniciarTransaccion();
+            itemListaPrecioDAO.ActualizarItemListaPrecioMaquina(itemListaPrecio.getIdItemListaPrecioMaquina(), itemListaPrecio.getFactor());
+            itemListaPrecioDAO.ConfirmarTransaccion();
+        } catch (Exception e) {
+            itemListaPrecioDAO.AbortarTransaccion();
+            throw e;
+        } finally {
+            itemListaPrecioDAO.CerrarSesion();
+        }
+        return true;
+    }
+    
     public boolean ActualizarEscalaListaPrecioMaquina(EscalaListaPrecioMaquina escalaListaPrecio) {
         try {
             escalaListaPrecioDAO = new EscalaListaPrecioMaquinaDAO();
@@ -206,17 +221,31 @@ public class ListaPrecioMaquinaDTO {
         return true;
     }
 
-    public List<EscalaListaPrecioMaquina> ObtenerEscalasPorMaquina(int idListaPrecioMaquina, int idMaquina) {
-        List<EscalaListaPrecioMaquina> escalas = new ArrayList<>();
+    public List<ItemListaPrecioMaquina> ObtenerEscalasPorMaquina(int idListaPrecioMaquina, int idMaquina) {
+        List<ItemListaPrecioMaquina> items = new ArrayList<>();
         try {
+            itemListaPrecioDAO = new ItemListaPrecioMaquinaDAO();
+            itemListaPrecioDAO.AbrirSesion();
+            
+            List<Object[]> filtros = new ArrayList<>();
+            filtros.add(new Object[]{"idListaPrecioMaquina", idListaPrecioMaquina});
+            filtros.add(new Object[]{"idMaquina", idMaquina});
+            items = itemListaPrecioDAO.ObtenerLista(ItemListaPrecioMaquina.class, filtros);
+            
             escalaListaPrecioDAO = new EscalaListaPrecioMaquinaDAO();
-            escalaListaPrecioDAO.AbrirSesion();
-            escalas = escalaListaPrecioDAO.ObtenerEscalasPorMaquina(idListaPrecioMaquina, idMaquina);
+            escalaListaPrecioDAO.AsignarSesion(itemListaPrecioDAO);
+            
+            for (ItemListaPrecioMaquina item : items) {
+                filtros = new ArrayList<>();
+                filtros.add(new Object[]{"idItemListaPrecioMaquina", item.getIdItemListaPrecioMaquina()});
+                List<EscalaListaPrecioMaquina> escalas = escalaListaPrecioDAO.ObtenerEscalasPorMaquina(idListaPrecioMaquina, idMaquina);
+                item.setEscalas(escalas);
+            }
         } catch (Exception e) {
             throw e;
         } finally {
-            escalaListaPrecioDAO.CerrarSesion();
+            itemListaPrecioDAO.CerrarSesion();
         }
-        return escalas;
+        return items;
     }
 }
