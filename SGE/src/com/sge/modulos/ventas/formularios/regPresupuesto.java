@@ -102,7 +102,7 @@ public class regPresupuesto extends frameBase<Presupuesto> {
         this.id = id;
         if (this.id == 0) {
             lblTitulo.setText("NUEVO " + lblTitulo.getText());
-
+            new swObtenerValoresDefinidos().execute();
         } else {
             lblTitulo.setText("MODIFICAR " + lblTitulo.getText());
             new swObtenerPresupuesto().execute();
@@ -553,7 +553,7 @@ public class regPresupuesto extends frameBase<Presupuesto> {
     }
 
     private void schNumeracionSearch() {
-        String filtro = "WHERE Numeracion.idEntidad = 4";
+        String filtro = "WHERE Numeracion.idEntidad = 5";
         VerModal(new lisNumeracion(1, filtro), sele_nume);
     }
 

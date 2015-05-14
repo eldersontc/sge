@@ -1,7 +1,5 @@
 package com.sge.modulos.ventas.clases;
 
-import java.awt.image.BufferedImage;
-
 /**
  *
  * @author elderson
@@ -50,8 +48,8 @@ public class ItemCotizacion {
     private int cantidadPliegos;
     private String ubicacionGraficoPrecorte;
     private String ubicacionGraficoImpresion;
-    private BufferedImage graficoPrecorte;
-    private BufferedImage graficoImpresion;
+    private byte[] graficoPrecorte;
+    private byte[] graficoImpresion;
     private boolean graficoPrecorteGirado;
     private boolean graficoImpresionGirado;
     private int cantidadPiezasPrecorte;
@@ -417,19 +415,19 @@ public class ItemCotizacion {
         this.ubicacionGraficoImpresion = ubicacionGraficoImpresion;
     }
 
-    public BufferedImage getGraficoPrecorte() {
+    public byte[] getGraficoPrecorte() {
         return graficoPrecorte;
     }
 
-    public void setGraficoPrecorte(BufferedImage graficoPrecorte) {
+    public void setGraficoPrecorte(byte[] graficoPrecorte) {
         this.graficoPrecorte = graficoPrecorte;
     }
 
-    public BufferedImage getGraficoImpresion() {
+    public byte[] getGraficoImpresion() {
         return graficoImpresion;
     }
 
-    public void setGraficoImpresion(BufferedImage graficoImpresion) {
+    public void setGraficoImpresion(byte[] graficoImpresion) {
         this.graficoImpresion = graficoImpresion;
     }
 

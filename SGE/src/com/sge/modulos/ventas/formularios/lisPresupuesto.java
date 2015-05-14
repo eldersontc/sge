@@ -335,6 +335,7 @@ public class lisPresupuesto extends frameBase<Presupuesto> {
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
         // TODO add your handling code here:
         regPresupuesto regPresupuesto = new regPresupuesto(0);
+        regPresupuesto.setUsuario(getUsuario());
         this.getParent().add(regPresupuesto);
         regPresupuesto.setVisible(true);
     }//GEN-LAST:event_btnNuevoActionPerformed

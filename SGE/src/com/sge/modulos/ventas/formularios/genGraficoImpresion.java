@@ -11,6 +11,8 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import javax.imageio.ImageIO;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ImageIcon;
@@ -58,26 +60,6 @@ public class genGraficoImpresion extends frameBase<Cotizacion> {
         if (this.item.getGraficoImpresion() != null) {
             lblGrafico.setIcon(new ImageIcon(this.item.getGraficoImpresion()));
         }
-    }
-
-    public BufferedImage CambiarDimensiones(BufferedImage imagen, int largo, int alto) {
-        int largoImagen = imagen.getWidth();
-        int altoImagen = imagen.getHeight();
-        if (largoImagen * alto < altoImagen * largo) {
-            largo = largoImagen * alto / altoImagen;
-        } else {
-            alto = altoImagen * largo / largoImagen;
-        }
-        BufferedImage nuevaImagen = new BufferedImage(largo, alto, BufferedImage.TYPE_INT_RGB);
-        Graphics2D grafico = nuevaImagen.createGraphics();
-        try {
-            grafico.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
-            grafico.clearRect(0, 0, largo, alto);
-            grafico.drawImage(imagen, 0, 0, largo, alto, null);
-        } finally {
-            grafico.dispose();
-        }
-        return nuevaImagen;
     }
 
     public void GenerarGrafico() throws Exception {
@@ -169,9 +151,12 @@ public class genGraficoImpresion extends frameBase<Cotizacion> {
         }
 
         this.item.setCantidadPiezasImpresion(cantidadPiezas);
-        this.item.setGraficoImpresion(imagen);
-
-        //AsignarControles();
+        
+        ByteArrayOutputStream arrayBytesOut = new ByteArrayOutputStream();
+        ImageIO.write(imagen, "jpg", arrayBytesOut);
+        byte[] arrayBytes = arrayBytesOut.toByteArray();
+        
+        this.item.setGraficoImpresion(arrayBytes);
     }
 
     public void GirarGrafico() throws Exception {

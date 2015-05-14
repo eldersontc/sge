@@ -8,6 +8,9 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
 /**
@@ -51,7 +54,7 @@ public class genGraficoPrecorte extends frameBase<Cotizacion> {
         }
     }
 
-    public BufferedImage CambiarDimensiones(BufferedImage imagen, int largo, int alto) {
+    public byte[] CambiarDimensiones(BufferedImage imagen, int largo, int alto) throws IOException {
         int largoImagen = imagen.getWidth();
         int altoImagen = imagen.getHeight();
         if (largoImagen * alto < altoImagen * largo) {
@@ -68,7 +71,12 @@ public class genGraficoPrecorte extends frameBase<Cotizacion> {
         } finally {
             grafico.dispose();
         }
-        return nuevaImagen;
+        
+        ByteArrayOutputStream arrayBytesOut = new ByteArrayOutputStream();
+        ImageIO.write(nuevaImagen, "jpg", arrayBytesOut);
+        byte[] arrayBytes = arrayBytesOut.toByteArray();
+        
+        return arrayBytes;
     }
 
     public void GenerarGrafico() throws Exception {
@@ -117,8 +125,6 @@ public class genGraficoPrecorte extends frameBase<Cotizacion> {
 
         this.item.setCantidadPiezasPrecorte(cantidadPiezas);
         this.item.setGraficoPrecorte(CambiarDimensiones(imagen, lGrafi / 2, aGrafi / 2));
-
-        //AsignarControles();
     }
 
     public void GenerarGraficoImpresion() throws Exception {
@@ -206,9 +212,12 @@ public class genGraficoPrecorte extends frameBase<Cotizacion> {
         }
 
         this.item.setCantidadPiezasImpresion(cantidadPiezas);
-        this.item.setGraficoImpresion(imagen);
-
-        //AsignarControles();
+        
+        ByteArrayOutputStream arrayBytesOut = new ByteArrayOutputStream();
+        ImageIO.write(imagen, "jpg", arrayBytesOut);
+        byte[] arrayBytes = arrayBytesOut.toByteArray();
+        
+        this.item.setGraficoImpresion(arrayBytes);
     }
     
     public void GirarGrafico() throws Exception {
