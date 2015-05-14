@@ -11,6 +11,8 @@ public class ItemCotizacion {
     private String nombre;
     private int idServicioImpresion;
     private String nombreServicioImpresion;
+    private boolean impresionVinil;
+    private boolean impresionBanner;
     private int idMaquina;
     private String descripcionMaquina;
     private int largoMaximoPliegoMaquina;
@@ -19,6 +21,8 @@ public class ItemCotizacion {
     private String nombreMaterial;
     private double largoMaterial;
     private double altoMaterial;
+    private int idUnidadMaterial;
+    private String abreviacionUnidadMaterial;
     private String nombreTipoUnidad;
     private String unidadMedidaAbierta;
     private boolean medidaAbierta;
@@ -36,10 +40,16 @@ public class ItemCotizacion {
     private double tiraColor;
     private double retiraColor;
     private double dFondo;
-    private int largoFormatoImpresion;
-    private int altoFormatoImpresion;
+    private int cantidadTipoUnidad;
+    private double largoFormatoImpresion;
+    private double altoFormatoImpresion;
     private double separacionX;
     private double separacionY;
+    private int cantidadPliegos;
+    private String ubicacionGraficoPrecorte;
+    private String ubicacionGraficoImpresion;
+    private byte[] graficoPrecorte;
+    private byte[] graficoImpresion;
     private boolean graficoPrecorteGirado;
     private boolean graficoImpresionGirado;
     private int cantidadPiezasPrecorte;
@@ -48,8 +58,12 @@ public class ItemCotizacion {
     private String descripcionMetodoImpresion;
     private int cantidadPases;
     private int cantidadCambios;
+    private int factorHorizontal;
+    private int factorVertical;
+    private String letras;
     private int cantidadMaterial;
     private int cantidadDemasia;
+    private int cantidadDemasiaMaterial;
     private int cantidadProduccion;
     private int cantidad;
     private int cantidadPaginasSobrantes;
@@ -103,6 +117,22 @@ public class ItemCotizacion {
 
     public void setNombreServicioImpresion(String nombreServicioImpresion) {
         this.nombreServicioImpresion = nombreServicioImpresion;
+    }
+
+    public boolean isImpresionVinil() {
+        return impresionVinil;
+    }
+
+    public void setImpresionVinil(boolean impresionVinil) {
+        this.impresionVinil = impresionVinil;
+    }
+
+    public boolean isImpresionBanner() {
+        return impresionBanner;
+    }
+
+    public void setImpresionBanner(boolean impresionBanner) {
+        this.impresionBanner = impresionBanner;
     }
 
     public int getIdMaquina() {
@@ -169,6 +199,22 @@ public class ItemCotizacion {
         this.altoMaterial = altoMaterial;
     }
 
+    public int getIdUnidadMaterial() {
+        return idUnidadMaterial;
+    }
+
+    public void setIdUnidadMaterial(int idUnidadMaterial) {
+        this.idUnidadMaterial = idUnidadMaterial;
+    }
+
+    public String getAbreviacionUnidadMaterial() {
+        return abreviacionUnidadMaterial;
+    }
+
+    public void setAbreviacionUnidadMaterial(String abreviacionUnidadMaterial) {
+        this.abreviacionUnidadMaterial = abreviacionUnidadMaterial;
+    }
+    
     public String getNombreTipoUnidad() {
         return nombreTipoUnidad;
     }
@@ -305,19 +351,27 @@ public class ItemCotizacion {
         this.dFondo = dFondo;
     }
 
-    public int getLargoFormatoImpresion() {
+    public int getCantidadTipoUnidad() {
+        return cantidadTipoUnidad;
+    }
+
+    public void setCantidadTipoUnidad(int cantidadTipoUnidad) {
+        this.cantidadTipoUnidad = cantidadTipoUnidad;
+    }
+    
+    public double getLargoFormatoImpresion() {
         return largoFormatoImpresion;
     }
 
-    public void setLargoFormatoImpresion(int largoFormatoImpresion) {
+    public void setLargoFormatoImpresion(double largoFormatoImpresion) {
         this.largoFormatoImpresion = largoFormatoImpresion;
     }
 
-    public int getAltoFormatoImpresion() {
+    public double getAltoFormatoImpresion() {
         return altoFormatoImpresion;
     }
 
-    public void setAltoFormatoImpresion(int altoFormatoImpresion) {
+    public void setAltoFormatoImpresion(double altoFormatoImpresion) {
         this.altoFormatoImpresion = altoFormatoImpresion;
     }
 
@@ -335,6 +389,46 @@ public class ItemCotizacion {
 
     public void setSeparacionY(double separacionY) {
         this.separacionY = separacionY;
+    }
+
+    public int getCantidadPliegos() {
+        return cantidadPliegos;
+    }
+
+    public void setCantidadPliegos(int cantidadPliegos) {
+        this.cantidadPliegos = cantidadPliegos;
+    }
+
+    public String getUbicacionGraficoPrecorte() {
+        return ubicacionGraficoPrecorte;
+    }
+
+    public void setUbicacionGraficoPrecorte(String ubicacionGraficoPrecorte) {
+        this.ubicacionGraficoPrecorte = ubicacionGraficoPrecorte;
+    }
+
+    public String getUbicacionGraficoImpresion() {
+        return ubicacionGraficoImpresion;
+    }
+
+    public void setUbicacionGraficoImpresion(String ubicacionGraficoImpresion) {
+        this.ubicacionGraficoImpresion = ubicacionGraficoImpresion;
+    }
+
+    public byte[] getGraficoPrecorte() {
+        return graficoPrecorte;
+    }
+
+    public void setGraficoPrecorte(byte[] graficoPrecorte) {
+        this.graficoPrecorte = graficoPrecorte;
+    }
+
+    public byte[] getGraficoImpresion() {
+        return graficoImpresion;
+    }
+
+    public void setGraficoImpresion(byte[] graficoImpresion) {
+        this.graficoImpresion = graficoImpresion;
     }
 
     public boolean isGraficoPrecorteGirado() {
@@ -401,6 +495,30 @@ public class ItemCotizacion {
         this.cantidadCambios = cantidadCambios;
     }
 
+    public int getFactorHorizontal() {
+        return factorHorizontal;
+    }
+
+    public void setFactorHorizontal(int factorHorizontal) {
+        this.factorHorizontal = factorHorizontal;
+    }
+
+    public int getFactorVertical() {
+        return factorVertical;
+    }
+
+    public void setFactorVertical(int factorVertical) {
+        this.factorVertical = factorVertical;
+    }
+
+    public String getLetras() {
+        return letras;
+    }
+
+    public void setLetras(String letras) {
+        this.letras = letras;
+    }
+
     public int getCantidadMaterial() {
         return cantidadMaterial;
     }
@@ -417,6 +535,14 @@ public class ItemCotizacion {
         this.cantidadDemasia = cantidadDemasia;
     }
 
+    public int getCantidadDemasiaMaterial() {
+        return cantidadDemasiaMaterial;
+    }
+
+    public void setCantidadDemasiaMaterial(int cantidadDemasiaMaterial) {
+        this.cantidadDemasiaMaterial = cantidadDemasiaMaterial;
+    }
+    
     public int getCantidadProduccion() {
         return cantidadProduccion;
     }

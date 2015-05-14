@@ -13,6 +13,8 @@
         <property name="nombre" column="nombre"/>
         <property name="idServicioImpresion" column="idServicioImpresion"/>
         <property name="nombreServicioImpresion" column="nombreServicioImpresion"/>
+        <property name="impresionVinil" column="impresionVinil"/>
+        <property name="impresionBanner" column="impresionBanner"/>
         <property name="idMaquina" column="idMaquina"/>
         <property name="descripcionMaquina" column="descripcionMaquina"/>
         <property name="largoMaximoPliegoMaquina" column="largoMaximoPliegoMaquina"/>
@@ -21,6 +23,8 @@
         <property name="nombreMaterial" column="nombreMaterial"/>
         <property name="largoMaterial" column="largoMaterial"/>
         <property name="altoMaterial" column="altoMaterial"/>
+        <property name="idUnidadMaterial" column="idUnidadMaterial"/>
+        <property name="abreviacionUnidadMaterial" column="abreviacionUnidadMaterial"/>
         <property name="unidadMedidaAbierta" column="unidadMedidaAbierta"/>
         <property name="medidaAbierta" column="medidaAbierta"/>
         <property name="medidaCerrada" column="medidaCerrada"/>
@@ -38,6 +42,9 @@
         <property name="tiraColor" column="tiraColor"/>
         <property name="retiraColor" column="retiraColor"/>
         <property name="dFondo" column="dFondo"/>
+        <property name="cantidadPliegos" column="cantidadPliegos"/>
+        <property name="ubicacionGraficoPrecorte" column="ubicacionGraficoPrecorte"/>
+        <property name="ubicacionGraficoImpresion" column="ubicacionGraficoImpresion"/>
         <property name="largoFormatoImpresion" column="largoFormatoImpresion"/>
         <property name="altoFormatoImpresion" column="altoFormatoImpresion"/>
         <property name="separacionX" column="separacionX"/>
@@ -50,8 +57,12 @@
         <property name="descripcionMetodoImpresion" column="descripcionMetodoImpresion"/>
         <property name="cantidadPases" column="cantidadPases"/>
         <property name="cantidadCambios" column="cantidadCambios"/>
+        <property name="factorHorizontal" column="factorHorizontal"/>
+        <property name="factorVertical" column="factorVertical"/>
+        <property name="letras" column="letras"/>
         <property name="cantidadMaterial" column="cantidadMaterial"/>
         <property name="cantidadDemasia" column="cantidadDemasia"/>
+        <property name="cantidadDemasiaMaterial" column="cantidadDemasiaMaterial"/>
         <property name="cantidadProduccion" column="cantidadProduccion"/>
         <property name="cantidad" column="cantidad"/>
         <property name="cantidadPaginasSobrantes" column="cantidadPaginasSobrantes"/>
