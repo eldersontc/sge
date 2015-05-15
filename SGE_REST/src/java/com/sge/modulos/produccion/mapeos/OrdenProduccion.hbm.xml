@@ -1,11 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
-
-
-<root>
-    
-</root>
+<!DOCTYPE hibernate-mapping PUBLIC 
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.sge.modulos.produccion.entidades.OrdenProduccion" table="OrdenProduccion" schema="Produccion">
+        <id name="idOrdenProduccion" column="idOrdenProduccion">
+            <generator class="sequence">
+                <param name="sequence">produccion.ordenproduccion_idordenproduccion_seq</param>
+            </generator>
+        </id>
+        <property name="numero" column="numero"/>
+        <property name="numeracionManual" column="numeracionManual"/>
+        <property name="idNumeracion" column="idNumeracion"/>
+        <property name="descripcionNumeracion" column="descripcionNumeracion"/>
+        <property name="fechaCreacion" column="fechaCreacion"/>
+        <property name="idCliente" column="idCliente"/>
+        <property name="razonSocialCliente" column="razonSocialCliente"/>
+        <property name="idResponsable" column="idResponsable"/>
+        <property name="nombreResponsable" column="nombreResponsable"/>
+        <property name="estado" column="estado"/>
+    </class>
+</hibernate-mapping>
