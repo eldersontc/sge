@@ -30,6 +30,29 @@ public class CotizacionDTO {
         return lista;
     }
 
+    public List<Cotizacion> ObtenerCotizacionesPorPresupuesto(int idPresupuesto) {
+        List<Cotizacion> lista;
+        try {
+            cotizacionDAO = new CotizacionDAO();
+            cotizacionDAO.AbrirSesion();
+            lista = cotizacionDAO.ObtenerCotizacionesPorPresupuesto(idPresupuesto);
+            
+            itemCotizacionDAO = new ItemCotizacionDAO();
+            itemCotizacionDAO.AsignarSesion(cotizacionDAO);
+            for (Cotizacion cotizacion : lista) {
+                List<Object[]> filtros = new ArrayList<>();
+                filtros.add(new Object[]{"idCotizacion", cotizacion.getIdCotizacion()});
+                List<ItemCotizacion> items = itemCotizacionDAO.ObtenerLista(ItemCotizacion.class, filtros);
+                cotizacion.setItems(items);
+            }
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            cotizacionDAO.CerrarSesion();
+        }
+        return lista;
+    }
+    
     public Cotizacion ObtenerCotizacion(int idCotizacion) {
         Cotizacion cotizacion = null;
         try {

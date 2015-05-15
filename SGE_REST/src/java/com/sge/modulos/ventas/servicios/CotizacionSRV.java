@@ -2,7 +2,6 @@ package com.sge.modulos.ventas.servicios;
 
 import com.google.gson.Gson;
 import com.sge.modulos.ventas.entidades.Cotizacion;
-import com.sge.modulos.ventas.entidades.EscalaListaPrecioMaquina;
 import com.sge.modulos.ventas.entidades.EscalaListaPrecioProducto;
 import com.sge.modulos.ventas.entidades.ItemListaPrecioMaquina;
 import com.sge.modulos.ventas.negocios.CotizacionDTO;

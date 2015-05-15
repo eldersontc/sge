@@ -19,6 +19,20 @@ public class CotizacionDAO extends BaseDAO {
         return super.ObtenerLista(sql);
     }
 
+    public List<Cotizacion> ObtenerCotizacionesPorPresupuesto(int idPresupuesto) {
+        String sql = "SELECT \n" +
+                    "  Cotizacion.* \n" +
+                    "FROM \n" +
+                    "  Ventas.Presupuesto AS Presupuesto \n" +
+                    "  INNER JOIN Ventas.ItemPresupuesto \n" +
+                    "  ON Presupuesto.idPresupuesto = ItemPresupuesto.idPresupuesto \n" +
+                    "  INNER JOIN Ventas.Cotizacion \n" +
+                    "  ON ItemPresupuesto.idCotizacion = Cotizacion.idCotizacion\n" +
+                    "WHERE \n" +
+                    "  Presupuesto.idPresupuesto = " + idPresupuesto;
+        return super.ObtenerLista(sql, Cotizacion.class);
+    }
+    
     public int ActualizarCotizacion(Cotizacion cotizacion) {
         String sql = String.format("UPDATE Ventas.Cotizacion SET descripcion = '%s', idCliente = %d, razonSocialCliente = '%s', "
                 + "idListaPrecioProducto = %d, nombreListaPrecioProducto = '%s', idListaPrecioServicio = %d, nombreListaPrecioServicio = '%s', idListaPrecioMaquina = %d, nombreListaPrecioMaquina = '%s', "

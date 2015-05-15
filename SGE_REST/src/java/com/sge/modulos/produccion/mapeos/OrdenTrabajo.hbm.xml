@@ -1,11 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
-
-
-<root>
-    
-</root>
+<!DOCTYPE hibernate-mapping PUBLIC 
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.sge.modulos.produccion.entidades.OrdenTrabajo" table="OrdenTrabajo" schema="Produccion">
+        <id name="idOrdenTrabajo" column="idOrdenTrabajo">
+            <generator class="sequence">
+                <param name="sequence">produccion.ordentrabajo_idordentrabajo_seq</param>
+            </generator>
+        </id>
+        <property name="numero" column="numero"/>
+        <property name="numeracionManual" column="numeracionManual"/>
+        <property name="idNumeracion" column="idNumeracion"/>
+        <property name="descripcionNumeracion" column="descripcionNumeracion"/>
+        <property name="fechaCreacion" column="fechaCreacion"/>
+        <property name="descripcion" column="descripcion"/>
+        <property name="idCliente" column="idCliente"/>
+        <property name="razonSocialCliente" column="razonSocialCliente"/>
+        <property name="idListaPrecioProducto" column="idListaPrecioProducto"/>
+        <property name="nombreListaPrecioProducto" column="nombreListaPrecioProducto"/>
+        <property name="idListaPrecioServicio" column="idListaPrecioServicio"/>
+        <property name="nombreListaPrecioServicio" column="nombreListaPrecioServicio"/>
+        <property name="idListaPrecioMaquina" column="idListaPrecioMaquina"/>
+        <property name="nombreListaPrecioMaquina" column="nombreListaPrecioMaquina"/>
+        <property name="idMoneda" column="idMoneda"/>
+        <property name="simboloMoneda" column="simboloMoneda"/>
+        <property name="idCotizador" column="idCotizador"/>
+        <property name="nombreCotizador" column="nombreCotizador"/>
+        <property name="idVendedor" column="idVendedor"/>
+        <property name="nombreVendedor" column="nombreVendedor"/>
+        <property name="idResponsable" column="idResponsable"/>
+        <property name="nombreResponsable" column="nombreResponsable"/>
+        <property name="lineaProduccion" column="lineaProduccion"/>
+        <property name="cantidad" column="cantidad"/>
+        <property name="observacion" column="observacion"/>
+        <property name="idContactoCliente" column="idContactoCliente"/>
+        <property name="nombreContactoCliente" column="nombreContactoCliente"/>
+        <property name="idCotizacion" column="idCotizacion"/>
+        <property name="numeroCotizacion" column="numeroCotizacion"/>
+        <property name="idPresupuesto" column="idPresupuesto"/>
+        <property name="numeroPresupuesto" column="numeroPresupuesto"/>
+        <property name="fechaTentativaEntrega" column="fechaTentativaEntrega"/>
+        <property name="prioridad" column="prioridad"/>
+        <property name="porcentajeUtilidad" column="porcentajeUtilidad"/>
+        <property name="subTotal" column="subTotal"/>
+        <property name="montoUtilidad" column="montoUtilidad"/>
+        <property name="total" column="total"/>
+        <property name="estado" column="estado"/>
+    </class>
+</hibernate-mapping>

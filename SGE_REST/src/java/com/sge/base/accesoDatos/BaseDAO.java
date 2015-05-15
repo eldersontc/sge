@@ -76,6 +76,9 @@ public class BaseDAO {
         recursos.add("com/sge/modulos/ventas/mapeos/MetodoImpresion.hbm.xml");
         recursos.add("com/sge/modulos/ventas/mapeos/Presupuesto.hbm.xml");
         recursos.add("com/sge/modulos/ventas/mapeos/ItemPresupuesto.hbm.xml");
+        // PRODUCCION
+        recursos.add("com/sge/modulos/produccion/mapeos/OrdenTrabajo.hbm.xml");
+        recursos.add("com/sge/modulos/produccion/mapeos/ItemOrdenTrabajo.hbm.xml");
         return recursos;
     }
     
