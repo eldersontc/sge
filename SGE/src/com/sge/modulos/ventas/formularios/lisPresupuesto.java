@@ -3,13 +3,20 @@ package com.sge.modulos.ventas.formularios;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.sge.base.formularios.frameBase;
+import com.sge.modulos.produccion.clases.ItemOrdenTrabajo;
+import com.sge.modulos.produccion.clases.OrdenTrabajo;
+import com.sge.modulos.produccion.formularios.regOrdenTrabajo;
+import com.sge.modulos.ventas.clases.Cotizacion;
+import com.sge.modulos.ventas.clases.ItemCotizacion;
 import com.sge.modulos.ventas.clases.Presupuesto;
 import com.sge.modulos.ventas.cliente.cliVentas;
 import java.awt.event.ActionEvent;
+import java.util.Date;
 import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ImageIcon;
+import javax.swing.JComboBox;
 import javax.swing.SwingWorker;
 import javax.swing.table.DefaultTableModel;
 
@@ -129,6 +136,114 @@ public class lisPresupuesto extends frameBase<Presupuesto> {
         }
     }
 
+    public class swGenerarOrdenTrabajo extends SwingWorker<Object, Object> {
+
+        @Override
+        protected Object doInBackground() {
+            VerCargando(frame);
+            cliVentas cliVentas = new cliVentas();
+            try {
+                int idPresupuesto = ObtenerValorCelda(tbPresupuestos, 1);
+                String json = cliVentas.GenerarOrdenTrabajo(new Gson().toJson(new int[]{idPresupuesto, getUsuario().getIdUsuario()}));
+                String[] resultado = new Gson().fromJson(json, String[].class);
+
+                if (resultado[0].equals("true")) {
+                    Cotizacion[] cotizaciones = new Gson().fromJson(resultado[2], Cotizacion[].class);
+                    JComboBox combo = new JComboBox();
+                    for (Cotizacion cotizacion : cotizaciones) {
+                        combo.addItem(cotizacion);
+                    }
+                    int confirmacion = VerModal(frame, combo, "SELECCIONE UNA COTIZACION");
+                    if (confirmacion == 0) {
+                        Date fechaServidor = new Gson().fromJson(resultado[1], Date.class);
+                        Cotizacion cotizacion = (Cotizacion) combo.getSelectedItem();
+                        OrdenTrabajo ordenTrabajo = null;
+                        if (resultado[3].isEmpty()) {
+                            ordenTrabajo = new OrdenTrabajo();
+                        } else {
+                            ordenTrabajo = new Gson().fromJson(resultado[3], OrdenTrabajo.class);
+                        }
+                        ordenTrabajo.setIdCliente(cotizacion.getIdCliente());
+                        ordenTrabajo.setRazonSocialCliente(cotizacion.getRazonSocialCliente());
+                        ordenTrabajo.setIdListaPrecioProducto(cotizacion.getIdListaPrecioProducto());
+                        ordenTrabajo.setNombreListaPrecioProducto(cotizacion.getNombreListaPrecioProducto());
+                        ordenTrabajo.setIdListaPrecioServicio(cotizacion.getIdListaPrecioServicio());
+                        ordenTrabajo.setNombreListaPrecioServicio(cotizacion.getNombreListaPrecioServicio());
+                        ordenTrabajo.setIdListaPrecioMaquina(cotizacion.getIdListaPrecioMaquina());
+                        ordenTrabajo.setNombreListaPrecioMaquina(cotizacion.getNombreListaPrecioMaquina());
+                        ordenTrabajo.setDescripcion(cotizacion.getDescripcion());
+                        ordenTrabajo.setIdMoneda(cotizacion.getIdMoneda());
+                        ordenTrabajo.setSimboloMoneda(cotizacion.getSimboloMoneda());
+                        ordenTrabajo.setFechaCreacion(fechaServidor);
+                        ordenTrabajo.setIdVendedor(cotizacion.getIdVendedor());
+                        ordenTrabajo.setNombreVendedor(cotizacion.getNombreVendedor());
+                        ordenTrabajo.setLineaProduccion(cotizacion.getLineaProduccion());
+                        ordenTrabajo.setCantidad(cotizacion.getCantidad());
+                        for (ItemCotizacion itemCotizacion : cotizacion.getItems()) {
+                            ItemOrdenTrabajo itemOrdenTrabajo = new ItemOrdenTrabajo();
+                            itemOrdenTrabajo.setNombre(itemCotizacion.getNombre());
+                            itemOrdenTrabajo.setIdServicioImpresion(itemCotizacion.getIdServicioImpresion());
+                            itemOrdenTrabajo.setNombreServicioImpresion(itemCotizacion.getNombreServicioImpresion());
+                            itemOrdenTrabajo.setIdMaquina(itemCotizacion.getIdMaquina());
+                            itemOrdenTrabajo.setDescripcionMaquina(itemCotizacion.getDescripcionMaquina());
+                            itemOrdenTrabajo.setAltoMaximoPliegoMaquina(itemCotizacion.getAltoMaximoPliegoMaquina());
+                            itemOrdenTrabajo.setLargoMaximoPliegoMaquina(itemCotizacion.getLargoMaximoPliegoMaquina());
+                            itemOrdenTrabajo.setIdMaterial(itemCotizacion.getIdMaterial());
+                            itemOrdenTrabajo.setNombreMaterial(itemCotizacion.getNombreMaterial());
+                            itemOrdenTrabajo.setAltoMaterial(itemCotizacion.getAltoMaterial());
+                            itemOrdenTrabajo.setLargoMaterial(itemCotizacion.getLargoMaterial());
+                            itemOrdenTrabajo.setIdUnidadMaterial(itemCotizacion.getIdUnidadMaterial());
+                            itemOrdenTrabajo.setAbreviacionUnidadMaterial(itemCotizacion.getAbreviacionUnidadMaterial());
+                            itemOrdenTrabajo.setNombreTipoUnidad(itemCotizacion.getNombreTipoUnidad());
+                            itemOrdenTrabajo.setUnidadMedidaAbierta(itemCotizacion.getUnidadMedidaAbierta());
+                            itemOrdenTrabajo.setMedidaAbierta(itemCotizacion.isMedidaAbierta());
+                            itemOrdenTrabajo.setMedidaCerrada(itemCotizacion.isMedidaCerrada());
+                            itemOrdenTrabajo.setTiraRetira(itemCotizacion.isTiraRetira());
+                            itemOrdenTrabajo.setGrafico(itemCotizacion.isGrafico());
+                            itemOrdenTrabajo.setMaterial(itemCotizacion.isMaterial());
+                            itemOrdenTrabajo.setServicioImpresion(itemCotizacion.isServicioImpresion());
+                            itemOrdenTrabajo.setFondo(itemCotizacion.isFondo());
+                            itemOrdenTrabajo.setTipoUnidad(itemCotizacion.isTipoUnidad());
+                            itemOrdenTrabajo.setLargoMedidaAbierta(itemCotizacion.getLargoMedidaAbierta());
+                            itemOrdenTrabajo.setAltoMedidaAbierta(itemCotizacion.getAltoMedidaAbierta());
+                            itemOrdenTrabajo.setLargoMedidaCerrada(itemCotizacion.getLargoMedidaCerrada());
+                            itemOrdenTrabajo.setAltoMedidaCerrada(itemCotizacion.getAltoMedidaCerrada());
+                            itemOrdenTrabajo.setTiraColor(itemCotizacion.getTiraColor());
+                            itemOrdenTrabajo.setRetiraColor(itemCotizacion.getRetiraColor());
+                            itemOrdenTrabajo.setdFondo(itemCotizacion.getdFondo());
+                            itemOrdenTrabajo.setCantidadTipoUnidad(itemCotizacion.getCantidadTipoUnidad());
+                            itemOrdenTrabajo.setIdMetodoImpresion(itemCotizacion.getIdMetodoImpresion());
+                            itemOrdenTrabajo.setDescripcionMetodoImpresion(itemCotizacion.getDescripcionMetodoImpresion());
+                            itemOrdenTrabajo.setCantidadPases(itemCotizacion.getCantidadPases());
+                            itemOrdenTrabajo.setCantidadCambios(itemCotizacion.getCantidadCambios());
+                            itemOrdenTrabajo.setFactorHorizontal(itemCotizacion.getFactorHorizontal());
+                            itemOrdenTrabajo.setFactorVertical(itemCotizacion.getFactorVertical());
+                            ordenTrabajo.getItems().add(itemOrdenTrabajo);
+                        }
+                        regOrdenTrabajo regOrdenTrabajo = new regOrdenTrabajo(0);
+                        regOrdenTrabajo.setUsuario(getUsuario());
+                        regOrdenTrabajo.setEntidad(ordenTrabajo);
+                        regOrdenTrabajo.AsignarControles();
+                        getParent().add(regOrdenTrabajo);
+                        regOrdenTrabajo.setVisible(true);
+                    }
+                }
+            } catch (Exception e) {
+                OcultarCargando(frame);
+                cancel(false);
+                ControlarExcepcion(e);
+            } finally {
+                cliVentas.close();
+            }
+            return null;
+        }
+
+        @Override
+        protected void done() {
+            OcultarCargando(frame);
+        }
+    }
+
     public void Init(int modo) {
         this.modo = modo;
         switch (this.modo) {
@@ -181,6 +296,7 @@ public class lisPresupuesto extends frameBase<Presupuesto> {
         lblFiltro = new javax.swing.JLabel();
         txtFiltro = new javax.swing.JTextField();
         btnRefrescar = new javax.swing.JButton();
+        btnGenerarOT = new javax.swing.JButton();
 
         setClosable(true);
 
@@ -280,6 +396,14 @@ public class lisPresupuesto extends frameBase<Presupuesto> {
             }
         });
 
+        btnGenerarOT.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sge/base/imagenes/refresh-16.png"))); // NOI18N
+        btnGenerarOT.setToolTipText("GENERAR OT");
+        btnGenerarOT.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGenerarOTActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout frameLayout = new javax.swing.GroupLayout(frame);
         frame.setLayout(frameLayout);
         frameLayout.setHorizontalGroup(
@@ -298,6 +422,8 @@ public class lisPresupuesto extends frameBase<Presupuesto> {
                         .addComponent(txtFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnRefrescar, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnGenerarOT, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -310,9 +436,10 @@ public class lisPresupuesto extends frameBase<Presupuesto> {
                     .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(lblFiltro)
                         .addComponent(txtFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(btnRefrescar, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnRefrescar, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnGenerarOT, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 242, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 245, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnSeleccionar)
                 .addGap(9, 9, 9))
@@ -367,8 +494,14 @@ public class lisPresupuesto extends frameBase<Presupuesto> {
         new swObtenerPresupuestos().execute();
     }//GEN-LAST:event_btnRefrescarActionPerformed
 
+    private void btnGenerarOTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarOTActionPerformed
+        // TODO add your handling code here:
+        new swGenerarOrdenTrabajo().execute();
+    }//GEN-LAST:event_btnGenerarOTActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnGenerarOT;
     private javax.swing.JButton btnNuevo;
     private javax.swing.JButton btnRefrescar;
     private javax.swing.JButton btnSeleccionar;

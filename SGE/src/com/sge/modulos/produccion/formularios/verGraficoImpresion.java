@@ -1,45 +1,28 @@
-package com.sge.modulos.ventas.formularios;
+package com.sge.modulos.produccion.formularios;
 
 import com.sge.base.controles.SearchListener;
 import com.sge.base.formularios.frameBase;
-import com.sge.modulos.ventas.clases.Cotizacion;
-import com.sge.modulos.ventas.clases.ItemCotizacion;
-import com.sge.modulos.ventas.clases.MetodoImpresion;
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Graphics2D;
-import java.awt.event.ActionEvent;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
-import javax.imageio.ImageIO;
-import javax.swing.AbstractAction;
-import javax.swing.Action;
+import com.sge.modulos.produccion.clases.ItemOrdenTrabajo;
+import com.sge.modulos.produccion.clases.OrdenTrabajo;
 import javax.swing.ImageIcon;
 
 /**
  *
  * @author elderson
  */
-public class genGraficoImpresion extends frameBase<Cotizacion> {
+public class verGraficoImpresion extends frameBase<OrdenTrabajo> {
 
     /**
-     * Creates new form genGraficoImpresion
+     * Creates new form verGraficoImpresion
      */
-    public genGraficoImpresion(ItemCotizacion item) {
+    public verGraficoImpresion(ItemOrdenTrabajo item) {
         initComponents();
         Init(item);
     }
+    
+    private ItemOrdenTrabajo item;
 
-    private int aGrafi = 0;
-    private int lGrafi = 0;
-    private int aPieza = 0;
-    private int lPieza = 0;
-    private int separx = 0;
-    private int separy = 0;
-
-    private ItemCotizacion item;
-
-    public void Init(ItemCotizacion item) {
+    public void Init(ItemOrdenTrabajo item) {
         this.item = item;
         AsignarControles();
     }
@@ -61,162 +44,6 @@ public class genGraficoImpresion extends frameBase<Cotizacion> {
         }
     }
 
-    public void GenerarGrafico() throws Exception {
-
-        if (this.item.getIdMetodoImpresion() == 0) {
-            throw new Exception("DEBE DE SELECCIONAR UN METODO DE IMPRESION.");
-        }
-
-        aGrafi = (int) (Math.min(this.item.getAltoFormatoImpresion(), this.item.getLargoFormatoImpresion()) * 10) / this.item.getFactorVertical();
-        lGrafi = (int) (Math.max(this.item.getAltoFormatoImpresion(), this.item.getLargoFormatoImpresion()) * 10) / this.item.getFactorHorizontal();
-
-        separx = (int) (this.item.getSeparacionX() * 10);
-        separy = (int) (this.item.getSeparacionY() * 10);
-
-        if (this.item.isGraficoImpresionGirado()) {
-            aPieza = (int) (this.item.getLargoMedidaAbierta() * 10);
-            lPieza = (int) (this.item.getAltoMedidaAbierta() * 10);
-        } else {
-            aPieza = (int) (this.item.getAltoMedidaAbierta() * 10);
-            lPieza = (int) (this.item.getLargoMedidaAbierta() * 10);
-        }
-
-        if (aGrafi <= 0) {
-            throw new Exception("ALTO DE MATERIAL NO PUEDE SER 0.");
-        }
-        if (lGrafi <= 0) {
-            throw new Exception("LARGO DE MATERIAL NO PUEDE SER 0.");
-        }
-        if (aPieza <= 0) {
-            throw new Exception("ALTO DE PIEZA NO PUEDE SER 0.");
-        }
-        if (lPieza <= 0) {
-            throw new Exception("LARGO DE PIEZA NO PUEDE SER 0.");
-        }
-
-        BufferedImage imagen_ = new BufferedImage(lGrafi, aGrafi, BufferedImage.TYPE_INT_RGB);
-        Graphics2D grafico_ = imagen_.createGraphics();
-
-        grafico_.setColor(Color.WHITE);
-        grafico_.fillRect(0, 0, lGrafi, aGrafi);
-
-        grafico_.setColor(Color.BLACK);
-        grafico_.drawRect(0, 0, lGrafi - 1, aGrafi - 1);
-
-        int cantidadPiezas = 0;
-        for (int y = 0; y <= aGrafi - aPieza; y += aPieza) {
-            for (int x = 0; x <= lGrafi - lPieza; x += lPieza) {
-                grafico_.setColor(Color.BLACK);
-                grafico_.drawRect(x, y, lPieza, aPieza);
-                cantidadPiezas++;
-                x += separy;
-            }
-            y += separx;
-        }
-
-        BufferedImage imagen = null;
-
-        if (this.item.getFactorHorizontal() > 1 || this.item.getFactorVertical() > 1) {
-
-            aGrafi = (int) (Math.min(this.item.getAltoFormatoImpresion(), this.item.getLargoFormatoImpresion()) * 10);
-            lGrafi = (int) (Math.max(this.item.getAltoFormatoImpresion(), this.item.getLargoFormatoImpresion()) * 10);
-
-            imagen = new BufferedImage(lGrafi, aGrafi, BufferedImage.TYPE_INT_RGB);
-            Graphics2D grafico = imagen.createGraphics();
-
-            if (this.item.getFactorHorizontal() > 1) {
-                String[] letras = this.item.getLetras().split(",");
-                for (int i = 0; i < this.item.getFactorHorizontal(); i++) {
-                    grafico.drawImage(imagen_, i * imagen_.getWidth(), 0, imagen_.getWidth(), imagen_.getHeight(), null);
-                    grafico.setFont(new Font("Arial", Font.PLAIN, 50));
-                    grafico.setColor(Color.RED);
-                    grafico.drawString(letras[i], (i * imagen_.getWidth()) + (imagen_.getWidth() / 2), imagen_.getHeight() / 2);
-                }
-                cantidadPiezas = cantidadPiezas * this.item.getFactorHorizontal();
-            }
-
-            if (this.item.getFactorVertical() > 1) {
-                String[] letras = this.item.getLetras().split(",");
-                for (int i = 0; i < this.item.getFactorVertical(); i++) {
-                    grafico.drawImage(imagen_, 0, i * imagen_.getHeight(), imagen_.getWidth(), imagen_.getHeight(), null);
-                    grafico.setFont(new Font("Arial", Font.PLAIN, 50));
-                    grafico.setColor(Color.RED);
-                    grafico.drawString(letras[i], imagen_.getWidth() / 2, (i * imagen_.getHeight()) + (imagen_.getHeight() / 2));
-                }
-                cantidadPiezas = cantidadPiezas * this.item.getFactorVertical();
-            }
-        } else {
-            imagen = imagen_;
-        }
-
-        this.item.setCantidadPiezasImpresion(cantidadPiezas);
-        
-        ByteArrayOutputStream arrayBytesOut = new ByteArrayOutputStream();
-        ImageIO.write(imagen, "jpg", arrayBytesOut);
-        byte[] arrayBytes = arrayBytesOut.toByteArray();
-        
-        this.item.setGraficoImpresion(arrayBytes);
-    }
-
-    public void GirarGrafico() throws Exception {
-        this.item.setGraficoImpresionGirado(!this.item.isGraficoImpresionGirado());
-        GenerarGrafico();
-    }
-
-    Action sele_meto = new AbstractAction() {
-        @Override
-        public void actionPerformed(ActionEvent evt) {
-            MetodoImpresion seleccionado = ((lisMetodoImpresion) evt.getSource()).getSeleccionado();
-            if (!(seleccionado == null)) {
-                schMetodoImpresion.asingValues(seleccionado.getIdMetodoImpresion(), seleccionado.getNombre());
-                item.setIdMetodoImpresion(seleccionado.getIdMetodoImpresion());
-                item.setDescripcionMetodoImpresion(seleccionado.getNombre());
-                item.setCantidadPases(seleccionado.getFactorPases());
-                item.setCantidadCambios(seleccionado.getFactorCambios());
-                item.setFactorHorizontal(seleccionado.getFactorHorizontal());
-                item.setFactorVertical(seleccionado.getFactorVertical());
-                item.setLetras(seleccionado.getLetras());
-                AsignarControles();
-            }
-        }
-    };
-
-    public void CalcularProduccion() {
-        if (this.item.isImpresionVinil() || this.item.isImpresionBanner()) {
-            double alto = this.item.getAltoMedidaAbierta();
-            double largo = this.item.getLargoMedidaAbierta();
-            if (this.item.getUnidadMedidaAbierta().equals("MT")) {
-                alto = alto * 100;
-                largo = largo * 100;
-            }
-            this.item.setCantidadMaterial(new Double(this.item.getCantidad() * (alto * largo)).intValue());
-            this.item.setCantidadProduccion(this.item.getCantidadMaterial() + this.item.getCantidadDemasia());
-        } else {
-            double cantidadDecimal = 0;
-            if (this.item.isTipoUnidad() && this.item.getCantidadTipoUnidad() > 0) {
-                cantidadDecimal = this.item.getCantidad() / this.item.getCantidadPiezasPrecorte();
-            } else {
-                cantidadDecimal = this.item.getCantidad() / (this.item.getCantidadPiezasPrecorte() * this.item.getCantidadPiezasImpresion());
-            }
-            int cantidadEntera = new Double(cantidadDecimal).intValue();
-            this.item.setCantidadMaterial(((cantidadDecimal - cantidadEntera) > 0) ? cantidadEntera + 1 : cantidadEntera);
-            this.item.setCantidadDemasiaMaterial(new Double(this.item.getCantidadDemasia() / this.item.getCantidadPiezasPrecorte()).intValue());
-            if (this.item.getCantidadTipoUnidad() == 0) {
-                this.item.setCantidadPliegos(1);
-            } else {
-                double pliegosDecimal = this.item.getCantidadTipoUnidad() / (this.item.getCantidadPiezasImpresion() * 2);
-                int pliegosEntero = new Double(Math.floor(pliegosDecimal)).intValue();
-                double residuo = pliegosEntero - pliegosDecimal;
-                this.item.setCantidadPaginasSobrantes(0);
-                if (residuo > 0) {
-                    this.item.setCantidadPaginasSobrantes(this.item.getCantidadTipoUnidad() - (pliegosEntero * this.item.getCantidadPiezasImpresion() * 2));
-                }
-                this.item.setCantidadPliegos((pliegosEntero == 0) ? 1 : pliegosEntero);
-            }
-            this.item.setCantidadProduccion((this.item.getCantidadMaterial() + this.item.getCantidadDemasiaMaterial()) * this.item.getCantidadPiezasPrecorte() * this.item.getCantidadPases());
-        }
-    }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -231,8 +58,6 @@ public class genGraficoImpresion extends frameBase<Cotizacion> {
         lblTitulo = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         lblGrafico = new javax.swing.JLabel();
-        btnGenerarGrafico = new javax.swing.JButton();
-        btnGirarGrafico = new javax.swing.JButton();
         lblAltoPieza = new javax.swing.JLabel();
         txtAltoPieza = new javax.swing.JTextField();
         lblLargoPieza = new javax.swing.JLabel();
@@ -258,8 +83,6 @@ public class genGraficoImpresion extends frameBase<Cotizacion> {
         txtTiraje = new javax.swing.JTextField();
 
         setClosable(true);
-        setMaximizable(true);
-        setPreferredSize(new java.awt.Dimension(903, 653));
 
         frame.setBackground(java.awt.Color.white);
         frame.setBorder(null);
@@ -279,7 +102,7 @@ public class genGraficoImpresion extends frameBase<Cotizacion> {
             .addGroup(pnlTituloLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lblTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 318, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(579, Short.MAX_VALUE))
+                .addContainerGap(569, Short.MAX_VALUE))
         );
         pnlTituloLayout.setVerticalGroup(
             pnlTituloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -288,22 +111,6 @@ public class genGraficoImpresion extends frameBase<Cotizacion> {
 
         lblGrafico.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jScrollPane1.setViewportView(lblGrafico);
-
-        btnGenerarGrafico.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sge/base/imagenes/visible-16.png"))); // NOI18N
-        btnGenerarGrafico.setText("VER");
-        btnGenerarGrafico.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnGenerarGraficoActionPerformed(evt);
-            }
-        });
-
-        btnGirarGrafico.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sge/base/imagenes/rotate-16.png"))); // NOI18N
-        btnGirarGrafico.setText("GIRAR");
-        btnGirarGrafico.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnGirarGraficoActionPerformed(evt);
-            }
-        });
 
         lblAltoPieza.setText("ALTO");
 
@@ -344,7 +151,6 @@ public class genGraficoImpresion extends frameBase<Cotizacion> {
         schMetodoImpresion.addSearchListener(new SearchListener() {
             @Override
             public void Search(){
-                schMetodoImpresionSearch();
             }
             @Override
             public void Clear(){
@@ -376,10 +182,6 @@ public class genGraficoImpresion extends frameBase<Cotizacion> {
                 .addComponent(jScrollPane1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(frameLayout.createSequentialGroup()
-                        .addComponent(btnGenerarGrafico, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnGirarGrafico, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addComponent(txtMedidasMaterial)
                     .addComponent(btnAceptar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
@@ -423,10 +225,6 @@ public class genGraficoImpresion extends frameBase<Cotizacion> {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(frameLayout.createSequentialGroup()
-                        .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnGenerarGrafico)
-                            .addComponent(btnGirarGrafico))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtMedidasMaterial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(lblMetodoImpresion)
@@ -467,10 +265,10 @@ public class genGraficoImpresion extends frameBase<Cotizacion> {
                             .addComponent(lblTiraje, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtTiraje, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 86, Short.MAX_VALUE)
+                        .addGap(41, 41, 41)
                         .addComponent(btnAceptar))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 567, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 538, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -490,40 +288,6 @@ public class genGraficoImpresion extends frameBase<Cotizacion> {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    public void schMetodoImpresionSearch() {
-        VerModal(new lisMetodoImpresion(1), sele_meto);
-    }
-
-    private void btnGenerarGraficoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarGraficoActionPerformed
-        // TODO add your handling code here:
-        try {
-            this.item.setAltoMedidaAbierta(Double.parseDouble(txtAltoPieza.getText()));
-            this.item.setLargoMedidaAbierta(Double.parseDouble(txtLargoPieza.getText()));
-            this.item.setSeparacionX(Double.parseDouble(txtSeparacionX.getText()));
-            this.item.setSeparacionY(Double.parseDouble(txtSeparacionY.getText()));
-            GenerarGrafico();
-            CalcularProduccion();
-            AsignarControles();
-        } catch (Exception e) {
-            ControlarExcepcion(e);
-        }
-    }//GEN-LAST:event_btnGenerarGraficoActionPerformed
-
-    private void btnGirarGraficoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGirarGraficoActionPerformed
-        // TODO add your handling code here:
-        try {
-            this.item.setAltoMedidaAbierta(Double.parseDouble(txtAltoPieza.getText()));
-            this.item.setLargoMedidaAbierta(Double.parseDouble(txtLargoPieza.getText()));
-            this.item.setSeparacionX(Double.parseDouble(txtSeparacionX.getText()));
-            this.item.setSeparacionY(Double.parseDouble(txtSeparacionY.getText()));
-            GirarGrafico();
-            CalcularProduccion();
-            AsignarControles();
-        } catch (Exception e) {
-            ControlarExcepcion(e);
-        }
-    }//GEN-LAST:event_btnGirarGraficoActionPerformed
-
     private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
         // TODO add your handling code here:
         Cerrar();
@@ -532,8 +296,6 @@ public class genGraficoImpresion extends frameBase<Cotizacion> {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAceptar;
-    private javax.swing.JButton btnGenerarGrafico;
-    private javax.swing.JButton btnGirarGrafico;
     private javax.swing.JPanel frame;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;

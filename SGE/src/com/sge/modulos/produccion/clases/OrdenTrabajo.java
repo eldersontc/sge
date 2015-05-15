@@ -1,4 +1,4 @@
-package com.sge.modulos.ventas.clases;
+package com.sge.modulos.produccion.clases;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -8,9 +8,9 @@ import java.util.List;
  *
  * @author elderson
  */
-public class Cotizacion {
-    
-    private int idCotizacion;
+public class OrdenTrabajo {
+ 
+    private int idOrdenTrabajo;
     private String numero;
     private boolean numeracionManual;
     private int idNumeracion;
@@ -31,30 +31,36 @@ public class Cotizacion {
     private String nombreCotizador;
     private int idVendedor;
     private String nombreVendedor;
-    private int idFormaPago;
-    private String descripcionFormaPago;
+    private int idResponsable;
+    private String nombreResponsable;
     private String lineaProduccion;
     private int cantidad;
     private String observacion;
     private int idContactoCliente;
     private String nombreContactoCliente;
+    private int idCotizacion;
+    private String numeroCotizacion;
+    private int idPresupuesto;
+    private String numeroPresupuesto;
+    private Date fechaTentativaEntrega;
+    private String prioridad;
     private double porcentajeUtilidad;
     private double subTotal;
     private double montoUtilidad;
     private double total;
     private String estado;
-    private List<ItemCotizacion> items;
+    private List<ItemOrdenTrabajo> items;
 
-    public Cotizacion() {
+    public OrdenTrabajo() {
         items = new ArrayList<>();
     }
 
-    public int getIdCotizacion() {
-        return idCotizacion;
+    public int getIdOrdenTrabajo() {
+        return idOrdenTrabajo;
     }
 
-    public void setIdCotizacion(int idCotizacion) {
-        this.idCotizacion = idCotizacion;
+    public void setIdOrdenTrabajo(int idOrdenTrabajo) {
+        this.idOrdenTrabajo = idOrdenTrabajo;
     }
 
     public String getNumero() {
@@ -217,20 +223,20 @@ public class Cotizacion {
         this.nombreVendedor = nombreVendedor;
     }
 
-    public int getIdFormaPago() {
-        return idFormaPago;
+    public int getIdResponsable() {
+        return idResponsable;
     }
 
-    public void setIdFormaPago(int idFormaPago) {
-        this.idFormaPago = idFormaPago;
+    public void setIdResponsable(int idResponsable) {
+        this.idResponsable = idResponsable;
     }
 
-    public String getDescripcionFormaPago() {
-        return descripcionFormaPago;
+    public String getNombreResponsable() {
+        return nombreResponsable;
     }
 
-    public void setDescripcionFormaPago(String descripcionFormaPago) {
-        this.descripcionFormaPago = descripcionFormaPago;
+    public void setNombreResponsable(String nombreResponsable) {
+        this.nombreResponsable = nombreResponsable;
     }
 
     public String getLineaProduccion() {
@@ -273,6 +279,54 @@ public class Cotizacion {
         this.nombreContactoCliente = nombreContactoCliente;
     }
 
+    public int getIdCotizacion() {
+        return idCotizacion;
+    }
+
+    public void setIdCotizacion(int idCotizacion) {
+        this.idCotizacion = idCotizacion;
+    }
+
+    public String getNumeroCotizacion() {
+        return numeroCotizacion;
+    }
+
+    public void setNumeroCotizacion(String numeroCotizacion) {
+        this.numeroCotizacion = numeroCotizacion;
+    }
+
+    public int getIdPresupuesto() {
+        return idPresupuesto;
+    }
+
+    public void setIdPresupuesto(int idPresupuesto) {
+        this.idPresupuesto = idPresupuesto;
+    }
+
+    public String getNumeroPresupuesto() {
+        return numeroPresupuesto;
+    }
+
+    public void setNumeroPresupuesto(String numeroPresupuesto) {
+        this.numeroPresupuesto = numeroPresupuesto;
+    }
+
+    public Date getFechaTentativaEntrega() {
+        return fechaTentativaEntrega;
+    }
+
+    public void setFechaTentativaEntrega(Date fechaTentativaEntrega) {
+        this.fechaTentativaEntrega = fechaTentativaEntrega;
+    }
+
+    public String getPrioridad() {
+        return prioridad;
+    }
+
+    public void setPrioridad(String prioridad) {
+        this.prioridad = prioridad;
+    }
+
     public double getPorcentajeUtilidad() {
         return porcentajeUtilidad;
     }
@@ -313,16 +367,11 @@ public class Cotizacion {
         this.estado = estado;
     }
 
-    public List<ItemCotizacion> getItems() {
+    public List<ItemOrdenTrabajo> getItems() {
         return items;
     }
 
-    public void setItems(List<ItemCotizacion> items) {
+    public void setItems(List<ItemOrdenTrabajo> items) {
         this.items = items;
-    }
-    
-    @Override
-    public String toString(){
-        return numero + " - " + descripcion;
     }
 }

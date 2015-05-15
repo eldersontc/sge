@@ -107,10 +107,10 @@ public class frameBase<T> extends javax.swing.JInternalFrame {
         Utils.OcultarControl(component);
     }
 
-    public void MostrarControl(Component component){
+    public void MostrarControl(Component component) {
         Utils.MostrarControl(component);
     }
-    
+
     public void AgregarOrdenamiento(JTable tabla) {
         Utils.AgregarOrdenamiento(tabla);
     }
@@ -142,7 +142,9 @@ public class frameBase<T> extends javax.swing.JInternalFrame {
     public void AsignarTitulo(JTabbedPane tabbedPane, int tab, String titulo) {
         Utils.AsignarTitulo(tabbedPane, tab, titulo);
     }
+
     ////////////////////////// FABRICA DE CONTROLES ////////////////////////////
+
     public void VerProcesando(JPanel panel) {
         FabricaControles.VerProcesando(panel);
     }
@@ -177,6 +179,10 @@ public class frameBase<T> extends javax.swing.JInternalFrame {
 
     public void VerModal(JInternalFrame frame) {
         FabricaControles.VerModal(this.getDesktopPane(), frame);
+    }
+
+    public int VerModal(JPanel panel, Component component, String title) {
+        return FabricaControles.VerModal(panel, component, title);
     }
 
     public int VerConfirmacion(Component parentComponent) {

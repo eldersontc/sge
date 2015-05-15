@@ -407,8 +407,8 @@ public class FabricaControles {
         });
     }
 
-    public static void VerModal(Component parentComponent, Component component, String title) {
-        JOptionPane.showInternalMessageDialog(parentComponent, component, title, JOptionPane.QUESTION_MESSAGE);
+    public static int VerModal(Component parentComponent, Component component, String title) {
+        return JOptionPane.showInternalConfirmDialog(parentComponent, component, title, JOptionPane.OK_CANCEL_OPTION);
     }
 
     public static int VerConfirmacion(Component parentComponent) {

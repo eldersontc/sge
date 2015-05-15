@@ -49,7 +49,7 @@
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="jScrollPane1" alignment="0" pref="848" max="32767" attributes="0"/>
+                      <Component id="jScrollPane1" alignment="0" pref="838" max="32767" attributes="0"/>
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                           <Component id="btnSeleccionar" min="-2" pref="128" max="-2" attributes="0"/>
@@ -60,8 +60,6 @@
                           <Component id="txtFiltro" min="-2" pref="172" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="btnRefrescar" min="-2" pref="36" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="btnGenerarOT" min="-2" pref="36" max="-2" attributes="0"/>
                           <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                       </Group>
                   </Group>
@@ -80,10 +78,9 @@
                           <Component id="txtFiltro" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <Component id="btnRefrescar" alignment="1" min="-2" pref="27" max="-2" attributes="0"/>
-                      <Component id="btnGenerarOT" min="-2" pref="27" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="jScrollPane1" pref="245" max="32767" attributes="0"/>
+                  <Component id="jScrollPane1" pref="171" max="32767" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="btnSeleccionar" min="-2" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="9" max="-2" attributes="0"/>
@@ -99,15 +96,18 @@
 
           <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
           <SubComponents>
-            <Component class="javax.swing.JTable" name="tbPresupuestos">
+            <Component class="javax.swing.JTable" name="tbOrdenesTrabajo">
               <Properties>
                 <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                  <Table columnCount="8" rowCount="0">
+                  <Table columnCount="11" rowCount="0">
                     <Column editable="true" title="CHECK" type="java.lang.Boolean"/>
                     <Column editable="false" title="ID" type="java.lang.Integer"/>
                     <Column editable="true" title="NUMERO" type="java.lang.String"/>
-                    <Column editable="true" title="F.CREACION" type="java.lang.String"/>
+                    <Column editable="true" title="DESCRIPCION" type="java.lang.String"/>
+                    <Column editable="true" title="F. CREACION" type="java.lang.String"/>
                     <Column editable="true" title="CLIENTE" type="java.lang.String"/>
+                    <Column editable="true" title="COTIZADOR" type="java.lang.String"/>
+                    <Column editable="true" title="VENDEDOR" type="java.lang.String"/>
                     <Column editable="true" title="TOTAL" type="java.lang.Double"/>
                     <Column editable="true" title="EDITAR" type="java.lang.Object"/>
                     <Column editable="true" title="ELIMINAR" type="java.lang.Object"/>
@@ -135,7 +135,22 @@
                       <Editor/>
                       <Renderer/>
                     </Column>
-                    <Column maxWidth="-1" minWidth="-1" prefWidth="300" resizable="true">
+                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                      <Title/>
+                      <Editor/>
+                      <Renderer/>
+                    </Column>
+                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                      <Title/>
+                      <Editor/>
+                      <Renderer/>
+                    </Column>
+                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                      <Title/>
+                      <Editor/>
+                      <Renderer/>
+                    </Column>
+                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
                       <Title/>
                       <Editor/>
                       <Renderer/>
@@ -186,9 +201,7 @@
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="lblTitulo" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="494" max="32767" attributes="0"/>
-                      <Component id="btnNuevo" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
+                      <EmptySpace pref="516" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -196,11 +209,8 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="lblTitulo" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="btnNuevo" alignment="3" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace max="32767" attributes="0"/>
+                      <Component id="lblTitulo" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace pref="17" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -217,19 +227,8 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/com/sge/base/imagenes/list-view-16.png"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="LISTADO DE PRESUPUESTOS"/>
+                <Property name="text" type="java.lang.String" value="LISTADO DE ORDENES DE TRABAJO"/>
               </Properties>
-            </Component>
-            <Component class="javax.swing.JButton" name="btnNuevo">
-              <Properties>
-                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/com/sge/base/imagenes/add-16.png"/>
-                </Property>
-                <Property name="text" type="java.lang.String" value="NUEVO"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnNuevoActionPerformed"/>
-              </Events>
             </Component>
           </SubComponents>
         </Container>
@@ -260,17 +259,6 @@
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnRefrescarActionPerformed"/>
-          </Events>
-        </Component>
-        <Component class="javax.swing.JButton" name="btnGenerarOT">
-          <Properties>
-            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/com/sge/base/imagenes/refresh-16.png"/>
-            </Property>
-            <Property name="toolTipText" type="java.lang.String" value="GENERAR OT"/>
-          </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnGenerarOTActionPerformed"/>
           </Events>
         </Component>
       </SubComponents>
