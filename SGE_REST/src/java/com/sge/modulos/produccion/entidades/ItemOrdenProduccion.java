@@ -14,7 +14,7 @@ public class ItemOrdenProduccion {
     private String numeroOrdenTrabajo;
     private String descripcionOrdenTrabajo;
     private int cantidadOrdenTrabajo;
-    private Date fechaOrdenTrabajo;
+    private Date fechaCreacionOrdenTrabajo;
     private boolean agregar;
     private boolean eliminar;
 
@@ -69,14 +69,14 @@ public class ItemOrdenProduccion {
         this.cantidadOrdenTrabajo = cantidadOrdenTrabajo;
     }
 
-    public Date getFechaOrdenTrabajo() {
-        return fechaOrdenTrabajo;
+    public Date getFechaCreacionOrdenTrabajo() {
+        return fechaCreacionOrdenTrabajo;
     }
 
-    public void setFechaOrdenTrabajo(Date fechaOrdenTrabajo) {
-        this.fechaOrdenTrabajo = fechaOrdenTrabajo;
+    public void setFechaCreacionOrdenTrabajo(Date fechaCreacionOrdenTrabajo) {
+        this.fechaCreacionOrdenTrabajo = fechaCreacionOrdenTrabajo;
     }
-
+    
     public boolean isAgregar() {
         return agregar;
     }
