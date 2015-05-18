@@ -90,6 +90,8 @@ public class BaseDAO {
         // FACTURACION
         recursos.add("com/sge/modulos/facturacion/mapeos/Factura.hbm.xml");
         recursos.add("com/sge/modulos/facturacion/mapeos/ItemFactura.hbm.xml");
+        recursos.add("com/sge/modulos/facturacion/mapeos/GuiaRemision.hbm.xml");
+        recursos.add("com/sge/modulos/facturacion/mapeos/ItemGuiaRemision.hbm.xml");
         return recursos;
     }
     

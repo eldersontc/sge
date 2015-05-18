@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.sge.modulos.facturacion.entidades.GuiaRemision" table="GuiaRemision" schema="Facturacion">
+        <id name="idGuiaRemision" column="idGuiaRemision">
+            <generator class="sequence">
+                <param name="sequence">facturacion.guiaremision_idguiaremision_seq</param>
+            </generator>
+        </id>
+        <property name="numero" column="numero"/>
+        <property name="numeracionManual" column="numeracionManual"/>
+        <property name="idNumeracion" column="idNumeracion"/>
+        <property name="descripcionNumeracion" column="descripcionNumeracion"/>
+        <property name="fechaCreacion" column="fechaCreacion"/>
+        <property name="idCliente" column="idCliente"/>
+        <property name="razonSocialCliente" column="razonSocialCliente"/>
+        <property name="idResponsable" column="idResponsable"/>
+        <property name="nombreResponsable" column="nombreResponsable"/>
+        <property name="idChofer" column="idChofer"/>
+        <property name="nombreChofer" column="nombreChofer"/>
+        <property name="licenciaConducir" column="licenciaConducir"/>
+        <property name="numeroPlaca" column="numeroPlaca"/>
+        <property name="idContactoCliente" column="idContactoCliente"/>
+        <property name="nombreContactoCliente" column="nombreContactoCliente"/>
+        <property name="idDepartamento" column="idDepartamento"/>
+        <property name="nombreDepartamento" column="nombreDepartamento"/>
+        <property name="idProvincia" column="idProvincia"/>
+        <property name="nombreProvincia" column="nombreProvincia"/>
+        <property name="idDistrito" column="idDistrito"/>
+        <property name="nombreDistrito" column="nombreDistrito"/>
+        <property name="direccion" column="direccion"/>
+        <property name="observacion" column="observacion"/>
+    </class>
+</hibernate-mapping>

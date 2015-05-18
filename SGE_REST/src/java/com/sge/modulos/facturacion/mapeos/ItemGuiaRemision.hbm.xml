@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.sge.modulos.facturacion.entidades.ItemGuiaRemision" table="ItemGuiaRemision" schema="Facturacion">
+        <id name="idItemGuiaRemision" column="idItemGuiaRemision">
+            <generator class="sequence">
+                <param name="sequence">facturacion.itemguiaremision_iditemguiaremision_seq</param>
+            </generator>
+        </id>
+        <property name="idGuiaRemision" column="idGuiaRemision"/>
+        <property name="idOrdenTrabajo" column="idOrdenTrabajo"/>
+        <property name="numeroOrdenTrabajo" column="numeroOrdenTrabajo"/>
+        <property name="descripcionOrdenTrabajo" column="descripcionOrdenTrabajo"/>
+        <property name="cantidad" column="cantidad"/>
+    </class>
+</hibernate-mapping>
