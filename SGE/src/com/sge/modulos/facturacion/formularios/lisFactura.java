@@ -1,13 +1,10 @@
-package com.sge.modulos.produccion.formularios;
+package com.sge.modulos.facturacion.formularios;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.sge.base.formularios.frameBase;
-import com.sge.modulos.produccion.clases.OrdenTrabajo;
-import com.sge.modulos.produccion.cliente.cliProduccion;
+import com.sge.modulos.facturacion.clases.Factura;
+import com.sge.modulos.facturacion.cliente.cliFacturacion;
 import java.awt.event.ActionEvent;
-import java.util.ArrayList;
-import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ImageIcon;
@@ -17,47 +14,44 @@ import javax.swing.SwingWorker;
  *
  * @author elderson
  */
-public class lisOrdenTrabajo extends frameBase<OrdenTrabajo> {
+public class lisFactura extends frameBase<Factura> {
 
     /**
-     * Creates new form lisOrdenTrabajo
+     * Creates new form lisFactura
      */
-    public lisOrdenTrabajo(int modo) {
+    public lisFactura(int modo) {
         initComponents();
         Init(modo);
     }
 
     private int modo = 0;
 
-    private OrdenTrabajo seleccionado;
-    private List<OrdenTrabajo> seleccionados = new ArrayList<>();
-
-    ImageIcon Icon_Edit = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/edit-16.png"));
+    ImageIcon Icon_View = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/view-16.png"));
     ImageIcon Icon_Dele = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/delete-16.png"));
 
-    Action edit = new AbstractAction() {
+    Action view = new AbstractAction() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            EditarOrdenTrabajo();
+            VerFactura();
         }
     };
 
     Action dele = new AbstractAction() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            EliminarOrdenTrabajo();
+            EliminarFactura();
         }
     };
 
-    public class swObtenerOrdenesTrabajo extends SwingWorker {
+    public class swObtenerFacturas extends SwingWorker {
 
         @Override
         protected Object doInBackground() {
             VerCargando(frame);
-            cliProduccion cliente = new cliProduccion();
+            cliFacturacion cliente = new cliFacturacion();
             String json = "";
             try {
-                json = cliente.ObtenerOrdenesTrabajo(new Gson().toJson(""));
+                json = cliente.ObtenerFacturas(new Gson().toJson(""));
             } catch (Exception e) {
                 OcultarCargando(frame);
                 cancel(false);
@@ -73,16 +67,15 @@ public class lisOrdenTrabajo extends frameBase<OrdenTrabajo> {
             try {
                 String json = get().toString();
                 String[] resultado = new Gson().fromJson(json, String[].class);
-
                 if (resultado[0].equals("true")) {
-                    EliminarTodasFilas(tbOrdenesTrabajo);
-                    OrdenTrabajo[] ordenesTrabajo = new Gson().fromJson(resultado[1], OrdenTrabajo[].class);
-                    for (OrdenTrabajo ordenTrabajo : ordenesTrabajo) {
-                        AgregarFila(tbOrdenesTrabajo, new Object[]{false, ordenTrabajo.getIdOrdenTrabajo(), ordenTrabajo.getNumero(), ordenTrabajo.getDescripcion(), ordenTrabajo.getCantidad(), ordenTrabajo.getFechaCreacion(), ordenTrabajo.getRazonSocialCliente(), ordenTrabajo.getNombreCotizador(), ordenTrabajo.getNombreVendedor(), ordenTrabajo.getTotal(), Icon_Edit, Icon_Dele});
+                    EliminarTodasFilas(tbFacturas);
+                    Factura[] entradasCaja = new Gson().fromJson(resultado[1], Factura[].class);
+                    for (Factura factura : entradasCaja) {
+                        AgregarFila(tbFacturas, new Object[]{false, factura.getIdFactura(), factura.getNumero(), factura.getFechaCreacion(), factura.getRazonSocialCliente(), factura.getSimboloMoneda(), factura.getTotal(), Icon_View, Icon_Dele});
                     }
-                    AgregarBoton(tbOrdenesTrabajo, edit, 10);
-                    AgregarBoton(tbOrdenesTrabajo, dele, 11);
-                    AgregarOrdenamiento(tbOrdenesTrabajo);
+                    AgregarBoton(tbFacturas, view, 7);
+                    AgregarBoton(tbFacturas, dele, 8);
+                    AgregarOrdenamiento(tbFacturas);
                 }
                 OcultarCargando(frame);
             } catch (Exception e) {
@@ -92,16 +85,16 @@ public class lisOrdenTrabajo extends frameBase<OrdenTrabajo> {
         }
     }
 
-    public class swEliminarOrdenTrabajo extends SwingWorker {
+    public class swEliminarFactura extends SwingWorker {
 
         @Override
         protected Object doInBackground() throws Exception {
             VerCargando(frame);
-            cliProduccion cliente = new cliProduccion();
+            cliFacturacion cliente = new cliFacturacion();
             String json = "";
             try {
-                int idOrdenTrabajo = ObtenerValorCelda(tbOrdenesTrabajo, 1);
-                json = cliente.EliminarOrdenTrabajo(new Gson().toJson(idOrdenTrabajo));
+                int idFactura = ObtenerValorCelda(tbFacturas, 1);
+                json = cliente.EliminarFactura(new Gson().toJson(idFactura));
             } catch (Exception e) {
                 OcultarCargando(frame);
                 cancel(false);
@@ -118,9 +111,10 @@ public class lisOrdenTrabajo extends frameBase<OrdenTrabajo> {
                 String json = get().toString();
                 String[] resultado = new Gson().fromJson(json, String[].class);
                 if (resultado[0].equals("true")) {
-                    new swObtenerOrdenesTrabajo().execute();
+                    new swObtenerFacturas().execute();
                 } else {
                     OcultarCargando(frame);
+                    ControlarExcepcion(resultado);
                 }
             } catch (Exception e) {
                 OcultarCargando(frame);
@@ -133,39 +127,29 @@ public class lisOrdenTrabajo extends frameBase<OrdenTrabajo> {
         this.modo = modo;
         switch (this.modo) {
             case 0:
-                OcultarColumna(tbOrdenesTrabajo, 0);
+                OcultarColumna(tbFacturas, 0);
                 OcultarControl(btnSeleccionar);
                 break;
             case 1:
-                OcultarColumnas(tbOrdenesTrabajo, new int[]{0, 10, 11});
-                break;
-            case 2:
-                OcultarColumnas(tbOrdenesTrabajo, new int[]{10, 11});
+                OcultarColumnas(tbFacturas, new int[]{0, 7, 8});
+                OcultarControl(btnNuevo);
                 break;
         }
-        new swObtenerOrdenesTrabajo().execute();
+        new swObtenerFacturas().execute();
     }
 
-    public void EditarOrdenTrabajo() {
-        int idOrdenTrabajo = ObtenerValorCelda(tbOrdenesTrabajo, 1);
-        regOrdenTrabajo regOrdenTrabajo = new regOrdenTrabajo(idOrdenTrabajo);
-        this.getParent().add(regOrdenTrabajo);
-        regOrdenTrabajo.setVisible(true);
+    public void VerFactura() {
+        int idFactura = ObtenerValorCelda(tbFacturas, 1);
+        regFactura regFactura = new regFactura(idFactura);
+        this.getParent().add(regFactura);
+        regFactura.setVisible(true);
     }
 
-    public void EliminarOrdenTrabajo() {
+    public void EliminarFactura() {
         int confirmacion = VerConfirmacion(this);
         if (confirmacion == 0) {
-            new swEliminarOrdenTrabajo().execute();
+            new swEliminarFactura().execute();
         }
-    }
-
-    public OrdenTrabajo getSeleccionado() {
-        return seleccionado;
-    }
-
-    public List<OrdenTrabajo> getSeleccionados() {
-        return seleccionados;
     }
 
     /**
@@ -179,9 +163,10 @@ public class lisOrdenTrabajo extends frameBase<OrdenTrabajo> {
 
         frame = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tbOrdenesTrabajo = new javax.swing.JTable();
+        tbFacturas = new javax.swing.JTable();
         pnlTitulo = new javax.swing.JPanel();
         lblTitulo = new javax.swing.JLabel();
+        btnNuevo = new javax.swing.JButton();
         btnSeleccionar = new javax.swing.JButton();
         lblFiltro = new javax.swing.JLabel();
         txtFiltro = new javax.swing.JTextField();
@@ -192,19 +177,19 @@ public class lisOrdenTrabajo extends frameBase<OrdenTrabajo> {
         frame.setBackground(java.awt.Color.white);
         frame.setBorder(null);
 
-        tbOrdenesTrabajo.setModel(new javax.swing.table.DefaultTableModel(
+        tbFacturas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "CHECK", "ID", "NUMERO", "DESCRIPCION", "CANTIDAD", "F. CREACION", "CLIENTE", "COTIZADOR", "VENDEDOR", "TOTAL", "EDITAR", "ELIMINAR"
+                "CHECK", "ID", "N°", "F.CREACION", "CLIENTE", "MONEDA", "TOTAL", "VER", "ELIMINAR"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Boolean.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Object.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Double.class, java.lang.Object.class, java.lang.Object.class
+                java.lang.Boolean.class, java.lang.Integer.class, java.lang.Object.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Double.class, java.lang.Object.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                true, false, true, true, true, true, true, true, true, true, true, true
+                true, false, true, true, true, true, false, true, true
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -215,13 +200,13 @@ public class lisOrdenTrabajo extends frameBase<OrdenTrabajo> {
                 return canEdit [columnIndex];
             }
         });
-        tbOrdenesTrabajo.setRowHeight(25);
-        tbOrdenesTrabajo.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        jScrollPane1.setViewportView(tbOrdenesTrabajo);
-        if (tbOrdenesTrabajo.getColumnModel().getColumnCount() > 0) {
-            tbOrdenesTrabajo.getColumnModel().getColumn(1).setMinWidth(0);
-            tbOrdenesTrabajo.getColumnModel().getColumn(1).setPreferredWidth(0);
-            tbOrdenesTrabajo.getColumnModel().getColumn(1).setMaxWidth(0);
+        tbFacturas.setRowHeight(25);
+        tbFacturas.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jScrollPane1.setViewportView(tbFacturas);
+        if (tbFacturas.getColumnModel().getColumnCount() > 0) {
+            tbFacturas.getColumnModel().getColumn(1).setMinWidth(0);
+            tbFacturas.getColumnModel().getColumn(1).setPreferredWidth(0);
+            tbFacturas.getColumnModel().getColumn(1).setMaxWidth(0);
         }
 
         pnlTitulo.setBackground(new java.awt.Color(67, 100, 130));
@@ -230,7 +215,15 @@ public class lisOrdenTrabajo extends frameBase<OrdenTrabajo> {
         lblTitulo.setFont(new java.awt.Font("Ubuntu", 1, 18)); // NOI18N
         lblTitulo.setForeground(java.awt.Color.white);
         lblTitulo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sge/base/imagenes/list-view-16.png"))); // NOI18N
-        lblTitulo.setText("LISTADO DE ORDENES DE TRABAJO");
+        lblTitulo.setText("LISTADO DE FACTURAS");
+
+        btnNuevo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sge/base/imagenes/add-16.png"))); // NOI18N
+        btnNuevo.setText("NUEVO");
+        btnNuevo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNuevoActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout pnlTituloLayout = new javax.swing.GroupLayout(pnlTitulo);
         pnlTitulo.setLayout(pnlTituloLayout);
@@ -238,15 +231,19 @@ public class lisOrdenTrabajo extends frameBase<OrdenTrabajo> {
             pnlTituloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlTituloLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(lblTitulo)
-                .addContainerGap(560, Short.MAX_VALUE))
+                .addComponent(lblTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 318, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnNuevo)
+                .addContainerGap())
         );
         pnlTituloLayout.setVerticalGroup(
             pnlTituloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlTituloLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(lblTitulo)
-                .addContainerGap(17, Short.MAX_VALUE))
+                .addGroup(pnlTituloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblTitulo)
+                    .addComponent(btnNuevo))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         btnSeleccionar.setText("SELECCIONAR");
@@ -280,8 +277,8 @@ public class lisOrdenTrabajo extends frameBase<OrdenTrabajo> {
             .addGroup(frameLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 882, Short.MAX_VALUE)
-                    .addGroup(frameLayout.createSequentialGroup()
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 797, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, frameLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btnSeleccionar, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(frameLayout.createSequentialGroup()
@@ -304,10 +301,10 @@ public class lisOrdenTrabajo extends frameBase<OrdenTrabajo> {
                         .addComponent(txtFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(btnRefrescar, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 231, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 172, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnSeleccionar)
-                .addGap(9, 9, 9))
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -324,51 +321,31 @@ public class lisOrdenTrabajo extends frameBase<OrdenTrabajo> {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
+        // TODO add your handling code here:
+        regFactura regFactura = new regFactura(0);
+        regFactura.setUsuario(getUsuario());
+        this.getDesktopPane().add(regFactura);
+        regFactura.setVisible(true);
+    }//GEN-LAST:event_btnNuevoActionPerformed
+
     private void btnSeleccionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeleccionarActionPerformed
         // TODO add your handling code here:
-        switch (this.modo) {
-            case 1:
-                if (FilaActiva(tbOrdenesTrabajo)) {
-                    OrdenTrabajo ordenTrabajo = new OrdenTrabajo();
-                    ordenTrabajo.setIdOrdenTrabajo(ObtenerValorCelda(tbOrdenesTrabajo, 1));
-                    ordenTrabajo.setNumero(ObtenerValorCelda(tbOrdenesTrabajo, 2));
-                    ordenTrabajo.setDescripcion(ObtenerValorCelda(tbOrdenesTrabajo, 3));
-                    ordenTrabajo.setCantidad(ObtenerValorCelda(tbOrdenesTrabajo, 4));
-                    ordenTrabajo.setTotal(ObtenerValorCelda(tbOrdenesTrabajo, 9));
-                    seleccionado = ordenTrabajo;
-                }
-                Cerrar();
-                break;
-            case 2:
-                for (int i = 0; i < tbOrdenesTrabajo.getRowCount(); i++) {
-                    boolean check = ObtenerValorCelda(tbOrdenesTrabajo, i, 0);
-                    if (check) {
-                        OrdenTrabajo ordenTrabajo = new OrdenTrabajo();
-                        ordenTrabajo.setIdOrdenTrabajo(ObtenerValorCelda(tbOrdenesTrabajo, i, 1));
-                        ordenTrabajo.setNumero(ObtenerValorCelda(tbOrdenesTrabajo, i, 2));
-                        ordenTrabajo.setDescripcion(ObtenerValorCelda(tbOrdenesTrabajo, i, 3));
-                        ordenTrabajo.setCantidad(ObtenerValorCelda(tbOrdenesTrabajo, i, 4));
-                        ordenTrabajo.setTotal(ObtenerValorCelda(tbOrdenesTrabajo, i, 9));
-                        seleccionados.add(ordenTrabajo);
-                    }
-                }
-                Cerrar();
-                break;
-        }
     }//GEN-LAST:event_btnSeleccionarActionPerformed
 
     private void txtFiltroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFiltroActionPerformed
         // TODO add your handling code here:
-        Filtrar(tbOrdenesTrabajo, txtFiltro.getText());
+        Filtrar(tbFacturas, txtFiltro.getText());
     }//GEN-LAST:event_txtFiltroActionPerformed
 
     private void btnRefrescarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefrescarActionPerformed
         // TODO add your handling code here:
-        new swObtenerOrdenesTrabajo().execute();
+        new swObtenerFacturas().execute();
     }//GEN-LAST:event_btnRefrescarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnNuevo;
     private javax.swing.JButton btnRefrescar;
     private javax.swing.JButton btnSeleccionar;
     private javax.swing.JPanel frame;
@@ -376,7 +353,7 @@ public class lisOrdenTrabajo extends frameBase<OrdenTrabajo> {
     private javax.swing.JLabel lblFiltro;
     private javax.swing.JLabel lblTitulo;
     private javax.swing.JPanel pnlTitulo;
-    private javax.swing.JTable tbOrdenesTrabajo;
+    private javax.swing.JTable tbFacturas;
     private javax.swing.JTextField txtFiltro;
     // End of variables declaration//GEN-END:variables
 }

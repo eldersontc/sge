@@ -51,7 +51,7 @@ public class cliFinanzas {
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    /////////////////////////// ENTRADA DE INVENTARIO //////////////////////////
+    /////////////////////////////// ENTRADA DE CAJA ////////////////////////////
     public String ObtenerEntradasCaja(Object requestEntity) throws ClientErrorException {
         WebTarget resource = client.target(BASE_URI).path("EntradaCajaSRV");
         resource = resource.path("ObtenerEntradasCaja");
@@ -77,7 +77,7 @@ public class cliFinanzas {
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    /////////////////////////// ENTRADA DE INVENTARIO //////////////////////////
+    /////////////////////////////// SALIDA DE CAJA /////////////////////////////
     public String ObtenerSalidasCaja(Object requestEntity) throws ClientErrorException {
         WebTarget resource = client.target(BASE_URI).path("SalidaCajaSRV");
         resource = resource.path("ObtenerSalidasCaja");
