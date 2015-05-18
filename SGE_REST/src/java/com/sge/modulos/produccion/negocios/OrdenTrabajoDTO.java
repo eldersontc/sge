@@ -16,8 +16,8 @@ public class OrdenTrabajoDTO {
     OrdenTrabajoDAO ordenTrabajoDAO;
     ItemOrdenTrabajoDAO itemOrdenTrabajoDAO;
     
-    public List<Object[]> ObtenerOrdenesTrabajo(String filtro) {
-        List<Object[]> lista;
+    public List<OrdenTrabajo> ObtenerOrdenesTrabajo(String filtro) {
+        List<OrdenTrabajo> lista;
         try {
             ordenTrabajoDAO = new OrdenTrabajoDAO();
             ordenTrabajoDAO.AbrirSesion();

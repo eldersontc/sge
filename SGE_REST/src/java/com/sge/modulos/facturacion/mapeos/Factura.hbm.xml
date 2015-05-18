@@ -16,6 +16,8 @@
         <property name="fechaCreacion" column="fechaCreacion"/>
         <property name="idCliente" column="idCliente"/>
         <property name="razonSocialCliente" column="razonSocialCliente"/>
+        <property name="idResponsable" column="idResponsable"/>
+        <property name="nombreResponsable" column="nombreResponsable"/>
         <property name="idMoneda" column="idMoneda"/>
         <property name="simboloMoneda" column="simboloMoneda"/>
         <property name="observacion" column="observacion"/>

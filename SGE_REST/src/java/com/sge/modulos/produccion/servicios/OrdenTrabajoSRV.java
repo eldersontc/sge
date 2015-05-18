@@ -34,7 +34,7 @@ public class OrdenTrabajoSRV {
         try {
             String filtro = new Gson().fromJson(json, String.class);
             OrdenTrabajoDTO OrdenTrabajoDTO = new OrdenTrabajoDTO();
-            List<Object[]> lista = OrdenTrabajoDTO.ObtenerOrdenesTrabajo(filtro);
+            List<OrdenTrabajo> lista = OrdenTrabajoDTO.ObtenerOrdenesTrabajo(filtro);
             resultado.add(new Gson().toJson(true));
             resultado.add(new Gson().toJson(lista));
         } catch (Exception e) {

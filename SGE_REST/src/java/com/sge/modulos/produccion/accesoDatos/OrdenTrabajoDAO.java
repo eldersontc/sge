@@ -10,13 +10,12 @@ import java.util.List;
  */
 public class OrdenTrabajoDAO extends BaseDAO {
     
-    public List<Object[]> ObtenerOrdenesTrabajo(String filtro) {
+    public List<OrdenTrabajo> ObtenerOrdenesTrabajo(String filtro) {
         String sql = "SELECT \n"
-                + "OrdenTrabajo.idOrdenTrabajo, OrdenTrabajo.numero, OrdenTrabajo.descripcion, OrdenTrabajo.fechaCreacion, \n"
-                + "OrdenTrabajo.razonSocialCliente, OrdenTrabajo.nombreCotizador, OrdenTrabajo.nombreVendedor, OrdenTrabajo.simboloMoneda, OrdenTrabajo.total \n"
+                + "OrdenTrabajo.* \n"
                 + "FROM \n"
                 + "Produccion.OrdenTrabajo " + filtro;
-        return super.ObtenerLista(sql);
+        return super.ObtenerLista(sql, OrdenTrabajo.class);
     }
 
     public int ActualizarOrdenTrabajo(OrdenTrabajo ordenTrabajo) {

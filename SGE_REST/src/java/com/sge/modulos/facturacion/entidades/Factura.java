@@ -1,5 +1,6 @@
 package com.sge.modulos.facturacion.entidades;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -17,6 +18,8 @@ public class Factura {
     private Date fechaCreacion;
     private int idCliente;
     private String razonSocialCliente;
+    private int idResponsable;
+    private String nombreResponsable;
     private int idMoneda;
     private String simboloMoneda;
     private String observacion;
@@ -28,6 +31,7 @@ public class Factura {
     private List<ItemFactura> items;
 
     public Factura() {
+        items = new ArrayList<>();
     }
 
     public int getIdFactura() {
@@ -92,6 +96,22 @@ public class Factura {
 
     public void setRazonSocialCliente(String razonSocialCliente) {
         this.razonSocialCliente = razonSocialCliente;
+    }
+
+    public int getIdResponsable() {
+        return idResponsable;
+    }
+
+    public void setIdResponsable(int idResponsable) {
+        this.idResponsable = idResponsable;
+    }
+
+    public String getNombreResponsable() {
+        return nombreResponsable;
+    }
+
+    public void setNombreResponsable(String nombreResponsable) {
+        this.nombreResponsable = nombreResponsable;
     }
 
     public int getIdMoneda() {

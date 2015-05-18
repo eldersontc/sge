@@ -11,7 +11,7 @@ public class ItemFactura {
     private int idOrdenTrabajo;
     private String numeroOrdenTrabajo;
     private String descripcionOrdenTrabajo;
-    private double cantidad;
+    private int cantidad;
     private double precio;
     private double total;
 
@@ -58,11 +58,11 @@ public class ItemFactura {
         this.descripcionOrdenTrabajo = descripcionOrdenTrabajo;
     }
 
-    public double getCantidad() {
+    public int getCantidad() {
         return cantidad;
     }
 
-    public void setCantidad(double cantidad) {
+    public void setCantidad(int cantidad) {
         this.cantidad = cantidad;
     }
 
