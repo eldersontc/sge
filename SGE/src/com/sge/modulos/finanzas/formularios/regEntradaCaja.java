@@ -1,7 +1,6 @@
-package com.sge.modulos.inventarios.formularios;
+package com.sge.modulos.finanzas.formularios;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.sge.base.controles.SearchListener;
 import com.sge.base.formularios.frameBase;
 import com.sge.modulos.administracion.clases.Empleado;
@@ -12,14 +11,10 @@ import com.sge.modulos.administracion.cliente.cliAdministracion;
 import com.sge.modulos.administracion.formularios.lisEmpleado;
 import com.sge.modulos.administracion.formularios.lisMoneda;
 import com.sge.modulos.administracion.formularios.lisNumeracion;
-import com.sge.modulos.compras.clases.Proveedor;
-import com.sge.modulos.compras.formularios.lisProveedor;
-import com.sge.modulos.inventarios.clases.Almacen;
-import com.sge.modulos.inventarios.clases.EntradaInventario;
-import com.sge.modulos.inventarios.clases.ItemEntradaInventario;
-import com.sge.modulos.inventarios.clases.Producto;
-import com.sge.modulos.inventarios.clases.ProductoUnidad;
-import com.sge.modulos.inventarios.cliente.cliInventarios;
+import com.sge.modulos.finanzas.clases.Caja;
+import com.sge.modulos.finanzas.clases.EntradaCaja;
+import com.sge.modulos.finanzas.clases.ItemEntradaCaja;
+import com.sge.modulos.finanzas.cliente.cliFinanzas;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.Date;
@@ -34,17 +29,17 @@ import javax.swing.SwingWorker;
  *
  * @author elderson
  */
-public class regEntradaInventario extends frameBase<EntradaInventario> {
+public class regEntradaCaja extends frameBase<EntradaCaja> {
 
     /**
-     * Creates new form regEntradaInventario
+     * Creates new form regEntradaCaja
      */
-    public regEntradaInventario(int id) {
+    public regEntradaCaja(int id) {
         initComponents();
         Init(id);
     }
 
-    public regEntradaInventario(ValorDefinido valorDefinido) {
+    public regEntradaCaja(ValorDefinido valorDefinido) {
         initComponents();
         super.Init(valorDefinido);
     }
@@ -55,40 +50,32 @@ public class regEntradaInventario extends frameBase<EntradaInventario> {
         this.id = id;
         if (this.id == 0) {
             lblTitulo.setText("NUEVA " + lblTitulo.getText());
-            AgregarCombo(tbItems, 7);
             new swObtenerValoresDefinidos().execute();
         } else {
             lblTitulo.setText("VER " + lblTitulo.getText());
             OcultarControles();
-            new swObtenerEntradaInventario().execute();
+            new swObtenerEntradaCaja().execute();
         }
     }
 
     @Override
     public void AsignarControles() {
         schNumeracion.asingValues(getEntidad().getIdNumeracion(), getEntidad().getDescripcionNumeracion());
-        schProveedor.asingValues(getEntidad().getIdProveedor(), getEntidad().getRazonSocialProveedor());
         txtNumero.setEnabled(getEntidad().isNumeracionManual());
         txtNumero.setText(getEntidad().getNumero());
         schResponsable.asingValues(getEntidad().getIdResponsable(), getEntidad().getNombreResponsable());
         txtFechaCreacion.setValue(getEntidad().getFechaCreacion());
-        schAlmacen.asingValues(getEntidad().getIdAlmacen(), getEntidad().getDescripcionAlmacen());
+        schCaja.asingValues(getEntidad().getIdCaja(), getEntidad().getDescripcionCaja());
         schMoneda.asingValues(getEntidad().getIdMoneda(), getEntidad().getSimboloMoneda());
         txtSubTotal.setValue(getEntidad().getSubTotal());
         txtImpuesto.setValue(getEntidad().getMontoImpuesto());
         lblPorcentajeImpuesto.setText(String.format("(%s%s)", getEntidad().getPorcentajeImpuesto(), "%"));
         txtTotal.setValue(getEntidad().getTotal());
-        for (ItemEntradaInventario item : getEntidad().getItems()) {
+        for (ItemEntradaCaja item : getEntidad().getItems()) {
             AgregarFila(tbItems,
                     new Object[]{
-                        item.getIdItemEntradaInventario(),
-                        item.getIdProducto(),
-                        item.getCodigoProducto(),
-                        item.getDescripcionProducto(),
-                        item.getIdUnidad(),
-                        item.getFactor(),
-                        null,
-                        item.getAbreviacionUnidad(),
+                        item.getIdItemEntradaCaja(),
+                        item.getDescripcion(),
                         item.getCantidad(),
                         item.getPrecio(),
                         item.getTotal()
@@ -105,7 +92,7 @@ public class regEntradaInventario extends frameBase<EntradaInventario> {
     public void CalcularTotales() {
         double subTotal = 0.0;
         for (int i = 0; i < tbItems.getRowCount(); i++) {
-            double totalItem = ObtenerValorCelda(tbItems, i, 10);
+            double totalItem = ObtenerValorCelda(tbItems, i, 4);
             subTotal += totalItem;
         }
 
@@ -120,19 +107,14 @@ public class regEntradaInventario extends frameBase<EntradaInventario> {
         txtTotal.setValue(total);
     }
 
-    public List<ItemEntradaInventario> getItems() {
-        List<ItemEntradaInventario> items = new ArrayList<>();
+    public List<ItemEntradaCaja> getItems() {
+        List<ItemEntradaCaja> items = new ArrayList<>();
         for (int i = 0; i < tbItems.getRowCount(); i++) {
-            ItemEntradaInventario item = new ItemEntradaInventario();
-            item.setIdProducto(ObtenerValorCelda(tbItems, i, 1));
-            item.setCodigoProducto(ObtenerValorCelda(tbItems, i, 2));
-            item.setDescripcionProducto(ObtenerValorCelda(tbItems, i, 3));
-            item.setIdUnidad(ObtenerValorCelda(tbItems, i, 4));
-            item.setFactor(ObtenerValorCelda(tbItems, i, 5));
-            item.setAbreviacionUnidad(ObtenerValorCelda(tbItems, i, 7).toString());
-            item.setCantidad(ObtenerValorCelda(tbItems, i, 8));
-            item.setPrecio(ObtenerValorCelda(tbItems, i, 9));
-            item.setTotal(ObtenerValorCelda(tbItems, i, 10));
+            ItemEntradaCaja item = new ItemEntradaCaja();
+            item.setDescripcion(ObtenerValorCelda(tbItems, i, 1));
+            item.setCantidad(ObtenerValorCelda(tbItems, i, 2));
+            item.setPrecio(ObtenerValorCelda(tbItems, i, 3));
+            item.setTotal(ObtenerValorCelda(tbItems, i, 4));
             items.add(item);
         }
         return items;
@@ -143,60 +125,18 @@ public class regEntradaInventario extends frameBase<EntradaInventario> {
         public void actionPerformed(ActionEvent e) {
             int[] celda = (int[]) e.getSource();
             switch (celda[1]) {
-                case 7:
-                    ProductoUnidad productoUnidad = ObtenerValorCelda(tbItems, celda[0], celda[1]);
-                    AsignarValorCelda(tbItems, productoUnidad.getIdUnidad(), celda[0], 4);
-                    AsignarValorCelda(tbItems, productoUnidad.getFactor(), celda[0], 5);
-                    break;
-                case 8:
-                    double cantidad8 = ObtenerValorCelda(tbItems, celda[0], celda[1]);
-                    double precio8 = ObtenerValorCelda(tbItems, celda[0], 9);
-                    AsignarValorCelda(tbItems, cantidad8 * precio8, celda[0], 10);
+                case 2:
+                    double cantidad2 = ObtenerValorCelda(tbItems, celda[0], celda[1]);
+                    double precio2 = ObtenerValorCelda(tbItems, celda[0], 3);
+                    AsignarValorCelda(tbItems, cantidad2 * precio2, celda[0], 4);
                     CalcularTotales();
                     break;
-                case 9:
-                    double cantidad9 = ObtenerValorCelda(tbItems, celda[0], 8);
-                    double precio9 = ObtenerValorCelda(tbItems, celda[0], celda[1]);
-                    AsignarValorCelda(tbItems, cantidad9 * precio9, celda[0], 10);
+                case 3:
+                    double cantidad3 = ObtenerValorCelda(tbItems, celda[0], 2);
+                    double precio3 = ObtenerValorCelda(tbItems, celda[0], celda[1]);
+                    AsignarValorCelda(tbItems, cantidad3 * precio3, celda[0], 4);
                     CalcularTotales();
                     break;
-            }
-        }
-    };
-
-    Action select_item = new AbstractAction() {
-        @Override
-        public void actionPerformed(ActionEvent evt) {
-            List<Producto> seleccionados = ((lisProducto) evt.getSource()).getSeleccionados();
-            if (!seleccionados.isEmpty()) {
-                cliInventarios cliente = new cliInventarios();
-                try {
-                    String json = cliente.ObtenerUnidadesPorProductos(new Gson().toJson(seleccionados));
-                    String[] resultado = new Gson().fromJson(json, String[].class);
-                    List<Producto> productos = (List<Producto>) new Gson().fromJson(resultado[1], new TypeToken<List<Producto>>() {
-                    }.getType());
-                    for (Producto producto : productos) {
-                        AgregarFila(tbItems,
-                                new Object[]{
-                                    0,
-                                    producto.getIdProducto(),
-                                    producto.getCodigo(),
-                                    producto.getDescripcion(),
-                                    producto.getUnidades().get(0).getIdUnidad(),
-                                    producto.getUnidades().get(0).getFactor(),
-                                    producto.getUnidades(),
-                                    producto.getUnidades().get(0).getAbreviacionUnidad(),
-                                    0.0,
-                                    0.0,
-                                    0.0
-                                });
-                    }
-                    AgregarEventoChange(tbItems, change_item);
-                } catch (Exception e) {
-                    ControlarExcepcion(e);
-                } finally {
-                    cliente.close();
-                }
             }
         }
     };
@@ -223,16 +163,6 @@ public class regEntradaInventario extends frameBase<EntradaInventario> {
         }
     };
 
-    Action select_prov = new AbstractAction() {
-        @Override
-        public void actionPerformed(ActionEvent evt) {
-            Proveedor seleccionado = ((lisProveedor) evt.getSource()).getSeleccionado();
-            if (!(seleccionado == null)) {
-                schProveedor.asingValues(seleccionado.getIdProveedor(), seleccionado.getRazonSocial());
-            }
-        }
-    };
-
     Action select_resp = new AbstractAction() {
         @Override
         public void actionPerformed(ActionEvent evt) {
@@ -243,12 +173,12 @@ public class regEntradaInventario extends frameBase<EntradaInventario> {
         }
     };
 
-    Action select_alma = new AbstractAction() {
+    Action select_caja = new AbstractAction() {
         @Override
         public void actionPerformed(ActionEvent evt) {
-            Almacen seleccionado = ((lisAlmacen) evt.getSource()).getSeleccionado();
+            Caja seleccionado = ((lisCaja) evt.getSource()).getSeleccionado();
             if (!(seleccionado == null)) {
-                schAlmacen.asingValues(seleccionado.getIdAlmacen(), seleccionado.getDescripcion());
+                schCaja.asingValues(seleccionado.getIdCaja(), seleccionado.getDescripcion());
             }
         }
     };
@@ -270,13 +200,13 @@ public class regEntradaInventario extends frameBase<EntradaInventario> {
             VerCargando(frame);
             cliAdministracion cliente = new cliAdministracion();
             try {
-                String json = cliente.ObtenerValorDefinidoPorUsuarioYEntidad(new Gson().toJson(new int[]{getUsuario().getIdUsuario(), 1}));
+                String json = cliente.ObtenerValorDefinidoPorUsuarioYEntidad(new Gson().toJson(new int[]{getUsuario().getIdUsuario(), 8}));
                 String[] resultado = new Gson().fromJson(json, String[].class);
                 if (resultado[0].equals("true")) {
                     if (resultado[2].isEmpty()) {
-                        setEntidad(new EntradaInventario());
+                        setEntidad(new EntradaCaja());
                     } else {
-                        setEntidad(new Gson().fromJson(resultado[2], EntradaInventario.class));
+                        setEntidad(new Gson().fromJson(resultado[2], EntradaCaja.class));
                     }
                     getEntidad().setFechaCreacion(new Gson().fromJson(resultado[1], Date.class));
                     AsignarControles();
@@ -297,15 +227,15 @@ public class regEntradaInventario extends frameBase<EntradaInventario> {
         }
     }
 
-    public class swObtenerEntradaInventario extends SwingWorker<Object, Object> {
+    public class swObtenerEntradaCaja extends SwingWorker<Object, Object> {
 
         @Override
         protected Object doInBackground() {
             VerCargando(frame);
-            cliInventarios cliente = new cliInventarios();
+            cliFinanzas cliente = new cliFinanzas();
             String json = "";
             try {
-                json = cliente.ObtenerEntradaInventario(new Gson().toJson(id));
+                json = cliente.ObtenerEntradaCaja(new Gson().toJson(id));
             } catch (Exception e) {
                 OcultarCargando(frame);
                 cancel(false);
@@ -323,7 +253,7 @@ public class regEntradaInventario extends frameBase<EntradaInventario> {
                 String[] resultado = new Gson().fromJson(json, String[].class);
 
                 if (resultado[0].equals("true")) {
-                    setEntidad(new Gson().fromJson(resultado[1], EntradaInventario.class));
+                    setEntidad(new Gson().fromJson(resultado[1], EntradaCaja.class));
                     AsignarControles();
                 }
                 OcultarCargando(frame);
@@ -338,27 +268,25 @@ public class regEntradaInventario extends frameBase<EntradaInventario> {
         getEntidad().setNumero(txtNumero.getText());
         getEntidad().setIdNumeracion(schNumeracion.getId());
         getEntidad().setDescripcionNumeracion(schNumeracion.getText());
-        getEntidad().setIdProveedor(schProveedor.getId());
-        getEntidad().setRazonSocialProveedor(schProveedor.getText());
         getEntidad().setIdResponsable(schResponsable.getId());
         getEntidad().setNombreResponsable(schResponsable.getText());
-        getEntidad().setIdAlmacen(schAlmacen.getId());
-        getEntidad().setDescripcionAlmacen(schAlmacen.getText());
+        getEntidad().setIdCaja(schCaja.getId());
+        getEntidad().setDescripcionCaja(schCaja.getText());
         getEntidad().setIdMoneda(schMoneda.getId());
         getEntidad().setSimboloMoneda(schMoneda.getText());
         getEntidad().setItems(getItems());
     }
 
-    public class swGuardarEntradaInventario extends SwingWorker<Object, Object> {
+    public class swGuardarEntradaCaja extends SwingWorker<Object, Object> {
 
         @Override
         protected Object doInBackground() {
             VerProcesando(frame);
-            cliInventarios cliente = new cliInventarios();
+            cliFinanzas cliente = new cliFinanzas();
             String json = "";
             try {
                 AsignarValores();
-                json = cliente.RegistrarEntradaInventario(new Gson().toJson(getEntidad()));
+                json = cliente.RegistrarEntradaCaja(new Gson().toJson(getEntidad()));
             } catch (Exception e) {
                 OcultarProcesando(frame);
                 cancel(false);
@@ -394,7 +322,7 @@ public class regEntradaInventario extends frameBase<EntradaInventario> {
             Cerrar();
         } else {
             if (this.id == 0) {
-                new swGuardarEntradaInventario().execute();
+                new swGuardarEntradaCaja().execute();
             } else {
                 Cerrar();
             }
@@ -415,7 +343,6 @@ public class regEntradaInventario extends frameBase<EntradaInventario> {
     private void initComponents() {
 
         frame = new javax.swing.JPanel();
-        lblProveedor = new javax.swing.JLabel();
         lblNombre = new javax.swing.JLabel();
         btnAceptar = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
@@ -442,7 +369,7 @@ public class regEntradaInventario extends frameBase<EntradaInventario> {
         lblNumero = new javax.swing.JLabel();
         txtNumero = new javax.swing.JTextField();
         lblMoneda = new javax.swing.JLabel();
-        lblAlmacen = new javax.swing.JLabel();
+        lblCaja = new javax.swing.JLabel();
         txtFechaCreacion = new javax.swing.JFormattedTextField();
         lblFechaCreacion = new javax.swing.JLabel();
         lblSubTotal = new javax.swing.JLabel();
@@ -450,9 +377,8 @@ public class regEntradaInventario extends frameBase<EntradaInventario> {
         lblTotal = new javax.swing.JLabel();
         txtSubTotal = new javax.swing.JFormattedTextField();
         txtTotal = new javax.swing.JFormattedTextField();
-        schProveedor = new com.sge.base.controles.JSearch();
         txtImpuesto = new javax.swing.JFormattedTextField();
-        schAlmacen = new com.sge.base.controles.JSearch();
+        schCaja = new com.sge.base.controles.JSearch();
         schResponsable = new com.sge.base.controles.JSearch();
         schMoneda = new com.sge.base.controles.JSearch();
         schNumeracion = new com.sge.base.controles.JSearch();
@@ -462,8 +388,6 @@ public class regEntradaInventario extends frameBase<EntradaInventario> {
 
         frame.setBackground(java.awt.Color.white);
         frame.setBorder(null);
-
-        lblProveedor.setText("PROVEEDOR");
 
         lblNombre.setText("RESPONSABLE");
 
@@ -490,14 +414,14 @@ public class regEntradaInventario extends frameBase<EntradaInventario> {
 
             },
             new String [] {
-                "IDITEM", "IDPRODUCTO", "CODIGO", "PRODUCTO", "IDUNIDAD", "FACTOR", "ARRAYUNIDAD", "UNIDAD", "CANTIDAD", "PRECIO", "TOTAL"
+                "IDITEM", "DESCRIPCION", "CANTIDAD", "PRECIO", "TOTAL"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Object.class, java.lang.Object.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, true, true, false, false, false, true, true, true, false
+                false, true, true, true, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -513,21 +437,7 @@ public class regEntradaInventario extends frameBase<EntradaInventario> {
             tbItems.getColumnModel().getColumn(0).setMinWidth(0);
             tbItems.getColumnModel().getColumn(0).setPreferredWidth(0);
             tbItems.getColumnModel().getColumn(0).setMaxWidth(0);
-            tbItems.getColumnModel().getColumn(1).setMinWidth(0);
-            tbItems.getColumnModel().getColumn(1).setPreferredWidth(0);
-            tbItems.getColumnModel().getColumn(1).setMaxWidth(0);
-            tbItems.getColumnModel().getColumn(2).setPreferredWidth(100);
-            tbItems.getColumnModel().getColumn(3).setPreferredWidth(200);
-            tbItems.getColumnModel().getColumn(4).setMinWidth(0);
-            tbItems.getColumnModel().getColumn(4).setPreferredWidth(0);
-            tbItems.getColumnModel().getColumn(4).setMaxWidth(0);
-            tbItems.getColumnModel().getColumn(5).setMinWidth(0);
-            tbItems.getColumnModel().getColumn(5).setPreferredWidth(0);
-            tbItems.getColumnModel().getColumn(5).setMaxWidth(0);
-            tbItems.getColumnModel().getColumn(6).setMinWidth(0);
-            tbItems.getColumnModel().getColumn(6).setPreferredWidth(0);
-            tbItems.getColumnModel().getColumn(6).setMaxWidth(0);
-            tbItems.getColumnModel().getColumn(8).setPreferredWidth(80);
+            tbItems.getColumnModel().getColumn(1).setPreferredWidth(300);
         }
 
         btnNuevoItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sge/base/imagenes/add-16.png"))); // NOI18N
@@ -563,7 +473,7 @@ public class regEntradaInventario extends frameBase<EntradaInventario> {
                 .addComponent(btnNuevoItem)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnEliminarItem)
-                .addContainerGap(134, Short.MAX_VALUE))
+                .addContainerGap(148, Short.MAX_VALUE))
             .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
         );
 
@@ -575,7 +485,7 @@ public class regEntradaInventario extends frameBase<EntradaInventario> {
         lblTitulo.setFont(new java.awt.Font("Ubuntu", 1, 18)); // NOI18N
         lblTitulo.setForeground(java.awt.Color.white);
         lblTitulo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sge/base/imagenes/add-list-16.png"))); // NOI18N
-        lblTitulo.setText("ENTRADA DE  INVENTARIO");
+        lblTitulo.setText("ENTRADA DE  CAJA");
 
         javax.swing.GroupLayout pnlTituloLayout = new javax.swing.GroupLayout(pnlTitulo);
         pnlTitulo.setLayout(pnlTituloLayout);
@@ -598,7 +508,7 @@ public class regEntradaInventario extends frameBase<EntradaInventario> {
 
         lblMoneda.setText("MONEDA");
 
-        lblAlmacen.setText("ALMACEN");
+        lblCaja.setText("CAJA");
 
         txtFechaCreacion.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter()));
 
@@ -616,23 +526,13 @@ public class regEntradaInventario extends frameBase<EntradaInventario> {
         txtTotal.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0.00"))));
         txtTotal.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
 
-        schProveedor.addSearchListener(new SearchListener() {
-            @Override
-            public void Search(){
-                schProveedorSearch();
-            }
-            @Override
-            public void Clear(){
-            }
-        });
-
         txtImpuesto.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0.00"))));
         txtImpuesto.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
 
-        schAlmacen.addSearchListener(new SearchListener() {
+        schCaja.addSearchListener(new SearchListener() {
             @Override
             public void Search(){
-                schAlmacenSearch();
+                schCajaSearch();
             }
             @Override
             public void Clear(){
@@ -681,15 +581,15 @@ public class regEntradaInventario extends frameBase<EntradaInventario> {
                 .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(jTabbedPane1, javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, frameLayout.createSequentialGroup()
-                        .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblNombre)
-                            .addComponent(lblProveedor)
-                            .addComponent(lblAlmacen))
-                        .addGap(24, 24, 24)
-                        .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(schProveedor, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(schAlmacen, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(schResponsable, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addGroup(frameLayout.createSequentialGroup()
+                                .addComponent(lblNombre)
+                                .addGap(24, 24, 24)
+                                .addComponent(schResponsable, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(frameLayout.createSequentialGroup()
+                                .addComponent(lblCaja, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(24, 24, 24)
+                                .addComponent(schCaja, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(29, 29, 29)
                         .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(frameLayout.createSequentialGroup()
@@ -735,12 +635,14 @@ public class regEntradaInventario extends frameBase<EntradaInventario> {
                 .addComponent(pnlTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(lblProveedor, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(lblNumero, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(txtNumero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(schNumeracion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(schProveedor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(schResponsable, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(lblNumero, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtNumero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(frameLayout.createSequentialGroup()
@@ -749,18 +651,13 @@ public class regEntradaInventario extends frameBase<EntradaInventario> {
                         .addComponent(schMoneda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(frameLayout.createSequentialGroup()
                         .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(schResponsable, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(schAlmacen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblAlmacen, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(frameLayout.createSequentialGroup()
-                        .addComponent(lblFechaCreacion, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblFechaCreacion, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(schCaja, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblCaja, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(lblMoneda, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(18, 18, 18)
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 274, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblSubTotal)
@@ -778,7 +675,7 @@ public class regEntradaInventario extends frameBase<EntradaInventario> {
                 .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnAceptar)
                     .addComponent(btnCancelar))
-                .addContainerGap(21, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -795,6 +692,23 @@ public class regEntradaInventario extends frameBase<EntradaInventario> {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void schNumeracionSearch() {
+        String filtro = "WHERE Numeracion.idEntidad = 8";
+        VerModal(new lisNumeracion(1, filtro), select_nume);
+    }
+
+    private void schResponsableSearch() {
+        VerModal(new lisEmpleado(1), select_resp);
+    }
+
+    private void schCajaSearch() {
+        VerModal(new lisCaja(1), select_caja);
+    }
+
+    private void schMonedaSearch() {
+        VerModal(new lisMoneda(1), select_mone);
+    }
+
     private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
         // TODO add your handling code here:
         Aceptar();
@@ -807,7 +721,8 @@ public class regEntradaInventario extends frameBase<EntradaInventario> {
 
     private void btnNuevoItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoItemActionPerformed
         // TODO add your handling code here:
-        VerModal(new lisProducto(2), select_item);
+        AgregarFila(tbItems, new Object[]{0, "", 0.0, 0.0, 0.0});
+        AgregarEventoChange(tbItems, change_item);
     }//GEN-LAST:event_btnNuevoItemActionPerformed
 
     private void btnEliminarItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarItemActionPerformed
@@ -818,27 +733,6 @@ public class regEntradaInventario extends frameBase<EntradaInventario> {
         }
     }//GEN-LAST:event_btnEliminarItemActionPerformed
 
-    private void schNumeracionSearch() {
-        String filtro = "WHERE Numeracion.idEntidad = 1";
-        VerModal(new lisNumeracion(1, filtro), select_nume);
-    }
-
-    private void schProveedorSearch() {
-        VerModal(new lisProveedor(1), select_prov);
-    }
-
-    private void schResponsableSearch() {
-        VerModal(new lisEmpleado(1), select_resp);
-    }
-
-    private void schAlmacenSearch() {
-        VerModal(new lisAlmacen(1), select_alma);
-    }
-
-    private void schMonedaSearch() {
-        VerModal(new lisMoneda(1), select_mone);
-    }
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAceptar;
@@ -848,23 +742,21 @@ public class regEntradaInventario extends frameBase<EntradaInventario> {
     private javax.swing.JPanel frame;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JLabel lblAlmacen;
+    private javax.swing.JLabel lblCaja;
     private javax.swing.JLabel lblFechaCreacion;
     private javax.swing.JLabel lblImpuesto;
     private javax.swing.JLabel lblMoneda;
     private javax.swing.JLabel lblNombre;
     private javax.swing.JLabel lblNumero;
     private javax.swing.JLabel lblPorcentajeImpuesto;
-    private javax.swing.JLabel lblProveedor;
     private javax.swing.JLabel lblSubTotal;
     private javax.swing.JLabel lblTitulo;
     private javax.swing.JLabel lblTotal;
     private javax.swing.JPanel pnlTitulo;
     private javax.swing.JPanel pnlUnidades;
-    private com.sge.base.controles.JSearch schAlmacen;
+    private com.sge.base.controles.JSearch schCaja;
     private com.sge.base.controles.JSearch schMoneda;
     private com.sge.base.controles.JSearch schNumeracion;
-    private com.sge.base.controles.JSearch schProveedor;
     private com.sge.base.controles.JSearch schResponsable;
     private javax.swing.JTable tbItems;
     private javax.swing.JFormattedTextField txtFechaCreacion;

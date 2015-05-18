@@ -1,13 +1,12 @@
-package com.sge.modulos.inventarios.formularios;
+package com.sge.modulos.finanzas.formularios;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.sge.base.formularios.frameBase;
-import com.sge.modulos.inventarios.clases.EntradaInventario;
-import com.sge.modulos.inventarios.cliente.cliInventarios;
+import com.sge.modulos.administracion.clases.Moneda;
+import com.sge.modulos.administracion.formularios.lisMoneda;
+import com.sge.modulos.finanzas.clases.Caja;
+import com.sge.modulos.finanzas.cliente.cliFinanzas;
 import java.awt.event.ActionEvent;
-import java.util.ArrayList;
-import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ImageIcon;
@@ -17,48 +16,64 @@ import javax.swing.SwingWorker;
  *
  * @author elderson
  */
-public class lisEntradaInventario extends frameBase<EntradaInventario> {
+public class lisCaja extends frameBase<Caja> {
 
     /**
-     * Creates new form lisEntradaInventario
+     * Creates new form lisCaja
      */
-    public lisEntradaInventario(int modo) {
+    public lisCaja(int modo) {
         initComponents();
         Init(modo);
     }
 
     private int modo = 0;
 
-    private EntradaInventario seleccionado;
+    private Caja seleccionado;
 
-    private List<EntradaInventario> seleccionados = new ArrayList<>();
-
-    ImageIcon Icon_View = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/view-16.png"));
+    ImageIcon Icon_Save = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/save-16.png"));
     ImageIcon Icon_Dele = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/delete-16.png"));
 
-    Action view = new AbstractAction() {
+    Action sele_mone = new AbstractAction() {
+        @Override
+        public void actionPerformed(ActionEvent evt) {
+            Moneda seleccionado = ((lisMoneda) evt.getSource()).getSeleccionado();
+            if (!(seleccionado == null)) {
+                AsignarValorCelda(tbCajas, seleccionado.getIdMoneda(), 3);
+                AsignarValorCelda(tbCajas, seleccionado.getSimbolo(), 4);
+            }
+        }
+    };
+    
+    Action search = new AbstractAction() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            VerEntradaInventario();
+            VerModal(new lisMoneda(1), sele_mone);
         }
     };
 
-    Action dele = new AbstractAction() {
+    Action save = new AbstractAction() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            EliminarEntradaInventario();
+            new swGuardarCaja().execute();
         }
     };
 
-    public class swObtenerEntradaInventarios extends SwingWorker {
+    Action delete = new AbstractAction() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            EliminarCaja();
+        }
+    };
+
+    public class swObtenerCajas extends SwingWorker<Object, Object> {
 
         @Override
         protected Object doInBackground() {
             VerCargando(frame);
-            cliInventarios cliente = new cliInventarios();
+            cliFinanzas cliente = new cliFinanzas();
             String json = "";
             try {
-                json = cliente.ObtenerEntradaInventarios("");
+                json = cliente.ObtenerCajas(new Gson().toJson(""));
             } catch (Exception e) {
                 OcultarCargando(frame);
                 cancel(false);
@@ -75,15 +90,15 @@ public class lisEntradaInventario extends frameBase<EntradaInventario> {
                 String json = get().toString();
                 String[] resultado = new Gson().fromJson(json, String[].class);
                 if (resultado[0].equals("true")) {
-                    EliminarTodasFilas(tbEntradaInventarios);
-                    List<Object[]> filas = (List<Object[]>) new Gson().fromJson(resultado[1], new TypeToken<List<Object[]>>() {
-                    }.getType());
-                    for (Object[] fila : filas) {
-                        AgregarFila(tbEntradaInventarios, new Object[]{false, ((Double) fila[0]).intValue(), fila[1], fila[2], fila[3], fila[4], fila[5], fila[6], Icon_View, Icon_Dele});
+                    EliminarTodasFilas(tbCajas);
+                    Caja[] cajas = new Gson().fromJson(resultado[1], Caja[].class);
+                    for (Caja caja : cajas) {
+                        AgregarFila(tbCajas, new Object[]{false, caja.getIdCaja(), caja.getDescripcion(), caja.getIdMoneda(), caja.getSimboloMoneda(), caja.getMontoActual(), caja.isActivo(), Icon_Save, Icon_Dele});
                     }
-                    AgregarBoton(tbEntradaInventarios, view, 8);
-                    AgregarBoton(tbEntradaInventarios, dele, 9);
-                    AgregarOrdenamiento(tbEntradaInventarios);
+                    AgregarBoton(tbCajas, search, 4);
+                    AgregarBoton(tbCajas, save, 7);
+                    AgregarBoton(tbCajas, delete, 8);
+                    AgregarOrdenamiento(tbCajas);
                 }
                 OcultarCargando(frame);
             } catch (Exception e) {
@@ -91,18 +106,27 @@ public class lisEntradaInventario extends frameBase<EntradaInventario> {
                 ControlarExcepcion(e);
             }
         }
-    }
+    };
 
-    public class swEliminarEntradaInventario extends SwingWorker {
+    public class swGuardarCaja extends SwingWorker<Object, Object> {
 
         @Override
-        protected Object doInBackground() throws Exception {
+        protected Object doInBackground() {
             VerCargando(frame);
-            cliInventarios cliente = new cliInventarios();
+            cliFinanzas cliente = new cliFinanzas();
             String json = "";
             try {
-                int idEntradaInventario = ObtenerValorCelda(tbEntradaInventarios, 1);
-                json = cliente.EliminarEntradaInventario(new Gson().toJson(idEntradaInventario));
+                Caja caja = new Caja();
+                caja.setIdCaja(ObtenerValorCelda(tbCajas, 1));
+                caja.setDescripcion(ObtenerValorCelda(tbCajas, 2));
+                caja.setIdMoneda(ObtenerValorCelda(tbCajas, 3));
+                caja.setSimboloMoneda(ObtenerValorCelda(tbCajas, 4));
+                caja.setActivo(ObtenerValorCelda(tbCajas, 6));
+                if (caja.getIdCaja() == 0) {
+                    json = cliente.RegistrarCaja(new Gson().toJson(caja));
+                } else {
+                    json = cliente.ActualizarCaja(new Gson().toJson(caja));
+                }
             } catch (Exception e) {
                 OcultarCargando(frame);
                 cancel(false);
@@ -119,10 +143,45 @@ public class lisEntradaInventario extends frameBase<EntradaInventario> {
                 String json = get().toString();
                 String[] resultado = new Gson().fromJson(json, String[].class);
                 if (resultado[0].equals("true")) {
-                    new swObtenerEntradaInventarios().execute();
+                    new swObtenerCajas().execute();
                 } else {
                     OcultarCargando(frame);
-                    ControlarExcepcion(resultado);
+                }
+            } catch (Exception e) {
+                OcultarCargando(frame);
+            }
+        }
+    }
+
+    public class swEliminarCaja extends SwingWorker<Object, Object> {
+
+        @Override
+        protected Object doInBackground() throws Exception {
+            VerCargando(frame);
+            cliFinanzas cliente = new cliFinanzas();
+            String json = "";
+            try {
+                int idCaja = ObtenerValorCelda(tbCajas, 1);
+                json = cliente.EliminarCaja(new Gson().toJson(idCaja));
+            } catch (Exception e) {
+                OcultarCargando(frame);
+                cancel(false);
+                ControlarExcepcion(e);
+            } finally {
+                cliente.close();
+            }
+            return json;
+        }
+
+        @Override
+        protected void done() {
+            try {
+                String json = get().toString();
+                String[] resultado = new Gson().fromJson(json, String[].class);
+                if (resultado[0].equals("true")) {
+                    new swObtenerCajas().execute();
+                } else {
+                    OcultarCargando(frame);
                 }
             } catch (Exception e) {
                 OcultarCargando(frame);
@@ -135,29 +194,31 @@ public class lisEntradaInventario extends frameBase<EntradaInventario> {
         this.modo = modo;
         switch (this.modo) {
             case 0:
-                OcultarColumna(tbEntradaInventarios, 0);
+                OcultarColumna(tbCajas, 0);
                 OcultarControl(btnSeleccionar);
                 break;
             case 1:
-                OcultarColumnas(tbEntradaInventarios, new int[]{0, 8, 9});
+                OcultarColumnas(tbCajas, new int[]{0, 7, 8});
                 OcultarControl(btnNuevo);
                 break;
         }
-        new swObtenerEntradaInventarios().execute();
+        new swObtenerCajas().execute();
     }
 
-    public void VerEntradaInventario() {
-        int idEntradaInventario = ObtenerValorCelda(tbEntradaInventarios, 1);
-        regEntradaInventario regEntradaInventario = new regEntradaInventario(idEntradaInventario);
-        this.getParent().add(regEntradaInventario);
-        regEntradaInventario.setVisible(true);
-    }
-
-    public void EliminarEntradaInventario() {
+    public void EliminarCaja() {
         int confirmacion = VerConfirmacion(this);
         if (confirmacion == 0) {
-            new swEliminarEntradaInventario().execute();
+            int idCaja = ObtenerValorCelda(tbCajas, 1);
+            if (idCaja == 0) {
+                EliminarFila(tbCajas);
+            } else {
+                new swEliminarCaja().execute();
+            }
         }
+    }
+
+    public Caja getSeleccionado() {
+        return seleccionado;
     }
 
     /**
@@ -171,34 +232,33 @@ public class lisEntradaInventario extends frameBase<EntradaInventario> {
 
         frame = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tbEntradaInventarios = new javax.swing.JTable();
+        tbCajas = new javax.swing.JTable();
         pnlTitulo = new javax.swing.JPanel();
         lblTitulo = new javax.swing.JLabel();
         btnNuevo = new javax.swing.JButton();
         btnSeleccionar = new javax.swing.JButton();
-        txtFiltro = new javax.swing.JTextField();
         lblFiltro = new javax.swing.JLabel();
+        txtFiltro = new javax.swing.JTextField();
         btnRefrescar = new javax.swing.JButton();
-        btnImprimir = new javax.swing.JButton();
 
         setClosable(true);
 
         frame.setBackground(java.awt.Color.white);
         frame.setBorder(null);
 
-        tbEntradaInventarios.setModel(new javax.swing.table.DefaultTableModel(
+        tbCajas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "CHECK", "IDENTRADAINVENTARIO", "NUMERO", "F. CREACION", "PROVEEDOR", "RESPONSABLE", "MONEDA", "TOTAL", "VER", "ELIMINAR"
+                "CHECK", "ID", "DESCRIPCION", "IDMONEDA", "MONEDA", "MONTO ACTUAL", "ACTIVO", "GUARDAR", "ELIMINAR"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Boolean.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Double.class, java.lang.Object.class, java.lang.Object.class
+                java.lang.Boolean.class, java.lang.Integer.class, java.lang.String.class, java.lang.Integer.class, java.lang.Object.class, java.lang.Double.class, java.lang.Boolean.class, java.lang.Object.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                true, false, true, true, true, true, true, true, true, true
+                true, false, true, true, true, false, true, true, true
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -209,16 +269,16 @@ public class lisEntradaInventario extends frameBase<EntradaInventario> {
                 return canEdit [columnIndex];
             }
         });
-        tbEntradaInventarios.setRowHeight(25);
-        tbEntradaInventarios.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        jScrollPane1.setViewportView(tbEntradaInventarios);
-        if (tbEntradaInventarios.getColumnModel().getColumnCount() > 0) {
-            tbEntradaInventarios.getColumnModel().getColumn(0).setPreferredWidth(30);
-            tbEntradaInventarios.getColumnModel().getColumn(1).setMinWidth(0);
-            tbEntradaInventarios.getColumnModel().getColumn(1).setPreferredWidth(0);
-            tbEntradaInventarios.getColumnModel().getColumn(1).setMaxWidth(0);
-            tbEntradaInventarios.getColumnModel().getColumn(8).setPreferredWidth(30);
-            tbEntradaInventarios.getColumnModel().getColumn(9).setPreferredWidth(50);
+        tbCajas.setRowHeight(25);
+        tbCajas.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jScrollPane1.setViewportView(tbCajas);
+        if (tbCajas.getColumnModel().getColumnCount() > 0) {
+            tbCajas.getColumnModel().getColumn(1).setMinWidth(0);
+            tbCajas.getColumnModel().getColumn(1).setPreferredWidth(0);
+            tbCajas.getColumnModel().getColumn(1).setMaxWidth(0);
+            tbCajas.getColumnModel().getColumn(3).setMinWidth(0);
+            tbCajas.getColumnModel().getColumn(3).setPreferredWidth(0);
+            tbCajas.getColumnModel().getColumn(3).setMaxWidth(0);
         }
 
         pnlTitulo.setBackground(new java.awt.Color(67, 100, 130));
@@ -227,7 +287,7 @@ public class lisEntradaInventario extends frameBase<EntradaInventario> {
         lblTitulo.setFont(new java.awt.Font("Ubuntu", 1, 18)); // NOI18N
         lblTitulo.setForeground(java.awt.Color.white);
         lblTitulo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sge/base/imagenes/list-view-16.png"))); // NOI18N
-        lblTitulo.setText("LISTADO DE ENTRADAS DE INVENTARIO");
+        lblTitulo.setText("LISTADO DE CAJAS");
 
         btnNuevo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sge/base/imagenes/add-16.png"))); // NOI18N
         btnNuevo.setText("NUEVO");
@@ -243,8 +303,8 @@ public class lisEntradaInventario extends frameBase<EntradaInventario> {
             pnlTituloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlTituloLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(lblTitulo)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 417, Short.MAX_VALUE)
+                .addComponent(lblTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 318, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnNuevo)
                 .addContainerGap())
         );
@@ -265,27 +325,19 @@ public class lisEntradaInventario extends frameBase<EntradaInventario> {
             }
         });
 
+        lblFiltro.setText("FILTRO");
+
         txtFiltro.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtFiltroActionPerformed(evt);
             }
         });
 
-        lblFiltro.setText("FILTRO");
-
         btnRefrescar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sge/base/imagenes/refresh-16.png"))); // NOI18N
         btnRefrescar.setToolTipText("REFRESCAR");
         btnRefrescar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnRefrescarActionPerformed(evt);
-            }
-        });
-
-        btnImprimir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sge/base/imagenes/imprimir.png"))); // NOI18N
-        btnImprimir.setToolTipText("REFRESCAR");
-        btnImprimir.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnImprimirActionPerformed(evt);
             }
         });
 
@@ -297,18 +349,16 @@ public class lisEntradaInventario extends frameBase<EntradaInventario> {
             .addGroup(frameLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 873, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 724, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, frameLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(btnSeleccionar, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(btnSeleccionar, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(frameLayout.createSequentialGroup()
                         .addComponent(lblFiltro)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, 331, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnRefrescar, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnImprimir, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -317,17 +367,16 @@ public class lisEntradaInventario extends frameBase<EntradaInventario> {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, frameLayout.createSequentialGroup()
                 .addComponent(pnlTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(lblFiltro)
                         .addComponent(txtFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(btnRefrescar, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnImprimir, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnRefrescar, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 331, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 233, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnSeleccionar)
-                .addGap(6, 6, 6))
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -346,35 +395,41 @@ public class lisEntradaInventario extends frameBase<EntradaInventario> {
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
         // TODO add your handling code here:
-        regEntradaInventario regEntradaInventario = new regEntradaInventario(0);
-        regEntradaInventario.setUsuario(getUsuario());
-        this.getDesktopPane().add(regEntradaInventario);
-        regEntradaInventario.setVisible(true);
+        AgregarFila(tbCajas, new Object[]{false, 0, "", 0, "", 0, false, Icon_Save, Icon_Dele});
     }//GEN-LAST:event_btnNuevoActionPerformed
+
+    private void btnSeleccionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeleccionarActionPerformed
+        // TODO add your handling code here:
+        switch (this.modo) {
+            case 1:
+                if (FilaActiva(tbCajas)) {
+                    Caja caja = new Caja();
+                    caja.setIdCaja(ObtenerValorCelda(tbCajas, 1));
+                    caja.setDescripcion(ObtenerValorCelda(tbCajas, 2));
+                    caja.setIdMoneda(ObtenerValorCelda(tbCajas, 3));
+                    caja.setSimboloMoneda(ObtenerValorCelda(tbCajas, 4));
+                    caja.setActivo(ObtenerValorCelda(tbCajas, 6));
+                    seleccionado = caja;
+                }
+                Cerrar();
+                break;
+            case 2:
+                break;
+        }
+    }//GEN-LAST:event_btnSeleccionarActionPerformed
 
     private void txtFiltroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFiltroActionPerformed
         // TODO add your handling code here:
-        Filtrar(tbEntradaInventarios, txtFiltro.getText());
+        Filtrar(tbCajas, txtFiltro.getText());
     }//GEN-LAST:event_txtFiltroActionPerformed
 
     private void btnRefrescarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefrescarActionPerformed
         // TODO add your handling code here:
-        new swObtenerEntradaInventarios().execute();
+        new swObtenerCajas().execute();
     }//GEN-LAST:event_btnRefrescarActionPerformed
 
-    private void btnImprimirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImprimirActionPerformed
-        // TODO add your handling code here:
-        if (FilaActiva(tbEntradaInventarios)) {
-            ImprimirConEntidad(1, ObtenerValorCelda(tbEntradaInventarios, 1), frame);
-        }
-    }//GEN-LAST:event_btnImprimirActionPerformed
-
-    private void btnSeleccionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeleccionarActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnSeleccionarActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnImprimir;
     private javax.swing.JButton btnNuevo;
     private javax.swing.JButton btnRefrescar;
     private javax.swing.JButton btnSeleccionar;
@@ -383,7 +438,7 @@ public class lisEntradaInventario extends frameBase<EntradaInventario> {
     private javax.swing.JLabel lblFiltro;
     private javax.swing.JLabel lblTitulo;
     private javax.swing.JPanel pnlTitulo;
-    private javax.swing.JTable tbEntradaInventarios;
+    private javax.swing.JTable tbCajas;
     private javax.swing.JTextField txtFiltro;
     // End of variables declaration//GEN-END:variables
 }
