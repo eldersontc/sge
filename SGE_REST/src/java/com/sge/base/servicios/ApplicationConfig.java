@@ -36,6 +36,7 @@ public class ApplicationConfig extends Application {
         resources.add(com.sge.modulos.administracion.servicios.UsuarioSRV.class);
         resources.add(com.sge.modulos.administracion.servicios.ValorDefinidoSRV.class);
         resources.add(com.sge.modulos.compras.servicios.ProveedorSRV.class);
+        resources.add(com.sge.modulos.facturacion.servicios.FacturaSRV.class);
         resources.add(com.sge.modulos.finanzas.servicios.CajaSRV.class);
         resources.add(com.sge.modulos.finanzas.servicios.EntradaCajaSRV.class);
         resources.add(com.sge.modulos.finanzas.servicios.SalidaCajaSRV.class);
