@@ -117,6 +117,7 @@ public class regPresupuesto extends frameBase<Presupuesto> {
         getEntidad().setNumero(txtNumero.getText());
         getEntidad().setIdMoneda(schMoneda.getId());
         getEntidad().setSimboloMoneda(schMoneda.getText());
+        getEntidad().setItems(getItems());
     }
 
     @Override
@@ -234,7 +235,6 @@ public class regPresupuesto extends frameBase<Presupuesto> {
             String json = "";
             try {
                 AsignarValores();
-                getEntidad().setItems(getItems());
                 if (id == 0) {
                     json = cliVentas.RegistrarPresupuesto(new Gson().toJson(getEntidad()));
                 } else {
