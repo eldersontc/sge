@@ -2,12 +2,9 @@
 package com.sge.modulos.inventarios.servicios;
 
 import com.google.gson.Gson;
-import com.sge.modulos.administracion.entidades.ValorDefinido;
-import com.sge.modulos.administracion.negocios.ValorDefinidoDTO;
 import com.sge.modulos.inventarios.entidades.EntradaInventario;
 import com.sge.modulos.inventarios.negocios.EntradaInventarioDTO;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;

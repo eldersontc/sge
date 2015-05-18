@@ -1,11 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
-
-
-<root>
-    
-</root>
+<!DOCTYPE hibernate-mapping PUBLIC 
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.sge.modulos.finanzas.entidades.EntradaCaja" table="EntradaCaja" schema="Finanzas">
+        <id name="idEntradaCaja" column="idEntradaCaja">
+            <generator class="sequence">
+                <param name="sequence">finanzas.entradacaja_identradacaja_seq</param>
+            </generator>
+        </id>
+        <property name="numero" column="numero"/>
+        <property name="numeracionManual" column="numeracionManual"/>
+        <property name="idNumeracion" column="idNumeracion"/>
+        <property name="descripcionNumeracion" column="descripcionNumeracion"/>
+        <property name="fechaCreacion" column="fechaCreacion"/>
+        <property name="idResponsable" column="idResponsable"/>
+        <property name="nombreResponsable" column="nombreResponsable"/>
+        <property name="idMoneda" column="idMoneda"/>
+        <property name="simboloMoneda" column="simboloMoneda"/>
+        <property name="idCaja" column="idCaja"/>
+        <property name="descripcionCaja" column="descripcionCaja"/>
+        <property name="observacion" column="observacion"/>
+        <property name="tipoCambio" column="tipoCambio"/>
+        <property name="subTotal" column="subTotal"/>
+        <property name="porcentajeImpuesto" column="porcentajeImpuesto"/>
+        <property name="montoImpuesto" column="montoImpuesto"/>
+        <property name="total" column="total"/>
+    </class>
+</hibernate-mapping>

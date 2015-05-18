@@ -1,11 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
-
-
-<root>
-    
-</root>
+<!DOCTYPE hibernate-mapping PUBLIC 
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.sge.modulos.finanzas.entidades.ItemEntradaCaja" table="ItemEntradaCaja" schema="Finanzas">
+        <id name="idItemEntradaCaja" column="idItemEntradaCaja">
+            <generator class="sequence">
+                <param name="sequence">finanzas.itementradacaja_iditementradacaja_seq</param>
+            </generator>
+        </id>
+        <property name="idEntradaCaja" column="idEntradaCaja"/>
+        <property name="descripcion" column="descripcion"/>
+        <property name="cantidad" column="cantidad"/>
+        <property name="precio" column="precio"/>
+        <property name="total" column="total"/>
+    </class>
+</hibernate-mapping>

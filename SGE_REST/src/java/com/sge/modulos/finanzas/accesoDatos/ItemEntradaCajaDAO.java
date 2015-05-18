@@ -8,4 +8,8 @@ import com.sge.base.accesoDatos.BaseDAO;
  */
 public class ItemEntradaCajaDAO extends BaseDAO {
     
+    public int EliminarItemEntradaCajaPorEntradaCaja(int idEntradaCaja) {
+        String sql = "DELETE FROM Finanzas.ItemEntradaCaja WHERE idEntradaCaja = " + idEntradaCaja;
+        return super.Ejecutar(sql);
+    }
 }

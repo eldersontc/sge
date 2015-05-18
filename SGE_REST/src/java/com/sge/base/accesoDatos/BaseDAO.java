@@ -81,6 +81,12 @@ public class BaseDAO {
         recursos.add("com/sge/modulos/produccion/mapeos/ItemOrdenTrabajo.hbm.xml");
         recursos.add("com/sge/modulos/produccion/mapeos/OrdenProduccion.hbm.xml");
         recursos.add("com/sge/modulos/produccion/mapeos/ItemOrdenProduccion.hbm.xml");
+        // FINANZAS
+        recursos.add("com/sge/modulos/finanzas/mapeos/Caja.hbm.xml");
+        recursos.add("com/sge/modulos/finanzas/mapeos/EntradaCaja.hbm.xml");
+        recursos.add("com/sge/modulos/finanzas/mapeos/ItemEntradaCaja.hbm.xml");
+        recursos.add("com/sge/modulos/finanzas/mapeos/SalidaCaja.hbm.xml");
+        recursos.add("com/sge/modulos/finanzas/mapeos/ItemSalidaCaja.hbm.xml");
         return recursos;
     }
     
