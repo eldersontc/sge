@@ -34,6 +34,10 @@ public class Cotizacion {
     private int idFormaPago;
     private String descripcionFormaPago;
     private String lineaProduccion;
+    private int idSolicitudCotizacion;
+    private String numeroSolicitudCotizacion;
+    private int idPresupuesto;
+    private String numeroPresupuesto;
     private int cantidad;
     private String observacion;
     private int idContactoCliente;
@@ -241,6 +245,38 @@ public class Cotizacion {
         this.lineaProduccion = lineaProduccion;
     }
 
+    public int getIdSolicitudCotizacion() {
+        return idSolicitudCotizacion;
+    }
+
+    public void setIdSolicitudCotizacion(int idSolicitudCotizacion) {
+        this.idSolicitudCotizacion = idSolicitudCotizacion;
+    }
+
+    public String getNumeroSolicitudCotizacion() {
+        return numeroSolicitudCotizacion;
+    }
+
+    public void setNumeroSolicitudCotizacion(String numeroSolicitudCotizacion) {
+        this.numeroSolicitudCotizacion = numeroSolicitudCotizacion;
+    }
+
+    public int getIdPresupuesto() {
+        return idPresupuesto;
+    }
+
+    public void setIdPresupuesto(int idPresupuesto) {
+        this.idPresupuesto = idPresupuesto;
+    }
+
+    public String getNumeroPresupuesto() {
+        return numeroPresupuesto;
+    }
+
+    public void setNumeroPresupuesto(String numeroPresupuesto) {
+        this.numeroPresupuesto = numeroPresupuesto;
+    }
+    
     public int getCantidad() {
         return cantidad;
     }

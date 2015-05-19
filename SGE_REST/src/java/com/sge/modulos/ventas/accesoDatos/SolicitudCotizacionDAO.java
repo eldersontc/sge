@@ -10,13 +10,12 @@ import java.util.List;
  */
 public class SolicitudCotizacionDAO extends BaseDAO {
 
-    public List<Object[]> ObtenerSolicitudesCotizacion(String filtro) {
+    public List<SolicitudCotizacion> ObtenerSolicitudesCotizacion(String filtro) {
         String sql = "SELECT \n"
-                + "SolicitudCotizacion.idSolicitudCotizacion, SolicitudCotizacion.numero, SolicitudCotizacion.descripcion, SolicitudCotizacion.fechaCreacion, \n"
-                + "SolicitudCotizacion.razonSocialCliente, SolicitudCotizacion.nombreVendedor, SolicitudCotizacion.simboloMoneda \n"
+                + "SolicitudCotizacion.* \n"
                 + "FROM \n"
                 + "Ventas.SolicitudCotizacion " + filtro;
-        return super.ObtenerLista(sql);
+        return super.ObtenerLista(sql, SolicitudCotizacion.class);
     }
 
     public int ActualizarSolicitudCotizacion(SolicitudCotizacion solicitud) {
@@ -24,8 +23,8 @@ public class SolicitudCotizacionDAO extends BaseDAO {
                 + "idListaPrecioProducto = %d, nombreListaPrecioProducto = '%s', idListaPrecioServicio = %d, nombreListaPrecioServicio = '%s', idListaPrecioMaquina = %d, nombreListaPrecioMaquina = '%s', "
                 + "idMoneda = %d, simboloMoneda = '%s', idVendedor = %d, nombreVendedor = '%s', idFormaPago = %d, descripcionFormaPago = '%s', "
                 + "lineaProduccion = '%s', cantidad = %d, observacion = '%s' WHERE idSolicitudCotizacion = %d",
-                solicitud.getDescripcion(), solicitud.getIdCliente(), solicitud.getRazonSocialCliente(), solicitud.getIdListaPrecioProducto(), 
-                solicitud.getNombreListaPrecioProducto(), solicitud.getIdListaPrecioServicio(), solicitud.getNombreListaPrecioServicio(), 
+                solicitud.getDescripcion(), solicitud.getIdCliente(), solicitud.getRazonSocialCliente(), solicitud.getIdListaPrecioProducto(),
+                solicitud.getNombreListaPrecioProducto(), solicitud.getIdListaPrecioServicio(), solicitud.getNombreListaPrecioServicio(),
                 solicitud.getIdListaPrecioMaquina(), solicitud.getNombreListaPrecioMaquina(), solicitud.getIdMoneda(), solicitud.getSimboloMoneda(),
                 solicitud.getIdVendedor(), solicitud.getNombreVendedor(), solicitud.getIdFormaPago(), solicitud.getDescripcionFormaPago(),
                 solicitud.getLineaProduccion(), solicitud.getCantidad(), solicitud.getObservacion(), solicitud.getIdSolicitudCotizacion());
@@ -34,6 +33,11 @@ public class SolicitudCotizacionDAO extends BaseDAO {
 
     public int EliminarSolicitudCotizacion(int idSolicitudCotizacion) {
         String sql = "DELETE FROM Ventas.SolicitudCotizacion WHERE idSolicitudCotizacion = " + idSolicitudCotizacion;
+        return super.Ejecutar(sql);
+    }
+
+    public int ActualizarEstadoSolicitudCotizacion(int idSolicitudCotizacion, String estado) {
+        String sql = String.format("UPDATE Ventas.SolicitudCotizacion SET estado = '%s' WHERE idSolicitudCotizacion = %d", estado, idSolicitudCotizacion);
         return super.Ejecutar(sql);
     }
 }

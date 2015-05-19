@@ -2,6 +2,7 @@ package com.sge.modulos.ventas.negocios;
 
 import com.sge.modulos.ventas.accesoDatos.CotizacionDAO;
 import com.sge.modulos.ventas.accesoDatos.ItemCotizacionDAO;
+import com.sge.modulos.ventas.accesoDatos.SolicitudCotizacionDAO;
 import com.sge.modulos.ventas.entidades.Cotizacion;
 import com.sge.modulos.ventas.entidades.ItemCotizacion;
 import java.util.ArrayList;
@@ -15,6 +16,7 @@ public class CotizacionDTO {
     
     CotizacionDAO cotizacionDAO;
     ItemCotizacionDAO itemCotizacionDAO;
+    SolicitudCotizacionDAO solicitudCotizacionDAO;
     
     public List<Object[]> ObtenerCotizaciones(String filtro) {
         List<Object[]> lista;
@@ -86,7 +88,13 @@ public class CotizacionDTO {
                 item.setIdCotizacion(cotizacion.getIdCotizacion());
                 itemCotizacionDAO.Agregar(item);
             }
-
+            
+            if(cotizacion.getIdSolicitudCotizacion() > 0){
+                solicitudCotizacionDAO = new SolicitudCotizacionDAO();
+                solicitudCotizacionDAO.AsignarSesion(cotizacionDAO);
+                solicitudCotizacionDAO.ActualizarEstadoSolicitudCotizacion(cotizacion.getIdSolicitudCotizacion(), "COTIZACIÓN GENERADA");
+            }
+            
             cotizacionDAO.ConfirmarTransaccion();
         } catch (Exception e) {
             cotizacionDAO.AbortarTransaccion();
@@ -132,6 +140,14 @@ public class CotizacionDTO {
         try {
             cotizacionDAO = new CotizacionDAO();
             cotizacionDAO.IniciarTransaccion();
+            
+            Cotizacion cotizacion = cotizacionDAO.ObtenerPorId(Cotizacion.class, idCotizacion);
+            if(cotizacion.getIdSolicitudCotizacion() > 0){
+                solicitudCotizacionDAO = new SolicitudCotizacionDAO();
+                solicitudCotizacionDAO.AsignarSesion(cotizacionDAO);
+                solicitudCotizacionDAO.ActualizarEstadoSolicitudCotizacion(cotizacion.getIdSolicitudCotizacion(), "APROBADO");
+            }
+            
             cotizacionDAO.EliminarCotizacion(idCotizacion);
 
             itemCotizacionDAO = new ItemCotizacionDAO();

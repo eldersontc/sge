@@ -16,8 +16,8 @@ public class SolicitudCotizacionDTO {
     SolicitudCotizacionDAO solicitudCotizacionDAO;
     ItemSolicitudCotizacionDAO itemSolicitudCotizacionDAO;
     
-    public List<Object[]> ObtenerSolicitudesCotizacion(String filtro) {
-        List<Object[]> lista;
+    public List<SolicitudCotizacion> ObtenerSolicitudesCotizacion(String filtro) {
+        List<SolicitudCotizacion> lista;
         try {
             solicitudCotizacionDAO = new SolicitudCotizacionDAO();
             solicitudCotizacionDAO.AbrirSesion();
@@ -55,6 +55,7 @@ public class SolicitudCotizacionDTO {
         try {
             solicitudCotizacionDAO = new SolicitudCotizacionDAO();
             solicitudCotizacionDAO.IniciarTransaccion();
+            solicitudCotizacion.setEstado("PENDIENTE DE APROBACIÓN");
             solicitudCotizacionDAO.Agregar(solicitudCotizacion);
 
             itemSolicitudCotizacionDAO = new ItemSolicitudCotizacionDAO();
@@ -94,7 +95,6 @@ public class SolicitudCotizacionDTO {
                     itemSolicitudCotizacionDAO.EliminarItemSolicitudCotizacion(item.getIdItemSolicitudCotizacion());
                 }
             }
-
             solicitudCotizacionDAO.ConfirmarTransaccion();
         } catch (Exception e) {
             solicitudCotizacionDAO.AbortarTransaccion();
@@ -115,6 +115,36 @@ public class SolicitudCotizacionDTO {
             itemSolicitudCotizacionDAO.AsignarSesion(solicitudCotizacionDAO);
             itemSolicitudCotizacionDAO.EliminarItemSolicitudCotizacionPorIdSolicitudCotizacion(idSolicitudCotizacion);
 
+            solicitudCotizacionDAO.ConfirmarTransaccion();
+        } catch (Exception e) {
+            solicitudCotizacionDAO.AbortarTransaccion();
+            throw e;
+        } finally {
+            solicitudCotizacionDAO.CerrarSesion();
+        }
+        return true;
+    }
+    
+    public boolean AprobarSolicitudCotizacion(int idSolicitudCotizacion) {
+        try {
+            solicitudCotizacionDAO = new SolicitudCotizacionDAO();
+            solicitudCotizacionDAO.IniciarTransaccion();
+            solicitudCotizacionDAO.ActualizarEstadoSolicitudCotizacion(idSolicitudCotizacion, "APROBADO");
+            solicitudCotizacionDAO.ConfirmarTransaccion();
+        } catch (Exception e) {
+            solicitudCotizacionDAO.AbortarTransaccion();
+            throw e;
+        } finally {
+            solicitudCotizacionDAO.CerrarSesion();
+        }
+        return true;
+    }
+    
+    public boolean DesaprobarSolicitudCotizacion(int idSolicitudCotizacion) {
+        try {
+            solicitudCotizacionDAO = new SolicitudCotizacionDAO();
+            solicitudCotizacionDAO.IniciarTransaccion();
+            solicitudCotizacionDAO.ActualizarEstadoSolicitudCotizacion(idSolicitudCotizacion, "PENDIENTE DE APROBACIÓN");
             solicitudCotizacionDAO.ConfirmarTransaccion();
         } catch (Exception e) {
             solicitudCotizacionDAO.AbortarTransaccion();

@@ -32,6 +32,10 @@
         <property name="idFormaPago" column="idFormaPago"/>
         <property name="descripcionFormaPago" column="descripcionFormaPago"/>
         <property name="lineaProduccion" column="lineaProduccion"/>
+        <property name="idSolicitudCotizacion" column="idSolicitudCotizacion"/>
+        <property name="numeroSolicitudCotizacion" column="numeroSolicitudCotizacion"/>
+        <property name="idPresupuesto" column="idPresupuesto"/>
+        <property name="numeroPresupuesto" column="numeroPresupuesto"/>
         <property name="cantidad" column="cantidad"/>
         <property name="observacion" column="observacion"/>
         <property name="idContactoCliente" column="idContactoCliente"/>

@@ -37,7 +37,7 @@ public class SolicitudCotizacionSRV {
         try {
             String filtro = new Gson().fromJson(json, String.class);
             SolicitudCotizacionDTO SolicitudCotizacionDTO = new SolicitudCotizacionDTO();
-            List<Object[]> lista = SolicitudCotizacionDTO.ObtenerSolicitudesCotizacion(filtro);
+            List<SolicitudCotizacion> lista = SolicitudCotizacionDTO.ObtenerSolicitudesCotizacion(filtro);
             resultado.add(new Gson().toJson(true));
             resultado.add(new Gson().toJson(lista));
         } catch (Exception e) {
@@ -116,6 +116,44 @@ public class SolicitudCotizacionSRV {
         try {
             SolicitudCotizacionDTO SolicitudCotizacionDTO = new SolicitudCotizacionDTO();
             SolicitudCotizacionDTO.EliminarSolicitudCotizacion(idSolicitudCotizacion);
+            resultado.add(new Gson().toJson(true));
+        } catch (Exception e) {
+            resultado.clear();
+            resultado.add(new Gson().toJson(false));
+            resultado.add(new Gson().toJson(e));
+        }
+        return new Gson().toJson(resultado);
+    }
+    
+    @POST
+    @Path("AprobarSolicitudCotizacion")
+    @Consumes("application/json")
+    @Produces("application/json")
+    public String AprobarSolicitudCotizacion(String json) {
+        List<String> resultado = new ArrayList<>();
+        int idSolicitudCotizacion = new Gson().fromJson(json, int.class);
+        try {
+            SolicitudCotizacionDTO SolicitudCotizacionDTO = new SolicitudCotizacionDTO();
+            SolicitudCotizacionDTO.AprobarSolicitudCotizacion(idSolicitudCotizacion);
+            resultado.add(new Gson().toJson(true));
+        } catch (Exception e) {
+            resultado.clear();
+            resultado.add(new Gson().toJson(false));
+            resultado.add(new Gson().toJson(e));
+        }
+        return new Gson().toJson(resultado);
+    }
+    
+    @POST
+    @Path("DesaprobarSolicitudCotizacion")
+    @Consumes("application/json")
+    @Produces("application/json")
+    public String DesaprobarSolicitudCotizacion(String json) {
+        List<String> resultado = new ArrayList<>();
+        int idSolicitudCotizacion = new Gson().fromJson(json, int.class);
+        try {
+            SolicitudCotizacionDTO SolicitudCotizacionDTO = new SolicitudCotizacionDTO();
+            SolicitudCotizacionDTO.DesaprobarSolicitudCotizacion(idSolicitudCotizacion);
             resultado.add(new Gson().toJson(true));
         } catch (Exception e) {
             resultado.clear();
