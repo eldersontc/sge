@@ -87,6 +87,12 @@ public class cliVentas {
         resource = resource.path("EliminarPlantillaSolicitudCotizacion");
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
     }
+    
+    public String GenerarSolicitudCotizacion(Object requestEntity) throws ClientErrorException {
+        WebTarget resource = client.target(BASE_URI).path("PlantillaSolicitudCotizacionSRV");
+        resource = resource.path("GenerarSolicitudCotizacion");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
+    }
 
     ////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////// SERVICIO ////////////////////////////////

@@ -3,9 +3,13 @@ package com.sge.modulos.ventas.formularios;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.sge.base.formularios.frameBase;
+import com.sge.modulos.ventas.clases.ItemPlantillaSolicitudCotizacion;
+import com.sge.modulos.ventas.clases.ItemSolicitudCotizacion;
 import com.sge.modulos.ventas.clases.PlantillaSolicitudCotizacion;
+import com.sge.modulos.ventas.clases.SolicitudCotizacion;
 import com.sge.modulos.ventas.cliente.cliVentas;
 import java.awt.event.ActionEvent;
+import java.util.Date;
 import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -129,6 +133,74 @@ public class lisPlantillaSC extends frameBase<PlantillaSolicitudCotizacion> {
         }
     }
 
+    public class swGenerarSolicitudCotizacion extends SwingWorker<Object, Object> {
+
+        @Override
+        protected Object doInBackground() {
+            VerCargando(frame);
+            cliVentas cliVentas = new cliVentas();
+            try {
+                int idPlantilla = ObtenerValorCelda(tbPlantillas, 1);
+                String json = cliVentas.GenerarSolicitudCotizacion(new Gson().toJson(new int[]{idPlantilla, getUsuario().getIdUsuario()}));
+                String[] resultado = new Gson().fromJson(json, String[].class);
+
+                if (resultado[0].equals("true")) {
+                    Date fechaServidor = new Gson().fromJson(resultado[1], Date.class);
+                    PlantillaSolicitudCotizacion plantilla = new Gson().fromJson(resultado[2], PlantillaSolicitudCotizacion.class);
+                    SolicitudCotizacion solicitud = null;
+                    if (resultado[4].isEmpty()) {
+                        solicitud = new SolicitudCotizacion();
+                    } else {
+                        solicitud = new Gson().fromJson(resultado[4], SolicitudCotizacion.class);
+                    }
+                    solicitud.setDescripcion(plantilla.getNombre());
+                    solicitud.setFechaCreacion(fechaServidor);
+                    solicitud.setGrupo(String.valueOf(new Gson().fromJson(resultado[3], int.class)));
+                    solicitud.setLineaProduccion(plantilla.getLineaProduccion());
+
+                    for (ItemPlantillaSolicitudCotizacion itemPlantilla : plantilla.getItems()) {
+                        ItemSolicitudCotizacion itemSolicitud = new ItemSolicitudCotizacion();
+                        itemSolicitud.setNombre(itemPlantilla.getNombre());
+                        itemSolicitud.setServicioImpresion(itemPlantilla.isServicioImpresion());
+                        itemSolicitud.setIdServicioImpresion(itemPlantilla.getIdServicioImpresion());
+                        itemSolicitud.setNombreServicioImpresion(itemPlantilla.getNombreServicioImpresion());
+                        itemSolicitud.setMaterial(itemPlantilla.isMaterial());
+                        itemSolicitud.setIdMaterial(itemPlantilla.getIdMaterial());
+                        itemSolicitud.setNombreMaterial(itemPlantilla.getNombreMaterial());
+                        itemSolicitud.setTipoUnidad(itemPlantilla.isTipoUnidad());
+                        itemSolicitud.setNombreTipoUnidad(itemPlantilla.getNombreTipoUnidad());
+                        itemSolicitud.setMedidaAbierta(itemPlantilla.isMedidaAbierta());
+                        itemSolicitud.setUnidadMedidaAbierta(itemPlantilla.getUnidadMedidaAbierta());
+                        itemSolicitud.setMedidaCerrada(itemPlantilla.isMedidaCerrada());
+                        itemSolicitud.setTiraRetira(itemPlantilla.isTiraRetira());
+                        itemSolicitud.setGrafico(itemPlantilla.isGrafico());
+                        itemSolicitud.setFondo(itemPlantilla.isFondo());
+                        solicitud.getItems().add(itemSolicitud);
+                    }
+
+                    regSolicitudCotizacion regSolicitudCotizacion = new regSolicitudCotizacion();
+                    regSolicitudCotizacion.setUsuario(getUsuario());
+                    regSolicitudCotizacion.setEntidad(solicitud);
+                    regSolicitudCotizacion.AsignarControles();
+                    getParent().add(regSolicitudCotizacion);
+                    regSolicitudCotizacion.setVisible(true);
+                }
+            } catch (Exception e) {
+                OcultarCargando(frame);
+                cancel(false);
+                ControlarExcepcion(e);
+            } finally {
+                cliVentas.close();
+            }
+            return null;
+        }
+
+        @Override
+        protected void done() {
+            OcultarCargando(frame);
+        }
+    }
+    
     public void Init(int modo) {
         this.modo = modo;
         switch (this.modo) {
@@ -181,6 +253,7 @@ public class lisPlantillaSC extends frameBase<PlantillaSolicitudCotizacion> {
         lblFiltro = new javax.swing.JLabel();
         txtFiltro = new javax.swing.JTextField();
         btnRefrescar = new javax.swing.JButton();
+        btnGenerarSolicitudCotizacion = new javax.swing.JButton();
 
         setClosable(true);
 
@@ -282,6 +355,14 @@ public class lisPlantillaSC extends frameBase<PlantillaSolicitudCotizacion> {
             }
         });
 
+        btnGenerarSolicitudCotizacion.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sge/base/imagenes/generar-cotizacion-16.png"))); // NOI18N
+        btnGenerarSolicitudCotizacion.setToolTipText("GENERAR SOLICITUD COTIZACION");
+        btnGenerarSolicitudCotizacion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGenerarSolicitudCotizacionActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout frameLayout = new javax.swing.GroupLayout(frame);
         frame.setLayout(frameLayout);
         frameLayout.setHorizontalGroup(
@@ -300,6 +381,8 @@ public class lisPlantillaSC extends frameBase<PlantillaSolicitudCotizacion> {
                         .addComponent(txtFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnRefrescar, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnGenerarSolicitudCotizacion, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -312,9 +395,10 @@ public class lisPlantillaSC extends frameBase<PlantillaSolicitudCotizacion> {
                     .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(lblFiltro)
                         .addComponent(txtFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(btnRefrescar, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnRefrescar, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnGenerarSolicitudCotizacion, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 283, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 286, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnSeleccionar)
                 .addGap(9, 9, 9))
@@ -368,8 +452,14 @@ public class lisPlantillaSC extends frameBase<PlantillaSolicitudCotizacion> {
         new swObtenerPlantillasSC().execute();
     }//GEN-LAST:event_btnRefrescarActionPerformed
 
+    private void btnGenerarSolicitudCotizacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarSolicitudCotizacionActionPerformed
+        // TODO add your handling code here:
+        new swGenerarSolicitudCotizacion().execute();
+    }//GEN-LAST:event_btnGenerarSolicitudCotizacionActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnGenerarSolicitudCotizacion;
     private javax.swing.JButton btnNuevo;
     private javax.swing.JButton btnRefrescar;
     private javax.swing.JButton btnSeleccionar;
