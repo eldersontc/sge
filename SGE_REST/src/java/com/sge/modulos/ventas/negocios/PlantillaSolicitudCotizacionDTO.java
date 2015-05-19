@@ -13,115 +13,129 @@ import java.util.List;
  */
 public class PlantillaSolicitudCotizacionDTO {
  
-    PlantillaSolicitudCotizacionDAO plantillaSolicitudCotizacionDAO;
-    ItemPlantillaSolicitudCotizacionDAO itemPlantillaSolicitudCotizacionDAO;
+    PlantillaSolicitudCotizacionDAO plantillaDAO;
+    ItemPlantillaSolicitudCotizacionDAO itemPlantillaDAO;
     
     public List<Object[]> ObtenerPlantillasSolicitudCotizacion(String filtro) {
         List<Object[]> lista;
         try {
-            plantillaSolicitudCotizacionDAO = new PlantillaSolicitudCotizacionDAO();
-            plantillaSolicitudCotizacionDAO.AbrirSesion();
-            lista = plantillaSolicitudCotizacionDAO.ObtenerPlantillasSolicitudCotizacion(filtro);
+            plantillaDAO = new PlantillaSolicitudCotizacionDAO();
+            plantillaDAO.AbrirSesion();
+            lista = plantillaDAO.ObtenerPlantillasSolicitudCotizacion(filtro);
         } catch (Exception e) {
             throw e;
         } finally {
-            plantillaSolicitudCotizacionDAO.CerrarSesion();
+            plantillaDAO.CerrarSesion();
         }
         return lista;
     }
 
-    public PlantillaSolicitudCotizacion ObtenerPlantillaSolicitudCotizacion(int idPlantillaSolicitudCotizacion) {
-        PlantillaSolicitudCotizacion plantillaSolicitudCotizacion = null;
+    public PlantillaSolicitudCotizacion ObtenerPlantillaSolicitudCotizacion(int idPlantilla) {
+        PlantillaSolicitudCotizacion plantilla = null;
         try {
-            plantillaSolicitudCotizacionDAO = new PlantillaSolicitudCotizacionDAO();
-            plantillaSolicitudCotizacionDAO.AbrirSesion();
-            plantillaSolicitudCotizacion = plantillaSolicitudCotizacionDAO.ObtenerPorId(PlantillaSolicitudCotizacion.class, idPlantillaSolicitudCotizacion);
+            plantillaDAO = new PlantillaSolicitudCotizacionDAO();
+            plantillaDAO.AbrirSesion();
+            plantilla = plantillaDAO.ObtenerPorId(PlantillaSolicitudCotizacion.class, idPlantilla);
             
-            itemPlantillaSolicitudCotizacionDAO = new ItemPlantillaSolicitudCotizacionDAO();
-            itemPlantillaSolicitudCotizacionDAO.AsignarSesion(plantillaSolicitudCotizacionDAO);
+            itemPlantillaDAO = new ItemPlantillaSolicitudCotizacionDAO();
+            itemPlantillaDAO.AsignarSesion(plantillaDAO);
             List<Object[]> filtros = new ArrayList<>();
-            filtros.add(new Object[]{"idPlantillaSolicitudCotizacion", idPlantillaSolicitudCotizacion});
-            List<ItemPlantillaSolicitudCotizacion> items = itemPlantillaSolicitudCotizacionDAO.ObtenerLista(ItemPlantillaSolicitudCotizacion.class, filtros);
-            plantillaSolicitudCotizacion.setItems(items);
+            filtros.add(new Object[]{"idPlantillaSolicitudCotizacion", idPlantilla});
+            List<ItemPlantillaSolicitudCotizacion> items = itemPlantillaDAO.ObtenerLista(ItemPlantillaSolicitudCotizacion.class, filtros);
+            plantilla.setItems(items);
         } catch (Exception e) {
             throw e;
         } finally {
-            plantillaSolicitudCotizacionDAO.CerrarSesion();
+            plantillaDAO.CerrarSesion();
         }
-        return plantillaSolicitudCotizacion;
+        return plantilla;
     }
 
-    public boolean RegistrarPlantillaSolicitudCotizacion(PlantillaSolicitudCotizacion plantillaSolicitudCotizacion) {
+    public boolean RegistrarPlantillaSolicitudCotizacion(PlantillaSolicitudCotizacion plantilla) {
         try {
-            plantillaSolicitudCotizacionDAO = new PlantillaSolicitudCotizacionDAO();
-            plantillaSolicitudCotizacionDAO.IniciarTransaccion();
-            plantillaSolicitudCotizacionDAO.Agregar(plantillaSolicitudCotizacion);
+            plantillaDAO = new PlantillaSolicitudCotizacionDAO();
+            plantillaDAO.IniciarTransaccion();
+            plantillaDAO.Agregar(plantilla);
 
-            itemPlantillaSolicitudCotizacionDAO = new ItemPlantillaSolicitudCotizacionDAO();
-            itemPlantillaSolicitudCotizacionDAO.AsignarSesion(plantillaSolicitudCotizacionDAO);
-            for (ItemPlantillaSolicitudCotizacion item : plantillaSolicitudCotizacion.getItems()) {
-                item.setIdPlantillaSolicitudCotizacion(plantillaSolicitudCotizacion.getIdPlantillaSolicitudCotizacion());
-                itemPlantillaSolicitudCotizacionDAO.Agregar(item);
+            itemPlantillaDAO = new ItemPlantillaSolicitudCotizacionDAO();
+            itemPlantillaDAO.AsignarSesion(plantillaDAO);
+            for (ItemPlantillaSolicitudCotizacion item : plantilla.getItems()) {
+                item.setIdPlantillaSolicitudCotizacion(plantilla.getIdPlantillaSolicitudCotizacion());
+                itemPlantillaDAO.Agregar(item);
             }
 
-            plantillaSolicitudCotizacionDAO.ConfirmarTransaccion();
+            plantillaDAO.ConfirmarTransaccion();
         } catch (Exception e) {
-            plantillaSolicitudCotizacionDAO.AbortarTransaccion();
+            plantillaDAO.AbortarTransaccion();
             throw e;
         } finally {
-            plantillaSolicitudCotizacionDAO.CerrarSesion();
+            plantillaDAO.CerrarSesion();
         }
         return true;
     }
 
-    public boolean ActualizarPlantillaSolicitudCotizacion(PlantillaSolicitudCotizacion plantillaSolicitudCotizacion) {
+    public boolean ActualizarPlantillaSolicitudCotizacion(PlantillaSolicitudCotizacion plantilla) {
         try {
-            plantillaSolicitudCotizacionDAO = new PlantillaSolicitudCotizacionDAO();
-            plantillaSolicitudCotizacionDAO.IniciarTransaccion();
-            plantillaSolicitudCotizacionDAO.ActualizarPlantillaSolicitudCotizacion(plantillaSolicitudCotizacion.getIdPlantillaSolicitudCotizacion(), plantillaSolicitudCotizacion.getNombre(), plantillaSolicitudCotizacion.getLineaProduccion(), plantillaSolicitudCotizacion.isActivo());
+            plantillaDAO = new PlantillaSolicitudCotizacionDAO();
+            plantillaDAO.IniciarTransaccion();
+            plantillaDAO.ActualizarPlantillaSolicitudCotizacion(plantilla.getIdPlantillaSolicitudCotizacion(), plantilla.getNombre(), plantilla.getLineaProduccion(), plantilla.isActivo());
 
-            itemPlantillaSolicitudCotizacionDAO = new ItemPlantillaSolicitudCotizacionDAO();
-            itemPlantillaSolicitudCotizacionDAO.AsignarSesion(plantillaSolicitudCotizacionDAO);
-            for (ItemPlantillaSolicitudCotizacion item : plantillaSolicitudCotizacion.getItems()) {
+            itemPlantillaDAO = new ItemPlantillaSolicitudCotizacionDAO();
+            itemPlantillaDAO.AsignarSesion(plantillaDAO);
+            for (ItemPlantillaSolicitudCotizacion item : plantilla.getItems()) {
                 if(item.isAgregar()){
-                    item.setIdPlantillaSolicitudCotizacion(plantillaSolicitudCotizacion.getIdPlantillaSolicitudCotizacion());
-                    itemPlantillaSolicitudCotizacionDAO.Agregar(item);
+                    item.setIdPlantillaSolicitudCotizacion(plantilla.getIdPlantillaSolicitudCotizacion());
+                    itemPlantillaDAO.Agregar(item);
                 }
                 if(item.isActualizar()){
-                    itemPlantillaSolicitudCotizacionDAO.ActualizarItemPlantillaSolicitudCotizacion(item);
+                    itemPlantillaDAO.ActualizarItemPlantillaSolicitudCotizacion(item);
                 }
                 if(item.isEliminar()){
-                    itemPlantillaSolicitudCotizacionDAO.EliminarItemPlantillaSolicitudCotizacion(item.getIdItemPlantillaSolicitudCotizacion());
+                    itemPlantillaDAO.EliminarItemPlantillaSolicitudCotizacion(item.getIdItemPlantillaSolicitudCotizacion());
                 }
             }
 
-            plantillaSolicitudCotizacionDAO.ConfirmarTransaccion();
+            plantillaDAO.ConfirmarTransaccion();
         } catch (Exception e) {
-            plantillaSolicitudCotizacionDAO.AbortarTransaccion();
+            plantillaDAO.AbortarTransaccion();
             throw e;
         } finally {
-            plantillaSolicitudCotizacionDAO.CerrarSesion();
+            plantillaDAO.CerrarSesion();
         }
         return true;
     }
 
-    public boolean EliminarPlantillaSolicitudCotizacion(int idPlantillaSolicitudCotizacion) {
+    public boolean EliminarPlantillaSolicitudCotizacion(int idPlantilla) {
         try {
-            plantillaSolicitudCotizacionDAO = new PlantillaSolicitudCotizacionDAO();
-            plantillaSolicitudCotizacionDAO.IniciarTransaccion();
-            plantillaSolicitudCotizacionDAO.EliminarPlantillaSolicitudCotizacion(idPlantillaSolicitudCotizacion);
+            plantillaDAO = new PlantillaSolicitudCotizacionDAO();
+            plantillaDAO.IniciarTransaccion();
+            plantillaDAO.EliminarPlantillaSolicitudCotizacion(idPlantilla);
 
-            itemPlantillaSolicitudCotizacionDAO = new ItemPlantillaSolicitudCotizacionDAO();
-            itemPlantillaSolicitudCotizacionDAO.AsignarSesion(plantillaSolicitudCotizacionDAO);
-            itemPlantillaSolicitudCotizacionDAO.EliminarItemPlantillaSolicitudCotizacionPorIdPlantillaSolicitudCotizacion(idPlantillaSolicitudCotizacion);
+            itemPlantillaDAO = new ItemPlantillaSolicitudCotizacionDAO();
+            itemPlantillaDAO.AsignarSesion(plantillaDAO);
+            itemPlantillaDAO.EliminarItemPlantillaSolicitudCotizacionPorIdPlantillaSolicitudCotizacion(idPlantilla);
 
-            plantillaSolicitudCotizacionDAO.ConfirmarTransaccion();
+            plantillaDAO.ConfirmarTransaccion();
         } catch (Exception e) {
-            plantillaSolicitudCotizacionDAO.AbortarTransaccion();
+            plantillaDAO.AbortarTransaccion();
             throw e;
         } finally {
-            plantillaSolicitudCotizacionDAO.CerrarSesion();
+            plantillaDAO.CerrarSesion();
         }
         return true;
+    }
+    
+    public int ObtenerGrupo() {
+        int grupo = 0;
+        try {
+            plantillaDAO = new PlantillaSolicitudCotizacionDAO();
+            plantillaDAO.AbrirSesion();
+            grupo = plantillaDAO.ObtenerGrupo();
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            plantillaDAO.CerrarSesion();
+        }
+        return grupo;
     }
 }

@@ -1,9 +1,14 @@
 package com.sge.modulos.ventas.servicios;
 
 import com.google.gson.Gson;
+import com.sge.modulos.administracion.entidades.ValorDefinido;
+import com.sge.modulos.administracion.negocios.ValorDefinidoDTO;
 import com.sge.modulos.ventas.entidades.PlantillaSolicitudCotizacion;
+import com.sge.modulos.ventas.entidades.SolicitudCotizacion;
 import com.sge.modulos.ventas.negocios.PlantillaSolicitudCotizacionDTO;
+import com.sge.modulos.ventas.negocios.SolicitudCotizacionDTO;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
@@ -114,6 +119,32 @@ public class PlantillaSolicitudCotizacionSRV {
             PlantillaSolicitudCotizacionDTO PlantillaSolicitudCotizacionDTO = new PlantillaSolicitudCotizacionDTO();
             PlantillaSolicitudCotizacionDTO.EliminarPlantillaSolicitudCotizacion(idPlantillaSolicitudCotizacion);
             resultado.add(new Gson().toJson(true));
+        } catch (Exception e) {
+            resultado.clear();
+            resultado.add(new Gson().toJson(false));
+            resultado.add(new Gson().toJson(e));
+        }
+        return new Gson().toJson(resultado);
+    }
+    
+    @POST
+    @Path("GenerarSolicitudCotizacion")
+    @Consumes("application/json")
+    @Produces("application/json")
+    public String GenerarSolicitudCotizacion(String json) {
+        List<String> resultado = new ArrayList<>();
+        int[] ids = new Gson().fromJson(json, int[].class);
+        try {
+            PlantillaSolicitudCotizacionDTO plantillaSDTO = new PlantillaSolicitudCotizacionDTO();
+            PlantillaSolicitudCotizacion plantilla = plantillaSDTO.ObtenerPlantillaSolicitudCotizacion(ids[0]);
+            int grupo = plantillaSDTO.ObtenerGrupo();
+            ValorDefinidoDTO valorDefinidoDTO = new ValorDefinidoDTO();
+            ValorDefinido valorDefinido = valorDefinidoDTO.ObtenerValorDefinidoPorUsuarioYEntidad(ids[1], 3);
+            resultado.add(new Gson().toJson(true));
+            resultado.add(new Gson().toJson(new Date()));
+            resultado.add(new Gson().toJson(plantilla));
+            resultado.add(new Gson().toJson(grupo));
+            resultado.add(valorDefinido == null ? "" : valorDefinido.getJson());
         } catch (Exception e) {
             resultado.clear();
             resultado.add(new Gson().toJson(false));

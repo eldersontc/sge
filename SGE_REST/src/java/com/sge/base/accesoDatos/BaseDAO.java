@@ -143,6 +143,10 @@ public class BaseDAO {
         return (T) sesion.get(clase, id);
     }
 
+    public <T> T ObtenerValor(String sql) {
+        return (T)sesion.createSQLQuery(sql).uniqueResult();
+    }
+    
     public List<Object[]> ObtenerLista(String sql) {
         return sesion.createSQLQuery(sql).list();
     }
