@@ -18,8 +18,8 @@ public class CotizacionDTO {
     ItemCotizacionDAO itemCotizacionDAO;
     SolicitudCotizacionDAO solicitudCotizacionDAO;
     
-    public List<Object[]> ObtenerCotizaciones(String filtro) {
-        List<Object[]> lista;
+    public List<Cotizacion> ObtenerCotizaciones(String filtro) {
+        List<Cotizacion> lista;
         try {
             cotizacionDAO = new CotizacionDAO();
             cotizacionDAO.AbrirSesion();
@@ -80,6 +80,7 @@ public class CotizacionDTO {
         try {
             cotizacionDAO = new CotizacionDAO();
             cotizacionDAO.IniciarTransaccion();
+            cotizacion.setEstado("PENDIENTE DE APROBACIÓN");
             cotizacionDAO.Agregar(cotizacion);
 
             itemCotizacionDAO = new ItemCotizacionDAO();
@@ -154,6 +155,36 @@ public class CotizacionDTO {
             itemCotizacionDAO.AsignarSesion(cotizacionDAO);
             itemCotizacionDAO.EliminarItemCotizacionPorIdCotizacion(idCotizacion);
 
+            cotizacionDAO.ConfirmarTransaccion();
+        } catch (Exception e) {
+            cotizacionDAO.AbortarTransaccion();
+            throw e;
+        } finally {
+            cotizacionDAO.CerrarSesion();
+        }
+        return true;
+    }
+    
+    public boolean AprobarCotizacion(int idCotizacion) {
+        try {
+            cotizacionDAO = new CotizacionDAO();
+            cotizacionDAO.IniciarTransaccion();
+            cotizacionDAO.ActualizarEstadoCotizacion(idCotizacion, "APROBADO");
+            cotizacionDAO.ConfirmarTransaccion();
+        } catch (Exception e) {
+            cotizacionDAO.AbortarTransaccion();
+            throw e;
+        } finally {
+            cotizacionDAO.CerrarSesion();
+        }
+        return true;
+    }
+    
+    public boolean DesaprobarCotizacion(int idCotizacion) {
+        try {
+            cotizacionDAO = new CotizacionDAO();
+            cotizacionDAO.IniciarTransaccion();
+            cotizacionDAO.ActualizarEstadoCotizacion(idCotizacion, "PENDIENTE DE APROBACIÓN");
             cotizacionDAO.ConfirmarTransaccion();
         } catch (Exception e) {
             cotizacionDAO.AbortarTransaccion();

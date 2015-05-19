@@ -1,6 +1,7 @@
 package com.sge.modulos.ventas.accesoDatos;
 
 import com.sge.base.accesoDatos.BaseDAO;
+import com.sge.modulos.ventas.entidades.Presupuesto;
 import java.util.List;
 
 /**
@@ -9,12 +10,12 @@ import java.util.List;
  */
 public class PresupuestoDAO extends BaseDAO {
 
-    public List<Object[]> ObtenerPresupuestos(String filtro) {
+    public List<Presupuesto> ObtenerPresupuestos(String filtro) {
         String sql = "SELECT \n"
-                + "Presupuesto.idPresupuesto, Presupuesto.numero, Presupuesto.fechaCreacion, Presupuesto.razonSocialCliente, Presupuesto.total \n"
+                + "Presupuesto.* \n"
                 + "FROM \n"
                 + "Ventas.Presupuesto " + filtro;
-        return super.ObtenerLista(sql);
+        return super.ObtenerLista(sql, Presupuesto.class);
     }
 
     public int ActualizarPresupuesto(int idPresupuesto, int idCliente, String razonSocialCliente, int idMoneda, String simboloMoneda, String numeroOrdenCompra, String instrucciones, double total) {
@@ -24,6 +25,11 @@ public class PresupuestoDAO extends BaseDAO {
 
     public int EliminarPresupuesto(int idPresupuesto) {
         String sql = "DELETE FROM Ventas.Presupuesto WHERE idPresupuesto = " + idPresupuesto;
+        return super.Ejecutar(sql);
+    }
+    
+    public int ActualizarEstadoPresupuesto(int idPresupuesto, String estado) {
+        String sql = String.format("UPDATE Ventas.Presupuesto SET estado = '%s' WHERE idPresupuesto = %d", estado, idPresupuesto);
         return super.Ejecutar(sql);
     }
 }

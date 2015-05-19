@@ -10,13 +10,12 @@ import java.util.List;
  */
 public class CotizacionDAO extends BaseDAO {
     
-    public List<Object[]> ObtenerCotizaciones(String filtro) {
+    public List<Cotizacion> ObtenerCotizaciones(String filtro) {
         String sql = "SELECT \n"
-                + "Cotizacion.idCotizacion, Cotizacion.numero, Cotizacion.descripcion, Cotizacion.fechaCreacion, \n"
-                + "Cotizacion.razonSocialCliente, Cotizacion.nombreCotizador, Cotizacion.nombreVendedor, Cotizacion.simboloMoneda, Cotizacion.total \n"
+                + "Cotizacion.* \n"
                 + "FROM \n"
                 + "Ventas.Cotizacion " + filtro;
-        return super.ObtenerLista(sql);
+        return super.ObtenerLista(sql, Cotizacion.class);
     }
 
     public List<Cotizacion> ObtenerCotizacionesPorPresupuesto(int idPresupuesto) {
@@ -48,6 +47,16 @@ public class CotizacionDAO extends BaseDAO {
 
     public int EliminarCotizacion(int idCotizacion) {
         String sql = "DELETE FROM Ventas.Cotizacion WHERE idCotizacion = " + idCotizacion;
+        return super.Ejecutar(sql);
+    }
+    
+    public int ActualizarEstadoCotizacion(int idCotizacion, String estado) {
+        String sql = String.format("UPDATE Ventas.Cotizacion SET estado = '%s' WHERE idCotizacion = %d", estado, idCotizacion);
+        return super.Ejecutar(sql);
+    }
+    
+    public int ActualizarIdYNumeroPresupuesto(int idCotizacion, int idPresupuesto, String numeroPresupuesto) {
+        String sql = String.format("UPDATE Ventas.Cotizacion SET idPresupuesto = %d, numeroPresupuesto = '%s' WHERE idCotizacion = %d", idPresupuesto, numeroPresupuesto, idCotizacion);
         return super.Ejecutar(sql);
     }
 }

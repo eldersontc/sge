@@ -38,7 +38,7 @@ public class CotizacionSRV {
         try {
             String filtro = new Gson().fromJson(json, String.class);
             CotizacionDTO CotizacionDTO = new CotizacionDTO();
-            List<Object[]> lista = CotizacionDTO.ObtenerCotizaciones(filtro);
+            List<Cotizacion> lista = CotizacionDTO.ObtenerCotizaciones(filtro);
             resultado.add(new Gson().toJson(true));
             resultado.add(new Gson().toJson(lista));
         } catch (Exception e) {
@@ -117,6 +117,44 @@ public class CotizacionSRV {
         try {
             CotizacionDTO CotizacionDTO = new CotizacionDTO();
             CotizacionDTO.EliminarCotizacion(idCotizacion);
+            resultado.add(new Gson().toJson(true));
+        } catch (Exception e) {
+            resultado.clear();
+            resultado.add(new Gson().toJson(false));
+            resultado.add(new Gson().toJson(e));
+        }
+        return new Gson().toJson(resultado);
+    }
+    
+    @POST
+    @Path("AprobarCotizacion")
+    @Consumes("application/json")
+    @Produces("application/json")
+    public String AprobarCotizacion(String json) {
+        List<String> resultado = new ArrayList<>();
+        int idCotizacion = new Gson().fromJson(json, int.class);
+        try {
+            CotizacionDTO CotizacionDTO = new CotizacionDTO();
+            CotizacionDTO.AprobarCotizacion(idCotizacion);
+            resultado.add(new Gson().toJson(true));
+        } catch (Exception e) {
+            resultado.clear();
+            resultado.add(new Gson().toJson(false));
+            resultado.add(new Gson().toJson(e));
+        }
+        return new Gson().toJson(resultado);
+    }
+    
+    @POST
+    @Path("DesaprobarCotizacion")
+    @Consumes("application/json")
+    @Produces("application/json")
+    public String DesaprobarCotizacion(String json) {
+        List<String> resultado = new ArrayList<>();
+        int idCotizacion = new Gson().fromJson(json, int.class);
+        try {
+            CotizacionDTO CotizacionDTO = new CotizacionDTO();
+            CotizacionDTO.DesaprobarCotizacion(idCotizacion);
             resultado.add(new Gson().toJson(true));
         } catch (Exception e) {
             resultado.clear();

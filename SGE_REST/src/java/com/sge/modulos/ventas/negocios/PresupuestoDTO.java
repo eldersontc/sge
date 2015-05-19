@@ -1,5 +1,6 @@
 package com.sge.modulos.ventas.negocios;
 
+import com.sge.modulos.ventas.accesoDatos.CotizacionDAO;
 import com.sge.modulos.ventas.accesoDatos.ItemPresupuestoDAO;
 import com.sge.modulos.ventas.accesoDatos.PresupuestoDAO;
 import com.sge.modulos.ventas.entidades.ItemPresupuesto;
@@ -15,9 +16,10 @@ public class PresupuestoDTO {
 
     PresupuestoDAO presupuestoDAO;
     ItemPresupuestoDAO itemPresupuestoDAO;
+    CotizacionDAO cotizacionDAO;
 
-    public List<Object[]> ObtenerPresupuestos(String filtro) {
-        List<Object[]> lista;
+    public List<Presupuesto> ObtenerPresupuestos(String filtro) {
+        List<Presupuesto> lista;
         try {
             presupuestoDAO = new PresupuestoDAO();
             presupuestoDAO.AbrirSesion();
@@ -55,13 +57,20 @@ public class PresupuestoDTO {
         try {
             presupuestoDAO = new PresupuestoDAO();
             presupuestoDAO.IniciarTransaccion();
+            presupuesto.setEstado("PENDIENTE DE APROBACIÓN");
             presupuestoDAO.Agregar(presupuesto);
 
             itemPresupuestoDAO = new ItemPresupuestoDAO();
             itemPresupuestoDAO.AsignarSesion(presupuestoDAO);
+            
+            cotizacionDAO = new CotizacionDAO();
+            cotizacionDAO.AsignarSesion(presupuestoDAO);
+            
             for (ItemPresupuesto item : presupuesto.getItems()) {
                 item.setIdPresupuesto(presupuesto.getIdPresupuesto());
                 itemPresupuestoDAO.Agregar(item);
+                cotizacionDAO.ActualizarIdYNumeroPresupuesto(item.getIdCotizacion(), presupuesto.getIdPresupuesto(), presupuesto.getNumero());
+                cotizacionDAO.ActualizarEstadoCotizacion(item.getIdCotizacion(), "PRESUPUESTO GENERADO");
             }
 
             presupuestoDAO.ConfirmarTransaccion();
@@ -82,15 +91,23 @@ public class PresupuestoDTO {
 
             itemPresupuestoDAO = new ItemPresupuestoDAO();
             itemPresupuestoDAO.AsignarSesion(presupuestoDAO);
+            
+            cotizacionDAO = new CotizacionDAO();
+            cotizacionDAO.AsignarSesion(presupuestoDAO);
+            
             for (ItemPresupuesto item : presupuesto.getItems()) {
                 if (item.isAgregar()) {
                     item.setIdPresupuesto(presupuesto.getIdPresupuesto());
                     itemPresupuestoDAO.Agregar(item);
+                    cotizacionDAO.ActualizarIdYNumeroPresupuesto(item.getIdCotizacion(), presupuesto.getIdPresupuesto(), presupuesto.getNumero());
+                    cotizacionDAO.ActualizarEstadoCotizacion(item.getIdCotizacion(), "PRESUPUESTO GENERADO");
                 }
                 if (item.isActualizar()) {
-                    itemPresupuestoDAO.ActualizarItemPresupuesto(item.getIdPresupuesto(), item.getRecargo(), item.getTotal());
+                    itemPresupuestoDAO.ActualizarItemPresupuesto(item.getIdItemPresupuesto(), item.getRecargo(), item.getTotal());
                 }
                 if (item.isEliminar()) {
+                    cotizacionDAO.ActualizarIdYNumeroPresupuesto(item.getIdCotizacion(), 0, "");
+                    cotizacionDAO.ActualizarEstadoCotizacion(item.getIdCotizacion(), "APROBADO");
                     itemPresupuestoDAO.EliminarItemPresupuesto(item.getIdItemPresupuesto());
                 }
             }
@@ -115,6 +132,81 @@ public class PresupuestoDTO {
             itemPresupuestoDAO.AsignarSesion(presupuestoDAO);
             itemPresupuestoDAO.EliminarItemPresupuestoPorPresupuesto(idPresupuesto);
 
+            presupuestoDAO.ConfirmarTransaccion();
+        } catch (Exception e) {
+            presupuestoDAO.AbortarTransaccion();
+            throw e;
+        } finally {
+            presupuestoDAO.CerrarSesion();
+        }
+        return true;
+    }
+    
+    public boolean AprobarPresupuesto(int idPresupuesto) {
+        try {
+            presupuestoDAO = new PresupuestoDAO();
+            presupuestoDAO.IniciarTransaccion();
+            presupuestoDAO.ActualizarEstadoPresupuesto(idPresupuesto, "APROBADO");
+            presupuestoDAO.ConfirmarTransaccion();
+        } catch (Exception e) {
+            presupuestoDAO.AbortarTransaccion();
+            throw e;
+        } finally {
+            presupuestoDAO.CerrarSesion();
+        }
+        return true;
+    }
+    
+    public boolean DesaprobarPresupuesto(int idPresupuesto) {
+        try {
+            presupuestoDAO = new PresupuestoDAO();
+            presupuestoDAO.IniciarTransaccion();
+            presupuestoDAO.ActualizarEstadoPresupuesto(idPresupuesto, "PENDIENTE DE APROBACIÓN");
+            presupuestoDAO.ConfirmarTransaccion();
+        } catch (Exception e) {
+            presupuestoDAO.AbortarTransaccion();
+            throw e;
+        } finally {
+            presupuestoDAO.CerrarSesion();
+        }
+        return true;
+    }
+    
+    public boolean EnviarPresupuesto(int idPresupuesto) {
+        try {
+            presupuestoDAO = new PresupuestoDAO();
+            presupuestoDAO.IniciarTransaccion();
+            presupuestoDAO.ActualizarEstadoPresupuesto(idPresupuesto, "ENVIADO AL CLIENTE");
+            presupuestoDAO.ConfirmarTransaccion();
+        } catch (Exception e) {
+            presupuestoDAO.AbortarTransaccion();
+            throw e;
+        } finally {
+            presupuestoDAO.CerrarSesion();
+        }
+        return true;
+    }
+    
+    public boolean AceptarPresupuesto(int idPresupuesto) {
+        try {
+            presupuestoDAO = new PresupuestoDAO();
+            presupuestoDAO.IniciarTransaccion();
+            presupuestoDAO.ActualizarEstadoPresupuesto(idPresupuesto, "ACEPTADO");
+            presupuestoDAO.ConfirmarTransaccion();
+        } catch (Exception e) {
+            presupuestoDAO.AbortarTransaccion();
+            throw e;
+        } finally {
+            presupuestoDAO.CerrarSesion();
+        }
+        return true;
+    }
+    
+    public boolean RechazarPresupuesto(int idPresupuesto) {
+        try {
+            presupuestoDAO = new PresupuestoDAO();
+            presupuestoDAO.IniciarTransaccion();
+            presupuestoDAO.ActualizarEstadoPresupuesto(idPresupuesto, "RECHAZADO");
             presupuestoDAO.ConfirmarTransaccion();
         } catch (Exception e) {
             presupuestoDAO.AbortarTransaccion();
