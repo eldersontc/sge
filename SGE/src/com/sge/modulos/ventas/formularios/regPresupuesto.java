@@ -21,6 +21,8 @@ import java.util.Date;
 import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
+import javax.swing.DefaultCellEditor;
+import javax.swing.JTextField;
 import javax.swing.SwingWorker;
 
 /**
@@ -44,6 +46,21 @@ public class regPresupuesto extends frameBase<Presupuesto> {
     
     int id = 0;
 
+    Action change_item = new AbstractAction() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            int[] celda = (int[]) e.getSource();
+            switch (celda[1]) {
+                case 5:
+                    double subTotal5 = ObtenerValorCelda(tbItems, celda[0], 4);
+                    double recargo5 = ObtenerValorCelda(tbItems, celda[0], celda[1]);
+                    AsignarValorCelda(tbItems, subTotal5 + recargo5, celda[0], 6);
+                    CalcularTotal();
+                    break;
+            }
+        }
+    };
+    
     Action sele_clie = new AbstractAction() {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -72,6 +89,7 @@ public class regPresupuesto extends frameBase<Presupuesto> {
             Moneda seleccionado = ((lisMoneda) evt.getSource()).getSeleccionado();
             if (!(seleccionado == null)) {
                 schMoneda.asingValues(seleccionado.getIdMoneda(), seleccionado.getSimbolo());
+                getEntidad().setSimboloMoneda(seleccionado.getSimbolo());
             }
         }
     };
@@ -81,8 +99,9 @@ public class regPresupuesto extends frameBase<Presupuesto> {
         public void actionPerformed(ActionEvent evt) {
             List<Cotizacion> seleccionados = ((lisCotizacion) evt.getSource()).getSeleccionados();
             for (Cotizacion seleccionado : seleccionados) {
-                AgregarFila(tbItems, new Object[]{0, seleccionado.getIdCotizacion(), seleccionado.getNumero(), seleccionado.getDescripcion(), seleccionado.getTotal(), 0, seleccionado.getTotal()});
+                AgregarFila(tbItems, new Object[]{0, seleccionado.getIdCotizacion(), seleccionado.getNumero(), seleccionado.getDescripcion(), seleccionado.getTotal(), 0.0, seleccionado.getTotal()});
             }
+            AgregarEventoChange(tbItems, change_item);
             CalcularTotal();
         }
     };
@@ -130,6 +149,7 @@ public class regPresupuesto extends frameBase<Presupuesto> {
         for (ItemPresupuesto item : getEntidad().getItems()) {
             AgregarFila(tbItems, new Object[]{item.getIdItemPresupuesto(), item.getIdCotizacion(), item.getNumeroCotizacion(), item.getDescripcionCotizacion(), item.getTotalCotizacion(), item.getRecargo(), item.getTotal()});
         }
+        AgregarEventoChange(tbItems, change_item);
         getEntidad().getItems().clear();
         NumberFormat formato = new DecimalFormat("#0.00");
         txtTotal.setText(getEntidad().getSimboloMoneda() + formato.format(getEntidad().getTotal()));
@@ -295,11 +315,24 @@ public class regPresupuesto extends frameBase<Presupuesto> {
         jTabbedPane1 = new javax.swing.JTabbedPane();
         tabItems = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tbItems = new javax.swing.JTable();
+        tbItems = new javax.swing.JTable(){
+            public void changeSelection(final int row, final int column, boolean toggle, boolean extend)
+            {
+                super.changeSelection(row, column, toggle, extend);
+                DefaultCellEditor cell = (DefaultCellEditor)tbItems.getCellEditor(row, column);
+                if(cell.getComponent() instanceof JTextField){
+                    tbItems.editCellAt(row, column);
+                    tbItems.transferFocus();
+                    ((JTextField)cell.getComponent()).selectAll();
+                }
+            }
+        };
         btnNuevoItem = new javax.swing.JButton();
         btnEliminarItem = new javax.swing.JButton();
         lblTotal = new javax.swing.JLabel();
         txtTotal = new javax.swing.JTextField();
+
+        setClosable(true);
 
         frame.setBackground(java.awt.Color.white);
         frame.setBorder(null);
@@ -396,7 +429,7 @@ public class regPresupuesto extends frameBase<Presupuesto> {
                 java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class
             };
             boolean[] canEdit = new boolean [] {
-                false, true, true, true, true, true, true
+                false, true, true, true, false, true, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -410,6 +443,15 @@ public class regPresupuesto extends frameBase<Presupuesto> {
         tbItems.setRowHeight(25);
         tbItems.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane1.setViewportView(tbItems);
+        if (tbItems.getColumnModel().getColumnCount() > 0) {
+            tbItems.getColumnModel().getColumn(0).setMinWidth(0);
+            tbItems.getColumnModel().getColumn(0).setPreferredWidth(0);
+            tbItems.getColumnModel().getColumn(0).setMaxWidth(0);
+            tbItems.getColumnModel().getColumn(1).setMinWidth(0);
+            tbItems.getColumnModel().getColumn(1).setPreferredWidth(0);
+            tbItems.getColumnModel().getColumn(1).setMaxWidth(0);
+            tbItems.getColumnModel().getColumn(3).setPreferredWidth(300);
+        }
 
         btnNuevoItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sge/base/imagenes/add-16.png"))); // NOI18N
         btnNuevoItem.addActionListener(new java.awt.event.ActionListener() {
@@ -583,7 +625,8 @@ public class regPresupuesto extends frameBase<Presupuesto> {
 
     private void btnNuevoItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoItemActionPerformed
         // TODO add your handling code here:
-        VerModal(new lisCotizacion(2), sele_coti);
+        String filtro = String.format("WHERE idCliente = %d AND idMoneda = %d AND estado = 'APROBADO'", schCliente.getId(), schMoneda.getId());
+        VerModal(new lisCotizacion(2, filtro), sele_coti);
     }//GEN-LAST:event_btnNuevoItemActionPerformed
 
     private void btnEliminarItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarItemActionPerformed
@@ -593,6 +636,7 @@ public class regPresupuesto extends frameBase<Presupuesto> {
             if (idItemPresupuesto > 0) {
                 ItemPresupuesto itemPresupuesto = new ItemPresupuesto();
                 itemPresupuesto.setIdItemPresupuesto(idItemPresupuesto);
+                itemPresupuesto.setIdCotizacion(ObtenerValorCelda(tbItems, 1));
                 itemPresupuesto.setEliminar(true);
                 getEntidad().getItems().add(itemPresupuesto);
             }

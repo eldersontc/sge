@@ -355,7 +355,7 @@ public class lisPlantillaSC extends frameBase<PlantillaSolicitudCotizacion> {
             }
         });
 
-        btnGenerarSolicitudCotizacion.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sge/base/imagenes/generar-cotizacion-16.png"))); // NOI18N
+        btnGenerarSolicitudCotizacion.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sge/base/imagenes/send-file-16.png"))); // NOI18N
         btnGenerarSolicitudCotizacion.setToolTipText("GENERAR SOLICITUD COTIZACION");
         btnGenerarSolicitudCotizacion.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

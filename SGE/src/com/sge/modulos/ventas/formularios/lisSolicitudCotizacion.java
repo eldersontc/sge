@@ -494,7 +494,7 @@ public class lisSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
             }
         });
 
-        btnGenerarCotizacion.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sge/base/imagenes/generar-cotizacion-16.png"))); // NOI18N
+        btnGenerarCotizacion.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sge/base/imagenes/send-file-16.png"))); // NOI18N
         btnGenerarCotizacion.setToolTipText("GENERAR COTIZACION");
         btnGenerarCotizacion.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -502,7 +502,7 @@ public class lisSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
             }
         });
 
-        btnAprobar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sge/base/imagenes/generar-cotizacion-16.png"))); // NOI18N
+        btnAprobar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sge/base/imagenes/checkmark-16.png"))); // NOI18N
         btnAprobar.setToolTipText("APROBAR");
         btnAprobar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -510,7 +510,7 @@ public class lisSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
             }
         });
 
-        btnDesaprobar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sge/base/imagenes/generar-cotizacion-16.png"))); // NOI18N
+        btnDesaprobar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sge/base/imagenes/x-mark-16.png"))); // NOI18N
         btnDesaprobar.setToolTipText("DESAPROBAR");
         btnDesaprobar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

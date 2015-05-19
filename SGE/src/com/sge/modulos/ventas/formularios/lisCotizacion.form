@@ -49,7 +49,7 @@
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="jScrollPane1" alignment="0" pref="1118" max="32767" attributes="0"/>
+                      <Component id="jScrollPane1" alignment="0" pref="1175" max="32767" attributes="0"/>
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                           <Component id="btnSeleccionar" min="-2" pref="128" max="-2" attributes="0"/>
@@ -60,6 +60,10 @@
                           <Component id="txtFiltro" min="-2" pref="172" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="btnRefrescar" min="-2" pref="36" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="btnAprobar" min="-2" pref="36" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="btnDesaprobar" min="-2" pref="36" max="-2" attributes="0"/>
                           <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                       </Group>
                   </Group>
@@ -78,9 +82,11 @@
                           <Component id="txtFiltro" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <Component id="btnRefrescar" alignment="1" min="-2" pref="27" max="-2" attributes="0"/>
+                      <Component id="btnAprobar" alignment="1" min="-2" pref="27" max="-2" attributes="0"/>
+                      <Component id="btnDesaprobar" alignment="1" min="-2" pref="27" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="jScrollPane1" pref="231" max="32767" attributes="0"/>
+                  <Component id="jScrollPane1" pref="234" max="32767" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="btnSeleccionar" min="-2" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="9" max="-2" attributes="0"/>
@@ -99,7 +105,7 @@
             <Component class="javax.swing.JTable" name="tbCotizaciones">
               <Properties>
                 <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                  <Table columnCount="11" rowCount="0">
+                  <Table columnCount="12" rowCount="0">
                     <Column editable="true" title="CHECK" type="java.lang.Boolean"/>
                     <Column editable="false" title="ID" type="java.lang.Integer"/>
                     <Column editable="true" title="NUMERO" type="java.lang.String"/>
@@ -109,6 +115,7 @@
                     <Column editable="true" title="COTIZADOR" type="java.lang.String"/>
                     <Column editable="true" title="VENDEDOR" type="java.lang.String"/>
                     <Column editable="true" title="TOTAL" type="java.lang.Double"/>
+                    <Column editable="true" title="ESTADO" type="java.lang.String"/>
                     <Column editable="true" title="EDITAR" type="java.lang.Object"/>
                     <Column editable="true" title="ELIMINAR" type="java.lang.Object"/>
                   </Table>
@@ -170,6 +177,11 @@
                       <Editor/>
                       <Renderer/>
                     </Column>
+                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                      <Title/>
+                      <Editor/>
+                      <Renderer/>
+                    </Column>
                   </TableColumnModel>
                 </Property>
                 <Property name="rowHeight" type="int" value="25"/>
@@ -201,7 +213,7 @@
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="lblTitulo" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="771" max="32767" attributes="0"/>
+                      <EmptySpace pref="828" max="32767" attributes="0"/>
                       <Component id="btnNuevo" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
@@ -275,6 +287,28 @@
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnRefrescarActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JButton" name="btnAprobar">
+          <Properties>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/com/sge/base/imagenes/checkmark-16.png"/>
+            </Property>
+            <Property name="toolTipText" type="java.lang.String" value="APROBAR"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnAprobarActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JButton" name="btnDesaprobar">
+          <Properties>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/com/sge/base/imagenes/x-mark-16.png"/>
+            </Property>
+            <Property name="toolTipText" type="java.lang.String" value="DESAPROBAR"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnDesaprobarActionPerformed"/>
           </Events>
         </Component>
       </SubComponents>

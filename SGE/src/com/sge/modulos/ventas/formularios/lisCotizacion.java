@@ -1,7 +1,6 @@
 package com.sge.modulos.ventas.formularios;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.sge.base.formularios.frameBase;
 import com.sge.modulos.ventas.clases.Cotizacion;
 import com.sge.modulos.ventas.cliente.cliVentas;
@@ -24,10 +23,17 @@ public class lisCotizacion extends frameBase<Cotizacion> {
      */
     public lisCotizacion(int modo) {
         initComponents();
-        Init(modo);
+        Init(modo, "");
     }
 
+    public lisCotizacion(int modo, String filtro) {
+        initComponents();
+        Init(modo, filtro);
+    }
+    
     private int modo = 0;
+    
+    private String filtro = "";
 
     private Cotizacion seleccionado;
     private List<Cotizacion> seleccionados = new ArrayList<>();
@@ -57,7 +63,7 @@ public class lisCotizacion extends frameBase<Cotizacion> {
             cliVentas cliente = new cliVentas();
             String json = "";
             try {
-                json = cliente.ObtenerCotizaciones(new Gson().toJson(""));
+                json = cliente.ObtenerCotizaciones(new Gson().toJson(filtro));
             } catch (Exception e) {
                 OcultarCargando(frame);
                 cancel(false);
@@ -76,13 +82,12 @@ public class lisCotizacion extends frameBase<Cotizacion> {
 
                 if (resultado[0].equals("true")) {
                     EliminarTodasFilas(tbCotizaciones);
-                    List<Object[]> filas = (List<Object[]>) new Gson().fromJson(resultado[1], new TypeToken<List<Object[]>>() {
-                    }.getType());
-                    for (Object[] fila : filas) {
-                        AgregarFila(tbCotizaciones, new Object[]{false, ((Double) fila[0]).intValue(), fila[1], fila[2], fila[3], fila[4], fila[5], fila[6], fila[8], Icon_Edit, Icon_Dele});
+                    Cotizacion[] cotizaciones = new Gson().fromJson(resultado[1], Cotizacion[].class);
+                    for (Cotizacion cotizacion : cotizaciones) {
+                        AgregarFila(tbCotizaciones, new Object[]{false, cotizacion.getIdCotizacion(), cotizacion.getNumero(), cotizacion.getDescripcion(), cotizacion.getFechaCreacion(), cotizacion.getRazonSocialCliente(), cotizacion.getNombreCotizador(), cotizacion.getNombreVendedor(), cotizacion.getTotal(), cotizacion.getEstado(), Icon_Edit, Icon_Dele});
                     }
-                    AgregarBoton(tbCotizaciones, edit, 9);
-                    AgregarBoton(tbCotizaciones, dele, 10);
+                    AgregarBoton(tbCotizaciones, edit, 10);
+                    AgregarBoton(tbCotizaciones, dele, 11);
                     AgregarOrdenamiento(tbCotizaciones);
                 }
                 OcultarCargando(frame);
@@ -130,19 +135,94 @@ public class lisCotizacion extends frameBase<Cotizacion> {
         }
     }
 
-    public void Init(int modo) {
+    public class swAprobarCotizacion extends SwingWorker {
+
+        @Override
+        protected Object doInBackground() throws Exception {
+            VerCargando(frame);
+            cliVentas cliente = new cliVentas();
+            String json = "";
+            try {
+                int idCotizacion = ObtenerValorCelda(tbCotizaciones, 1);
+                json = cliente.AprobarCotizacion(new Gson().toJson(idCotizacion));
+            } catch (Exception e) {
+                OcultarCargando(frame);
+                cancel(false);
+                ControlarExcepcion(e);
+            } finally {
+                cliente.close();
+            }
+            return json;
+        }
+
+        @Override
+        protected void done() {
+            try {
+                String json = get().toString();
+                String[] resultado = new Gson().fromJson(json, String[].class);
+                if (resultado[0].equals("true")) {
+                    new swObtenerCotizaciones().execute();
+                } else {
+                    OcultarCargando(frame);
+                }
+            } catch (Exception e) {
+                OcultarCargando(frame);
+                ControlarExcepcion(e);
+            }
+        }
+    }
+    
+    public class swDesaprobarCotizacion extends SwingWorker {
+
+        @Override
+        protected Object doInBackground() throws Exception {
+            VerCargando(frame);
+            cliVentas cliente = new cliVentas();
+            String json = "";
+            try {
+                int idCotizacion = ObtenerValorCelda(tbCotizaciones, 1);
+                json = cliente.DesaprobarCotizacion(new Gson().toJson(idCotizacion));
+            } catch (Exception e) {
+                OcultarCargando(frame);
+                cancel(false);
+                ControlarExcepcion(e);
+            } finally {
+                cliente.close();
+            }
+            return json;
+        }
+
+        @Override
+        protected void done() {
+            try {
+                String json = get().toString();
+                String[] resultado = new Gson().fromJson(json, String[].class);
+                if (resultado[0].equals("true")) {
+                    new swObtenerCotizaciones().execute();
+                } else {
+                    OcultarCargando(frame);
+                }
+            } catch (Exception e) {
+                OcultarCargando(frame);
+                ControlarExcepcion(e);
+            }
+        }
+    }
+    
+    public void Init(int modo, String filtro) {
         this.modo = modo;
+        this.filtro = filtro;
         switch (this.modo) {
             case 0:
                 OcultarColumna(tbCotizaciones, 0);
                 OcultarControl(btnSeleccionar);
                 break;
             case 1:
-                OcultarColumnas(tbCotizaciones, new int[]{0, 9, 10});
+                OcultarColumnas(tbCotizaciones, new int[]{0, 10, 11});
                 OcultarControl(btnNuevo);
                 break;
             case 2:
-                OcultarColumnas(tbCotizaciones, new int[]{9, 10});
+                OcultarColumnas(tbCotizaciones, new int[]{10, 11});
                 OcultarControl(btnNuevo);
                 break;
         }
@@ -163,6 +243,24 @@ public class lisCotizacion extends frameBase<Cotizacion> {
         }
     }
 
+    public void AprobarCotizacion() {
+        String estado = ObtenerValorCelda(tbCotizaciones, 9);
+        if (estado.equals("PENDIENTE DE APROBACIÓN")) {
+            new swAprobarCotizacion().execute();
+        } else {
+            VerAdvertencia("NO SE PUEDE APROBAR LA COTIZACIÓN", frame);
+        }
+    }
+    
+    public void DesaprobarCotizacion() {
+        String estado = ObtenerValorCelda(tbCotizaciones, 9);
+        if (estado.equals("APROBADO")) {
+            new swDesaprobarCotizacion().execute();
+        } else {
+            VerAdvertencia("NO SE PUEDE DESAPROBAR LA COTIZACIÓN", frame);
+        }
+    }
+    
     public Cotizacion getSeleccionado() {
         return seleccionado;
     }
@@ -190,6 +288,8 @@ public class lisCotizacion extends frameBase<Cotizacion> {
         lblFiltro = new javax.swing.JLabel();
         txtFiltro = new javax.swing.JTextField();
         btnRefrescar = new javax.swing.JButton();
+        btnAprobar = new javax.swing.JButton();
+        btnDesaprobar = new javax.swing.JButton();
 
         setClosable(true);
 
@@ -201,14 +301,14 @@ public class lisCotizacion extends frameBase<Cotizacion> {
 
             },
             new String [] {
-                "CHECK", "ID", "NUMERO", "DESCRIPCION", "F. CREACION", "CLIENTE", "COTIZADOR", "VENDEDOR", "TOTAL", "EDITAR", "ELIMINAR"
+                "CHECK", "ID", "NUMERO", "DESCRIPCION", "F. CREACION", "CLIENTE", "COTIZADOR", "VENDEDOR", "TOTAL", "ESTADO", "EDITAR", "ELIMINAR"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Boolean.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Double.class, java.lang.Object.class, java.lang.Object.class
+                java.lang.Boolean.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Double.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                true, false, true, true, true, true, true, true, true, true, true
+                true, false, true, true, true, true, true, true, true, true, true, true
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -255,7 +355,7 @@ public class lisCotizacion extends frameBase<Cotizacion> {
             .addGroup(pnlTituloLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lblTitulo)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 771, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 828, Short.MAX_VALUE)
                 .addComponent(btnNuevo)
                 .addContainerGap())
         );
@@ -292,6 +392,22 @@ public class lisCotizacion extends frameBase<Cotizacion> {
             }
         });
 
+        btnAprobar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sge/base/imagenes/checkmark-16.png"))); // NOI18N
+        btnAprobar.setToolTipText("APROBAR");
+        btnAprobar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAprobarActionPerformed(evt);
+            }
+        });
+
+        btnDesaprobar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sge/base/imagenes/x-mark-16.png"))); // NOI18N
+        btnDesaprobar.setToolTipText("DESAPROBAR");
+        btnDesaprobar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDesaprobarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout frameLayout = new javax.swing.GroupLayout(frame);
         frame.setLayout(frameLayout);
         frameLayout.setHorizontalGroup(
@@ -300,7 +416,7 @@ public class lisCotizacion extends frameBase<Cotizacion> {
             .addGroup(frameLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1118, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1175, Short.MAX_VALUE)
                     .addGroup(frameLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btnSeleccionar, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -310,6 +426,10 @@ public class lisCotizacion extends frameBase<Cotizacion> {
                         .addComponent(txtFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnRefrescar, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnAprobar, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnDesaprobar, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -322,9 +442,11 @@ public class lisCotizacion extends frameBase<Cotizacion> {
                     .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(lblFiltro)
                         .addComponent(txtFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(btnRefrescar, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnRefrescar, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnAprobar, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnDesaprobar, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 231, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 234, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnSeleccionar)
                 .addGap(9, 9, 9))
@@ -393,8 +515,24 @@ public class lisCotizacion extends frameBase<Cotizacion> {
         new swObtenerCotizaciones().execute();
     }//GEN-LAST:event_btnRefrescarActionPerformed
 
+    private void btnAprobarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAprobarActionPerformed
+        // TODO add your handling code here:
+        if (FilaActiva(tbCotizaciones)) {
+            AprobarCotizacion();
+        }
+    }//GEN-LAST:event_btnAprobarActionPerformed
+
+    private void btnDesaprobarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDesaprobarActionPerformed
+        // TODO add your handling code here:
+        if (FilaActiva(tbCotizaciones)) {
+            DesaprobarCotizacion();
+        }
+    }//GEN-LAST:event_btnDesaprobarActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAprobar;
+    private javax.swing.JButton btnDesaprobar;
     private javax.swing.JButton btnNuevo;
     private javax.swing.JButton btnRefrescar;
     private javax.swing.JButton btnSeleccionar;

@@ -283,7 +283,7 @@
         <Component class="javax.swing.JButton" name="btnGenerarCotizacion">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/com/sge/base/imagenes/generar-cotizacion-16.png"/>
+              <Image iconType="3" name="/com/sge/base/imagenes/send-file-16.png"/>
             </Property>
             <Property name="toolTipText" type="java.lang.String" value="GENERAR COTIZACION"/>
           </Properties>
@@ -294,7 +294,7 @@
         <Component class="javax.swing.JButton" name="btnAprobar">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/com/sge/base/imagenes/generar-cotizacion-16.png"/>
+              <Image iconType="3" name="/com/sge/base/imagenes/checkmark-16.png"/>
             </Property>
             <Property name="toolTipText" type="java.lang.String" value="APROBAR"/>
           </Properties>
@@ -305,7 +305,7 @@
         <Component class="javax.swing.JButton" name="btnDesaprobar">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/com/sge/base/imagenes/generar-cotizacion-16.png"/>
+              <Image iconType="3" name="/com/sge/base/imagenes/x-mark-16.png"/>
             </Property>
             <Property name="toolTipText" type="java.lang.String" value="DESAPROBAR"/>
           </Properties>

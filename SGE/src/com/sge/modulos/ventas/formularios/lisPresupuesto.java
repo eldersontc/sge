@@ -1,7 +1,6 @@
 package com.sge.modulos.ventas.formularios;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.sge.base.formularios.frameBase;
 import com.sge.modulos.produccion.clases.ItemOrdenTrabajo;
 import com.sge.modulos.produccion.clases.OrdenTrabajo;
@@ -12,7 +11,6 @@ import com.sge.modulos.ventas.clases.Presupuesto;
 import com.sge.modulos.ventas.cliente.cliVentas;
 import java.awt.event.ActionEvent;
 import java.util.Date;
-import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ImageIcon;
@@ -81,13 +79,12 @@ public class lisPresupuesto extends frameBase<Presupuesto> {
 
                 if (resultado[0].equals("true")) {
                     EliminarTodasFilas(tbPresupuestos);
-                    List<Object[]> filas = (List<Object[]>) new Gson().fromJson(resultado[1], new TypeToken<List<Object[]>>() {
-                    }.getType());
-                    for (Object[] fila : filas) {
-                        AgregarFila(tbPresupuestos, new Object[]{false, ((Double) fila[0]).intValue(), fila[1], fila[2], fila[3], fila[4], Icon_Edit, Icon_Dele});
+                    Presupuesto[] presupuestos = new Gson().fromJson(resultado[1], Presupuesto[].class);
+                    for (Presupuesto presupuesto : presupuestos) {
+                        AgregarFila(tbPresupuestos, new Object[]{false, presupuesto.getIdPresupuesto(), presupuesto.getNumero(), presupuesto.getFechaCreacion(), presupuesto.getRazonSocialCliente(), presupuesto.getTotal(), presupuesto.getEstado(), Icon_Edit, Icon_Dele});
                     }
-                    AgregarBoton(tbPresupuestos, edit, 6);
-                    AgregarBoton(tbPresupuestos, dele, 7);
+                    AgregarBoton(tbPresupuestos, edit, 7);
+                    AgregarBoton(tbPresupuestos, dele, 8);
                     AgregarOrdenamiento(tbPresupuestos);
                 }
                 OcultarCargando(frame);
@@ -135,6 +132,191 @@ public class lisPresupuesto extends frameBase<Presupuesto> {
         }
     }
 
+    public class swAprobarPresupuesto extends SwingWorker {
+
+        @Override
+        protected Object doInBackground() throws Exception {
+            VerCargando(frame);
+            cliVentas plantillaSC = new cliVentas();
+            String json = "";
+            try {
+                int idPresupuesto = ObtenerValorCelda(tbPresupuestos, 1);
+                json = plantillaSC.AprobarPresupuesto(new Gson().toJson(idPresupuesto));
+            } catch (Exception e) {
+                OcultarCargando(frame);
+                cancel(false);
+                ControlarExcepcion(e);
+            } finally {
+                plantillaSC.close();
+            }
+            return json;
+        }
+
+        @Override
+        protected void done() {
+            try {
+                String json = get().toString();
+                String[] resultado = new Gson().fromJson(json, String[].class);
+                if (resultado[0].equals("true")) {
+                    new swObtenerPresupuestos().execute();
+                } else {
+                    OcultarCargando(frame);
+                }
+            } catch (Exception e) {
+                OcultarCargando(frame);
+                ControlarExcepcion(e);
+            }
+        }
+    }
+    
+    public class swDesaprobarPresupuesto extends SwingWorker {
+
+        @Override
+        protected Object doInBackground() throws Exception {
+            VerCargando(frame);
+            cliVentas plantillaSC = new cliVentas();
+            String json = "";
+            try {
+                int idPresupuesto = ObtenerValorCelda(tbPresupuestos, 1);
+                json = plantillaSC.DesaprobarPresupuesto(new Gson().toJson(idPresupuesto));
+            } catch (Exception e) {
+                OcultarCargando(frame);
+                cancel(false);
+                ControlarExcepcion(e);
+            } finally {
+                plantillaSC.close();
+            }
+            return json;
+        }
+
+        @Override
+        protected void done() {
+            try {
+                String json = get().toString();
+                String[] resultado = new Gson().fromJson(json, String[].class);
+                if (resultado[0].equals("true")) {
+                    new swObtenerPresupuestos().execute();
+                } else {
+                    OcultarCargando(frame);
+                }
+            } catch (Exception e) {
+                OcultarCargando(frame);
+                ControlarExcepcion(e);
+            }
+        }
+    }
+    
+    public class swEnviarPresupuesto extends SwingWorker {
+
+        @Override
+        protected Object doInBackground() throws Exception {
+            VerCargando(frame);
+            cliVentas plantillaSC = new cliVentas();
+            String json = "";
+            try {
+                int idPresupuesto = ObtenerValorCelda(tbPresupuestos, 1);
+                json = plantillaSC.EnviarPresupuesto(new Gson().toJson(idPresupuesto));
+            } catch (Exception e) {
+                OcultarCargando(frame);
+                cancel(false);
+                ControlarExcepcion(e);
+            } finally {
+                plantillaSC.close();
+            }
+            return json;
+        }
+
+        @Override
+        protected void done() {
+            try {
+                String json = get().toString();
+                String[] resultado = new Gson().fromJson(json, String[].class);
+                if (resultado[0].equals("true")) {
+                    new swObtenerPresupuestos().execute();
+                } else {
+                    OcultarCargando(frame);
+                }
+            } catch (Exception e) {
+                OcultarCargando(frame);
+                ControlarExcepcion(e);
+            }
+        }
+    }
+    
+    public class swAceptarPresupuesto extends SwingWorker {
+
+        @Override
+        protected Object doInBackground() throws Exception {
+            VerCargando(frame);
+            cliVentas plantillaSC = new cliVentas();
+            String json = "";
+            try {
+                int idPresupuesto = ObtenerValorCelda(tbPresupuestos, 1);
+                json = plantillaSC.AceptarPresupuesto(new Gson().toJson(idPresupuesto));
+            } catch (Exception e) {
+                OcultarCargando(frame);
+                cancel(false);
+                ControlarExcepcion(e);
+            } finally {
+                plantillaSC.close();
+            }
+            return json;
+        }
+
+        @Override
+        protected void done() {
+            try {
+                String json = get().toString();
+                String[] resultado = new Gson().fromJson(json, String[].class);
+                if (resultado[0].equals("true")) {
+                    new swObtenerPresupuestos().execute();
+                } else {
+                    OcultarCargando(frame);
+                }
+            } catch (Exception e) {
+                OcultarCargando(frame);
+                ControlarExcepcion(e);
+            }
+        }
+    }
+    
+    public class swRechazarPresupuesto extends SwingWorker {
+
+        @Override
+        protected Object doInBackground() throws Exception {
+            VerCargando(frame);
+            cliVentas plantillaSC = new cliVentas();
+            String json = "";
+            try {
+                int idPresupuesto = ObtenerValorCelda(tbPresupuestos, 1);
+                json = plantillaSC.RechazarPresupuesto(new Gson().toJson(idPresupuesto));
+            } catch (Exception e) {
+                OcultarCargando(frame);
+                cancel(false);
+                ControlarExcepcion(e);
+            } finally {
+                plantillaSC.close();
+            }
+            return json;
+        }
+
+        @Override
+        protected void done() {
+            try {
+                String json = get().toString();
+                String[] resultado = new Gson().fromJson(json, String[].class);
+                if (resultado[0].equals("true")) {
+                    new swObtenerPresupuestos().execute();
+                } else {
+                    OcultarCargando(frame);
+                }
+            } catch (Exception e) {
+                OcultarCargando(frame);
+                ControlarExcepcion(e);
+            }
+        }
+    }
+    
     public class swGenerarOrdenTrabajo extends SwingWorker<Object, Object> {
 
         @Override
@@ -251,7 +433,7 @@ public class lisPresupuesto extends frameBase<Presupuesto> {
                 OcultarControl(btnSeleccionar);
                 break;
             case 1:
-                OcultarColumnas(tbPresupuestos, new int[]{0, 6, 7});
+                OcultarColumnas(tbPresupuestos, new int[]{0, 7, 8});
                 OcultarControl(btnNuevo);
                 break;
         }
@@ -272,6 +454,60 @@ public class lisPresupuesto extends frameBase<Presupuesto> {
         }
     }
 
+    public void AprobarPresupuesto() {
+        String estado = ObtenerValorCelda(tbPresupuestos, 6);
+        if (estado.equals("PENDIENTE DE APROBACIÓN")) {
+            new swAprobarPresupuesto().execute();
+        } else {
+            VerAdvertencia("NO SE PUEDE APROBAR EL PRESUPUESTO", frame);
+        }
+    }
+    
+    public void DesaprobarPresupuesto() {
+        String estado = ObtenerValorCelda(tbPresupuestos, 6);
+        if (estado.equals("APROBADO")) {
+            new swDesaprobarPresupuesto().execute();
+        } else {
+            VerAdvertencia("NO SE PUEDE DESAPROBAR EL PRESUPUESTO", frame);
+        }
+    }
+
+    public void EnviarPresupuesto() {
+        String estado = ObtenerValorCelda(tbPresupuestos, 6);
+        if (estado.equals("APROBADO")) {
+            new swEnviarPresupuesto().execute();
+        } else {
+            VerAdvertencia("NO SE PUEDE ENVIAR EL PRESUPUESTO", frame);
+        }
+    }
+    
+    public void AceptarPresupuesto() {
+        String estado = ObtenerValorCelda(tbPresupuestos, 6);
+        if (estado.equals("ENVIADO AL CLIENTE")) {
+            new swAceptarPresupuesto().execute();
+        } else {
+            VerAdvertencia("NO SE PUEDE ACEPTAR EL PRESUPUESTO", frame);
+        }
+    }
+    
+    public void RechazarPresupuesto() {
+        String estado = ObtenerValorCelda(tbPresupuestos, 6);
+        if (estado.equals("ENVIADO AL CLIENTE")) {
+            new swRechazarPresupuesto().execute();
+        } else {
+            VerAdvertencia("NO SE PUEDE RECHAZAR EL PRESUPUESTO", frame);
+        }
+    }
+    
+    public void GenerarOrdenTrabajo() {
+        String estado = ObtenerValorCelda(tbPresupuestos, 6);
+        if (estado.equals("ACEPTADO")) {
+            new swGenerarOrdenTrabajo().execute();
+        } else {
+            VerAdvertencia("NO SE PUEDE GENERAR LA ORDEN DE TRABAJO", frame);
+        }
+    }
+    
     public Presupuesto getSeleccionado() {
         return seleccionado;
     }
@@ -296,6 +532,11 @@ public class lisPresupuesto extends frameBase<Presupuesto> {
         txtFiltro = new javax.swing.JTextField();
         btnRefrescar = new javax.swing.JButton();
         btnGenerarOT = new javax.swing.JButton();
+        btnAprobar = new javax.swing.JButton();
+        btnDesaprobar = new javax.swing.JButton();
+        btnEnviar = new javax.swing.JButton();
+        btnAceptar = new javax.swing.JButton();
+        btnRechazar = new javax.swing.JButton();
 
         setClosable(true);
 
@@ -307,14 +548,14 @@ public class lisPresupuesto extends frameBase<Presupuesto> {
 
             },
             new String [] {
-                "CHECK", "ID", "NUMERO", "F.CREACION", "CLIENTE", "TOTAL", "EDITAR", "ELIMINAR"
+                "CHECK", "ID", "NUMERO", "F.CREACION", "CLIENTE", "TOTAL", "ESTADO", "EDITAR", "ELIMINAR"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Boolean.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Double.class, java.lang.Object.class, java.lang.Object.class
+                java.lang.Boolean.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Double.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                true, false, true, true, true, true, true, true
+                true, false, true, true, true, true, true, true, true
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -358,7 +599,7 @@ public class lisPresupuesto extends frameBase<Presupuesto> {
             .addGroup(pnlTituloLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lblTitulo)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 494, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 751, Short.MAX_VALUE)
                 .addComponent(btnNuevo)
                 .addContainerGap())
         );
@@ -395,11 +636,51 @@ public class lisPresupuesto extends frameBase<Presupuesto> {
             }
         });
 
-        btnGenerarOT.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sge/base/imagenes/refresh-16.png"))); // NOI18N
+        btnGenerarOT.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sge/base/imagenes/send-file-16.png"))); // NOI18N
         btnGenerarOT.setToolTipText("GENERAR OT");
         btnGenerarOT.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnGenerarOTActionPerformed(evt);
+            }
+        });
+
+        btnAprobar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sge/base/imagenes/checkmark-16.png"))); // NOI18N
+        btnAprobar.setToolTipText("APROBAR");
+        btnAprobar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAprobarActionPerformed(evt);
+            }
+        });
+
+        btnDesaprobar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sge/base/imagenes/x-mark-16.png"))); // NOI18N
+        btnDesaprobar.setToolTipText("DESAPROBAR");
+        btnDesaprobar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDesaprobarActionPerformed(evt);
+            }
+        });
+
+        btnEnviar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sge/base/imagenes/talk-16.png"))); // NOI18N
+        btnEnviar.setToolTipText("ENVIAR");
+        btnEnviar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEnviarActionPerformed(evt);
+            }
+        });
+
+        btnAceptar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sge/base/imagenes/checked-user-16.png"))); // NOI18N
+        btnAceptar.setToolTipText("ACEPTAR");
+        btnAceptar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAceptarActionPerformed(evt);
+            }
+        });
+
+        btnRechazar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sge/base/imagenes/remove-user-16.png"))); // NOI18N
+        btnRechazar.setToolTipText("RECHAZAR");
+        btnRechazar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRechazarActionPerformed(evt);
             }
         });
 
@@ -411,7 +692,7 @@ public class lisPresupuesto extends frameBase<Presupuesto> {
             .addGroup(frameLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 848, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1105, Short.MAX_VALUE)
                     .addGroup(frameLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btnSeleccionar, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -421,6 +702,16 @@ public class lisPresupuesto extends frameBase<Presupuesto> {
                         .addComponent(txtFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnRefrescar, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnAprobar, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnDesaprobar, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnEnviar, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnAceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnRechazar, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnGenerarOT, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE)))
@@ -436,9 +727,14 @@ public class lisPresupuesto extends frameBase<Presupuesto> {
                         .addComponent(lblFiltro)
                         .addComponent(txtFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(btnRefrescar, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnGenerarOT, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnGenerarOT, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnAprobar, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnDesaprobar, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnEnviar, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnAceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnRechazar, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 245, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 251, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnSeleccionar)
                 .addGap(9, 9, 9))
@@ -495,13 +791,54 @@ public class lisPresupuesto extends frameBase<Presupuesto> {
 
     private void btnGenerarOTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarOTActionPerformed
         // TODO add your handling code here:
-        new swGenerarOrdenTrabajo().execute();
+        if(FilaActiva(tbPresupuestos)){
+            GenerarOrdenTrabajo();
+        }
     }//GEN-LAST:event_btnGenerarOTActionPerformed
 
+    private void btnAprobarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAprobarActionPerformed
+        // TODO add your handling code here:
+        if (FilaActiva(tbPresupuestos)) {
+            AprobarPresupuesto();
+        }
+    }//GEN-LAST:event_btnAprobarActionPerformed
+
+    private void btnDesaprobarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDesaprobarActionPerformed
+        // TODO add your handling code here:
+        if (FilaActiva(tbPresupuestos)) {
+            DesaprobarPresupuesto();
+        }
+    }//GEN-LAST:event_btnDesaprobarActionPerformed
+
+    private void btnEnviarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEnviarActionPerformed
+        // TODO add your handling code here:
+        if (FilaActiva(tbPresupuestos)) {
+            EnviarPresupuesto();
+        }
+    }//GEN-LAST:event_btnEnviarActionPerformed
+
+    private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
+        // TODO add your handling code here:
+        if (FilaActiva(tbPresupuestos)) {
+            AceptarPresupuesto();
+        }
+    }//GEN-LAST:event_btnAceptarActionPerformed
+
+    private void btnRechazarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRechazarActionPerformed
+        // TODO add your handling code here:
+        if (FilaActiva(tbPresupuestos)) {
+            RechazarPresupuesto();
+        }
+    }//GEN-LAST:event_btnRechazarActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAceptar;
+    private javax.swing.JButton btnAprobar;
+    private javax.swing.JButton btnDesaprobar;
+    private javax.swing.JButton btnEnviar;
     private javax.swing.JButton btnGenerarOT;
     private javax.swing.JButton btnNuevo;
+    private javax.swing.JButton btnRechazar;
     private javax.swing.JButton btnRefrescar;
     private javax.swing.JButton btnSeleccionar;
     private javax.swing.JPanel frame;

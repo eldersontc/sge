@@ -272,6 +272,18 @@ public class cliVentas {
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
     }
 
+    public String AprobarCotizacion(Object requestEntity) throws ClientErrorException {
+        WebTarget resource = client.target(BASE_URI).path("CotizacionSRV");
+        resource = resource.path("AprobarCotizacion");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
+    }
+     
+     public String DesaprobarCotizacion(Object requestEntity) throws ClientErrorException {
+        WebTarget resource = client.target(BASE_URI).path("CotizacionSRV");
+        resource = resource.path("DesaprobarCotizacion");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
+    }
+    
     public String ObtenerEscalasMaquinaYProducto(Object requestEntity) throws ClientErrorException {
         WebTarget resource = client.target(BASE_URI).path("CotizacionSRV");
         resource = resource.path("ObtenerEscalasMaquinaYProducto");
@@ -582,6 +594,36 @@ public class cliVentas {
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
     }
 
+    public String AprobarPresupuesto(Object requestEntity) throws ClientErrorException {
+        WebTarget resource = client.target(BASE_URI).path("PresupuestoSRV");
+        resource = resource.path("AprobarPresupuesto");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
+    }
+    
+    public String DesaprobarPresupuesto(Object requestEntity) throws ClientErrorException {
+        WebTarget resource = client.target(BASE_URI).path("PresupuestoSRV");
+        resource = resource.path("DesaprobarPresupuesto");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
+    }
+    
+    public String EnviarPresupuesto(Object requestEntity) throws ClientErrorException {
+        WebTarget resource = client.target(BASE_URI).path("PresupuestoSRV");
+        resource = resource.path("EnviarPresupuesto");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
+    }
+    
+    public String AceptarPresupuesto(Object requestEntity) throws ClientErrorException {
+        WebTarget resource = client.target(BASE_URI).path("PresupuestoSRV");
+        resource = resource.path("AceptarPresupuesto");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
+    }
+    
+    public String RechazarPresupuesto(Object requestEntity) throws ClientErrorException {
+        WebTarget resource = client.target(BASE_URI).path("PresupuestoSRV");
+        resource = resource.path("RechazarPresupuesto");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
+    }
+    
     public String GenerarOrdenTrabajo(Object requestEntity) throws ClientErrorException {
         WebTarget resource = client.target(BASE_URI).path("PresupuestoSRV");
         resource = resource.path("GenerarOrdenTrabajo");
