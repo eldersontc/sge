@@ -195,6 +195,18 @@ public class cliVentas {
         resource = resource.path("EliminarSolicitudCotizacion");
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
     }
+    
+    public String AprobarSolicitudCotizacion(Object requestEntity) throws ClientErrorException {
+        WebTarget resource = client.target(BASE_URI).path("SolicitudCotizacionSRV");
+        resource = resource.path("AprobarSolicitudCotizacion");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
+    }
+    
+    public String DesaprobarSolicitudCotizacion(Object requestEntity) throws ClientErrorException {
+        WebTarget resource = client.target(BASE_URI).path("SolicitudCotizacionSRV");
+        resource = resource.path("DesaprobarSolicitudCotizacion");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
+    }
 
     public String GenerarCotizacion(Object requestEntity) throws ClientErrorException {
         WebTarget resource = client.target(BASE_URI).path("SolicitudCotizacionSRV");
