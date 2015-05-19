@@ -139,7 +139,8 @@ public class ReporteDTO {
                     parametros.put(item.getNombre(), item.getValor());
                 }
             }
-            JasperPrint jasperPrint = JasperFillManager.fillReport(reporte.getUbicacion(), parametros, reporteDAO.getConexion());
+            String carpetaReportes = "/home/elderson/REPORTES/";
+            JasperPrint jasperPrint = JasperFillManager.fillReport(carpetaReportes + reporte.getUbicacion(), parametros, reporteDAO.getConexion());
             ByteArrayOutputStream out = new ByteArrayOutputStream();
             ObjectOutputStream os = new ObjectOutputStream(out);
             os.writeObject(jasperPrint);
@@ -162,7 +163,8 @@ public class ReporteDTO {
             for (ItemReporte item : reporte.getItems()) {
                 parametros.put(item.getNombre(), item.getValor());
             }
-            JasperPrint jasperPrint = JasperFillManager.fillReport(reporte.getUbicacion(), parametros, reporteDAO.getConexion());
+            String carpetaReportes = "/home/elderson/REPORTES/";
+            JasperPrint jasperPrint = JasperFillManager.fillReport(carpetaReportes + reporte.getUbicacion(), parametros, reporteDAO.getConexion());
             ByteArrayOutputStream out = new ByteArrayOutputStream();
             ObjectOutputStream os = new ObjectOutputStream(out);
             os.writeObject(jasperPrint);
