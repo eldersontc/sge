@@ -5,13 +5,14 @@ import com.sge.modulos.ventas.accesoDatos.ItemCotizacionDAO;
 import com.sge.modulos.ventas.accesoDatos.SolicitudCotizacionDAO;
 import com.sge.modulos.ventas.entidades.Cotizacion;
 import com.sge.modulos.ventas.entidades.ItemCotizacion;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileOutputStream;
-import java.net.URI;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import javax.imageio.ImageIO;
 
 /**
  *
@@ -37,7 +38,7 @@ public class CotizacionDTO {
         return lista;
     }
 
-    public List<Cotizacion> ObtenerCotizacionesPorPresupuesto(int idPresupuesto) {
+    public List<Cotizacion> ObtenerCotizacionesPorPresupuesto(int idPresupuesto) throws Exception {
         List<Cotizacion> lista;
         try {
             cotizacionDAO = new CotizacionDAO();
@@ -47,9 +48,28 @@ public class CotizacionDTO {
             itemCotizacionDAO = new ItemCotizacionDAO();
             itemCotizacionDAO.AsignarSesion(cotizacionDAO);
             for (Cotizacion cotizacion : lista) {
+                
+                String carpetaGraficos = "/home/elderson/GRAFICOS/";
+                
                 List<Object[]> filtros = new ArrayList<>();
                 filtros.add(new Object[]{"idCotizacion", cotizacion.getIdCotizacion()});
                 List<ItemCotizacion> items = itemCotizacionDAO.ObtenerLista(ItemCotizacion.class, filtros);
+                
+                for (ItemCotizacion item : items) {
+                    if (item.getUbicacionGraficoPrecorte() != null && !item.getUbicacionGraficoPrecorte().isEmpty()) {
+                        BufferedImage grafico = ImageIO.read(new File(carpetaGraficos + item.getUbicacionGraficoPrecorte()));
+                        ByteArrayOutputStream arrayBytesOut = new ByteArrayOutputStream();
+                        ImageIO.write(grafico, "jpg", arrayBytesOut);
+                        item.setGraficoPrecorte(arrayBytesOut.toByteArray());
+                    }
+                    if (item.getUbicacionGraficoImpresion() != null && !item.getUbicacionGraficoImpresion().isEmpty()) {
+                        BufferedImage grafico = ImageIO.read(new File(carpetaGraficos + item.getUbicacionGraficoImpresion()));
+                        ByteArrayOutputStream arrayBytesOut = new ByteArrayOutputStream();
+                        ImageIO.write(grafico, "jpg", arrayBytesOut);
+                        item.setGraficoImpresion(arrayBytesOut.toByteArray());
+                    }
+                }
+                
                 cotizacion.setItems(items);
             }
         } catch (Exception e) {
@@ -69,22 +89,28 @@ public class CotizacionDTO {
 
             itemCotizacionDAO = new ItemCotizacionDAO();
             itemCotizacionDAO.AsignarSesion(cotizacionDAO);
-            
+
             String carpetaGraficos = "/home/elderson/GRAFICOS/";
-            
+
             List<Object[]> filtros = new ArrayList<>();
             filtros.add(new Object[]{"idCotizacion", idCotizacion});
             List<ItemCotizacion> items = itemCotizacionDAO.ObtenerLista(ItemCotizacion.class, filtros);
-            
+
             for (ItemCotizacion item : items) {
-                if(!item.getUbicacionGraficoPrecorte().isEmpty()){
-                    item.setGraficoPrecorte(Files.readAllBytes(Paths.get(new URI(carpetaGraficos + item.getUbicacionGraficoPrecorte()))));
+                if (item.getUbicacionGraficoPrecorte() != null && !item.getUbicacionGraficoPrecorte().isEmpty()) {
+                    BufferedImage grafico = ImageIO.read(new File(carpetaGraficos + item.getUbicacionGraficoPrecorte()));
+                    ByteArrayOutputStream arrayBytesOut = new ByteArrayOutputStream();
+                    ImageIO.write(grafico, "jpg", arrayBytesOut);
+                    item.setGraficoPrecorte(arrayBytesOut.toByteArray());
                 }
-                if(!item.getUbicacionGraficoImpresion().isEmpty()){
-                    item.setGraficoImpresion(Files.readAllBytes(Paths.get(new URI(carpetaGraficos + item.getUbicacionGraficoImpresion()))));
+                if (item.getUbicacionGraficoImpresion() != null && !item.getUbicacionGraficoImpresion().isEmpty()) {
+                    BufferedImage grafico = ImageIO.read(new File(carpetaGraficos + item.getUbicacionGraficoImpresion()));
+                    ByteArrayOutputStream arrayBytesOut = new ByteArrayOutputStream();
+                    ImageIO.write(grafico, "jpg", arrayBytesOut);
+                    item.setGraficoImpresion(arrayBytesOut.toByteArray());
                 }
             }
-            
+
             cotizacion.setItems(items);
         } catch (Exception e) {
             throw e;
@@ -149,9 +175,9 @@ public class CotizacionDTO {
 
             itemCotizacionDAO = new ItemCotizacionDAO();
             itemCotizacionDAO.AsignarSesion(cotizacionDAO);
-            
+
             String carpetaGraficos = "/home/elderson/GRAFICOS/";
-            
+
             for (ItemCotizacion item : cotizacion.getItems()) {
                 if (item.isAgregar()) {
                     item.setIdCotizacion(cotizacion.getIdCotizacion());
