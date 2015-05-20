@@ -399,6 +399,10 @@ public class lisPresupuesto extends frameBase<Presupuesto> {
                             itemOrdenTrabajo.setCantidadCambios(itemCotizacion.getCantidadCambios());
                             itemOrdenTrabajo.setFactorHorizontal(itemCotizacion.getFactorHorizontal());
                             itemOrdenTrabajo.setFactorVertical(itemCotizacion.getFactorVertical());
+                            itemOrdenTrabajo.setUbicacionGraficoPrecorte(itemCotizacion.getUbicacionGraficoPrecorte());
+                            itemOrdenTrabajo.setUbicacionGraficoImpresion(itemCotizacion.getUbicacionGraficoImpresion());
+                            itemOrdenTrabajo.setGraficoPrecorte(itemCotizacion.getGraficoPrecorte());
+                            itemOrdenTrabajo.setGraficoImpresion(itemCotizacion.getGraficoImpresion());
                             ordenTrabajo.getItems().add(itemOrdenTrabajo);
                         }
                         regOrdenTrabajo regOrdenTrabajo = new regOrdenTrabajo(0);

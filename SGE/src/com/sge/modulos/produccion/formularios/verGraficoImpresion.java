@@ -83,6 +83,7 @@ public class verGraficoImpresion extends frameBase<OrdenTrabajo> {
         txtTiraje = new javax.swing.JTextField();
 
         setClosable(true);
+        setMaximizable(true);
 
         frame.setBackground(java.awt.Color.white);
         frame.setBorder(null);

@@ -70,6 +70,7 @@ public class verGraficoPrecorte extends frameBase<OrdenTrabajo> {
         txtOtros = new javax.swing.JTextArea();
 
         setClosable(true);
+        setMaximizable(true);
 
         frame.setBackground(java.awt.Color.white);
         frame.setBorder(null);
