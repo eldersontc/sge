@@ -131,7 +131,17 @@ public class ReporteDTO {
             reporteDAO = new ReporteDAO();
             reporteDAO.AbrirSesion();
             Reporte reporte = reporteDAO.ObtenerPorId(Reporte.class, idReporte);
+            
+            itemReporteDAO = new ItemReporteDAO();
+            itemReporteDAO.AsignarSesion(reporteDAO);
+            
+            List<Object[]> filtros = new ArrayList<>();
+            filtros.add(new Object[]{"idReporte", idReporte});
+            List<ItemReporte> items = itemReporteDAO.ObtenerLista(ItemReporte.class, filtros);
+            reporte.setItems(items);
+            
             Map parametros = new HashMap();
+            
             for (ItemReporte item : reporte.getItems()) {
                 if (item.isAsignarId()) {
                     parametros.put(item.getNombre(), id);
@@ -139,6 +149,7 @@ public class ReporteDTO {
                     parametros.put(item.getNombre(), item.getValor());
                 }
             }
+            
             String carpetaReportes = "/home/elderson/REPORTES/";
             JasperPrint jasperPrint = JasperFillManager.fillReport(carpetaReportes + reporte.getUbicacion(), parametros, reporteDAO.getConexion());
             ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -159,10 +170,21 @@ public class ReporteDTO {
             reporteDAO = new ReporteDAO();
             reporteDAO.AbrirSesion();
             Reporte reporte = reporteDAO.ObtenerPorId(Reporte.class, idReporte);
+            
+            itemReporteDAO = new ItemReporteDAO();
+            itemReporteDAO.AsignarSesion(reporteDAO);
+            
+            List<Object[]> filtros = new ArrayList<>();
+            filtros.add(new Object[]{"idReporte", idReporte});
+            List<ItemReporte> items = itemReporteDAO.ObtenerLista(ItemReporte.class, filtros);
+            reporte.setItems(items);
+            
             Map parametros = new HashMap();
+            
             for (ItemReporte item : reporte.getItems()) {
                 parametros.put(item.getNombre(), item.getValor());
             }
+            
             String carpetaReportes = "/home/elderson/REPORTES/";
             JasperPrint jasperPrint = JasperFillManager.fillReport(carpetaReportes + reporte.getUbicacion(), parametros, reporteDAO.getConexion());
             ByteArrayOutputStream out = new ByteArrayOutputStream();
