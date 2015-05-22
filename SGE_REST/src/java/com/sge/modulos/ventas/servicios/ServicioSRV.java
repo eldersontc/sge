@@ -141,4 +141,26 @@ public class ServicioSRV {
         }
         return new Gson().toJson(resultado);
     }
+    
+    @POST
+    @Path("ObtenerUnidadesPorServicios")
+    @Consumes("application/json")
+    @Produces("application/json")
+    public String ObtenerUnidadesPorServicios(String json) {
+        List<String> resultado = new ArrayList<>();
+        String[] arrayJson = new Gson().fromJson(json, String[].class);
+        Servicio[] servicios = new Gson().fromJson(arrayJson[0], Servicio[].class);
+        int idListaPrecioServicio = new Gson().fromJson(arrayJson[1], int.class);
+        try {
+            ServicioDTO ServicioDTO = new ServicioDTO();
+            List<Servicio> lista = ServicioDTO.ObtenerUnidadesPorServicios(servicios, idListaPrecioServicio);
+            resultado.add(new Gson().toJson(true));
+            resultado.add(new Gson().toJson(lista));
+        } catch (Exception e) {
+            resultado.clear();
+            resultado.add(new Gson().toJson(false));
+            resultado.add(new Gson().toJson(e));
+        }
+        return new Gson().toJson(resultado);
+    }
 }

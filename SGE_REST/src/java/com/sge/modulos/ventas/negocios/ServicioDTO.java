@@ -1,8 +1,10 @@
 package com.sge.modulos.ventas.negocios;
 
+import com.sge.modulos.ventas.accesoDatos.EscalaListaPrecioServicioDAO;
 import com.sge.modulos.ventas.accesoDatos.ServicioDAO;
 import com.sge.modulos.ventas.accesoDatos.ServicioMaquinaDAO;
 import com.sge.modulos.ventas.accesoDatos.ServicioUnidadDAO;
+import com.sge.modulos.ventas.entidades.EscalaListaPrecioServicio;
 import com.sge.modulos.ventas.entidades.Servicio;
 import com.sge.modulos.ventas.entidades.ServicioMaquina;
 import com.sge.modulos.ventas.entidades.ServicioUnidad;
@@ -18,6 +20,7 @@ public class ServicioDTO {
     ServicioDAO servicioDAO;
     ServicioUnidadDAO servicioUnidadDAO;
     ServicioMaquinaDAO servicioMaquinaDAO;
+    EscalaListaPrecioServicioDAO escalaListaPrecioServicioDAO;
 
     public List<Object[]> ObtenerServicios(String filtro) {
         List<Object[]> lista;
@@ -163,6 +166,41 @@ public class ServicioDTO {
             servicioUnidadDAO = new ServicioUnidadDAO();
             servicioUnidadDAO.AbrirSesion();
             lista = servicioUnidadDAO.ObtenerServicioUnidades(filtro);
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            servicioUnidadDAO.CerrarSesion();
+        }
+        return lista;
+    }
+    
+    public List<Servicio> ObtenerUnidadesPorServicios(Servicio[] servicios, int idListaPrecioServicio) {
+        List<Servicio> lista = new ArrayList<>();
+        try {
+            servicioUnidadDAO = new ServicioUnidadDAO();
+            servicioUnidadDAO.AbrirSesion();
+
+            escalaListaPrecioServicioDAO = new EscalaListaPrecioServicioDAO();
+            escalaListaPrecioServicioDAO.AsignarSesion(servicioUnidadDAO);
+            
+            for (Servicio servicio : servicios) {
+                
+                List<Object[]> filtros = new ArrayList<>();
+                filtros.add(new Object[]{"idServicio", servicio.getIdServicio()});
+
+                List<ServicioUnidad> unidades = servicioUnidadDAO.ObtenerLista(ServicioUnidad.class, filtros);
+                
+                for (ServicioUnidad unidad : unidades) {
+                    
+                    List<EscalaListaPrecioServicio> escalas = escalaListaPrecioServicioDAO.ObtenerEscalasPorUnidad(idListaPrecioServicio, servicio.getIdServicio(), unidad.getIdServicioUnidad());
+                    
+                    unidad.setEscalas(escalas);
+                }
+                
+                servicio.setUnidades(unidades);
+
+                lista.add(servicio);
+            }
         } catch (Exception e) {
             throw e;
         } finally {

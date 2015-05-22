@@ -109,6 +109,26 @@ public class ListaPrecioServicioSRV {
     }
     
     @POST
+    @Path("ObtenerEscalasListaPrecioServicioPorUnidad")
+    @Consumes("application/json")
+    @Produces("application/json")
+    public String ObtenerEscalasListaPrecioServicioPorUnidad(String json) {
+        List<String> resultado = new ArrayList<>();
+        int[] ids = new Gson().fromJson(json, int[].class);
+        try {
+            ListaPrecioServicioDTO listaPrecioServicioDTO = new ListaPrecioServicioDTO();
+            List<EscalaListaPrecioServicio> escalas = listaPrecioServicioDTO.ObtenerEscalasListaPrecioServicioPorUnidad(ids[0], ids[1], ids[2]);
+            resultado.add(new Gson().toJson(true));
+            resultado.add(new Gson().toJson(escalas));
+        } catch (Exception e) {
+            resultado.clear();
+            resultado.add(new Gson().toJson(false));
+            resultado.add(new Gson().toJson(e));
+        }
+        return new Gson().toJson(resultado);
+    }
+    
+    @POST
     @Path("RegistrarListaPrecioServicio")
     @Consumes("application/json")
     @Produces("application/json")

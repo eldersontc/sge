@@ -1,5 +1,8 @@
 package com.sge.modulos.ventas.entidades;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  *
  * @author elderson
@@ -11,11 +14,13 @@ public class ServicioUnidad {
     private int idUnidad;
     private String abreviacionUnidad;
     private int factor;
+    private List<EscalaListaPrecioServicio> escalas;
     private boolean agregar;
     private boolean actualizar;
     private boolean eliminar;
 
     public ServicioUnidad() {
+        escalas = new ArrayList<>();
     }
 
     public int getIdServicioUnidad() {
@@ -58,6 +63,14 @@ public class ServicioUnidad {
         this.factor = factor;
     }
 
+    public List<EscalaListaPrecioServicio> getEscalas() {
+        return escalas;
+    }
+
+    public void setEscalas(List<EscalaListaPrecioServicio> escalas) {
+        this.escalas = escalas;
+    }
+    
     public boolean isAgregar() {
         return agregar;
     }

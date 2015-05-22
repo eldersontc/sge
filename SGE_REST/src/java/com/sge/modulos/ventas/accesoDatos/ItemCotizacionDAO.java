@@ -13,7 +13,7 @@ public class ItemCotizacionDAO extends BaseDAO {
         String sql = String.format("UPDATE Ventas.ItemCotizacion SET nombre = '%s', idServicioImpresion = %d, "
                 + "nombreServicioImpresion = '%s', impresionVinil = %b, impresionBanner = %b, idMaquina = %d, "
                 + "descripcionMaquina = '%s', largoMaximoPliegoMaquina = %d, altoMaximoPliegoMaquina = %d, idMaterial = %d, nombreMaterial = '%s', largoMaterial = %s, "
-                + "altoMaterial %s, idUnidadMaterial = %d, abreviacionUnidadMaterial = '%s', nombreTipoUnidad = '%s', "
+                + "altoMaterial = %s, idUnidadMaterial = %d, abreviacionUnidadMaterial = '%s', nombreTipoUnidad = '%s', "
                 + "unidadMedidaAbierta = '%s', medidaAbierta = %b, medidaCerrada = %b, tiraRetira = %b, grafico = %b, "
                 + "material = %b, servicioImpresion = %b, fondo = %b, tipoUnidad = %b, largoMedidaAbierta = %s, "
                 + "altoMedidaAbierta = %s, largoMedidaCerrada = %s, altoMedidaCerrada = %s, tiraColor = %s, retiraColor = %s, "

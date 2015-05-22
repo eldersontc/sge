@@ -89,6 +89,20 @@ public class ListaPrecioServicioDTO {
         return escalas;
     }
     
+    public List<EscalaListaPrecioServicio> ObtenerEscalasListaPrecioServicioPorUnidad(int idListaPrecioServicio, int idServicio, int idServicioUnidad) {
+        List<EscalaListaPrecioServicio> escalas = null;
+        try {
+            escalaListaPrecioDAO = new EscalaListaPrecioServicioDAO();
+            escalaListaPrecioDAO.AbrirSesion();
+            escalas = escalaListaPrecioDAO.ObtenerEscalasPorUnidad(idListaPrecioServicio, idServicio, idServicioUnidad);
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            escalaListaPrecioDAO.CerrarSesion();
+        }
+        return escalas;
+    }
+    
     public boolean RegistrarListaPrecioServicio(ListaPrecioServicio listaPrecio) {
         try {
             listaPrecioDAO = new ListaPrecioServicioDAO();
