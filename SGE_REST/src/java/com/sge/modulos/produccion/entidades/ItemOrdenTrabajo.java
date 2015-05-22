@@ -1,5 +1,8 @@
 package com.sge.modulos.produccion.entidades;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  *
  * @author elderson
@@ -71,9 +74,12 @@ public class ItemOrdenTrabajo {
     private double precioMaquina;
     private double totalMaquina;
     private double totalMaterial;
+    private double totalAcabados;
     private double total;
-
+    private List<ServicioOrdenTrabajo> acabados;
+    
     public ItemOrdenTrabajo() {
+        acabados = new ArrayList<>();
     }
 
     public int getIdItemOrdenTrabajo() {
@@ -595,6 +601,14 @@ public class ItemOrdenTrabajo {
     public void setTotalMaterial(double totalMaterial) {
         this.totalMaterial = totalMaterial;
     }
+    
+    public double getTotalAcabados() {
+        return totalAcabados;
+    }
+
+    public void setTotalAcabados(double totalAcabados) {
+        this.totalAcabados = totalAcabados;
+    }
 
     public double getTotal() {
         return total;
@@ -602,5 +616,13 @@ public class ItemOrdenTrabajo {
 
     public void setTotal(double total) {
         this.total = total;
+    }
+
+    public List<ServicioOrdenTrabajo> getAcabados() {
+        return acabados;
+    }
+
+    public void setAcabados(List<ServicioOrdenTrabajo> acabados) {
+        this.acabados = acabados;
     }
 }

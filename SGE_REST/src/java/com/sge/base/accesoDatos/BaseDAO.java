@@ -80,6 +80,7 @@ public class BaseDAO {
         // PRODUCCION
         recursos.add("com/sge/modulos/produccion/mapeos/OrdenTrabajo.hbm.xml");
         recursos.add("com/sge/modulos/produccion/mapeos/ItemOrdenTrabajo.hbm.xml");
+        recursos.add("com/sge/modulos/produccion/mapeos/ServicioOrdenTrabajo.hbm.xml");
         recursos.add("com/sge/modulos/produccion/mapeos/OrdenProduccion.hbm.xml");
         recursos.add("com/sge/modulos/produccion/mapeos/ItemOrdenProduccion.hbm.xml");
         // FINANZAS

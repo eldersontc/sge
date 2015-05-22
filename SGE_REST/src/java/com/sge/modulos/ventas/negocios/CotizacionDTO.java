@@ -216,7 +216,9 @@ public class CotizacionDTO {
                 itemCotizacionDAO.Agregar(item);
                 
                 for (ServicioCotizacion acabado : item.getAcabados()) {
+                    
                     acabado.setIdItemCotizacion(item.getIdItemCotizacion());
+                    
                     servicioCotizacionDAO.Agregar(acabado);
                 }
             }

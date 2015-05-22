@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.sge.modulos.produccion.entidades.ServicioOrdenTrabajo" table="ServicioOrdenTrabajo" schema="Produccion">
+        <id name="idServicioOrdenTrabajo" column="idServicioOrdenTrabajo">
+            <generator class="sequence">
+                <param name="sequence">produccion.servicioordentrabajo_idservicioordentrabajo_seq</param>
+            </generator>
+        </id>
+        <property name="idItemOrdenTrabajo" column="idItemOrdenTrabajo"/>
+        <property name="idServicio" column="idServicio"/>
+        <property name="descripcionServicio" column="descripcionServicio"/>
+        <property name="idServicioUnidad" column="idServicioUnidad"/>
+        <property name="abreviacionUnidad" column="abreviacionUnidad"/>
+        <property name="precioManual" column="precioManual"/>
+        <property name="precio" column="precio"/>
+        <property name="cantidad" column="cantidad"/>
+        <property name="total" column="total"/>
+    </class>
+</hibernate-mapping>

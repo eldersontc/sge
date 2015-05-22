@@ -70,6 +70,7 @@
         <property name="precioMaterial" column="precioMaterial"/>
         <property name="totalMaquina" column="totalMaquina"/>
         <property name="totalMaterial" column="totalMaterial"/>
+        <property name="totalAcabados" column="totalAcabados"/>
         <property name="total" column="total"/>
     </class>
 </hibernate-mapping>
