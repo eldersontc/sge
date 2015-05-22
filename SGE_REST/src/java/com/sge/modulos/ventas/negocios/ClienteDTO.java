@@ -158,4 +158,18 @@ public class ClienteDTO {
         }
         return true;
     }
+    
+    public List<ContactoCliente> ObtenerContactosCliente(String filtro) {
+        List<ContactoCliente> lista;
+        try {
+            contactoClienteDAO = new ContactoClienteDAO();
+            contactoClienteDAO.AbrirSesion();
+            lista = contactoClienteDAO.ObtenerContactosCliente(filtro);
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            contactoClienteDAO.CerrarSesion();
+        }
+        return lista;
+    }
 }

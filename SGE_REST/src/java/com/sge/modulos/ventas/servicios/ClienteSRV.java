@@ -2,6 +2,7 @@ package com.sge.modulos.ventas.servicios;
 
 import com.google.gson.Gson;
 import com.sge.modulos.ventas.entidades.Cliente;
+import com.sge.modulos.ventas.entidades.ContactoCliente;
 import com.sge.modulos.ventas.negocios.ClienteDTO;
 import java.util.ArrayList;
 import java.util.List;
@@ -114,6 +115,26 @@ public class ClienteSRV {
             ClienteDTO ClienteDTO = new ClienteDTO();
             ClienteDTO.EliminarCliente(idCliente);
             resultado.add(new Gson().toJson(true));
+        } catch (Exception e) {
+            resultado.clear();
+            resultado.add(new Gson().toJson(false));
+            resultado.add(new Gson().toJson(e));
+        }
+        return new Gson().toJson(resultado);
+    }
+    
+    @POST
+    @Path("ObtenerContactosCliente")
+    @Consumes("application/json")
+    @Produces("application/json")
+    public String ObtenerContactosCliente(String json) {
+        List<String> resultado = new ArrayList<>();
+        try {
+            String filtro = new Gson().fromJson(json, String.class);
+            ClienteDTO ClienteDTO = new ClienteDTO();
+            List<ContactoCliente> lista = ClienteDTO.ObtenerContactosCliente(filtro);
+            resultado.add(new Gson().toJson(true));
+            resultado.add(new Gson().toJson(lista));
         } catch (Exception e) {
             resultado.clear();
             resultado.add(new Gson().toJson(false));

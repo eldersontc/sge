@@ -33,11 +33,13 @@ public class SolicitudCotizacion {
     private int idFormaPago;
     private String descripcionFormaPago;
     private String lineaProduccion;
+    private int idContactoCliente;
+    private String nombreContactoCliente;
     private int cantidad;
     private String observacion;
     private String estado;
     private List<ItemSolicitudCotizacion> items;
-
+    
     public SolicitudCotizacion() {
         items = new ArrayList<>();
     }
@@ -226,6 +228,22 @@ public class SolicitudCotizacion {
         this.lineaProduccion = lineaProduccion;
     }
 
+    public int getIdContactoCliente() {
+        return idContactoCliente;
+    }
+
+    public void setIdContactoCliente(int idContactoCliente) {
+        this.idContactoCliente = idContactoCliente;
+    }
+
+    public String getNombreContactoCliente() {
+        return nombreContactoCliente;
+    }
+
+    public void setNombreContactoCliente(String nombreContactoCliente) {
+        this.nombreContactoCliente = nombreContactoCliente;
+    }
+    
     public int getCantidad() {
         return cantidad;
     }

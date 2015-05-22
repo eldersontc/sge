@@ -31,6 +31,8 @@
         <property name="idFormaPago" column="idFormaPago"/>
         <property name="descripcionFormaPago" column="descripcionFormaPago"/>
         <property name="lineaProduccion" column="lineaProduccion"/>
+        <property name="idContactoCliente" column="idContactoCliente"/>
+        <property name="nombreContactoCliente" column="nombreContactoCliente"/>
         <property name="cantidad" column="cantidad"/>
         <property name="observacion" column="observacion"/>
         <property name="estado" column="estado"/>
