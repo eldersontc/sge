@@ -240,6 +240,8 @@ public class lisSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
                     cotizacion.setIdVendedor(solicitud.getIdVendedor());
                     cotizacion.setNombreVendedor(solicitud.getNombreVendedor());
                     cotizacion.setLineaProduccion(solicitud.getLineaProduccion());
+                    cotizacion.setIdContactoCliente(solicitud.getIdContactoCliente());
+                    cotizacion.setNombreContactoCliente(solicitud.getNombreContactoCliente());
                     cotizacion.setIdSolicitudCotizacion(solicitud.getIdSolicitudCotizacion());
                     cotizacion.setNumeroSolicitudCotizacion(solicitud.getNumero());
                     cotizacion.setCantidad(solicitud.getCantidad());

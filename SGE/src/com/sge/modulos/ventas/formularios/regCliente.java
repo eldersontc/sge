@@ -197,6 +197,7 @@ public class regCliente extends frameBase<Cliente> {
             if (idContactoCliente == 0) {
                 contactoCliente.setAgregar(true);
             } else {
+                contactoCliente.setIdContactoCliente(idContactoCliente);
                 contactoCliente.setActualizar(true);
             }
             contactos.add(contactoCliente);

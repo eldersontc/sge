@@ -213,7 +213,7 @@
                           <Component id="btnAceptar" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
-                  <EmptySpace max="32767" attributes="0"/>
+                  <EmptySpace pref="15" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -777,7 +777,13 @@
                               <Component id="schListaPrecioServicio" alignment="0" min="-2" pref="255" max="-2" attributes="0"/>
                               <Component id="schListaPrecioMaquina" alignment="0" min="-2" pref="255" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace pref="347" max="32767" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="jSeparator1" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="lblContacto" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="schContacto" min="-2" pref="214" max="-2" attributes="0"/>
+                          <EmptySpace pref="15" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -786,18 +792,27 @@
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="lblListaPrecioProducto" alignment="0" min="-2" pref="27" max="-2" attributes="0"/>
-                              <Component id="schListaPrecioProducto" alignment="0" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="lblListaPrecioServicio" alignment="0" min="-2" pref="27" max="-2" attributes="0"/>
-                              <Component id="schListaPrecioServicio" alignment="0" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="lblListaPrecioMaquina" alignment="0" min="-2" pref="27" max="-2" attributes="0"/>
-                              <Component id="schListaPrecioMaquina" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="lblContacto" min="-2" pref="29" max="-2" attributes="0"/>
+                              <Component id="schContacto" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                  <Component id="jSeparator1" max="32767" attributes="0"/>
+                                  <Group type="102" attributes="0">
+                                      <Group type="103" groupAlignment="0" attributes="0">
+                                          <Component id="lblListaPrecioProducto" alignment="0" min="-2" pref="27" max="-2" attributes="0"/>
+                                          <Component id="schListaPrecioProducto" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      </Group>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Group type="103" groupAlignment="0" attributes="0">
+                                          <Component id="lblListaPrecioServicio" alignment="0" min="-2" pref="27" max="-2" attributes="0"/>
+                                          <Component id="schListaPrecioServicio" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      </Group>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Group type="103" groupAlignment="0" attributes="0">
+                                          <Component id="lblListaPrecioMaquina" alignment="0" min="-2" pref="27" max="-2" attributes="0"/>
+                                          <Component id="schListaPrecioMaquina" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      </Group>
+                                  </Group>
+                              </Group>
                           </Group>
                           <EmptySpace pref="233" max="32767" attributes="0"/>
                       </Group>
@@ -842,6 +857,21 @@
                   </Properties>
                   <AuxValues>
                     <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="schListaPrecioMaquina.addSearchListener(new SearchListener() {&#xa;    @Override&#xa;    public void Search(){&#xa;    }&#xa;    @Override&#xa;    public void Clear(){&#xa;    }&#xa;});"/>
+                  </AuxValues>
+                </Component>
+                <Component class="javax.swing.JSeparator" name="jSeparator1">
+                  <Properties>
+                    <Property name="orientation" type="int" value="1"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JLabel" name="lblContacto">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="CONTACTO"/>
+                  </Properties>
+                </Component>
+                <Component class="com.sge.base.controles.JSearch" name="schContacto">
+                  <AuxValues>
+                    <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="schContacto.addSearchListener(new SearchListener() {&#xa;    @Override&#xa;    public void Search(){&#xa;        schContactoSearch();&#xa;    }&#xa;    @Override&#xa;    public void Clear(){&#xa;    }&#xa;});"/>
                   </AuxValues>
                 </Component>
               </SubComponents>

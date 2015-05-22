@@ -14,6 +14,7 @@ import com.sge.modulos.administracion.formularios.lisNumeracion;
 import com.sge.modulos.inventarios.clases.Producto;
 import com.sge.modulos.inventarios.formularios.lisProducto;
 import com.sge.modulos.ventas.clases.Cliente;
+import com.sge.modulos.ventas.clases.ContactoCliente;
 import com.sge.modulos.ventas.clases.FormaPago;
 import com.sge.modulos.ventas.clases.ItemCotizacion;
 import com.sge.modulos.ventas.clases.Maquina;
@@ -169,6 +170,16 @@ public class regCotizacion extends frameBase<Cotizacion> {
         }
     };
 
+    Action sele_cont = new AbstractAction() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            ContactoCliente seleccionado = ((lisContactoCliente) e.getSource()).getSeleccionado();
+            if (!(seleccionado == null)) {
+                schContacto.asingValues(seleccionado.getIdContactoCliente(), seleccionado.getNombre());
+            }
+        }
+    };
+    
     Action sele_acab = new AbstractAction() {
         @Override
         public void actionPerformed(ActionEvent evt) {
@@ -303,6 +314,8 @@ public class regCotizacion extends frameBase<Cotizacion> {
         getEntidad().setDescripcion(txtDescripcion.getText());
         getEntidad().setCantidad(Integer.valueOf(txtCantidad.getText()));
         getEntidad().setLineaProduccion(cboLineaProduccion.getSelectedItem().toString());
+        getEntidad().setIdContactoCliente(schContacto.getId());
+        getEntidad().setNombreContactoCliente(schContacto.getText());
         getEntidad().setItems(getItems());
     }
 
@@ -322,6 +335,7 @@ public class regCotizacion extends frameBase<Cotizacion> {
         txtDescripcion.setText(getEntidad().getDescripcion());
         txtCantidad.setText(String.valueOf(getEntidad().getCantidad()));
         cboLineaProduccion.setSelectedItem(getEntidad().getLineaProduccion());
+        schContacto.asingValues(getEntidad().getIdContactoCliente(), getEntidad().getNombreContactoCliente());
         for (ItemCotizacion itemCotizacion : getEntidad().getItems()) {
             AgregarElemento(lisItems, itemCotizacion);
         }
@@ -639,6 +653,11 @@ public class regCotizacion extends frameBase<Cotizacion> {
         VerModal(new lisProducto(1), sele_mate);
     }
 
+    private void schContactoSearch() {
+        String filtro = "WHERE ContactoCliente.idCliente = " + schCliente.getId();
+        VerModal(new lisContactoCliente(filtro), sele_cont);
+    }
+    
     public void Aceptar() {
         if (super.isFromJson()) {
             AsignarValores();
@@ -877,6 +896,9 @@ public class regCotizacion extends frameBase<Cotizacion> {
         lblListaPrecioServicio = new javax.swing.JLabel();
         lblListaPrecioMaquina = new javax.swing.JLabel();
         schListaPrecioMaquina = new com.sge.base.controles.JSearch();
+        jSeparator2 = new javax.swing.JSeparator();
+        lblContacto = new javax.swing.JLabel();
+        schContacto = new com.sge.base.controles.JSearch();
         btnNuevoItem = new javax.swing.JButton();
         btnEliminarItem = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
@@ -1411,6 +1433,20 @@ public class regCotizacion extends frameBase<Cotizacion> {
         });
         schListaPrecioMaquina.setEnabled(false);
 
+        jSeparator2.setOrientation(javax.swing.SwingConstants.VERTICAL);
+
+        lblContacto.setText("CONTACTO");
+
+        schContacto.addSearchListener(new SearchListener() {
+            @Override
+            public void Search(){
+                schContactoSearch();
+            }
+            @Override
+            public void Clear(){
+            }
+        });
+
         javax.swing.GroupLayout tabInformacionAdicionalLayout = new javax.swing.GroupLayout(tabInformacionAdicional);
         tabInformacionAdicional.setLayout(tabInformacionAdicionalLayout);
         tabInformacionAdicionalLayout.setHorizontalGroup(
@@ -1426,23 +1462,34 @@ public class regCotizacion extends frameBase<Cotizacion> {
                     .addComponent(schListaPrecioProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(schListaPrecioServicio, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(schListaPrecioMaquina, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(324, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 6, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblContacto)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(schContacto, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(15, Short.MAX_VALUE))
         );
         tabInformacionAdicionalLayout.setVerticalGroup(
             tabInformacionAdicionalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(tabInformacionAdicionalLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(tabInformacionAdicionalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblListaPrecioProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(schListaPrecioProducto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(tabInformacionAdicionalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblListaPrecioServicio, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(schListaPrecioServicio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(tabInformacionAdicionalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblListaPrecioMaquina, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(schListaPrecioMaquina, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(tabInformacionAdicionalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jSeparator2)
+                    .addComponent(lblContacto, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(schContacto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(tabInformacionAdicionalLayout.createSequentialGroup()
+                        .addGroup(tabInformacionAdicionalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblListaPrecioProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(schListaPrecioProducto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(tabInformacionAdicionalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblListaPrecioServicio, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(schListaPrecioServicio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(tabInformacionAdicionalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblListaPrecioMaquina, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(schListaPrecioMaquina, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(205, Short.MAX_VALUE))
         );
 
@@ -1881,12 +1928,14 @@ public class regCotizacion extends frameBase<Cotizacion> {
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JSeparator jSeparator2;
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JLabel lblAltoMedidaAbierta;
     private javax.swing.JLabel lblAltoMedidaCerrada;
     private javax.swing.JLabel lblCantidad;
     private javax.swing.JLabel lblCantidadItem;
     private javax.swing.JLabel lblCliente;
+    private javax.swing.JLabel lblContacto;
     private javax.swing.JLabel lblCotizador;
     private javax.swing.JLabel lblDescripcion;
     private javax.swing.JLabel lblFecha;
@@ -1915,6 +1964,7 @@ public class regCotizacion extends frameBase<Cotizacion> {
     private javax.swing.JPanel pnlItem;
     private javax.swing.JPanel pnlTitulo;
     private com.sge.base.controles.JSearch schCliente;
+    private com.sge.base.controles.JSearch schContacto;
     private com.sge.base.controles.JSearch schCotizador;
     private com.sge.base.controles.JSearch schFormaPago;
     private com.sge.base.controles.JSearch schListaPrecioMaquina;
