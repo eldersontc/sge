@@ -34,10 +34,8 @@ import java.util.Date;
 import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
-import javax.swing.DefaultCellEditor;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
-import javax.swing.JTextField;
 import javax.swing.SwingWorker;
 
 /**
@@ -327,6 +325,7 @@ public class regCotizacion extends frameBase<Cotizacion> {
         for (ItemCotizacion itemCotizacion : getEntidad().getItems()) {
             AgregarElemento(lisItems, itemCotizacion);
         }
+        AsignarTotales();
     }
 
     @Override
@@ -505,6 +504,8 @@ public class regCotizacion extends frameBase<Cotizacion> {
         chkMaterial.setSelected(this.item.isMaterial());
         schMaterial.setVisible(this.item.isMaterial());
         schMaterial.asingValues(this.item.getIdMaterial(), this.item.getNombreMaterial());
+        chkIncluirEnPresupuesto.setSelected(this.item.isIncluirEnPresupuesto());
+        chkMostrarPrecioEnPresupuesto.setSelected(this.item.isVerPrecioEnPresupuesto());
         for (ServicioCotizacion acabado : this.item.getAcabados()) {
             if (!acabado.isEliminar()) {
                 AgregarFila(tbAcabados,
@@ -525,6 +526,7 @@ public class regCotizacion extends frameBase<Cotizacion> {
         AgregarBoton(tbAcabados, refresh, 7);
         AgregarEventoChange(tbAcabados, change_acab);
         AsignarTotalAcabados();
+        AsignarTotalesItem();
     }
 
     private List<ServicioCotizacion> getAcabados() {
@@ -534,7 +536,9 @@ public class regCotizacion extends frameBase<Cotizacion> {
             ServicioCotizacion acabado = new ServicioCotizacion();
             acabado.setIdServicio(ObtenerValorCelda(tbAcabados, i, 1));
             acabado.setDescripcionServicio(ObtenerValorCelda(tbAcabados, i, 2));
-            acabado.setIdServicioUnidad(((ServicioUnidad) ObtenerValorCelda(tbAcabados, i, 4)).getIdServicioUnidad());
+            ServicioUnidad servicioUnidad = ObtenerValorCelda(tbAcabados, i, 4);
+            acabado.setIdServicioUnidad(servicioUnidad.getIdServicioUnidad());
+            acabado.setAbreviacionUnidad(servicioUnidad.getAbreviacionUnidad());
             acabado.setCantidad(ObtenerValorCelda(tbAcabados, i, 5));
             acabado.setPrecio(ObtenerValorCelda(tbAcabados, i, 8));
             acabado.setTotal(ObtenerValorCelda(tbAcabados, i, 9));
@@ -579,6 +583,8 @@ public class regCotizacion extends frameBase<Cotizacion> {
         this.item.setMaterial(chkMaterial.isSelected());
         this.item.setIdMaterial(schMaterial.getId());
         this.item.setNombreMaterial(schMaterial.getText());
+        this.item.setIncluirEnPresupuesto(chkIncluirEnPresupuesto.isSelected());
+        this.item.setVerPrecioEnPresupuesto(chkMostrarPrecioEnPresupuesto.isSelected());
         this.item.setAcabados(getAcabados());
     }
 
