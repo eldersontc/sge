@@ -21,16 +21,23 @@ import com.sge.modulos.ventas.clases.Servicio;
 import com.sge.modulos.ventas.clases.Cotizacion;
 import com.sge.modulos.ventas.clases.EscalaListaPrecioMaquina;
 import com.sge.modulos.ventas.clases.EscalaListaPrecioProducto;
+import com.sge.modulos.ventas.clases.EscalaListaPrecioServicio;
 import com.sge.modulos.ventas.clases.ItemListaPrecioMaquina;
+import com.sge.modulos.ventas.clases.ServicioCotizacion;
+import com.sge.modulos.ventas.clases.ServicioUnidad;
 import com.sge.modulos.ventas.cliente.cliVentas;
 import java.awt.event.ActionEvent;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
+import javax.swing.DefaultCellEditor;
 import javax.swing.DefaultListModel;
+import javax.swing.ImageIcon;
+import javax.swing.JTextField;
 import javax.swing.SwingWorker;
 
 /**
@@ -60,6 +67,8 @@ public class regCotizacion extends frameBase<Cotizacion> {
     int id = 0;
 
     private ItemCotizacion item;
+
+    ImageIcon Icon_Refresh = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/refresh-16.png"));
 
     Action sele_clie = new AbstractAction() {
         @Override
@@ -162,13 +171,117 @@ public class regCotizacion extends frameBase<Cotizacion> {
         }
     };
 
+    Action sele_acab = new AbstractAction() {
+        @Override
+        public void actionPerformed(ActionEvent evt) {
+            List<Servicio> seleccionados = ((lisServicio) evt.getSource()).getSeleccionados();
+            if (!seleccionados.isEmpty()) {
+                cliVentas cliente = new cliVentas();
+                try {
+                    String[] arrayJson = new String[]{new Gson().toJson(seleccionados), new Gson().toJson(getEntidad().getIdListaPrecioServicio())};
+                    String json = cliente.ObtenerUnidadesPorServicios(new Gson().toJson(arrayJson));
+                    String[] resultado = new Gson().fromJson(json, String[].class);
+                    Servicio[] acabados = new Gson().fromJson(resultado[1], Servicio[].class);
+                    for (Servicio acabado : acabados) {
+                        double precio = ObtenerPrecioAcabado(acabado.getUnidades().get(0).getEscalas(), 1);
+                        AgregarFila(tbAcabados,
+                                new Object[]{
+                                    0,
+                                    acabado.getIdServicio(),
+                                    acabado.getDescripcion(),
+                                    acabado.getUnidades(),
+                                    acabado.getUnidades().get(0),
+                                    1.0,
+                                    false,
+                                    Icon_Refresh,
+                                    precio,
+                                    precio
+                                });
+                    }
+                    AgregarBoton(tbAcabados, refresh, 7);
+                    AgregarEventoChange(tbAcabados, change_acab);
+                    CalcularTotalAcabados();
+                } catch (Exception e) {
+                    ControlarExcepcion(e);
+                } finally {
+                    cliente.close();
+                }
+            }
+        }
+    };
+
+    Action refresh = new AbstractAction() {
+        @Override
+        public void actionPerformed(ActionEvent evt) {
+            cliVentas cliente = new cliVentas();
+            try {
+                int idServicio = ObtenerValorCelda(tbAcabados, 1);
+                ServicioUnidad servicioUnidad = ObtenerValorCelda(tbAcabados, 4);
+                String json = cliente.ObtenerEscalasListaPrecioServicioPorUnidad(new Gson().toJson(new int[]{getEntidad().getIdListaPrecioServicio(), idServicio, servicioUnidad.getIdServicioUnidad()}));
+                String[] resultado = new Gson().fromJson(json, String[].class);
+                EscalaListaPrecioServicio[] escalas = new Gson().fromJson(resultado[1], EscalaListaPrecioServicio[].class);
+                servicioUnidad.setEscalas(Arrays.asList(escalas));
+                double cantidad = ObtenerValorCelda(tbAcabados, 5);
+                double precio = ObtenerPrecioAcabado(servicioUnidad.getEscalas(), cantidad);
+                AsignarValorCelda(tbAcabados, precio, 8);
+            } catch (Exception e) {
+                ControlarExcepcion(e);
+            } finally {
+                cliente.close();
+            }
+        }
+    };
+
+    Action change_acab = new AbstractAction() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            int[] celda = (int[]) e.getSource();
+            switch (celda[1]) {
+                case 4:
+                    ServicioUnidad servicioUnidad4 = ObtenerValorCelda(tbAcabados, celda[0], celda[1]);
+                    double cantidad4 = ObtenerValorCelda(tbAcabados, celda[0], 5);
+                    double precio4 = ObtenerPrecioAcabado(servicioUnidad4.getEscalas(), cantidad4);
+                    AsignarValorCelda(tbAcabados, precio4, celda[0], 8);
+                    break;
+                case 5:
+                    boolean precioManual5 = ObtenerValorCelda(tbAcabados, celda[0], 6);
+                    if (precioManual5) {
+                        double precio5 = ObtenerValorCelda(tbAcabados, celda[0], 8);
+                        AsignarValorCelda(tbAcabados, precio5, celda[0], 8);
+                    } else {
+                        ServicioUnidad servicioUnidad5 = ObtenerValorCelda(tbAcabados, celda[0], 4);
+                        double cantidad5 = ObtenerValorCelda(tbAcabados, celda[0], celda[1]);
+                        double precio5 = ObtenerPrecioAcabado(servicioUnidad5.getEscalas(), cantidad5);
+                        AsignarValorCelda(tbAcabados, precio5, celda[0], 8);
+                    }
+                    break;
+                case 6:
+                    boolean precioManual6 = ObtenerValorCelda(tbAcabados, celda[0], celda[1]);
+                    if (!precioManual6) {
+                        ServicioUnidad servicioUnidad6 = ObtenerValorCelda(tbAcabados, celda[0], 4);
+                        double cantidad6 = ObtenerValorCelda(tbAcabados, celda[0], 5);
+                        double precio6 = ObtenerPrecioAcabado(servicioUnidad6.getEscalas(), cantidad6);
+                        AsignarValorCelda(tbAcabados, precio6, celda[0], 8);
+                    }
+                    break;
+                case 8:
+                    double cantidad8 = ObtenerValorCelda(tbAcabados, celda[0], 5);
+                    double precio8 = ObtenerValorCelda(tbAcabados, celda[0], celda[1]);
+                    AsignarValorCelda(tbAcabados, cantidad8 * precio8, celda[0], 9);
+                    CalcularTotalAcabados();
+                    break;
+            }
+        }
+    };
+
     public void Init(int id) {
         this.id = id;
         if (this.id == 0) {
             lblTitulo.setText("NUEVA " + lblTitulo.getText());
-            //new swObtenerValoresDefinidos().execute();
+            AgregarCombo(tbAcabados, 4);
         } else {
             lblTitulo.setText("MODIFICAR " + lblTitulo.getText());
+            AgregarCombo(tbAcabados, 4);
             new swObtenerCotizacion().execute();
         }
         OcultarControl(tpnlItems);
@@ -392,6 +505,48 @@ public class regCotizacion extends frameBase<Cotizacion> {
         chkMaterial.setSelected(this.item.isMaterial());
         schMaterial.setVisible(this.item.isMaterial());
         schMaterial.asingValues(this.item.getIdMaterial(), this.item.getNombreMaterial());
+        for (ServicioCotizacion acabado : this.item.getAcabados()) {
+            if (!acabado.isEliminar()) {
+                AgregarFila(tbAcabados,
+                        new Object[]{
+                            acabado.getIdServicioCotizacion(),
+                            acabado.getIdServicio(),
+                            acabado.getDescripcionServicio(),
+                            acabado.getUnidades(),
+                            acabado.getUnidad(),
+                            acabado.getCantidad(),
+                            acabado.isPrecioManual(),
+                            Icon_Refresh,
+                            acabado.getPrecio(),
+                            acabado.getTotal()
+                        });
+            }
+        }
+        AgregarBoton(tbAcabados, refresh, 7);
+        AgregarEventoChange(tbAcabados, change_acab);
+        AsignarTotalAcabados();
+    }
+
+    private List<ServicioCotizacion> getAcabados() {
+        this.item.getAcabados().removeIf(a -> a.isEliminar() == false);
+        for (int i = 0; i < tbAcabados.getRowCount(); i++) {
+            int idServicioCotizacion = ObtenerValorCelda(tbAcabados, i, 0);
+            ServicioCotizacion acabado = new ServicioCotizacion();
+            acabado.setIdServicio(ObtenerValorCelda(tbAcabados, i, 1));
+            acabado.setDescripcionServicio(ObtenerValorCelda(tbAcabados, i, 2));
+            acabado.setIdServicioUnidad(((ServicioUnidad) ObtenerValorCelda(tbAcabados, i, 4)).getIdServicioUnidad());
+            acabado.setCantidad(ObtenerValorCelda(tbAcabados, i, 5));
+            acabado.setPrecio(ObtenerValorCelda(tbAcabados, i, 8));
+            acabado.setTotal(ObtenerValorCelda(tbAcabados, i, 9));
+            if (idServicioCotizacion == 0) {
+                acabado.setAgregar(true);
+            } else {
+                acabado.setIdServicioCotizacion(idServicioCotizacion);
+                acabado.setActualizar(true);
+            }
+            this.item.getAcabados().add(acabado);
+        }
+        return this.item.getAcabados();
     }
 
     private void AsignarValoresItem() {
@@ -424,7 +579,7 @@ public class regCotizacion extends frameBase<Cotizacion> {
         this.item.setMaterial(chkMaterial.isSelected());
         this.item.setIdMaterial(schMaterial.getId());
         this.item.setNombreMaterial(schMaterial.getText());
-
+        this.item.setAcabados(getAcabados());
     }
 
     private void schClienteSearch() {
@@ -504,6 +659,40 @@ public class regCotizacion extends frameBase<Cotizacion> {
         txtTotalMaterial.setText(getEntidad().getSimboloMoneda() + formato.format(this.item.getTotalMaterial()));
     }
 
+    public void AsignarTotalAcabados() {
+        NumberFormat formato = new DecimalFormat("#0.00");
+        txtTotalAcabados.setText(getEntidad().getSimboloMoneda() + formato.format(this.item.getTotalAcabados()));
+    }
+
+    public double ObtenerPrecioAcabado(List<EscalaListaPrecioServicio> escalas, double cantidad) {
+        double precio = 0.0;
+        for (EscalaListaPrecioServicio escala : escalas) {
+            if (escala.getDesde() == 0 && escala.getHasta() == 0) {
+                precio = escala.getPrecio();
+                break;
+            }
+            if (escala.getDesde() <= cantidad && escala.getHasta() >= cantidad) {
+                precio = escala.getPrecio();
+                break;
+            }
+            if (escala.getDesde() <= cantidad && escala.getHasta() == 0) {
+                precio = escala.getPrecio();
+                break;
+            }
+        }
+        return precio;
+    }
+
+    public void CalcularTotalAcabados() {
+        double total = 0.0;
+        for (int i = 0; i < tbAcabados.getRowCount(); i++) {
+            double totalItem = ObtenerValorCelda(tbAcabados, i, 9);
+            total += totalItem;
+        }
+        this.item.setTotalAcabados(total);
+        AsignarTotalAcabados();
+    }
+
     public void Calcular() {
         cliVentas cliVentas = new cliVentas();
         try {
@@ -514,16 +703,16 @@ public class regCotizacion extends frameBase<Cotizacion> {
 
                 if (resultado[0].equals("true")) {
                     ItemListaPrecioMaquina[] itemsListaPrecioMaquina = new Gson().fromJson(resultado[1], ItemListaPrecioMaquina[].class);
-                    
-                    if(itemsListaPrecioMaquina.length == 0){
+
+                    if (itemsListaPrecioMaquina.length == 0) {
                         VerAdvertencia("NO SE ENCONTRÓ UNA ESCALA PARA LA MÁQUINA: " + item.getDescripcionMaquina(), frame);
                         break;
                     }
-                    
+
                     int cantidadIntMaquina = item.getCantidadProduccion() / itemsListaPrecioMaquina[0].getFactor();
                     double cantidadDoubleMaquina = item.getCantidadProduccion() / itemsListaPrecioMaquina[0].getFactor();
                     double precioMaquina = 0;
-                    
+
                     for (EscalaListaPrecioMaquina escala : itemsListaPrecioMaquina[0].getEscalas()) {
                         if (escala.getDesde() == 0 && escala.getHasta() == 0) {
                             precioMaquina = escala.getPrecio();
@@ -669,6 +858,11 @@ public class regCotizacion extends frameBase<Cotizacion> {
         txtTotalMaterial = new javax.swing.JTextField();
         txtTotalMaquina = new javax.swing.JTextField();
         tabAcabados = new javax.swing.JPanel();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        tbAcabados = new javax.swing.JTable();
+        btnNuevoAcabado = new javax.swing.JButton();
+        btnEliminarAcabado = new javax.swing.JButton();
+        txtTotalAcabados = new javax.swing.JTextField();
         tabInformacionAdicional = new javax.swing.JPanel();
         lblListaPrecioProducto = new javax.swing.JLabel();
         schListaPrecioProducto = new com.sge.base.controles.JSearch();
@@ -947,8 +1141,7 @@ public class regCotizacion extends frameBase<Cotizacion> {
                                     .addGroup(pnlItemLayout.createSequentialGroup()
                                         .addComponent(chkFondo, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(70, 70, 70)
-                                        .addComponent(lblObservacionItem)
-                                        .addGap(0, 0, Short.MAX_VALUE))
+                                        .addComponent(lblObservacionItem))
                                     .addGroup(pnlItemLayout.createSequentialGroup()
                                         .addComponent(txtCantidadItem, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -1081,15 +1274,92 @@ public class regCotizacion extends frameBase<Cotizacion> {
         tabAcabados.setBackground(java.awt.Color.white);
         tabAcabados.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
+        tbAcabados.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "ID", "IDSERVICIO", "DESCRIPCION", "ARRAYUNIDAD", "UNIDAD", "CANTIDAD", "MANUAL", "", "PRECIO", "TOTAL"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.Integer.class, java.lang.String.class, java.lang.Object.class, java.lang.String.class, java.lang.Double.class, java.lang.Boolean.class, java.lang.Object.class, java.lang.Double.class, java.lang.Double.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, true, false, true, true, true, true, true, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tbAcabados.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
+        tbAcabados.setRowHeight(25);
+        jScrollPane4.setViewportView(tbAcabados);
+        if (tbAcabados.getColumnModel().getColumnCount() > 0) {
+            tbAcabados.getColumnModel().getColumn(0).setMinWidth(0);
+            tbAcabados.getColumnModel().getColumn(0).setPreferredWidth(0);
+            tbAcabados.getColumnModel().getColumn(0).setMaxWidth(0);
+            tbAcabados.getColumnModel().getColumn(1).setMinWidth(0);
+            tbAcabados.getColumnModel().getColumn(1).setPreferredWidth(0);
+            tbAcabados.getColumnModel().getColumn(1).setMaxWidth(0);
+            tbAcabados.getColumnModel().getColumn(2).setPreferredWidth(300);
+            tbAcabados.getColumnModel().getColumn(3).setMinWidth(0);
+            tbAcabados.getColumnModel().getColumn(3).setPreferredWidth(0);
+            tbAcabados.getColumnModel().getColumn(3).setMaxWidth(0);
+            tbAcabados.getColumnModel().getColumn(7).setPreferredWidth(30);
+        }
+
+        btnNuevoAcabado.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sge/base/imagenes/add-16.png"))); // NOI18N
+        btnNuevoAcabado.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNuevoAcabadoActionPerformed(evt);
+            }
+        });
+
+        btnEliminarAcabado.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sge/base/imagenes/delete-16.png"))); // NOI18N
+        btnEliminarAcabado.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarAcabadoActionPerformed(evt);
+            }
+        });
+
+        txtTotalAcabados.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        txtTotalAcabados.setText("0");
+
         javax.swing.GroupLayout tabAcabadosLayout = new javax.swing.GroupLayout(tabAcabados);
         tabAcabados.setLayout(tabAcabadosLayout);
         tabAcabadosLayout.setHorizontalGroup(
             tabAcabadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 764, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, tabAcabadosLayout.createSequentialGroup()
+                .addGroup(tabAcabadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(tabAcabadosLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(txtTotalAcabados, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 712, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(tabAcabadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btnNuevoAcabado, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnEliminarAcabado, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         tabAcabadosLayout.setVerticalGroup(
             tabAcabadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 316, Short.MAX_VALUE)
+            .addGroup(tabAcabadosLayout.createSequentialGroup()
+                .addGap(23, 23, 23)
+                .addComponent(btnNuevoAcabado)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnEliminarAcabado)
+                .addContainerGap(231, Short.MAX_VALUE))
+            .addGroup(tabAcabadosLayout.createSequentialGroup()
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                .addGap(12, 12, 12)
+                .addComponent(txtTotalAcabados, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         tpnlItems.addTab("ACABADOS", tabAcabados);
@@ -1553,15 +1823,37 @@ public class regCotizacion extends frameBase<Cotizacion> {
         Calcular();
     }//GEN-LAST:event_btnCalcularActionPerformed
 
+    private void btnNuevoAcabadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoAcabadoActionPerformed
+        // TODO add your handling code here:
+        VerModal(new lisServicio(2), sele_acab);
+    }//GEN-LAST:event_btnNuevoAcabadoActionPerformed
+
+    private void btnEliminarAcabadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarAcabadoActionPerformed
+        // TODO add your handling code here:
+        if (FilaActiva(tbAcabados)) {
+            int idServicioCotizacion = ObtenerValorCelda(tbAcabados, 0);
+            if (idServicioCotizacion > 0) {
+                ServicioCotizacion servicioCotizacion = new ServicioCotizacion();
+                servicioCotizacion.setIdServicioCotizacion(idServicioCotizacion);
+                servicioCotizacion.setEliminar(true);
+                this.item.getAcabados().add(servicioCotizacion);
+            }
+            EliminarFila(tbAcabados);
+            CalcularTotalAcabados();
+        }
+    }//GEN-LAST:event_btnEliminarAcabadoActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAceptar;
     private javax.swing.JButton btnCalcular;
     private javax.swing.JButton btnCancelar;
+    private javax.swing.JButton btnEliminarAcabado;
     private javax.swing.JButton btnEliminarItem;
     private javax.swing.JButton btnGenerarGraficoImpresion;
     private javax.swing.JButton btnGenerarGraficoPrecorte;
     private javax.swing.JButton btnGuardarItem;
+    private javax.swing.JButton btnNuevoAcabado;
     private javax.swing.JButton btnNuevoItem;
     private javax.swing.JComboBox cboLineaProduccion;
     private javax.swing.JComboBox cboTipoUnidad;
@@ -1579,6 +1871,7 @@ public class regCotizacion extends frameBase<Cotizacion> {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JLabel lblAltoMedidaAbierta;
@@ -1627,6 +1920,7 @@ public class regCotizacion extends frameBase<Cotizacion> {
     private com.sge.base.controles.JSearch schVendedor;
     private javax.swing.JPanel tabAcabados;
     private javax.swing.JPanel tabInformacionAdicional;
+    private javax.swing.JTable tbAcabados;
     private javax.swing.JTabbedPane tpnlItems;
     private javax.swing.JTextField txtAltoMedidaAbierta;
     private javax.swing.JTextField txtAltoMedidaCerrada;
@@ -1646,6 +1940,7 @@ public class regCotizacion extends frameBase<Cotizacion> {
     private javax.swing.JTextField txtSubTotal;
     private javax.swing.JTextField txtTiraColor;
     private javax.swing.JTextField txtTotal;
+    private javax.swing.JTextField txtTotalAcabados;
     private javax.swing.JTextField txtTotalMaquina;
     private javax.swing.JTextField txtTotalMaterial;
     private javax.swing.JTextField txtUtilidad;

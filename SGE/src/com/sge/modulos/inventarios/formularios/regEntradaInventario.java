@@ -173,8 +173,7 @@ public class regEntradaInventario extends frameBase<EntradaInventario> {
                 try {
                     String json = cliente.ObtenerUnidadesPorProductos(new Gson().toJson(seleccionados));
                     String[] resultado = new Gson().fromJson(json, String[].class);
-                    List<Producto> productos = (List<Producto>) new Gson().fromJson(resultado[1], new TypeToken<List<Producto>>() {
-                    }.getType());
+                    Producto[] productos = new Gson().fromJson(resultado[1], Producto[].class);
                     for (Producto producto : productos) {
                         AgregarFila(tbItems,
                                 new Object[]{

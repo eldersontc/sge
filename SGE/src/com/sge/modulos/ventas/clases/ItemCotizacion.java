@@ -1,5 +1,8 @@
 package com.sge.modulos.ventas.clases;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  *
  * @author elderson
@@ -71,12 +74,15 @@ public class ItemCotizacion {
     private boolean verPrecioEnPresupuesto;
     private double totalMaquina;
     private double totalMaterial;
+    private double totalAcabados;
     private double total;
+    private List<ServicioCotizacion> acabados;
     private boolean agregar;
     private boolean actualizar;
     private boolean eliminar;
 
     public ItemCotizacion() {
+        acabados = new ArrayList<>();
     }
 
     public int getIdItemCotizacion() {
@@ -599,6 +605,14 @@ public class ItemCotizacion {
         this.totalMaterial = totalMaterial;
     }
 
+    public double getTotalAcabados() {
+        return totalAcabados;
+    }
+
+    public void setTotalAcabados(double totalAcabados) {
+        this.totalAcabados = totalAcabados;
+    }
+    
     public double getTotal() {
         return total;
     }
@@ -607,6 +621,14 @@ public class ItemCotizacion {
         this.total = total;
     }
 
+    public List<ServicioCotizacion> getAcabados() {
+        return acabados;
+    }
+
+    public void setAcabados(List<ServicioCotizacion> acabados) {
+        this.acabados = acabados;
+    }
+    
     public boolean isAgregar() {
         return agregar;
     }
