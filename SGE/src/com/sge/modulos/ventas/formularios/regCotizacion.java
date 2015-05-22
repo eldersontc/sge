@@ -506,6 +506,7 @@ public class regCotizacion extends frameBase<Cotizacion> {
         schMaterial.asingValues(this.item.getIdMaterial(), this.item.getNombreMaterial());
         chkIncluirEnPresupuesto.setSelected(this.item.isIncluirEnPresupuesto());
         chkMostrarPrecioEnPresupuesto.setSelected(this.item.isVerPrecioEnPresupuesto());
+        EliminarTodasFilas(tbAcabados);
         for (ServicioCotizacion acabado : this.item.getAcabados()) {
             if (!acabado.isEliminar()) {
                 AgregarFila(tbAcabados,
@@ -1305,6 +1306,7 @@ public class regCotizacion extends frameBase<Cotizacion> {
         });
         tbAcabados.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
         tbAcabados.setRowHeight(25);
+        tbAcabados.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane4.setViewportView(tbAcabados);
         if (tbAcabados.getColumnModel().getColumnCount() > 0) {
             tbAcabados.getColumnModel().getColumn(0).setMinWidth(0);

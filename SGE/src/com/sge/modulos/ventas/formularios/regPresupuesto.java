@@ -641,6 +641,7 @@ public class regPresupuesto extends frameBase<Presupuesto> {
                 getEntidad().getItems().add(itemPresupuesto);
             }
             EliminarFila(tbItems);
+            CalcularTotal();
         }
     }//GEN-LAST:event_btnEliminarItemActionPerformed
 

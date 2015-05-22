@@ -15,6 +15,7 @@ import com.sge.modulos.inventarios.clases.Producto;
 import com.sge.modulos.inventarios.formularios.lisProducto;
 import com.sge.modulos.produccion.clases.ItemOrdenTrabajo;
 import com.sge.modulos.produccion.clases.OrdenTrabajo;
+import com.sge.modulos.produccion.clases.ServicioOrdenTrabajo;
 import com.sge.modulos.produccion.cliente.cliProduccion;
 import com.sge.modulos.ventas.clases.Cliente;
 import com.sge.modulos.ventas.clases.Maquina;
@@ -376,6 +377,19 @@ public class regOrdenTrabajo extends frameBase<OrdenTrabajo> {
         chkMaterial.setSelected(this.item.isMaterial());
         schMaterial.setVisible(this.item.isMaterial());
         schMaterial.asingValues(this.item.getIdMaterial(), this.item.getNombreMaterial());
+        EliminarTodasFilas(tbAcabados);
+        for (ServicioOrdenTrabajo acabado : this.item.getAcabados()) {
+            AgregarFila(tbAcabados,
+                    new Object[]{
+                        acabado.getIdServicioOrdenTrabajo(),
+                        acabado.getIdServicio(),
+                        acabado.getDescripcionServicio(),
+                        acabado.getAbreviacionUnidad(),
+                        acabado.getCantidad(),
+                        acabado.getPrecio(),
+                        acabado.getTotal()
+                    });
+        }
     }
 
     private void AsignarValoresItem() {
@@ -533,6 +547,8 @@ public class regOrdenTrabajo extends frameBase<OrdenTrabajo> {
         lblCantidadItem = new javax.swing.JLabel();
         txtCantidadItem = new javax.swing.JTextField();
         tabAcabados = new javax.swing.JPanel();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        tbAcabados = new javax.swing.JTable();
         tabInformacionAdicional = new javax.swing.JPanel();
         lblListaPrecioProducto = new javax.swing.JLabel();
         schListaPrecioProducto = new com.sge.base.controles.JSearch();
@@ -896,15 +912,51 @@ public class regOrdenTrabajo extends frameBase<OrdenTrabajo> {
         tabAcabados.setBackground(java.awt.Color.white);
         tabAcabados.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
+        tbAcabados.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "ID", "IDSERVICIO", "DESCRIPCION", "UNIDAD", "CANTIDAD", "PRECIO", "TOTAL"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, true, true, true, true, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tbAcabados.setRowHeight(25);
+        tbAcabados.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jScrollPane4.setViewportView(tbAcabados);
+        if (tbAcabados.getColumnModel().getColumnCount() > 0) {
+            tbAcabados.getColumnModel().getColumn(0).setMinWidth(0);
+            tbAcabados.getColumnModel().getColumn(0).setPreferredWidth(0);
+            tbAcabados.getColumnModel().getColumn(0).setMaxWidth(0);
+            tbAcabados.getColumnModel().getColumn(1).setMinWidth(0);
+            tbAcabados.getColumnModel().getColumn(1).setPreferredWidth(0);
+            tbAcabados.getColumnModel().getColumn(1).setMaxWidth(0);
+            tbAcabados.getColumnModel().getColumn(2).setPreferredWidth(300);
+        }
+
         javax.swing.GroupLayout tabAcabadosLayout = new javax.swing.GroupLayout(tabAcabados);
         tabAcabados.setLayout(tabAcabadosLayout);
         tabAcabadosLayout.setHorizontalGroup(
             tabAcabadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 764, Short.MAX_VALUE)
+            .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 764, Short.MAX_VALUE)
         );
         tabAcabadosLayout.setVerticalGroup(
             tabAcabadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 316, Short.MAX_VALUE)
+            .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
         );
 
         tpnlItems.addTab("ACABADOS", tabAcabados);
@@ -1279,6 +1331,7 @@ public class regOrdenTrabajo extends frameBase<OrdenTrabajo> {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JLabel lblAltoMedidaAbierta;
     private javax.swing.JLabel lblAltoMedidaCerrada;
@@ -1322,6 +1375,7 @@ public class regOrdenTrabajo extends frameBase<OrdenTrabajo> {
     private com.sge.base.controles.JSearch schVendedor;
     private javax.swing.JPanel tabAcabados;
     private javax.swing.JPanel tabInformacionAdicional;
+    private javax.swing.JTable tbAcabados;
     private javax.swing.JTabbedPane tpnlItems;
     private javax.swing.JTextField txtAltoMedidaAbierta;
     private javax.swing.JTextField txtAltoMedidaCerrada;

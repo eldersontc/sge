@@ -4,10 +4,12 @@ import com.google.gson.Gson;
 import com.sge.base.formularios.frameBase;
 import com.sge.modulos.produccion.clases.ItemOrdenTrabajo;
 import com.sge.modulos.produccion.clases.OrdenTrabajo;
+import com.sge.modulos.produccion.clases.ServicioOrdenTrabajo;
 import com.sge.modulos.produccion.formularios.regOrdenTrabajo;
 import com.sge.modulos.ventas.clases.Cotizacion;
 import com.sge.modulos.ventas.clases.ItemCotizacion;
 import com.sge.modulos.ventas.clases.Presupuesto;
+import com.sge.modulos.ventas.clases.ServicioCotizacion;
 import com.sge.modulos.ventas.cliente.cliVentas;
 import java.awt.event.ActionEvent;
 import java.util.Date;
@@ -358,11 +360,14 @@ public class lisPresupuesto extends frameBase<Presupuesto> {
                         ordenTrabajo.setFechaCreacion(fechaServidor);
                         ordenTrabajo.setIdVendedor(cotizacion.getIdVendedor());
                         ordenTrabajo.setNombreVendedor(cotizacion.getNombreVendedor());
+                        ordenTrabajo.setIdCotizador(cotizacion.getIdCotizador());
+                        ordenTrabajo.setNombreCotizador(cotizacion.getNombreCotizador());
                         ordenTrabajo.setLineaProduccion(cotizacion.getLineaProduccion());
                         ordenTrabajo.setCantidad(cotizacion.getCantidad());
                         for (ItemCotizacion itemCotizacion : cotizacion.getItems()) {
                             ItemOrdenTrabajo itemOrdenTrabajo = new ItemOrdenTrabajo();
                             itemOrdenTrabajo.setNombre(itemCotizacion.getNombre());
+                            itemOrdenTrabajo.setCantidad(itemCotizacion.getCantidad());
                             itemOrdenTrabajo.setIdServicioImpresion(itemCotizacion.getIdServicioImpresion());
                             itemOrdenTrabajo.setNombreServicioImpresion(itemCotizacion.getNombreServicioImpresion());
                             itemOrdenTrabajo.setIdMaquina(itemCotizacion.getIdMaquina());
@@ -403,6 +408,18 @@ public class lisPresupuesto extends frameBase<Presupuesto> {
                             itemOrdenTrabajo.setUbicacionGraficoImpresion(itemCotizacion.getUbicacionGraficoImpresion());
                             itemOrdenTrabajo.setGraficoPrecorte(itemCotizacion.getGraficoPrecorte());
                             itemOrdenTrabajo.setGraficoImpresion(itemCotizacion.getGraficoImpresion());
+                            for (ServicioCotizacion acabadoCotizacion : itemCotizacion.getAcabados()) {
+                                ServicioOrdenTrabajo acabadoOT = new ServicioOrdenTrabajo();
+                                acabadoOT.setIdServicio(acabadoCotizacion.getIdServicio());
+                                acabadoOT.setDescripcionServicio(acabadoCotizacion.getDescripcionServicio());
+                                acabadoOT.setIdServicioUnidad(acabadoCotizacion.getIdServicioUnidad());
+                                acabadoOT.setAbreviacionUnidad(acabadoCotizacion.getAbreviacionUnidad());
+                                acabadoOT.setCantidad(acabadoCotizacion.getCantidad());
+                                acabadoOT.setPrecioManual(acabadoCotizacion.isPrecioManual());
+                                acabadoOT.setPrecio(acabadoCotizacion.getPrecio());
+                                acabadoOT.setTotal(acabadoCotizacion.getTotal());
+                                itemOrdenTrabajo.getAcabados().add(acabadoOT);
+                            }
                             ordenTrabajo.getItems().add(itemOrdenTrabajo);
                         }
                         regOrdenTrabajo regOrdenTrabajo = new regOrdenTrabajo(0);
