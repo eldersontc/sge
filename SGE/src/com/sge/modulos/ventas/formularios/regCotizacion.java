@@ -179,7 +179,7 @@ public class regCotizacion extends frameBase<Cotizacion> {
             }
         }
     };
-    
+
     Action sele_acab = new AbstractAction() {
         @Override
         public void actionPerformed(ActionEvent evt) {
@@ -657,14 +657,18 @@ public class regCotizacion extends frameBase<Cotizacion> {
         String filtro = "WHERE ContactoCliente.idCliente = " + schCliente.getId();
         VerModal(new lisContactoCliente(filtro), sele_cont);
     }
-    
+
     public void Aceptar() {
         if (super.isFromJson()) {
             AsignarValores();
             setJson(new Gson().toJson(super.getEntidad()));
             Cerrar();
         } else {
-            new swGuardarCotizacion().execute();
+            if (getEntidad().getIdCotizacion() == 0 || "PENDIENTE DE APROBACIÓN".equals(getEntidad().getEstado())) {
+                new swGuardarCotizacion().execute();
+            } else {
+                VerAdvertencia("SÓLO SE PUEDE MODIFICAR CUANDO EL ESTADO ES : PENDIENTE DE APROBACIÓN.", frame);
+            }
         }
     }
 

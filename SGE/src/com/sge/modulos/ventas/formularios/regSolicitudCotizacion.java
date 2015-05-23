@@ -1254,7 +1254,11 @@ public class regSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
             setJson(new Gson().toJson(super.getEntidad()));
             Cerrar();
         } else {
-            new swGuardarSolicitud().execute();
+            if(getEntidad().getIdSolicitudCotizacion() == 0 || "PENDIENTE DE APROBACIÓN".equals(getEntidad().getEstado())){
+                new swGuardarSolicitud().execute();
+            } else {
+                VerAdvertencia("SÓLO SE PUEDE MODIFICAR CUANDO EL ESTADO ES : PENDIENTE DE APROBACIÓN.", frame);
+            }
         }
     }
 

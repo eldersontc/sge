@@ -45,7 +45,12 @@ public class lisSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
     Action dele = new AbstractAction() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            EliminarSolicitudCotizacion();
+            String estado = ObtenerValorCelda(tbSolicitudes, 7);
+            if(estado.equals("COTIZACIÓN GENERADA")){
+                VerAdvertencia("NO SE PUEDE ELIMINAR PORQUE TIENE UNA COTIZACIÓN GENERADA.", frame);
+            } else {
+                EliminarSolicitudCotizacion();
+            }
         }
     };
 
@@ -347,7 +352,7 @@ public class lisSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
         if (estado.equals("PENDIENTE DE APROBACIÓN")) {
             new swAprobarSolicitudCotizacion().execute();
         } else {
-            VerAdvertencia("NO SE PUEDE APROBAR LA SOLICITUD DE COTIZACIÓN", frame);
+            VerAdvertencia("SÓLO SE PUEDE APROBAR CUANDO ESTÁ EN ESTADO : PENDIENTE DE APROBACIÓN.", frame);
         }
     }
     
@@ -356,7 +361,7 @@ public class lisSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
         if (estado.equals("APROBADO")) {
             new swDesaprobarSolicitudCotizacion().execute();
         } else {
-            VerAdvertencia("NO SE PUEDE DESAPROBAR LA SOLICITUD DE COTIZACIÓN", frame);
+            VerAdvertencia("SÓLO SE PUEDE DESAPROBAR CUANDO ESTÁ EN ESTADO : APROBADO.", frame);
         }
     }
 
@@ -365,7 +370,7 @@ public class lisSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
         if (estado.equals("APROBADO")) {
             new swGenerarCotizacion().execute();
         } else {
-            VerAdvertencia("NO SE PUEDE GENERAR LA COTIZACIÓN", frame);
+            VerAdvertencia("SÓLO SE PUEDE GENERAR COTIZACIÓN CUANDO ESTÁ EN ESTADO : APROBADO.", frame);
         }
     }
     

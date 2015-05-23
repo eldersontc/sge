@@ -477,10 +477,10 @@ public class lisPresupuesto extends frameBase<Presupuesto> {
 
     public void AprobarPresupuesto() {
         String estado = ObtenerValorCelda(tbPresupuestos, 6);
-        if (estado.equals("PENDIENTE DE APROBACIÓN")) {
+        if (estado.equals("PENDIENTE DE APROBACIÓN") || estado.equals("RECHAZADO")) {
             new swAprobarPresupuesto().execute();
         } else {
-            VerAdvertencia("NO SE PUEDE APROBAR EL PRESUPUESTO", frame);
+            VerAdvertencia("SÓLO SE PUEDE APROBAR CUANDO ESTÁ EN ESTADO : PENDIENTE DE APROBACIÓN Ó RECHAZADO.", frame);
         }
     }
     
@@ -489,7 +489,7 @@ public class lisPresupuesto extends frameBase<Presupuesto> {
         if (estado.equals("APROBADO")) {
             new swDesaprobarPresupuesto().execute();
         } else {
-            VerAdvertencia("NO SE PUEDE DESAPROBAR EL PRESUPUESTO", frame);
+            VerAdvertencia("SÓLO SE PUEDE DESAPROBAR CUANDO ESTÁ EN ESTADO : APROBADO.", frame);
         }
     }
 
@@ -498,7 +498,7 @@ public class lisPresupuesto extends frameBase<Presupuesto> {
         if (estado.equals("APROBADO")) {
             new swEnviarPresupuesto().execute();
         } else {
-            VerAdvertencia("NO SE PUEDE ENVIAR EL PRESUPUESTO", frame);
+            VerAdvertencia("SÓLO SE PUEDE ENVIAR CUANDO ESTÁ EN ESTADO : APROBADO.", frame);
         }
     }
     
@@ -507,7 +507,7 @@ public class lisPresupuesto extends frameBase<Presupuesto> {
         if (estado.equals("ENVIADO AL CLIENTE")) {
             new swAceptarPresupuesto().execute();
         } else {
-            VerAdvertencia("NO SE PUEDE ACEPTAR EL PRESUPUESTO", frame);
+            VerAdvertencia("SÓLO SE PUEDE ACEPTAR CUANDO ESTÁ EN ESTADO : ENVIADO AL CLIENTE.", frame);
         }
     }
     
@@ -516,7 +516,7 @@ public class lisPresupuesto extends frameBase<Presupuesto> {
         if (estado.equals("ENVIADO AL CLIENTE")) {
             new swRechazarPresupuesto().execute();
         } else {
-            VerAdvertencia("NO SE PUEDE RECHAZAR EL PRESUPUESTO", frame);
+            VerAdvertencia("SÓLO SE PUEDE RECHAZAR CUANDO ESTÁ EN ESTADO : ENVIADO AL CLIENTE.", frame);
         }
     }
     
@@ -525,7 +525,7 @@ public class lisPresupuesto extends frameBase<Presupuesto> {
         if (estado.equals("ACEPTADO")) {
             new swGenerarOrdenTrabajo().execute();
         } else {
-            VerAdvertencia("NO SE PUEDE GENERAR LA ORDEN DE TRABAJO", frame);
+            VerAdvertencia("SÓLO SE PUEDE GENERAR OT CUANDO ESTÁ EN ESTADO : ACEPTADO.", frame);
         }
     }
     

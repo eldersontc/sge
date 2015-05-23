@@ -51,7 +51,12 @@ public class lisCotizacion extends frameBase<Cotizacion> {
     Action dele = new AbstractAction() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            EliminarCotizacion();
+            String estado = ObtenerValorCelda(tbCotizaciones, 9);
+            if(estado.equals("EN PRESUPUESTO")){
+                VerAdvertencia("NO SE PUEDE ELIMINAR PORQUE ESTÁ INCLUIDO EN UN PRESUPUESTO.", frame);
+            } else {
+                EliminarCotizacion();
+            }
         }
     };
 
@@ -248,7 +253,7 @@ public class lisCotizacion extends frameBase<Cotizacion> {
         if (estado.equals("PENDIENTE DE APROBACIÓN")) {
             new swAprobarCotizacion().execute();
         } else {
-            VerAdvertencia("NO SE PUEDE APROBAR LA COTIZACIÓN", frame);
+            VerAdvertencia("SÓLO SE PUEDE APROBAR CUANDO ESTÁ EN ESTADO : PENDIENTE DE APROBACIÓN.", frame);
         }
     }
     
@@ -257,7 +262,7 @@ public class lisCotizacion extends frameBase<Cotizacion> {
         if (estado.equals("APROBADO")) {
             new swDesaprobarCotizacion().execute();
         } else {
-            VerAdvertencia("NO SE PUEDE DESAPROBAR LA COTIZACIÓN", frame);
+            VerAdvertencia("SÓLO SE PUEDE DESAPROBAR CUANDO ESTÁ EN ESTADO : APROBADO.", frame);
         }
     }
     
@@ -292,6 +297,8 @@ public class lisCotizacion extends frameBase<Cotizacion> {
         btnDesaprobar = new javax.swing.JButton();
 
         setClosable(true);
+        setMaximizable(true);
+        setResizable(true);
 
         frame.setBackground(java.awt.Color.white);
         frame.setBorder(null);
@@ -355,7 +362,7 @@ public class lisCotizacion extends frameBase<Cotizacion> {
             .addGroup(pnlTituloLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lblTitulo)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 828, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 837, Short.MAX_VALUE)
                 .addComponent(btnNuevo)
                 .addContainerGap())
         );
@@ -416,7 +423,7 @@ public class lisCotizacion extends frameBase<Cotizacion> {
             .addGroup(frameLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1175, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1184, Short.MAX_VALUE)
                     .addGroup(frameLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btnSeleccionar, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -446,7 +453,7 @@ public class lisCotizacion extends frameBase<Cotizacion> {
                     .addComponent(btnAprobar, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnDesaprobar, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 234, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 237, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnSeleccionar)
                 .addGap(9, 9, 9))

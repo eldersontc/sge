@@ -43,7 +43,7 @@ public class regPresupuesto extends frameBase<Presupuesto> {
         initComponents();
         super.Init(valorDefinido);
     }
-    
+
     int id = 0;
 
     Action change_item = new AbstractAction() {
@@ -60,7 +60,7 @@ public class regPresupuesto extends frameBase<Presupuesto> {
             }
         }
     };
-    
+
     Action sele_clie = new AbstractAction() {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -106,7 +106,7 @@ public class regPresupuesto extends frameBase<Presupuesto> {
         }
     };
 
-    private void CalcularTotal(){
+    private void CalcularTotal() {
         double total = 0;
         for (int i = 0; i < tbItems.getRowCount(); i++) {
             double totalItem = ObtenerValorCelda(tbItems, i, 6);
@@ -116,7 +116,7 @@ public class regPresupuesto extends frameBase<Presupuesto> {
         NumberFormat formato = new DecimalFormat("#0.00");
         txtTotal.setText(getEntidad().getSimboloMoneda() + formato.format(getEntidad().getTotal()));
     }
-    
+
     public void Init(int id) {
         this.id = id;
         if (this.id == 0) {
@@ -288,7 +288,7 @@ public class regPresupuesto extends frameBase<Presupuesto> {
             }
         }
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -602,17 +602,21 @@ public class regPresupuesto extends frameBase<Presupuesto> {
     private void schMonedaSearch() {
         VerModal(new lisMoneda(1), sele_mone);
     }
-    
+
     public void Aceptar() {
         if (super.isFromJson()) {
             AsignarValores();
             setJson(new Gson().toJson(super.getEntidad()));
             Cerrar();
         } else {
-            new swGuardarPresupuesto().execute();
+            if (getEntidad().getIdPresupuesto() == 0 || "PENDIENTE DE APROBACIÓN".equals(getEntidad().getEstado()) || "RECHAZADO".equals(getEntidad().getEstado())) {
+                new swGuardarPresupuesto().execute();
+            } else {
+                VerAdvertencia("SÓLO SE PUEDE MODIFICAR CUANDO EL ESTADO ES : PENDIENTE DE APROBACIÓN Ó RECHAZADO.", frame);
+            }
         }
     }
-    
+
     private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
         // TODO add your handling code here:
         Aceptar();
