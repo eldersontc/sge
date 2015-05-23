@@ -41,9 +41,11 @@ public class PresupuestoDTO {
 
             itemPresupuestoDAO = new ItemPresupuestoDAO();
             itemPresupuestoDAO.AsignarSesion(presupuestoDAO);
+            
             List<Object[]> filtros = new ArrayList<>();
             filtros.add(new Object[]{"idPresupuesto", idPresupuesto});
             List<ItemPresupuesto> items = itemPresupuestoDAO.ObtenerLista(ItemPresupuesto.class, filtros);
+            
             presupuesto.setItems(items);
         } catch (Exception e) {
             throw e;
@@ -70,7 +72,7 @@ public class PresupuestoDTO {
                 item.setIdPresupuesto(presupuesto.getIdPresupuesto());
                 itemPresupuestoDAO.Agregar(item);
                 cotizacionDAO.ActualizarIdYNumeroPresupuesto(item.getIdCotizacion(), presupuesto.getIdPresupuesto(), presupuesto.getNumero());
-                cotizacionDAO.ActualizarEstadoCotizacion(item.getIdCotizacion(), "PRESUPUESTO GENERADO");
+                cotizacionDAO.ActualizarEstadoCotizacion(item.getIdCotizacion(), "EN PRESUPUESTO");
             }
 
             presupuestoDAO.ConfirmarTransaccion();
@@ -100,7 +102,7 @@ public class PresupuestoDTO {
                     item.setIdPresupuesto(presupuesto.getIdPresupuesto());
                     itemPresupuestoDAO.Agregar(item);
                     cotizacionDAO.ActualizarIdYNumeroPresupuesto(item.getIdCotizacion(), presupuesto.getIdPresupuesto(), presupuesto.getNumero());
-                    cotizacionDAO.ActualizarEstadoCotizacion(item.getIdCotizacion(), "PRESUPUESTO GENERADO");
+                    cotizacionDAO.ActualizarEstadoCotizacion(item.getIdCotizacion(), "EN PRESUPUESTO");
                 }
                 if (item.isActualizar()) {
                     itemPresupuestoDAO.ActualizarItemPresupuesto(item.getIdItemPresupuesto(), item.getRecargo(), item.getTotal());
@@ -130,8 +132,20 @@ public class PresupuestoDTO {
 
             itemPresupuestoDAO = new ItemPresupuestoDAO();
             itemPresupuestoDAO.AsignarSesion(presupuestoDAO);
-            itemPresupuestoDAO.EliminarItemPresupuestoPorPresupuesto(idPresupuesto);
-
+            
+            cotizacionDAO = new CotizacionDAO();
+            cotizacionDAO.AsignarSesion(presupuestoDAO);
+            
+            List<Object[]> filtros = new ArrayList<>();
+            filtros.add(new Object[]{"idPresupuesto", idPresupuesto});
+            List<ItemPresupuesto> items = itemPresupuestoDAO.ObtenerLista(ItemPresupuesto.class, filtros);
+            
+            for (ItemPresupuesto item : items) {
+                cotizacionDAO.ActualizarIdYNumeroPresupuesto(item.getIdCotizacion(), 0, "");
+                cotizacionDAO.ActualizarEstadoCotizacion(item.getIdCotizacion(), "APROBADO");
+                itemPresupuestoDAO.EliminarItemPresupuesto(item.getIdItemPresupuesto());
+            }
+            
             presupuestoDAO.ConfirmarTransaccion();
         } catch (Exception e) {
             presupuestoDAO.AbortarTransaccion();
