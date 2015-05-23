@@ -1,6 +1,7 @@
 package com.sge.modulos.administracion.servicios;
 
 import com.google.gson.Gson;
+import com.sge.modulos.administracion.entidades.Entidad;
 import com.sge.modulos.administracion.negocios.EntidadDTO;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,9 +34,29 @@ public class EntidadSRV {
         try {
             String filtro = new Gson().fromJson(json, String.class);
             EntidadDTO entidadDTO = new EntidadDTO();
-            List<Object[]> lista = entidadDTO.ObtenerEntidades(filtro);
+            List<Entidad> lista = entidadDTO.ObtenerEntidades(filtro);
             resultado.add(new Gson().toJson(true));
             resultado.add(new Gson().toJson(lista));
+        } catch (Exception e) {
+            resultado.clear();
+            resultado.add(new Gson().toJson(false));
+            resultado.add(new Gson().toJson(e));
+        }
+        return new Gson().toJson(resultado);
+    }
+    
+    @POST
+    @Path("ObtenerEntidad")
+    @Consumes("application/json")
+    @Produces("application/json")
+    public String ObtenerEntidad(String json) {
+        List<String> resultado = new ArrayList<>();
+        try {
+            int idEntidad = new Gson().fromJson(json, int.class);
+            EntidadDTO entidadDTO = new EntidadDTO();
+            Entidad entidad = entidadDTO.ObtenerEntidad(idEntidad);
+            resultado.add(new Gson().toJson(true));
+            resultado.add(new Gson().toJson(entidad));
         } catch (Exception e) {
             resultado.clear();
             resultado.add(new Gson().toJson(false));

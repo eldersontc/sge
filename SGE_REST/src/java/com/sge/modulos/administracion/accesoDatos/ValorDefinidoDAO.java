@@ -1,6 +1,7 @@
 package com.sge.modulos.administracion.accesoDatos;
 
 import com.sge.base.accesoDatos.BaseDAO;
+import com.sge.modulos.administracion.entidades.ValorDefinido;
 import java.util.List;
 
 /**
@@ -9,17 +10,16 @@ import java.util.List;
  */
 public class ValorDefinidoDAO extends BaseDAO {
 
-    public List<Object[]> ObtenerValoresDefinidos(String filtro) {
+    public List<ValorDefinido> ObtenerValoresDefinidos(String filtro) {
         String sql = "SELECT \n"
-                + "ValorDefinido.idValorDefinido, ValorDefinido.usuario, Entidad.nombre AS entidad, ValorDefinido.activo \n"
+                + "ValorDefinido.* \n"
                 + "FROM \n"
-                + "Administracion.ValorDefinido AS ValorDefinido \n"
-                + "INNER JOIN Administracion.Entidad AS Entidad ON ValorDefinido.idEntidad = Entidad.idEntidad " + filtro;
-        return super.ObtenerLista(sql);
+                + "Administracion.ValorDefinido AS ValorDefinido " + filtro;
+        return super.ObtenerLista(sql, ValorDefinido.class);
     }
 
-    public int ActualizarValorDefinido(int idValorDefinido, int idUsuario, String usuario, int idEntidad, String json, boolean activo) {
-        String sql = String.format("UPDATE Administracion.ValorDefinido SET idUsuario = '%d', usuario = '%s', idEntidad = %d, json = '%s', activo = %b WHERE idValorDefinido = %d", idUsuario, usuario, idEntidad, json, activo, idValorDefinido);
+    public int ActualizarValorDefinido(int idValorDefinido, int idUsuario, String usuario, int idEntidad, String nombreEntidad, String json, boolean activo) {
+        String sql = String.format("UPDATE Administracion.ValorDefinido SET idUsuario = '%d', usuario = '%s', idEntidad = %d, nombreEntidad = '%s', json = '%s', activo = %b WHERE idValorDefinido = %d", idUsuario, usuario, idEntidad, nombreEntidad, json, activo, idValorDefinido);
         return super.Ejecutar(sql);
     }
 

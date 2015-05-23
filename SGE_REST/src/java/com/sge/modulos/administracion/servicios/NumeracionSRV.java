@@ -34,7 +34,7 @@ public class NumeracionSRV {
         try {
             String filtro = new Gson().fromJson(json, String.class);
             NumeracionDTO numeracionDTO = new NumeracionDTO();
-            List<Object[]> lista = numeracionDTO.ObtenerNumeraciones(filtro);
+            List<Numeracion> lista = numeracionDTO.ObtenerNumeraciones(filtro);
             resultado.add(new Gson().toJson(true));
             resultado.add(new Gson().toJson(lista));
         } catch (Exception e) {

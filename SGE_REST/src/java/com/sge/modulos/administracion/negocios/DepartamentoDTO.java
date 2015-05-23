@@ -1,6 +1,7 @@
 package com.sge.modulos.administracion.negocios;
 
 import com.sge.modulos.administracion.accesoDatos.DepartamentoDAO;
+import com.sge.modulos.administracion.entidades.Departamento;
 import java.util.List;
 
 /**
@@ -11,8 +12,8 @@ public class DepartamentoDTO {
     
     DepartamentoDAO departamentoDAO;
     
-    public List<Object[]> ObtenerDepartamentos(String filtro) {
-        List<Object[]> lista;
+    public List<Departamento> ObtenerDepartamentos(String filtro) {
+        List<Departamento> lista;
         try {
             departamentoDAO = new DepartamentoDAO();
             departamentoDAO.AbrirSesion();

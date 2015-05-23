@@ -12,8 +12,8 @@ public class NumeracionDTO {
     
     NumeracionDAO numeracionDAO;
     
-    public List<Object[]> ObtenerNumeraciones(String filtro) {
-        List<Object[]> lista;
+    public List<Numeracion> ObtenerNumeraciones(String filtro) {
+        List<Numeracion> lista;
         try {
             numeracionDAO = new NumeracionDAO();
             numeracionDAO.AbrirSesion();
@@ -59,7 +59,7 @@ public class NumeracionDTO {
         try {
             numeracionDAO = new NumeracionDAO();
             numeracionDAO.IniciarTransaccion();
-            numeracionDAO.ActualizarNumeracion(numeracion.getIdNumeracion(), numeracion.getDescripcion(), numeracion.getIdEntidad(), numeracion.isManual(), numeracion.getSerie(), numeracion.getNumeroActual(), numeracion.getLongitudNumero(), numeracion.isTieneImpuesto(), numeracion.getPorcentajeImpuesto(),numeracion.isActivo());
+            numeracionDAO.ActualizarNumeracion(numeracion.getIdNumeracion(), numeracion.getDescripcion(), numeracion.getIdEntidad(), numeracion.getNombreEntidad(), numeracion.isManual(), numeracion.getSerie(), numeracion.getNumeroActual(), numeracion.getLongitudNumero(), numeracion.isTieneImpuesto(), numeracion.getPorcentajeImpuesto(),numeracion.isActivo());
             numeracionDAO.ConfirmarTransaccion();
         } catch (Exception e) {
             numeracionDAO.AbortarTransaccion();

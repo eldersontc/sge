@@ -12,6 +12,7 @@ public class Reporte {
     private int idReporte;
     private String nombre;
     private int idEntidad;
+    private String nombreEntidad;
     private String ubicacion;
     private boolean activo;
     private List<ItemReporte> items;
@@ -43,7 +44,15 @@ public class Reporte {
     public void setIdEntidad(int idEntidad) {
         this.idEntidad = idEntidad;
     }
-    
+
+    public String getNombreEntidad() {
+        return nombreEntidad;
+    }
+
+    public void setNombreEntidad(String nombreEntidad) {
+        this.nombreEntidad = nombreEntidad;
+    }
+
     public String getUbicacion() {
         return ubicacion;
     }

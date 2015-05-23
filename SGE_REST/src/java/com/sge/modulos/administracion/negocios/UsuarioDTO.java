@@ -12,8 +12,8 @@ public class UsuarioDTO {
 
     UsuarioDAO usuarioDAO;
 
-    public List<Object[]> ObtenerUsuarios(String filtro) {
-        List<Object[]> lista;
+    public List<Usuario> ObtenerUsuarios(String filtro) {
+        List<Usuario> lista;
         try {
             usuarioDAO = new UsuarioDAO();
             usuarioDAO.AbrirSesion();

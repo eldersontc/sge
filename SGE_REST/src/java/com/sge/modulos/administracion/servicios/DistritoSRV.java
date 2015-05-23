@@ -1,6 +1,7 @@
 package com.sge.modulos.administracion.servicios;
 
 import com.google.gson.Gson;
+import com.sge.modulos.administracion.entidades.Distrito;
 import com.sge.modulos.administracion.negocios.DistritoDTO;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +34,7 @@ public class DistritoSRV {
         try {
             String filtro = new Gson().fromJson(json, String.class);
             DistritoDTO distritoDTO = new DistritoDTO();
-            List<Object[]> lista = distritoDTO.ObtenerDistritos(filtro);
+            List<Distrito> lista = distritoDTO.ObtenerDistritos(filtro);
             resultado.add(new Gson().toJson(true));
             resultado.add(new Gson().toJson(lista));
         } catch (Exception e) {

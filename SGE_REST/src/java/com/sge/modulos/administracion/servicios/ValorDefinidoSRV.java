@@ -35,7 +35,7 @@ public class ValorDefinidoSRV {
         try {
             String filtro = new Gson().fromJson(json, String.class);
             ValorDefinidoDTO valoresDefinidosDTO = new ValorDefinidoDTO();
-            List<Object[]> lista = valoresDefinidosDTO.ObtenerValoresDefinidos(filtro);
+            List<ValorDefinido> lista = valoresDefinidosDTO.ObtenerValoresDefinidos(filtro);
             resultado.add(new Gson().toJson(true));
             resultado.add(new Gson().toJson(lista));
         } catch (Exception e) {

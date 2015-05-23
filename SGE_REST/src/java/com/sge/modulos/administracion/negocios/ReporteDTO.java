@@ -22,8 +22,8 @@ public class ReporteDTO {
     ReporteDAO reporteDAO;
     ItemReporteDAO itemReporteDAO;
 
-    public List<Object[]> ObtenerReportes(String filtro) {
-        List<Object[]> lista;
+    public List<Reporte> ObtenerReportes(String filtro) {
+        List<Reporte> lista;
         try {
             reporteDAO = new ReporteDAO();
             reporteDAO.AbrirSesion();
@@ -81,7 +81,7 @@ public class ReporteDTO {
         try {
             reporteDAO = new ReporteDAO();
             reporteDAO.IniciarTransaccion();
-            reporteDAO.ActualizarReporte(reporte.getIdReporte(), reporte.getNombre(), reporte.getIdEntidad(), reporte.getUbicacion(), reporte.isActivo());
+            reporteDAO.ActualizarReporte(reporte.getIdReporte(), reporte.getNombre(), reporte.getIdEntidad(), reporte.getNombreEntidad(), reporte.getUbicacion(), reporte.isActivo());
             itemReporteDAO = new ItemReporteDAO();
             itemReporteDAO.AsignarSesion(reporteDAO);
             for (ItemReporte item : reporte.getItems()) {

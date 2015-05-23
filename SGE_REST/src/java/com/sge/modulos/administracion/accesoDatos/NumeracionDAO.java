@@ -1,6 +1,7 @@
 package com.sge.modulos.administracion.accesoDatos;
 
 import com.sge.base.accesoDatos.BaseDAO;
+import com.sge.modulos.administracion.entidades.Numeracion;
 import java.util.List;
 
 /**
@@ -9,17 +10,16 @@ import java.util.List;
  */
 public class NumeracionDAO extends BaseDAO {
 
-    public List<Object[]> ObtenerNumeraciones(String filtro) {
+    public List<Numeracion> ObtenerNumeraciones(String filtro) {
         String sql = "SELECT \n"
-                + "Numeracion.idNumeracion, Numeracion.descripcion, Entidad.nombre as entidad, Numeracion.manual, Numeracion.activo \n"
+                + "Numeracion.* \n"
                 + "FROM \n"
-                + "Administracion.Numeracion AS Numeracion \n"
-                + "INNER JOIN Administracion.Entidad AS Entidad ON Numeracion.idEntidad = Entidad.idEntidad " + filtro;
-        return super.ObtenerLista(sql);
+                + "Administracion.Numeracion AS Numeracion " + filtro;
+        return super.ObtenerLista(sql, Numeracion.class);
     }
 
-    public int ActualizarNumeracion(int idNumeracion, String descripcion, int idEntidad, boolean manual, String serie, int numeroActual, int longitudNumero, boolean tieneImpuesto, double porcentajeImpuesto, boolean activo) {
-        String sql = String.format("UPDATE Administracion.Numeracion SET descripcion = '%s', idEntidad = %d, manual = %b, serie = '%s', numeroActual = %s, longitudNumero = %s, tieneImpuesto = %b, porcentajeImpuesto = %s, activo = %b WHERE idNumeracion = %d", descripcion, idEntidad, manual, serie, numeroActual, longitudNumero, tieneImpuesto, porcentajeImpuesto, activo, idNumeracion);
+    public int ActualizarNumeracion(int idNumeracion, String descripcion, int idEntidad, String nombreEntidad, boolean manual, String serie, int numeroActual, int longitudNumero, boolean tieneImpuesto, double porcentajeImpuesto, boolean activo) {
+        String sql = String.format("UPDATE Administracion.Numeracion SET descripcion = '%s', idEntidad = %d, nombreEntidad = '%s', manual = %b, serie = '%s', numeroActual = %s, longitudNumero = %s, tieneImpuesto = %b, porcentajeImpuesto = %s, activo = %b WHERE idNumeracion = %d", descripcion, idEntidad, nombreEntidad, manual, serie, numeroActual, longitudNumero, tieneImpuesto, porcentajeImpuesto, activo, idNumeracion);
         return super.Ejecutar(sql);
     }
 

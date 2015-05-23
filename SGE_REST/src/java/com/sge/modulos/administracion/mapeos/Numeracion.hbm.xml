@@ -11,6 +11,7 @@
         </id>
         <property name="descripcion" column="descripcion"/>
         <property name="idEntidad" column="idEntidad"/>
+        <property name="nombreEntidad" column="nombreEntidad"/>
         <property name="manual" column="manual"/>
         <property name="serie" column="serie"/>
         <property name="numeroActual" column="numeroActual"/>

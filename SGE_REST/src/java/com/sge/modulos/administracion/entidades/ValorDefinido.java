@@ -10,6 +10,7 @@ public class ValorDefinido {
     private int idUsuario;
     private String usuario;
     private int idEntidad;
+    private String nombreEntidad;
     private String json;
     private boolean activo;
 
@@ -28,8 +29,8 @@ public class ValorDefinido {
         return idUsuario;
     }
 
-    public void setIdUsuario(int idUduario) {
-        this.idUsuario = idUduario;
+    public void setIdUsuario(int idUsuario) {
+        this.idUsuario = idUsuario;
     }
 
     public String getUsuario() {
@@ -47,7 +48,15 @@ public class ValorDefinido {
     public void setIdEntidad(int idEntidad) {
         this.idEntidad = idEntidad;
     }
-    
+
+    public String getNombreEntidad() {
+        return nombreEntidad;
+    }
+
+    public void setNombreEntidad(String nombreEntidad) {
+        this.nombreEntidad = nombreEntidad;
+    }
+
     public String getJson() {
         return json;
     }

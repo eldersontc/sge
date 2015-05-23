@@ -1,6 +1,7 @@
 package com.sge.modulos.administracion.servicios;
 
 import com.google.gson.Gson;
+import com.sge.modulos.administracion.entidades.Provincia;
 import com.sge.modulos.administracion.negocios.ProvinciaDTO;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +34,7 @@ public class ProvinciaSRV {
         try {
             String filtro = new Gson().fromJson(json, String.class);
             ProvinciaDTO provinciaDTO = new ProvinciaDTO();
-            List<Object[]> lista = provinciaDTO.ObtenerProvincias(filtro);
+            List<Provincia> lista = provinciaDTO.ObtenerProvincias(filtro);
             resultado.add(new Gson().toJson(true));
             resultado.add(new Gson().toJson(lista));
         } catch (Exception e) {

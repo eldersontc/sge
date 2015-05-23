@@ -12,12 +12,12 @@ public class MonedaDTO {
     
     MonedaDAO monedaDAO;
     
-    public List<Object[]> ObtenerMonedas() {
-        List<Object[]> lista;
+    public List<Moneda> ObtenerMonedas(String filtro) {
+        List<Moneda> lista;
         try {
             monedaDAO = new MonedaDAO();
             monedaDAO.AbrirSesion();
-            lista = monedaDAO.ObtenerMonedas();
+            lista = monedaDAO.ObtenerMonedas(filtro);
         } catch (Exception e) {
             throw e;
         } finally {

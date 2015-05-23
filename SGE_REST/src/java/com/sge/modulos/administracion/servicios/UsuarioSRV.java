@@ -36,7 +36,7 @@ public class UsuarioSRV {
         try {
             String filtro = new Gson().fromJson(json, String.class);
             UsuarioDTO usuarioDTO = new UsuarioDTO();
-            List<Object[]> lista = usuarioDTO.ObtenerUsuarios(filtro);
+            List<Usuario> lista = usuarioDTO.ObtenerUsuarios(filtro);
             resultado.add(new Gson().toJson(true));
             resultado.add(new Gson().toJson(lista));
             resultado.add(new Gson().toJson(new Date()));

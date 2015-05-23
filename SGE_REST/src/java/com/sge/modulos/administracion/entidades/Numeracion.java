@@ -9,6 +9,7 @@ public class Numeracion {
     private int idNumeracion;
     private String descripcion;
     private int idEntidad;
+    private String nombreEntidad;
     private boolean manual;
     private String serie;
     private int numeroActual;
@@ -42,6 +43,14 @@ public class Numeracion {
 
     public void setIdEntidad(int idEntidad) {
         this.idEntidad = idEntidad;
+    }
+
+    public String getNombreEntidad() {
+        return nombreEntidad;
+    }
+
+    public void setNombreEntidad(String nombreEntidad) {
+        this.nombreEntidad = nombreEntidad;
     }
 
     public boolean isManual() {

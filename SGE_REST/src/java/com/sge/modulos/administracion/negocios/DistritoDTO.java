@@ -1,6 +1,7 @@
 package com.sge.modulos.administracion.negocios;
 
 import com.sge.modulos.administracion.accesoDatos.DistritoDAO;
+import com.sge.modulos.administracion.entidades.Distrito;
 import java.util.List;
 
 /**
@@ -11,8 +12,8 @@ public class DistritoDTO {
     
     DistritoDAO distritoDAO;
     
-    public List<Object[]> ObtenerDistritos(String filtro) {
-        List<Object[]> lista;
+    public List<Distrito> ObtenerDistritos(String filtro) {
+        List<Distrito> lista;
         try {
             distritoDAO = new DistritoDAO();
             distritoDAO.AbrirSesion();

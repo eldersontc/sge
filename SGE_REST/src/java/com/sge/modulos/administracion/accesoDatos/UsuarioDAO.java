@@ -1,6 +1,7 @@
 package com.sge.modulos.administracion.accesoDatos;
 
 import com.sge.base.accesoDatos.BaseDAO;
+import com.sge.modulos.administracion.entidades.Usuario;
 import java.util.List;
 
 /**
@@ -9,12 +10,12 @@ import java.util.List;
  */
 public class UsuarioDAO extends BaseDAO {
 
-    public List<Object[]> ObtenerUsuarios(String filtro) {
+    public List<Usuario> ObtenerUsuarios(String filtro) {
         String sql = "SELECT \n"
-                + "Usuario.idUsuario, Usuario.usuario, Usuario.clave, Usuario.activo \n"
+                + "Usuario.* \n"
                 + "FROM \n"
-                + "Administracion.Usuario " + filtro;
-        return super.ObtenerLista(sql);
+                + "Administracion.Usuario AS Usuario " + filtro;
+        return super.ObtenerLista(sql, Usuario.class);
     }
 
     public int ActualizarUsuario(int idUsuario, String usuario, String clave, boolean activo) {

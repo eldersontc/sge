@@ -13,8 +13,8 @@ public class ValorDefinidoDTO {
 
     ValorDefinidoDAO valorDefinidoDAO;
 
-    public List<Object[]> ObtenerValoresDefinidos(String filtro) {
-        List<Object[]> lista;
+    public List<ValorDefinido> ObtenerValoresDefinidos(String filtro) {
+        List<ValorDefinido> lista;
         try {
             valorDefinidoDAO = new ValorDefinidoDAO();
             valorDefinidoDAO.AbrirSesion();
@@ -80,7 +80,7 @@ public class ValorDefinidoDTO {
         try {
             valorDefinidoDAO = new ValorDefinidoDAO();
             valorDefinidoDAO.IniciarTransaccion();
-            valorDefinidoDAO.ActualizarValorDefinido(valorDefinido.getIdValorDefinido(), valorDefinido.getIdUsuario(), valorDefinido.getUsuario(), valorDefinido.getIdEntidad(), valorDefinido.getJson(), valorDefinido.isActivo());
+            valorDefinidoDAO.ActualizarValorDefinido(valorDefinido.getIdValorDefinido(), valorDefinido.getIdUsuario(), valorDefinido.getUsuario(), valorDefinido.getIdEntidad(), valorDefinido.getNombreEntidad(), valorDefinido.getJson(), valorDefinido.isActivo());
             valorDefinidoDAO.ConfirmarTransaccion();
         } catch (Exception e) {
             valorDefinidoDAO.AbortarTransaccion();

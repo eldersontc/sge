@@ -32,8 +32,9 @@ public class EmpleadoSRV {
     public String ObtenerEmpleados(String json) {
         List<String> resultado = new ArrayList<>();
         try {
+            String filtro = new Gson().fromJson(json, String.class);
             EmpleadoDTO empleadoDTO = new EmpleadoDTO();
-            List<Object[]> lista = empleadoDTO.ObtenerEmpleados();
+            List<Empleado> lista = empleadoDTO.ObtenerEmpleados(filtro);
             resultado.add(new Gson().toJson(true));
             resultado.add(new Gson().toJson(lista));
         } catch (Exception e) {

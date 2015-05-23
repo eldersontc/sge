@@ -32,8 +32,9 @@ public class MonedaSRV {
     public String ObtenerMonedas(String json) {
         List<String> resultado = new ArrayList<>();
         try {
+            String filtro = new Gson().fromJson(json, String.class);
             MonedaDTO monedaDTO = new MonedaDTO();
-            List<Object[]> lista = monedaDTO.ObtenerMonedas();
+            List<Moneda> lista = monedaDTO.ObtenerMonedas(filtro);
             resultado.add(new Gson().toJson(true));
             resultado.add(new Gson().toJson(lista));
         } catch (Exception e) {

@@ -11,6 +11,7 @@
         </id>
         <property name="nombre" column="nombre"/>
         <property name="idEntidad" column="idEntidad"/>
+        <property name="nombreEntidad" column="nombreEntidad"/>
         <property name="ubicacion" column="ubicacion"/>
         <property name="activo" column="activo"/>
     </class>

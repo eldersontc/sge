@@ -12,12 +12,12 @@ public class EmpleadoDTO {
     
     EmpleadoDAO empleadoDAO;
     
-    public List<Object[]> ObtenerEmpleados() {
-        List<Object[]> lista;
+    public List<Empleado> ObtenerEmpleados(String filtro) {
+        List<Empleado> lista;
         try {
             empleadoDAO = new EmpleadoDAO();
             empleadoDAO.AbrirSesion();
-            lista = empleadoDAO.ObtenerEmpleados();
+            lista = empleadoDAO.ObtenerEmpleados(filtro);
         } catch (Exception e) {
             throw e;
         } finally {
