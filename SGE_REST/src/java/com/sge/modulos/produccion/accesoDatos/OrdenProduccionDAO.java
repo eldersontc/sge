@@ -1,6 +1,7 @@
 package com.sge.modulos.produccion.accesoDatos;
 
 import com.sge.base.accesoDatos.BaseDAO;
+import com.sge.modulos.produccion.entidades.OrdenProduccion;
 import java.util.List;
 
 /**
@@ -9,12 +10,12 @@ import java.util.List;
  */
 public class OrdenProduccionDAO extends BaseDAO {
     
-    public List<Object[]> ObtenerOrdenesProduccion(String filtro) {
+    public List<OrdenProduccion> ObtenerOrdenesProduccion(String filtro) {
         String sql = "SELECT \n"
-                + "OrdenProduccion.idOrdenProduccion, OrdenProduccion.numero, OrdenProduccion.fechaCreacion, OrdenProduccion.razonSocialCliente, OrdenProduccion.nombreResponsable \n"
+                + "OrdenProduccion.* \n"
                 + "FROM \n"
-                + "Produccion.OrdenProduccion " + filtro;
-        return super.ObtenerLista(sql);
+                + "Produccion.OrdenProduccion AS OrdenProduccion " + filtro;
+        return super.ObtenerLista(sql, OrdenProduccion.class);
     }
 
     public int ActualizarOrdenProduccion(int idOrdenProduccion, int idCliente, String razonSocialCliente, int idResponsable, String nombreResponsable) {

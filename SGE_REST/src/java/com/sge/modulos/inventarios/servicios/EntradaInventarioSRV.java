@@ -33,8 +33,9 @@ public class EntradaInventarioSRV {
     public String ObtenerEntradaInventarios(String json) {
         List<String> resultado = new ArrayList<>();
         try {
+            String filtro = new Gson().fromJson(json, String.class);
             EntradaInventarioDTO entradaInventarioDTO = new EntradaInventarioDTO();
-            List<Object[]> lista = entradaInventarioDTO.ObtenerEntradaInventarios();
+            List<EntradaInventario> lista = entradaInventarioDTO.ObtenerEntradaInventarios(filtro);
             resultado.add(new Gson().toJson(true));
             resultado.add(new Gson().toJson(lista));
         } catch (Exception e) {

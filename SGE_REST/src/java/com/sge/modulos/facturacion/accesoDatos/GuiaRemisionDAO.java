@@ -14,7 +14,7 @@ public class GuiaRemisionDAO extends BaseDAO {
         String sql = "SELECT \n"
                 + "GuiaRemision.* \n"
                 + "FROM \n"
-                + "Facturacion.GuiaRemision " + filtro;
+                + "Facturacion.GuiaRemision AS GuiaRemision " + filtro;
         return super.ObtenerLista(sql, GuiaRemision.class);
     }
 

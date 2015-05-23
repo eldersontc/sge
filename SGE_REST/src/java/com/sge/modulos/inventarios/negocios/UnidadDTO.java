@@ -12,12 +12,12 @@ public class UnidadDTO {
     
     UnidadDAO unidadDAO;
     
-    public List<Object[]> ObtenerUnidades() {
-        List<Object[]> lista;
+    public List<Unidad> ObtenerUnidades(String filtro) {
+        List<Unidad> lista;
         try {
             unidadDAO = new UnidadDAO();
             unidadDAO.AbrirSesion();
-            lista = unidadDAO.ObtenerUnidades();
+            lista = unidadDAO.ObtenerUnidades(filtro);
         } catch (Exception e) {
             throw e;
         } finally {

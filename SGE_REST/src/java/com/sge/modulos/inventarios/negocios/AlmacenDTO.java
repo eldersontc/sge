@@ -12,12 +12,12 @@ public class AlmacenDTO {
     
     AlmacenDAO almacenDAO;
     
-    public List<Object[]> ObtenerAlmacenes() {
-        List<Object[]> lista;
+    public List<Almacen> ObtenerAlmacenes(String filtro) {
+        List<Almacen> lista;
         try {
             almacenDAO = new AlmacenDAO();
             almacenDAO.AbrirSesion();
-            lista = almacenDAO.ObtenerAlmacenes();
+            lista = almacenDAO.ObtenerAlmacenes(filtro);
         } catch (Exception e) {
             throw e;
         } finally {

@@ -1,12 +1,9 @@
 package com.sge.modulos.inventarios.servicios;
 
 import com.google.gson.Gson;
-import com.sge.modulos.administracion.entidades.ValorDefinido;
-import com.sge.modulos.administracion.negocios.ValorDefinidoDTO;
 import com.sge.modulos.inventarios.entidades.SalidaInventario;
 import com.sge.modulos.inventarios.negocios.SalidaInventarioDTO;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
@@ -35,8 +32,9 @@ public class SalidaInventarioSRV {
     public String ObtenerSalidaInventarios(String json) {
         List<String> resultado = new ArrayList<>();
         try {
+            String filtro = new Gson().fromJson(json, String.class);
             SalidaInventarioDTO salidaInventarioDTO = new SalidaInventarioDTO();
-            List<Object[]> lista = salidaInventarioDTO.ObtenerSalidaInventarios();
+            List<SalidaInventario> lista = salidaInventarioDTO.ObtenerSalidaInventarios(filtro);
             resultado.add(new Gson().toJson(true));
             resultado.add(new Gson().toJson(lista));
         } catch (Exception e) {

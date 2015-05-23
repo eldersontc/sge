@@ -1,7 +1,6 @@
 package com.sge.modulos.inventarios.accesoDatos;
 
 import com.sge.base.accesoDatos.BaseDAO;
-import java.util.List;
 
 /**
  *

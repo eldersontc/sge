@@ -16,8 +16,8 @@ public class OrdenProduccionDTO {
     OrdenProduccionDAO ordenProduccionDAO;
     ItemOrdenProduccionDAO itemOrdenProduccionDAO;
 
-    public List<Object[]> ObtenerOrdenesProduccion(String filtro) {
-        List<Object[]> lista;
+    public List<OrdenProduccion> ObtenerOrdenesProduccion(String filtro) {
+        List<OrdenProduccion> lista;
         try {
             ordenProduccionDAO = new OrdenProduccionDAO();
             ordenProduccionDAO.AbrirSesion();

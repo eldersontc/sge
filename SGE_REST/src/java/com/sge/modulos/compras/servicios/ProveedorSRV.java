@@ -32,8 +32,9 @@ public class ProveedorSRV {
     public String ObtenerProveedores(String json) {
         List<String> resultado = new ArrayList<>();
         try {
+            String filtro = new Gson().fromJson(json, String.class);
             ProveedorDTO proveedorDTO = new ProveedorDTO();
-            List<Object[]> lista = proveedorDTO.ObtenerProveedores();
+            List<Proveedor> lista = proveedorDTO.ObtenerProveedores(filtro);
             resultado.add(new Gson().toJson(true));
             resultado.add(new Gson().toJson(lista));
         } catch (Exception e) {

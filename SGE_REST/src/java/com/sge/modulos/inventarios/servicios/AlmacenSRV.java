@@ -32,8 +32,9 @@ public class AlmacenSRV {
     public String ObtenerAlmacenes(String json) {
         List<String> resultado = new ArrayList<>();
         try {
+            String filtro = new Gson().fromJson(json, String.class);
             AlmacenDTO AlmacenDTO = new AlmacenDTO();
-            List<Object[]> lista = AlmacenDTO.ObtenerAlmacenes();
+            List<Almacen> lista = AlmacenDTO.ObtenerAlmacenes(filtro);
             resultado.add(new Gson().toJson(true));
             resultado.add(new Gson().toJson(lista));
         } catch (Exception e) {

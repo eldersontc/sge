@@ -32,8 +32,9 @@ public class UnidadSRV {
     public String ObtenerUnidades(String json) {
         List<String> resultado = new ArrayList<>();
         try {
+            String filtro = new Gson().fromJson(json, String.class);
             UnidadDTO UnidadDTO = new UnidadDTO();
-            List<Object[]> lista = UnidadDTO.ObtenerUnidades();
+            List<Unidad> lista = UnidadDTO.ObtenerUnidades(filtro);
             resultado.add(new Gson().toJson(true));
             resultado.add(new Gson().toJson(lista));
         } catch (Exception e) {

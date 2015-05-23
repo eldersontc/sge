@@ -14,7 +14,7 @@ public class CajaDAO extends BaseDAO {
         String sql = "SELECT \n"
                 + "Caja.* \n"
                 + "FROM \n"
-                + "Finanzas.Caja " + filtro;
+                + "Finanzas.Caja AS Caja " + filtro;
         return super.ObtenerLista(sql, Caja.class);
     }
 

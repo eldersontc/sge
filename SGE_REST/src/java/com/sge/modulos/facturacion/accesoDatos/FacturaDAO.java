@@ -14,7 +14,7 @@ public class FacturaDAO extends BaseDAO {
         String sql = "SELECT \n"
                 + "Factura.* \n"
                 + "FROM \n"
-                + "Facturacion.Factura " + filtro;
+                + "Facturacion.Factura AS Factura " + filtro;
         return super.ObtenerLista(sql, Factura.class);
     }
 

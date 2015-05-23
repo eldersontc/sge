@@ -1,6 +1,7 @@
 package com.sge.modulos.inventarios.accesoDatos;
 
 import com.sge.base.accesoDatos.BaseDAO;
+import com.sge.modulos.inventarios.entidades.Unidad;
 import java.util.List;
 
 /**
@@ -9,12 +10,12 @@ import java.util.List;
  */
 public class UnidadDAO extends BaseDAO {
 
-    public List<Object[]> ObtenerUnidades() {
+    public List<Unidad> ObtenerUnidades(String filtro) {
         String sql = "SELECT \n"
-                + "Unidad.idUnidad, Unidad.abreviacion, Unidad.descripcion, Unidad.activo \n"
+                + "Unidad.* \n"
                 + "FROM \n"
-                + "Inventarios.Unidad \n";
-        return super.ObtenerLista(sql);
+                + "Inventarios.Unidad AS Unidad " + filtro;
+        return super.ObtenerLista(sql, Unidad.class);
     }
 
     public int ActualizarUnidad(int idUnidad, String abreviacion, String descripcion, boolean activo) {

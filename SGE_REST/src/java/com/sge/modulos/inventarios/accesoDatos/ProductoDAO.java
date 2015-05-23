@@ -1,6 +1,7 @@
 package com.sge.modulos.inventarios.accesoDatos;
 
 import com.sge.base.accesoDatos.BaseDAO;
+import com.sge.modulos.inventarios.entidades.Producto;
 import java.util.List;
 
 /**
@@ -9,12 +10,12 @@ import java.util.List;
  */
 public class ProductoDAO extends BaseDAO {
     
-    public List<Object[]> ObtenerProductos() {
+    public List<Producto> ObtenerProductos(String filtro) {
         String sql = "SELECT \n"
                 + "Producto.idProducto, Producto.codigo, Producto.descripcion, Producto.alto, Producto.largo, Producto.idUnidadBase, Producto.abreviacionUnidadBase, Producto.activo \n"
                 + "FROM \n"
-                + "Inventarios.Producto \n";
-        return super.ObtenerLista(sql);
+                + "Inventarios.Producto AS Producto " + filtro;
+        return super.ObtenerLista(sql, Producto.class);
     }
 
     public int ActualizarProducto(int idProducto, String codigo, String descripcion, boolean inventarios, boolean compras, boolean ventas, double alto, double largo, int idUnidadBase, String abreviacionUnidadBase, boolean activo) {

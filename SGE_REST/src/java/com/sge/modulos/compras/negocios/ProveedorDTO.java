@@ -12,12 +12,12 @@ public class ProveedorDTO {
 
     ProveedorDAO proveedorDAO;
 
-    public List<Object[]> ObtenerProveedores() {
-        List<Object[]> lista;
+    public List<Proveedor> ObtenerProveedores(String filtro) {
+        List<Proveedor> lista;
         try {
             proveedorDAO = new ProveedorDAO();
             proveedorDAO.AbrirSesion();
-            lista = proveedorDAO.ObtenerProveedores();
+            lista = proveedorDAO.ObtenerProveedores(filtro);
         } catch (Exception e) {
             throw e;
         } finally {

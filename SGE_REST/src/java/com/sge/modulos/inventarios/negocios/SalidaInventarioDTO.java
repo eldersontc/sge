@@ -18,12 +18,12 @@ public class SalidaInventarioDTO {
     ItemSalidaInventarioDAO itemSalidaInventarioDAO;
     ProductoAlmacenDAO productoAlmacenDAO;
 
-    public List<Object[]> ObtenerSalidaInventarios() {
-        List<Object[]> lista;
+    public List<SalidaInventario> ObtenerSalidaInventarios(String filtro) {
+        List<SalidaInventario> lista;
         try {
             salidaInventarioDAO = new SalidaInventarioDAO();
             salidaInventarioDAO.AbrirSesion();
-            lista = salidaInventarioDAO.ObtenerSalidaInventarios();
+            lista = salidaInventarioDAO.ObtenerSalidaInventarios(filtro);
         } catch (Exception e) {
             throw e;
         } finally {

@@ -14,7 +14,7 @@ public class OrdenTrabajoDAO extends BaseDAO {
         String sql = "SELECT \n"
                 + "OrdenTrabajo.* \n"
                 + "FROM \n"
-                + "Produccion.OrdenTrabajo " + filtro;
+                + "Produccion.OrdenTrabajo AS OrdenTrabajo " + filtro;
         return super.ObtenerLista(sql, OrdenTrabajo.class);
     }
 

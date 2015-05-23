@@ -2,6 +2,7 @@ package com.sge.modulos.inventarios.servicios;
 
 import com.google.gson.Gson;
 import com.sge.modulos.inventarios.entidades.Producto;
+import com.sge.modulos.inventarios.entidades.ProductoUnidad;
 import com.sge.modulos.inventarios.negocios.ProductoDTO;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,8 +33,9 @@ public class ProductoSRV {
     public String ObtenerProductos(String json) {
         List<String> resultado = new ArrayList<>();
         try {
+            String filtro = new Gson().fromJson(json, String.class);
             ProductoDTO ProductoDTO = new ProductoDTO();
-            List<Object[]> lista = ProductoDTO.ObtenerProductos();
+            List<Producto> lista = ProductoDTO.ObtenerProductos(filtro);
             resultado.add(new Gson().toJson(true));
             resultado.add(new Gson().toJson(lista));
         } catch (Exception e) {
@@ -146,10 +148,10 @@ public class ProductoSRV {
     @Produces("application/json")
     public String ObtenerProductoUnidades(String json) {
         List<String> resultado = new ArrayList<>();
-        String filtros = new Gson().fromJson(json, String.class);
         try {
+            String filtro = new Gson().fromJson(json, String.class);
             ProductoDTO ProductoDTO = new ProductoDTO();
-            List<Object[]> lista = ProductoDTO.ObtenerProductoUnidades(filtros);
+            List<ProductoUnidad> lista = ProductoDTO.ObtenerProductoUnidades(filtro);
             resultado.add(new Gson().toJson(true));
             resultado.add(new Gson().toJson(lista));
         } catch (Exception e) {

@@ -19,12 +19,12 @@ public class ProductoDTO {
     ProductoAlmacenDAO productoAlmacenDAO;
     ProductoUnidadDAO productoUnidadDAO;
 
-    public List<Object[]> ObtenerProductos() {
-        List<Object[]> lista;
+    public List<Producto> ObtenerProductos(String filtro) {
+        List<Producto> lista;
         try {
             productoDAO = new ProductoDAO();
             productoDAO.AbrirSesion();
-            lista = productoDAO.ObtenerProductos();
+            lista = productoDAO.ObtenerProductos(filtro);
         } catch (Exception e) {
             throw e;
         } finally {
@@ -180,8 +180,8 @@ public class ProductoDTO {
         return lista;
     }
     
-    public List<Object[]> ObtenerProductoUnidades(String filtro) {
-        List<Object[]> lista = new ArrayList<>();
+    public List<ProductoUnidad> ObtenerProductoUnidades(String filtro) {
+        List<ProductoUnidad> lista = new ArrayList<>();
         try {
             productoUnidadDAO = new ProductoUnidadDAO();
             productoUnidadDAO.AbrirSesion();

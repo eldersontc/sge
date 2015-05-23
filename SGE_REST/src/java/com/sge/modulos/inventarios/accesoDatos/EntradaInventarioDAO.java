@@ -1,6 +1,7 @@
 package com.sge.modulos.inventarios.accesoDatos;
 
 import com.sge.base.accesoDatos.BaseDAO;
+import com.sge.modulos.inventarios.entidades.EntradaInventario;
 import java.util.List;
 
 /**
@@ -9,14 +10,12 @@ import java.util.List;
  */
 public class EntradaInventarioDAO extends BaseDAO {
     
-    public List<Object[]> ObtenerEntradaInventarios() {
+    public List<EntradaInventario> ObtenerEntradaInventarios(String filtro) {
         String sql = "SELECT \n"
-                + "EntradaInventario.idEntradaInventario, EntradaInventario.numero, EntradaInventario.fechaCreacion, \n"
-                + "EntradaInventario.razonSocialProveedor, EntradaInventario.nombreResponsable, EntradaInventario.simboloMoneda, \n"
-                + "EntradaInventario.total \n"
+                + "EntradaInventario.* \n"
                 + "FROM \n"
-                + "Inventarios.EntradaInventario \n";
-        return super.ObtenerLista(sql);
+                + "Inventarios.EntradaInventario AS EntradaInventario " + filtro;
+        return super.ObtenerLista(sql, EntradaInventario.class);
     }
     
     public int EliminarEntradaInventario(int idEntradaInventario) {

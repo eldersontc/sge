@@ -1,6 +1,7 @@
 package com.sge.modulos.compras.accesoDatos;
 
 import com.sge.base.accesoDatos.BaseDAO;
+import com.sge.modulos.compras.entidades.Proveedor;
 import java.util.List;
 
 /**
@@ -9,12 +10,12 @@ import java.util.List;
  */
 public class ProveedorDAO extends BaseDAO {
 
-    public List<Object[]> ObtenerProveedores() {
+    public List<Proveedor> ObtenerProveedores(String filtro) {
         String sql = "SELECT \n"
-                + "Proveedor.idProveedor, Proveedor.razonSocial, Proveedor.tipoDocumentoIdentidad, Proveedor.documentoIdentidad, Proveedor.nombreComercial, Proveedor.fechaUltimaCompra, Proveedor.activo \n"
+                + "Proveedor.* \n"
                 + "FROM \n"
-                + "Compras.Proveedor \n";
-        return super.ObtenerLista(sql);
+                + "Compras.Proveedor AS Proveedor " + filtro;
+        return super.ObtenerLista(sql, Proveedor.class);
     }
 
     public int ActualizarProveedor(int idProveedor, String razonSocial, String tipoDocumentoIdentidad, String documentoIdentidad, String nombreComercial, boolean activo) {
