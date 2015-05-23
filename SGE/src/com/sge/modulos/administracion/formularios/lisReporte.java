@@ -1,12 +1,10 @@
 package com.sge.modulos.administracion.formularios;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.sge.base.formularios.frameBase;
 import com.sge.modulos.administracion.clases.Reporte;
 import com.sge.modulos.administracion.cliente.cliAdministracion;
 import java.awt.event.ActionEvent;
-import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ImageIcon;
@@ -23,10 +21,17 @@ public class lisReporte extends frameBase<Reporte> {
      */
     public lisReporte(int modo) {
         initComponents();
-        Init(modo);
+        Init(modo, "");
     }
 
-    private int modo = 0;
+    public lisReporte(int modo, String filtro) {
+        initComponents();
+        Init(modo, filtro);
+    }
+
+    private int modo;
+
+    private String filtro;
 
     private Reporte seleccionado;
 
@@ -55,7 +60,7 @@ public class lisReporte extends frameBase<Reporte> {
             cliAdministracion cliente = new cliAdministracion();
             String json = "";
             try {
-                json = cliente.ObtenerReportes(new Gson().toJson(""));
+                json = cliente.ObtenerReportes(new Gson().toJson(filtro));
             } catch (Exception e) {
                 OcultarCargando(frame);
                 cancel(false);
@@ -74,10 +79,9 @@ public class lisReporte extends frameBase<Reporte> {
 
                 if (resultado[0].equals("true")) {
                     EliminarTodasFilas(tbReportes);
-                    List<Object[]> filas = (List<Object[]>) new Gson().fromJson(resultado[1], new TypeToken<List<Object[]>>() {
-                    }.getType());
-                    for (Object[] fila : filas) {
-                        AgregarFila(tbReportes, new Object[]{false, ((Double) fila[0]).intValue(), fila[1], fila[2], fila[3], Icon_Edit, Icon_Dele});
+                    Reporte[] reportes = new Gson().fromJson(resultado[1], Reporte[].class);
+                    for (Reporte reporte : reportes) {
+                        AgregarFila(tbReportes, new Object[]{false, reporte.getIdReporte(), reporte.getNombre(), reporte.getNombreEntidad(), reporte.isActivo(), Icon_Edit, Icon_Dele});
                     }
                     AgregarBoton(tbReportes, edit, 5);
                     AgregarBoton(tbReportes, dele, 6);
@@ -128,8 +132,9 @@ public class lisReporte extends frameBase<Reporte> {
         }
     }
 
-    public void Init(int modo) {
+    public void Init(int modo, String filtro) {
         this.modo = modo;
+        this.filtro = filtro;
         switch (this.modo) {
             case 0:
                 OcultarColumna(tbReportes, 0);

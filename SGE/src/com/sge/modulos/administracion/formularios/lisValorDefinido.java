@@ -1,12 +1,10 @@
 package com.sge.modulos.administracion.formularios;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.sge.base.formularios.frameBase;
 import com.sge.modulos.administracion.clases.ValorDefinido;
 import com.sge.modulos.administracion.cliente.cliAdministracion;
 import java.awt.event.ActionEvent;
-import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ImageIcon;
@@ -23,10 +21,17 @@ public class lisValorDefinido extends frameBase<ValorDefinido> {
      */
     public lisValorDefinido(int modo) {
         initComponents();
-        Init(modo);
+        Init(modo, "");
     }
 
-    private int modo = 0;
+    public lisValorDefinido(int modo, String filtro) {
+        initComponents();
+        Init(modo, filtro);
+    }
+
+    private int modo;
+
+    private String filtro;
 
     ImageIcon Icon_Edit = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/edit-16.png"));
     ImageIcon Icon_Dele = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/delete-16.png"));
@@ -53,7 +58,7 @@ public class lisValorDefinido extends frameBase<ValorDefinido> {
             cliAdministracion cliente = new cliAdministracion();
             String json = "";
             try {
-                json = cliente.ObtenerValoresDefinidos(new Gson().toJson(""));
+                json = cliente.ObtenerValoresDefinidos(new Gson().toJson(filtro));
             } catch (Exception e) {
                 OcultarCargando(frame);
                 cancel(false);
@@ -72,10 +77,9 @@ public class lisValorDefinido extends frameBase<ValorDefinido> {
 
                 if (resultado[0].equals("true")) {
                     EliminarTodasFilas(tbValoresDefinidos);
-                    List<Object[]> filas = (List<Object[]>) new Gson().fromJson(resultado[1], new TypeToken<List<Object[]>>() {
-                    }.getType());
-                    for (Object[] fila : filas) {
-                        AgregarFila(tbValoresDefinidos, new Object[]{false, ((Double) fila[0]).intValue(), fila[1], fila[2], fila[3], Icon_Edit, Icon_Dele});
+                    ValorDefinido[] valoresDefinidos = new Gson().fromJson(resultado[1], ValorDefinido[].class);
+                    for (ValorDefinido valorDefinido : valoresDefinidos) {
+                        AgregarFila(tbValoresDefinidos, new Object[]{false, valorDefinido.getIdValorDefinido(), valorDefinido.getUsuario(), valorDefinido.getNombreEntidad(), valorDefinido.isActivo(), Icon_Edit, Icon_Dele});
                     }
                     AgregarBoton(tbValoresDefinidos, edit, 5);
                     AgregarBoton(tbValoresDefinidos, dele, 6);
@@ -126,12 +130,12 @@ public class lisValorDefinido extends frameBase<ValorDefinido> {
         }
     }
 
-    public void Init(int modo) {
+    public void Init(int modo, String filtro) {
         this.modo = modo;
+        this.filtro = filtro;
         switch (this.modo) {
             case 0:
                 OcultarColumna(tbValoresDefinidos, 0);
-                //OcultarControl(btnSeleccionar);
                 break;
             case 1:
                 OcultarColumna(tbValoresDefinidos, 0);

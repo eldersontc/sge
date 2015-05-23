@@ -1,12 +1,10 @@
 package com.sge.modulos.administracion.formularios;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.sge.base.formularios.frameBase;
-import com.sge.modulos.administracion.clases.Numeracion;
+import com.sge.modulos.administracion.clases.Entidad;
 import com.sge.modulos.administracion.cliente.cliAdministracion;
 import java.awt.event.ActionEvent;
-import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ImageIcon;
@@ -16,88 +14,49 @@ import javax.swing.SwingWorker;
  *
  * @author elderson
  */
-public class lisNumeracion extends frameBase<Numeracion> {
+public class lisEntidad extends frameBase<Entidad> {
 
     /**
-     * Creates new form lisNumeracion
+     * Creates new form lisEntidad
      */
-    public lisNumeracion(int modo) {
+    public lisEntidad() {
+        initComponents();
+    }
+
+    public lisEntidad(int modo) {
         initComponents();
         Init(modo, "");
     }
 
-    public lisNumeracion(int modo, String filtro) {
+    public lisEntidad(int modo, String filtro) {
         initComponents();
         Init(modo, filtro);
     }
-    
+
     private int modo;
-    
+
     private String filtro;
 
-    private Numeracion seleccionado;
+    private Entidad seleccionado;
 
-    ImageIcon Icon_Edit = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/edit-16.png"));
+    ImageIcon Icon_Save = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/save-16.png"));
     ImageIcon Icon_Dele = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/delete-16.png"));
 
-    Action edit = new AbstractAction() {
+    Action save = new AbstractAction() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            EditarNumeracion();
+            //new swGuardarEntidad().execute();
         }
     };
 
     Action dele = new AbstractAction() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            EliminarNumeracion();
+            //EliminarEntidad();
         }
     };
 
-    public class swObtenerNumeraciones extends SwingWorker {
-
-        @Override
-        protected Object doInBackground() {
-            VerCargando(frame);
-            cliAdministracion cliente = new cliAdministracion();
-            String json = "";
-            try {
-                json = cliente.ObtenerNumeraciones(new Gson().toJson(filtro));
-            } catch (Exception e) {
-                OcultarCargando(frame);
-                cancel(false);
-                ControlarExcepcion(e);
-            } finally {
-                cliente.close();
-            }
-            return json;
-        }
-
-        @Override
-        protected void done() {
-            try {
-                String json = get().toString();
-                String[] resultado = new Gson().fromJson(json, String[].class);
-
-                if (resultado[0].equals("true")) {
-                    EliminarTodasFilas(tbNumeraciones);
-                    Numeracion[] numeraciones = new Gson().fromJson(resultado[1], Numeracion[].class);
-                    for (Numeracion numeracion : numeraciones) {
-                        AgregarFila(tbNumeraciones, new Object[]{false, numeracion.getIdNumeracion(), numeracion.getDescripcion(), numeracion.getNombreEntidad(), numeracion.isManual(), numeracion.isActivo(), Icon_Edit, Icon_Dele});
-                    }
-                    AgregarBoton(tbNumeraciones, edit, 6);
-                    AgregarBoton(tbNumeraciones, dele, 7);
-                    AgregarOrdenamiento(tbNumeraciones);
-                }
-                OcultarCargando(frame);
-            } catch (Exception e) {
-                OcultarCargando(frame);
-                ControlarExcepcion(e);
-            }
-        }
-    }
-
-    public class swEliminarNumeracion extends SwingWorker {
+    public class swObtenerEntidades extends SwingWorker<Object, Object> {
 
         @Override
         protected Object doInBackground() throws Exception {
@@ -105,8 +64,7 @@ public class lisNumeracion extends frameBase<Numeracion> {
             cliAdministracion cliente = new cliAdministracion();
             String json = "";
             try {
-                int idNumeracion = ObtenerValorCelda(tbNumeraciones, 1);
-                json = cliente.EliminarNumeracion(new Gson().toJson(idNumeracion));
+                json = cliente.ObtenerEntidades(new Gson().toJson(filtro));
             } catch (Exception e) {
                 OcultarCargando(frame);
                 cancel(false);
@@ -122,11 +80,18 @@ public class lisNumeracion extends frameBase<Numeracion> {
             try {
                 String json = get().toString();
                 String[] resultado = new Gson().fromJson(json, String[].class);
+
                 if (resultado[0].equals("true")) {
-                    new swObtenerNumeraciones().execute();
-                } else {
-                    OcultarCargando(frame);
+                    EliminarTodasFilas(tbEntidades);
+                    Entidad[] entidades = new Gson().fromJson(resultado[1], Entidad[].class);
+                    for (Entidad entidad : entidades) {
+                        AgregarFila(tbEntidades, new Object[]{false, entidad.getIdEntidad(), entidad.getNombre(), Icon_Save, Icon_Dele});
+                    }
+                    AgregarBoton(tbEntidades, save, 3);
+                    AgregarBoton(tbEntidades, dele, 4);
+                    AgregarOrdenamiento(tbEntidades);
                 }
+                OcultarCargando(frame);
             } catch (Exception e) {
                 OcultarCargando(frame);
                 ControlarExcepcion(e);
@@ -139,35 +104,21 @@ public class lisNumeracion extends frameBase<Numeracion> {
         this.filtro = filtro;
         switch (this.modo) {
             case 0:
-                OcultarColumna(tbNumeraciones, 0);
+                OcultarColumna(tbEntidades, 0);
                 OcultarControl(btnSeleccionar);
                 break;
             case 1:
-                OcultarColumnas(tbNumeraciones, new int[]{0, 6, 7});
+                OcultarColumnas(tbEntidades, new int[]{0, 3, 4});
                 OcultarControl(btnNuevo);
                 break;
         }
-        new swObtenerNumeraciones().execute();
+        new swObtenerEntidades().execute();
     }
 
-    public void EditarNumeracion() {
-        int idNumeracion = ObtenerValorCelda(tbNumeraciones, 1);
-        regNumeracion regNumeracion = new regNumeracion("EDITAR ", idNumeracion);
-        this.getParent().add(regNumeracion);
-        regNumeracion.setVisible(true);
-    }
-
-    public void EliminarNumeracion() {
-        int confirmacion = VerConfirmacion(this);
-        if (confirmacion == 0) {
-            new swEliminarNumeracion().execute();
-        }
-    }
-
-    public Numeracion getSeleccionado() {
+    public Entidad getSeleccionado() {
         return seleccionado;
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -179,13 +130,13 @@ public class lisNumeracion extends frameBase<Numeracion> {
 
         frame = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tbNumeraciones = new javax.swing.JTable();
+        tbEntidades = new javax.swing.JTable();
         pnlTitulo = new javax.swing.JPanel();
         lblTitulo = new javax.swing.JLabel();
         btnNuevo = new javax.swing.JButton();
+        btnSeleccionar = new javax.swing.JButton();
         lblFiltro = new javax.swing.JLabel();
         txtFiltro = new javax.swing.JTextField();
-        btnSeleccionar = new javax.swing.JButton();
         btnRefrescar = new javax.swing.JButton();
 
         setClosable(true);
@@ -193,19 +144,19 @@ public class lisNumeracion extends frameBase<Numeracion> {
         frame.setBackground(java.awt.Color.white);
         frame.setBorder(null);
 
-        tbNumeraciones.setModel(new javax.swing.table.DefaultTableModel(
+        tbEntidades.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "CHECK", "ID", "DESCRIPCION", "ENTIDAD", "MANUAL", "ACTIVO", "EDITAR", "ELIMINAR"
+                "CHECK", "ID", "NOMBRE", "GUARDAR", "ELIMINAR"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Boolean.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Boolean.class, java.lang.Boolean.class, java.lang.Object.class, java.lang.Object.class
+                java.lang.Boolean.class, java.lang.Integer.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                true, false, true, true, true, true, true, true
+                true, false, true, true, true
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -216,19 +167,13 @@ public class lisNumeracion extends frameBase<Numeracion> {
                 return canEdit [columnIndex];
             }
         });
-        tbNumeraciones.setRowHeight(25);
-        tbNumeraciones.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        jScrollPane1.setViewportView(tbNumeraciones);
-        if (tbNumeraciones.getColumnModel().getColumnCount() > 0) {
-            tbNumeraciones.getColumnModel().getColumn(1).setMinWidth(0);
-            tbNumeraciones.getColumnModel().getColumn(1).setPreferredWidth(0);
-            tbNumeraciones.getColumnModel().getColumn(1).setMaxWidth(0);
-            tbNumeraciones.getColumnModel().getColumn(2).setPreferredWidth(200);
-            tbNumeraciones.getColumnModel().getColumn(3).setPreferredWidth(200);
-            tbNumeraciones.getColumnModel().getColumn(4).setPreferredWidth(100);
-            tbNumeraciones.getColumnModel().getColumn(5).setPreferredWidth(100);
-            tbNumeraciones.getColumnModel().getColumn(6).setPreferredWidth(100);
-            tbNumeraciones.getColumnModel().getColumn(7).setPreferredWidth(100);
+        tbEntidades.setRowHeight(25);
+        tbEntidades.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jScrollPane1.setViewportView(tbEntidades);
+        if (tbEntidades.getColumnModel().getColumnCount() > 0) {
+            tbEntidades.getColumnModel().getColumn(1).setMinWidth(0);
+            tbEntidades.getColumnModel().getColumn(1).setPreferredWidth(0);
+            tbEntidades.getColumnModel().getColumn(1).setMaxWidth(0);
         }
 
         pnlTitulo.setBackground(new java.awt.Color(67, 100, 130));
@@ -237,7 +182,7 @@ public class lisNumeracion extends frameBase<Numeracion> {
         lblTitulo.setFont(new java.awt.Font("Ubuntu", 1, 18)); // NOI18N
         lblTitulo.setForeground(java.awt.Color.white);
         lblTitulo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sge/base/imagenes/list-view-16.png"))); // NOI18N
-        lblTitulo.setText("LISTADO DE NUMERACIONES");
+        lblTitulo.setText("LISTADO DE ENTIDADES");
 
         btnNuevo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sge/base/imagenes/add-16.png"))); // NOI18N
         btnNuevo.setText("NUEVO");
@@ -253,7 +198,7 @@ public class lisNumeracion extends frameBase<Numeracion> {
             pnlTituloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlTituloLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(lblTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 299, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(lblTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnNuevo)
                 .addContainerGap())
@@ -268,18 +213,18 @@ public class lisNumeracion extends frameBase<Numeracion> {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        btnSeleccionar.setText("SELECCIONAR");
+        btnSeleccionar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSeleccionarActionPerformed(evt);
+            }
+        });
+
         lblFiltro.setText("FILTRO");
 
         txtFiltro.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtFiltroActionPerformed(evt);
-            }
-        });
-
-        btnSeleccionar.setText("SELECCIONAR");
-        btnSeleccionar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSeleccionarActionPerformed(evt);
             }
         });
 
@@ -299,17 +244,17 @@ public class lisNumeracion extends frameBase<Numeracion> {
             .addGroup(frameLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 656, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 676, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, frameLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(btnSeleccionar, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(frameLayout.createSequentialGroup()
                         .addComponent(lblFiltro)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnRefrescar, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, frameLayout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(btnSeleccionar, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         frameLayout.setVerticalGroup(
@@ -323,10 +268,10 @@ public class lisNumeracion extends frameBase<Numeracion> {
                         .addComponent(txtFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(btnRefrescar, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 288, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 221, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnSeleccionar)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -343,41 +288,37 @@ public class lisNumeracion extends frameBase<Numeracion> {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
-        // TODO add your handling code here:
-        regNumeracion regNumeracion = new regNumeracion("NUEVO ", 0);
-        this.getParent().add(regNumeracion);
-        regNumeracion.setVisible(true);
-    }//GEN-LAST:event_btnNuevoActionPerformed
-
-    private void txtFiltroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFiltroActionPerformed
-        // TODO add your handling code here:
-        Filtrar(tbNumeraciones, txtFiltro.getText());
-    }//GEN-LAST:event_txtFiltroActionPerformed
-
     private void btnSeleccionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeleccionarActionPerformed
         // TODO add your handling code here:
         switch (this.modo) {
             case 1:
-            if (FilaActiva(tbNumeraciones)) {
-                Numeracion numeracion = new Numeracion();
-                numeracion.setIdNumeracion(ObtenerValorCelda(tbNumeraciones, 1));
-                numeracion.setDescripcion(ObtenerValorCelda(tbNumeraciones, 2));
-                numeracion.setManual(ObtenerValorCelda(tbNumeraciones, 4));
-                numeracion.setActivo(ObtenerValorCelda(tbNumeraciones, 5));
-                seleccionado = numeracion;
-            }
-            Cerrar();
-            break;
+                if (FilaActiva(tbEntidades)) {
+                    Entidad entidad = new Entidad();
+                    entidad.setIdEntidad(ObtenerValorCelda(tbEntidades, 1));
+                    entidad.setNombre(ObtenerValorCelda(tbEntidades, 2));
+                    seleccionado = entidad;
+                }
+                Cerrar();
+                break;
             case 2:
-            break;
+                break;
         }
     }//GEN-LAST:event_btnSeleccionarActionPerformed
 
+    private void txtFiltroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFiltroActionPerformed
+        // TODO add your handling code here:
+        Filtrar(tbEntidades, txtFiltro.getText());
+    }//GEN-LAST:event_txtFiltroActionPerformed
+
     private void btnRefrescarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefrescarActionPerformed
         // TODO add your handling code here:
-        new swObtenerNumeraciones().execute();
+        new swObtenerEntidades().execute();
     }//GEN-LAST:event_btnRefrescarActionPerformed
+
+    private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
+        // TODO add your handling code here:
+        //AgregarFila(tbEntidades, new Object[]{false, 0, "", "", false, Icon_Save, Icon_Dele});
+    }//GEN-LAST:event_btnNuevoActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -389,7 +330,7 @@ public class lisNumeracion extends frameBase<Numeracion> {
     private javax.swing.JLabel lblFiltro;
     private javax.swing.JLabel lblTitulo;
     private javax.swing.JPanel pnlTitulo;
-    private javax.swing.JTable tbNumeraciones;
+    private javax.swing.JTable tbEntidades;
     private javax.swing.JTextField txtFiltro;
     // End of variables declaration//GEN-END:variables
 }

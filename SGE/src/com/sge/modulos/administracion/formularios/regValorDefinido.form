@@ -56,9 +56,9 @@
                           </Group>
                           <EmptySpace min="-2" pref="54" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                              <Component id="btnEstablecerValores" max="32767" attributes="0"/>
-                              <Component id="cboEntidad" alignment="0" pref="263" max="32767" attributes="0"/>
+                              <Component id="btnEstablecerValores" pref="263" max="32767" attributes="0"/>
                               <Component id="schUsuario" max="32767" attributes="0"/>
+                              <Component id="schEntidad" alignment="1" max="32767" attributes="0"/>
                           </Group>
                           <EmptySpace pref="34" max="32767" attributes="0"/>
                           <Component id="chkActivo" min="-2" pref="108" max="-2" attributes="0"/>
@@ -87,9 +87,9 @@
                       <Component id="schUsuario" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="lblEntidad" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="cboEntidad" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Component id="lblEntidad" min="-2" max="-2" attributes="0"/>
+                      <Component id="schEntidad" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="btnEstablecerValores" min="-2" max="-2" attributes="0"/>
@@ -98,7 +98,7 @@
                       <Component id="btnAceptar" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="btnCancelar" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="22" max="32767" attributes="0"/>
+                  <EmptySpace pref="23" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -112,13 +112,6 @@
         <Component class="javax.swing.JLabel" name="lblEntidad">
           <Properties>
             <Property name="text" type="java.lang.String" value="ENTIDAD"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JComboBox" name="cboEntidad">
-          <Properties>
-            <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-              <StringArray count="0"/>
-            </Property>
           </Properties>
         </Component>
         <Component class="javax.swing.JCheckBox" name="chkActivo">
@@ -202,6 +195,11 @@
         <Component class="com.sge.base.controles.JSearch" name="schUsuario">
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="schUsuario.addSearchListener(new SearchListener() {&#xa;    @Override&#xa;    public void Search(){&#xa;        schUsuarioSearch();&#xa;    }&#xa;    @Override&#xa;    public void Clear(){&#xa;    }&#xa;});"/>
+          </AuxValues>
+        </Component>
+        <Component class="com.sge.base.controles.JSearch" name="schEntidad">
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="schEntidad.addSearchListener(new SearchListener() {&#xa;    @Override&#xa;    public void Search(){&#xa;        schEntidadSearch();&#xa;    }&#xa;    @Override&#xa;    public void Clear(){&#xa;    }&#xa;});"/>
           </AuxValues>
         </Component>
       </SubComponents>

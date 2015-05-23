@@ -1,11 +1,14 @@
 package com.sge.modulos.administracion.formularios;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
+import com.sge.base.controles.SearchListener;
 import com.sge.base.formularios.frameBase;
+import com.sge.modulos.administracion.clases.Entidad;
 import com.sge.modulos.administracion.clases.Numeracion;
 import com.sge.modulos.administracion.cliente.cliAdministracion;
-import java.util.List;
+import java.awt.event.ActionEvent;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.SwingWorker;
 
 /**
@@ -24,59 +27,24 @@ public class regNumeracion extends frameBase {
 
     private int idNumeracion = 0;
 
-    private List<Object[]> entidades;
-
     public void Init(String operacion, int idNumeracion) {
         lblTitulo.setText(operacion + lblTitulo.getText());
         this.idNumeracion = idNumeracion;
-        new swObtenerEntidades().execute();
-    }
-
-    public class swObtenerEntidades extends SwingWorker<Object, Object> {
-
-        @Override
-        protected Object doInBackground() {
-            VerCargando(frame);
-            cliAdministracion cliente = new cliAdministracion();
-            String json = "";
-            try {
-                json = cliente.ObtenerEntidades(new Gson().toJson(""));
-            } catch (Exception e) {
-                OcultarCargando(frame);
-                cancel(false);
-                ControlarExcepcion(e);
-            } finally {
-                cliente.close();
-            }
-            return json;
-        }
-
-        @Override
-        protected void done() {
-            try {
-                String json = get().toString();
-                String[] resultado = new Gson().fromJson(json, String[].class);
-                if (resultado[0].equals("true")) {
-                    entidades = (List<Object[]>) new Gson().fromJson(resultado[1], new TypeToken<List<Object[]>>() {
-                    }.getType());
-                    for (Object[] entidad : entidades) {
-                        cboEntidad.addItem(entidad[1]);
-                    }
-                    if (idNumeracion > 0) {
-                        new swObtenerNumeracion().execute();
-                    } else {
-                        OcultarCargando(frame);
-                    }
-                } else {
-                    OcultarCargando(frame);
-                }
-            } catch (Exception e) {
-                OcultarCargando(frame);
-                ControlarExcepcion(e);
-            }
+        if (this.idNumeracion > 0) {
+            new swObtenerNumeracion().execute();
         }
     }
 
+    Action sele_enti = new AbstractAction() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            Entidad seleccionado = ((lisEntidad) e.getSource()).getSeleccionado();
+            if (!(seleccionado == null)) {
+                schEntidad.asingValues(seleccionado.getIdEntidad(), seleccionado.getNombre());
+            }
+        }
+    };
+    
     public class swObtenerNumeracion extends SwingWorker<Object, Object> {
 
         @Override
@@ -104,7 +72,7 @@ public class regNumeracion extends frameBase {
                 if (resultado[0].equals("true")) {
                     Numeracion numeracion = new Gson().fromJson(resultado[1], Numeracion.class);
                     txtDescripcion.setText(numeracion.getDescripcion());
-                    cboEntidad.setSelectedItem(getNombreEntidad(numeracion.getIdEntidad()));
+                    schEntidad.asingValues(numeracion.getIdEntidad(), numeracion.getNombreEntidad());
                     chkManual.setSelected(numeracion.isManual());
                     txtSerie.setEnabled(!numeracion.isManual());
                     txtNumeroActual.setEnabled(!numeracion.isManual());
@@ -125,28 +93,6 @@ public class regNumeracion extends frameBase {
         }
     }
 
-    public int getIdEntidad() {
-        int idEntidad = 0;
-        for (Object[] entidad : entidades) {
-            if (entidad[1].equals(cboEntidad.getSelectedItem())) {
-                idEntidad = ((Double) entidad[0]).intValue();
-                break;
-            }
-        }
-        return idEntidad;
-    }
-
-    public String getNombreEntidad(int idEntidad) {
-        String nombre = "";
-        for (Object[] entidad : entidades) {
-            if (((Double) entidad[0]).intValue() == idEntidad) {
-                nombre = entidad[1].toString();
-                break;
-            }
-        }
-        return nombre;
-    }
-
     public class swGuardarNumeracion extends SwingWorker<Object, Object> {
 
         @Override
@@ -157,7 +103,8 @@ public class regNumeracion extends frameBase {
             try {
                 Numeracion numeracion = new Numeracion();
                 numeracion.setDescripcion(txtDescripcion.getText());
-                numeracion.setIdEntidad(getIdEntidad());
+                numeracion.setIdEntidad(schEntidad.getId());
+                numeracion.setNombreEntidad(schEntidad.getText());
                 numeracion.setManual(chkManual.isSelected());
                 numeracion.setSerie(txtSerie.getText());
                 numeracion.setNumeroActual(Integer.parseInt(txtNumeroActual.getText()));
@@ -211,7 +158,6 @@ public class regNumeracion extends frameBase {
         lblDescripcion = new javax.swing.JLabel();
         lblEntidad = new javax.swing.JLabel();
         txtDescripcion = new javax.swing.JTextField();
-        cboEntidad = new javax.swing.JComboBox();
         chkManual = new javax.swing.JCheckBox();
         btnAceptar = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
@@ -227,6 +173,7 @@ public class regNumeracion extends frameBase {
         txtLongitudNumero = new javax.swing.JTextField();
         txtPorcentajeImpuesto = new javax.swing.JTextField();
         txtNumeroActual = new javax.swing.JTextField();
+        schEntidad = new com.sge.base.controles.JSearch();
 
         setClosable(true);
 
@@ -306,6 +253,16 @@ public class regNumeracion extends frameBase {
 
         txtNumeroActual.setText("0");
 
+        schEntidad.addSearchListener(new SearchListener() {
+            @Override
+            public void Search(){
+                schEntidadSearch();
+            }
+            @Override
+            public void Clear(){
+            }
+        });
+
         javax.swing.GroupLayout frameLayout = new javax.swing.GroupLayout(frame);
         frame.setLayout(frameLayout);
         frameLayout.setHorizontalGroup(
@@ -339,8 +296,8 @@ public class regNumeracion extends frameBase {
                             .addComponent(chkManual, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(frameLayout.createSequentialGroup()
                                 .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(txtDescripcion, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(cboEntidad, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(schEntidad, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(txtDescripcion, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 290, Short.MAX_VALUE))
                                 .addGap(25, 25, 25)
                                 .addComponent(chkActivo, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addComponent(chkTieneImpuesto, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -353,13 +310,13 @@ public class regNumeracion extends frameBase {
                 .addComponent(pnlTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblDescripcion)
                     .addComponent(txtDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(chkActivo))
-                .addGap(2, 2, 2)
-                .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblEntidad)
-                    .addComponent(cboEntidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(chkActivo)
+                    .addComponent(lblDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(7, 7, 7)
+                .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblEntidad, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(schEntidad, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(chkManual)
                 .addGap(6, 6, 6)
@@ -383,7 +340,7 @@ public class regNumeracion extends frameBase {
                         .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnCancelar)
                             .addComponent(btnAceptar))))
-                .addContainerGap(23, Short.MAX_VALUE))
+                .addGap(19, 19, 19))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -400,6 +357,10 @@ public class regNumeracion extends frameBase {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void schEntidadSearch() {
+        VerModal(new lisEntidad(1), sele_enti);
+    }
+    
     private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
         // TODO add your handling code here:
         new swGuardarNumeracion().execute();
@@ -436,7 +397,6 @@ public class regNumeracion extends frameBase {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAceptar;
     private javax.swing.JButton btnCancelar;
-    private javax.swing.JComboBox cboEntidad;
     private javax.swing.JCheckBox chkActivo;
     private javax.swing.JCheckBox chkManual;
     private javax.swing.JCheckBox chkTieneImpuesto;
@@ -449,6 +409,7 @@ public class regNumeracion extends frameBase {
     private javax.swing.JLabel lblSerie;
     private javax.swing.JLabel lblTitulo;
     private javax.swing.JPanel pnlTitulo;
+    private com.sge.base.controles.JSearch schEntidad;
     private javax.swing.JTextField txtDescripcion;
     private javax.swing.JTextField txtLongitudNumero;
     private javax.swing.JTextField txtNumeroActual;

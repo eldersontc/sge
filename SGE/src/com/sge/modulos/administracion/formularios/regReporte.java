@@ -2,12 +2,17 @@ package com.sge.modulos.administracion.formularios;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.sge.base.controles.SearchListener;
 import com.sge.base.formularios.frameBase;
+import com.sge.modulos.administracion.clases.Entidad;
 import com.sge.modulos.administracion.clases.ItemReporte;
 import com.sge.modulos.administracion.clases.Reporte;
 import com.sge.modulos.administracion.cliente.cliAdministracion;
+import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.SwingWorker;
 
 /**
@@ -26,16 +31,26 @@ public class regReporte extends frameBase<Reporte> {
 
     private int idReporte = 0;
 
-    private List<Object[]> entidades;
-
     private List<ItemReporte> items = new ArrayList<>();
 
     public void Init(String operacion, int idReporte) {
         lblTitulo.setText(operacion + lblTitulo.getText());
         this.idReporte = idReporte;
-        new swObtenerEntidades().execute();
+        if (this.idReporte > 0) {
+            new swObtenerReporte().execute();
+        }
     }
 
+    Action sele_enti = new AbstractAction() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            Entidad seleccionado = ((lisEntidad) e.getSource()).getSeleccionado();
+            if (!(seleccionado == null)) {
+                schEntidad.asingValues(seleccionado.getIdEntidad(), seleccionado.getNombre());
+            }
+        }
+    };
+    
     public List<ItemReporte> getItems() {
         for (int i = 0; i < tbItems.getRowCount(); i++) {
             int idItemReporte = ObtenerValorCelda(tbItems, i, 0);
@@ -57,51 +72,6 @@ public class regReporte extends frameBase<Reporte> {
             }
         }
         return this.items;
-    }
-
-    public class swObtenerEntidades extends SwingWorker<Object, Object> {
-
-        @Override
-        protected Object doInBackground() {
-            VerCargando(frame);
-            cliAdministracion cliente = new cliAdministracion();
-            String json = "";
-            try {
-                json = cliente.ObtenerEntidades(new Gson().toJson(""));
-            } catch (Exception e) {
-                OcultarCargando(frame);
-                cancel(false);
-                ControlarExcepcion(e);
-            } finally {
-                cliente.close();
-            }
-            return json;
-        }
-
-        @Override
-        protected void done() {
-            try {
-                String json = get().toString();
-                String[] resultado = new Gson().fromJson(json, String[].class);
-                if (resultado[0].equals("true")) {
-                    entidades = (List<Object[]>) new Gson().fromJson(resultado[1], new TypeToken<List<Object[]>>() {
-                    }.getType());
-                    for (Object[] entidad : entidades) {
-                        cboEntidad.addItem(entidad[1]);
-                    }
-                    if (idReporte > 0) {
-                        new swObtenerReporte().execute();
-                    } else {
-                        OcultarCargando(frame);
-                    }
-                } else {
-                    OcultarCargando(frame);
-                }
-            } catch (Exception e) {
-                OcultarCargando(frame);
-                ControlarExcepcion(e);
-            }
-        }
     }
 
     public class swObtenerReporte extends SwingWorker<Object, Object> {
@@ -131,7 +101,7 @@ public class regReporte extends frameBase<Reporte> {
                 if (resultado[0].equals("true")) {
                     Reporte reporte = new Gson().fromJson(resultado[1], Reporte.class);
                     txtNombre.setText(reporte.getNombre());
-                    cboEntidad.setSelectedItem(getNombreEntidad(reporte.getIdEntidad()));
+                    schEntidad.asingValues(reporte.getIdEntidad(), reporte.getNombreEntidad());
                     txtUbicacion.setText(reporte.getUbicacion());
                     chkActivo.setSelected(reporte.isActivo());
                     for (ItemReporte item : reporte.getItems()) {
@@ -152,28 +122,6 @@ public class regReporte extends frameBase<Reporte> {
         }
     }
 
-    public int getIdEntidad() {
-        int idEntidad = 0;
-        for (Object[] entidad : entidades) {
-            if (entidad[1].equals(cboEntidad.getSelectedItem())) {
-                idEntidad = ((Double) entidad[0]).intValue();
-                break;
-            }
-        }
-        return idEntidad;
-    }
-
-    public String getNombreEntidad(int idEntidad) {
-        String nombre = "";
-        for (Object[] entidad : entidades) {
-            if (((Double) entidad[0]).intValue() == idEntidad) {
-                nombre = entidad[1].toString();
-                break;
-            }
-        }
-        return nombre;
-    }
-
     public class swGuardarReporte extends SwingWorker<Object, Object> {
 
         @Override
@@ -184,7 +132,8 @@ public class regReporte extends frameBase<Reporte> {
             try {
                 Reporte reporte = new Reporte();
                 reporte.setNombre(txtNombre.getText());
-                reporte.setIdEntidad(getIdEntidad());
+                reporte.setIdEntidad(schEntidad.getId());
+                reporte.setNombreEntidad(schEntidad.getText());
                 reporte.setUbicacion(txtUbicacion.getText());
                 reporte.setActivo(chkActivo.isSelected());
                 reporte.setItems(getItems());
@@ -234,7 +183,6 @@ public class regReporte extends frameBase<Reporte> {
         lblNombre = new javax.swing.JLabel();
         lblEntidad = new javax.swing.JLabel();
         txtNombre = new javax.swing.JTextField();
-        cboEntidad = new javax.swing.JComboBox();
         chkActivo = new javax.swing.JCheckBox();
         btnAceptar = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
@@ -248,6 +196,7 @@ public class regReporte extends frameBase<Reporte> {
         tbItems = new javax.swing.JTable();
         btnEliminarItem = new javax.swing.JButton();
         btnNuevoItem = new javax.swing.JButton();
+        schEntidad = new com.sge.base.controles.JSearch();
 
         setClosable(true);
 
@@ -257,8 +206,6 @@ public class regReporte extends frameBase<Reporte> {
         lblNombre.setText("NOMBRE");
 
         lblEntidad.setText("ENTIDAD");
-
-        cboEntidad.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "NINGUNO" }));
 
         chkActivo.setText("ACTIVO");
 
@@ -291,7 +238,7 @@ public class regReporte extends frameBase<Reporte> {
             .addGroup(pnlTituloLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lblTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(339, Short.MAX_VALUE))
         );
         pnlTituloLayout.setVerticalGroup(
             pnlTituloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -367,6 +314,16 @@ public class regReporte extends frameBase<Reporte> {
 
         jTabbedPane1.addTab("PARAMETROS", pnlParametros);
 
+        schEntidad.addSearchListener(new SearchListener() {
+            @Override
+            public void Search(){
+                schEntidadSearch();
+            }
+            @Override
+            public void Clear(){
+            }
+        });
+
         javax.swing.GroupLayout frameLayout = new javax.swing.GroupLayout(frame);
         frame.setLayout(frameLayout);
         frameLayout.setHorizontalGroup(
@@ -388,11 +345,11 @@ public class regReporte extends frameBase<Reporte> {
                                 .addComponent(lblEntidad))
                             .addGap(39, 39, 39)
                             .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addGroup(frameLayout.createSequentialGroup()
-                                    .addComponent(cboEntidad, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 38, Short.MAX_VALUE)
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, frameLayout.createSequentialGroup()
+                                    .addComponent(schEntidad, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                     .addComponent(chkActivo, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addComponent(txtNombre)
+                                .addComponent(txtNombre, javax.swing.GroupLayout.DEFAULT_SIZE, 409, Short.MAX_VALUE)
                                 .addComponent(txtUbicacion)))))
                 .addContainerGap(26, Short.MAX_VALUE))
         );
@@ -405,10 +362,11 @@ public class regReporte extends frameBase<Reporte> {
                     .addComponent(lblNombre)
                     .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(2, 2, 2)
-                .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblEntidad)
-                    .addComponent(cboEntidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(chkActivo))
+                .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(lblEntidad)
+                        .addComponent(chkActivo))
+                    .addComponent(schEntidad, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblUbicacion)
@@ -419,7 +377,7 @@ public class regReporte extends frameBase<Reporte> {
                 .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCancelar)
                     .addComponent(btnAceptar))
-                .addContainerGap(24, Short.MAX_VALUE))
+                .addContainerGap(25, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -436,6 +394,10 @@ public class regReporte extends frameBase<Reporte> {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void schEntidadSearch() {
+        VerModal(new lisEntidad(1), sele_enti);
+    }
+    
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
         // TODO add your handling code here:
         Cerrar();
@@ -468,7 +430,6 @@ public class regReporte extends frameBase<Reporte> {
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnEliminarItem;
     private javax.swing.JButton btnNuevoItem;
-    private javax.swing.JComboBox cboEntidad;
     private javax.swing.JCheckBox chkActivo;
     private javax.swing.JPanel frame;
     private javax.swing.JScrollPane jScrollPane1;
@@ -479,6 +440,7 @@ public class regReporte extends frameBase<Reporte> {
     private javax.swing.JLabel lblUbicacion;
     private javax.swing.JPanel pnlParametros;
     private javax.swing.JPanel pnlTitulo;
+    private com.sge.base.controles.JSearch schEntidad;
     private javax.swing.JTable tbItems;
     private javax.swing.JTextField txtNombre;
     private javax.swing.JTextField txtUbicacion;

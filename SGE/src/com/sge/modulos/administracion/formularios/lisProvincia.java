@@ -25,14 +25,14 @@ public class lisProvincia extends frameBase<Provincia> {
         initComponents();
         Init(modo, "");
     }
-    
+
     public lisProvincia(int modo, String filtro) {
         initComponents();
         Init(modo, filtro);
     }
 
     private int modo;
-    
+
     private String filtro;
 
     private Provincia seleccionado;
@@ -81,10 +81,9 @@ public class lisProvincia extends frameBase<Provincia> {
 
                 if (resultado[0].equals("true")) {
                     EliminarTodasFilas(tbProvincias);
-                    List<Object[]> filas = (List<Object[]>) new Gson().fromJson(resultado[1], new TypeToken<List<Object[]>>() {
-                    }.getType());
-                    for (Object[] fila : filas) {
-                        AgregarFila(tbProvincias, new Object[]{false, ((Double) fila[0]).intValue(), fila[1], Icon_Save, Icon_Dele});
+                    Provincia[] provincias = new Gson().fromJson(resultado[1], Provincia[].class);
+                    for (Provincia provincia : provincias) {
+                        AgregarFila(tbProvincias, new Object[]{false, provincia.getIdProvincia(), provincia.getNombre(), Icon_Save, Icon_Dele});
                     }
                     AgregarBoton(tbProvincias, save, 3);
                     AgregarBoton(tbProvincias, dele, 4);
@@ -97,7 +96,7 @@ public class lisProvincia extends frameBase<Provincia> {
             }
         }
     }
-    
+
     public void Init(int modo, String filtro) {
         this.modo = modo;
         this.filtro = filtro;
@@ -113,11 +112,11 @@ public class lisProvincia extends frameBase<Provincia> {
         }
         new swObtenerProvincias().execute();
     }
-    
+
     public Provincia getSeleccionado() {
         return seleccionado;
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -299,16 +298,16 @@ public class lisProvincia extends frameBase<Provincia> {
         // TODO add your handling code here:
         switch (this.modo) {
             case 1:
-            if (FilaActiva(tbProvincias)) {
-                Provincia provincia = new Provincia();
-                provincia.setIdProvincia(ObtenerValorCelda(tbProvincias, 1));
-                provincia.setNombre(ObtenerValorCelda(tbProvincias, 2));
-                seleccionado = provincia;
-            }
-            Cerrar();
-            break;
+                if (FilaActiva(tbProvincias)) {
+                    Provincia provincia = new Provincia();
+                    provincia.setIdProvincia(ObtenerValorCelda(tbProvincias, 1));
+                    provincia.setNombre(ObtenerValorCelda(tbProvincias, 2));
+                    seleccionado = provincia;
+                }
+                Cerrar();
+                break;
             case 2:
-            break;
+                break;
         }
     }//GEN-LAST:event_btnSeleccionarActionPerformed
 

@@ -2,11 +2,9 @@ package com.sge.modulos.administracion.formularios;
 
 import com.sge.modulos.administracion.cliente.cliAdministracion;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.sge.base.formularios.frameBase;
 import com.sge.modulos.administracion.clases.Usuario;
 import java.awt.event.ActionEvent;
-import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ImageIcon;
@@ -23,11 +21,18 @@ public class lisUsuario extends frameBase<Usuario> {
      */
     public lisUsuario(int modo) {
         initComponents();
-        Init(modo);
+        Init(modo, "");
     }
 
+    public lisUsuario(int modo, String filtro) {
+        initComponents();
+        Init(modo, filtro);
+    }
+    
     private int modo;
 
+    private String filtro;
+    
     private Usuario seleccionado;
 
     ImageIcon Icon_Save = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/save-16.png"));
@@ -55,7 +60,7 @@ public class lisUsuario extends frameBase<Usuario> {
             cliAdministracion cliente = new cliAdministracion();
             String json = "";
             try {
-                json = cliente.ObtenerUsuarios(new Gson().toJson(""));
+                json = cliente.ObtenerUsuarios(new Gson().toJson(filtro));
             } catch (Exception e) {
                 OcultarCargando(frame);
                 cancel(false);
@@ -74,10 +79,9 @@ public class lisUsuario extends frameBase<Usuario> {
 
                 if (resultado[0].equals("true")) {
                     EliminarTodasFilas(tbUsuarios);
-                    List<Object[]> filas = (List<Object[]>) new Gson().fromJson(resultado[1], new TypeToken<List<Object[]>>() {
-                    }.getType());
-                    for (Object[] fila : filas) {
-                        AgregarFila(tbUsuarios, new Object[]{false, ((Double) fila[0]).intValue(), fila[1], fila[2], fila[3], Icon_Save, Icon_Dele});
+                    Usuario[] usuarios = new Gson().fromJson(resultado[1], Usuario[].class);
+                    for (Usuario usuario : usuarios) {
+                        AgregarFila(tbUsuarios, new Object[]{false, usuario.getIdUsuario(), usuario.getUsuario(), usuario.getClave(), usuario.isActivo(), Icon_Save, Icon_Dele});
                     }
                     AgregarBoton(tbUsuarios, save, 5);
                     AgregarBoton(tbUsuarios, dele, 6);
@@ -173,8 +177,9 @@ public class lisUsuario extends frameBase<Usuario> {
         }
     }
 
-    public void Init(int modo) {
+    public void Init(int modo, String filtro) {
         this.modo = modo;
+        this.filtro = filtro;
         switch (this.modo) {
             case 0:
                 OcultarColumna(tbUsuarios, 0);

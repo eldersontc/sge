@@ -81,10 +81,9 @@ public class lisDistrito extends frameBase<Distrito> {
 
                 if (resultado[0].equals("true")) {
                     EliminarTodasFilas(tbDistritos);
-                    List<Object[]> filas = (List<Object[]>) new Gson().fromJson(resultado[1], new TypeToken<List<Object[]>>() {
-                    }.getType());
-                    for (Object[] fila : filas) {
-                        AgregarFila(tbDistritos, new Object[]{false, ((Double) fila[0]).intValue(), fila[1], Icon_Save, Icon_Dele});
+                    Distrito[] distritos = new Gson().fromJson(resultado[1], Distrito[].class);
+                    for (Distrito distrito : distritos) {
+                        AgregarFila(tbDistritos, new Object[]{false, distrito.getIdDistrito(), distrito.getNombre(), Icon_Save, Icon_Dele});
                     }
                     AgregarBoton(tbDistritos, save, 3);
                     AgregarBoton(tbDistritos, dele, 4);

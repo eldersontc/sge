@@ -46,12 +46,6 @@ public class SGE extends javax.swing.JFrame {
 
     private Date fechaServidor;
 
-    public void AsignarUsuario(Object[] array) {
-        this.usuario = new Usuario();
-        this.usuario.setIdUsuario(((Double) array[0]).intValue());
-        this.usuario.setUsuario(array[1].toString());
-    }
-
     public Usuario getUsuario() {
         return usuario;
     }
@@ -89,7 +83,7 @@ public class SGE extends javax.swing.JFrame {
         public void actionPerformed(ActionEvent e) {
             frameLogin frame = ((frameLogin) e.getSource());
             if (frame.getUsuario() != null) {
-                AsignarUsuario(frame.getUsuario());
+                usuario = frame.getUsuario();
                 AsignarFechaServidor(frame.getFechaServidor());
                 LlenarMenus(getUsuario().getIdUsuario());
                 VerBanner();

@@ -1,12 +1,11 @@
 package com.sge.base.formularios;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.sge.base.controles.FabricaControles;
 import com.sge.base.excepciones.Excepciones;
+import com.sge.modulos.administracion.clases.Usuario;
 import com.sge.modulos.administracion.cliente.cliAdministracion;
 import java.util.Date;
-import java.util.List;
 import javax.swing.SwingWorker;
 
 /**
@@ -22,13 +21,13 @@ public class frameLogin extends javax.swing.JInternalFrame {
         initComponents();
     }
 
-    private Object[] usuario;
+    private Usuario usuario;
 
-    public Object[] getUsuario() {
+    public Usuario getUsuario() {
         return usuario;
     }
 
-    public void setUsuario(Object[] usuario) {
+    public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
     }
 
@@ -68,13 +67,12 @@ public class frameLogin extends javax.swing.JInternalFrame {
                 String json = get().toString();
                 String[] resultado = new Gson().fromJson(json, String[].class);
                 if (resultado[0].equals("true")) {
-                    List<Object[]> usuarios = (List<Object[]>) new Gson().fromJson(resultado[1], new TypeToken<List<Object[]>>() {
-                    }.getType());
-                    if (usuarios.isEmpty()) {
+                    Usuario[] usuarios = new Gson().fromJson(resultado[1], Usuario[].class);
+                    if (usuarios.length == 0) {
                         throw new Exception("USUARIO NO EXISTE.");
                     } else {
-                        if (usuarios.get(0)[2].equals(txtClave.getText())) {
-                            setUsuario(usuarios.get(0));
+                        if (usuarios[0].getClave().equals(txtClave.getText())) {
+                            setUsuario(usuarios[0]);
                             setFechaServidor(new Gson().fromJson(resultado[2], Date.class));
                             setClosed(true);
                         } else {

@@ -77,8 +77,8 @@
                               <Component id="chkManual" alignment="0" min="-2" pref="108" max="-2" attributes="0"/>
                               <Group type="102" alignment="0" attributes="0">
                                   <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                                      <Component id="txtDescripcion" alignment="0" min="-2" pref="290" max="-2" attributes="0"/>
-                                      <Component id="cboEntidad" alignment="0" min="-2" pref="290" max="-2" attributes="0"/>
+                                      <Component id="schEntidad" alignment="0" max="32767" attributes="0"/>
+                                      <Component id="txtDescripcion" alignment="0" pref="290" max="32767" attributes="0"/>
                                   </Group>
                                   <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
                                   <Component id="chkActivo" min="-2" pref="83" max="-2" attributes="0"/>
@@ -98,14 +98,14 @@
                   <Component id="pnlTitulo" min="-2" max="-2" attributes="0"/>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="lblDescripcion" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="txtDescripcion" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="chkActivo" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="lblDescripcion" alignment="0" min="-2" pref="27" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace min="-2" pref="2" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="lblEntidad" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="cboEntidad" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="7" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Component id="lblEntidad" max="32767" attributes="0"/>
+                      <Component id="schEntidad" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="chkManual" min="-2" max="-2" attributes="0"/>
@@ -136,7 +136,7 @@
                           </Group>
                       </Group>
                   </Group>
-                  <EmptySpace pref="23" max="32767" attributes="0"/>
+                  <EmptySpace min="-2" pref="19" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -153,13 +153,6 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="txtDescripcion">
-        </Component>
-        <Component class="javax.swing.JComboBox" name="cboEntidad">
-          <Properties>
-            <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-              <StringArray count="0"/>
-            </Property>
-          </Properties>
         </Component>
         <Component class="javax.swing.JCheckBox" name="chkManual">
           <Properties>
@@ -283,6 +276,11 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="0"/>
           </Properties>
+        </Component>
+        <Component class="com.sge.base.controles.JSearch" name="schEntidad">
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="schEntidad.addSearchListener(new SearchListener() {&#xa;    @Override&#xa;    public void Search(){&#xa;        schEntidadSearch();&#xa;    }&#xa;    @Override&#xa;    public void Clear(){&#xa;    }&#xa;});"/>
+          </AuxValues>
         </Component>
       </SubComponents>
     </Container>

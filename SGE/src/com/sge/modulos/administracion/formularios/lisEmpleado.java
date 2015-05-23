@@ -1,17 +1,14 @@
 package com.sge.modulos.administracion.formularios;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.sge.base.formularios.frameBase;
 import com.sge.modulos.administracion.clases.Empleado;
 import com.sge.modulos.administracion.cliente.cliAdministracion;
 import java.awt.event.ActionEvent;
-import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ImageIcon;
 import javax.swing.SwingWorker;
-import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -24,10 +21,17 @@ public class lisEmpleado extends frameBase<Empleado> {
      */
     public lisEmpleado(int modo) {
         initComponents();
-        Init(modo);
+        Init(modo, "");
     }
 
-    private int modo = 0;
+    public lisEmpleado(int modo, String filtro) {
+        initComponents();
+        Init(modo, filtro);
+    }
+
+    private int modo;
+
+    private String filtro;
 
     private Empleado seleccionado;
 
@@ -56,7 +60,7 @@ public class lisEmpleado extends frameBase<Empleado> {
             cliAdministracion cliente = new cliAdministracion();
             String json = "";
             try {
-                json = cliente.ObtenerEmpleados("");
+                json = cliente.ObtenerEmpleados(new Gson().toJson(filtro));
             } catch (Exception e) {
                 OcultarCargando(frame);
                 cancel(false);
@@ -72,16 +76,11 @@ public class lisEmpleado extends frameBase<Empleado> {
             try {
                 String json = get().toString();
                 String[] resultado = new Gson().fromJson(json, String[].class);
-
                 if (resultado[0].equals("true")) {
-                    DefaultTableModel modelo = (DefaultTableModel) tbEmpleados.getModel();
-                    modelo.setRowCount(0);
-
-                    List<Object[]> filas = (List<Object[]>) new Gson().fromJson(resultado[1], new TypeToken<List<Object[]>>() {
-                    }.getType());
-
-                    for (Object[] fila : filas) {
-                        modelo.addRow(new Object[]{false, ((Double) fila[0]).intValue(), fila[1], fila[2] + " " + fila[3] + " " + fila[4], fila[6], fila[7], Icon_Edit, Icon_Dele});
+                    EliminarTodasFilas(tbEmpleados);
+                    Empleado[] empleados = new Gson().fromJson(resultado[1], Empleado[].class);
+                    for (Empleado empleado : empleados) {
+                        AgregarFila(tbEmpleados, new Object[]{false, empleado.getIdEmpleado(), empleado.getCodigo(), empleado.getNombre() + " " + empleado.getApellidoPaterno() + " " + empleado.getApellidoMaterno(), empleado.getDocumentoIdentidad(), empleado.isActivo(), Icon_Edit, Icon_Dele});
                     }
                     AgregarBoton(tbEmpleados, edit, 6);
                     AgregarBoton(tbEmpleados, dele, 7);
@@ -132,8 +131,9 @@ public class lisEmpleado extends frameBase<Empleado> {
         }
     }
 
-    public void Init(int modo) {
+    public void Init(int modo, String filtro) {
         this.modo = modo;
+        this.filtro = filtro;
         switch (this.modo) {
             case 0:
                 OcultarColumna(tbEmpleados, 0);

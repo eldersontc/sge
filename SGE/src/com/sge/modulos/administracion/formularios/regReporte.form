@@ -64,12 +64,12 @@
                               </Group>
                               <EmptySpace min="39" pref="39" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                  <Group type="102" attributes="0">
-                                      <Component id="cboEntidad" min="-2" pref="263" max="-2" attributes="0"/>
-                                      <EmptySpace pref="38" max="32767" attributes="0"/>
+                                  <Group type="102" alignment="1" attributes="0">
+                                      <Component id="schEntidad" max="32767" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
                                       <Component id="chkActivo" min="-2" pref="108" max="-2" attributes="0"/>
                                   </Group>
-                                  <Component id="txtNombre" max="32767" attributes="0"/>
+                                  <Component id="txtNombre" pref="409" max="32767" attributes="0"/>
                                   <Component id="txtUbicacion" alignment="0" max="32767" attributes="0"/>
                               </Group>
                           </Group>
@@ -89,10 +89,12 @@
                       <Component id="txtNombre" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace min="-2" pref="2" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="lblEntidad" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="cboEntidad" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="chkActivo" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="lblEntidad" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="chkActivo" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <Component id="schEntidad" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
@@ -106,7 +108,7 @@
                       <Component id="btnCancelar" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="btnAceptar" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="24" max="32767" attributes="0"/>
+                  <EmptySpace pref="25" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -123,15 +125,6 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="txtNombre">
-        </Component>
-        <Component class="javax.swing.JComboBox" name="cboEntidad">
-          <Properties>
-            <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-              <StringArray count="1">
-                <StringItem index="0" value="NINGUNO"/>
-              </StringArray>
-            </Property>
-          </Properties>
         </Component>
         <Component class="javax.swing.JCheckBox" name="chkActivo">
           <Properties>
@@ -172,7 +165,7 @@
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="lblTitulo" min="-2" pref="228" max="-2" attributes="0"/>
-                      <EmptySpace max="32767" attributes="0"/>
+                      <EmptySpace pref="339" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -326,6 +319,11 @@
             </Container>
           </SubComponents>
         </Container>
+        <Component class="com.sge.base.controles.JSearch" name="schEntidad">
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="schEntidad.addSearchListener(new SearchListener() {&#xa;    @Override&#xa;    public void Search(){&#xa;        schEntidadSearch();&#xa;    }&#xa;    @Override&#xa;    public void Clear(){&#xa;    }&#xa;});"/>
+          </AuxValues>
+        </Component>
       </SubComponents>
     </Container>
   </SubComponents>

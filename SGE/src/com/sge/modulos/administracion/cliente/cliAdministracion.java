@@ -219,6 +219,12 @@ public class cliAdministracion {
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
     }
     
+    public String ObtenerEntidad(Object requestEntity) throws ClientErrorException {
+        WebTarget resource = client.target(BASE_URI).path("EntidadSRV");
+        resource = resource.path("ObtenerEntidad");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
+    }
+    
     ////////////////////////////////////////////////////////////////////////////
     
     /////////////////////////////// NUMERACION /////////////////////////////////
