@@ -1,7 +1,6 @@
 package com.sge.modulos.produccion.formularios;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.sge.base.formularios.frameBase;
 import com.sge.modulos.produccion.clases.OrdenTrabajo;
 import com.sge.modulos.produccion.cliente.cliProduccion;
@@ -24,12 +23,20 @@ public class lisOrdenTrabajo extends frameBase<OrdenTrabajo> {
      */
     public lisOrdenTrabajo(int modo) {
         initComponents();
-        Init(modo);
+        Init(modo, filtro);
     }
 
-    private int modo = 0;
+    public lisOrdenTrabajo(int modo, String filtro) {
+        initComponents();
+        Init(modo, filtro);
+    }
+    
+    private int modo;
 
+    private String filtro;
+    
     private OrdenTrabajo seleccionado;
+    
     private List<OrdenTrabajo> seleccionados = new ArrayList<>();
 
     ImageIcon Icon_Edit = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/edit-16.png"));
@@ -57,7 +64,7 @@ public class lisOrdenTrabajo extends frameBase<OrdenTrabajo> {
             cliProduccion cliente = new cliProduccion();
             String json = "";
             try {
-                json = cliente.ObtenerOrdenesTrabajo(new Gson().toJson(""));
+                json = cliente.ObtenerOrdenesTrabajo(new Gson().toJson(filtro));
             } catch (Exception e) {
                 OcultarCargando(frame);
                 cancel(false);
@@ -129,8 +136,9 @@ public class lisOrdenTrabajo extends frameBase<OrdenTrabajo> {
         }
     }
 
-    public void Init(int modo) {
+    public void Init(int modo, String filtro) {
         this.modo = modo;
+        this.filtro = filtro;
         switch (this.modo) {
             case 0:
                 OcultarColumna(tbOrdenesTrabajo, 0);

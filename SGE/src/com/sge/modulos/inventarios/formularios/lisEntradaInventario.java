@@ -1,7 +1,6 @@
 package com.sge.modulos.inventarios.formularios;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.sge.base.formularios.frameBase;
 import com.sge.modulos.inventarios.clases.EntradaInventario;
 import com.sge.modulos.inventarios.cliente.cliInventarios;
@@ -24,11 +23,18 @@ public class lisEntradaInventario extends frameBase<EntradaInventario> {
      */
     public lisEntradaInventario(int modo) {
         initComponents();
-        Init(modo);
+        Init(modo, "");
     }
 
-    private int modo = 0;
+    public lisEntradaInventario(int modo, String filtro) {
+        initComponents();
+        Init(modo, filtro);
+    }
+    
+    private int modo;
 
+    private String filtro;
+    
     private EntradaInventario seleccionado;
 
     private List<EntradaInventario> seleccionados = new ArrayList<>();
@@ -58,7 +64,7 @@ public class lisEntradaInventario extends frameBase<EntradaInventario> {
             cliInventarios cliente = new cliInventarios();
             String json = "";
             try {
-                json = cliente.ObtenerEntradaInventarios("");
+                json = cliente.ObtenerEntradaInventarios(new Gson().toJson(filtro));
             } catch (Exception e) {
                 OcultarCargando(frame);
                 cancel(false);
@@ -76,10 +82,9 @@ public class lisEntradaInventario extends frameBase<EntradaInventario> {
                 String[] resultado = new Gson().fromJson(json, String[].class);
                 if (resultado[0].equals("true")) {
                     EliminarTodasFilas(tbEntradaInventarios);
-                    List<Object[]> filas = (List<Object[]>) new Gson().fromJson(resultado[1], new TypeToken<List<Object[]>>() {
-                    }.getType());
-                    for (Object[] fila : filas) {
-                        AgregarFila(tbEntradaInventarios, new Object[]{false, ((Double) fila[0]).intValue(), fila[1], fila[2], fila[3], fila[4], fila[5], fila[6], Icon_View, Icon_Dele});
+                    EntradaInventario[] entradas = new Gson().fromJson(resultado[1], EntradaInventario[].class);
+                    for (EntradaInventario entrada : entradas) {
+                        AgregarFila(tbEntradaInventarios, new Object[]{false, entrada.getIdEntradaInventario(), entrada.getNumero(), entrada.getFechaCreacion(), entrada.getRazonSocialProveedor(), entrada.getNombreResponsable(), entrada.getSimboloMoneda(), entrada.getTotal(), Icon_View, Icon_Dele});
                     }
                     AgregarBoton(tbEntradaInventarios, view, 8);
                     AgregarBoton(tbEntradaInventarios, dele, 9);
@@ -131,8 +136,9 @@ public class lisEntradaInventario extends frameBase<EntradaInventario> {
         }
     }
 
-    public void Init(int modo) {
+    public void Init(int modo, String filtro) {
         this.modo = modo;
+        this.filtro = filtro;
         switch (this.modo) {
             case 0:
                 OcultarColumna(tbEntradaInventarios, 0);

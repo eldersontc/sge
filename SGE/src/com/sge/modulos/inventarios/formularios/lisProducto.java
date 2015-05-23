@@ -1,7 +1,6 @@
 package com.sge.modulos.inventarios.formularios;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.sge.base.formularios.frameBase;
 import com.sge.modulos.inventarios.clases.Producto;
 import com.sge.modulos.inventarios.cliente.cliInventarios;
@@ -24,10 +23,17 @@ public class lisProducto extends frameBase<Producto> {
      */
     public lisProducto(int modo) {
         initComponents();
-        Init(modo);
+        Init(modo, "");
     }
 
-    private int modo = 0;
+    public lisProducto(int modo, String filtro) {
+        initComponents();
+        Init(modo, filtro);
+    }
+
+    private int modo;
+
+    private String filtro;
 
     private Producto seleccionado;
 
@@ -58,7 +64,7 @@ public class lisProducto extends frameBase<Producto> {
             cliInventarios cliente = new cliInventarios();
             String json = "";
             try {
-                json = cliente.ObtenerProductos("");
+                json = cliente.ObtenerProductos(new Gson().toJson(filtro));
             } catch (Exception e) {
                 OcultarCargando(frame);
                 cancel(false);
@@ -76,10 +82,9 @@ public class lisProducto extends frameBase<Producto> {
                 String[] resultado = new Gson().fromJson(json, String[].class);
                 if (resultado[0].equals("true")) {
                     EliminarTodasFilas(tbProductos);
-                    List<Object[]> filas = (List<Object[]>) new Gson().fromJson(resultado[1], new TypeToken<List<Object[]>>() {
-                    }.getType());
-                    for (Object[] fila : filas) {
-                        AgregarFila(tbProductos, new Object[]{false, ((Double) fila[0]).intValue(), fila[1], fila[2], fila[3], fila[4], ((Double) fila[5]).intValue(), fila[6], fila[7], Icon_Edit, Icon_Dele});
+                    Producto[] productos = new Gson().fromJson(resultado[1], Producto[].class);
+                    for (Producto producto : productos) {
+                        AgregarFila(tbProductos, new Object[]{false, producto.getIdProducto(), producto.getCodigo(), producto.getDescripcion(), producto.getLargo(), producto.getAlto(), producto.getIdUnidadBase(), producto.getAbreviacionUnidadBase(), producto.isActivo(), Icon_Edit, Icon_Dele});
                     }
                     AgregarBoton(tbProductos, edit, 9);
                     AgregarBoton(tbProductos, dele, 10);
@@ -130,8 +135,9 @@ public class lisProducto extends frameBase<Producto> {
         }
     }
 
-    public void Init(int modo) {
+    public void Init(int modo, String filtro) {
         this.modo = modo;
+        this.filtro = filtro;
         switch (this.modo) {
             case 0:
                 OcultarColumna(tbProductos, 0);

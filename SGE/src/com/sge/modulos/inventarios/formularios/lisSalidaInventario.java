@@ -1,7 +1,6 @@
 package com.sge.modulos.inventarios.formularios;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.sge.base.formularios.frameBase;
 import com.sge.modulos.inventarios.clases.SalidaInventario;
 import com.sge.modulos.inventarios.cliente.cliInventarios;
@@ -24,10 +23,17 @@ public class lisSalidaInventario extends frameBase<SalidaInventario> {
      */
     public lisSalidaInventario(int modo) {
         initComponents();
-        Init(modo);
+        Init(modo, "");
     }
 
-    private int modo = 0;
+    public lisSalidaInventario(int modo, String filtro) {
+        initComponents();
+        Init(modo, filtro);
+    }
+
+    private int modo;
+
+    private String filtro;
 
     private SalidaInventario seleccionado;
 
@@ -58,7 +64,7 @@ public class lisSalidaInventario extends frameBase<SalidaInventario> {
             cliInventarios cliente = new cliInventarios();
             String json = "";
             try {
-                json = cliente.ObtenerSalidaInventarios("");
+                json = cliente.ObtenerSalidaInventarios(new Gson().toJson(filtro));
             } catch (Exception e) {
                 OcultarCargando(frame);
                 cancel(false);
@@ -76,10 +82,9 @@ public class lisSalidaInventario extends frameBase<SalidaInventario> {
                 String[] resultado = new Gson().fromJson(json, String[].class);
                 if (resultado[0].equals("true")) {
                     EliminarTodasFilas(tbSalidaInventarios);
-                    List<Object[]> filas = (List<Object[]>) new Gson().fromJson(resultado[1], new TypeToken<List<Object[]>>() {
-                    }.getType());
-                    for (Object[] fila : filas) {
-                        AgregarFila(tbSalidaInventarios, new Object[]{false, ((Double) fila[0]).intValue(), fila[1], fila[2], fila[3], fila[4], fila[5], fila[6], Icon_View, Icon_Dele});
+                    SalidaInventario[] salidas = new Gson().fromJson(resultado[1], SalidaInventario[].class);
+                    for (SalidaInventario salida : salidas) {
+                        AgregarFila(tbSalidaInventarios, new Object[]{false, salida.getIdSalidaInventario(), salida.getNumero(), salida.getFechaCreacion(), salida.getRazonSocialCliente(), salida.getNombreResponsable(), salida.getSimboloMoneda(), salida.getTotal(), Icon_View, Icon_Dele});
                     }
                     AgregarBoton(tbSalidaInventarios, view, 8);
                     AgregarBoton(tbSalidaInventarios, dele, 9);
@@ -131,8 +136,9 @@ public class lisSalidaInventario extends frameBase<SalidaInventario> {
         }
     }
 
-    public void Init(int modo) {
+    public void Init(int modo, String filtro) {
         this.modo = modo;
+        this.filtro = filtro;
         switch (this.modo) {
             case 0:
                 OcultarColumna(tbSalidaInventarios, 0);

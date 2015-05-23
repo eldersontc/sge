@@ -1,17 +1,14 @@
 package com.sge.modulos.compras.formularios;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.sge.base.formularios.frameBase;
 import com.sge.modulos.compras.clases.Proveedor;
 import com.sge.modulos.compras.cliente.cliCompras;
 import java.awt.event.ActionEvent;
-import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ImageIcon;
 import javax.swing.SwingWorker;
-import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -24,11 +21,18 @@ public class lisProveedor extends frameBase<Proveedor> {
      */
     public lisProveedor(int modo) {
         initComponents();
-        Init(modo);
+        Init(modo, "");
     }
 
-    private int modo = 0;
+    public lisProveedor(int modo, String filtro) {
+        initComponents();
+        Init(modo, filtro);
+    }
+    
+    private int modo;
 
+    private String filtro;
+    
     private Proveedor seleccionado;
 
     ImageIcon Icon_Edit = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/edit-16.png"));
@@ -56,7 +60,7 @@ public class lisProveedor extends frameBase<Proveedor> {
             cliCompras cliente = new cliCompras();
             String json = "";
             try {
-                json = cliente.ObtenerProveedores("");
+                json = cliente.ObtenerProveedores(new Gson().toJson(filtro));
             } catch (Exception e) {
                 OcultarCargando(frame);
                 cancel(false);
@@ -74,16 +78,11 @@ public class lisProveedor extends frameBase<Proveedor> {
                 String[] resultado = new Gson().fromJson(json, String[].class);
 
                 if (resultado[0].equals("true")) {
-                    DefaultTableModel modelo = (DefaultTableModel) tbProveedores.getModel();
-                    modelo.setRowCount(0);
-
-                    List<Object[]> filas = (List<Object[]>) new Gson().fromJson(resultado[1], new TypeToken<List<Object[]>>() {
-                    }.getType());
-
-                    for (Object[] fila : filas) {
-                        modelo.addRow(new Object[]{false, ((Double) fila[0]).intValue(), fila[1], fila[5], fila[6], Icon_Edit, Icon_Dele});
+                    EliminarTodasFilas(tbProveedores);
+                    Proveedor[] proveedores = new Gson().fromJson(resultado[1], Proveedor[].class);
+                    for (Proveedor proveedor : proveedores) {
+                        AgregarFila(tbProveedores, new Object[]{false, proveedor.getIdProveedor(), proveedor.getRazonSocial(), proveedor.getFechaUltimaCompra(), proveedor.isActivo(), Icon_Edit, Icon_Dele});
                     }
-
                     AgregarBoton(tbProveedores, edit, 5);
                     AgregarBoton(tbProveedores, dele, 6);
                     AgregarOrdenamiento(tbProveedores);
@@ -133,8 +132,9 @@ public class lisProveedor extends frameBase<Proveedor> {
         }
     }
 
-    public void Init(int modo) {
+    public void Init(int modo, String filtro) {
         this.modo = modo;
+        this.filtro = filtro;
         switch (this.modo) {
             case 0:
                 OcultarColumna(tbProveedores, 0);

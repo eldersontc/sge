@@ -23,7 +23,7 @@ public class lisProductoUnidad extends frameBase<ProductoUnidad> {
         Init(filtro);
     }
 
-    private String filtro = "";
+    private String filtro;
 
     private List<ProductoUnidad> seleccionados = new ArrayList<>();
 
@@ -54,10 +54,9 @@ public class lisProductoUnidad extends frameBase<ProductoUnidad> {
 
                 if (resultado[0].equals("true")) {
                     EliminarTodasFilas(tbUnidades);
-                    List<Object[]> filas = (List<Object[]>) new Gson().fromJson(resultado[1].toString(), new TypeToken<List<Object[]>>() {
-                    }.getType());
-                    for (Object[] fila : filas) {
-                        AgregarFila(tbUnidades, new Object[]{false, ((Double) fila[0]).intValue(), ((Double) fila[2]).intValue(), fila[3], ((Double) fila[4]).intValue()});
+                    ProductoUnidad[] unidades = new Gson().fromJson(resultado[1].toString(), ProductoUnidad[].class);
+                    for (ProductoUnidad unidad : unidades) {
+                        AgregarFila(tbUnidades, new Object[]{false, unidad.getIdProductoUnidad(), unidad.getIdUnidad(), unidad.getAbreviacionUnidad(), unidad.getFactor()});
                     }
                     AgregarOrdenamiento(tbUnidades);
                 }
@@ -77,7 +76,7 @@ public class lisProductoUnidad extends frameBase<ProductoUnidad> {
     public List<ProductoUnidad> getSeleccionados() {
         return seleccionados;
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -238,17 +237,17 @@ public class lisProductoUnidad extends frameBase<ProductoUnidad> {
     private void btnSeleccionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeleccionarActionPerformed
         // TODO add your handling code here:
         for (int i = 0; i < tbUnidades.getRowCount(); i++) {
-                boolean check = ObtenerValorCelda(tbUnidades, i, 0);
-                if (check) {
-                    ProductoUnidad productoUnidad = new ProductoUnidad();
-                    productoUnidad.setIdProductoUnidad(ObtenerValorCelda(tbUnidades, i, 1));
-                    productoUnidad.setIdUnidad(ObtenerValorCelda(tbUnidades, i, 2));
-                    productoUnidad.setAbreviacionUnidad(ObtenerValorCelda(tbUnidades, i, 3));
-                    productoUnidad.setFactor(ObtenerValorCelda(tbUnidades, i, 4));
-                    seleccionados.add(productoUnidad);
-                }
+            boolean check = ObtenerValorCelda(tbUnidades, i, 0);
+            if (check) {
+                ProductoUnidad productoUnidad = new ProductoUnidad();
+                productoUnidad.setIdProductoUnidad(ObtenerValorCelda(tbUnidades, i, 1));
+                productoUnidad.setIdUnidad(ObtenerValorCelda(tbUnidades, i, 2));
+                productoUnidad.setAbreviacionUnidad(ObtenerValorCelda(tbUnidades, i, 3));
+                productoUnidad.setFactor(ObtenerValorCelda(tbUnidades, i, 4));
+                seleccionados.add(productoUnidad);
             }
-            Cerrar();
+        }
+        Cerrar();
     }//GEN-LAST:event_btnSeleccionarActionPerformed
 
     private void txtFiltroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFiltroActionPerformed

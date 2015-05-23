@@ -1,12 +1,10 @@
 package com.sge.modulos.produccion.formularios;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.sge.base.formularios.frameBase;
 import com.sge.modulos.produccion.clases.OrdenProduccion;
 import com.sge.modulos.produccion.cliente.cliProduccion;
 import java.awt.event.ActionEvent;
-import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ImageIcon;
@@ -23,10 +21,17 @@ public class lisOrdenProduccion extends frameBase<OrdenProduccion> {
      */
     public lisOrdenProduccion(int modo) {
         initComponents();
-         Init(modo);
+        Init(modo, "");
     }
-    
-    private int modo = 0;
+
+    public lisOrdenProduccion(int modo, String filtro) {
+        initComponents();
+        Init(modo, filtro);
+    }
+
+    private int modo;
+
+    private String filtro;
 
     private OrdenProduccion seleccionado;
 
@@ -55,7 +60,7 @@ public class lisOrdenProduccion extends frameBase<OrdenProduccion> {
             cliProduccion cliente = new cliProduccion();
             String json = "";
             try {
-                json = cliente.ObtenerOrdenesProduccion(new Gson().toJson(""));
+                json = cliente.ObtenerOrdenesProduccion(new Gson().toJson(filtro));
             } catch (Exception e) {
                 OcultarCargando(frame);
                 cancel(false);
@@ -74,10 +79,9 @@ public class lisOrdenProduccion extends frameBase<OrdenProduccion> {
 
                 if (resultado[0].equals("true")) {
                     EliminarTodasFilas(tbOrdenesProduccion);
-                    List<Object[]> filas = (List<Object[]>) new Gson().fromJson(resultado[1], new TypeToken<List<Object[]>>() {
-                    }.getType());
-                    for (Object[] fila : filas) {
-                        AgregarFila(tbOrdenesProduccion, new Object[]{false, ((Double) fila[0]).intValue(), fila[1], fila[2], fila[3], fila[4], Icon_Edit, Icon_Dele});
+                    OrdenProduccion[] ordenes = new Gson().fromJson(resultado[1], OrdenProduccion[].class);
+                    for (OrdenProduccion orden : ordenes) {
+                        AgregarFila(tbOrdenesProduccion, new Object[]{false, orden.getIdOrdenProduccion(), orden.getNumero(), orden.getFechaCreacion(), orden.getRazonSocialCliente(), orden.getNombreResponsable(), Icon_Edit, Icon_Dele});
                     }
                     AgregarBoton(tbOrdenesProduccion, edit, 6);
                     AgregarBoton(tbOrdenesProduccion, dele, 7);
@@ -127,9 +131,10 @@ public class lisOrdenProduccion extends frameBase<OrdenProduccion> {
             }
         }
     }
-    
-    public void Init(int modo) {
+
+    public void Init(int modo, String filtro) {
         this.modo = modo;
+        this.filtro = filtro;
         switch (this.modo) {
             case 0:
                 OcultarColumna(tbOrdenesProduccion, 0);
@@ -344,16 +349,16 @@ public class lisOrdenProduccion extends frameBase<OrdenProduccion> {
         // TODO add your handling code here:
         switch (this.modo) {
             case 1:
-            if (FilaActiva(tbOrdenesProduccion)) {
-                OrdenProduccion ordenProduccion = new OrdenProduccion();
-                ordenProduccion.setIdOrdenProduccion(ObtenerValorCelda(tbOrdenesProduccion, 1));
-                ordenProduccion.setNumero(ObtenerValorCelda(tbOrdenesProduccion, 2));
-                seleccionado = ordenProduccion;
-            }
-            Cerrar();
-            break;
+                if (FilaActiva(tbOrdenesProduccion)) {
+                    OrdenProduccion ordenProduccion = new OrdenProduccion();
+                    ordenProduccion.setIdOrdenProduccion(ObtenerValorCelda(tbOrdenesProduccion, 1));
+                    ordenProduccion.setNumero(ObtenerValorCelda(tbOrdenesProduccion, 2));
+                    seleccionado = ordenProduccion;
+                }
+                Cerrar();
+                break;
             case 2:
-            break;
+                break;
         }
     }//GEN-LAST:event_btnSeleccionarActionPerformed
 

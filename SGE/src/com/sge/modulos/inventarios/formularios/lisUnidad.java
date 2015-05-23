@@ -24,11 +24,18 @@ public class lisUnidad extends frameBase<Unidad> {
      */
     public lisUnidad(int modo) {
         initComponents();
-        Init(modo);
+        Init(modo, filtro);
+    }
+    
+    public lisUnidad(int modo, String filtro) {
+        initComponents();
+        Init(modo, filtro);
     }
 
-    private int modo = 0;
+    private int modo;
 
+    private String filtro;
+    
     private Unidad seleccionado;
 
     private List<Unidad> seleccionados = new ArrayList<>();
@@ -58,7 +65,7 @@ public class lisUnidad extends frameBase<Unidad> {
             cliInventarios cliente = new cliInventarios();
             String json = "";
             try {
-                json = cliente.ObtenerUnidades("");
+                json = cliente.ObtenerUnidades(new Gson().toJson(filtro));
             } catch (Exception e) {
                 OcultarCargando(frame);
                 cancel(false);
@@ -74,13 +81,11 @@ public class lisUnidad extends frameBase<Unidad> {
             try {
                 String json = get().toString();
                 String[] resultado = new Gson().fromJson(json, String[].class);
-
                 if (resultado[0].equals("true")) {
                     EliminarTodasFilas(tbUnidades);
-                    List<Object[]> filas = (List<Object[]>) new Gson().fromJson(resultado[1].toString(), new TypeToken<List<Object[]>>() {
-                    }.getType());
-                    for (Object[] fila : filas) {
-                        AgregarFila(tbUnidades, new Object[]{false, ((Double) fila[0]).intValue(), fila[1], fila[2], fila[3], Icon_Save, Icon_Dele});
+                    Unidad[] unidades = new Gson().fromJson(resultado[1].toString(), Unidad[].class);
+                    for (Unidad unidad : unidades) {
+                        AgregarFila(tbUnidades, new Object[]{false, unidad.getIdUnidad(), unidad.getAbreviacion(), unidad.getDescripcion(), unidad.isActivo(), Icon_Save, Icon_Dele});
                     }
                     AgregarBoton(tbUnidades, save, 5);
                     AgregarBoton(tbUnidades, dele, 6);
@@ -176,8 +181,9 @@ public class lisUnidad extends frameBase<Unidad> {
         }
     }
 
-    public void Init(int modo) {
+    public void Init(int modo, String filtro) {
         this.modo = modo;
+        this.filtro = filtro;
         switch (this.modo) {
             case 0:
                 OcultarColumna(tbUnidades, 0);
