@@ -11,8 +11,11 @@
         </id>
         <property name="idCliente" column="idCliente"/>
         <property name="idDepartamento" column="idDepartamento"/>
+        <property name="nombreDepartamento" column="nombreDepartamento"/>
         <property name="idProvincia" column="idProvincia"/>
+        <property name="nombreProvincia" column="nombreProvincia"/>
         <property name="idDistrito" column="idDistrito"/>
+        <property name="nombreDistrito" column="nombreDistrito"/>
         <property name="direccion" column="direccion"/>
     </class>
 </hibernate-mapping>

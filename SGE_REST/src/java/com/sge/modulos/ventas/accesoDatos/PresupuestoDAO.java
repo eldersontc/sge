@@ -14,7 +14,7 @@ public class PresupuestoDAO extends BaseDAO {
         String sql = "SELECT \n"
                 + "Presupuesto.* \n"
                 + "FROM \n"
-                + "Ventas.Presupuesto " + filtro;
+                + "Ventas.Presupuesto AS Presupuesto " + filtro;
         return super.ObtenerLista(sql, Presupuesto.class);
     }
 

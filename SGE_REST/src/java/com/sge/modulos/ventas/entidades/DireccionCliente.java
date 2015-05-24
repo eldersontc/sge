@@ -9,8 +9,11 @@ public class DireccionCliente {
     private int idDireccionCliente;
     private int idCliente;
     private int idDepartamento;
+    private String nombreDepartamento;
     private int idProvincia;
+    private String nombreProvincia;
     private int idDistrito;
+    private String nombreDistrito;
     private String direccion;
     private boolean agregar;
     private boolean actualizar;
@@ -43,6 +46,14 @@ public class DireccionCliente {
         this.idDepartamento = idDepartamento;
     }
 
+    public String getNombreDepartamento() {
+        return nombreDepartamento;
+    }
+
+    public void setNombreDepartamento(String nombreDepartamento) {
+        this.nombreDepartamento = nombreDepartamento;
+    }
+
     public int getIdProvincia() {
         return idProvincia;
     }
@@ -51,12 +62,28 @@ public class DireccionCliente {
         this.idProvincia = idProvincia;
     }
 
+    public String getNombreProvincia() {
+        return nombreProvincia;
+    }
+
+    public void setNombreProvincia(String nombreProvincia) {
+        this.nombreProvincia = nombreProvincia;
+    }
+
     public int getIdDistrito() {
         return idDistrito;
     }
 
     public void setIdDistrito(int idDistrito) {
         this.idDistrito = idDistrito;
+    }
+
+    public String getNombreDistrito() {
+        return nombreDistrito;
+    }
+
+    public void setNombreDistrito(String nombreDistrito) {
+        this.nombreDistrito = nombreDistrito;
     }
 
     public String getDireccion() {

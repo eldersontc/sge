@@ -10,14 +10,12 @@ import java.util.List;
  */
 public class ClienteDAO extends BaseDAO {
 
-    public List<Object[]> ObtenerClientes(String filtro) {
+    public List<Cliente> ObtenerClientes(String filtro) {
         String sql = "SELECT \n"
-                + "Cliente.idCliente, Cliente.razonSocial, Cliente.tipoDocumentoIdentidad, Cliente.documentoIdentidad, Cliente.nombreComercial, Cliente.fechaUltimaVenta, "
-                + "Cliente.idListaPrecioProducto, Cliente.nombreListaPrecioProducto, Cliente.idListaPrecioServicio, Cliente.nombreListaPrecioServicio, Cliente.idListaPrecioMaquina, "
-                + "Cliente.nombreListaPrecioMaquina, Cliente.activo \n"
+                + "Cliente.* \n"
                 + "FROM \n"
-                + "Ventas.Cliente " + filtro;
-        return super.ObtenerLista(sql);
+                + "Ventas.Cliente AS Cliente " + filtro;
+        return super.ObtenerLista(sql, Cliente.class);
     }
 
     public int ActualizarCliente(Cliente cliente) {

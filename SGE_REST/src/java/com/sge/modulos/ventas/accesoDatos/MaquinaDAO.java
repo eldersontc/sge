@@ -10,12 +10,12 @@ import java.util.List;
  */
 public class MaquinaDAO extends BaseDAO {
 
-    public List<Object[]> ObtenerMaquinas(String filtro) {
+    public List<Maquina> ObtenerMaquinas(String filtro) {
         String sql = "SELECT \n"
-                + "Maquina.idMaquina, Maquina.descripcion, Maquina.tipoMaquina, Maquina.altoMaximoPliego, Maquina.largoMaximoPliego, Maquina.activo \n"
+                + "Maquina.* \n"
                 + "FROM \n"
-                + "Ventas.Maquina " + filtro;
-        return super.ObtenerLista(sql);
+                + "Ventas.Maquina AS Maquina " + filtro;
+        return super.ObtenerLista(sql, Maquina.class);
     }
 
     public int ActualizarMaquina(Maquina maquina) {

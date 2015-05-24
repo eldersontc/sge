@@ -34,7 +34,7 @@ public class FormaPagoSRV {
         try {
             String filtro = new Gson().fromJson(json, String.class);
             FormaPagoDTO FormaPagoDTO = new FormaPagoDTO();
-            List<Object[]> lista = FormaPagoDTO.ObtenerFormasPago(filtro);
+            List<FormaPago> lista = FormaPagoDTO.ObtenerFormasPago(filtro);
             resultado.add(new Gson().toJson(true));
             resultado.add(new Gson().toJson(lista));
         } catch (Exception e) {

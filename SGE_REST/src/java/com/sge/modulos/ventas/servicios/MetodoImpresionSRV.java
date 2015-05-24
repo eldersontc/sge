@@ -34,7 +34,7 @@ public class MetodoImpresionSRV {
         try {
             String filtro = new Gson().fromJson(json, String.class);
             MetodoImpresionDTO MetodoImpresionDTO = new MetodoImpresionDTO();
-            List<Object[]> lista = MetodoImpresionDTO.ObtenerMetodosImpresion(filtro);
+            List<MetodoImpresion> lista = MetodoImpresionDTO.ObtenerMetodosImpresion(filtro);
             resultado.add(new Gson().toJson(true));
             resultado.add(new Gson().toJson(lista));
         } catch (Exception e) {

@@ -12,8 +12,8 @@ public class MaquinaDTO {
     
     MaquinaDAO maquinaDAO;
 
-    public List<Object[]> ObtenerMaquinas(String filtro) {
-        List<Object[]> lista;
+    public List<Maquina> ObtenerMaquinas(String filtro) {
+        List<Maquina> lista;
         try {
             maquinaDAO = new MaquinaDAO();
             maquinaDAO.AbrirSesion();

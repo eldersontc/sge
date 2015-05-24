@@ -37,7 +37,7 @@ public class ListaPrecioServicioSRV {
         try {
             String filtro = new Gson().fromJson(json, String.class);
             ListaPrecioServicioDTO listaPrecioServicioDTO = new ListaPrecioServicioDTO();
-            List<Object[]> lista = listaPrecioServicioDTO.ObtenerListasPrecio(filtro);
+            List<ListaPrecioServicio> lista = listaPrecioServicioDTO.ObtenerListasPrecio(filtro);
             resultado.add(new Gson().toJson(true));
             resultado.add(new Gson().toJson(lista));
         } catch (Exception e) {

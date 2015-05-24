@@ -1,6 +1,7 @@
 package com.sge.modulos.ventas.accesoDatos;
 
 import com.sge.base.accesoDatos.BaseDAO;
+import com.sge.modulos.ventas.entidades.PlantillaSolicitudCotizacion;
 import java.math.BigInteger;
 import java.util.List;
 
@@ -10,19 +11,19 @@ import java.util.List;
  */
 public class PlantillaSolicitudCotizacionDAO extends BaseDAO {
 
-    public List<Object[]> ObtenerPlantillasSolicitudCotizacion(String filtro) {
+    public List<PlantillaSolicitudCotizacion> ObtenerPlantillasSolicitudCotizacion(String filtro) {
         String sql = "SELECT \n"
-                + "PlantillaSolicitudCotizacion.idPlantillaSolicitudCotizacion, PlantillaSolicitudCotizacion.nombre, PlantillaSolicitudCotizacion.lineaProduccion, PlantillaSolicitudCotizacion.activo \n"
+                + "PlantillaSolicitudCotizacion.* \n"
                 + "FROM \n"
-                + "Ventas.PlantillaSolicitudCotizacion " + filtro;
-        return super.ObtenerLista(sql);
+                + "Ventas.PlantillaSolicitudCotizacion AS PlantillaSolicitudCotizacion " + filtro;
+        return super.ObtenerLista(sql, PlantillaSolicitudCotizacion.class);
     }
 
     public int ObtenerGrupo() {
         String sql = "SELECT nextval ('Ventas.Grupo_Seq')";
-        return ((BigInteger)super.ObtenerValor(sql)).intValue();
+        return ((BigInteger) super.ObtenerValor(sql)).intValue();
     }
-    
+
     public int ActualizarPlantillaSolicitudCotizacion(int idPlantillaSolicitudCotizacion, String nombre, String lineaProduccion, boolean activo) {
         String sql = String.format("UPDATE Ventas.PlantillaSolicitudCotizacion SET nombre = '%s', lineaProduccion = '%s', activo = %b WHERE idPlantillaSolicitudCotizacion = %d", nombre, lineaProduccion, activo, idPlantillaSolicitudCotizacion);
         return super.Ejecutar(sql);

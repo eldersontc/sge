@@ -34,7 +34,7 @@ public class MaquinaSRV {
         try {
             String filtro = new Gson().fromJson(json, String.class);
             MaquinaDTO MaquinaDTO = new MaquinaDTO();
-            List<Object[]> lista = MaquinaDTO.ObtenerMaquinas(filtro);
+            List<Maquina> lista = MaquinaDTO.ObtenerMaquinas(filtro);
             resultado.add(new Gson().toJson(true));
             resultado.add(new Gson().toJson(lista));
         } catch (Exception e) {

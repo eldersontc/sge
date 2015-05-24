@@ -14,7 +14,7 @@ public class SolicitudCotizacionDAO extends BaseDAO {
         String sql = "SELECT \n"
                 + "SolicitudCotizacion.* \n"
                 + "FROM \n"
-                + "Ventas.SolicitudCotizacion " + filtro;
+                + "Ventas.SolicitudCotizacion AS SolicitudCotizacion " + filtro;
         return super.ObtenerLista(sql, SolicitudCotizacion.class);
     }
 

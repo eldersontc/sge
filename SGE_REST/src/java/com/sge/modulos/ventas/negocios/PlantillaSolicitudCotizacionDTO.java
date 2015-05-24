@@ -16,8 +16,8 @@ public class PlantillaSolicitudCotizacionDTO {
     PlantillaSolicitudCotizacionDAO plantillaDAO;
     ItemPlantillaSolicitudCotizacionDAO itemPlantillaDAO;
     
-    public List<Object[]> ObtenerPlantillasSolicitudCotizacion(String filtro) {
-        List<Object[]> lista;
+    public List<PlantillaSolicitudCotizacion> ObtenerPlantillasSolicitudCotizacion(String filtro) {
+        List<PlantillaSolicitudCotizacion> lista;
         try {
             plantillaDAO = new PlantillaSolicitudCotizacionDAO();
             plantillaDAO.AbrirSesion();

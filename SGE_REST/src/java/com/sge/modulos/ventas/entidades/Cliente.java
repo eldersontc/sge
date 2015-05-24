@@ -26,13 +26,11 @@ public class Cliente {
     private int idListaPrecioMaquina;
     private String nombreListaPrecioMaquina;
     private List<DireccionCliente> direcciones;
-    private List<Object[]> direccionesConNombres;
     private List<ContactoCliente> contactos;
     private boolean  activo;
 
     public Cliente() {
         direcciones = new ArrayList<>();
-        direccionesConNombres = new ArrayList<>();
         contactos = new ArrayList<>();
     }
 
@@ -170,14 +168,6 @@ public class Cliente {
 
     public void setDirecciones(List<DireccionCliente> direcciones) {
         this.direcciones = direcciones;
-    }
-
-    public List<Object[]> getDireccionesConNombres() {
-        return direccionesConNombres;
-    }
-
-    public void setDireccionesConNombres(List<Object[]> direccionesConNombres) {
-        this.direccionesConNombres = direccionesConNombres;
     }
 
     public List<ContactoCliente> getContactos() {

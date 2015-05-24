@@ -12,8 +12,8 @@ public class MetodoImpresionDTO {
     
     MetodoImpresionDAO metodoImpresionDAO;
     
-    public List<Object[]> ObtenerMetodosImpresion(String filtro) {
-        List<Object[]> lista;
+    public List<MetodoImpresion> ObtenerMetodosImpresion(String filtro) {
+        List<MetodoImpresion> lista;
         try {
             metodoImpresionDAO = new MetodoImpresionDAO();
             metodoImpresionDAO.AbrirSesion();

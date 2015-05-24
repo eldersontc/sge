@@ -1,6 +1,7 @@
 package com.sge.modulos.ventas.accesoDatos;
 
 import com.sge.base.accesoDatos.BaseDAO;
+import com.sge.modulos.ventas.entidades.MetodoImpresion;
 import java.util.List;
 
 /**
@@ -8,14 +9,13 @@ import java.util.List;
  * @author elderson
  */
 public class MetodoImpresionDAO extends BaseDAO {
-    
-    public List<Object[]> ObtenerMetodosImpresion(String filtro) {
+
+    public List<MetodoImpresion> ObtenerMetodosImpresion(String filtro) {
         String sql = "SELECT \n"
-                + "MetodoImpresion.idMetodoImpresion, MetodoImpresion.nombre, MetodoImpresion.factorPases, MetodoImpresion.factorCambios, "
-                + "MetodoImpresion.factorHorizontal, MetodoImpresion.factorVertical, MetodoImpresion.letras, MetodoImpresion.activo \n"
+                + "MetodoImpresion.* \n"
                 + "FROM \n"
-                + "Ventas.MetodoImpresion " + filtro;
-        return super.ObtenerLista(sql);
+                + "Ventas.MetodoImpresion AS MetodoImpresion " + filtro;
+        return super.ObtenerLista(sql, MetodoImpresion.class);
     }
 
     public int ActualizarMetodoImpresion(int idMetodoImpresion, String nombre, int factorPases, int factorCambios, int factorHorizontal, int factorVertical, String letras, boolean activo) {

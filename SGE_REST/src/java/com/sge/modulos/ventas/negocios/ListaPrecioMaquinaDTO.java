@@ -19,8 +19,8 @@ public class ListaPrecioMaquinaDTO {
     ItemListaPrecioMaquinaDAO itemListaPrecioDAO;
     EscalaListaPrecioMaquinaDAO escalaListaPrecioDAO;
 
-    public List<Object[]> ObtenerListasPrecio(String filtro) {
-        List<Object[]> lista;
+    public List<ListaPrecioMaquina> ObtenerListasPrecio(String filtro) {
+        List<ListaPrecioMaquina> lista;
         try {
             listaPrecioDAO = new ListaPrecioMaquinaDAO();
             listaPrecioDAO.AbrirSesion();

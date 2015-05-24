@@ -19,8 +19,8 @@ public class ClienteDTO {
     DireccionClienteDAO direccionClienteDAO;
     ContactoClienteDAO contactoClienteDAO;
 
-    public List<Object[]> ObtenerClientes(String filtro) {
-        List<Object[]> lista;
+    public List<Cliente> ObtenerClientes(String filtro) {
+        List<Cliente> lista;
         try {
             clienteDAO = new ClienteDAO();
             clienteDAO.AbrirSesion();
@@ -42,6 +42,7 @@ public class ClienteDTO {
             
             contactoClienteDAO = new ContactoClienteDAO();
             contactoClienteDAO.AsignarSesion(clienteDAO);
+            
             List<Object[]> filtros = new ArrayList<>();
             filtros.add(new Object[]{"idCliente", idCliente});
             List<ContactoCliente> contactos = contactoClienteDAO.ObtenerLista(ContactoCliente.class, filtros);
@@ -49,8 +50,12 @@ public class ClienteDTO {
             
             direccionClienteDAO = new DireccionClienteDAO();
             direccionClienteDAO.AsignarSesion(clienteDAO);
-            List<Object[]> direcciones = direccionClienteDAO.ObtenerDireccionesClientePorIdCliente(idCliente);
-            cliente.setDireccionesConNombres(direcciones);
+            
+            filtros = new ArrayList<>();
+            filtros.add(new Object[]{"idCliente", idCliente});
+            List<DireccionCliente> direcciones = direccionClienteDAO.ObtenerLista(DireccionCliente.class, filtros);
+            cliente.setDirecciones(direcciones);
+            
         } catch (Exception e) {
             throw e;
         } finally {
@@ -118,7 +123,7 @@ public class ClienteDTO {
                     direccionClienteDAO.Agregar(direccionCliente);
                 }
                 if(direccionCliente.isActualizar()){
-                    direccionClienteDAO.ActualizarDireccionCliente(direccionCliente.getIdDireccionCliente(), direccionCliente.getIdDepartamento(), direccionCliente.getIdProvincia(), direccionCliente.getIdDistrito(), direccionCliente.getDireccion());
+                    direccionClienteDAO.ActualizarDireccionCliente(direccionCliente.getIdDireccionCliente(), direccionCliente.getIdDepartamento(), direccionCliente.getNombreDepartamento(), direccionCliente.getIdProvincia(), direccionCliente.getNombreProvincia(), direccionCliente.getIdDistrito(), direccionCliente.getNombreDistrito(), direccionCliente.getDireccion());
                 }
                 if(direccionCliente.isEliminar()){
                     direccionClienteDAO.EliminarDireccionCliente(direccionCliente.getIdDireccionCliente());
@@ -169,6 +174,20 @@ public class ClienteDTO {
             throw e;
         } finally {
             contactoClienteDAO.CerrarSesion();
+        }
+        return lista;
+    }
+    
+    public List<DireccionCliente> ObtenerDireccionesCliente(String filtro) {
+        List<DireccionCliente> lista;
+        try {
+            direccionClienteDAO = new DireccionClienteDAO();
+            direccionClienteDAO.AbrirSesion();
+            lista = direccionClienteDAO.ObtenerDireccionesCliente(filtro);
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            direccionClienteDAO.CerrarSesion();
         }
         return lista;
     }

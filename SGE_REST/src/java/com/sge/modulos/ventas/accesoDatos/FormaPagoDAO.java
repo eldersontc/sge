@@ -1,6 +1,7 @@
 package com.sge.modulos.ventas.accesoDatos;
 
 import com.sge.base.accesoDatos.BaseDAO;
+import com.sge.modulos.ventas.entidades.FormaPago;
 import java.util.List;
 
 /**
@@ -9,12 +10,12 @@ import java.util.List;
  */
 public class FormaPagoDAO extends BaseDAO {
 
-    public List<Object[]> ObtenerFormasPago(String filtro) {
+    public List<FormaPago> ObtenerFormasPago(String filtro) {
         String sql = "SELECT \n"
-                + "FormaPago.idFormaPago, FormaPago.descripcion, FormaPago.credito, FormaPago.dias, FormaPago.activo \n"
+                + "FormaPago.* \n"
                 + "FROM \n"
-                + "Ventas.FormaPago " + filtro;
-        return super.ObtenerLista(sql);
+                + "Ventas.FormaPago AS FormaPago " + filtro;
+        return super.ObtenerLista(sql, FormaPago.class);
     }
 
     public int ActualizarFormaPago(int idFormaPago, String descripcion, boolean credito, int dias, boolean activo) {

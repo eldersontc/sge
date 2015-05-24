@@ -1,6 +1,7 @@
 package com.sge.modulos.ventas.accesoDatos;
 
 import com.sge.base.accesoDatos.BaseDAO;
+import com.sge.modulos.ventas.entidades.Servicio;
 import java.util.List;
 
 /**
@@ -8,13 +9,13 @@ import java.util.List;
  * @author elderson
  */
 public class ServicioDAO extends BaseDAO {
-    
-    public List<Object[]> ObtenerServicios(String filtro) {
+
+    public List<Servicio> ObtenerServicios(String filtro) {
         String sql = "SELECT \n"
-                + "Servicio.idServicio, Servicio.codigo, Servicio.descripcion, Servicio.activo \n"
+                + "Servicio.* \n"
                 + "FROM \n"
-                + "Ventas.Servicio " + filtro;
-        return super.ObtenerLista(sql);
+                + "Ventas.Servicio AS Servicio " + filtro;
+        return super.ObtenerLista(sql, Servicio.class);
     }
 
     public int ActualizarServicio(int idServicio, String codigo, String descripcipon, boolean servicioImpresion, boolean activo) {

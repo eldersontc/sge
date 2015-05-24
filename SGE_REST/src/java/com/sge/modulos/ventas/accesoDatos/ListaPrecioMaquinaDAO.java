@@ -1,6 +1,7 @@
 package com.sge.modulos.ventas.accesoDatos;
 
 import com.sge.base.accesoDatos.BaseDAO;
+import com.sge.modulos.ventas.entidades.ListaPrecioMaquina;
 import java.util.List;
 
 /**
@@ -8,13 +9,13 @@ import java.util.List;
  * @author elderson
  */
 public class ListaPrecioMaquinaDAO extends BaseDAO {
-    
-    public List<Object[]> ObtenerListasPrecio(String filtro) {
+
+    public List<ListaPrecioMaquina> ObtenerListasPrecio(String filtro) {
         String sql = "SELECT \n"
-                + "ListaPrecioMaquina.idListaPrecioMaquina, ListaPrecioMaquina.nombre, ListaPrecioMaquina.activo \n"
+                + "ListaPrecioMaquina.* \n"
                 + "FROM \n"
-                + "Ventas.ListaPrecioMaquina " + filtro;
-        return super.ObtenerLista(sql);
+                + "Ventas.ListaPrecioMaquina AS ListaPrecioMaquina " + filtro;
+        return super.ObtenerLista(sql, ListaPrecioMaquina.class);
     }
 
     public int ActualizarListaPrecioMaquina(int idListaPrecioMaquina, String nombre, boolean activo) {

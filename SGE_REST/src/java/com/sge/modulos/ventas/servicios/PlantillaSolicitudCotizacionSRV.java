@@ -4,9 +4,7 @@ import com.google.gson.Gson;
 import com.sge.modulos.administracion.entidades.ValorDefinido;
 import com.sge.modulos.administracion.negocios.ValorDefinidoDTO;
 import com.sge.modulos.ventas.entidades.PlantillaSolicitudCotizacion;
-import com.sge.modulos.ventas.entidades.SolicitudCotizacion;
 import com.sge.modulos.ventas.negocios.PlantillaSolicitudCotizacionDTO;
-import com.sge.modulos.ventas.negocios.SolicitudCotizacionDTO;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -39,7 +37,7 @@ public class PlantillaSolicitudCotizacionSRV {
         try {
             String filtro = new Gson().fromJson(json, String.class);
             PlantillaSolicitudCotizacionDTO PlantillaSolicitudCotizacionDTO = new PlantillaSolicitudCotizacionDTO();
-            List<Object[]> lista = PlantillaSolicitudCotizacionDTO.ObtenerPlantillasSolicitudCotizacion(filtro);
+            List<PlantillaSolicitudCotizacion> lista = PlantillaSolicitudCotizacionDTO.ObtenerPlantillasSolicitudCotizacion(filtro);
             resultado.add(new Gson().toJson(true));
             resultado.add(new Gson().toJson(lista));
         } catch (Exception e) {

@@ -12,8 +12,8 @@ public class FormaPagoDTO {
     
     FormaPagoDAO formaPagoDAO;
     
-    public List<Object[]> ObtenerFormasPago(String filtro) {
-        List<Object[]> lista;
+    public List<FormaPago> ObtenerFormasPago(String filtro) {
+        List<FormaPago> lista;
         try {
             formaPagoDAO = new FormaPagoDAO();
             formaPagoDAO.AbrirSesion();

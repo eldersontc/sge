@@ -22,8 +22,8 @@ public class ServicioDTO {
     ServicioMaquinaDAO servicioMaquinaDAO;
     EscalaListaPrecioServicioDAO escalaListaPrecioServicioDAO;
 
-    public List<Object[]> ObtenerServicios(String filtro) {
-        List<Object[]> lista;
+    public List<Servicio> ObtenerServicios(String filtro) {
+        List<Servicio> lista;
         try {
             servicioDAO = new ServicioDAO();
             servicioDAO.AbrirSesion();
@@ -160,8 +160,8 @@ public class ServicioDTO {
         return true;
     }
     
-    public List<Object[]> ObtenerServicioUnidades(String filtro) {
-        List<Object[]> lista = new ArrayList<>();
+    public List<ServicioUnidad> ObtenerServicioUnidades(String filtro) {
+        List<ServicioUnidad> lista = new ArrayList<>();
         try {
             servicioUnidadDAO = new ServicioUnidadDAO();
             servicioUnidadDAO.AbrirSesion();

@@ -2,6 +2,7 @@ package com.sge.modulos.ventas.servicios;
 
 import com.google.gson.Gson;
 import com.sge.modulos.ventas.entidades.Servicio;
+import com.sge.modulos.ventas.entidades.ServicioUnidad;
 import com.sge.modulos.ventas.negocios.ServicioDTO;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +35,7 @@ public class ServicioSRV {
         try {
             String filtro = new Gson().fromJson(json, String.class);
             ServicioDTO ServicioDTO = new ServicioDTO();
-            List<Object[]> lista = ServicioDTO.ObtenerServicios(filtro);
+            List<Servicio> lista = ServicioDTO.ObtenerServicios(filtro);
             resultado.add(new Gson().toJson(true));
             resultado.add(new Gson().toJson(lista));
         } catch (Exception e) {
@@ -131,7 +132,7 @@ public class ServicioSRV {
         String filtros = new Gson().fromJson(json, String.class);
         try {
             ServicioDTO ServicioDTO = new ServicioDTO();
-            List<Object[]> lista = ServicioDTO.ObtenerServicioUnidades(filtros);
+            List<ServicioUnidad> lista = ServicioDTO.ObtenerServicioUnidades(filtros);
             resultado.add(new Gson().toJson(true));
             resultado.add(new Gson().toJson(lista));
         } catch (Exception e) {

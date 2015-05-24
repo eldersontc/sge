@@ -12,11 +12,7 @@ public class EscalaListaPrecioMaquinaDAO extends BaseDAO {
     
     public List<EscalaListaPrecioMaquina> ObtenerEscalasPorMaquina(int idListaPrecioMaquina, int idMaquina){
         String sql = String.format("SELECT \n" +
-                                    "  EscalaListaPrecioMaquina.idEscalaListaPrecioMaquina, \n" +
-                                    "  EscalaListaPrecioMaquina.idItemListaPrecioMaquina, \n" +
-                                    "  EscalaListaPrecioMaquina.desde, \n" +
-                                    "  EscalaListaPrecioMaquina.hasta, \n" +
-                                    "  EscalaListaPrecioMaquina.precio\n" +
+                                    "  EscalaListaPrecioMaquina.* \n" +
                                     "FROM \n" +
                                     "  Ventas.EscalaListaPrecioMaquina AS EscalaListaPrecioMaquina INNER JOIN  \n" +
                                     "  Ventas.ItemListaPrecioMaquina AS ItemListaPrecioMaquina \n" +

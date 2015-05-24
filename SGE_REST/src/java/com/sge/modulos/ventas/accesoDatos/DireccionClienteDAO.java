@@ -1,6 +1,7 @@
 package com.sge.modulos.ventas.accesoDatos;
 
 import com.sge.base.accesoDatos.BaseDAO;
+import com.sge.modulos.ventas.entidades.DireccionCliente;
 import java.util.List;
 
 /**
@@ -9,20 +10,16 @@ import java.util.List;
  */
 public class DireccionClienteDAO extends BaseDAO {
 
-    public List<Object[]> ObtenerDireccionesClientePorIdCliente(int idCliente) {
+    public List<DireccionCliente> ObtenerDireccionesCliente(String filtro) {
         String sql = "SELECT \n"
-                + "DireccionCliente.idDireccionCliente, DireccionCliente.idDepartamento, Departamento.nombre AS departamento, DireccionCliente.idProvincia, Provincia.nombre AS provincia, DireccionCliente.idDistrito, Distrito.nombre AS distrito, DireccionCliente.direccion \n"
+                + "DireccionCliente.* \n"
                 + "FROM \n"
-                + "Ventas.DireccionCliente AS DireccionCliente \n"
-                + "INNER JOIN Administracion.Departamento AS Departamento ON Departamento.idDepartamento = DireccionCliente.idDepartamento \n"
-                + "INNER JOIN Administracion.Provincia AS Provincia ON Provincia.idProvincia = DireccionCliente.idProvincia \n"
-                + "INNER JOIN Administracion.Distrito AS Distrito ON Distrito.idDistrito = DireccionCliente.idDistrito \n"
-                + "WHERE DireccionCliente.idCliente = " + idCliente;
-        return super.ObtenerLista(sql);
+                + "Ventas.DireccionCliente AS DireccionCliente " + filtro;
+        return super.ObtenerLista(sql, DireccionCliente.class);
     }
 
-    public int ActualizarDireccionCliente(int idDireccionCliente, int idDepartamento, int idProvincia, int idDistrito, String direccion) {
-        String sql = String.format("UPDATE Ventas.DireccionCliente SET idDepartamento = %d, idProvincia = %d, idDistrito = %d, direccion = '%s' WHERE idDireccionCliente = %d", idDepartamento, idProvincia, idDistrito, direccion, idDireccionCliente);
+    public int ActualizarDireccionCliente(int idDireccionCliente, int idDepartamento, String nombreDepartamento, int idProvincia, String nombreProvincia, int idDistrito, String nombreDistrito, String direccion) {
+        String sql = String.format("UPDATE Ventas.DireccionCliente SET idDepartamento = %d, nombreDepartamento = '%s', idProvincia = %d, nombreProvincia = %s, idDistrito = %d, nombreDistrito = '%s', direccion = '%s' WHERE idDireccionCliente = %d", idDepartamento, nombreDepartamento, idProvincia, nombreProvincia, idDistrito, nombreDistrito, direccion, idDireccionCliente);
         return super.Ejecutar(sql);
     }
 
@@ -30,7 +27,7 @@ public class DireccionClienteDAO extends BaseDAO {
         String sql = "DELETE FROM Ventas.DireccionCliente WHERE idDireccionCliente = " + idDireccionCliente;
         return super.Ejecutar(sql);
     }
-    
+
     public int EliminarDireccionClientePorIdCliente(int idCliente) {
         String sql = "DELETE FROM Ventas.DireccionCliente WHERE idCliente = " + idCliente;
         return super.Ejecutar(sql);
