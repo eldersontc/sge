@@ -36,6 +36,9 @@ public class BaseDAO {
         recursos.add("com/sge/modulos/administracion/mapeos/ValorDefinido.hbm.xml");
         recursos.add("com/sge/modulos/administracion/mapeos/Numeracion.hbm.xml");
         recursos.add("com/sge/modulos/administracion/mapeos/Entidad.hbm.xml");
+        recursos.add("com/sge/modulos/administracion/mapeos/Departamento.hbm.xml");
+        recursos.add("com/sge/modulos/administracion/mapeos/Provincia.hbm.xml");
+        recursos.add("com/sge/modulos/administracion/mapeos/Distrito.hbm.xml");
         // COMPRAS
         recursos.add("com/sge/modulos/compras/mapeos/Proveedor.hbm.xml");
         // INVENTARIOS

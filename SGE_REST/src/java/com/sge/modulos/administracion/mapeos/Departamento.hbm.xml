@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.sge.modulos.administracion.entidades.Departamento" table="Departamento" schema="Administracion">
+        <id name="idDepartamento" column="idDepartamento">
+            <generator class="sequence">
+                <param name="sequence">Administracion.departamento_iddepartamento_seq</param>
+            </generator>
+        </id>
+        <property name="nombre" column="nombre"/>
+    </class>
+</hibernate-mapping>

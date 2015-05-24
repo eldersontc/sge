@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.sge.modulos.administracion.entidades.Provincia" table="Provincia" schema="Administracion">
+        <id name="idProvincia" column="idProvincia">
+            <generator class="sequence">
+                <param name="sequence">Administracion.provincia_idprovincia_seq</param>
+            </generator>
+        </id>
+        <property name="nombre" column="nombre"/>
+        <property name="idDepartamento" column="idDepartamento"/>
+    </class>
+</hibernate-mapping>
