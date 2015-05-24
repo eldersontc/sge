@@ -30,11 +30,18 @@ public class lisPresupuesto extends frameBase<Presupuesto> {
      */
     public lisPresupuesto(int modo) {
         initComponents();
-        Init(modo);
+        Init(modo, "");
     }
 
-    private int modo = 0;
+    public lisPresupuesto(int modo, String filtro) {
+        initComponents();
+        Init(modo, filtro);
+    }
+    
+    private int modo;
 
+    private String filtro;
+    
     private Presupuesto seleccionado;
 
     ImageIcon Icon_Edit = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/edit-16.png"));
@@ -62,7 +69,7 @@ public class lisPresupuesto extends frameBase<Presupuesto> {
             cliVentas cliente = new cliVentas();
             String json = "";
             try {
-                json = cliente.ObtenerPresupuestos(new Gson().toJson(""));
+                json = cliente.ObtenerPresupuestos(new Gson().toJson(filtro));
             } catch (Exception e) {
                 OcultarCargando(frame);
                 cancel(false);
@@ -446,8 +453,9 @@ public class lisPresupuesto extends frameBase<Presupuesto> {
         }
     }
 
-    public void Init(int modo) {
+    public void Init(int modo, String filtro) {
         this.modo = modo;
+        this.filtro = filtro;
         switch (this.modo) {
             case 0:
                 OcultarColumna(tbPresupuestos, 0);

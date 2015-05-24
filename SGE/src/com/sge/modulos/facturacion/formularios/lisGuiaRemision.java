@@ -25,10 +25,17 @@ public class lisGuiaRemision extends frameBase<GuiaRemision> {
 
     public lisGuiaRemision(int modo) {
         initComponents();
-        Init(modo);
+        Init(modo, "");
     }
 
-    private int modo = 0;
+    public lisGuiaRemision(int modo, String filtro) {
+        initComponents();
+        Init(modo, filtro);
+    }
+
+    private int modo;
+
+    private String filtro;
 
     private GuiaRemision seleccionado;
 
@@ -57,7 +64,7 @@ public class lisGuiaRemision extends frameBase<GuiaRemision> {
             cliFacturacion cliente = new cliFacturacion();
             String json = "";
             try {
-                json = cliente.ObtenerGuiasRemision(new Gson().toJson(""));
+                json = cliente.ObtenerGuiasRemision(new Gson().toJson(filtro));
             } catch (Exception e) {
                 OcultarCargando(frame);
                 cancel(false);
@@ -129,8 +136,9 @@ public class lisGuiaRemision extends frameBase<GuiaRemision> {
         }
     }
 
-    public void Init(int modo) {
+    public void Init(int modo, String filtro) {
         this.modo = modo;
+        this.filtro = filtro;
         switch (this.modo) {
             case 0:
                 OcultarColumna(tbGuiasRemision, 0);

@@ -31,9 +31,9 @@ public class lisCotizacion extends frameBase<Cotizacion> {
         Init(modo, filtro);
     }
     
-    private int modo = 0;
+    private int modo;
     
-    private String filtro = "";
+    private String filtro;
 
     private Cotizacion seleccionado;
     private List<Cotizacion> seleccionados = new ArrayList<>();

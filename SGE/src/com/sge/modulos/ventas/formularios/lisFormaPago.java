@@ -23,11 +23,18 @@ public class lisFormaPago extends frameBase<FormaPago> {
      */
     public lisFormaPago(int modo) {
         initComponents();
-        Init(modo);
+        Init(modo, "");
     }
 
-    private int modo = 0;
+    public lisFormaPago(int modo, String filtro) {
+        initComponents();
+        Init(modo, filtro);
+    }
+    
+    private int modo;
 
+    private String filtro;
+    
     private FormaPago seleccionado;
 
     ImageIcon Icon_Save = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/save-16.png"));
@@ -55,7 +62,7 @@ public class lisFormaPago extends frameBase<FormaPago> {
             cliVentas cliente = new cliVentas();
             String json = "";
             try {
-                json = cliente.ObtenerFormasPago(new Gson().toJson(""));
+                json = cliente.ObtenerFormasPago(new Gson().toJson(filtro));
             } catch (Exception e) {
                 OcultarCargando(frame);
                 cancel(false);
@@ -74,13 +81,10 @@ public class lisFormaPago extends frameBase<FormaPago> {
 
                 if (resultado[0].equals("true")) {
                     EliminarTodasFilas(tbFormasPago);
-                    List<Object[]> filas = (List<Object[]>) new Gson().fromJson(resultado[1], new TypeToken<List<Object[]>>() {
-                    }.getType());
-
-                    for (Object[] fila : filas) {
-                        AgregarFila(tbFormasPago, new Object[]{false, ((Double) fila[0]).intValue(), fila[1], fila[2], ((Double) fila[3]).intValue(), fila[4], Icon_Save, Icon_Dele});
+                    FormaPago[] formasPago = new Gson().fromJson(resultado[1], FormaPago[].class);
+                    for (FormaPago formaPago : formasPago) {
+                        AgregarFila(tbFormasPago, new Object[]{false, formaPago.getIdFormaPago(), formaPago.getDescripcion(), formaPago.isCredito(), formaPago.getDias(), formaPago.isActivo(), Icon_Save, Icon_Dele});
                     }
-
                     AgregarBoton(tbFormasPago, save, 6);
                     AgregarBoton(tbFormasPago, dele, 7);
                     AgregarOrdenamiento(tbFormasPago);
@@ -175,8 +179,9 @@ public class lisFormaPago extends frameBase<FormaPago> {
         }
     }
 
-    public void Init(int modo) {
+    public void Init(int modo, String filtro) {
         this.modo = modo;
+        this.filtro = filtro;
         switch (this.modo) {
             case 0:
                 OcultarColumna(tbFormasPago, 0);

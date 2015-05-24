@@ -23,10 +23,17 @@ public class lisMetodoImpresion extends frameBase<MetodoImpresion> {
      */
     public lisMetodoImpresion(int modo) {
         initComponents();
-        Init(modo);
+        Init(modo, "");
     }
 
-    private int modo = 0;
+    public lisMetodoImpresion(int modo, String filtro) {
+        initComponents();
+        Init(modo, filtro);
+    }
+
+    private int modo;
+
+    private String filtro;
 
     private MetodoImpresion seleccionado;
 
@@ -55,7 +62,7 @@ public class lisMetodoImpresion extends frameBase<MetodoImpresion> {
             cliVentas cliente = new cliVentas();
             String json = "";
             try {
-                json = cliente.ObtenerMetodosImpresion(new Gson().toJson(""));
+                json = cliente.ObtenerMetodosImpresion(new Gson().toJson(filtro));
             } catch (Exception e) {
                 OcultarCargando(frame);
                 cancel(false);
@@ -71,16 +78,12 @@ public class lisMetodoImpresion extends frameBase<MetodoImpresion> {
             try {
                 String json = get().toString();
                 String[] resultado = new Gson().fromJson(json, String[].class);
-
                 if (resultado[0].equals("true")) {
                     EliminarTodasFilas(tbMetodosImpresion);
-                    List<Object[]> filas = (List<Object[]>) new Gson().fromJson(resultado[1], new TypeToken<List<Object[]>>() {
-                    }.getType());
-
-                    for (Object[] fila : filas) {
-                        AgregarFila(tbMetodosImpresion, new Object[]{false, ((Double) fila[0]).intValue(), fila[1], ((Double) fila[2]).intValue(), ((Double) fila[3]).intValue(), ((Double) fila[4]).intValue(), ((Double) fila[5]).intValue(), fila[6], fila[7], Icon_Save, Icon_Dele});
+                    MetodoImpresion[] metodosImpresion = new Gson().fromJson(resultado[1], MetodoImpresion[].class);
+                    for (MetodoImpresion metodoImpresion : metodosImpresion) {
+                        AgregarFila(tbMetodosImpresion, new Object[]{false, metodoImpresion.getIdMetodoImpresion(), metodoImpresion.getNombre(), metodoImpresion.getFactorPases(), metodoImpresion.getFactorCambios(), metodoImpresion.getFactorHorizontal(), metodoImpresion.getFactorVertical(), metodoImpresion.getLetras(), metodoImpresion.isActivo(), Icon_Save, Icon_Dele});
                     }
-
                     AgregarBoton(tbMetodosImpresion, save, 9);
                     AgregarBoton(tbMetodosImpresion, dele, 10);
                     AgregarOrdenamiento(tbMetodosImpresion);
@@ -178,8 +181,9 @@ public class lisMetodoImpresion extends frameBase<MetodoImpresion> {
         }
     }
 
-    public void Init(int modo) {
+    public void Init(int modo, String filtro) {
         this.modo = modo;
+        this.filtro = filtro;
         switch (this.modo) {
             case 0:
                 OcultarColumna(tbMetodosImpresion, 0);

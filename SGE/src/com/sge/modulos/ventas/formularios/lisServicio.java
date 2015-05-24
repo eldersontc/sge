@@ -33,12 +33,12 @@ public class lisServicio extends frameBase<Servicio> {
         Init(modo, filtro);
     }
 
-    private int modo = 0;
+    private int modo;
 
-    private String filtro = "";
+    private String filtro;
 
     private Servicio seleccionado;
-    
+
     private List<Servicio> seleccionados = new ArrayList<>();
 
     ImageIcon Icon_Edit = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/edit-16.png"));
@@ -82,18 +82,12 @@ public class lisServicio extends frameBase<Servicio> {
             try {
                 String json = get().toString();
                 String[] resultado = new Gson().fromJson(json, String[].class);
-
                 if (resultado[0].equals("true")) {
-                    DefaultTableModel modelo = (DefaultTableModel) tbServicios.getModel();
-                    modelo.setRowCount(0);
-
-                    List<Object[]> filas = (List<Object[]>) new Gson().fromJson(resultado[1], new TypeToken<List<Object[]>>() {
-                    }.getType());
-
-                    for (Object[] fila : filas) {
-                        modelo.addRow(new Object[]{false, ((Double) fila[0]).intValue(), fila[1], fila[2], fila[3], Icon_Edit, Icon_Dele});
+                    EliminarTodasFilas(tbServicios);
+                    Servicio[] servicios = new Gson().fromJson(resultado[1], Servicio[].class);
+                    for (Servicio servicio : servicios) {
+                        AgregarFila(tbServicios, new Object[]{false, servicio.getIdServicio(), servicio.getCodigo(), servicio.getDescripcion(), servicio.isActivo(), Icon_Edit, Icon_Dele});
                     }
-
                     AgregarBoton(tbServicios, edit, 5);
                     AgregarBoton(tbServicios, dele, 6);
                     AgregarOrdenamiento(tbServicios);
@@ -180,7 +174,7 @@ public class lisServicio extends frameBase<Servicio> {
     public List<Servicio> getSeleccionados() {
         return seleccionados;
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always

@@ -23,10 +23,17 @@ public class lisListaPrecioServicio extends frameBase<ListaPrecioServicio> {
      */
     public lisListaPrecioServicio(int modo) {
         initComponents();
-        Init(modo);
+        Init(modo, "");
     }
 
-    private int modo = 0;
+    public lisListaPrecioServicio(int modo, String filtro) {
+        initComponents();
+        Init(modo, filtro);
+    }
+
+    private int modo;
+
+    private String filtro;
 
     private ListaPrecioServicio seleccionado;
 
@@ -55,7 +62,7 @@ public class lisListaPrecioServicio extends frameBase<ListaPrecioServicio> {
             cliVentas cliente = new cliVentas();
             String json = "";
             try {
-                json = cliente.ObtenerListasPrecioServicio(new Gson().toJson(""));
+                json = cliente.ObtenerListasPrecioServicio(new Gson().toJson(filtro));
             } catch (Exception e) {
                 OcultarCargando(frame);
                 cancel(false);
@@ -74,10 +81,9 @@ public class lisListaPrecioServicio extends frameBase<ListaPrecioServicio> {
 
                 if (resultado[0].equals("true")) {
                     EliminarTodasFilas(tbListasPrecio);
-                    List<Object[]> filas = (List<Object[]>) new Gson().fromJson(resultado[1], new TypeToken<List<Object[]>>() {
-                    }.getType());
-                    for (Object[] fila : filas) {
-                        AgregarFila(tbListasPrecio, new Object[]{false, ((Double) fila[0]).intValue(), fila[1], fila[2], Icon_Edit, Icon_Dele});
+                    ListaPrecioServicio[] listasPrecio = new Gson().fromJson(resultado[1], ListaPrecioServicio[].class);
+                    for (ListaPrecioServicio listaPrecio : listasPrecio) {
+                        AgregarFila(tbListasPrecio, new Object[]{false, listaPrecio.getIdListaPrecioServicio(), listaPrecio.getNombre(), listaPrecio.isActivo(), Icon_Edit, Icon_Dele});
                     }
                     AgregarBoton(tbListasPrecio, edit, 4);
                     AgregarBoton(tbListasPrecio, dele, 5);
@@ -128,8 +134,9 @@ public class lisListaPrecioServicio extends frameBase<ListaPrecioServicio> {
         }
     }
 
-    public void Init(int modo) {
+    public void Init(int modo, String filtro) {
         this.modo = modo;
+        this.filtro = filtro;
         switch (this.modo) {
             case 0:
                 OcultarColumna(tbListasPrecio, 0);
@@ -160,7 +167,7 @@ public class lisListaPrecioServicio extends frameBase<ListaPrecioServicio> {
     public ListaPrecioServicio getSeleccionado() {
         return seleccionado;
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -342,16 +349,16 @@ public class lisListaPrecioServicio extends frameBase<ListaPrecioServicio> {
         // TODO add your handling code here:
         switch (this.modo) {
             case 1:
-            if (FilaActiva(tbListasPrecio)) {
-                ListaPrecioServicio listaPrecio = new ListaPrecioServicio();
-                listaPrecio.setIdListaPrecioServicio(ObtenerValorCelda(tbListasPrecio, 1));
-                listaPrecio.setNombre(ObtenerValorCelda(tbListasPrecio, 2));
-                seleccionado = listaPrecio;
-            }
-            Cerrar();
-            break;
+                if (FilaActiva(tbListasPrecio)) {
+                    ListaPrecioServicio listaPrecio = new ListaPrecioServicio();
+                    listaPrecio.setIdListaPrecioServicio(ObtenerValorCelda(tbListasPrecio, 1));
+                    listaPrecio.setNombre(ObtenerValorCelda(tbListasPrecio, 2));
+                    seleccionado = listaPrecio;
+                }
+                Cerrar();
+                break;
             case 2:
-            break;
+                break;
         }
     }//GEN-LAST:event_btnSeleccionarActionPerformed
 

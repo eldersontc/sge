@@ -23,7 +23,7 @@ public class lisServicioUnidad extends frameBase<ServicioUnidad> {
         Init(filtro);
     }
 
-    private String filtro = "";
+    private String filtro;
 
     private List<ServicioUnidad> seleccionados = new ArrayList<>();
 
@@ -54,10 +54,9 @@ public class lisServicioUnidad extends frameBase<ServicioUnidad> {
 
                 if (resultado[0].equals("true")) {
                     EliminarTodasFilas(tbUnidades);
-                    List<Object[]> filas = (List<Object[]>) new Gson().fromJson(resultado[1].toString(), new TypeToken<List<Object[]>>() {
-                    }.getType());
-                    for (Object[] fila : filas) {
-                        AgregarFila(tbUnidades, new Object[]{false, ((Double) fila[0]).intValue(), ((Double) fila[2]).intValue(), fila[3], ((Double) fila[4]).intValue()});
+                    ServicioUnidad[] unidades = new Gson().fromJson(resultado[1].toString(), ServicioUnidad[].class);
+                    for (ServicioUnidad unidad : unidades) {
+                        AgregarFila(tbUnidades, new Object[]{false, unidad.getIdServicioUnidad(), unidad.getIdUnidad(), unidad.getAbreviacionUnidad(), unidad.getFactor()});
                     }
                     AgregarOrdenamiento(tbUnidades);
                 }
@@ -77,7 +76,7 @@ public class lisServicioUnidad extends frameBase<ServicioUnidad> {
     public List<ServicioUnidad> getSeleccionados() {
         return seleccionados;
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always

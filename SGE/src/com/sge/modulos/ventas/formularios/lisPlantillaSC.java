@@ -15,7 +15,6 @@ import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ImageIcon;
 import javax.swing.SwingWorker;
-import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -28,10 +27,17 @@ public class lisPlantillaSC extends frameBase<PlantillaSolicitudCotizacion> {
      */
     public lisPlantillaSC(int modo) {
         initComponents();
-        Init(modo);
+        Init(modo, "");
     }
 
-    private int modo = 0;
+    public lisPlantillaSC(int modo, String filtro) {
+        initComponents();
+        Init(modo, filtro);
+    }
+
+    private int modo;
+
+    private String filtro;
 
     private PlantillaSolicitudCotizacion seleccionado;
 
@@ -60,7 +66,7 @@ public class lisPlantillaSC extends frameBase<PlantillaSolicitudCotizacion> {
             cliVentas cliente = new cliVentas();
             String json = "";
             try {
-                json = cliente.ObtenerPlantillasSolicitudCotizacion(new Gson().toJson(""));
+                json = cliente.ObtenerPlantillasSolicitudCotizacion(new Gson().toJson(filtro));
             } catch (Exception e) {
                 OcultarCargando(frame);
                 cancel(false);
@@ -79,10 +85,9 @@ public class lisPlantillaSC extends frameBase<PlantillaSolicitudCotizacion> {
 
                 if (resultado[0].equals("true")) {
                     EliminarTodasFilas(tbPlantillas);
-                    List<Object[]> filas = (List<Object[]>) new Gson().fromJson(resultado[1], new TypeToken<List<Object[]>>() {
-                    }.getType());
-                    for (Object[] fila : filas) {
-                        AgregarFila(tbPlantillas, new Object[]{false, ((Double) fila[0]).intValue(), fila[1], fila[2], fila[3], Icon_Edit, Icon_Dele});
+                    PlantillaSolicitudCotizacion[] plantillas = new Gson().fromJson(resultado[1], PlantillaSolicitudCotizacion[].class);
+                    for (PlantillaSolicitudCotizacion plantilla : plantillas) {
+                        AgregarFila(tbPlantillas, new Object[]{false, plantilla.getIdPlantillaSolicitudCotizacion(), plantilla.getNombre(), plantilla.getLineaProduccion(), plantilla.isActivo(), Icon_Edit, Icon_Dele});
                     }
                     AgregarBoton(tbPlantillas, edit, 5);
                     AgregarBoton(tbPlantillas, dele, 6);
@@ -200,9 +205,10 @@ public class lisPlantillaSC extends frameBase<PlantillaSolicitudCotizacion> {
             OcultarCargando(frame);
         }
     }
-    
-    public void Init(int modo) {
+
+    public void Init(int modo, String filtro) {
         this.modo = modo;
+        this.filtro = filtro;
         switch (this.modo) {
             case 0:
                 OcultarColumna(tbPlantillas, 0);

@@ -12,7 +12,6 @@ import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ImageIcon;
 import javax.swing.SwingWorker;
-import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -25,11 +24,18 @@ public class lisMaquina extends frameBase<Maquina> {
      */
     public lisMaquina(int modo) {
         initComponents();
-        Init(modo);
+        Init(modo, "");
     }
 
-    private int modo = 0;
+    public lisMaquina(int modo, String filtro) {
+        initComponents();
+        Init(modo, filtro);
+    }
+    
+    private int modo;
 
+    private String filtro;
+    
     private Maquina seleccionado;
 
     private List<Maquina> seleccionados = new ArrayList<>();
@@ -59,7 +65,7 @@ public class lisMaquina extends frameBase<Maquina> {
             cliVentas cliente = new cliVentas();
             String json = "";
             try {
-                json = cliente.ObtenerMaquinas(new Gson().toJson(""));
+                json = cliente.ObtenerMaquinas(new Gson().toJson(filtro));
             } catch (Exception e) {
                 OcultarCargando(frame);
                 cancel(false);
@@ -77,10 +83,9 @@ public class lisMaquina extends frameBase<Maquina> {
                 String[] resultado = new Gson().fromJson(json, String[].class);
                 if (resultado[0].equals("true")) {
                     EliminarTodasFilas(tbMaquinas);
-                    List<Object[]> filas = (List<Object[]>) new Gson().fromJson(resultado[1], new TypeToken<List<Object[]>>() {
-                    }.getType());
-                    for (Object[] fila : filas) {
-                        AgregarFila(tbMaquinas, new Object[]{false, ((Double) fila[0]).intValue(), fila[1], fila[2], ((Double) fila[3]).intValue(), ((Double) fila[4]).intValue(), fila[5], Icon_Edit, Icon_Dele});
+                    Maquina[] maquinas = new Gson().fromJson(resultado[1], Maquina[].class);
+                    for (Maquina maquina : maquinas) {
+                        AgregarFila(tbMaquinas, new Object[]{false, maquina.getIdMaquina(), maquina.getDescripcion(), maquina.getTipoMaquina(), maquina.getAltoMaximoPliego(), maquina.getLargoMaximoPliego(), maquina.isActivo(), Icon_Edit, Icon_Dele});
                     }
                     AgregarBoton(tbMaquinas, edit, 7);
                     AgregarBoton(tbMaquinas, dele, 8);
@@ -131,8 +136,9 @@ public class lisMaquina extends frameBase<Maquina> {
         }
     }
 
-    public void Init(int modo) {
+    public void Init(int modo, String filtro) {
         this.modo = modo;
+        this.filtro = filtro;
         switch (this.modo) {
             case 0:
                 OcultarColumna(tbMaquinas, 0);

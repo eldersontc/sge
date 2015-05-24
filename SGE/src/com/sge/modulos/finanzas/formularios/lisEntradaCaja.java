@@ -21,10 +21,17 @@ public class lisEntradaCaja extends frameBase<EntradaCaja> {
      */
     public lisEntradaCaja(int modo) {
         initComponents();
-        Init(modo);
+        Init(modo, "");
     }
 
-    private int modo = 0;
+    public lisEntradaCaja(int modo, String filtro) {
+        initComponents();
+        Init(modo, filtro);
+    }
+
+    private int modo;
+
+    private String filtro;
 
     ImageIcon Icon_View = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/view-16.png"));
     ImageIcon Icon_Dele = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/delete-16.png"));
@@ -51,7 +58,7 @@ public class lisEntradaCaja extends frameBase<EntradaCaja> {
             cliFinanzas cliente = new cliFinanzas();
             String json = "";
             try {
-                json = cliente.ObtenerEntradasCaja(new Gson().toJson(""));
+                json = cliente.ObtenerEntradasCaja(new Gson().toJson(filtro));
             } catch (Exception e) {
                 OcultarCargando(frame);
                 cancel(false);
@@ -123,8 +130,9 @@ public class lisEntradaCaja extends frameBase<EntradaCaja> {
         }
     }
 
-    public void Init(int modo) {
+    public void Init(int modo, String filtro) {
         this.modo = modo;
+        this.filtro = filtro;
         switch (this.modo) {
             case 0:
                 OcultarColumna(tbEntradasCaja, 0);

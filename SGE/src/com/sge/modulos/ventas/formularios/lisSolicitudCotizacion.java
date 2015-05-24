@@ -25,11 +25,18 @@ public class lisSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
      */
     public lisSolicitudCotizacion(int modo) {
         initComponents();
-        Init(modo);
+        Init(modo, "");
     }
 
-    private int modo = 0;
+    public lisSolicitudCotizacion(int modo, String filtro) {
+        initComponents();
+        Init(modo, filtro);
+    }
+    
+    private int modo;
 
+    private String filtro;
+    
     private SolicitudCotizacion seleccionado;
 
     ImageIcon Icon_Edit = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/edit-16.png"));
@@ -62,7 +69,7 @@ public class lisSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
             cliVentas cliente = new cliVentas();
             String json = "";
             try {
-                json = cliente.ObtenerSolicitudesCotizacion(new Gson().toJson(""));
+                json = cliente.ObtenerSolicitudesCotizacion(new Gson().toJson(filtro));
             } catch (Exception e) {
                 OcultarCargando(frame);
                 cancel(false);
@@ -318,8 +325,9 @@ public class lisSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
         }
     }
 
-    public void Init(int modo) {
+    public void Init(int modo, String filtro) {
         this.modo = modo;
+        this.filtro = filtro;
         switch (this.modo) {
             case 0:
                 OcultarColumna(tbSolicitudes, 0);

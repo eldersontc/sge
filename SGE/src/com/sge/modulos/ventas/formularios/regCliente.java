@@ -172,8 +172,11 @@ public class regCliente extends frameBase<Cliente> {
             int idDireccionCliente = ObtenerValorCelda(tbDirecciones, i, 0);
             DireccionCliente direccionCliente = new DireccionCliente();
             direccionCliente.setIdDepartamento(ObtenerValorCelda(tbDirecciones, i, 1));
+            direccionCliente.setNombreDepartamento(ObtenerValorCelda(tbDirecciones, i, 2));
             direccionCliente.setIdProvincia(ObtenerValorCelda(tbDirecciones, i, 3));
+            direccionCliente.setNombreProvincia(ObtenerValorCelda(tbDirecciones, i, 4));
             direccionCliente.setIdDistrito(ObtenerValorCelda(tbDirecciones, i, 5));
+            direccionCliente.setNombreDistrito(ObtenerValorCelda(tbDirecciones, i, 6));
             direccionCliente.setDireccion(ObtenerValorCelda(tbDirecciones, i, 7));
             if (idDireccionCliente == 0) {
                 direccionCliente.setAgregar(true);
@@ -227,17 +230,18 @@ public class regCliente extends frameBase<Cliente> {
                     schListaPrecioServicio.asingValues(cliente.getIdListaPrecioServicio(), cliente.getNombreListaPrecioServicio());
                     schListaPrecioMaquina.asingValues(cliente.getIdListaPrecioMaquina(), cliente.getNombreListaPrecioMaquina());
                     chkActivo.setSelected(cliente.isActivo());
-                    for (Object[] direccion : cliente.getDireccionesConNombres()) {
+                    for (DireccionCliente direccion : cliente.getDirecciones()) {
                         AgregarFila(tbDirecciones,
                                 new Object[]{
-                                    ((Double) direccion[0]).intValue(),
-                                    ((Double) direccion[1]).intValue(),
-                                    direccion[2],
-                                    ((Double) direccion[3]).intValue(),
-                                    direccion[4],
-                                    ((Double) direccion[5]).intValue(),
-                                    direccion[6],
-                                    direccion[7],});
+                                    direccion.getIdDireccionCliente(),
+                                    direccion.getIdDepartamento(),
+                                    direccion.getNombreDepartamento(),
+                                    direccion.getIdProvincia(),
+                                    direccion.getNombreProvincia(),
+                                    direccion.getIdDistrito(),
+                                    direccion.getNombreDistrito(),
+                                    direccion.getDireccion()
+                                });
                     }
                     for (ContactoCliente contacto : cliente.getContactos()) {
                         AgregarFila(tbContactos,

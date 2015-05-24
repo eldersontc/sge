@@ -1,12 +1,10 @@
 package com.sge.modulos.ventas.formularios;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.sge.base.formularios.frameBase;
 import com.sge.modulos.ventas.clases.ListaPrecioMaquina;
 import com.sge.modulos.ventas.cliente.cliVentas;
 import java.awt.event.ActionEvent;
-import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ImageIcon;
@@ -23,11 +21,18 @@ public class lisListaPrecioMaquina extends frameBase<ListaPrecioMaquina> {
      */
     public lisListaPrecioMaquina(int modo) {
         initComponents();
-        Init(modo);
+        Init(modo, "");
     }
 
-    private int modo = 0;
+    public lisListaPrecioMaquina(int modo, String filtro) {
+        initComponents();
+        Init(modo, filtro);
+    }
+    
+    private int modo;
 
+    private String filtro;
+    
     private ListaPrecioMaquina seleccionado;
 
     ImageIcon Icon_Edit = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/edit-16.png"));
@@ -55,7 +60,7 @@ public class lisListaPrecioMaquina extends frameBase<ListaPrecioMaquina> {
             cliVentas cliente = new cliVentas();
             String json = "";
             try {
-                json = cliente.ObtenerListasPrecioMaquina(new Gson().toJson(""));
+                json = cliente.ObtenerListasPrecioMaquina(new Gson().toJson(filtro));
             } catch (Exception e) {
                 OcultarCargando(frame);
                 cancel(false);
@@ -71,13 +76,11 @@ public class lisListaPrecioMaquina extends frameBase<ListaPrecioMaquina> {
             try {
                 String json = get().toString();
                 String[] resultado = new Gson().fromJson(json, String[].class);
-
                 if (resultado[0].equals("true")) {
                     EliminarTodasFilas(tbListasPrecio);
-                    List<Object[]> filas = (List<Object[]>) new Gson().fromJson(resultado[1], new TypeToken<List<Object[]>>() {
-                    }.getType());
-                    for (Object[] fila : filas) {
-                        AgregarFila(tbListasPrecio, new Object[]{false, ((Double) fila[0]).intValue(), fila[1], fila[2], Icon_Edit, Icon_Dele});
+                    ListaPrecioMaquina[] listasPrecio = new Gson().fromJson(resultado[1], ListaPrecioMaquina[].class);
+                    for (ListaPrecioMaquina listaPrecio : listasPrecio) {
+                        AgregarFila(tbListasPrecio, new Object[]{false, listaPrecio.getIdListaPrecioMaquina(), listaPrecio.getNombre(), listaPrecio.isActivo(), Icon_Edit, Icon_Dele});
                     }
                     AgregarBoton(tbListasPrecio, edit, 4);
                     AgregarBoton(tbListasPrecio, dele, 5);
@@ -128,8 +131,9 @@ public class lisListaPrecioMaquina extends frameBase<ListaPrecioMaquina> {
         }
     }
 
-    public void Init(int modo) {
+    public void Init(int modo, String filtro) {
         this.modo = modo;
+        this.filtro = filtro;
         switch (this.modo) {
             case 0:
                 OcultarColumna(tbListasPrecio, 0);
