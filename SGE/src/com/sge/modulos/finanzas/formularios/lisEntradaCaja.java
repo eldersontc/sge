@@ -78,7 +78,7 @@ public class lisEntradaCaja extends frameBase<EntradaCaja> {
                     EliminarTodasFilas(tbEntradasCaja);
                     EntradaCaja[] entradasCaja = new Gson().fromJson(resultado[1], EntradaCaja[].class);
                     for (EntradaCaja entradaCaja : entradasCaja) {
-                        AgregarFila(tbEntradasCaja, new Object[]{false, entradaCaja.getIdEntradaCaja(), entradaCaja.getNumero(), entradaCaja.getFechaCreacion(), entradaCaja.getNombreResponsable(), entradaCaja.getDescripcionCaja(), entradaCaja.getTotal(), Icon_View, Icon_Dele});
+                        AgregarFila(tbEntradasCaja, new Object[]{false, entradaCaja.getIdEntradaCaja(), entradaCaja.getNumero(), entradaCaja.getFechaCreacionString(), entradaCaja.getNombreResponsable(), entradaCaja.getDescripcionCaja(), entradaCaja.getTotal(), Icon_View, Icon_Dele});
                     }
                     AgregarBoton(tbEntradasCaja, view, 7);
                     AgregarBoton(tbEntradasCaja, dele, 8);
@@ -215,6 +215,7 @@ public class lisEntradaCaja extends frameBase<EntradaCaja> {
             tbEntradasCaja.getColumnModel().getColumn(1).setMinWidth(0);
             tbEntradasCaja.getColumnModel().getColumn(1).setPreferredWidth(0);
             tbEntradasCaja.getColumnModel().getColumn(1).setMaxWidth(0);
+            tbEntradasCaja.getColumnModel().getColumn(4).setPreferredWidth(200);
         }
 
         pnlTitulo.setBackground(new java.awt.Color(67, 100, 130));
@@ -285,7 +286,7 @@ public class lisEntradaCaja extends frameBase<EntradaCaja> {
             .addGroup(frameLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 779, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1178, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, frameLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btnSeleccionar, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -309,7 +310,7 @@ public class lisEntradaCaja extends frameBase<EntradaCaja> {
                         .addComponent(txtFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(btnRefrescar, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 209, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 374, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnSeleccionar)
                 .addContainerGap())

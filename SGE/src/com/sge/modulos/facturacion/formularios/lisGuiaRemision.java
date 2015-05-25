@@ -85,7 +85,7 @@ public class lisGuiaRemision extends frameBase<GuiaRemision> {
                     EliminarTodasFilas(tbGuiasRemision);
                     GuiaRemision[] guiasRemision = new Gson().fromJson(resultado[1], GuiaRemision[].class);
                     for (GuiaRemision guiaRemision : guiasRemision) {
-                        AgregarFila(tbGuiasRemision, new Object[]{false, guiaRemision.getIdGuiaRemision(), guiaRemision.getNumero(), guiaRemision.getFechaCreacion(), guiaRemision.getRazonSocialCliente(), guiaRemision.getNombreResponsable(), Icon_Edit, Icon_Dele});
+                        AgregarFila(tbGuiasRemision, new Object[]{false, guiaRemision.getIdGuiaRemision(), guiaRemision.getNumero(), guiaRemision.getFechaCreacionString(), guiaRemision.getRazonSocialCliente(), guiaRemision.getNombreResponsable(), Icon_Edit, Icon_Dele});
                     }
                     AgregarBoton(tbGuiasRemision, edit, 6);
                     AgregarBoton(tbGuiasRemision, dele, 7);
@@ -297,7 +297,7 @@ public class lisGuiaRemision extends frameBase<GuiaRemision> {
             .addGroup(frameLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 827, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1176, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, frameLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btnSeleccionar, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -321,7 +321,7 @@ public class lisGuiaRemision extends frameBase<GuiaRemision> {
                         .addComponent(txtFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(btnRefrescar, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 194, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 370, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnSeleccionar)
                 .addContainerGap())

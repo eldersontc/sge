@@ -90,7 +90,7 @@ public class lisPresupuesto extends frameBase<Presupuesto> {
                     EliminarTodasFilas(tbPresupuestos);
                     Presupuesto[] presupuestos = new Gson().fromJson(resultado[1], Presupuesto[].class);
                     for (Presupuesto presupuesto : presupuestos) {
-                        AgregarFila(tbPresupuestos, new Object[]{false, presupuesto.getIdPresupuesto(), presupuesto.getNumero(), presupuesto.getFechaCreacion(), presupuesto.getRazonSocialCliente(), presupuesto.getTotal(), presupuesto.getEstado(), Icon_Edit, Icon_Dele});
+                        AgregarFila(tbPresupuestos, new Object[]{false, presupuesto.getIdPresupuesto(), presupuesto.getNumero(), presupuesto.getFechaCreacionString(), presupuesto.getRazonSocialCliente(), presupuesto.getTotal(), presupuesto.getEstado(), Icon_Edit, Icon_Dele});
                     }
                     AgregarBoton(tbPresupuestos, edit, 7);
                     AgregarBoton(tbPresupuestos, dele, 8);
@@ -629,7 +629,7 @@ public class lisPresupuesto extends frameBase<Presupuesto> {
             .addGroup(pnlTituloLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lblTitulo)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 751, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 823, Short.MAX_VALUE)
                 .addComponent(btnNuevo)
                 .addContainerGap())
         );
@@ -730,7 +730,7 @@ public class lisPresupuesto extends frameBase<Presupuesto> {
             .addGroup(frameLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1105, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1177, Short.MAX_VALUE)
                     .addGroup(frameLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btnSeleccionar, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -775,7 +775,7 @@ public class lisPresupuesto extends frameBase<Presupuesto> {
                     .addComponent(btnRechazar, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnImprimir, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 254, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 373, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnSeleccionar)
                 .addGap(9, 9, 9))

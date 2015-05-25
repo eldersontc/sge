@@ -1,5 +1,6 @@
 package com.sge.modulos.facturacion.clases;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -88,6 +89,11 @@ public class GuiaRemision {
         this.fechaCreacion = fechaCreacion;
     }
 
+    public String getFechaCreacionString(){
+        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yy hh:mm:ss a");
+        return format.format(fechaCreacion);
+    }
+    
     public int getIdCliente() {
         return idCliente;
     }

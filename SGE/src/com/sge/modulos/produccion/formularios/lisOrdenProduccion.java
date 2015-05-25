@@ -81,7 +81,7 @@ public class lisOrdenProduccion extends frameBase<OrdenProduccion> {
                     EliminarTodasFilas(tbOrdenesProduccion);
                     OrdenProduccion[] ordenes = new Gson().fromJson(resultado[1], OrdenProduccion[].class);
                     for (OrdenProduccion orden : ordenes) {
-                        AgregarFila(tbOrdenesProduccion, new Object[]{false, orden.getIdOrdenProduccion(), orden.getNumero(), orden.getFechaCreacion(), orden.getRazonSocialCliente(), orden.getNombreResponsable(), Icon_Edit, Icon_Dele});
+                        AgregarFila(tbOrdenesProduccion, new Object[]{false, orden.getIdOrdenProduccion(), orden.getNumero(), orden.getFechaCreacionString(), orden.getRazonSocialCliente(), orden.getNombreResponsable(), Icon_Edit, Icon_Dele});
                     }
                     AgregarBoton(tbOrdenesProduccion, edit, 6);
                     AgregarBoton(tbOrdenesProduccion, dele, 7);
@@ -248,7 +248,7 @@ public class lisOrdenProduccion extends frameBase<OrdenProduccion> {
             .addGroup(pnlTituloLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lblTitulo)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 387, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 724, Short.MAX_VALUE)
                 .addComponent(btnNuevo)
                 .addContainerGap())
         );
@@ -293,7 +293,7 @@ public class lisOrdenProduccion extends frameBase<OrdenProduccion> {
             .addGroup(frameLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 840, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1177, Short.MAX_VALUE)
                     .addGroup(frameLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btnSeleccionar, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -317,7 +317,7 @@ public class lisOrdenProduccion extends frameBase<OrdenProduccion> {
                         .addComponent(txtFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(btnRefrescar, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 214, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 381, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnSeleccionar)
                 .addGap(9, 9, 9))

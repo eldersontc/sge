@@ -78,7 +78,7 @@ public class lisFactura extends frameBase<Factura> {
                     EliminarTodasFilas(tbFacturas);
                     Factura[] entradasCaja = new Gson().fromJson(resultado[1], Factura[].class);
                     for (Factura factura : entradasCaja) {
-                        AgregarFila(tbFacturas, new Object[]{false, factura.getIdFactura(), factura.getNumero(), factura.getFechaCreacion(), factura.getRazonSocialCliente(), factura.getSimboloMoneda(), factura.getTotal(), Icon_View, Icon_Dele});
+                        AgregarFila(tbFacturas, new Object[]{false, factura.getIdFactura(), factura.getNumero(), factura.getFechaCreacionString(), factura.getRazonSocialCliente(), factura.getSimboloMoneda(), factura.getTotal(), Icon_View, Icon_Dele});
                     }
                     AgregarBoton(tbFacturas, view, 7);
                     AgregarBoton(tbFacturas, dele, 8);
@@ -215,6 +215,7 @@ public class lisFactura extends frameBase<Factura> {
             tbFacturas.getColumnModel().getColumn(1).setMinWidth(0);
             tbFacturas.getColumnModel().getColumn(1).setPreferredWidth(0);
             tbFacturas.getColumnModel().getColumn(1).setMaxWidth(0);
+            tbFacturas.getColumnModel().getColumn(4).setPreferredWidth(200);
         }
 
         pnlTitulo.setBackground(new java.awt.Color(67, 100, 130));
@@ -285,7 +286,7 @@ public class lisFactura extends frameBase<Factura> {
             .addGroup(frameLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 797, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1163, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, frameLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btnSeleccionar, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -309,7 +310,7 @@ public class lisFactura extends frameBase<Factura> {
                         .addComponent(txtFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(btnRefrescar, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 172, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 372, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnSeleccionar)
                 .addContainerGap())

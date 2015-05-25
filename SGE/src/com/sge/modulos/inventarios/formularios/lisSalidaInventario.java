@@ -84,7 +84,7 @@ public class lisSalidaInventario extends frameBase<SalidaInventario> {
                     EliminarTodasFilas(tbSalidaInventarios);
                     SalidaInventario[] salidas = new Gson().fromJson(resultado[1], SalidaInventario[].class);
                     for (SalidaInventario salida : salidas) {
-                        AgregarFila(tbSalidaInventarios, new Object[]{false, salida.getIdSalidaInventario(), salida.getNumero(), salida.getFechaCreacion(), salida.getRazonSocialCliente(), salida.getNombreResponsable(), salida.getSimboloMoneda(), salida.getTotal(), Icon_View, Icon_Dele});
+                        AgregarFila(tbSalidaInventarios, new Object[]{false, salida.getIdSalidaInventario(), salida.getNumero(), salida.getFechaCreacionString(), salida.getRazonSocialCliente(), salida.getNombreResponsable(), salida.getSimboloMoneda(), salida.getTotal(), Icon_View, Icon_Dele});
                     }
                     AgregarBoton(tbSalidaInventarios, view, 8);
                     AgregarBoton(tbSalidaInventarios, dele, 9);
@@ -222,6 +222,8 @@ public class lisSalidaInventario extends frameBase<SalidaInventario> {
             tbSalidaInventarios.getColumnModel().getColumn(1).setMinWidth(0);
             tbSalidaInventarios.getColumnModel().getColumn(1).setPreferredWidth(0);
             tbSalidaInventarios.getColumnModel().getColumn(1).setMaxWidth(0);
+            tbSalidaInventarios.getColumnModel().getColumn(4).setPreferredWidth(200);
+            tbSalidaInventarios.getColumnModel().getColumn(5).setPreferredWidth(200);
             tbSalidaInventarios.getColumnModel().getColumn(8).setPreferredWidth(40);
             tbSalidaInventarios.getColumnModel().getColumn(9).setPreferredWidth(40);
         }
@@ -249,7 +251,7 @@ public class lisSalidaInventario extends frameBase<SalidaInventario> {
             .addGroup(pnlTituloLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lblTitulo)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 427, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 748, Short.MAX_VALUE)
                 .addComponent(btnNuevo)
                 .addContainerGap())
         );
@@ -297,7 +299,7 @@ public class lisSalidaInventario extends frameBase<SalidaInventario> {
             .addGroup(frameLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 860, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1181, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, frameLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btnSeleccionar, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -324,7 +326,7 @@ public class lisSalidaInventario extends frameBase<SalidaInventario> {
                     .addComponent(btnRefrescar, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnImprimir, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 315, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 384, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnSeleccionar)
                 .addGap(6, 6, 6))

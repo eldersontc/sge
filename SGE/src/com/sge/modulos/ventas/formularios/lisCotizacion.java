@@ -89,7 +89,7 @@ public class lisCotizacion extends frameBase<Cotizacion> {
                     EliminarTodasFilas(tbCotizaciones);
                     Cotizacion[] cotizaciones = new Gson().fromJson(resultado[1], Cotizacion[].class);
                     for (Cotizacion cotizacion : cotizaciones) {
-                        AgregarFila(tbCotizaciones, new Object[]{false, cotizacion.getIdCotizacion(), cotizacion.getNumero(), cotizacion.getDescripcion(), cotizacion.getFechaCreacion(), cotizacion.getRazonSocialCliente(), cotizacion.getNombreCotizador(), cotizacion.getNombreVendedor(), cotizacion.getTotal(), cotizacion.getEstado(), Icon_Edit, Icon_Dele});
+                        AgregarFila(tbCotizaciones, new Object[]{false, cotizacion.getIdCotizacion(), cotizacion.getNumero(), cotizacion.getDescripcion(), cotizacion.getFechaCreacionString(), cotizacion.getRazonSocialCliente(), cotizacion.getNombreCotizador(), cotizacion.getNombreVendedor(), cotizacion.getTotal(), cotizacion.getEstado(), Icon_Edit, Icon_Dele});
                     }
                     AgregarBoton(tbCotizaciones, edit, 10);
                     AgregarBoton(tbCotizaciones, dele, 11);
@@ -362,7 +362,7 @@ public class lisCotizacion extends frameBase<Cotizacion> {
             .addGroup(pnlTituloLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lblTitulo)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 837, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 834, Short.MAX_VALUE)
                 .addComponent(btnNuevo)
                 .addContainerGap())
         );
@@ -423,7 +423,7 @@ public class lisCotizacion extends frameBase<Cotizacion> {
             .addGroup(frameLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1184, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1181, Short.MAX_VALUE)
                     .addGroup(frameLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btnSeleccionar, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -453,7 +453,7 @@ public class lisCotizacion extends frameBase<Cotizacion> {
                     .addComponent(btnAprobar, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnDesaprobar, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 237, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 377, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnSeleccionar)
                 .addGap(9, 9, 9))

@@ -23,7 +23,7 @@ public class lisOrdenTrabajo extends frameBase<OrdenTrabajo> {
      */
     public lisOrdenTrabajo(int modo) {
         initComponents();
-        Init(modo, filtro);
+        Init(modo, "");
     }
 
     public lisOrdenTrabajo(int modo, String filtro) {
@@ -85,7 +85,7 @@ public class lisOrdenTrabajo extends frameBase<OrdenTrabajo> {
                     EliminarTodasFilas(tbOrdenesTrabajo);
                     OrdenTrabajo[] ordenesTrabajo = new Gson().fromJson(resultado[1], OrdenTrabajo[].class);
                     for (OrdenTrabajo ordenTrabajo : ordenesTrabajo) {
-                        AgregarFila(tbOrdenesTrabajo, new Object[]{false, ordenTrabajo.getIdOrdenTrabajo(), ordenTrabajo.getNumero(), ordenTrabajo.getDescripcion(), ordenTrabajo.getCantidad(), ordenTrabajo.getFechaCreacion(), ordenTrabajo.getRazonSocialCliente(), ordenTrabajo.getNombreCotizador(), ordenTrabajo.getNombreVendedor(), ordenTrabajo.getTotal(), Icon_Edit, Icon_Dele});
+                        AgregarFila(tbOrdenesTrabajo, new Object[]{false, ordenTrabajo.getIdOrdenTrabajo(), ordenTrabajo.getNumero(), ordenTrabajo.getDescripcion(), ordenTrabajo.getCantidad(), ordenTrabajo.getFechaCreacionString(), ordenTrabajo.getRazonSocialCliente(), ordenTrabajo.getNombreCotizador(), ordenTrabajo.getNombreVendedor(), ordenTrabajo.getTotal(), Icon_Edit, Icon_Dele});
                     }
                     AgregarBoton(tbOrdenesTrabajo, edit, 10);
                     AgregarBoton(tbOrdenesTrabajo, dele, 11);
@@ -247,7 +247,7 @@ public class lisOrdenTrabajo extends frameBase<OrdenTrabajo> {
             .addGroup(pnlTituloLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lblTitulo)
-                .addContainerGap(560, Short.MAX_VALUE))
+                .addContainerGap(863, Short.MAX_VALUE))
         );
         pnlTituloLayout.setVerticalGroup(
             pnlTituloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -288,7 +288,7 @@ public class lisOrdenTrabajo extends frameBase<OrdenTrabajo> {
             .addGroup(frameLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 882, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1185, Short.MAX_VALUE)
                     .addGroup(frameLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btnSeleccionar, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -312,7 +312,7 @@ public class lisOrdenTrabajo extends frameBase<OrdenTrabajo> {
                         .addComponent(txtFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(btnRefrescar, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 231, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 388, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnSeleccionar)
                 .addGap(9, 9, 9))

@@ -1,5 +1,6 @@
 package com.sge.modulos.ventas.clases;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -110,6 +111,11 @@ public class Presupuesto {
         this.fechaCreacion = fechaCreacion;
     }
 
+    public String getFechaCreacionString(){
+        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yy hh:mm:ss a");
+        return format.format(fechaCreacion);
+    }
+    
     public String getNumeroOrdenCompra() {
         return numeroOrdenCompra;
     }
