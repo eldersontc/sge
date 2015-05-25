@@ -30,13 +30,13 @@ public class regValorDefinido extends frameBase<ValorDefinido> {
 
     private int idValorDefinido = 0;
 
-    private ValorDefinido valorDefinido;
-
     public void Init(String operacion, int idValorDefinido) {
         lblTitulo.setText(operacion + lblTitulo.getText());
         this.idValorDefinido = idValorDefinido;
         if (this.idValorDefinido > 0) {
             new swObtenerValorDefinido().execute();
+        } else {
+            setEntidad(new ValorDefinido());
         }
     }
 
@@ -85,10 +85,10 @@ public class regValorDefinido extends frameBase<ValorDefinido> {
                 String json = get().toString();
                 String[] resultado = new Gson().fromJson(json, String[].class);
                 if (resultado[0].equals("true")) {
-                    valorDefinido = new Gson().fromJson(resultado[1], ValorDefinido.class);
-                    schUsuario.asingValues(valorDefinido.getIdUsuario(), valorDefinido.getUsuario());
-                    schEntidad.asingValues(valorDefinido.getIdEntidad(), valorDefinido.getNombreEntidad());
-                    chkActivo.setSelected(valorDefinido.isActivo());
+                    setEntidad(new Gson().fromJson(resultado[1], ValorDefinido.class));
+                    schUsuario.asingValues(getEntidad().getIdUsuario(), getEntidad().getUsuario());
+                    schEntidad.asingValues(getEntidad().getIdEntidad(), getEntidad().getNombreEntidad());
+                    chkActivo.setSelected(getEntidad().isActivo());
                 }
                 OcultarCargando(frame);
             } catch (Exception e) {
@@ -106,16 +106,16 @@ public class regValorDefinido extends frameBase<ValorDefinido> {
             cliAdministracion cliente = new cliAdministracion();
             String json = "";
             try {
-                valorDefinido.setIdUsuario(schUsuario.getId());
-                valorDefinido.setUsuario(schUsuario.getText());
-                valorDefinido.setIdEntidad(schEntidad.getId());
-                valorDefinido.setNombreEntidad(schEntidad.getText());
-                valorDefinido.setActivo(chkActivo.isSelected());
+                getEntidad().setIdUsuario(schUsuario.getId());
+                getEntidad().setUsuario(schUsuario.getText());
+                getEntidad().setIdEntidad(schEntidad.getId());
+                getEntidad().setNombreEntidad(schEntidad.getText());
+                getEntidad().setActivo(chkActivo.isSelected());
                 if (idValorDefinido == 0) {
-                    json = cliente.RegistrarValorDefinido(new Gson().toJson(valorDefinido));
+                    json = cliente.RegistrarValorDefinido(new Gson().toJson(getEntidad()));
                 } else {
-                    valorDefinido.setIdValorDefinido(idValorDefinido);
-                    json = cliente.ActualizarValorDefinido(new Gson().toJson(valorDefinido));
+                    getEntidad().setIdValorDefinido(idValorDefinido);
+                    json = cliente.ActualizarValorDefinido(new Gson().toJson(getEntidad()));
                 }
             } catch (Exception e) {
                 OcultarProcesando(frame);
@@ -329,7 +329,7 @@ public class regValorDefinido extends frameBase<ValorDefinido> {
                 Entidad entidad = new Gson().fromJson(resultado[1], Entidad.class);
                 Class<?> clazz = Class.forName(entidad.getFormulario());
                 Constructor<?> constructor = clazz.getConstructor(ValorDefinido.class);
-                JInternalFrame frame = (JInternalFrame) constructor.newInstance(new Object[]{this.valorDefinido});
+                JInternalFrame frame = (JInternalFrame) constructor.newInstance(new Object[]{getEntidad()});
                 VerModal(frame);
             }
         } catch (Exception e) {

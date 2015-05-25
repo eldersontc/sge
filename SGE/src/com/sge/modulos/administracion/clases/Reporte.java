@@ -76,4 +76,9 @@ public class Reporte {
     public void setItems(List<ItemReporte> items) {
         this.items = items;
     }
+    
+    @Override
+    public String toString(){
+        return nombre;
+    }
 }

@@ -1,7 +1,6 @@
 package com.sge.modulos.administracion.formularios;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.sge.base.controles.SearchListener;
 import com.sge.base.formularios.frameBase;
 import com.sge.modulos.administracion.clases.Entidad;

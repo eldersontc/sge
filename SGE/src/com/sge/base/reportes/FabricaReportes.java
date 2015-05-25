@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.sge.base.controles.FabricaControles;
 import com.sge.base.excepciones.Excepciones;
+import com.sge.modulos.administracion.clases.Reporte;
 import com.sge.modulos.administracion.cliente.cliAdministracion;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -81,51 +82,38 @@ public class FabricaReportes {
             FabricaControles.VerProcesando(frame);
             cliAdministracion cliente = new cliAdministracion();
             try {
-
-                String json = cliente.ObtenerReportes(new Gson().toJson(String.format("WHERE Reporte.idEntidad = %d", idEntidad)));
+                String json = cliente.ObtenerReportes(new Gson().toJson("WHERE Reporte.idEntidad = " + idEntidad));
                 String[] resultado = new Gson().fromJson(json, String[].class);
-
                 if (resultado[0].equals("true")) {
-
-                    List<Object[]> reportes = (List<Object[]>) new Gson().fromJson(resultado[1], new TypeToken<List<Object[]>>() {
-                    }.getType());
-
-                    if (reportes.isEmpty()) {
+                    Reporte[] reportes = new Gson().fromJson(resultado[1], Reporte[].class);
+                    if (reportes.length == 0) {
                         throw new Exception("NO HAY NINGUN REPORTE!");
                     }
-
-                    String titulo = "";
-
-                    int idReporte = 0;
-
-                    if (reportes.size() == 1) {
-                        idReporte = ((Double) reportes.get(0)[0]).intValue();
-                        titulo = reportes.get(0)[1].toString();
+                    Reporte reporteSeleccionado = null;
+                    if (reportes.length == 1) {
+                        reporteSeleccionado = reportes[0];
                     } else {
                         JComboBox combo = new JComboBox();
-                        for (Object[] reporte : reportes) {
-                            combo.addItem(reporte[1]);
+                        for (Reporte reporte : reportes) {
+                            combo.addItem(reporte);
                         }
-                        FabricaControles.VerModal(frame, combo, "SELECCIONE UN REPORTE");
-                        for (Object[] reporte : reportes) {
-                            if (reporte[1].equals(combo.getSelectedItem())) {
-                                idReporte = ((Double) reporte[0]).intValue();
-                                titulo = reporte[1].toString();
-                                break;
-                            }
+                        int confirmacion = FabricaControles.VerModal(frame, combo, "SELECCIONE UN REPORTE");
+                        if (confirmacion == 0) {
+                            reporteSeleccionado = (Reporte) combo.getSelectedItem();
                         }
                     }
-
-                    json = cliente.GenerarReporteConEntidad(new Gson().toJson(new int[]{idReporte, id}));
-                    resultado = new Gson().fromJson(json, String[].class);
-                    if (resultado[0].equals("true")) {
-                        byte[] bytes = new Gson().fromJson(resultado[1], byte[].class);
-                        InputStream is = new ByteArrayInputStream(bytes);
-                        JasperViewer view = new JasperViewer(is, false, false);
-                        view.setTitle(titulo);
-                        view.setVisible(true);
-                    } else {
-                        Excepciones.Controlar(resultado, frame);
+                    if (reporteSeleccionado != null) {
+                        json = cliente.GenerarReporteConEntidad(new Gson().toJson(new int[]{reporteSeleccionado.getIdReporte(), id}));
+                        resultado = new Gson().fromJson(json, String[].class);
+                        if (resultado[0].equals("true")) {
+                            byte[] bytes = new Gson().fromJson(resultado[1], byte[].class);
+                            InputStream is = new ByteArrayInputStream(bytes);
+                            JasperViewer view = new JasperViewer(is, false, false);
+                            view.setTitle(reporteSeleccionado.getNombre());
+                            view.setVisible(true);
+                        } else {
+                            Excepciones.Controlar(resultado, frame);
+                        }
                     }
                 } else {
                     Excepciones.Controlar(resultado, frame);

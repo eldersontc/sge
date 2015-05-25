@@ -84,7 +84,7 @@ public class lisProducto extends frameBase<Producto> {
                     EliminarTodasFilas(tbProductos);
                     Producto[] productos = new Gson().fromJson(resultado[1], Producto[].class);
                     for (Producto producto : productos) {
-                        AgregarFila(tbProductos, new Object[]{false, producto.getIdProducto(), producto.getCodigo(), producto.getDescripcion(), producto.getLargo(), producto.getAlto(), producto.getIdUnidadBase(), producto.getAbreviacionUnidadBase(), producto.isActivo(), Icon_Edit, Icon_Dele});
+                        AgregarFila(tbProductos, new Object[]{false, producto.getIdProducto(), producto.getCodigo(), producto.getDescripcion(), producto.getAlto(), producto.getLargo(), producto.getIdUnidadBase(), producto.getAbreviacionUnidadBase(), producto.isActivo(), Icon_Edit, Icon_Dele});
                     }
                     AgregarBoton(tbProductos, edit, 9);
                     AgregarBoton(tbProductos, dele, 10);
@@ -262,7 +262,7 @@ public class lisProducto extends frameBase<Producto> {
             .addGroup(pnlTituloLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lblTitulo)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 606, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 828, Short.MAX_VALUE)
                 .addComponent(btnNuevo)
                 .addContainerGap())
         );
@@ -307,7 +307,7 @@ public class lisProducto extends frameBase<Producto> {
             .addGroup(frameLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 932, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1154, Short.MAX_VALUE)
                     .addGroup(frameLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btnSeleccionar, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -331,10 +331,10 @@ public class lisProducto extends frameBase<Producto> {
                         .addComponent(lblFiltro))
                     .addComponent(btnRefrescar, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 360, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnSeleccionar)
-                .addContainerGap(24, Short.MAX_VALUE))
+                .addGap(27, 27, 27))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
