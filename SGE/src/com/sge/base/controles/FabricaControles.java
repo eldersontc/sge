@@ -259,39 +259,39 @@ public class FabricaControles {
     }
 
     public static void VerCargando(JPanel panel) {
-        for (Component component : panel.getParent().getComponents()) {
-            if ("panelCargando".equals(component.getName())) {
-                return;
-            }
-        }
-        JInternalFrame frame = (JInternalFrame) panel.getParent().getParent().getParent().getParent();
-        JPanel panelCargando = new JPanel();
-        panelCargando.setName("panelCargando");
-        panelCargando.setBackground(Color.white);
-        panelCargando.setLayout(new BorderLayout());
-        ImageIcon iconoCargando = new ImageIcon(frame.getClass().getResource("/com/sge/base/imagenes/preload-24.gif"));
-        JLabel labelCargando = new JLabel();
-        labelCargando.setText("Cargando, espere un momento por favor...");
-        labelCargando.setIcon(iconoCargando);
-        labelCargando.setHorizontalAlignment(SwingConstants.CENTER);
-        panelCargando.add(labelCargando, BorderLayout.CENTER);
-        frame.setLayout(new BorderLayout());
-        frame.add(panelCargando, 0);
-        panel.setVisible(false);
+//        for (Component component : panel.getParent().getComponents()) {
+//            if ("panelCargando".equals(component.getName())) {
+//                return;
+//            }
+//        }
+//        JInternalFrame frame = (JInternalFrame) panel.getParent().getParent().getParent().getParent();
+//        JPanel panelCargando = new JPanel();
+//        panelCargando.setName("panelCargando");
+//        panelCargando.setBackground(Color.white);
+//        panelCargando.setLayout(new BorderLayout());
+//        ImageIcon iconoCargando = new ImageIcon(frame.getClass().getResource("/com/sge/base/imagenes/preload-24.gif"));
+//        JLabel labelCargando = new JLabel();
+//        labelCargando.setText("Cargando, espere un momento por favor...");
+//        labelCargando.setIcon(iconoCargando);
+//        labelCargando.setHorizontalAlignment(SwingConstants.CENTER);
+//        panelCargando.add(labelCargando, BorderLayout.CENTER);
+//        frame.setLayout(new BorderLayout());
+//        frame.add(panelCargando, 0);
+//        panel.setVisible(false);
     }
 
     public static void OcultarCargando(JPanel panel) {
-        Component panelCargando = null;
-        for (Component component : panel.getParent().getComponents()) {
-            if ("panelCargando".equals(component.getName())) {
-                panelCargando = component;
-                break;
-            }
-        }
-        if (!(panelCargando == null)) {
-            panel.getParent().remove(panelCargando);
-        }
-        panel.setVisible(true);
+//        Component panelCargando = null;
+//        for (Component component : panel.getParent().getComponents()) {
+//            if ("panelCargando".equals(component.getName())) {
+//                panelCargando = component;
+//                break;
+//            }
+//        }
+//        if (!(panelCargando == null)) {
+//            panel.getParent().remove(panelCargando);
+//        }
+//        panel.setVisible(true);
     }
 
     public static void VerProcesando(JPanel panel) {
