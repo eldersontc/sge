@@ -30,22 +30,22 @@ public class Utils {
 
     public static <T> T ObtenerValorCelda(JTable tabla, int columna) {
         DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
-        return (T) modelo.getValueAt(tabla.getSelectedRow(), columna);
+        return (T) modelo.getValueAt(tabla.convertRowIndexToModel(tabla.getSelectedRow()), columna);
     }
 
     public static <T> T ObtenerValorCelda(JTable tabla, int fila, int columna) {
         DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
-        return (T) modelo.getValueAt(fila, columna);
+        return (T) modelo.getValueAt(tabla.convertRowIndexToModel(fila), columna);
     }
 
     public static void AsignarValorCelda(JTable tabla, Object valor, int columna) {
         DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
-        modelo.setValueAt(valor, tabla.getSelectedRow(), columna);
+        modelo.setValueAt(valor, tabla.convertRowIndexToModel(tabla.getSelectedRow()), columna);
     }
 
     public static void AsignarValorCelda(JTable tabla, Object valor, int fila, int columna) {
         DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
-        modelo.setValueAt(valor, fila, columna);
+        modelo.setValueAt(valor, tabla.convertRowIndexToModel(fila), columna);
     }
 
     public static void AgregarFila(JTable tabla, Object[] fila) {
@@ -60,7 +60,7 @@ public class Utils {
 
     public static void EliminarFila(JTable tabla) {
         DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
-        modelo.removeRow(tabla.getSelectedRow());
+        modelo.removeRow(tabla.convertRowIndexToModel(tabla.getSelectedRow()));
     }
 
     public static void OcultarColumna(JTable tabla, int columna) {
