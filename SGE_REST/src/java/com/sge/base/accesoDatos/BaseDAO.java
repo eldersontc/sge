@@ -1,8 +1,10 @@
 package com.sge.base.accesoDatos;
 
 import java.io.File;
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 import org.hibernate.Criteria;
@@ -178,11 +180,27 @@ public class BaseDAO {
 
             @Override
             public void execute(Connection cnctn) throws SQLException {
-                cnctn.prepareCall(sql).executeQuery();
+                cnctn.prepareCall(String.format("{ CALL %s }", sql)).executeQuery();
             }
         });
     }
 
+    private String outString;
+    
+    public String EjecutarFuncionString(String sql) {
+        sesion.doWork(new Work() {
+
+            @Override
+            public void execute(Connection cnctn) throws SQLException {
+                CallableStatement call = cnctn.prepareCall(String.format("{ ? = CALL %s }", sql));
+                call.registerOutParameter(1, Types.VARCHAR);
+                call.execute();
+                outString = call.getString(1);
+            }
+        });
+        return outString;
+    }
+    
     public Connection getConexion() throws Exception {
         SessionFactoryImplementor sfi = (SessionFactoryImplementor) sesion.getSessionFactory();
         ConnectionProvider cp = sfi.getConnectionProvider();

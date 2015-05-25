@@ -1,5 +1,6 @@
 package com.sge.modulos.inventarios.negocios;
 
+import com.sge.modulos.administracion.accesoDatos.NumeracionDAO;
 import com.sge.modulos.inventarios.accesoDatos.SalidaInventarioDAO;
 import com.sge.modulos.inventarios.accesoDatos.ItemSalidaInventarioDAO;
 import com.sge.modulos.inventarios.accesoDatos.ProductoAlmacenDAO;
@@ -17,6 +18,7 @@ public class SalidaInventarioDTO {
     SalidaInventarioDAO salidaInventarioDAO;
     ItemSalidaInventarioDAO itemSalidaInventarioDAO;
     ProductoAlmacenDAO productoAlmacenDAO;
+    NumeracionDAO numeracionDAO;
 
     public List<SalidaInventario> ObtenerSalidaInventarios(String filtro) {
         List<SalidaInventario> lista;
@@ -56,6 +58,14 @@ public class SalidaInventarioDTO {
         try {
             salidaInventarioDAO = new SalidaInventarioDAO();
             salidaInventarioDAO.IniciarTransaccion();
+            
+            numeracionDAO = new NumeracionDAO();
+            numeracionDAO.AsignarSesion(salidaInventarioDAO);
+            
+            if(!salidaInventario.isNumeracionManual()){
+                salidaInventario.setNumero(numeracionDAO.GenerarNumeracion(salidaInventario.getIdNumeracion()));
+            }
+            
             salidaInventarioDAO.Agregar(salidaInventario);
 
             itemSalidaInventarioDAO = new ItemSalidaInventarioDAO();

@@ -1,5 +1,6 @@
 package com.sge.modulos.ventas.negocios;
 
+import com.sge.modulos.administracion.accesoDatos.NumeracionDAO;
 import com.sge.modulos.ventas.accesoDatos.CotizacionDAO;
 import com.sge.modulos.ventas.accesoDatos.ItemPresupuestoDAO;
 import com.sge.modulos.ventas.accesoDatos.PresupuestoDAO;
@@ -17,6 +18,7 @@ public class PresupuestoDTO {
     PresupuestoDAO presupuestoDAO;
     ItemPresupuestoDAO itemPresupuestoDAO;
     CotizacionDAO cotizacionDAO;
+    NumeracionDAO numeracionDAO;
 
     public List<Presupuesto> ObtenerPresupuestos(String filtro) {
         List<Presupuesto> lista;
@@ -59,7 +61,16 @@ public class PresupuestoDTO {
         try {
             presupuestoDAO = new PresupuestoDAO();
             presupuestoDAO.IniciarTransaccion();
+            
+            numeracionDAO = new NumeracionDAO();
+            numeracionDAO.AsignarSesion(presupuestoDAO);
+            
+            if(!presupuesto.isNumeracionManual()){
+                presupuesto.setNumero(numeracionDAO.GenerarNumeracion(presupuesto.getIdNumeracion()));
+            }
+            
             presupuesto.setEstado("PENDIENTE DE APROBACIÓN");
+            
             presupuestoDAO.Agregar(presupuesto);
 
             itemPresupuestoDAO = new ItemPresupuestoDAO();

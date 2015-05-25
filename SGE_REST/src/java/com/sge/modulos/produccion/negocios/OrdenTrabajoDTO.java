@@ -1,5 +1,6 @@
 package com.sge.modulos.produccion.negocios;
 
+import com.sge.modulos.administracion.accesoDatos.NumeracionDAO;
 import com.sge.modulos.produccion.accesoDatos.ItemOrdenTrabajoDAO;
 import com.sge.modulos.produccion.accesoDatos.OrdenTrabajoDAO;
 import com.sge.modulos.produccion.accesoDatos.ServicioOrdenTrabajoDAO;
@@ -22,6 +23,7 @@ public class OrdenTrabajoDTO {
     OrdenTrabajoDAO ordenTrabajoDAO;
     ItemOrdenTrabajoDAO itemOrdenTrabajoDAO;
     ServicioOrdenTrabajoDAO servicioOrdenTrabajoDAO;
+    NumeracionDAO numeracionDAO;
     
     public List<OrdenTrabajo> ObtenerOrdenesTrabajo(String filtro) {
         List<OrdenTrabajo> lista;
@@ -92,6 +94,14 @@ public class OrdenTrabajoDTO {
         try {
             ordenTrabajoDAO = new OrdenTrabajoDAO();
             ordenTrabajoDAO.IniciarTransaccion();
+            
+            numeracionDAO = new NumeracionDAO();
+            numeracionDAO.AsignarSesion(ordenTrabajoDAO);
+            
+            if(!ordenTrabajo.isNumeracionManual()){
+                ordenTrabajo.setNumero(numeracionDAO.GenerarNumeracion(ordenTrabajo.getIdNumeracion()));
+            }
+            
             ordenTrabajoDAO.Agregar(ordenTrabajo);
 
             itemOrdenTrabajoDAO = new ItemOrdenTrabajoDAO();

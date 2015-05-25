@@ -27,4 +27,9 @@ public class NumeracionDAO extends BaseDAO {
         String sql = "DELETE FROM Administracion.Numeracion WHERE idNumeracion = " + idNumeracion;
         return super.Ejecutar(sql);
     }
+    
+    public String GenerarNumeracion(int idNumeracion){
+        String sql = String.format("Administracion.Sp_Generar_Numeracion(%d)", idNumeracion);
+        return super.EjecutarFuncionString(sql);
+    }
 }

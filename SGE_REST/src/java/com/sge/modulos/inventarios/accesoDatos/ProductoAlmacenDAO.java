@@ -9,7 +9,7 @@ import com.sge.base.accesoDatos.BaseDAO;
 public class ProductoAlmacenDAO extends BaseDAO {
     
     public void ActualizarStockFisico(int idProducto, int idAlmacen, double cantidad){
-        String sql = String.format("SELECT Inventarios.Sp_Actualizar_Stock_Fisico(%d, %d, %s)", idProducto, idAlmacen, cantidad);
+        String sql = String.format("Inventarios.Sp_Actualizar_Stock_Fisico(%d, %d, %s)", idProducto, idAlmacen, cantidad);
         super.EjecutarFuncion(sql);
     }
     

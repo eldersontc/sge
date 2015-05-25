@@ -12,7 +12,7 @@ public class ProductoDAO extends BaseDAO {
     
     public List<Producto> ObtenerProductos(String filtro) {
         String sql = "SELECT \n"
-                + "Producto.idProducto, Producto.codigo, Producto.descripcion, Producto.alto, Producto.largo, Producto.idUnidadBase, Producto.abreviacionUnidadBase, Producto.activo \n"
+                + "Producto.* \n"
                 + "FROM \n"
                 + "Inventarios.Producto AS Producto " + filtro;
         return super.ObtenerLista(sql, Producto.class);

@@ -1,5 +1,6 @@
 package com.sge.modulos.finanzas.negocios;
 
+import com.sge.modulos.administracion.accesoDatos.NumeracionDAO;
 import com.sge.modulos.finanzas.accesoDatos.CajaDAO;
 import com.sge.modulos.finanzas.accesoDatos.EntradaCajaDAO;
 import com.sge.modulos.finanzas.accesoDatos.ItemEntradaCajaDAO;
@@ -17,6 +18,7 @@ public class EntradaCajaDTO {
     EntradaCajaDAO entradaCajaDAO;
     ItemEntradaCajaDAO itemEntradaCajaDAO;
     CajaDAO cajaDAO;
+    NumeracionDAO numeracionDAO;
 
     public List<EntradaCaja> ObtenerEntradasCaja(String filtro) {
         List<EntradaCaja> lista;
@@ -56,6 +58,14 @@ public class EntradaCajaDTO {
         try {
             entradaCajaDAO = new EntradaCajaDAO();
             entradaCajaDAO.IniciarTransaccion();
+            
+            numeracionDAO = new NumeracionDAO();
+            numeracionDAO.AsignarSesion(entradaCajaDAO);
+            
+            if(!entradaCaja.isNumeracionManual()){
+                entradaCaja.setNumero(numeracionDAO.GenerarNumeracion(entradaCaja.getIdNumeracion()));
+            }
+            
             entradaCajaDAO.Agregar(entradaCaja);
 
             itemEntradaCajaDAO = new ItemEntradaCajaDAO();

@@ -1,5 +1,6 @@
 package com.sge.modulos.ventas.negocios;
 
+import com.sge.modulos.administracion.accesoDatos.NumeracionDAO;
 import com.sge.modulos.ventas.accesoDatos.CotizacionDAO;
 import com.sge.modulos.ventas.accesoDatos.EscalaListaPrecioServicioDAO;
 import com.sge.modulos.ventas.accesoDatos.ItemCotizacionDAO;
@@ -32,6 +33,7 @@ public class CotizacionDTO {
     SolicitudCotizacionDAO solicitudCotizacionDAO;
     ServicioUnidadDAO servicioUnidadDAO;
     EscalaListaPrecioServicioDAO escalaListaPrecioServicioDAO;
+    NumeracionDAO numeracionDAO;
 
     public List<Cotizacion> ObtenerCotizaciones(String filtro) {
         List<Cotizacion> lista;
@@ -182,7 +184,16 @@ public class CotizacionDTO {
         try {
             cotizacionDAO = new CotizacionDAO();
             cotizacionDAO.IniciarTransaccion();
+            
+            numeracionDAO = new NumeracionDAO();
+            numeracionDAO.AsignarSesion(cotizacionDAO);
+            
+            if(!cotizacion.isNumeracionManual()){
+                cotizacion.setNumero(numeracionDAO.GenerarNumeracion(cotizacion.getIdNumeracion()));
+            }
+            
             cotizacion.setEstado("PENDIENTE DE APROBACIÓN");
+            
             cotizacionDAO.Agregar(cotizacion);
 
             itemCotizacionDAO = new ItemCotizacionDAO();

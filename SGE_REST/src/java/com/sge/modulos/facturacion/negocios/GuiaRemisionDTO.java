@@ -1,5 +1,6 @@
 package com.sge.modulos.facturacion.negocios;
 
+import com.sge.modulos.administracion.accesoDatos.NumeracionDAO;
 import com.sge.modulos.facturacion.accesoDatos.GuiaRemisionDAO;
 import com.sge.modulos.facturacion.accesoDatos.ItemGuiaRemisionDAO;
 import com.sge.modulos.facturacion.entidades.GuiaRemision;
@@ -15,6 +16,7 @@ public class GuiaRemisionDTO {
     
     GuiaRemisionDAO guiaRemisionDAO;
     ItemGuiaRemisionDAO itemGuiaRemisionDAO;
+    NumeracionDAO numeracionDAO;
 
     public List<GuiaRemision> ObtenerGuiasRemision(String filtro) {
         List<GuiaRemision> lista;
@@ -55,6 +57,14 @@ public class GuiaRemisionDTO {
         try {
             guiaRemisionDAO = new GuiaRemisionDAO();
             guiaRemisionDAO.IniciarTransaccion();
+            
+            numeracionDAO = new NumeracionDAO();
+            numeracionDAO.AsignarSesion(guiaRemisionDAO);
+            
+            if(!guiaRemision.isNumeracionManual()){
+                guiaRemision.setNumero(numeracionDAO.GenerarNumeracion(guiaRemision.getIdNumeracion()));
+            }
+            
             guiaRemisionDAO.Agregar(guiaRemision);
 
             itemGuiaRemisionDAO = new ItemGuiaRemisionDAO();
