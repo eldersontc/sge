@@ -45,7 +45,7 @@ public class UsuarioDTO {
         try {
             usuarioDAO = new UsuarioDAO();
             usuarioDAO.IniciarTransaccion();
-            usuarioDAO.ActualizarUsuario(usuario.getIdUsuario(), usuario.getUsuario(), usuario.getClave(), usuario.isActivo());
+            usuarioDAO.ActualizarUsuario(usuario.getIdUsuario(), usuario.getUsuario(), usuario.getClave(), usuario.getIdPerfil(), usuario.getNombrePerfil(), usuario.isActivo());
             usuarioDAO.ConfirmarTransaccion();
         } catch (Exception e) {
             usuarioDAO.AbortarTransaccion();

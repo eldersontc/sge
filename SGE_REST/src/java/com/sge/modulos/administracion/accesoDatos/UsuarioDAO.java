@@ -18,8 +18,8 @@ public class UsuarioDAO extends BaseDAO {
         return super.ObtenerLista(sql, Usuario.class);
     }
 
-    public int ActualizarUsuario(int idUsuario, String usuario, String clave, boolean activo) {
-        String sql = String.format("UPDATE Administracion.Usuario SET usuario = '%s', clave = '%s', activo = %b WHERE idUsuario = %d", usuario, clave, activo, idUsuario);
+    public int ActualizarUsuario(int idUsuario, String usuario, String clave, int idPerfil, String nombrePefil, boolean activo) {
+        String sql = String.format("UPDATE Administracion.Usuario SET usuario = '%s', clave = '%s', idPerfil = %d, nombrePerfil = '%s', activo = %b WHERE idUsuario = %d", usuario, clave, idPerfil, nombrePefil, activo, idUsuario);
         return super.Ejecutar(sql);
     }
 

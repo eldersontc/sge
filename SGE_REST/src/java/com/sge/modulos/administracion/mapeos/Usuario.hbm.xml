@@ -11,6 +11,8 @@
         </id>
         <property name="usuario" column="usuario"/>
         <property name="clave" column="clave"/>
+        <property name="idPerfil" column="idPerfil"/>
+        <property name="nombrePerfil" column="nombrePerfil"/>
         <property name="activo" column="activo"/>
     </class>
 </hibernate-mapping>

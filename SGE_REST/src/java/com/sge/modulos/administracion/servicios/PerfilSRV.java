@@ -1,8 +1,8 @@
 package com.sge.modulos.administracion.servicios;
 
 import com.google.gson.Gson;
-import com.sge.modulos.administracion.entidades.Usuario;
-import com.sge.modulos.administracion.negocios.UsuarioDTO;
+import com.sge.modulos.administracion.entidades.Perfil;
+import com.sge.modulos.administracion.negocios.PerfilDTO;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -17,25 +17,25 @@ import javax.ws.rs.core.UriInfo;
  *
  * @author elderson
  */
-@Path("UsuarioSRV")
-public class UsuarioSRV {
+@Path("PerfilSRV")
+public class PerfilSRV {
     
     @Context
     private UriInfo context;
 
-    public UsuarioSRV() {
+    public PerfilSRV() {
     }
 
     @POST
-    @Path("ObtenerUsuarios")
+    @Path("ObtenerPerfiles")
     @Consumes("application/json")
     @Produces("application/json")
-    public String ObtenerUsuarios(String json) {
+    public String ObtenerPerfiles(String json) {
         List<String> resultado = new ArrayList<>();
         try {
             String filtro = new Gson().fromJson(json, String.class);
-            UsuarioDTO usuarioDTO = new UsuarioDTO();
-            List<Usuario> lista = usuarioDTO.ObtenerUsuarios(filtro);
+            PerfilDTO perfilDTO = new PerfilDTO();
+            List<Perfil> lista = perfilDTO.ObtenerPerfiles(filtro);
             resultado.add(new Gson().toJson(true));
             resultado.add(new Gson().toJson(lista));
             resultado.add(new Gson().toJson(new Date()));
@@ -48,15 +48,15 @@ public class UsuarioSRV {
     }
     
     @POST
-    @Path("RegistrarUsuario")
+    @Path("RegistrarPerfil")
     @Consumes("application/json")
     @Produces("application/json")
-    public String RegistrarUsuario(String json) {
+    public String RegistrarPerfil(String json) {
         List<String> resultado = new ArrayList<>();
-        Usuario usuario = new Gson().fromJson(json, Usuario.class);
+        Perfil perfil = new Gson().fromJson(json, Perfil.class);
         try {
-            UsuarioDTO usuarioDTO = new UsuarioDTO();
-            usuarioDTO.RegistrarUsuario(usuario);
+            PerfilDTO perfilDTO = new PerfilDTO();
+            perfilDTO.RegistrarPerfil(perfil);
             resultado.add(new Gson().toJson(true));
         } catch (Exception e) {
             resultado.clear();
@@ -67,15 +67,15 @@ public class UsuarioSRV {
     }
     
     @POST
-    @Path("ActualizarUsuario")
+    @Path("ActualizarPerfil")
     @Consumes("application/json")
     @Produces("application/json")
-    public String ActualizarUsuario(String json) {
+    public String ActualizarPerfil(String json) {
         List<String> resultado = new ArrayList<>();
-        Usuario usuario = new Gson().fromJson(json, Usuario.class);
+        Perfil perfil = new Gson().fromJson(json, Perfil.class);
         try {
-            UsuarioDTO usuarioDTO = new UsuarioDTO();
-            usuarioDTO.ActualizarUsuario(usuario);
+            PerfilDTO perfilDTO = new PerfilDTO();
+            perfilDTO.ActualizarPerfil(perfil);
             resultado.add(new Gson().toJson(true));
         } catch (Exception e) {
             resultado.clear();
@@ -86,15 +86,15 @@ public class UsuarioSRV {
     }
     
     @POST
-    @Path("EliminarUsuario")
+    @Path("EliminarPerfil")
     @Consumes("application/json")
     @Produces("application/json")
-    public String EliminarUsuario(String json) {
+    public String EliminarPerfil(String json) {
         List<String> resultado = new ArrayList<>();
-        int idUsuario = new Gson().fromJson(json, int.class);
+        int idPerfil = new Gson().fromJson(json, int.class);
         try {
-            UsuarioDTO usuarioDTO = new UsuarioDTO();
-            usuarioDTO.EliminarUsuario(idUsuario);
+            PerfilDTO perfilDTO = new PerfilDTO();
+            perfilDTO.EliminarPerfil(idPerfil);
             resultado.add(new Gson().toJson(true));
         } catch (Exception e) {
             resultado.clear();

@@ -31,6 +31,7 @@ public class BaseDAO {
         List<String> recursos = new ArrayList<>();
         // ADMINISTRACION
         recursos.add("com/sge/modulos/administracion/mapeos/Usuario.hbm.xml");
+        recursos.add("com/sge/modulos/administracion/mapeos/Perfil.hbm.xml");
         recursos.add("com/sge/modulos/administracion/mapeos/Empleado.hbm.xml");
         recursos.add("com/sge/modulos/administracion/mapeos/Moneda.hbm.xml");
         recursos.add("com/sge/modulos/administracion/mapeos/Reporte.hbm.xml");

@@ -8,6 +8,7 @@ public class Perfil {
     
     private int idPerfil;
     private String nombre;
+    private boolean activo;
 
     public Perfil() {
     }
@@ -27,5 +28,12 @@ public class Perfil {
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
-    
+
+    public boolean isActivo() {
+        return activo;
+    }
+
+    public void setActivo(boolean activo) {
+        this.activo = activo;
+    }
 }
