@@ -1,10 +1,9 @@
 package com.sge.modulos.administracion.formularios;
 
-import com.sge.modulos.administracion.cliente.cliAdministracion;
 import com.google.gson.Gson;
 import com.sge.base.formularios.frameBase;
 import com.sge.modulos.administracion.clases.Perfil;
-import com.sge.modulos.administracion.clases.Usuario;
+import com.sge.modulos.administracion.cliente.cliAdministracion;
 import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -15,17 +14,17 @@ import javax.swing.SwingWorker;
  *
  * @author elderson
  */
-public class lisUsuario extends frameBase<Usuario> {
+public class lisPerfil extends frameBase<Perfil> {
 
     /**
-     * Creates new form lisUsuario
+     * Creates new form lisPerfilx
      */
-    public lisUsuario(int modo) {
+    public lisPerfil(int modo) {
         initComponents();
         Init(modo, "");
     }
 
-    public lisUsuario(int modo, String filtro) {
+    public lisPerfil(int modo, String filtro) {
         initComponents();
         Init(modo, filtro);
     }
@@ -34,44 +33,26 @@ public class lisUsuario extends frameBase<Usuario> {
 
     private String filtro;
 
-    private Usuario seleccionado;
+    private Perfil seleccionado;
 
     ImageIcon Icon_Save = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/save-16.png"));
     ImageIcon Icon_Dele = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/delete-16.png"));
 
-    Action sele_perf = new AbstractAction() {
-        @Override
-        public void actionPerformed(ActionEvent evt) {
-            Perfil seleccionado = ((lisPerfil) evt.getSource()).getSeleccionado();
-            if (!(seleccionado == null)) {
-                AsignarValorCelda(tbUsuarios, seleccionado.getIdPerfil(), 4);
-                AsignarValorCelda(tbUsuarios, seleccionado.getNombre(), 5);
-            }
-        }
-    };
-    
-    Action search = new AbstractAction() {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            VerModal(new lisPerfil(1), sele_perf);
-        }
-    };
-    
     Action save = new AbstractAction() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            new swGuardarUsuario().execute();
+            new swGuardarPerfil().execute();
         }
     };
 
     Action dele = new AbstractAction() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            EliminarUsuario();
+            EliminarPerfil();
         }
     };
 
-    public class swObtenerUsuarios extends SwingWorker<Object, Object> {
+    public class swObtenerPerfiles extends SwingWorker<Object, Object> {
 
         @Override
         protected Object doInBackground() throws Exception {
@@ -79,7 +60,7 @@ public class lisUsuario extends frameBase<Usuario> {
             cliAdministracion cliente = new cliAdministracion();
             String json = "";
             try {
-                json = cliente.ObtenerUsuarios(new Gson().toJson(filtro));
+                json = cliente.ObtenerPerfiles(new Gson().toJson(filtro));
             } catch (Exception e) {
                 OcultarCargando(frame);
                 cancel(false);
@@ -97,15 +78,14 @@ public class lisUsuario extends frameBase<Usuario> {
                 String[] resultado = new Gson().fromJson(json, String[].class);
 
                 if (resultado[0].equals("true")) {
-                    EliminarTodasFilas(tbUsuarios);
-                    Usuario[] usuarios = new Gson().fromJson(resultado[1], Usuario[].class);
-                    for (Usuario usuario : usuarios) {
-                        AgregarFila(tbUsuarios, new Object[]{false, usuario.getIdUsuario(), usuario.getUsuario(), usuario.getClave(), usuario.getIdPerfil(), usuario.getNombrePerfil(), usuario.isActivo(), Icon_Save, Icon_Dele});
+                    EliminarTodasFilas(tbPerfiles);
+                    Perfil[] perfiles = new Gson().fromJson(resultado[1], Perfil[].class);
+                    for (Perfil perfil : perfiles) {
+                        AgregarFila(tbPerfiles, new Object[]{false, perfil.getIdPerfil(), perfil.getNombre(), perfil.isActivo(), Icon_Save, Icon_Dele});
                     }
-                    AgregarBoton(tbUsuarios, search, 5);
-                    AgregarBoton(tbUsuarios, save, 7);
-                    AgregarBoton(tbUsuarios, dele, 8);
-                    AgregarOrdenamiento(tbUsuarios);
+                    AgregarBoton(tbPerfiles, save, 4);
+                    AgregarBoton(tbPerfiles, dele, 5);
+                    AgregarOrdenamiento(tbPerfiles);
                 }
                 OcultarCargando(frame);
             } catch (Exception e) {
@@ -115,7 +95,7 @@ public class lisUsuario extends frameBase<Usuario> {
         }
     }
 
-    public class swGuardarUsuario extends SwingWorker<Object, Object> {
+    public class swGuardarPerfil extends SwingWorker<Object, Object> {
 
         @Override
         protected Object doInBackground() {
@@ -123,17 +103,14 @@ public class lisUsuario extends frameBase<Usuario> {
             cliAdministracion cliente = new cliAdministracion();
             String json = "";
             try {
-                Usuario usuario = new Usuario();
-                usuario.setIdUsuario(ObtenerValorCelda(tbUsuarios, 1));
-                usuario.setUsuario(ObtenerValorCelda(tbUsuarios, 2));
-                usuario.setClave(ObtenerValorCelda(tbUsuarios, 3));
-                usuario.setIdPerfil(ObtenerValorCelda(tbUsuarios, 4));
-                usuario.setNombrePerfil(ObtenerValorCelda(tbUsuarios, 5));
-                usuario.setActivo(ObtenerValorCelda(tbUsuarios, 6));
-                if (usuario.getIdUsuario() == 0) {
-                    json = cliente.RegistrarUsuario(new Gson().toJson(usuario));
+                Perfil perfil = new Perfil();
+                perfil.setIdPerfil(ObtenerValorCelda(tbPerfiles, 1));
+                perfil.setNombre(ObtenerValorCelda(tbPerfiles, 2));
+                perfil.setActivo(ObtenerValorCelda(tbPerfiles, 3));
+                if (perfil.getIdPerfil() == 0) {
+                    json = cliente.RegistrarPerfil(new Gson().toJson(perfil));
                 } else {
-                    json = cliente.ActualizarUsuario(new Gson().toJson(usuario));
+                    json = cliente.ActualizarPerfil(new Gson().toJson(perfil));
                 }
             } catch (Exception e) {
                 OcultarCargando(frame);
@@ -151,7 +128,7 @@ public class lisUsuario extends frameBase<Usuario> {
                 String json = get().toString();
                 String[] resultado = new Gson().fromJson(json, String[].class);
                 if (resultado[0].equals("true")) {
-                    new swObtenerUsuarios().execute();
+                    new swObtenerPerfiles().execute();
                 } else {
                     OcultarCargando(frame);
                 }
@@ -162,7 +139,7 @@ public class lisUsuario extends frameBase<Usuario> {
         }
     }
 
-    public class swEliminarUsuario extends SwingWorker<Object, Object> {
+    public class swEliminarPerfil extends SwingWorker<Object, Object> {
 
         @Override
         protected Object doInBackground() throws Exception {
@@ -170,8 +147,8 @@ public class lisUsuario extends frameBase<Usuario> {
             cliAdministracion cliente = new cliAdministracion();
             String json = "";
             try {
-                int idUsuario = ObtenerValorCelda(tbUsuarios, 1);
-                json = cliente.EliminarUsuario(new Gson().toJson(idUsuario));
+                int idPerfil = ObtenerValorCelda(tbPerfiles, 1);
+                json = cliente.EliminarPerfil(new Gson().toJson(idPerfil));
             } catch (Exception e) {
                 OcultarCargando(frame);
                 cancel(false);
@@ -188,7 +165,7 @@ public class lisUsuario extends frameBase<Usuario> {
                 String json = get().toString();
                 String[] resultado = new Gson().fromJson(json, String[].class);
                 if (resultado[0].equals("true")) {
-                    new swObtenerUsuarios().execute();
+                    new swObtenerPerfiles().execute();
                 } else {
                     OcultarCargando(frame);
                 }
@@ -204,30 +181,30 @@ public class lisUsuario extends frameBase<Usuario> {
         this.filtro = filtro;
         switch (this.modo) {
             case 0:
-                OcultarColumna(tbUsuarios, 0);
+                OcultarColumna(tbPerfiles, 0);
                 OcultarControl(btnSeleccionar);
                 break;
             case 1:
-                OcultarColumnas(tbUsuarios, new int[]{0, 7, 8});
+                OcultarColumnas(tbPerfiles, new int[]{0, 4, 5});
                 OcultarControl(btnNuevo);
                 break;
         }
-        new swObtenerUsuarios().execute();
+        new swObtenerPerfiles().execute();
     }
 
-    public void EliminarUsuario() {
+    public void EliminarPerfil() {
         int confirmacion = VerConfirmacion(this);
         if (confirmacion == 0) {
-            int idUsuario = ObtenerValorCelda(tbUsuarios, 1);
-            if (idUsuario == 0) {
-                EliminarFila(tbUsuarios);
+            int idPerfil = ObtenerValorCelda(tbPerfiles, 1);
+            if (idPerfil == 0) {
+                EliminarFila(tbPerfiles);
             } else {
-                new swEliminarUsuario().execute();
+                new swEliminarPerfil().execute();
             }
         }
     }
 
-    public Usuario getSeleccionado() {
+    public Perfil getSeleccionado() {
         return seleccionado;
     }
 
@@ -241,10 +218,10 @@ public class lisUsuario extends frameBase<Usuario> {
     private void initComponents() {
 
         frame = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        tbUsuarios = new javax.swing.JTable();
-        pnlTitulo = new javax.swing.JPanel();
-        lblTitulo = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tbPerfiles = new javax.swing.JTable();
+        pnlTitulo1 = new javax.swing.JPanel();
+        lblTitulo1 = new javax.swing.JLabel();
         btnNuevo = new javax.swing.JButton();
         btnSeleccionar = new javax.swing.JButton();
         lblFiltro = new javax.swing.JLabel();
@@ -256,19 +233,19 @@ public class lisUsuario extends frameBase<Usuario> {
         frame.setBackground(java.awt.Color.white);
         frame.setBorder(null);
 
-        tbUsuarios.setModel(new javax.swing.table.DefaultTableModel(
+        tbPerfiles.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "CHECK", "IDUSUARIO", "USUARIO", "CLAVE", "IDPERFIL", "PERFIL", "ACTIVO", "GUARDAR", "ELIMINAR"
+                "CHECK", "ID", "NOMBRE", "ACTIVO", "GUARDAR", "ELIMINAR"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Boolean.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.Boolean.class, java.lang.Object.class, java.lang.Object.class
+                java.lang.Boolean.class, java.lang.Integer.class, java.lang.String.class, java.lang.Boolean.class, java.lang.Object.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                true, false, true, true, true, true, true, true, true
+                true, false, true, true, true, true
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -279,32 +256,22 @@ public class lisUsuario extends frameBase<Usuario> {
                 return canEdit [columnIndex];
             }
         });
-        tbUsuarios.setRowHeight(25);
-        tbUsuarios.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        jScrollPane1.setViewportView(tbUsuarios);
-        if (tbUsuarios.getColumnModel().getColumnCount() > 0) {
-            tbUsuarios.getColumnModel().getColumn(0).setMinWidth(0);
-            tbUsuarios.getColumnModel().getColumn(0).setPreferredWidth(0);
-            tbUsuarios.getColumnModel().getColumn(0).setMaxWidth(0);
-            tbUsuarios.getColumnModel().getColumn(1).setMinWidth(0);
-            tbUsuarios.getColumnModel().getColumn(1).setPreferredWidth(0);
-            tbUsuarios.getColumnModel().getColumn(1).setMaxWidth(0);
-            tbUsuarios.getColumnModel().getColumn(2).setPreferredWidth(200);
-            tbUsuarios.getColumnModel().getColumn(4).setMinWidth(0);
-            tbUsuarios.getColumnModel().getColumn(4).setPreferredWidth(0);
-            tbUsuarios.getColumnModel().getColumn(4).setMaxWidth(0);
-            tbUsuarios.getColumnModel().getColumn(5).setPreferredWidth(200);
-            tbUsuarios.getColumnModel().getColumn(7).setPreferredWidth(10);
-            tbUsuarios.getColumnModel().getColumn(8).setPreferredWidth(10);
+        tbPerfiles.setRowHeight(25);
+        tbPerfiles.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jScrollPane2.setViewportView(tbPerfiles);
+        if (tbPerfiles.getColumnModel().getColumnCount() > 0) {
+            tbPerfiles.getColumnModel().getColumn(1).setMinWidth(0);
+            tbPerfiles.getColumnModel().getColumn(1).setPreferredWidth(0);
+            tbPerfiles.getColumnModel().getColumn(1).setMaxWidth(0);
         }
 
-        pnlTitulo.setBackground(new java.awt.Color(67, 100, 130));
-        pnlTitulo.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        pnlTitulo1.setBackground(new java.awt.Color(67, 100, 130));
+        pnlTitulo1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        lblTitulo.setFont(new java.awt.Font("Ubuntu", 1, 18)); // NOI18N
-        lblTitulo.setForeground(java.awt.Color.white);
-        lblTitulo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sge/base/imagenes/list-view-16.png"))); // NOI18N
-        lblTitulo.setText("LISTADO DE USUARIOS");
+        lblTitulo1.setFont(new java.awt.Font("Ubuntu", 1, 18)); // NOI18N
+        lblTitulo1.setForeground(java.awt.Color.white);
+        lblTitulo1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sge/base/imagenes/list-view-16.png"))); // NOI18N
+        lblTitulo1.setText("LISTADO DE PERFILES");
 
         btnNuevo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sge/base/imagenes/add-16.png"))); // NOI18N
         btnNuevo.setText("NUEVO");
@@ -314,23 +281,23 @@ public class lisUsuario extends frameBase<Usuario> {
             }
         });
 
-        javax.swing.GroupLayout pnlTituloLayout = new javax.swing.GroupLayout(pnlTitulo);
-        pnlTitulo.setLayout(pnlTituloLayout);
-        pnlTituloLayout.setHorizontalGroup(
-            pnlTituloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlTituloLayout.createSequentialGroup()
+        javax.swing.GroupLayout pnlTitulo1Layout = new javax.swing.GroupLayout(pnlTitulo1);
+        pnlTitulo1.setLayout(pnlTitulo1Layout);
+        pnlTitulo1Layout.setHorizontalGroup(
+            pnlTitulo1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlTitulo1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(lblTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(lblTitulo1, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnNuevo)
                 .addContainerGap())
         );
-        pnlTituloLayout.setVerticalGroup(
-            pnlTituloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlTituloLayout.createSequentialGroup()
+        pnlTitulo1Layout.setVerticalGroup(
+            pnlTitulo1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlTitulo1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(pnlTituloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblTitulo)
+                .addGroup(pnlTitulo1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblTitulo1)
                     .addComponent(btnNuevo))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -362,11 +329,11 @@ public class lisUsuario extends frameBase<Usuario> {
         frame.setLayout(frameLayout);
         frameLayout.setHorizontalGroup(
             frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(pnlTitulo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(pnlTitulo1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(frameLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1160, Short.MAX_VALUE)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 768, Short.MAX_VALUE)
                     .addGroup(frameLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btnSeleccionar, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -382,7 +349,7 @@ public class lisUsuario extends frameBase<Usuario> {
         frameLayout.setVerticalGroup(
             frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, frameLayout.createSequentialGroup()
-                .addComponent(pnlTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(pnlTitulo1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -390,7 +357,7 @@ public class lisUsuario extends frameBase<Usuario> {
                         .addComponent(txtFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(btnRefrescar, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 361, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 269, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnSeleccionar)
                 .addGap(15, 15, 15))
@@ -412,34 +379,34 @@ public class lisUsuario extends frameBase<Usuario> {
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
         // TODO add your handling code here:
-        AgregarFila(tbUsuarios, new Object[]{false, 0, "", "", 0, "", false, Icon_Save, Icon_Dele});
+        AgregarFila(tbPerfiles, new Object[]{false, 0, "", false, Icon_Save, Icon_Dele});
     }//GEN-LAST:event_btnNuevoActionPerformed
 
     private void btnSeleccionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeleccionarActionPerformed
         // TODO add your handling code here:
         switch (this.modo) {
             case 1:
-                if (FilaActiva(tbUsuarios)) {
-                    Usuario usuario = new Usuario();
-                    usuario.setIdUsuario(ObtenerValorCelda(tbUsuarios, 1));
-                    usuario.setUsuario(ObtenerValorCelda(tbUsuarios, 2));
-                    seleccionado = usuario;
-                }
-                Cerrar();
-                break;
+            if (FilaActiva(tbPerfiles)) {
+                Perfil perfil = new Perfil();
+                perfil.setIdPerfil(ObtenerValorCelda(tbPerfiles, 1));
+                perfil.setNombre(ObtenerValorCelda(tbPerfiles, 2));
+                seleccionado = perfil;
+            }
+            Cerrar();
+            break;
             case 2:
-                break;
+            break;
         }
     }//GEN-LAST:event_btnSeleccionarActionPerformed
 
     private void txtFiltroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFiltroActionPerformed
         // TODO add your handling code here:
-        Filtrar(tbUsuarios, txtFiltro.getText());
+        Filtrar(tbPerfiles, txtFiltro.getText());
     }//GEN-LAST:event_txtFiltroActionPerformed
 
     private void btnRefrescarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefrescarActionPerformed
         // TODO add your handling code here:
-        new swObtenerUsuarios().execute();
+        new swObtenerPerfiles().execute();
     }//GEN-LAST:event_btnRefrescarActionPerformed
 
 
@@ -448,11 +415,11 @@ public class lisUsuario extends frameBase<Usuario> {
     private javax.swing.JButton btnRefrescar;
     private javax.swing.JButton btnSeleccionar;
     private javax.swing.JPanel frame;
-    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel lblFiltro;
-    private javax.swing.JLabel lblTitulo;
-    private javax.swing.JPanel pnlTitulo;
-    private javax.swing.JTable tbUsuarios;
+    private javax.swing.JLabel lblTitulo1;
+    private javax.swing.JPanel pnlTitulo1;
+    private javax.swing.JTable tbPerfiles;
     private javax.swing.JTextField txtFiltro;
     // End of variables declaration//GEN-END:variables
 }

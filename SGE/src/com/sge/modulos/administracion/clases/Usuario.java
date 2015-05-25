@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.sge.modulos.administracion.clases;
 
 /**
@@ -14,6 +9,8 @@ public class Usuario {
     private int idUsuario;
     private String usuario;
     private String clave;
+    private int idPerfil;
+    private String nombrePerfil;
     private boolean activo;
 
     public Usuario() {
@@ -41,6 +38,22 @@ public class Usuario {
 
     public void setClave(String clave) {
         this.clave = clave;
+    }
+
+    public int getIdPerfil() {
+        return idPerfil;
+    }
+
+    public void setIdPerfil(int idPerfil) {
+        this.idPerfil = idPerfil;
+    }
+
+    public String getNombrePerfil() {
+        return nombrePerfil;
+    }
+
+    public void setNombrePerfil(String nombrePerfil) {
+        this.nombrePerfil = nombrePerfil;
     }
 
     public boolean isActivo() {
