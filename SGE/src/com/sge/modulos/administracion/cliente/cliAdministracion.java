@@ -26,12 +26,18 @@ public class cliAdministracion {
     }
 
     ////////////////////////////// MENU ////////////////////////////////////////
-    public String ObtenerMenus(Object requestEntity) throws ClientErrorException {
+    public String ObtenerMenusPorUsuario(Object requestEntity) throws ClientErrorException {
         WebTarget resource = client.target(BASE_URI).path("MenuSRV");
-        resource = resource.path("ObtenerMenus");
+        resource = resource.path("ObtenerMenusPorUsuario");
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
     }
 
+    public String ObtenerMenusPorPerfil(Object requestEntity) throws ClientErrorException {
+        WebTarget resource = client.target(BASE_URI).path("MenuSRV");
+        resource = resource.path("ObtenerMenusPorPerfil");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
+    }
+    
     ////////////////////////////////////////////////////////////////////////////
     ///////////////////////////// USUARIO //////////////////////////////////////
     public String ObtenerUsuarios(Object requestEntity) throws ClientErrorException {

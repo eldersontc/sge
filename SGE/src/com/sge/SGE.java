@@ -6,6 +6,7 @@ import com.sge.base.controles.FabricaControles;
 import com.sge.base.excepciones.Excepciones;
 import com.sge.base.formularios.frameBase;
 import com.sge.base.formularios.frameLogin;
+import com.sge.modulos.administracion.clases.Menu;
 import com.sge.modulos.administracion.clases.Usuario;
 import com.sge.modulos.administracion.cliente.cliAdministracion;
 import java.awt.BorderLayout;
@@ -94,11 +95,10 @@ public class SGE extends javax.swing.JFrame {
     public void LlenarMenus(int idUsuario) {
         cliAdministracion cliente = new cliAdministracion();
         try {
-            String json = cliente.ObtenerMenus(new Gson().toJson(idUsuario));
+            String json = cliente.ObtenerMenusPorUsuario(new Gson().toJson(idUsuario));
             String[] resultado = new Gson().fromJson(json, String[].class);
             if (resultado[0].equals("true")) {
-                List<Object[]> menus = (List<Object[]>) new Gson().fromJson(resultado[1], new TypeToken<List<Object[]>>() {
-                }.getType());
+                Menu[] menus = new Gson().fromJson(resultado[1], Menu[].class);
                 JMenuBar menuBar = new JMenuBar();
                 menuBar.setPreferredSize(new java.awt.Dimension(128, 40));
                 menuBar.addMouseListener(new MouseAdapter() {
@@ -121,18 +121,18 @@ public class SGE extends javax.swing.JFrame {
                         }
                     }
                 });
-                for (Object[] itemN1 : menus) {
-                    JMenu menuN1 = new JMenu(itemN1[2].toString());
-                    URL urlN1 = getClass().getResource("/com/sge/base/imagenes/" + itemN1[4]);
+                for (Menu itemN1 : menus) {
+                    JMenu menuN1 = new JMenu(itemN1.getNombre());
+                    URL urlN1 = getClass().getResource("/com/sge/base/imagenes/" + itemN1.getIcono());
                     if (!(urlN1 == null)) {
                         menuN1.setIcon(new ImageIcon(urlN1));
                     }
                     menuBar.add(menuN1);
-                    for (List<Object> itemN2 : (List<List<Object>>) itemN1[5]) {
-                        if (((List<Object>) itemN2.get(5)).isEmpty()) {
-                            JMenuItem menuItemN2 = new JMenuItem(itemN2.get(2).toString());
-                            menuItemN2.setName((itemN2.get(3) == null) ? "" : itemN2.get(3).toString());
-                            URL urlItemN2 = getClass().getResource("/com/sge/base/imagenes/" + itemN2.get(4));
+                    for (Menu itemN2 : itemN1.getSubMenus()) {
+                        if (itemN2.getSubMenus().isEmpty()) {
+                            JMenuItem menuItemN2 = new JMenuItem(itemN2.getNombre());
+                            menuItemN2.setName((itemN2.getFormulario() == null) ? "" : itemN2.getFormulario());
+                            URL urlItemN2 = getClass().getResource("/com/sge/base/imagenes/" + itemN2.getIcono());
                             if (!(urlItemN2 == null)) {
                                 menuItemN2.setIcon(new ImageIcon(urlItemN2));
                             }
@@ -144,16 +144,16 @@ public class SGE extends javax.swing.JFrame {
                             });
                             menuN1.add(menuItemN2);
                         } else {
-                            JMenu menuN2 = new JMenu(itemN2.get(2).toString());
-                            URL urlN2 = getClass().getResource("/com/sge/base/imagenes/" + itemN2.get(4));
+                            JMenu menuN2 = new JMenu(itemN2.getNombre());
+                            URL urlN2 = getClass().getResource("/com/sge/base/imagenes/" + itemN2.getIcono());
                             if (!(urlN2 == null)) {
                                 menuN2.setIcon(new ImageIcon(urlN2));
                             }
                             menuN1.add(menuN2);
-                            for (List<Object> itemN3 : (List<List<Object>>) itemN2.get(5)) {
-                                JMenuItem menuItemN3 = new JMenuItem(itemN3.get(2).toString());
-                                menuItemN3.setName((itemN3.get(3) == null) ? "" : itemN3.get(3).toString());
-                                URL urlItemN3 = getClass().getResource("/com/sge/base/imagenes/" + itemN3.get(4));
+                            for (Menu itemN3 : itemN2.getSubMenus()) {
+                                JMenuItem menuItemN3 = new JMenuItem(itemN3.getNombre());
+                                menuItemN3.setName((itemN3.getFormulario() == null) ? "" : itemN3.getFormulario());
+                                URL urlItemN3 = getClass().getResource("/com/sge/base/imagenes/" + itemN3.getIcono());
                                 if (!(urlItemN3 == null)) {
                                     menuItemN3.setIcon(new ImageIcon(urlItemN3));
                                 }
