@@ -9,7 +9,7 @@ import java.util.List;
  * @author elderson
  */
 public class CajaDAO extends BaseDAO {
-    
+
     public List<Caja> ObtenerCajas(String filtro) {
         String sql = "SELECT \n"
                 + "Caja.* \n"
@@ -21,6 +21,11 @@ public class CajaDAO extends BaseDAO {
     public int ActualizarCaja(int idCaja, String descripcion, int idMoneda, String simboloMoneda, boolean activo) {
         String sql = String.format("UPDATE Finanzas.Caja SET descripcion = '%s', idMoneda = %d, simboloMoneda = '%s', activo = %b WHERE idCaja = %d", descripcion, idMoneda, simboloMoneda, activo, idCaja);
         return super.Ejecutar(sql);
+    }
+
+    public void ActualizarSaldo(int idCaja, double monto) {
+        String sql = String.format("Finanzas.Sp_Actualizar_Saldo_Caja(%d, %s)", idCaja, monto);
+        super.EjecutarFuncion(sql);
     }
 
     public int EliminarCaja(int idCaja) {

@@ -77,9 +77,10 @@ public class EntradaCajaDTO {
             for (ItemEntradaCaja item : entradaCaja.getItems()) {
                 item.setIdEntradaCaja(entradaCaja.getIdEntradaCaja());
                 itemEntradaCajaDAO.Agregar(item);
-                //
             }
 
+            cajaDAO.ActualizarSaldo(entradaCaja.getIdCaja(), entradaCaja.getTotal());
+            
             entradaCajaDAO.ConfirmarTransaccion();
         } catch (Exception e) {
             entradaCajaDAO.AbortarTransaccion();

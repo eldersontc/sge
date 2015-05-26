@@ -14,7 +14,7 @@ import java.util.List;
  * @author elderson
  */
 public class SalidaCajaDTO {
-    
+
     SalidaCajaDAO salidaCajaDAO;
     ItemSalidaCajaDAO itemSalidaCajaDAO;
     CajaDAO cajaDAO;
@@ -58,14 +58,14 @@ public class SalidaCajaDTO {
         try {
             salidaCajaDAO = new SalidaCajaDAO();
             salidaCajaDAO.IniciarTransaccion();
-            
+
             numeracionDAO = new NumeracionDAO();
             numeracionDAO.AsignarSesion(salidaCajaDAO);
-            
-            if(!salidaCaja.isNumeracionManual()){
+
+            if (!salidaCaja.isNumeracionManual()) {
                 salidaCaja.setNumero(numeracionDAO.GenerarNumeracion(salidaCaja.getIdNumeracion()));
             }
-            
+
             salidaCajaDAO.Agregar(salidaCaja);
 
             itemSalidaCajaDAO = new ItemSalidaCajaDAO();
@@ -77,8 +77,9 @@ public class SalidaCajaDTO {
             for (ItemSalidaCaja item : salidaCaja.getItems()) {
                 item.setIdSalidaCaja(salidaCaja.getIdSalidaCaja());
                 itemSalidaCajaDAO.Agregar(item);
-                //
             }
+
+            cajaDAO.ActualizarSaldo(salidaCaja.getIdCaja(), salidaCaja.getTotal() * -1);
 
             salidaCajaDAO.ConfirmarTransaccion();
         } catch (Exception e) {
