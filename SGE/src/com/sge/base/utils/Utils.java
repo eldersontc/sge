@@ -128,7 +128,13 @@ public class Utils {
         DefaultMutableTreeNode nodo = (DefaultMutableTreeNode) path.getLastPathComponent();
         return (T) nodo.getUserObject();
     }
-
+    
+    public static void ExpandirTodosNodos(JTree tree){
+        for (int i = 0; i < tree.getRowCount(); i++) {
+            tree.expandRow(i);
+        }
+    }
+    
     ////////////////////////////////// JLIST ///////////////////////////////////
     public static void AgregarElemento(JList list, Object element) {
         DefaultListModel model = (DefaultListModel) list.getModel();

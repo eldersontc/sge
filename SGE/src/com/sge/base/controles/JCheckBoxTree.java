@@ -1,7 +1,9 @@
 package com.sge.base.controles;
 
+import com.sge.modulos.administracion.clases.Menu;
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.EventListener;
@@ -28,8 +30,6 @@ public class JCheckBoxTree extends JTree {
     private static final long serialVersionUID = -4194122328392241790L;
 
     JCheckBoxTree selfPointer = this;
-
-
 
     // Defining data structure that will enable to fast check-indicate the state of each node
     // It totally replaces the "selection" mechanism of the JTree
@@ -109,7 +109,11 @@ public class JCheckBoxTree extends JTree {
     private void addSubtreeToCheckingStateTracking(DefaultMutableTreeNode node) {
         TreeNode[] path = node.getPath();   
         TreePath tp = new TreePath(path);
-        CheckedNode cn = new CheckedNode(false, node.getChildCount() > 0, false);
+        boolean isSelected = false;
+        if(node.getUserObject() instanceof Menu){
+            isSelected = ((Menu)node.getUserObject()).isCheck();
+        }
+        CheckedNode cn = new CheckedNode(isSelected, node.getChildCount() > 0, false);
         nodesCheckingState.put(tp, cn);
         for (int i = 0 ; i < node.getChildCount() ; i++) {              
             addSubtreeToCheckingStateTracking((DefaultMutableTreeNode) tp.pathByAddingChild(node.getChildAt(i)).getLastPathComponent());
@@ -140,6 +144,10 @@ public class JCheckBoxTree extends JTree {
             if (cn == null) {
                 return this;
             }
+            if(node.getUserObject() instanceof Menu){
+                Menu menu = (Menu)node.getUserObject();
+                menu.setNuevoCheck(cn.isSelected);
+            }
             checkBox.setSelected(cn.isSelected);
             checkBox.setText(obj.toString());
             checkBox.setOpaque(cn.isSelected && cn.hasChildren && ! cn.allChildrenSelected);
@@ -169,7 +177,7 @@ public class JCheckBoxTree extends JTree {
             }
         };
         // Calling checking mechanism on mouse click
-        this.addMouseListener(new MouseListener() {
+        this.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent arg0) {
                 TreePath tp = selfPointer.getPathForLocation(arg0.getX(), arg0.getY());
                 if (tp == null) {
@@ -182,15 +190,7 @@ public class JCheckBoxTree extends JTree {
                 fireCheckChangeEvent(new CheckChangeEvent(new Object()));
                 // Repainting tree after the data structures were updated
                 selfPointer.repaint();                          
-            }           
-            public void mouseEntered(MouseEvent arg0) {         
-            }           
-            public void mouseExited(MouseEvent arg0) {              
-            }
-            public void mousePressed(MouseEvent arg0) {             
-            }
-            public void mouseReleased(MouseEvent arg0) {
-            }           
+            }      
         });
         this.setSelectionModel(dtsm);
     }

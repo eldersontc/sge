@@ -143,6 +143,10 @@ public class frameBase<T> extends javax.swing.JInternalFrame {
         Utils.AsignarTitulo(tabbedPane, tab, titulo);
     }
 
+    public void ExpandirTodosNodos(JTree tree){
+        Utils.ExpandirTodosNodos(tree);
+    }
+    
     ////////////////////////// FABRICA DE CONTROLES ////////////////////////////
 
     public void VerProcesando(JPanel panel) {

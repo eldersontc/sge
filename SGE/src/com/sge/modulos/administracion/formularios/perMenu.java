@@ -5,14 +5,12 @@ import com.sge.base.formularios.frameBase;
 import com.sge.modulos.administracion.clases.Menu;
 import com.sge.modulos.administracion.clases.Perfil;
 import com.sge.modulos.administracion.cliente.cliAdministracion;
-import java.awt.Component;
-import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
-import javax.swing.JTree;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.SwingWorker;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
-import javax.swing.tree.TreeCellRenderer;
+import javax.swing.tree.TreePath;
 
 /**
  *
@@ -112,7 +110,7 @@ public class perMenu extends frameBase<Menu> {
                 String[] resultado = new Gson().fromJson(json, String[].class);
                 if (resultado[0].equals("true")) {
                     Menu[] menus = new Gson().fromJson(resultado[1], Menu[].class);
-                    DefaultMutableTreeNode root = new DefaultMutableTreeNode("PANTALLAS");
+                    DefaultMutableTreeNode root = new DefaultMutableTreeNode();
                     for (Menu menu : menus) {
                         DefaultMutableTreeNode nivel1 = new DefaultMutableTreeNode(menu);
                         for (Menu subMenu : menu.getSubMenus()) {
@@ -126,6 +124,7 @@ public class perMenu extends frameBase<Menu> {
                         root.add(nivel1);
                     }
                     treeMenus.setModel(new DefaultTreeModel(root, false));
+                    ExpandirTodosNodos(treeMenus);
                 }
                 OcultarCargando(frame);
             } catch (Exception e) {
@@ -135,6 +134,71 @@ public class perMenu extends frameBase<Menu> {
         }
     }
 
+    private List<Menu> menus;
+    
+    private void getSubMenus(DefaultMutableTreeNode node) {
+        if(node.getUserObject() instanceof Menu){
+            Menu menu = (Menu)node.getUserObject();
+            if(menu.isCheck() != menu.isNuevoCheck()){
+                if(menu.isNuevoCheck()){
+                    menu.setAgregar(true);
+                } else {
+                    menu.setEliminar(true);
+                }
+                menus.add(menu);
+            }
+        }
+        TreePath tp = new TreePath(node.getPath());
+        for (int i = 0 ; i < node.getChildCount() ; i++) {              
+            getSubMenus((DefaultMutableTreeNode) tp.pathByAddingChild(node.getChildAt(i)).getLastPathComponent());
+        }
+    }
+    
+    public List<Menu> getMenus(){
+        this.menus = new ArrayList<>();
+        DefaultMutableTreeNode nodo = (DefaultMutableTreeNode)treeMenus.getModel().getRoot();
+        getSubMenus(nodo);
+        return menus;
+    }
+    
+    public class swActualizarPermisos extends SwingWorker<Object, Object> {
+
+        @Override
+        protected Object doInBackground() {
+            VerProcesando(frame);
+            cliAdministracion cliente = new cliAdministracion();
+            String json = "";
+            try {
+                Perfil perfil = (Perfil)cboPerfiles.getSelectedItem();
+                String[] arrayJson = new String[]{ new Gson().toJson(getMenus()), new Gson().toJson(perfil.getIdPerfil()) };
+                json = cliente.ActualizarPermisos(new Gson().toJson(arrayJson));
+            } catch (Exception e) {
+                OcultarProcesando(frame);
+                cancel(false);
+                ControlarExcepcion(e);
+            } finally {
+                cliente.close();
+            }
+            return json;
+        }
+
+        @Override
+        protected void done() {
+            try {
+                String json = get().toString();
+                String[] resultado = new Gson().fromJson(json, String[].class);
+                if (resultado[0].equals("true")) {
+                    Cerrar();
+                } else {
+                    OcultarProcesando(frame);
+                }
+            } catch (Exception e) {
+                OcultarProcesando(frame);
+                ControlarExcepcion(e);
+            }
+        }
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -152,6 +216,8 @@ public class perMenu extends frameBase<Menu> {
         cboPerfiles = new javax.swing.JComboBox();
         jScrollPane2 = new javax.swing.JScrollPane();
         treeMenus = new com.sge.base.controles.JCheckBoxTree();
+        btnAceptar = new javax.swing.JButton();
+        btnCancelar = new javax.swing.JButton();
 
         setClosable(true);
 
@@ -173,7 +239,7 @@ public class perMenu extends frameBase<Menu> {
             .addGroup(pnlTitulo1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lblTitulo1, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(560, Short.MAX_VALUE))
+                .addContainerGap(313, Short.MAX_VALUE))
         );
         pnlTitulo1Layout.setVerticalGroup(
             pnlTitulo1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -193,7 +259,24 @@ public class perMenu extends frameBase<Menu> {
             }
         });
 
+        javax.swing.tree.DefaultMutableTreeNode treeNode1 = new javax.swing.tree.DefaultMutableTreeNode("root");
+        treeMenus.setModel(new javax.swing.tree.DefaultTreeModel(treeNode1));
+        treeMenus.setRootVisible(false);
         jScrollPane2.setViewportView(treeMenus);
+
+        btnAceptar.setText("ACEPTAR");
+        btnAceptar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAceptarActionPerformed(evt);
+            }
+        });
+
+        btnCancelar.setText("CANCELAR");
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout frameLayout = new javax.swing.GroupLayout(frame);
         frame.setLayout(frameLayout);
@@ -202,17 +285,20 @@ public class perMenu extends frameBase<Menu> {
             .addComponent(pnlTitulo1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(frameLayout.createSequentialGroup()
                 .addGap(26, 26, 26)
-                .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(frameLayout.createSequentialGroup()
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 507, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(frameLayout.createSequentialGroup()
                         .addComponent(lblPerfil)
                         .addGap(36, 36, 36)
                         .addComponent(cboPerfiles, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnVer, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(262, 262, 262))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnVer, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(frameLayout.createSequentialGroup()
+                            .addComponent(btnAceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 507, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(24, Short.MAX_VALUE))
         );
         frameLayout.setVerticalGroup(
             frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -225,8 +311,12 @@ public class perMenu extends frameBase<Menu> {
                         .addComponent(cboPerfiles, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(btnVer, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2)
-                .addContainerGap())
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 441, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnAceptar)
+                    .addComponent(btnCancelar))
+                .addContainerGap(21, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -248,7 +338,19 @@ public class perMenu extends frameBase<Menu> {
         new swObtenerMenusPorPerfil().execute();
     }//GEN-LAST:event_btnVerActionPerformed
 
+    private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
+        // TODO add your handling code here:
+        new swActualizarPermisos().execute();
+    }//GEN-LAST:event_btnAceptarActionPerformed
+
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+        // TODO add your handling code here:
+        Cerrar();
+    }//GEN-LAST:event_btnCancelarActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAceptar;
+    private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnVer;
     private javax.swing.JComboBox cboPerfiles;
     private javax.swing.JPanel frame;
