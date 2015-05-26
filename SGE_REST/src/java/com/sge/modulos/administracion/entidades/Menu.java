@@ -1,5 +1,8 @@
 package com.sge.modulos.administracion.entidades;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  *
  * @author elderson
@@ -7,12 +10,14 @@ package com.sge.modulos.administracion.entidades;
 public class Menu {
     
     private int idMenu;
-    private Menu menuPadre;
+    private int idMenuPadre;
     private String nombre;
     private String formulario;
     private String icono;
+    private List<Menu> subMenus;
 
     public Menu() {
+        subMenus = new ArrayList<>();
     }
 
     public int getIdMenu() {
@@ -23,12 +28,12 @@ public class Menu {
         this.idMenu = idMenu;
     }
 
-    public Menu getMenuPadre() {
-        return menuPadre;
+    public int getIdMenuPadre() {
+        return idMenuPadre;
     }
 
-    public void setMenuPadre(Menu menuPadre) {
-        this.menuPadre = menuPadre;
+    public void setIdMenuPadre(int idMenuPadre) {
+        this.idMenuPadre = idMenuPadre;
     }
 
     public String getNombre() {
@@ -53,5 +58,13 @@ public class Menu {
 
     public void setIcono(String icono) {
         this.icono = icono;
+    }
+
+    public List<Menu> getSubMenus() {
+        return subMenus;
+    }
+
+    public void setSubMenus(List<Menu> subMenus) {
+        this.subMenus = subMenus;
     }
 }

@@ -1,6 +1,7 @@
 package com.sge.modulos.administracion.accesoDatos;
 
 import com.sge.base.accesoDatos.BaseDAO;
+import com.sge.modulos.administracion.entidades.Menu;
 import java.util.List;
 
 /**
@@ -9,15 +10,26 @@ import java.util.List;
  */
 public class MenuDAO extends BaseDAO{
     
-    public List<Object[]> ObtenerMenus(int idUsuario){
+    public List<Menu> ObtenerMenusPorUsuario(int idUsuario){
         String sql = "SELECT \n" +
-                    "	Menu.idMenu, Menu.idMenuPadre, Menu.nombre, Menu.formulario, Menu.icono \n" +
+                    "	Menu.* \n" +
                     "FROM \n" +
                     "	Administracion.Usuario AS Usuario INNER JOIN \n" +
                     "	Administracion.PerfilMenu AS PerfilMenu ON Usuario.idPerfil = PerfilMenu.idPerfil INNER JOIN \n" +
                     "	Administracion.Menu AS Menu ON PerfilMenu.idMenu = Menu.idMenu \n" +
                     "WHERE \n" +
                     "	Usuario.idUsuario = " + idUsuario;
-        return super.ObtenerLista(sql);
+        return super.ObtenerLista(sql, Menu.class);
+    }
+    
+    public List<Menu> ObtenerMenusPorPerfil(int idPerfil){
+        String sql = "SELECT \n" +
+                    "	Menu.* \n" +
+                    "FROM \n" +
+                    "	Administracion.PerfilMenu AS PerfilMenu INNER JOIN \n" +
+                    "	Administracion.Menu AS Menu ON PerfilMenu.idMenu = Menu.idMenu \n" +
+                    "WHERE \n" +
+                    "	PerfilMenu.idPerfil = " + idPerfil;
+        return super.ObtenerLista(sql, Menu.class);
     }
 }

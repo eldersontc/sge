@@ -1,6 +1,7 @@
 package com.sge.modulos.administracion.negocios;
 
 import com.sge.modulos.administracion.accesoDatos.MenuDAO;
+import com.sge.modulos.administracion.entidades.Menu;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,32 +13,60 @@ public class MenuDTO {
 
     MenuDAO menuDAO;
 
-    private List<Object[]> ObtenerSubMenus(List<Object[]> menus, int idMenuPadre) {
-        List<Object[]> lista = new ArrayList<>();
-        for (Object[] menu : menus) {
-            if ((int)menu[1] == idMenuPadre) {
-                lista.add(new Object[]{ menu[0], menu[1], menu[2], menu[3], menu[4], ObtenerSubMenus(menus, (int)menu[0]) });
+    private List<Menu> ObtenerSubMenus(List<Menu> menus, int idMenuPadre) {
+        List<Menu> lista = new ArrayList<>();
+        for (Menu menu : menus) {
+            if (menu.getIdMenuPadre() == idMenuPadre) {
+                Menu menuNuevo = new Menu();
+                menuNuevo.setIdMenu(menu.getIdMenu());
+                menuNuevo.setIdMenuPadre(menu.getIdMenuPadre());
+                menuNuevo.setNombre(menu.getNombre());
+                menuNuevo.setFormulario(menu.getFormulario());
+                menuNuevo.setIcono(menu.getIcono());
+                menuNuevo.setSubMenus(ObtenerSubMenus(menus, menu.getIdMenu()));
+                lista.add(menuNuevo);
             }
         }
         return lista;
     }
 
-    private List<Object[]> ObtenerMenus(List<Object[]> menus) {
-        List<Object[]> lista = new ArrayList<>();
-        for (Object[] menu : menus) {
-            if ((int)menu[1] == 0) {
-                lista.add(new Object[]{ menu[0], menu[1], menu[2], menu[3], menu[4], ObtenerSubMenus(menus, (int)menu[0]) });
+    private List<Menu> ObtenerMenus(List<Menu> menus) {
+        List<Menu> lista = new ArrayList<>();
+        for (Menu menu : menus) {
+            if (menu.getIdMenuPadre()== 0) {
+                Menu menuNuevo = new Menu();
+                menuNuevo.setIdMenu(menu.getIdMenu());
+                menuNuevo.setIdMenuPadre(menu.getIdMenuPadre());
+                menuNuevo.setNombre(menu.getNombre());
+                menuNuevo.setFormulario(menu.getFormulario());
+                menuNuevo.setIcono(menu.getIcono());
+                menuNuevo.setSubMenus(ObtenerSubMenus(menus, menu.getIdMenu()));
+                lista.add(menuNuevo);
             }
         }
         return lista;
     }
 
-    public List<Object[]> ObtenerMenus(int idUsuario) {
-        List<Object[]> lista;
+    public List<Menu> ObtenerMenusPorUsuario(int idUsuario) {
+        List<Menu> lista;
         try {
             menuDAO = new MenuDAO();
             menuDAO.AbrirSesion();
-            lista = ObtenerMenus(menuDAO.ObtenerMenus(idUsuario));
+            lista = ObtenerMenus(menuDAO.ObtenerMenusPorUsuario(idUsuario));
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            menuDAO.CerrarSesion();
+        }
+        return lista;
+    }
+    
+    public List<Menu> ObtenerMenusPorPerfil(int idPerfil) {
+        List<Menu> lista;
+        try {
+            menuDAO = new MenuDAO();
+            menuDAO.AbrirSesion();
+            lista = ObtenerMenus(menuDAO.ObtenerMenusPorPerfil(idPerfil));
         } catch (Exception e) {
             throw e;
         } finally {
