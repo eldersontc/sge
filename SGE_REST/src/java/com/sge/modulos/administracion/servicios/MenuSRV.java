@@ -64,4 +64,25 @@ public class MenuSRV {
         }
         return new Gson().toJson(resultado);
     }
+    
+    @POST
+    @Path("ActualizarPermisos")
+    @Consumes("application/json")
+    @Produces("application/json")
+    public String ActualizarPermisos(String json) {
+        List<String> resultado = new ArrayList<>();
+        String[] arrayJson = new Gson().fromJson(json, String[].class);
+        Menu[] menus = new Gson().fromJson(arrayJson[0], Menu[].class);
+        int idPerfil = new Gson().fromJson(arrayJson[1], int.class);
+        try {
+            MenuDTO menuDTO = new MenuDTO();
+            menuDTO.ActualizarPermisos(menus, idPerfil);
+            resultado.add(new Gson().toJson(true));
+        } catch (Exception e) {
+            resultado.clear();
+            resultado.add(new Gson().toJson(false));
+            resultado.add(new Gson().toJson(e));
+        }
+        return new Gson().toJson(resultado);
+    }
 }

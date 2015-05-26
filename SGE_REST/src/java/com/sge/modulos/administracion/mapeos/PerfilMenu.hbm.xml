@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.sge.modulos.administracion.entidades.PerfilMenu" table="PerfilMenu" schema="Administracion">
+        <id name="idPerfilMenu" column="idPerfilMenu">
+            <generator class="sequence">
+                <param name="sequence">Administracion.perfilmenu_idperfilmenu_seq</param>
+            </generator>
+        </id>
+        <property name="idPerfil" column="idPerfil"/>
+        <property name="idMenu" column="idMenu"/>
+        <property name="filtro" column="filtro"/>
+    </class>
+</hibernate-mapping>

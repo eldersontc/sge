@@ -13,5 +13,7 @@
         <property name="nombre" column="nombre"/>
         <property name="formulario" column="formulario"/>
         <property name="icono" column="icono"/>
+        <property name="filtro" column="filtro"/>
+        <property name="check" column="check"/>
     </class>
 </hibernate-mapping>

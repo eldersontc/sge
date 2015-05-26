@@ -43,6 +43,7 @@ public class BaseDAO {
         recursos.add("com/sge/modulos/administracion/mapeos/Provincia.hbm.xml");
         recursos.add("com/sge/modulos/administracion/mapeos/Distrito.hbm.xml");
         recursos.add("com/sge/modulos/administracion/mapeos/Menu.hbm.xml");
+        recursos.add("com/sge/modulos/administracion/mapeos/PerfilMenu.hbm.xml");
         // COMPRAS
         recursos.add("com/sge/modulos/compras/mapeos/Proveedor.hbm.xml");
         // INVENTARIOS

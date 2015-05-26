@@ -14,7 +14,12 @@ public class Menu {
     private String nombre;
     private String formulario;
     private String icono;
+    private String filtro;
+    private boolean check;
+    private boolean nuevoCheck;
     private List<Menu> subMenus;
+    private boolean agregar;
+    private boolean eliminar;
 
     public Menu() {
         subMenus = new ArrayList<>();
@@ -60,11 +65,51 @@ public class Menu {
         this.icono = icono;
     }
 
+    public String getFiltro() {
+        return filtro;
+    }
+
+    public void setFiltro(String filtro) {
+        this.filtro = filtro;
+    }
+    
+    public boolean isCheck() {
+        return check;
+    }
+
+    public void setCheck(boolean check) {
+        this.check = check;
+    }
+
+    public boolean isNuevoCheck() {
+        return nuevoCheck;
+    }
+
+    public void setNuevoCheck(boolean nuevoCheck) {
+        this.nuevoCheck = nuevoCheck;
+    }
+    
     public List<Menu> getSubMenus() {
         return subMenus;
     }
 
     public void setSubMenus(List<Menu> subMenus) {
         this.subMenus = subMenus;
+    }
+    
+    public boolean isAgregar() {
+        return agregar;
+    }
+
+    public void setAgregar(boolean agregar) {
+        this.agregar = agregar;
+    }
+
+    public boolean isEliminar() {
+        return eliminar;
+    }
+
+    public void setEliminar(boolean eliminar) {
+        this.eliminar = eliminar;
     }
 }
