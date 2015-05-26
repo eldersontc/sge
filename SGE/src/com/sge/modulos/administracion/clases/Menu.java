@@ -76,4 +76,9 @@ public class Menu {
     public void setSubMenus(List<Menu> subMenus) {
         this.subMenus = subMenus;
     }
+    
+    @Override
+    public String toString(){
+        return nombre;
+    }
 }

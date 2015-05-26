@@ -150,8 +150,8 @@ public class perMenu extends frameBase<Menu> {
         lblPerfil = new javax.swing.JLabel();
         btnVer = new javax.swing.JButton();
         cboPerfiles = new javax.swing.JComboBox();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        treeMenus = new javax.swing.JTree();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        treeMenus = new com.sge.base.controles.JCheckBoxTree();
 
         setClosable(true);
 
@@ -193,30 +193,26 @@ public class perMenu extends frameBase<Menu> {
             }
         });
 
-        treeMenus.setEditable(true);
-        treeMenus.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                treeMenusMouseClicked(evt);
-            }
-        });
-        jScrollPane1.setViewportView(treeMenus);
+        jScrollPane2.setViewportView(treeMenus);
 
         javax.swing.GroupLayout frameLayout = new javax.swing.GroupLayout(frame);
         frame.setLayout(frameLayout);
         frameLayout.setHorizontalGroup(
             frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(pnlTitulo1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, frameLayout.createSequentialGroup()
+            .addGroup(frameLayout.createSequentialGroup()
                 .addGap(26, 26, 26)
-                .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane1)
+                .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(frameLayout.createSequentialGroup()
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 507, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(frameLayout.createSequentialGroup()
                         .addComponent(lblPerfil)
                         .addGap(36, 36, 36)
                         .addComponent(cboPerfiles, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnVer, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(262, 262, 262))
+                        .addComponent(btnVer, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(262, 262, 262))))
         );
         frameLayout.setVerticalGroup(
             frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -229,8 +225,8 @@ public class perMenu extends frameBase<Menu> {
                         .addComponent(cboPerfiles, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(btnVer, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(44, Short.MAX_VALUE))
+                .addComponent(jScrollPane2)
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -246,57 +242,20 @@ public class perMenu extends frameBase<Menu> {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void checkChange(javax.swing.event.ChangeEvent evt) {                                              
-        // TODO add your handling code here:
-        JCheckBox check = (JCheckBox)evt.getSource();
-        if(check.isSelected()){
-            
-        }
-    }     
     
     private void btnVerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerActionPerformed
         // TODO add your handling code here:
-        treeMenus.setCellRenderer(new TreeCellRenderer() {
-
-            @Override
-            public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
-                Object object = ((DefaultMutableTreeNode) value).getUserObject();
-                JCheckBox check = new JCheckBox();
-                if (object instanceof Menu) {
-                    Menu menu = (Menu) object;
-                    check = new JCheckBox(menu.getNombre(), menu.isCheck());
-                }
-                check.addChangeListener(new javax.swing.event.ChangeListener() {
-                    public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                        checkChange(evt);
-                    }
-                });
-                return check; //To change body of generated methods, choose Tools | Templates.
-            }
-        });
         new swObtenerMenusPorPerfil().execute();
     }//GEN-LAST:event_btnVerActionPerformed
-
-    private void treeMenusMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_treeMenusMouseClicked
-        // TODO add your handling code here:
-//        DefaultMutableTreeNode node = (DefaultMutableTreeNode) treeMenus.getLastSelectedPathComponent();
-//        if (node != null) {
-//            Menu menu = (Menu) node.getUserObject();
-//            menu.setNombre("xxx");
-//            treeMenus.updateUI();
-//            System.out.print("");
-//        }
-    }//GEN-LAST:event_treeMenusMouseClicked
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnVer;
     private javax.swing.JComboBox cboPerfiles;
     private javax.swing.JPanel frame;
-    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel lblPerfil;
     private javax.swing.JLabel lblTitulo1;
     private javax.swing.JPanel pnlTitulo1;
-    private javax.swing.JTree treeMenus;
+    private com.sge.base.controles.JCheckBoxTree treeMenus;
     // End of variables declaration//GEN-END:variables
 }
