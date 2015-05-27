@@ -84,6 +84,12 @@ public class cliInventarios {
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
     }
 
+    public String ObtenerProductosPorAlmacen(Object requestEntity) throws ClientErrorException {
+        WebTarget resource = client.target(BASE_URI).path("ProductoSRV");
+        resource = resource.path("ObtenerProductosPorAlmacen");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
+    }
+    
     public String ObtenerProducto(Object requestEntity) throws ClientErrorException {
         WebTarget resource = client.target(BASE_URI).path("ProductoSRV");
         resource = resource.path("ObtenerProducto");

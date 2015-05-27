@@ -2,7 +2,8 @@ package com.sge.modulos.inventarios.formularios;
 
 import com.google.gson.Gson;
 import com.sge.base.formularios.frameBase;
-import com.sge.modulos.inventarios.clases.ProductoUnidad;
+import com.sge.modulos.inventarios.clases.Producto;
+import com.sge.modulos.inventarios.clases.SeleccionProducto;
 import com.sge.modulos.inventarios.cliente.cliInventarios;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,25 +13,26 @@ import javax.swing.SwingWorker;
  *
  * @author elderson
  */
-public class lisProductoUnidad extends frameBase<ProductoUnidad> {
+public class selProducto extends frameBase<Producto> {
 
     /**
-     * Creates new form lisProductoUnidad
+     * Creates new form selProducto
      */
-    public lisProductoUnidad(int modo, String filtro) {
+    public selProducto(int idAlmacen) {
         initComponents();
-        Init(modo, filtro);
+        Init(idAlmacen);
+    }
+    
+    private int idAlmacen;
+    
+    private List<SeleccionProducto> seleccionados = new ArrayList<>();
+    
+    public void Init(int idAlmacen) {
+        this.idAlmacen = idAlmacen;
+        new swObtenerProductos().execute();
     }
 
-    private int modo;
-
-    private String filtro;
-
-    private ProductoUnidad seleccionado;
-
-    private List<ProductoUnidad> seleccionados = new ArrayList<>();
-
-    public class swObtenerUnidades extends SwingWorker {
+    public class swObtenerProductos extends SwingWorker {
 
         @Override
         protected Object doInBackground() {
@@ -38,7 +40,7 @@ public class lisProductoUnidad extends frameBase<ProductoUnidad> {
             cliInventarios cliente = new cliInventarios();
             String json = "";
             try {
-                json = cliente.ObtenerProductoUnidades(new Gson().toJson(filtro));
+                json = cliente.ObtenerProductosPorAlmacen(new Gson().toJson(idAlmacen));
             } catch (Exception e) {
                 OcultarCargando(frame);
                 cancel(false);
@@ -54,14 +56,13 @@ public class lisProductoUnidad extends frameBase<ProductoUnidad> {
             try {
                 String json = get().toString();
                 String[] resultado = new Gson().fromJson(json, String[].class);
-
                 if (resultado[0].equals("true")) {
-                    EliminarTodasFilas(tbUnidades);
-                    ProductoUnidad[] unidades = new Gson().fromJson(resultado[1].toString(), ProductoUnidad[].class);
-                    for (ProductoUnidad unidad : unidades) {
-                        AgregarFila(tbUnidades, new Object[]{false, unidad.getIdProductoUnidad(), unidad.getIdUnidad(), unidad.getAbreviacionUnidad(), unidad.getFactor()});
+                    EliminarTodasFilas(tbProductos);
+                    SeleccionProducto[] productos = new Gson().fromJson(resultado[1], SeleccionProducto[].class);
+                    for (SeleccionProducto producto : productos) {
+                        AgregarFila(tbProductos, new Object[]{false, producto, producto.getCodigoProducto(), producto.getDescripcionProducto(), producto.getCostoUltimaCompra(), producto.getCostoPromedio(), producto.getCostoReferencia(), producto.getAbreviacionUnidadBase(), producto.getStock()});
                     }
-                    AgregarOrdenamiento(tbUnidades);
+                    AgregarOrdenamiento(tbProductos);
                 }
                 OcultarCargando(frame);
             } catch (Exception e) {
@@ -71,23 +72,10 @@ public class lisProductoUnidad extends frameBase<ProductoUnidad> {
         }
     }
 
-    public void Init(int modo, String filtro) {
-        this.modo = modo;
-        this.filtro = filtro;
-        if(this.modo == 1){
-            OcultarColumna(tbUnidades, 0);
-        }
-        new swObtenerUnidades().execute();
-    }
-
-    public List<ProductoUnidad> getSeleccionados() {
+    public List<SeleccionProducto> getSeleccionados(){
         return seleccionados;
     }
-
-    public ProductoUnidad getSeleccionado() {
-        return seleccionado;
-    }
-
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -99,7 +87,7 @@ public class lisProductoUnidad extends frameBase<ProductoUnidad> {
 
         frame = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tbUnidades = new javax.swing.JTable();
+        tbProductos = new javax.swing.JTable();
         pnlTitulo = new javax.swing.JPanel();
         lblTitulo = new javax.swing.JLabel();
         btnSeleccionar = new javax.swing.JButton();
@@ -112,19 +100,19 @@ public class lisProductoUnidad extends frameBase<ProductoUnidad> {
         frame.setBackground(java.awt.Color.white);
         frame.setBorder(null);
 
-        tbUnidades.setModel(new javax.swing.table.DefaultTableModel(
+        tbProductos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "CHECK", "ID", "IDUNIDAD", "ABREVIACION", "FACTOR"
+                "CHECK", "TAG", "CODIGO", "DESCRIPCION", "PRECIO", "PRECIO", "PRECIO", "UNIDAD BASE", "STOCK FISICO"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Boolean.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.String.class, java.lang.Integer.class
+                java.lang.Boolean.class, java.lang.Object.class, java.lang.String.class, java.lang.String.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.String.class, java.lang.Double.class
             };
             boolean[] canEdit = new boolean [] {
-                true, false, true, true, true
+                true, false, true, true, true, true, true, true, true
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -135,17 +123,20 @@ public class lisProductoUnidad extends frameBase<ProductoUnidad> {
                 return canEdit [columnIndex];
             }
         });
-        tbUnidades.setRowHeight(25);
-        tbUnidades.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        jScrollPane1.setViewportView(tbUnidades);
-        if (tbUnidades.getColumnModel().getColumnCount() > 0) {
-            tbUnidades.getColumnModel().getColumn(1).setMinWidth(0);
-            tbUnidades.getColumnModel().getColumn(1).setPreferredWidth(0);
-            tbUnidades.getColumnModel().getColumn(1).setMaxWidth(0);
-            tbUnidades.getColumnModel().getColumn(2).setMinWidth(0);
-            tbUnidades.getColumnModel().getColumn(2).setPreferredWidth(0);
-            tbUnidades.getColumnModel().getColumn(2).setMaxWidth(0);
-            tbUnidades.getColumnModel().getColumn(3).setPreferredWidth(200);
+        tbProductos.setRowHeight(25);
+        tbProductos.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jScrollPane1.setViewportView(tbProductos);
+        if (tbProductos.getColumnModel().getColumnCount() > 0) {
+            tbProductos.getColumnModel().getColumn(1).setMinWidth(0);
+            tbProductos.getColumnModel().getColumn(1).setPreferredWidth(0);
+            tbProductos.getColumnModel().getColumn(1).setMaxWidth(0);
+            tbProductos.getColumnModel().getColumn(3).setPreferredWidth(400);
+            tbProductos.getColumnModel().getColumn(5).setMinWidth(0);
+            tbProductos.getColumnModel().getColumn(5).setPreferredWidth(0);
+            tbProductos.getColumnModel().getColumn(5).setMaxWidth(0);
+            tbProductos.getColumnModel().getColumn(6).setMinWidth(0);
+            tbProductos.getColumnModel().getColumn(6).setPreferredWidth(0);
+            tbProductos.getColumnModel().getColumn(6).setMaxWidth(0);
         }
 
         pnlTitulo.setBackground(new java.awt.Color(67, 100, 130));
@@ -154,7 +145,7 @@ public class lisProductoUnidad extends frameBase<ProductoUnidad> {
         lblTitulo.setFont(new java.awt.Font("Ubuntu", 1, 18)); // NOI18N
         lblTitulo.setForeground(java.awt.Color.white);
         lblTitulo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sge/base/imagenes/list-view-16.png"))); // NOI18N
-        lblTitulo.setText("LISTADO DE UNIDADES");
+        lblTitulo.setText("SELECCIÓN DE PRODUCTOS");
 
         javax.swing.GroupLayout pnlTituloLayout = new javax.swing.GroupLayout(pnlTitulo);
         pnlTitulo.setLayout(pnlTituloLayout);
@@ -163,11 +154,14 @@ public class lisProductoUnidad extends frameBase<ProductoUnidad> {
             .addGroup(pnlTituloLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lblTitulo)
-                .addContainerGap(163, Short.MAX_VALUE))
+                .addContainerGap(742, Short.MAX_VALUE))
         );
         pnlTituloLayout.setVerticalGroup(
             pnlTituloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(lblTitulo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 33, Short.MAX_VALUE)
+            .addGroup(pnlTituloLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblTitulo)
+                .addContainerGap(17, Short.MAX_VALUE))
         );
 
         btnSeleccionar.setText("SELECCIONAR");
@@ -201,34 +195,36 @@ public class lisProductoUnidad extends frameBase<ProductoUnidad> {
             .addGroup(frameLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 375, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, frameLayout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(btnSeleccionar, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(frameLayout.createSequentialGroup()
                         .addComponent(lblFiltro)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnRefrescar, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(frameLayout.createSequentialGroup()
+                        .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(frameLayout.createSequentialGroup()
+                                .addGap(869, 869, 869)
+                                .addComponent(btnSeleccionar, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
         frameLayout.setVerticalGroup(
             frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, frameLayout.createSequentialGroup()
                 .addComponent(pnlTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(lblFiltro)
-                        .addComponent(txtFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(txtFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(lblFiltro))
                     .addComponent(btnRefrescar, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(5, 5, 5)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 366, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
                 .addComponent(btnSeleccionar)
-                .addContainerGap(23, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -247,45 +243,25 @@ public class lisProductoUnidad extends frameBase<ProductoUnidad> {
 
     private void btnSeleccionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeleccionarActionPerformed
         // TODO add your handling code here:
-        switch (this.modo) {
-            case 1:
-                if (FilaActiva(tbUnidades)) {
-                    ProductoUnidad productoUnidad = new ProductoUnidad();
-                    productoUnidad.setIdProductoUnidad(ObtenerValorCelda(tbUnidades, 1));
-                    productoUnidad.setIdUnidad(ObtenerValorCelda(tbUnidades, 2));
-                    productoUnidad.setAbreviacionUnidad(ObtenerValorCelda(tbUnidades, 3));
-                    productoUnidad.setFactor(ObtenerValorCelda(tbUnidades, 4));
-                    seleccionado = productoUnidad;
-                    Cerrar();
-                }
-                break;
-            case 2:
-                for (int i = 0; i < tbUnidades.getRowCount(); i++) {
-                    boolean check = ObtenerValorCelda(tbUnidades, i, 0);
-                    if (check) {
-                        ProductoUnidad productoUnidad = new ProductoUnidad();
-                        productoUnidad.setIdProductoUnidad(ObtenerValorCelda(tbUnidades, i, 1));
-                        productoUnidad.setIdUnidad(ObtenerValorCelda(tbUnidades, i, 2));
-                        productoUnidad.setAbreviacionUnidad(ObtenerValorCelda(tbUnidades, i, 3));
-                        productoUnidad.setFactor(ObtenerValorCelda(tbUnidades, i, 4));
-                        seleccionados.add(productoUnidad);
-                    }
-                }
-                Cerrar();
-                break;
+        for (int i = 0; i < tbProductos.getRowCount(); i++) {
+            boolean check = ObtenerValorCelda(tbProductos, i, 0);
+            if (check) {
+                SeleccionProducto producto = ObtenerValorCelda(tbProductos, i, 1);
+                seleccionados.add(producto);
+            }
         }
+        Cerrar();
     }//GEN-LAST:event_btnSeleccionarActionPerformed
 
     private void txtFiltroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFiltroActionPerformed
         // TODO add your handling code here:
-        Filtrar(tbUnidades, txtFiltro.getText());
+        Filtrar(tbProductos, txtFiltro.getText());
     }//GEN-LAST:event_txtFiltroActionPerformed
 
     private void btnRefrescarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefrescarActionPerformed
         // TODO add your handling code here:
-        new swObtenerUnidades().execute();
+        new swObtenerProductos().execute();
     }//GEN-LAST:event_btnRefrescarActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnRefrescar;
@@ -295,7 +271,7 @@ public class lisProductoUnidad extends frameBase<ProductoUnidad> {
     private javax.swing.JLabel lblFiltro;
     private javax.swing.JLabel lblTitulo;
     private javax.swing.JPanel pnlTitulo;
-    private javax.swing.JTable tbUnidades;
+    private javax.swing.JTable tbProductos;
     private javax.swing.JTextField txtFiltro;
     // End of variables declaration//GEN-END:variables
 }

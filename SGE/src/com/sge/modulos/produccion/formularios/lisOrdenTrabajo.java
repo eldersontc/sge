@@ -2,10 +2,15 @@ package com.sge.modulos.produccion.formularios;
 
 import com.google.gson.Gson;
 import com.sge.base.formularios.frameBase;
+import com.sge.modulos.inventarios.clases.ItemSalidaInventario;
+import com.sge.modulos.inventarios.clases.SalidaInventario;
+import com.sge.modulos.inventarios.formularios.regSalidaInventario;
+import com.sge.modulos.produccion.clases.ItemOrdenTrabajo;
 import com.sge.modulos.produccion.clases.OrdenTrabajo;
 import com.sge.modulos.produccion.cliente.cliProduccion;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -136,6 +141,66 @@ public class lisOrdenTrabajo extends frameBase<OrdenTrabajo> {
         }
     }
 
+    public class swGenerarSalidaInventario extends SwingWorker<Object, Object> {
+
+        @Override
+        protected Object doInBackground() {
+            VerCargando(frame);
+            cliProduccion cliProduccion = new cliProduccion();
+            try {
+                int idOrdenTrabajo = ObtenerValorCelda(tbOrdenesTrabajo, 1);
+                String json = cliProduccion.GenerarSalidaInventario(new Gson().toJson(new int[]{idOrdenTrabajo, getUsuario().getIdUsuario()}));
+                String[] resultado = new Gson().fromJson(json, String[].class);
+
+                if (resultado[0].equals("true")) {
+                    Date fechaServidor = new Gson().fromJson(resultado[1], Date.class);
+                    OrdenTrabajo ordenTrabajo = new Gson().fromJson(resultado[2], OrdenTrabajo.class);
+                    SalidaInventario salidaInventario = null;
+                    if (resultado[3].isEmpty()) {
+                        salidaInventario = new SalidaInventario();
+                    } else {
+                        salidaInventario = new Gson().fromJson(resultado[3], SalidaInventario.class);
+                    }
+                    
+                    salidaInventario.setIdCliente(ordenTrabajo.getIdCliente());
+                    salidaInventario.setRazonSocialCliente(ordenTrabajo.getRazonSocialCliente());
+                    salidaInventario.setFechaCreacion(fechaServidor);
+                    
+                    for (ItemOrdenTrabajo itemOrdenTrabajo : ordenTrabajo.getItems()) {
+                        ItemSalidaInventario itemSalidaInventario = new ItemSalidaInventario();
+                        itemSalidaInventario.setIdProducto(itemOrdenTrabajo.getIdMaterial());
+                        itemSalidaInventario.setDescripcionProducto(itemOrdenTrabajo.getNombreMaterial());
+                        itemSalidaInventario.setIdUnidad(itemOrdenTrabajo.getIdUnidadMaterial());
+                        itemSalidaInventario.setAbreviacionUnidad(itemOrdenTrabajo.getAbreviacionUnidadMaterial());
+                        itemSalidaInventario.setCantidad(itemOrdenTrabajo.getCantidadMaterial() + itemOrdenTrabajo.getCantidadDemasiaMaterial());
+                        itemSalidaInventario.setPrecio(itemOrdenTrabajo.getPrecioMaterial());
+                        salidaInventario.getItems().add(itemSalidaInventario);
+                    }
+
+                    regSalidaInventario regSalidaInventario = new regSalidaInventario(0);
+                    regSalidaInventario.setUsuario(getUsuario());
+                    regSalidaInventario.setEntidad(salidaInventario);
+                    regSalidaInventario.AsignarControles();
+                    regSalidaInventario.CalcularTotales();
+                    getParent().add(regSalidaInventario);
+                    regSalidaInventario.setVisible(true);
+                }
+            } catch (Exception e) {
+                OcultarCargando(frame);
+                cancel(false);
+                ControlarExcepcion(e);
+            } finally {
+                cliProduccion.close();
+            }
+            return null;
+        }
+
+        @Override
+        protected void done() {
+            OcultarCargando(frame);
+        }
+    }
+    
     public void Init(int modo, String filtro) {
         this.modo = modo;
         this.filtro = filtro;
@@ -194,6 +259,8 @@ public class lisOrdenTrabajo extends frameBase<OrdenTrabajo> {
         lblFiltro = new javax.swing.JLabel();
         txtFiltro = new javax.swing.JTextField();
         btnRefrescar = new javax.swing.JButton();
+        btnGenerarSalidaInventario = new javax.swing.JButton();
+        btnGenerarSalidaCaja = new javax.swing.JButton();
 
         setClosable(true);
 
@@ -280,6 +347,22 @@ public class lisOrdenTrabajo extends frameBase<OrdenTrabajo> {
             }
         });
 
+        btnGenerarSalidaInventario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sge/base/imagenes/inventarios.png"))); // NOI18N
+        btnGenerarSalidaInventario.setToolTipText("REFRESCAR");
+        btnGenerarSalidaInventario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGenerarSalidaInventarioActionPerformed(evt);
+            }
+        });
+
+        btnGenerarSalidaCaja.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sge/base/imagenes/salida-caja.png"))); // NOI18N
+        btnGenerarSalidaCaja.setToolTipText("REFRESCAR");
+        btnGenerarSalidaCaja.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGenerarSalidaCajaActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout frameLayout = new javax.swing.GroupLayout(frame);
         frame.setLayout(frameLayout);
         frameLayout.setHorizontalGroup(
@@ -298,6 +381,10 @@ public class lisOrdenTrabajo extends frameBase<OrdenTrabajo> {
                         .addComponent(txtFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnRefrescar, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnGenerarSalidaInventario, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnGenerarSalidaCaja, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -310,9 +397,11 @@ public class lisOrdenTrabajo extends frameBase<OrdenTrabajo> {
                     .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(lblFiltro)
                         .addComponent(txtFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(btnRefrescar, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnRefrescar, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnGenerarSalidaInventario, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnGenerarSalidaCaja, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 388, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 391, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnSeleccionar)
                 .addGap(9, 9, 9))
@@ -375,8 +464,21 @@ public class lisOrdenTrabajo extends frameBase<OrdenTrabajo> {
         new swObtenerOrdenesTrabajo().execute();
     }//GEN-LAST:event_btnRefrescarActionPerformed
 
+    private void btnGenerarSalidaInventarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarSalidaInventarioActionPerformed
+        // TODO add your handling code here:
+        if (FilaActiva(tbOrdenesTrabajo)) {
+            new swGenerarSalidaInventario().execute();
+        }
+    }//GEN-LAST:event_btnGenerarSalidaInventarioActionPerformed
+
+    private void btnGenerarSalidaCajaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarSalidaCajaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnGenerarSalidaCajaActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnGenerarSalidaCaja;
+    private javax.swing.JButton btnGenerarSalidaInventario;
     private javax.swing.JButton btnRefrescar;
     private javax.swing.JButton btnSeleccionar;
     private javax.swing.JPanel frame;

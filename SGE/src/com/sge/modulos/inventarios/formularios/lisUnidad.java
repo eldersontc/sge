@@ -1,7 +1,6 @@
 package com.sge.modulos.inventarios.formularios;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.sge.base.formularios.frameBase;
 import com.sge.modulos.inventarios.clases.Unidad;
 import com.sge.modulos.inventarios.cliente.cliInventarios;
@@ -24,7 +23,7 @@ public class lisUnidad extends frameBase<Unidad> {
      */
     public lisUnidad(int modo) {
         initComponents();
-        Init(modo, filtro);
+        Init(modo, "");
     }
     
     public lisUnidad(int modo, String filtro) {

@@ -41,7 +41,7 @@ public class regListaPrecioProducto extends frameBase<ListaPrecioProducto> {
     public void Init(String operacion, int id) {
         lblTitulo.setText(operacion + lblTitulo.getText());
         this.id = id;
-        if(this.id == 0){
+        if (this.id == 0) {
             OcultarControl(btnNuevoItem);
             OcultarControl(btnNuevaUnidad);
             OcultarControl(btnNuevaEscala);
@@ -769,7 +769,7 @@ public class regListaPrecioProducto extends frameBase<ListaPrecioProducto> {
         // TODO add your handling code here:
         if (FilaActiva(tbItems)) {
             String filtro = "WHERE ProductoUnidad.idProducto = " + idProducto;
-            VerModal(new lisProductoUnidad(filtro), select_unid);
+            VerModal(new lisProductoUnidad(2, filtro), select_unid);
         }
     }//GEN-LAST:event_btnNuevaUnidadActionPerformed
 

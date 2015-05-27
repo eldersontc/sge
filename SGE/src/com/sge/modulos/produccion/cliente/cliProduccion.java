@@ -55,6 +55,18 @@ public class cliProduccion {
         resource = resource.path("EliminarOrdenTrabajo");
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
     }
+    
+    public String GenerarSalidaInventario(Object requestEntity) throws ClientErrorException {
+        WebTarget resource = client.target(BASE_URI).path("OrdenTrabajoSRV");
+        resource = resource.path("GenerarSalidaInventario");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
+    }
+    
+    public String GenerarSalidaCaja(Object requestEntity) throws ClientErrorException {
+        WebTarget resource = client.target(BASE_URI).path("OrdenTrabajoSRV");
+        resource = resource.path("GenerarSalidaCaja");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
+    }
 
     ////////////////////////////////////////////////////////////////////////////
     //////////////////////////// ORDEN PRODUCCION //////////////////////////////
