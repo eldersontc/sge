@@ -34,12 +34,12 @@ public class ProductoDTO {
         return lista;
     }
 
-    public List<SeleccionProducto> ObtenerProductosPorAlmacen(int idAlmacen) {
+    public List<SeleccionProducto> ObtenerProductosPorAlmacen(String filtro) {
         List<SeleccionProducto> lista;
         try {
             productoDAO = new ProductoDAO();
             productoDAO.AbrirSesion();
-            lista = productoDAO.ObtenerProductosPorAlmacen(idAlmacen);
+            lista = productoDAO.ObtenerProductosPorAlmacen(filtro);
         } catch (Exception e) {
             throw e;
         } finally {

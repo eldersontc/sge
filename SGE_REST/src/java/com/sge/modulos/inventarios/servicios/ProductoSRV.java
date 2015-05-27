@@ -54,9 +54,9 @@ public class ProductoSRV {
     public String ObtenerProductosPorAlmacen(String json) {
         List<String> resultado = new ArrayList<>();
         try {
-            int idAlmacen = new Gson().fromJson(json, int.class);
+            String filtro = new Gson().fromJson(json, String.class);
             ProductoDTO ProductoDTO = new ProductoDTO();
-            List<SeleccionProducto> lista = ProductoDTO.ObtenerProductosPorAlmacen(idAlmacen);
+            List<SeleccionProducto> lista = ProductoDTO.ObtenerProductosPorAlmacen(filtro);
             resultado.add(new Gson().toJson(true));
             resultado.add(new Gson().toJson(lista));
         } catch (Exception e) {
