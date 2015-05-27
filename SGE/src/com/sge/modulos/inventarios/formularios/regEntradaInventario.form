@@ -180,7 +180,7 @@
                       <Component id="btnAceptar" min="-2" max="-2" attributes="0"/>
                       <Component id="btnCancelar" alignment="0" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="21" max="32767" attributes="0"/>
+                  <EmptySpace max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -275,15 +275,14 @@
                     <Component class="javax.swing.JTable" name="tbItems">
                       <Properties>
                         <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                          <Table columnCount="11" rowCount="0">
+                          <Table columnCount="10" rowCount="0">
                             <Column editable="false" title="IDITEM" type="java.lang.Integer"/>
                             <Column editable="false" title="IDPRODUCTO" type="java.lang.Integer"/>
                             <Column editable="true" title="CODIGO" type="java.lang.String"/>
                             <Column editable="true" title="PRODUCTO" type="java.lang.String"/>
                             <Column editable="false" title="IDUNIDAD" type="java.lang.Integer"/>
                             <Column editable="false" title="FACTOR" type="java.lang.Integer"/>
-                            <Column editable="false" title="ARRAYUNIDAD" type="java.lang.Object"/>
-                            <Column editable="true" title="UNIDAD" type="java.lang.Object"/>
+                            <Column editable="true" title="UNIDAD" type="java.lang.String"/>
                             <Column editable="true" title="CANTIDAD" type="java.lang.Double"/>
                             <Column editable="true" title="PRECIO" type="java.lang.Double"/>
                             <Column editable="false" title="TOTAL" type="java.lang.Double"/>
@@ -321,11 +320,6 @@
                               <Editor/>
                               <Renderer/>
                             </Column>
-                            <Column maxWidth="0" minWidth="0" prefWidth="0" resizable="true">
-                              <Title/>
-                              <Editor/>
-                              <Renderer/>
-                            </Column>
                             <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
                               <Title/>
                               <Editor/>
@@ -348,13 +342,11 @@
                             </Column>
                           </TableColumnModel>
                         </Property>
+                        <Property name="rowHeight" type="int" value="25"/>
                         <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
                           <TableHeader reorderingAllowed="true" resizingAllowed="true"/>
                         </Property>
                       </Properties>
-                      <AuxValues>
-                        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JTable(){&#xa;    public void changeSelection(final int row, final int column, boolean toggle, boolean extend)&#xa;    {&#xa;        super.changeSelection(row, column, toggle, extend);&#xa;        DefaultCellEditor cell = (DefaultCellEditor)tbItems.getCellEditor(row, column);&#xa;        if(cell.getComponent() instanceof JTextField){&#xa;            tbItems.editCellAt(row, column);&#xa;            tbItems.transferFocus();&#xa;            ((JTextField)cell.getComponent()).selectAll();&#xa;        }&#xa;    }&#xa;}&#xa;"/>
-                      </AuxValues>
                     </Component>
                   </SubComponents>
                 </Container>

@@ -18,16 +18,19 @@ public class selProducto extends frameBase<Producto> {
     /**
      * Creates new form selProducto
      */
-    public selProducto(int idAlmacen) {
+    public selProducto(int modo, int idAlmacen) {
         initComponents();
-        Init(idAlmacen);
+        Init(modo, idAlmacen);
     }
-    
+
+    private int modo;
+
     private int idAlmacen;
-    
+
     private List<SeleccionProducto> seleccionados = new ArrayList<>();
-    
-    public void Init(int idAlmacen) {
+
+    public void Init(int modo, int idAlmacen) {
+        this.modo = modo;
         this.idAlmacen = idAlmacen;
         new swObtenerProductos().execute();
     }
@@ -40,7 +43,16 @@ public class selProducto extends frameBase<Producto> {
             cliInventarios cliente = new cliInventarios();
             String json = "";
             try {
-                json = cliente.ObtenerProductosPorAlmacen(new Gson().toJson(idAlmacen));
+                String filtro = "";
+                switch (modo) {
+                    case 1:
+                        filtro = "WHERE ProductoAlmacen.idAlmacen = " + idAlmacen;
+                        break;
+                    case 2:
+                        filtro = "WHERE ProductoAlmacen.stockFisico > 0 AND ProductoAlmacen.idAlmacen = " + idAlmacen;
+                        break;
+                }
+                json = cliente.ObtenerProductosPorAlmacen(new Gson().toJson(filtro));
             } catch (Exception e) {
                 OcultarCargando(frame);
                 cancel(false);
@@ -72,10 +84,10 @@ public class selProducto extends frameBase<Producto> {
         }
     }
 
-    public List<SeleccionProducto> getSeleccionados(){
+    public List<SeleccionProducto> getSeleccionados() {
         return seleccionados;
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -94,6 +106,7 @@ public class selProducto extends frameBase<Producto> {
         lblFiltro = new javax.swing.JLabel();
         txtFiltro = new javax.swing.JTextField();
         btnRefrescar = new javax.swing.JButton();
+        cboCosto = new javax.swing.JComboBox();
 
         setClosable(true);
 
@@ -131,6 +144,7 @@ public class selProducto extends frameBase<Producto> {
             tbProductos.getColumnModel().getColumn(1).setPreferredWidth(0);
             tbProductos.getColumnModel().getColumn(1).setMaxWidth(0);
             tbProductos.getColumnModel().getColumn(3).setPreferredWidth(400);
+            tbProductos.getColumnModel().getColumn(4).setPreferredWidth(40);
             tbProductos.getColumnModel().getColumn(5).setMinWidth(0);
             tbProductos.getColumnModel().getColumn(5).setPreferredWidth(0);
             tbProductos.getColumnModel().getColumn(5).setMaxWidth(0);
@@ -187,6 +201,13 @@ public class selProducto extends frameBase<Producto> {
             }
         });
 
+        cboCosto.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "COSTO ULTIMA COMPRA", "COSTO PROMEDIO", "COSTO REFERENCIA" }));
+        cboCosto.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cboCostoItemStateChanged(evt);
+            }
+        });
+
         javax.swing.GroupLayout frameLayout = new javax.swing.GroupLayout(frame);
         frame.setLayout(frameLayout);
         frameLayout.setHorizontalGroup(
@@ -201,6 +222,8 @@ public class selProducto extends frameBase<Producto> {
                         .addComponent(txtFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnRefrescar, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(cboCosto, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(frameLayout.createSequentialGroup()
                         .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
@@ -219,10 +242,11 @@ public class selProducto extends frameBase<Producto> {
                     .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(txtFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(lblFiltro))
-                    .addComponent(btnRefrescar, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(5, 5, 5)
+                    .addComponent(btnRefrescar, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cboCosto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 366, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
                 .addComponent(btnSeleccionar)
                 .addContainerGap())
         );
@@ -247,6 +271,17 @@ public class selProducto extends frameBase<Producto> {
             boolean check = ObtenerValorCelda(tbProductos, i, 0);
             if (check) {
                 SeleccionProducto producto = ObtenerValorCelda(tbProductos, i, 1);
+                switch (cboCosto.getSelectedItem().toString()) {
+                    case "COSTO ULTIMA COMPRA":
+                        producto.setPrecio(ObtenerValorCelda(tbProductos, 4));
+                        break;
+                    case "COSTO PROMEDIO":
+                        producto.setPrecio(ObtenerValorCelda(tbProductos, 5));
+                        break;
+                    case "COSTO REFERENCIA":
+                        producto.setPrecio(ObtenerValorCelda(tbProductos, 6));
+                        break;
+                }
                 seleccionados.add(producto);
             }
         }
@@ -263,9 +298,28 @@ public class selProducto extends frameBase<Producto> {
         new swObtenerProductos().execute();
     }//GEN-LAST:event_btnRefrescarActionPerformed
 
+    private void cboCostoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cboCostoItemStateChanged
+        // TODO add your handling code here:
+        switch (cboCosto.getSelectedItem().toString()) {
+            case "COSTO ULTIMA COMPRA":
+                MostrarColumna(tbProductos, 4, 80);
+                OcultarColumnas(tbProductos, new int[]{5, 6});
+                break;
+            case "COSTO PROMEDIO":
+                MostrarColumna(tbProductos, 5, 80);
+                OcultarColumnas(tbProductos, new int[]{4, 6});
+                break;
+            case "COSTO REFERENCIA":
+                MostrarColumna(tbProductos, 6, 80);
+                OcultarColumnas(tbProductos, new int[]{4, 5});
+                break;
+        }
+    }//GEN-LAST:event_cboCostoItemStateChanged
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnRefrescar;
     private javax.swing.JButton btnSeleccionar;
+    private javax.swing.JComboBox cboCosto;
     private javax.swing.JPanel frame;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblFiltro;

@@ -172,7 +172,7 @@ public class regSalidaInventario extends frameBase<SalidaInventario> {
                 case 7:
                     int cantidadMaxima7 = ObtenerValorCelda(tbItems, celda[0], 10);
                     double cantidad7 = ObtenerValorCelda(tbItems, celda[0], celda[1]);
-                    double factor7 = ObtenerValorCelda(tbItems, celda[0], 5);
+                    int factor7 = ObtenerValorCelda(tbItems, celda[0], 5);
                     if ((cantidad7 * factor7) > cantidadMaxima7) {
                         VerAdvertencia("STOCK INSUFICIENTE : " + cantidadMaxima7, frame);
                         double cantidadAnterior7 = ObtenerValorCelda(tbItems, celda[0], 11);
@@ -518,6 +518,7 @@ public class regSalidaInventario extends frameBase<SalidaInventario> {
                 return canEdit [columnIndex];
             }
         });
+        tbItems.setRowHeight(25);
         jScrollPane2.setViewportView(tbItems);
         if (tbItems.getColumnModel().getColumnCount() > 0) {
             tbItems.getColumnModel().getColumn(0).setMinWidth(0);
@@ -818,7 +819,7 @@ public class regSalidaInventario extends frameBase<SalidaInventario> {
     private void btnNuevoItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoItemActionPerformed
         // TODO add your handling code here:
         if (schAlmacen.getId() > 0) {
-            VerModal(new selProducto(schAlmacen.getId()), select_item);
+            VerModal(new selProducto(2, schAlmacen.getId()), select_item);
         }
     }//GEN-LAST:event_btnNuevoItemActionPerformed
 

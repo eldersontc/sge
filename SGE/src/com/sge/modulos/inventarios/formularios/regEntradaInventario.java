@@ -1,7 +1,6 @@
 package com.sge.modulos.inventarios.formularios;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.sge.base.controles.SearchListener;
 import com.sge.base.formularios.frameBase;
 import com.sge.modulos.administracion.clases.Empleado;
@@ -17,8 +16,8 @@ import com.sge.modulos.compras.formularios.lisProveedor;
 import com.sge.modulos.inventarios.clases.Almacen;
 import com.sge.modulos.inventarios.clases.EntradaInventario;
 import com.sge.modulos.inventarios.clases.ItemEntradaInventario;
-import com.sge.modulos.inventarios.clases.Producto;
 import com.sge.modulos.inventarios.clases.ProductoUnidad;
+import com.sge.modulos.inventarios.clases.SeleccionProducto;
 import com.sge.modulos.inventarios.cliente.cliInventarios;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
@@ -26,8 +25,6 @@ import java.util.Date;
 import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
-import javax.swing.DefaultCellEditor;
-import javax.swing.JTextField;
 import javax.swing.SwingWorker;
 
 /**
@@ -55,7 +52,6 @@ public class regEntradaInventario extends frameBase<EntradaInventario> {
         this.id = id;
         if (this.id == 0) {
             lblTitulo.setText("NUEVA " + lblTitulo.getText());
-            AgregarCombo(tbItems, 7);
             new swObtenerValoresDefinidos().execute();
         } else {
             lblTitulo.setText("VER " + lblTitulo.getText());
@@ -64,6 +60,27 @@ public class regEntradaInventario extends frameBase<EntradaInventario> {
         }
     }
 
+    Action sele_unid = new AbstractAction() {
+        @Override
+        public void actionPerformed(ActionEvent evt) {
+            ProductoUnidad seleccionado = ((lisProductoUnidad) evt.getSource()).getSeleccionado();
+            if (!(seleccionado == null)) {
+                AsignarValorCelda(tbItems, seleccionado.getIdProductoUnidad(), 4);
+                AsignarValorCelda(tbItems, seleccionado.getFactor(), 5);
+                AsignarValorCelda(tbItems, seleccionado.getAbreviacionUnidad(), 6);
+            }
+        }
+    };
+
+    Action clic_unid = new AbstractAction() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            int idProducto = ObtenerValorCelda(tbItems, 1);
+            String filtro = "WHERE ProductoUnidad.idProducto = " + idProducto;
+            VerModal(new lisProductoUnidad(1, filtro), sele_unid);
+        }
+    };
+    
     @Override
     public void AsignarControles() {
         schNumeracion.asingValues(getEntidad().getIdNumeracion(), getEntidad().getDescripcionNumeracion());
@@ -87,7 +104,6 @@ public class regEntradaInventario extends frameBase<EntradaInventario> {
                         item.getDescripcionProducto(),
                         item.getIdUnidad(),
                         item.getFactor(),
-                        null,
                         item.getAbreviacionUnidad(),
                         item.getCantidad(),
                         item.getPrecio(),
@@ -105,7 +121,7 @@ public class regEntradaInventario extends frameBase<EntradaInventario> {
     public void CalcularTotales() {
         double subTotal = 0.0;
         for (int i = 0; i < tbItems.getRowCount(); i++) {
-            double totalItem = ObtenerValorCelda(tbItems, i, 10);
+            double totalItem = ObtenerValorCelda(tbItems, i, 9);
             subTotal += totalItem;
         }
 
@@ -129,10 +145,10 @@ public class regEntradaInventario extends frameBase<EntradaInventario> {
             item.setDescripcionProducto(ObtenerValorCelda(tbItems, i, 3));
             item.setIdUnidad(ObtenerValorCelda(tbItems, i, 4));
             item.setFactor(ObtenerValorCelda(tbItems, i, 5));
-            item.setAbreviacionUnidad(ObtenerValorCelda(tbItems, i, 7).toString());
-            item.setCantidad(ObtenerValorCelda(tbItems, i, 8));
-            item.setPrecio(ObtenerValorCelda(tbItems, i, 9));
-            item.setTotal(ObtenerValorCelda(tbItems, i, 10));
+            item.setAbreviacionUnidad(ObtenerValorCelda(tbItems, i, 6));
+            item.setCantidad(ObtenerValorCelda(tbItems, i, 7));
+            item.setPrecio(ObtenerValorCelda(tbItems, i, 8));
+            item.setTotal(ObtenerValorCelda(tbItems, i, 9));
             items.add(item);
         }
         return items;
@@ -144,20 +160,15 @@ public class regEntradaInventario extends frameBase<EntradaInventario> {
             int[] celda = (int[]) e.getSource();
             switch (celda[1]) {
                 case 7:
-                    ProductoUnidad productoUnidad = ObtenerValorCelda(tbItems, celda[0], celda[1]);
-                    AsignarValorCelda(tbItems, productoUnidad.getIdUnidad(), celda[0], 4);
-                    AsignarValorCelda(tbItems, productoUnidad.getFactor(), celda[0], 5);
-                    break;
-                case 8:
-                    double cantidad8 = ObtenerValorCelda(tbItems, celda[0], celda[1]);
-                    double precio8 = ObtenerValorCelda(tbItems, celda[0], 9);
-                    AsignarValorCelda(tbItems, cantidad8 * precio8, celda[0], 10);
+                    double cantidad7 = ObtenerValorCelda(tbItems, celda[0], celda[1]);
+                    double precio7 = ObtenerValorCelda(tbItems, celda[0], 8);
+                    AsignarValorCelda(tbItems, cantidad7 * precio7, celda[0], 9);
                     CalcularTotales();
                     break;
-                case 9:
-                    double cantidad9 = ObtenerValorCelda(tbItems, celda[0], 8);
-                    double precio9 = ObtenerValorCelda(tbItems, celda[0], celda[1]);
-                    AsignarValorCelda(tbItems, cantidad9 * precio9, celda[0], 10);
+                case 8:
+                    double cantidad8 = ObtenerValorCelda(tbItems, celda[0], 7);
+                    double precio8 = ObtenerValorCelda(tbItems, celda[0], celda[1]);
+                    AsignarValorCelda(tbItems, cantidad8 * precio8, celda[0], 9);
                     CalcularTotales();
                     break;
             }
@@ -167,35 +178,25 @@ public class regEntradaInventario extends frameBase<EntradaInventario> {
     Action select_item = new AbstractAction() {
         @Override
         public void actionPerformed(ActionEvent evt) {
-            List<Producto> seleccionados = ((lisProducto) evt.getSource()).getSeleccionados();
+            List<SeleccionProducto> seleccionados = ((selProducto) evt.getSource()).getSeleccionados();
             if (!seleccionados.isEmpty()) {
-                cliInventarios cliente = new cliInventarios();
-                try {
-                    String json = cliente.ObtenerUnidadesPorProductos(new Gson().toJson(seleccionados));
-                    String[] resultado = new Gson().fromJson(json, String[].class);
-                    Producto[] productos = new Gson().fromJson(resultado[1], Producto[].class);
-                    for (Producto producto : productos) {
-                        AgregarFila(tbItems,
-                                new Object[]{
-                                    0,
-                                    producto.getIdProducto(),
-                                    producto.getCodigo(),
-                                    producto.getDescripcion(),
-                                    producto.getUnidades().get(0).getIdUnidad(),
-                                    producto.getUnidades().get(0).getFactor(),
-                                    producto.getUnidades(),
-                                    producto.getUnidades().get(0).getAbreviacionUnidad(),
-                                    0.0,
-                                    0.0,
-                                    0.0
-                                });
-                    }
-                    AgregarEventoChange(tbItems, change_item);
-                } catch (Exception e) {
-                    ControlarExcepcion(e);
-                } finally {
-                    cliente.close();
+                for (SeleccionProducto seleccionado : seleccionados) {
+                    AgregarFila(tbItems,
+                            new Object[]{
+                                0,
+                                seleccionado.getIdProducto(),
+                                seleccionado.getCodigoProducto(),
+                                seleccionado.getDescripcionProducto(),
+                                seleccionado.getIdUnidadBase(),
+                                seleccionado.getFactorUnidadBase(),
+                                seleccionado.getAbreviacionUnidadBase(),
+                                1.0,
+                                seleccionado.getPrecio(),
+                                seleccionado.getPrecio()
+                            });
                 }
+                AgregarBoton(tbItems, clic_unid, 6);
+                AgregarEventoChange(tbItems, change_item);
             }
         }
     };
@@ -421,19 +422,7 @@ public class regEntradaInventario extends frameBase<EntradaInventario> {
         jTabbedPane1 = new javax.swing.JTabbedPane();
         pnlUnidades = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        tbItems = new javax.swing.JTable(){
-            public void changeSelection(final int row, final int column, boolean toggle, boolean extend)
-            {
-                super.changeSelection(row, column, toggle, extend);
-                DefaultCellEditor cell = (DefaultCellEditor)tbItems.getCellEditor(row, column);
-                if(cell.getComponent() instanceof JTextField){
-                    tbItems.editCellAt(row, column);
-                    tbItems.transferFocus();
-                    ((JTextField)cell.getComponent()).selectAll();
-                }
-            }
-        }
-        ;
+        tbItems = new javax.swing.JTable();
         btnNuevoItem = new javax.swing.JButton();
         btnEliminarItem = new javax.swing.JButton();
         pnlTitulo = new javax.swing.JPanel();
@@ -489,14 +478,14 @@ public class regEntradaInventario extends frameBase<EntradaInventario> {
 
             },
             new String [] {
-                "IDITEM", "IDPRODUCTO", "CODIGO", "PRODUCTO", "IDUNIDAD", "FACTOR", "ARRAYUNIDAD", "UNIDAD", "CANTIDAD", "PRECIO", "TOTAL"
+                "IDITEM", "IDPRODUCTO", "CODIGO", "PRODUCTO", "IDUNIDAD", "FACTOR", "UNIDAD", "CANTIDAD", "PRECIO", "TOTAL"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Object.class, java.lang.Object.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class
+                java.lang.Integer.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.String.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, true, true, false, false, false, true, true, true, false
+                false, false, true, true, false, false, true, true, true, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -507,6 +496,7 @@ public class regEntradaInventario extends frameBase<EntradaInventario> {
                 return canEdit [columnIndex];
             }
         });
+        tbItems.setRowHeight(25);
         jScrollPane2.setViewportView(tbItems);
         if (tbItems.getColumnModel().getColumnCount() > 0) {
             tbItems.getColumnModel().getColumn(0).setMinWidth(0);
@@ -523,10 +513,7 @@ public class regEntradaInventario extends frameBase<EntradaInventario> {
             tbItems.getColumnModel().getColumn(5).setMinWidth(0);
             tbItems.getColumnModel().getColumn(5).setPreferredWidth(0);
             tbItems.getColumnModel().getColumn(5).setMaxWidth(0);
-            tbItems.getColumnModel().getColumn(6).setMinWidth(0);
-            tbItems.getColumnModel().getColumn(6).setPreferredWidth(0);
-            tbItems.getColumnModel().getColumn(6).setMaxWidth(0);
-            tbItems.getColumnModel().getColumn(8).setPreferredWidth(80);
+            tbItems.getColumnModel().getColumn(7).setPreferredWidth(80);
         }
 
         btnNuevoItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sge/base/imagenes/add-16.png"))); // NOI18N
@@ -777,7 +764,7 @@ public class regEntradaInventario extends frameBase<EntradaInventario> {
                 .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnAceptar)
                     .addComponent(btnCancelar))
-                .addContainerGap(21, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -806,7 +793,9 @@ public class regEntradaInventario extends frameBase<EntradaInventario> {
 
     private void btnNuevoItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoItemActionPerformed
         // TODO add your handling code here:
-        VerModal(new lisProducto(2), select_item);
+        if(schAlmacen.getId() > 0){
+            VerModal(new selProducto(1, schAlmacen.getId()), select_item);
+        }
     }//GEN-LAST:event_btnNuevoItemActionPerformed
 
     private void btnEliminarItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarItemActionPerformed

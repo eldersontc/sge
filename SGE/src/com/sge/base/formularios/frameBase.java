@@ -94,6 +94,10 @@ public class frameBase<T> extends javax.swing.JInternalFrame {
     public void EliminarFila(JTable tabla) {
         Utils.EliminarFila(tabla);
     }
+    
+    public void MostrarColumna(JTable tabla, int columna, int ancho) {
+        Utils.MostrarColumna(tabla, columna, ancho);
+    }
 
     public void OcultarColumna(JTable tabla, int columna) {
         Utils.OcultarColumna(tabla, columna);
@@ -143,12 +147,11 @@ public class frameBase<T> extends javax.swing.JInternalFrame {
         Utils.AsignarTitulo(tabbedPane, tab, titulo);
     }
 
-    public void ExpandirTodosNodos(JTree tree){
+    public void ExpandirTodosNodos(JTree tree) {
         Utils.ExpandirTodosNodos(tree);
     }
-    
-    ////////////////////////// FABRICA DE CONTROLES ////////////////////////////
 
+    ////////////////////////// FABRICA DE CONTROLES ////////////////////////////
     public void VerProcesando(JPanel panel) {
         FabricaControles.VerProcesando(panel);
     }

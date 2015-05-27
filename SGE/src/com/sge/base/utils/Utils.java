@@ -63,6 +63,12 @@ public class Utils {
         modelo.removeRow(tabla.convertRowIndexToModel(tabla.getSelectedRow()));
     }
 
+    public static void MostrarColumna(JTable tabla, int columna, int ancho){
+        tabla.getColumnModel().getColumn(columna).setMinWidth(ancho);
+        tabla.getColumnModel().getColumn(columna).setMaxWidth(ancho);
+        tabla.getColumnModel().getColumn(columna).setWidth(ancho);
+    }
+    
     public static void OcultarColumna(JTable tabla, int columna) {
         tabla.getColumnModel().getColumn(columna).setMinWidth(0);
         tabla.getColumnModel().getColumn(columna).setMaxWidth(0);
