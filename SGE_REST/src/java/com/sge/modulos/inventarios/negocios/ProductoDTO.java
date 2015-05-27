@@ -6,6 +6,7 @@ import com.sge.modulos.inventarios.accesoDatos.ProductoUnidadDAO;
 import com.sge.modulos.inventarios.entidades.Producto;
 import com.sge.modulos.inventarios.entidades.ProductoAlmacen;
 import com.sge.modulos.inventarios.entidades.ProductoUnidad;
+import com.sge.modulos.inventarios.entidades.SeleccionProducto;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,6 +34,20 @@ public class ProductoDTO {
         return lista;
     }
 
+    public List<SeleccionProducto> ObtenerProductosPorAlmacen(int idAlmacen) {
+        List<SeleccionProducto> lista;
+        try {
+            productoDAO = new ProductoDAO();
+            productoDAO.AbrirSesion();
+            lista = productoDAO.ObtenerProductosPorAlmacen(idAlmacen);
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            productoDAO.CerrarSesion();
+        }
+        return lista;
+    }
+    
     public Producto ObtenerProducto(int idProducto) {
         Producto producto = null;
         try {

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.sge.modulos.inventarios.entidades.SeleccionProducto" schema="Inventarios">
+        <id name="idProducto" column="idProducto"></id>
+        <property name="codigoProducto" column="codigoProducto"/>
+        <property name="descripcionProducto" column="descripcionProducto"/>
+        <property name="idUnidadBase" column="idUnidadBase"/>
+        <property name="abreviacionUnidadBase" column="abreviacionUnidadBase"/>
+        <property name="factorUnidadBase" column="factorUnidadBase"/>
+        <property name="stock" column="stock"/>
+        <property name="costoUltimaCompra" column="costoUltimaCompra"/>
+        <property name="costoPromedio" column="costoPromedio"/>
+        <property name="costoReferencia" column="costoReferencia"/>
+    </class>
+</hibernate-mapping>

@@ -1,9 +1,12 @@
 package com.sge.modulos.produccion.servicios;
 
 import com.google.gson.Gson;
+import com.sge.modulos.administracion.entidades.ValorDefinido;
+import com.sge.modulos.administracion.negocios.ValorDefinidoDTO;
 import com.sge.modulos.produccion.entidades.OrdenTrabajo;
 import com.sge.modulos.produccion.negocios.OrdenTrabajoDTO;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
@@ -114,6 +117,54 @@ public class OrdenTrabajoSRV {
             OrdenTrabajoDTO OrdenTrabajoDTO = new OrdenTrabajoDTO();
             OrdenTrabajoDTO.EliminarOrdenTrabajo(idOrdenTrabajo);
             resultado.add(new Gson().toJson(true));
+        } catch (Exception e) {
+            resultado.clear();
+            resultado.add(new Gson().toJson(false));
+            resultado.add(new Gson().toJson(e));
+        }
+        return new Gson().toJson(resultado);
+    }
+    
+    @POST
+    @Path("GenerarSalidaInventario")
+    @Consumes("application/json")
+    @Produces("application/json")
+    public String GenerarSalidaInventario(String json) {
+        List<String> resultado = new ArrayList<>();
+        int[] ids = new Gson().fromJson(json, int[].class);
+        try {
+            OrdenTrabajoDTO ordenTrabajoDTO = new OrdenTrabajoDTO();
+            OrdenTrabajo ordenTrabajo = ordenTrabajoDTO.ObtenerOrdenTrabajo(ids[0]);
+            ValorDefinidoDTO valorDefinidoDTO = new ValorDefinidoDTO();
+            ValorDefinido valorDefinido = valorDefinidoDTO.ObtenerValorDefinidoPorUsuarioYEntidad(ids[1], 2);
+            resultado.add(new Gson().toJson(true));
+            resultado.add(new Gson().toJson(new Date()));
+            resultado.add(new Gson().toJson(ordenTrabajo));
+            resultado.add(valorDefinido == null ? "" : valorDefinido.getJson());
+        } catch (Exception e) {
+            resultado.clear();
+            resultado.add(new Gson().toJson(false));
+            resultado.add(new Gson().toJson(e));
+        }
+        return new Gson().toJson(resultado);
+    }
+    
+    @POST
+    @Path("GenerarSalidaCaja")
+    @Consumes("application/json")
+    @Produces("application/json")
+    public String GenerarSalidaCaja(String json) {
+        List<String> resultado = new ArrayList<>();
+        int[] ids = new Gson().fromJson(json, int[].class);
+        try {
+            OrdenTrabajoDTO ordenTrabajoDTO = new OrdenTrabajoDTO();
+            OrdenTrabajo ordenTrabajo = ordenTrabajoDTO.ObtenerOrdenTrabajo(ids[0]);
+            ValorDefinidoDTO valorDefinidoDTO = new ValorDefinidoDTO();
+            ValorDefinido valorDefinido = valorDefinidoDTO.ObtenerValorDefinidoPorUsuarioYEntidad(ids[1], 9);
+            resultado.add(new Gson().toJson(true));
+            resultado.add(new Gson().toJson(new Date()));
+            resultado.add(new Gson().toJson(ordenTrabajo));
+            resultado.add(valorDefinido == null ? "" : valorDefinido.getJson());
         } catch (Exception e) {
             resultado.clear();
             resultado.add(new Gson().toJson(false));

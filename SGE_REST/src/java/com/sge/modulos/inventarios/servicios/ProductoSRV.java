@@ -3,6 +3,7 @@ package com.sge.modulos.inventarios.servicios;
 import com.google.gson.Gson;
 import com.sge.modulos.inventarios.entidades.Producto;
 import com.sge.modulos.inventarios.entidades.ProductoUnidad;
+import com.sge.modulos.inventarios.entidades.SeleccionProducto;
 import com.sge.modulos.inventarios.negocios.ProductoDTO;
 import java.util.ArrayList;
 import java.util.List;
@@ -46,6 +47,26 @@ public class ProductoSRV {
         return new Gson().toJson(resultado);
     }
 
+    @POST
+    @Path("ObtenerProductosPorAlmacen")
+    @Consumes("application/json")
+    @Produces("application/json")
+    public String ObtenerProductosPorAlmacen(String json) {
+        List<String> resultado = new ArrayList<>();
+        try {
+            int idAlmacen = new Gson().fromJson(json, int.class);
+            ProductoDTO ProductoDTO = new ProductoDTO();
+            List<SeleccionProducto> lista = ProductoDTO.ObtenerProductosPorAlmacen(idAlmacen);
+            resultado.add(new Gson().toJson(true));
+            resultado.add(new Gson().toJson(lista));
+        } catch (Exception e) {
+            resultado.clear();
+            resultado.add(new Gson().toJson(false));
+            resultado.add(new Gson().toJson(e));
+        }
+        return new Gson().toJson(resultado);
+    }
+    
     @POST
     @Path("ObtenerProducto")
     @Consumes("application/json")
