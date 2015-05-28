@@ -17,9 +17,10 @@ public class ItemSalidaInventario {
     private String abreviacionUnidad;
     private double precio;
     private double cantidad;
+    private double cantidadMaxima;
     private double tipoCambio;
     private double total;
-
+    
     public ItemSalidaInventario() {
     }
 
@@ -111,6 +112,14 @@ public class ItemSalidaInventario {
         this.cantidad = cantidad;
     }
 
+    public double getCantidadMaxima() {
+        return cantidadMaxima;
+    }
+
+    public void setCantidadMaxima(double cantidadMaxima) {
+        this.cantidadMaxima = cantidadMaxima;
+    }
+    
     public double getTipoCambio() {
         return tipoCambio;
     }

@@ -155,6 +155,12 @@ public class regOrdenTrabajo extends frameBase<OrdenTrabajo> {
             Producto seleccionado = ((lisProducto) e.getSource()).getSeleccionado();
             if (!(seleccionado == null)) {
                 schMaterial.asingValues(seleccionado.getIdProducto(), seleccionado.getDescripcion());
+                item.setAltoMaterial(seleccionado.getAlto());
+                item.setLargoMaterial(seleccionado.getLargo());
+                item.setIdUnidadMaterial(seleccionado.getIdUnidadBase());
+                item.setAbreviacionUnidadMaterial(seleccionado.getAbreviacionUnidadBase());
+                item.setFactorUnidadMaterial(seleccionado.getFactorUnidadBase());
+                item.setCodigoMaterial(seleccionado.getCodigo());
             }
         }
     };
@@ -475,6 +481,15 @@ public class regOrdenTrabajo extends frameBase<OrdenTrabajo> {
         VerModal(new lisProducto(1), sele_mate);
     }
 
+    private void schMaterialClear() {
+        this.item.setAltoMaterial(0);
+        this.item.setLargoMaterial(0);
+        this.item.setIdUnidadMaterial(0);
+        this.item.setAbreviacionUnidadMaterial(null);
+        this.item.setFactorUnidadMaterial(0);
+        this.item.setCodigoMaterial(null);
+    }
+    
     public void Aceptar() {
         if (super.isFromJson()) {
             AsignarValores();
@@ -651,6 +666,7 @@ public class regOrdenTrabajo extends frameBase<OrdenTrabajo> {
             }
             @Override
             public void Clear(){
+                schMaterialClear();
             }
         });
 

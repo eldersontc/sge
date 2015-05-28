@@ -110,6 +110,8 @@ public class regEntradaInventario extends frameBase<EntradaInventario> {
                         item.getTotal()
                     });
         }
+        AgregarBoton(tbItems, clic_unid, 6);
+        AgregarEventoChange(tbItems, change_item);
     }
 
     @Override

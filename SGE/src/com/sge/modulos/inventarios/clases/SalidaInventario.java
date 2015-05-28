@@ -25,6 +25,8 @@ public class SalidaInventario {
     private String descripcionAlmacen;
     private int idMoneda;
     private String simboloMoneda;
+    private int idOrdenTrabajo;
+    private String numeroOrdenTrabajo;
     private String observacion;
     private double tipoCambio;
     private double subTotal;
@@ -154,6 +156,22 @@ public class SalidaInventario {
         this.simboloMoneda = simboloMoneda;
     }
 
+    public int getIdOrdenTrabajo() {
+        return idOrdenTrabajo;
+    }
+
+    public void setIdOrdenTrabajo(int idOrdenTrabajo) {
+        this.idOrdenTrabajo = idOrdenTrabajo;
+    }
+
+    public String getNumeroOrdenTrabajo() {
+        return numeroOrdenTrabajo;
+    }
+
+    public void setNumeroOrdenTrabajo(String numeroOrdenTrabajo) {
+        this.numeroOrdenTrabajo = numeroOrdenTrabajo;
+    }
+    
     public String getObservacion() {
         return observacion;
     }

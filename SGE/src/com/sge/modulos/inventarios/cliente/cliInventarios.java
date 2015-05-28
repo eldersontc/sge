@@ -177,6 +177,12 @@ public class cliInventarios {
         resource = resource.path("EliminarSalidaInventario");
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
     }
+    
+    public String ObtenerStockFisicoItems(Object requestEntity) throws ClientErrorException {
+        WebTarget resource = client.target(BASE_URI).path("SalidaInventarioSRV");
+        resource = resource.path("ObtenerStockFisicoItems");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
+    }
 
     ////////////////////////////////////////////////////////////////////////////
     public void close() {

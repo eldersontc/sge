@@ -84,10 +84,10 @@ public class lisProducto extends frameBase<Producto> {
                     EliminarTodasFilas(tbProductos);
                     Producto[] productos = new Gson().fromJson(resultado[1], Producto[].class);
                     for (Producto producto : productos) {
-                        AgregarFila(tbProductos, new Object[]{false, producto.getIdProducto(), producto.getCodigo(), producto.getDescripcion(), producto.getAlto(), producto.getLargo(), producto.getIdUnidadBase(), producto.getAbreviacionUnidadBase(), producto.isActivo(), Icon_Edit, Icon_Dele});
+                        AgregarFila(tbProductos, new Object[]{false, producto.getIdProducto(), producto.getCodigo(), producto.getDescripcion(), producto.getAlto(), producto.getLargo(), producto.getIdUnidadBase(), producto.getAbreviacionUnidadBase(), producto.getFactorUnidadBase(), producto.isActivo(), Icon_Edit, Icon_Dele});
                     }
-                    AgregarBoton(tbProductos, edit, 9);
-                    AgregarBoton(tbProductos, dele, 10);
+                    AgregarBoton(tbProductos, edit, 10);
+                    AgregarBoton(tbProductos, dele, 11);
                     AgregarOrdenamiento(tbProductos);
                 }
                 OcultarCargando(frame);
@@ -144,11 +144,11 @@ public class lisProducto extends frameBase<Producto> {
                 OcultarControl(btnSeleccionar);
                 break;
             case 1:
-                OcultarColumnas(tbProductos, new int[]{0, 9, 10});
+                OcultarColumnas(tbProductos, new int[]{0, 10, 11});
                 OcultarControl(btnNuevo);
                 break;
             case 2:
-                OcultarColumnas(tbProductos, new int[]{9, 10});
+                OcultarColumnas(tbProductos, new int[]{10, 11});
                 OcultarControl(btnNuevo);
                 break;
         }
@@ -207,14 +207,14 @@ public class lisProducto extends frameBase<Producto> {
 
             },
             new String [] {
-                "CHECK", "IDPRODUCTO", "CODIGO", "DESCRIPCION", "ALTO", "LARGO", "IDUNIDADBASE", "UNID.BASE", "ACTIVO", "EDITAR", "ELIMINAR"
+                "CHECK", "IDPRODUCTO", "CODIGO", "DESCRIPCION", "ALTO", "LARGO", "IDUNIDADBASE", "UNID.BASE", "FACTOR", "ACTIVO", "EDITAR", "ELIMINAR"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Boolean.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Double.class, java.lang.Double.class, java.lang.Integer.class, java.lang.String.class, java.lang.Boolean.class, java.lang.Object.class, java.lang.Object.class
+                java.lang.Boolean.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Double.class, java.lang.Double.class, java.lang.Integer.class, java.lang.String.class, java.lang.Integer.class, java.lang.Boolean.class, java.lang.Object.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                true, false, true, true, true, true, true, true, true, true, true
+                true, false, true, true, true, true, true, true, false, true, true, true
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -237,6 +237,9 @@ public class lisProducto extends frameBase<Producto> {
             tbProductos.getColumnModel().getColumn(6).setMinWidth(0);
             tbProductos.getColumnModel().getColumn(6).setPreferredWidth(0);
             tbProductos.getColumnModel().getColumn(6).setMaxWidth(0);
+            tbProductos.getColumnModel().getColumn(8).setMinWidth(0);
+            tbProductos.getColumnModel().getColumn(8).setPreferredWidth(0);
+            tbProductos.getColumnModel().getColumn(8).setMaxWidth(0);
         }
 
         pnlTitulo.setBackground(new java.awt.Color(67, 100, 130));
@@ -376,7 +379,8 @@ public class lisProducto extends frameBase<Producto> {
                     seleccionado.setLargo(ObtenerValorCelda(tbProductos, 5));
                     seleccionado.setIdUnidadBase(ObtenerValorCelda(tbProductos, 6));
                     seleccionado.setAbreviacionUnidadBase(ObtenerValorCelda(tbProductos, 7));
-                    seleccionado.setActivo(ObtenerValorCelda(tbProductos, 8));
+                    seleccionado.setFactorUnidadBase(ObtenerValorCelda(tbProductos, 8));
+                    seleccionado.setActivo(ObtenerValorCelda(tbProductos, 9));
                     Cerrar();
                 }
                 break;
@@ -392,7 +396,8 @@ public class lisProducto extends frameBase<Producto> {
                         producto.setLargo(ObtenerValorCelda(tbProductos, i, 5));
                         producto.setIdUnidadBase(ObtenerValorCelda(tbProductos, i, 6));
                         producto.setAbreviacionUnidadBase(ObtenerValorCelda(tbProductos, i, 7));
-                        producto.setActivo(ObtenerValorCelda(tbProductos, i, 8));
+                        producto.setFactorUnidadBase(ObtenerValorCelda(tbProductos, i, 8));
+                        producto.setActivo(ObtenerValorCelda(tbProductos, i, 9));
                         seleccionados.add(producto);
                     }
                 }

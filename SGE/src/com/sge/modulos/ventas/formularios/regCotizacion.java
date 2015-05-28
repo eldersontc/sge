@@ -166,6 +166,12 @@ public class regCotizacion extends frameBase<Cotizacion> {
             Producto seleccionado = ((lisProducto) e.getSource()).getSeleccionado();
             if (!(seleccionado == null)) {
                 schMaterial.asingValues(seleccionado.getIdProducto(), seleccionado.getDescripcion());
+                item.setAltoMaterial(seleccionado.getAlto());
+                item.setLargoMaterial(seleccionado.getLargo());
+                item.setIdUnidadMaterial(seleccionado.getIdUnidadBase());
+                item.setAbreviacionUnidadMaterial(seleccionado.getAbreviacionUnidadBase());
+                item.setFactorUnidadMaterial(seleccionado.getFactorUnidadBase());
+                item.setCodigoMaterial(seleccionado.getCodigo());
             }
         }
     };
@@ -652,7 +658,16 @@ public class regCotizacion extends frameBase<Cotizacion> {
     private void schMaterialSearch() {
         VerModal(new lisProducto(1), sele_mate);
     }
-
+    
+    private void schMaterialClear() {
+        this.item.setAltoMaterial(0);
+        this.item.setLargoMaterial(0);
+        this.item.setIdUnidadMaterial(0);
+        this.item.setAbreviacionUnidadMaterial(null);
+        this.item.setFactorUnidadMaterial(0);
+        this.item.setCodigoMaterial(null);
+    }
+    
     private void schContactoSearch() {
         String filtro = "WHERE ContactoCliente.idCliente = " + schCliente.getId();
         VerModal(new lisContactoCliente(filtro), sele_cont);
@@ -1009,6 +1024,7 @@ public class regCotizacion extends frameBase<Cotizacion> {
             }
             @Override
             public void Clear(){
+                schMaterialClear();
             }
         });
 

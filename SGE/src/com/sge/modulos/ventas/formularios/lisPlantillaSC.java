@@ -171,7 +171,13 @@ public class lisPlantillaSC extends frameBase<PlantillaSolicitudCotizacion> {
                         itemSolicitud.setNombreServicioImpresion(itemPlantilla.getNombreServicioImpresion());
                         itemSolicitud.setMaterial(itemPlantilla.isMaterial());
                         itemSolicitud.setIdMaterial(itemPlantilla.getIdMaterial());
+                        itemSolicitud.setCodigoMaterial(itemPlantilla.getCodigoMaterial());
                         itemSolicitud.setNombreMaterial(itemPlantilla.getNombreMaterial());
+                        itemSolicitud.setIdUnidadMaterial(itemPlantilla.getIdUnidadMaterial());
+                        itemSolicitud.setAbreviacionUnidadMaterial(itemPlantilla.getAbreviacionUnidadMaterial());
+                        itemSolicitud.setFactorUnidadMaterial(itemPlantilla.getFactorUnidadMaterial());
+                        itemSolicitud.setAltoMaterial(itemPlantilla.getAltoMaterial());
+                        itemSolicitud.setLargoMaterial(itemPlantilla.getLargoMaterial());
                         itemSolicitud.setTipoUnidad(itemPlantilla.isTipoUnidad());
                         itemSolicitud.setNombreTipoUnidad(itemPlantilla.getNombreTipoUnidad());
                         itemSolicitud.setMedidaAbierta(itemPlantilla.isMedidaAbierta());

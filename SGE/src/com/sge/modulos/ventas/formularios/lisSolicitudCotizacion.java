@@ -268,11 +268,13 @@ public class lisSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
                         itemCotizacion.setAltoMaximoPliegoMaquina(itemSolicitud.getAltoMaximoPliegoMaquina());
                         itemCotizacion.setLargoMaximoPliegoMaquina(itemSolicitud.getLargoMaximoPliegoMaquina());
                         itemCotizacion.setIdMaterial(itemSolicitud.getIdMaterial());
+                        itemCotizacion.setCodigoMaterial(itemSolicitud.getCodigoMaterial());
                         itemCotizacion.setNombreMaterial(itemSolicitud.getNombreMaterial());
                         itemCotizacion.setAltoMaterial(itemSolicitud.getAltoMaterial());
                         itemCotizacion.setLargoMaterial(itemSolicitud.getLargoMaterial());
                         itemCotizacion.setIdUnidadMaterial(itemSolicitud.getIdUnidadMaterial());
                         itemCotizacion.setAbreviacionUnidadMaterial(itemSolicitud.getAbreviacionUnidadMaterial());
+                        itemCotizacion.setFactorUnidadMaterial(itemSolicitud.getFactorUnidadMaterial());
                         itemCotizacion.setNombreTipoUnidad(itemSolicitud.getNombreTipoUnidad());
                         itemCotizacion.setUnidadMedidaAbierta(itemSolicitud.getUnidadMedidaAbierta());
                         itemCotizacion.setMedidaAbierta(itemSolicitud.isMedidaAbierta());
@@ -291,6 +293,8 @@ public class lisSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
                         itemCotizacion.setRetiraColor(itemSolicitud.getRetiraColor());
                         itemCotizacion.setdFondo(itemSolicitud.getdFondo());
                         itemCotizacion.setCantidadTipoUnidad(itemSolicitud.getCantidadTipoUnidad());
+                        itemCotizacion.setObservacion(itemSolicitud.getAcabados());
+                        
                         if (itemSolicitud.isGrafico()) {
                             itemCotizacion.setIdMetodoImpresion(4);
                             itemCotizacion.setDescripcionMetodoImpresion("TIRA");

@@ -21,7 +21,8 @@ public class Producto {
     private double alto;
     private double largo;
     private int idUnidadBase;
-    private String abreviacionUnidadBase; 
+    private String abreviacionUnidadBase;
+    private int factorUnidadBase;
     private boolean activo;
     private List<ProductoUnidad> unidades;
     private List<ProductoAlmacen> almacenes;
@@ -133,6 +134,14 @@ public class Producto {
 
     public void setAbreviacionUnidadBase(String abreviacionUnidadBase) {
         this.abreviacionUnidadBase = abreviacionUnidadBase;
+    }
+    
+    public int getFactorUnidadBase() {
+        return factorUnidadBase;
+    }
+
+    public void setFactorUnidadBase(int factorUnidadBase) {
+        this.factorUnidadBase = factorUnidadBase;
     }
     
     public boolean isActivo() {

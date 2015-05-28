@@ -150,6 +150,8 @@ public class regSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
                 item.setLargoMaterial(seleccionado.getLargo());
                 item.setIdUnidadMaterial(seleccionado.getIdUnidadBase());
                 item.setAbreviacionUnidadMaterial(seleccionado.getAbreviacionUnidadBase());
+                item.setFactorUnidadMaterial(seleccionado.getFactorUnidadBase());
+                item.setCodigoMaterial(seleccionado.getCodigo());
             }
         }
     };
@@ -1240,7 +1242,9 @@ public class regSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
         this.item.setAltoMaterial(0);
         this.item.setLargoMaterial(0);
         this.item.setIdUnidadMaterial(0);
-        this.item.setAbreviacionUnidadMaterial("");
+        this.item.setAbreviacionUnidadMaterial(null);
+        this.item.setFactorUnidadMaterial(0);
+        this.item.setCodigoMaterial(null);
     }
 
     private void schContactoSearch() {

@@ -35,13 +35,13 @@ public class lisOrdenTrabajo extends frameBase<OrdenTrabajo> {
         initComponents();
         Init(modo, filtro);
     }
-    
+
     private int modo;
 
     private String filtro;
-    
+
     private OrdenTrabajo seleccionado;
-    
+
     private List<OrdenTrabajo> seleccionados = new ArrayList<>();
 
     ImageIcon Icon_Edit = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/edit-16.png"));
@@ -161,23 +161,34 @@ public class lisOrdenTrabajo extends frameBase<OrdenTrabajo> {
                     } else {
                         salidaInventario = new Gson().fromJson(resultado[3], SalidaInventario.class);
                     }
+
+                    if(salidaInventario.getIdAlmacen() == 0){
+                        throw new Exception("NO SE HA ASIGNADO NINGÚN ALMACEN.");
+                    }
                     
                     salidaInventario.setIdCliente(ordenTrabajo.getIdCliente());
                     salidaInventario.setRazonSocialCliente(ordenTrabajo.getRazonSocialCliente());
                     salidaInventario.setFechaCreacion(fechaServidor);
-                    
+                    salidaInventario.setIdOrdenTrabajo(ordenTrabajo.getIdOrdenTrabajo());
+                    salidaInventario.setNumeroOrdenTrabajo(ordenTrabajo.getNumero());
+
                     for (ItemOrdenTrabajo itemOrdenTrabajo : ordenTrabajo.getItems()) {
                         ItemSalidaInventario itemSalidaInventario = new ItemSalidaInventario();
                         itemSalidaInventario.setIdProducto(itemOrdenTrabajo.getIdMaterial());
+                        itemSalidaInventario.setCodigoProducto(itemOrdenTrabajo.getCodigoMaterial());
                         itemSalidaInventario.setDescripcionProducto(itemOrdenTrabajo.getNombreMaterial());
                         itemSalidaInventario.setIdUnidad(itemOrdenTrabajo.getIdUnidadMaterial());
                         itemSalidaInventario.setAbreviacionUnidad(itemOrdenTrabajo.getAbreviacionUnidadMaterial());
-                        itemSalidaInventario.setCantidad(itemOrdenTrabajo.getCantidadMaterial() + itemOrdenTrabajo.getCantidadDemasiaMaterial());
+                        itemSalidaInventario.setFactor(itemOrdenTrabajo.getFactorUnidadMaterial());
+//                        itemSalidaInventario.setCantidad(itemOrdenTrabajo.getCantidadMaterial() + itemOrdenTrabajo.getCantidadDemasiaMaterial());
+                        itemSalidaInventario.setCantidad(10);
                         itemSalidaInventario.setPrecio(itemOrdenTrabajo.getPrecioMaterial());
+                        itemSalidaInventario.setTotal(itemSalidaInventario.getCantidad() * itemSalidaInventario.getPrecio());
+                        itemSalidaInventario.setIdAlmacen(salidaInventario.getIdAlmacen());
                         salidaInventario.getItems().add(itemSalidaInventario);
                     }
 
-                    regSalidaInventario regSalidaInventario = new regSalidaInventario(0);
+                    regSalidaInventario regSalidaInventario = new regSalidaInventario(2, 0);
                     regSalidaInventario.setUsuario(getUsuario());
                     regSalidaInventario.setEntidad(salidaInventario);
                     regSalidaInventario.AsignarControles();
@@ -200,7 +211,7 @@ public class lisOrdenTrabajo extends frameBase<OrdenTrabajo> {
             OcultarCargando(frame);
         }
     }
-    
+
     public void Init(int modo, String filtro) {
         this.modo = modo;
         this.filtro = filtro;

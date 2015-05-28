@@ -21,11 +21,13 @@ public class ItemCotizacion {
     private int largoMaximoPliegoMaquina;
     private int altoMaximoPliegoMaquina;
     private int idMaterial;
+    private String codigoMaterial;
     private String nombreMaterial;
     private double largoMaterial;
     private double altoMaterial;
     private int idUnidadMaterial;
     private String abreviacionUnidadMaterial;
+    private int factorUnidadMaterial;
     private String nombreTipoUnidad;
     private String unidadMedidaAbierta;
     private boolean medidaAbierta;
@@ -70,6 +72,7 @@ public class ItemCotizacion {
     private int cantidadProduccion;
     private int cantidad;
     private int cantidadPaginasSobrantes;
+    private String observacion;
     private boolean incluirEnPresupuesto;
     private boolean verPrecioEnPresupuesto;
     private double totalMaquina;
@@ -181,6 +184,14 @@ public class ItemCotizacion {
         this.idMaterial = idMaterial;
     }
 
+    public String getCodigoMaterial() {
+        return codigoMaterial;
+    }
+
+    public void setCodigoMaterial(String codigoMaterial) {
+        this.codigoMaterial = codigoMaterial;
+    }
+    
     public String getNombreMaterial() {
         return nombreMaterial;
     }
@@ -219,6 +230,14 @@ public class ItemCotizacion {
 
     public void setAbreviacionUnidadMaterial(String abreviacionUnidadMaterial) {
         this.abreviacionUnidadMaterial = abreviacionUnidadMaterial;
+    }
+    
+    public int getFactorUnidadMaterial() {
+        return factorUnidadMaterial;
+    }
+
+    public void setFactorUnidadMaterial(int factorUnidadMaterial) {
+        this.factorUnidadMaterial = factorUnidadMaterial;
     }
     
     public String getNombreTipoUnidad() {
@@ -573,6 +592,14 @@ public class ItemCotizacion {
         this.cantidadPaginasSobrantes = cantidadPaginasSobrantes;
     }
 
+    public String getObservacion() {
+        return observacion;
+    }
+
+    public void setObservacion(String observacion) {
+        this.observacion = observacion;
+    }
+    
     public boolean isIncluirEnPresupuesto() {
         return incluirEnPresupuesto;
     }

@@ -68,6 +68,7 @@ public class regProducto extends frameBase<Producto> {
                     if (base) {
                         getEntidad().setIdUnidadBase(ObtenerValorCelda(tbUnidades, celda[0], 1));
                         getEntidad().setAbreviacionUnidadBase(ObtenerValorCelda(tbUnidades, celda[0], 2));
+                        getEntidad().setFactorUnidadBase(ObtenerValorCelda(tbUnidades, celda[0], 3));
                     }
                     break;
             }

@@ -54,6 +54,8 @@ public class regPlantillaSC extends frameBase<PlantillaSolicitudCotizacion> {
                 item.setLargoMaterial(seleccionado.getLargo());
                 item.setIdUnidadMaterial(seleccionado.getIdUnidadBase());
                 item.setAbreviacionUnidadMaterial(seleccionado.getAbreviacionUnidadBase());
+                item.setFactorUnidadMaterial(seleccionado.getFactorUnidadBase());
+                item.setCodigoMaterial(seleccionado.getCodigo());
             }
         }
     };
@@ -561,7 +563,9 @@ public class regPlantillaSC extends frameBase<PlantillaSolicitudCotizacion> {
         this.item.setAltoMaterial(0);
         this.item.setLargoMaterial(0);
         this.item.setIdUnidadMaterial(0);
-        this.item.setAbreviacionUnidadMaterial("");
+        this.item.setAbreviacionUnidadMaterial(null);
+        this.item.setFactorUnidadMaterial(0);
+        this.item.setCodigoMaterial(null);
     }
 
     private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
