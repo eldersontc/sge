@@ -37,9 +37,13 @@ public class regSalidaInventario extends frameBase<SalidaInventario> {
     /**
      * Creates new form regSalidaInventario
      */
-    public regSalidaInventario(int modo, int id) {
+    public regSalidaInventario() {
         initComponents();
-        Init(modo, id);
+    }
+
+    public regSalidaInventario(int id) {
+        initComponents();
+        Init(id);
     }
 
     public regSalidaInventario(ValorDefinido valorDefinido) {
@@ -48,20 +52,16 @@ public class regSalidaInventario extends frameBase<SalidaInventario> {
     }
 
     private int id;
-    private int modo;
 
-    public void Init(int modo, int id) {
+    public void Init(int id) {
         this.id = id;
-        this.modo = modo;
-        if (this.modo == 1) {
-            if (this.id == 0) {
-                lblTitulo.setText("NUEVA " + lblTitulo.getText());
-                new swObtenerValoresDefinidos().execute();
-            } else {
-                lblTitulo.setText("VER " + lblTitulo.getText());
-                OcultarControles();
-                new swObtenerSalidaInventario().execute();
-            }
+        if (this.id == 0) {
+            lblTitulo.setText("NUEVA " + lblTitulo.getText());
+            new swObtenerValoresDefinidos().execute();
+        } else {
+            lblTitulo.setText("VER " + lblTitulo.getText());
+            OcultarControles();
+            new swObtenerSalidaInventario().execute();
         }
     }
 
@@ -94,6 +94,8 @@ public class regSalidaInventario extends frameBase<SalidaInventario> {
         }
     };
 
+    private String itemsSinStock = "";
+    
     public List<ItemSalidaInventario> getItemsConStock(List<ItemSalidaInventario> items) {
         cliInventarios cliente = new cliInventarios();
         ItemSalidaInventario[] itemsConStock = null;
@@ -102,15 +104,11 @@ public class regSalidaInventario extends frameBase<SalidaInventario> {
             String[] resultado = new Gson().fromJson(json, String[].class);
             if (resultado[0].equals("true")) {
                 itemsConStock = new Gson().fromJson(resultado[1], ItemSalidaInventario[].class);
-                String sinStock = "";
                 for (ItemSalidaInventario item : itemsConStock) {
                     if (item.getCantidad() > item.getCantidadMaxima()) {
                         item.setCantidad(0);
-                        sinStock += String.format("PRODUCTO %s SIN STOCK FISICO SUFICIENTE : %s \n", item.getDescripcionProducto(), item.getCantidadMaxima());
+                        itemsSinStock += String.format("PRODUCTO %s SIN STOCK FISICO SUFICIENTE : %s \n", item.getDescripcionProducto(), item.getCantidadMaxima());
                     }
-                }
-                if (!sinStock.isEmpty()) {
-                    VerAdvertencia(sinStock, frame);
                 }
             }
         } catch (Exception e) {
@@ -120,8 +118,13 @@ public class regSalidaInventario extends frameBase<SalidaInventario> {
         return Arrays.asList(itemsConStock);
     }
 
-    @Override
-    public void AsignarControles() {
+    public void VerItemsSinStock(){
+        if (!itemsSinStock.isEmpty()) {
+            VerAdvertencia(itemsSinStock, frame);
+        }
+    }
+    
+    public void AsignarControlesConStocks(){
         schNumeracion.asingValues(getEntidad().getIdNumeracion(), getEntidad().getDescripcionNumeracion());
         schCliente.asingValues(getEntidad().getIdCliente(), getEntidad().getRazonSocialCliente());
         txtNumero.setEnabled(getEntidad().isNumeracionManual());
@@ -135,9 +138,7 @@ public class regSalidaInventario extends frameBase<SalidaInventario> {
         txtImpuesto.setValue(getEntidad().getMontoImpuesto());
         lblPorcentajeImpuesto.setText(String.format("(%s%s)", getEntidad().getPorcentajeImpuesto(), "%"));
         txtTotal.setValue(getEntidad().getTotal());
-        if (this.modo == 2) {
-            getEntidad().setItems(getItemsConStock(getEntidad().getItems()));
-        }
+        getEntidad().setItems(getItemsConStock(getEntidad().getItems()));
         for (ItemSalidaInventario item : getEntidad().getItems()) {
             AgregarFila(tbItems,
                     new Object[]{
@@ -156,9 +157,42 @@ public class regSalidaInventario extends frameBase<SalidaInventario> {
                         item.getPrecio()
                     });
         }
-        if (this.id == 0) {
-            AgregarBoton(tbItems, clic_unid, 6);
-            AgregarEventoChange(tbItems, change_item);
+        AgregarBoton(tbItems, clic_unid, 6);
+        AgregarEventoChange(tbItems, change_item);
+    }
+    
+    @Override
+    public void AsignarControles() {
+        schNumeracion.asingValues(getEntidad().getIdNumeracion(), getEntidad().getDescripcionNumeracion());
+        schCliente.asingValues(getEntidad().getIdCliente(), getEntidad().getRazonSocialCliente());
+        txtNumero.setEnabled(getEntidad().isNumeracionManual());
+        txtNumero.setText(getEntidad().getNumero());
+        schResponsable.asingValues(getEntidad().getIdResponsable(), getEntidad().getNombreResponsable());
+        txtFechaCreacion.setValue(getEntidad().getFechaCreacion());
+        schAlmacen.asingValues(getEntidad().getIdAlmacen(), getEntidad().getDescripcionAlmacen());
+        schMoneda.asingValues(getEntidad().getIdMoneda(), getEntidad().getSimboloMoneda());
+        txtOT.setText(getEntidad().getNumeroOrdenTrabajo());
+        txtSubTotal.setValue(getEntidad().getSubTotal());
+        txtImpuesto.setValue(getEntidad().getMontoImpuesto());
+        lblPorcentajeImpuesto.setText(String.format("(%s%s)", getEntidad().getPorcentajeImpuesto(), "%"));
+        txtTotal.setValue(getEntidad().getTotal());
+        for (ItemSalidaInventario item : getEntidad().getItems()) {
+            AgregarFila(tbItems,
+                    new Object[]{
+                        item.getIdItemSalidaInventario(),
+                        item.getIdProducto(),
+                        item.getCodigoProducto(),
+                        item.getDescripcionProducto(),
+                        item.getIdUnidad(),
+                        item.getFactor(),
+                        item.getAbreviacionUnidad(),
+                        item.getCantidad(),
+                        item.getPrecio(),
+                        item.getTotal(),
+                        item.getCantidadMaxima(),
+                        item.getCantidad(),
+                        item.getPrecio()
+                    });
         }
     }
 

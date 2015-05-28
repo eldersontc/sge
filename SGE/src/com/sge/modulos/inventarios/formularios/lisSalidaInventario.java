@@ -154,7 +154,7 @@ public class lisSalidaInventario extends frameBase<SalidaInventario> {
 
     public void VerSalidaInventario() {
         int idSalidaInventario = ObtenerValorCelda(tbSalidaInventarios, 1);
-        regSalidaInventario regSalidaInventario = new regSalidaInventario(1, idSalidaInventario);
+        regSalidaInventario regSalidaInventario = new regSalidaInventario(idSalidaInventario);
         this.getParent().add(regSalidaInventario);
         regSalidaInventario.setVisible(true);
     }
@@ -348,7 +348,7 @@ public class lisSalidaInventario extends frameBase<SalidaInventario> {
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
         // TODO add your handling code here:
-        regSalidaInventario regSalidaInventario = new regSalidaInventario(1, 0);
+        regSalidaInventario regSalidaInventario = new regSalidaInventario(0);
         regSalidaInventario.setUsuario(getUsuario());
         this.getDesktopPane().add(regSalidaInventario);
         regSalidaInventario.setVisible(true);

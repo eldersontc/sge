@@ -142,7 +142,7 @@ public class lisOrdenTrabajo extends frameBase<OrdenTrabajo> {
     }
 
     public class swGenerarSalidaInventario extends SwingWorker<Object, Object> {
-
+        
         @Override
         protected Object doInBackground() {
             VerCargando(frame);
@@ -161,7 +161,7 @@ public class lisOrdenTrabajo extends frameBase<OrdenTrabajo> {
                     } else {
                         salidaInventario = new Gson().fromJson(resultado[3], SalidaInventario.class);
                     }
-
+                    
                     if(salidaInventario.getIdAlmacen() == 0){
                         throw new Exception("NO SE HA ASIGNADO NINGÚN ALMACEN.");
                     }
@@ -180,21 +180,21 @@ public class lisOrdenTrabajo extends frameBase<OrdenTrabajo> {
                         itemSalidaInventario.setIdUnidad(itemOrdenTrabajo.getIdUnidadMaterial());
                         itemSalidaInventario.setAbreviacionUnidad(itemOrdenTrabajo.getAbreviacionUnidadMaterial());
                         itemSalidaInventario.setFactor(itemOrdenTrabajo.getFactorUnidadMaterial());
-//                        itemSalidaInventario.setCantidad(itemOrdenTrabajo.getCantidadMaterial() + itemOrdenTrabajo.getCantidadDemasiaMaterial());
-                        itemSalidaInventario.setCantidad(10);
+                        itemSalidaInventario.setCantidad(itemOrdenTrabajo.getCantidadMaterial() + itemOrdenTrabajo.getCantidadDemasiaMaterial());
                         itemSalidaInventario.setPrecio(itemOrdenTrabajo.getPrecioMaterial());
                         itemSalidaInventario.setTotal(itemSalidaInventario.getCantidad() * itemSalidaInventario.getPrecio());
                         itemSalidaInventario.setIdAlmacen(salidaInventario.getIdAlmacen());
                         salidaInventario.getItems().add(itemSalidaInventario);
                     }
-
-                    regSalidaInventario regSalidaInventario = new regSalidaInventario(2, 0);
+                    
+                    regSalidaInventario regSalidaInventario = new regSalidaInventario();
                     regSalidaInventario.setUsuario(getUsuario());
                     regSalidaInventario.setEntidad(salidaInventario);
-                    regSalidaInventario.AsignarControles();
+                    regSalidaInventario.AsignarControlesConStocks();
                     regSalidaInventario.CalcularTotales();
                     getParent().add(regSalidaInventario);
                     regSalidaInventario.setVisible(true);
+                    regSalidaInventario.VerItemsSinStock();
                 }
             } catch (Exception e) {
                 OcultarCargando(frame);
