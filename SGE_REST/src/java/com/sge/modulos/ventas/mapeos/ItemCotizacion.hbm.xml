@@ -20,11 +20,13 @@
         <property name="largoMaximoPliegoMaquina" column="largoMaximoPliegoMaquina"/>
         <property name="altoMaximoPliegoMaquina" column="altoMaximoPliegoMaquina"/>
         <property name="idMaterial" column="idMaterial"/>
+        <property name="codigoMaterial" column="codigoMaterial"/>
         <property name="nombreMaterial" column="nombreMaterial"/>
         <property name="largoMaterial" column="largoMaterial"/>
         <property name="altoMaterial" column="altoMaterial"/>
         <property name="idUnidadMaterial" column="idUnidadMaterial"/>
         <property name="abreviacionUnidadMaterial" column="abreviacionUnidadMaterial"/>
+        <property name="factorUnidadMaterial" column="factorUnidadMaterial"/>
         <property name="unidadMedidaAbierta" column="unidadMedidaAbierta"/>
         <property name="medidaAbierta" column="medidaAbierta"/>
         <property name="medidaCerrada" column="medidaCerrada"/>
@@ -66,6 +68,7 @@
         <property name="cantidadProduccion" column="cantidadProduccion"/>
         <property name="cantidad" column="cantidad"/>
         <property name="cantidadPaginasSobrantes" column="cantidadPaginasSobrantes"/>
+        <property name="observacion" column="observacion"/>
         <property name="incluirEnPresupuesto" column="incluirEnPresupuesto"/>
         <property name="verPrecioEnPresupuesto" column="verPrecioEnPresupuesto"/>
         <property name="totalMaquina" column="totalMaquina"/>

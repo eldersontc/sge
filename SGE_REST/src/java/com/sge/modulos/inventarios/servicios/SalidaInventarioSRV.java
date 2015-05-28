@@ -1,6 +1,7 @@
 package com.sge.modulos.inventarios.servicios;
 
 import com.google.gson.Gson;
+import com.sge.modulos.inventarios.entidades.ItemSalidaInventario;
 import com.sge.modulos.inventarios.entidades.SalidaInventario;
 import com.sge.modulos.inventarios.negocios.SalidaInventarioDTO;
 import java.util.ArrayList;
@@ -95,6 +96,26 @@ public class SalidaInventarioSRV {
             SalidaInventarioDTO salidaInventarioDTO = new SalidaInventarioDTO();
             salidaInventarioDTO.EliminarSalidaInventario(idSalidaInventario);
             resultado.add(new Gson().toJson(true));
+        } catch (Exception e) {
+            resultado.clear();
+            resultado.add(new Gson().toJson(false));
+            resultado.add(new Gson().toJson(e));
+        }
+        return new Gson().toJson(resultado);
+    }
+    
+    @POST
+    @Path("ObtenerStockFisicoItems")
+    @Consumes("application/json")
+    @Produces("application/json")
+    public String ObtenerStockFisicoItems(String json) {
+        List<String> resultado = new ArrayList<>();
+        try {
+            ItemSalidaInventario[] items = new Gson().fromJson(json, ItemSalidaInventario[].class);
+            SalidaInventarioDTO salidaInventarioDTO = new SalidaInventarioDTO();
+            ItemSalidaInventario[] lista = salidaInventarioDTO.ObtenerStockFisicoItems(items);
+            resultado.add(new Gson().toJson(true));
+            resultado.add(new Gson().toJson(lista));
         } catch (Exception e) {
             resultado.clear();
             resultado.add(new Gson().toJson(false));

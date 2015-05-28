@@ -6,6 +6,7 @@ import com.sge.modulos.inventarios.accesoDatos.ItemSalidaInventarioDAO;
 import com.sge.modulos.inventarios.accesoDatos.ProductoAlmacenDAO;
 import com.sge.modulos.inventarios.entidades.SalidaInventario;
 import com.sge.modulos.inventarios.entidades.ItemSalidaInventario;
+import com.sge.modulos.inventarios.entidades.ProductoAlmacen;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -58,14 +59,14 @@ public class SalidaInventarioDTO {
         try {
             salidaInventarioDAO = new SalidaInventarioDAO();
             salidaInventarioDAO.IniciarTransaccion();
-            
+
             numeracionDAO = new NumeracionDAO();
             numeracionDAO.AsignarSesion(salidaInventarioDAO);
-            
-            if(!salidaInventario.isNumeracionManual()){
+
+            if (!salidaInventario.isNumeracionManual()) {
                 salidaInventario.setNumero(numeracionDAO.GenerarNumeracion(salidaInventario.getIdNumeracion()));
             }
-            
+
             salidaInventarioDAO.Agregar(salidaInventario);
 
             itemSalidaInventarioDAO = new ItemSalidaInventarioDAO();
@@ -121,5 +122,26 @@ public class SalidaInventarioDTO {
             salidaInventarioDAO.CerrarSesion();
         }
         return true;
+    }
+
+    public ItemSalidaInventario[] ObtenerStockFisicoItems(ItemSalidaInventario[] items) {
+        try {
+            productoAlmacenDAO = new ProductoAlmacenDAO();
+            productoAlmacenDAO.AbrirSesion();
+            for (ItemSalidaInventario item : items) {
+                List<Object[]> filtros = new ArrayList<>();
+                filtros.add(new Object[]{"idAlmacen", item.getIdAlmacen()});
+                filtros.add(new Object[]{"idProducto", item.getIdProducto()});
+                List<ProductoAlmacen> productoAlmacenes = productoAlmacenDAO.ObtenerLista(ProductoAlmacen.class, filtros);
+                if(!productoAlmacenes.isEmpty()){
+                    item.setCantidadMaxima(productoAlmacenes.get(0).getStockFisico());
+                }
+            }
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            productoAlmacenDAO.CerrarSesion();
+        }
+        return items;
     }
 }

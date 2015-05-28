@@ -21,6 +21,7 @@
         <property name="largo" column="largo"/>
         <property name="idUnidadBase" column="idUnidadBase"/>
         <property name="abreviacionUnidadBase" column="abreviacionUnidadBase"/>
+        <property name="factorUnidadBase" column="factorUnidadBase"/>
         <property name="activo" column="activo"/>
     </class>
 </hibernate-mapping>

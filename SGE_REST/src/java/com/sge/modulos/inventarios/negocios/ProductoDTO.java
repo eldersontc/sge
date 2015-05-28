@@ -110,8 +110,8 @@ public class ProductoDTO {
         try {
             productoDAO = new ProductoDAO();
             productoDAO.IniciarTransaccion();
-            productoDAO.ActualizarProducto(producto.getIdProducto(), producto.getCodigo(), producto.getDescripcion(), producto.isInventarios(), producto.isCompras(), producto.isVentas(), producto.getAlto(), producto.getLargo(), producto.getIdUnidadBase(), producto.getAbreviacionUnidadBase(), producto.isActivo());
-
+            productoDAO.ActualizarProducto(producto);
+            
             productoUnidadDAO = new ProductoUnidadDAO();
             productoUnidadDAO.AsignarSesion(productoDAO);
             for (ProductoUnidad productoUnidad : producto.getUnidades()) {

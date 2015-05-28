@@ -12,7 +12,7 @@ public class SeleccionProducto {
     private int idUnidadBase;
     private String abreviacionUnidadBase;
     private int factorUnidadBase;
-    private int stock;
+    private double stock;
     private double costoUltimaCompra;
     private double costoPromedio;
     private double costoReferencia;
@@ -69,11 +69,11 @@ public class SeleccionProducto {
         this.factorUnidadBase = factorUnidadBase;
     }
 
-    public int getStock() {
+    public double getStock() {
         return stock;
     }
 
-    public void setStock(int stock) {
+    public void setStock(double stock) {
         this.stock = stock;
     }
 

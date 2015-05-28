@@ -12,11 +12,13 @@ public class ItemPlantillaSolicitudCotizacion {
     private int idServicioImpresion;
     private String nombreServicioImpresion;
     private int idMaterial;
+    private String codigoMaterial;
     private String nombreMaterial;
     private double altoMaterial;
     private double largoMaterial;
     private int idUnidadMaterial;
     private String abreviacionUnidadMaterial;
+    private int factorUnidadMaterial;
     private String nombreTipoUnidad;
     private String unidadMedidaAbierta;
     private boolean medidaAbierta;
@@ -82,6 +84,14 @@ public class ItemPlantillaSolicitudCotizacion {
         this.idMaterial = idMaterial;
     }
 
+    public String getCodigoMaterial() {
+        return codigoMaterial;
+    }
+
+    public void setCodigoMaterial(String codigoMaterial) {
+        this.codigoMaterial = codigoMaterial;
+    }
+    
     public String getNombreMaterial() {
         return nombreMaterial;
     }
@@ -120,6 +130,14 @@ public class ItemPlantillaSolicitudCotizacion {
 
     public void setAbreviacionUnidadMaterial(String abreviacionUnidadMaterial) {
         this.abreviacionUnidadMaterial = abreviacionUnidadMaterial;
+    }
+    
+    public int getFactorUnidadMaterial() {
+        return factorUnidadMaterial;
+    }
+
+    public void setFactorUnidadMaterial(int factorUnidadMaterial) {
+        this.factorUnidadMaterial = factorUnidadMaterial;
     }
     
     public String getNombreTipoUnidad() {

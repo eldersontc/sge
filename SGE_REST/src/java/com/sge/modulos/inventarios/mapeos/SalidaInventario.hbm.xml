@@ -22,6 +22,8 @@
         <property name="descripcionAlmacen" column="descripcionAlmacen"/>
         <property name="idMoneda" column="idMoneda"/>
         <property name="simboloMoneda" column="simboloMoneda"/>
+        <property name="idOrdenTrabajo" column="idOrdenTrabajo"/>
+        <property name="numeroOrdenTrabajo" column="numeroOrdenTrabajo"/>
         <property name="observacion" column="observacion"/>
         <property name="tipoCambio" column="tipoCambio"/>
         <property name="subTotal" column="subTotal"/>

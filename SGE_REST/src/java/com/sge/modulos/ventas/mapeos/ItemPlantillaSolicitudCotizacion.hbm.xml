@@ -14,11 +14,13 @@
         <property name="idServicioImpresion" column="idServicioImpresion"/>
         <property name="nombreServicioImpresion" column="nombreServicioImpresion"/>
         <property name="idMaterial" column="idMaterial"/>
+        <property name="codigoMaterial" column="codigoMaterial"/>
         <property name="nombreMaterial" column="nombreMaterial"/>
         <property name="altoMaterial" column="altoMaterial"/>
         <property name="largoMaterial" column="largoMaterial"/>
         <property name="idUnidadMaterial" column="idUnidadMaterial"/>
         <property name="abreviacionUnidadMaterial" column="abreviacionUnidadMaterial"/>
+        <property name="factorUnidadMaterial" column="factorUnidadMaterial"/>
         <property name="unidadMedidaAbierta" column="unidadMedidaAbierta"/>
         <property name="medidaAbierta" column="medidaAbierta"/>
         <property name="medidaCerrada" column="medidaCerrada"/>

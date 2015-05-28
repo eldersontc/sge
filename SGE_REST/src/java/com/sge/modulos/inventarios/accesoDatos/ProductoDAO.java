@@ -31,8 +31,8 @@ public class ProductoDAO extends BaseDAO {
         return super.ObtenerLista(sql, SeleccionProducto.class);
     }
 
-    public int ActualizarProducto(int idProducto, String codigo, String descripcion, boolean inventarios, boolean compras, boolean ventas, double alto, double largo, int idUnidadBase, String abreviacionUnidadBase, boolean activo) {
-        String sql = String.format("UPDATE Inventarios.Producto SET codigo = '%s', descripcion = '%s', inventarios = %b, compras = %b, ventas = %b, alto = %s, largo = %s, idUnidadBase = %d, abreviacionUnidadBase = '%s', activo = %b WHERE idProducto = %d", codigo, descripcion, inventarios, compras, ventas, alto, largo, idUnidadBase, abreviacionUnidadBase, activo, idProducto);
+    public int ActualizarProducto(Producto producto) {
+        String sql = String.format("UPDATE Inventarios.Producto SET codigo = '%s', descripcion = '%s', inventarios = %b, compras = %b, ventas = %b, alto = %s, largo = %s, idUnidadBase = %d, abreviacionUnidadBase = '%s', factorUnidadBase = %d, activo = %b WHERE idProducto = %d", producto.getCodigo(), producto.getDescripcion(), producto.isInventarios(), producto.isCompras(), producto.isVentas(), producto.getAlto(), producto.getLargo(), producto.getIdUnidadBase(), producto.getAbreviacionUnidadBase(), producto.getFactorUnidadBase(), producto.isActivo(), producto.getIdProducto());
         return super.Ejecutar(sql);
     }
 
