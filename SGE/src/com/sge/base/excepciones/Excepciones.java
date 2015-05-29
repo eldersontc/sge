@@ -15,7 +15,7 @@ import java.util.Date;
  */
 public class Excepciones {
 
-    private static void EscribirLog(Throwable throwable) {
+    public static void EscribirLog(Throwable throwable) {
         FileWriter writer = null;
         try {
             writer = new FileWriter("/home/elderson/SGE_LOG.txt", true);
@@ -37,7 +37,7 @@ public class Excepciones {
         }
     }
 
-    private static void EscribirLog(Exception exception) {
+    public static void EscribirLog(Exception exception) {
         FileWriter writer = null;
         try {
             writer = new FileWriter("/home/elderson/SGE_LOG.txt", true);

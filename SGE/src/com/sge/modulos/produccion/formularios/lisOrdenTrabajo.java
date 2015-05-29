@@ -212,6 +212,77 @@ public class lisOrdenTrabajo extends frameBase<OrdenTrabajo> {
         }
     }
 
+    public class swGenerarSalidaCaja extends SwingWorker<Object, Object> {
+        
+        @Override
+        protected Object doInBackground() {
+            VerCargando(frame);
+            cliProduccion cliProduccion = new cliProduccion();
+            try {
+                int idOrdenTrabajo = ObtenerValorCelda(tbOrdenesTrabajo, 1);
+                String json = cliProduccion.GenerarSalidaInventario(new Gson().toJson(new int[]{idOrdenTrabajo, getUsuario().getIdUsuario()}));
+                String[] resultado = new Gson().fromJson(json, String[].class);
+
+                if (resultado[0].equals("true")) {
+                    Date fechaServidor = new Gson().fromJson(resultado[1], Date.class);
+                    OrdenTrabajo ordenTrabajo = new Gson().fromJson(resultado[2], OrdenTrabajo.class);
+                    SalidaInventario salidaInventario = null;
+                    if (resultado[3].isEmpty()) {
+                        salidaInventario = new SalidaInventario();
+                    } else {
+                        salidaInventario = new Gson().fromJson(resultado[3], SalidaInventario.class);
+                    }
+                    
+                    if(salidaInventario.getIdAlmacen() == 0){
+                        throw new Exception("NO SE HA ASIGNADO NINGÚN ALMACEN.");
+                    }
+                    
+                    salidaInventario.setIdCliente(ordenTrabajo.getIdCliente());
+                    salidaInventario.setRazonSocialCliente(ordenTrabajo.getRazonSocialCliente());
+                    salidaInventario.setFechaCreacion(fechaServidor);
+                    salidaInventario.setIdOrdenTrabajo(ordenTrabajo.getIdOrdenTrabajo());
+                    salidaInventario.setNumeroOrdenTrabajo(ordenTrabajo.getNumero());
+
+                    for (ItemOrdenTrabajo itemOrdenTrabajo : ordenTrabajo.getItems()) {
+                        ItemSalidaInventario itemSalidaInventario = new ItemSalidaInventario();
+                        itemSalidaInventario.setIdProducto(itemOrdenTrabajo.getIdMaterial());
+                        itemSalidaInventario.setCodigoProducto(itemOrdenTrabajo.getCodigoMaterial());
+                        itemSalidaInventario.setDescripcionProducto(itemOrdenTrabajo.getNombreMaterial());
+                        itemSalidaInventario.setIdUnidad(itemOrdenTrabajo.getIdUnidadMaterial());
+                        itemSalidaInventario.setAbreviacionUnidad(itemOrdenTrabajo.getAbreviacionUnidadMaterial());
+                        itemSalidaInventario.setFactor(itemOrdenTrabajo.getFactorUnidadMaterial());
+                        itemSalidaInventario.setCantidad(itemOrdenTrabajo.getCantidadMaterial() + itemOrdenTrabajo.getCantidadDemasiaMaterial());
+                        itemSalidaInventario.setPrecio(itemOrdenTrabajo.getPrecioMaterial());
+                        itemSalidaInventario.setTotal(itemSalidaInventario.getCantidad() * itemSalidaInventario.getPrecio());
+                        itemSalidaInventario.setIdAlmacen(salidaInventario.getIdAlmacen());
+                        salidaInventario.getItems().add(itemSalidaInventario);
+                    }
+                    
+                    regSalidaInventario regSalidaInventario = new regSalidaInventario();
+                    regSalidaInventario.setUsuario(getUsuario());
+                    regSalidaInventario.setEntidad(salidaInventario);
+                    regSalidaInventario.AsignarControlesConStocks();
+                    regSalidaInventario.CalcularTotales();
+                    getParent().add(regSalidaInventario);
+                    regSalidaInventario.setVisible(true);
+                    regSalidaInventario.VerItemsSinStock();
+                }
+            } catch (Exception e) {
+                OcultarCargando(frame);
+                cancel(false);
+                ControlarExcepcion(e);
+            } finally {
+                cliProduccion.close();
+            }
+            return null;
+        }
+
+        @Override
+        protected void done() {
+            OcultarCargando(frame);
+        }
+    }
+    
     public void Init(int modo, String filtro) {
         this.modo = modo;
         this.filtro = filtro;
@@ -359,7 +430,7 @@ public class lisOrdenTrabajo extends frameBase<OrdenTrabajo> {
         });
 
         btnGenerarSalidaInventario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sge/base/imagenes/inventarios.png"))); // NOI18N
-        btnGenerarSalidaInventario.setToolTipText("REFRESCAR");
+        btnGenerarSalidaInventario.setToolTipText("GENERAR SALIDA DE INVENTARIO");
         btnGenerarSalidaInventario.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnGenerarSalidaInventarioActionPerformed(evt);
@@ -367,7 +438,7 @@ public class lisOrdenTrabajo extends frameBase<OrdenTrabajo> {
         });
 
         btnGenerarSalidaCaja.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sge/base/imagenes/salida-caja.png"))); // NOI18N
-        btnGenerarSalidaCaja.setToolTipText("REFRESCAR");
+        btnGenerarSalidaCaja.setToolTipText("GENERAR SALIDA DE CAJA");
         btnGenerarSalidaCaja.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnGenerarSalidaCajaActionPerformed(evt);
@@ -484,6 +555,9 @@ public class lisOrdenTrabajo extends frameBase<OrdenTrabajo> {
 
     private void btnGenerarSalidaCajaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarSalidaCajaActionPerformed
         // TODO add your handling code here:
+        if (FilaActiva(tbOrdenesTrabajo)) {
+            new swGenerarSalidaCaja().execute();
+        }
     }//GEN-LAST:event_btnGenerarSalidaCajaActionPerformed
 
 

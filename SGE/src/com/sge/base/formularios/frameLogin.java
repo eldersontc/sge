@@ -5,6 +5,8 @@ import com.sge.base.controles.FabricaControles;
 import com.sge.base.excepciones.Excepciones;
 import com.sge.modulos.administracion.clases.Usuario;
 import com.sge.modulos.administracion.cliente.cliAdministracion;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.Date;
 import javax.swing.SwingWorker;
 
@@ -41,6 +43,11 @@ public class frameLogin extends javax.swing.JInternalFrame {
         this.fechaServidor = fechaServidor;
     }
 
+    public void AsignarNombrePC() throws UnknownHostException{
+        InetAddress host = InetAddress.getLocalHost();
+        this.usuario.setIp(host.getHostName());
+    }
+    
     public class swAutenticar extends SwingWorker<Object, Object> {
 
         @Override
@@ -51,6 +58,27 @@ public class frameLogin extends javax.swing.JInternalFrame {
             try {
                 String filtro = String.format("WHERE Usuario.usuario = '%s'", txtUsuario.getText());
                 json = cliente.ObtenerUsuarios(new Gson().toJson(filtro));
+                String[] resultado = new Gson().fromJson(json, String[].class);
+                if (resultado[0].equals("true")) {
+                    Usuario[] usuarios = new Gson().fromJson(resultado[1], Usuario[].class);
+                    if (usuarios.length == 0) {
+                        throw new Exception("USUARIO NO EXISTE.");
+                    } else {
+                        if (usuarios[0].getClave().equals(txtClave.getText())) {
+                            if (usuarios[0].isConectado()) {
+                                throw new Exception("EL USUARIO YA SE ENCUENTRA CONECTADO.");
+                            } else {
+                                setUsuario(usuarios[0]);
+                                setFechaServidor(new Gson().fromJson(resultado[2], Date.class));
+                                AsignarNombrePC();
+                                cliente.ConectarUsuario(new Gson().toJson(getUsuario()));
+                                setClosed(true);
+                            }
+                        } else {
+                            throw new Exception("CLAVE INCORRECTA.");
+                        }
+                    }
+                }
             } catch (Exception e) {
                 FabricaControles.OcultarProcesando(frame);
                 cancel(false);
@@ -63,30 +91,7 @@ public class frameLogin extends javax.swing.JInternalFrame {
 
         @Override
         protected void done() {
-            try {
-                String json = get().toString();
-                String[] resultado = new Gson().fromJson(json, String[].class);
-                if (resultado[0].equals("true")) {
-                    Usuario[] usuarios = new Gson().fromJson(resultado[1], Usuario[].class);
-                    if (usuarios.length == 0) {
-                        throw new Exception("USUARIO NO EXISTE.");
-                    } else {
-                        if (usuarios[0].getClave().equals(txtClave.getText())) {
-                            setUsuario(usuarios[0]);
-                            setFechaServidor(new Gson().fromJson(resultado[2], Date.class));
-                            setClosed(true);
-                        } else {
-                            throw new Exception("CLAVE INCORRECTA.");
-                        }
-                    }
-                } else {
-                    Excepciones.Controlar(resultado, frame);
-                }
-                FabricaControles.OcultarProcesando(frame);
-            } catch (Exception e) {
-                FabricaControles.OcultarProcesando(frame);
-                Excepciones.Controlar(e, frame);
-            }
+            FabricaControles.OcultarProcesando(frame);
         }
     }
 

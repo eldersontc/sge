@@ -1,7 +1,6 @@
 package com.sge;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.sge.base.controles.FabricaControles;
 import com.sge.base.excepciones.Excepciones;
 import com.sge.base.formularios.frameBase;
@@ -14,11 +13,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.lang.reflect.Constructor;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ImageIcon;
@@ -28,6 +30,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.SwingUtilities;
+import javax.swing.SwingWorker;
 
 /**
  *
@@ -170,11 +173,17 @@ public class SGE extends javax.swing.JFrame {
                 }
                 pnlMenu.setLayout(new BorderLayout());
                 pnlMenu.add(menuBar, BorderLayout.NORTH);
+                
+                int mensajesSinLeer = new Gson().fromJson(resultado[2], int.class);
+                if(mensajesSinLeer > 0){
+                    btnVerMensajes.setText(String.format("(%d)", mensajesSinLeer));
+                }
             }
         } catch (Exception e) {
             Excepciones.Controlar(e, this);
         } finally {
             cliente.close();
+            IniciarServidor();
         }
     }
 
@@ -197,6 +206,76 @@ public class SGE extends javax.swing.JFrame {
         }
     }
 
+    public void DesconectarUsuario() {
+        cliAdministracion cliente = new cliAdministracion();
+        try {
+            cliente.DesconectarUsuario(new Gson().toJson(getUsuario().getIdUsuario()));
+        } catch (Exception e) {
+            cliente.close();
+            Excepciones.EscribirLog(e);
+        } finally {
+            FinalizarServidor();
+        }
+    }
+
+    /////////////////////////// SERVIDOR SOCKET ////////////////////////////////
+    //static ServerSocket variable
+    private static ServerSocket server;
+    //socket server port on which it will listen
+    private static int port = 9876;
+
+    public class swServidor extends SwingWorker<Object, Object> {
+
+        @Override
+        protected Object doInBackground() throws Exception {
+            try {
+                //create the socket server object
+                server = new ServerSocket(port);
+                //keep listens indefinitely until receives 'exit' call or program terminates
+                while (true) {
+                    System.out.println("Waiting for client request");
+                    //creating socket and waiting for client connection
+                    Socket socket = server.accept();
+                    //read from socket to ObjectInputStream object
+                    ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
+                    //convert ObjectInputStream object to String
+                    String message = (String) ois.readObject();
+                    System.out.println("Message Received: " + message);
+                    //create ObjectOutputStream object
+                    ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
+                    //write object to Socket
+                    oos.writeObject("Hi Client " + message);
+                    //close resources
+                    ois.close();
+                    oos.close();
+                    socket.close();
+                    //terminate the server if client sends exit request
+                    if (message.equalsIgnoreCase("exit")) {
+                        break;
+                    }
+                }
+            } catch (Exception e) {
+                Excepciones.EscribirLog(e);
+            }
+            return null;
+        }
+
+    }
+
+    public void IniciarServidor() {
+        new swServidor().execute();
+    }
+
+    public void FinalizarServidor() {
+        try {
+            System.out.println("Shutting down Socket server!!");
+            server.close();
+        } catch (Exception e) {
+            Excepciones.EscribirLog(e);
+        }
+    }
+
+    ////////////////////////////////////////////////////////////////////////////
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -214,10 +293,16 @@ public class SGE extends javax.swing.JFrame {
         txtUsuario = new javax.swing.JLabel();
         lblFecha = new javax.swing.JLabel();
         txtFecha = new javax.swing.JLabel();
+        btnVerMensajes = new javax.swing.JButton();
         pnlMenu = new javax.swing.JPanel();
         jdpPrincipal = new javax.swing.JDesktopPane();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         pnlBanner.setBackground(new java.awt.Color(67, 100, 130));
         pnlBanner.setBorder(null);
@@ -257,36 +342,53 @@ public class SGE extends javax.swing.JFrame {
         txtFecha.setForeground(java.awt.Color.white);
         txtFecha.setText("DD/MM/YYYY");
 
+        btnVerMensajes.setFont(new java.awt.Font("Ubuntu", 1, 15)); // NOI18N
+        btnVerMensajes.setForeground(java.awt.Color.red);
+        btnVerMensajes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sge/base/imagenes/message-2-16.png"))); // NOI18N
+        btnVerMensajes.setToolTipText("");
+        btnVerMensajes.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
+        btnVerMensajes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnVerMensajesActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout pnlBannerLayout = new javax.swing.GroupLayout(pnlBanner);
         pnlBanner.setLayout(pnlBannerLayout);
         pnlBannerLayout.setHorizontalGroup(
             pnlBannerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlBannerLayout.createSequentialGroup()
                 .addGap(45, 45, 45)
-                .addComponent(lblTituloBanner, javax.swing.GroupLayout.DEFAULT_SIZE, 360, Short.MAX_VALUE)
-                .addGap(37, 37, 37)
+                .addComponent(lblTituloBanner, javax.swing.GroupLayout.DEFAULT_SIZE, 468, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblSeparador)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(pnlBannerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(lblUsuario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(lblFecha, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(lblFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(pnlBannerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(txtFecha, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(1, 1, 1)
+                .addComponent(btnVerMensajes, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(32, 32, 32))
         );
         pnlBannerLayout.setVerticalGroup(
             pnlBannerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlBannerLayout.createSequentialGroup()
+            .addComponent(lblTituloBanner, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(lblSeparador, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlBannerLayout.createSequentialGroup()
                 .addContainerGap(18, Short.MAX_VALUE)
-                .addGroup(pnlBannerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(pnlBannerLayout.createSequentialGroup()
-                        .addComponent(btnSalir)
+                .addGroup(pnlBannerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlBannerLayout.createSequentialGroup()
+                        .addGroup(pnlBannerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnSalir)
+                            .addComponent(btnVerMensajes))
                         .addGap(22, 22, 22))
-                    .addGroup(pnlBannerLayout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlBannerLayout.createSequentialGroup()
                         .addGroup(pnlBannerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(txtUsuario)
                             .addComponent(lblUsuario))
@@ -295,8 +397,6 @@ public class SGE extends javax.swing.JFrame {
                             .addComponent(txtFecha)
                             .addComponent(lblFecha))
                         .addGap(16, 16, 16))))
-            .addComponent(lblTituloBanner, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(lblSeparador, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pnlMenu.setBackground(new java.awt.Color(67, 100, 130));
@@ -339,6 +439,7 @@ public class SGE extends javax.swing.JFrame {
     private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
         // TODO add your handling code here:
         OcultarBanner();
+        DesconectarUsuario();
         FabricaControles.VerModal(jdpPrincipal, new frameLogin(), close);
     }//GEN-LAST:event_btnSalirActionPerformed
 
@@ -358,6 +459,15 @@ public class SGE extends javax.swing.JFrame {
             popup.show(pnlBanner, evt.getPoint().x, evt.getPoint().y);
         }
     }//GEN-LAST:event_pnlBannerMouseReleased
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        // TODO add your handling code here:
+        DesconectarUsuario();
+    }//GEN-LAST:event_formWindowClosing
+
+    private void btnVerMensajesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerMensajesActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnVerMensajesActionPerformed
 
     /**
      * @param args the command line arguments
@@ -396,6 +506,7 @@ public class SGE extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnSalir;
+    private javax.swing.JButton btnVerMensajes;
     private javax.swing.JDesktopPane jdpPrincipal;
     private javax.swing.JLabel lblFecha;
     private javax.swing.JLabel lblSeparador;

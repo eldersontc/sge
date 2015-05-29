@@ -12,6 +12,9 @@ public class Usuario {
     private int idPerfil;
     private String nombrePerfil;
     private boolean activo;
+    private boolean conectado;
+    private String ip;
+    private int mensajesSinLeer;
 
     public Usuario() {
     }
@@ -62,5 +65,29 @@ public class Usuario {
 
     public void setActivo(boolean activo) {
         this.activo = activo;
+    }
+
+    public boolean isConectado() {
+        return conectado;
+    }
+
+    public void setConectado(boolean conectado) {
+        this.conectado = conectado;
+    }
+
+    public String getIp() {
+        return ip;
+    }
+
+    public void setIp(String ip) {
+        this.ip = ip;
+    }
+
+    public int getMensajesSinLeer() {
+        return mensajesSinLeer;
+    }
+
+    public void setMensajesSinLeer(int mensajesSinLeer) {
+        this.mensajesSinLeer = mensajesSinLeer;
     }
 }
