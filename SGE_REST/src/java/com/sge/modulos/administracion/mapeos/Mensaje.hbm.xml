@@ -13,5 +13,6 @@
         <property name="idUsuarioDestino" column="idUsuarioDestino"/>
         <property name="fechaEnvio" column="fechaEnvio"/>
         <property name="mensaje" column="mensaje"/>
+        <property name="leido" column="leido"/>
     </class>
 </hibernate-mapping>

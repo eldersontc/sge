@@ -33,10 +33,7 @@ public class MensajeDTO {
         try {
             mensajeDAO = new MensajeDAO();
             mensajeDAO.AbrirSesion();
-            List<Object[]> filtros = new ArrayList<>();
-            filtros.add(new Object[]{"idUsuarioOrigen", idUsuarioOrigen});
-            filtros.add(new Object[]{"idUsuarioDestino", idUsuarioDestino});
-            lista = mensajeDAO.ObtenerLista(Mensaje.class, filtros);
+            lista = mensajeDAO.ObtenerMensajesPorUsuarioOrigenYDestino(idUsuarioOrigen, idUsuarioDestino);
         } catch (Exception e) {
             throw e;
         } finally {

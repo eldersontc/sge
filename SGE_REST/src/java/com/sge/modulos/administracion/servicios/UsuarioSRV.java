@@ -59,7 +59,6 @@ public class UsuarioSRV {
             List<Usuario> lista = usuarioDTO.ObtenerUsuariosConMensajesSinLeer(idUsuarioDestino);
             resultado.add(new Gson().toJson(true));
             resultado.add(new Gson().toJson(lista));
-            resultado.add(new Gson().toJson(new Date()));
         } catch (Exception e) {
             resultado.clear();
             resultado.add(new Gson().toJson(false));

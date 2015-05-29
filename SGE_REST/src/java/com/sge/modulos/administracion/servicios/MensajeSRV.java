@@ -56,6 +56,7 @@ public class MensajeSRV {
             MensajeDTO mensajeDTO = new MensajeDTO();
             mensajeDTO.RegistrarMensaje(mensaje);
             resultado.add(new Gson().toJson(true));
+            resultado.add(new Gson().toJson(mensaje.getFechaEnvio()));
         } catch (Exception e) {
             resultado.clear();
             resultado.add(new Gson().toJson(false));
