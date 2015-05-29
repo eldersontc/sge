@@ -5,6 +5,7 @@ import com.sge.base.controles.FabricaControles;
 import com.sge.base.excepciones.Excepciones;
 import com.sge.base.formularios.frameBase;
 import com.sge.base.formularios.frameLogin;
+import com.sge.modulos.administracion.clases.Mensaje;
 import com.sge.modulos.administracion.clases.Menu;
 import com.sge.modulos.administracion.clases.Usuario;
 import com.sge.modulos.administracion.cliente.cliAdministracion;
@@ -23,6 +24,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
+import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JInternalFrame;
 import javax.swing.JMenu;
@@ -67,6 +69,7 @@ public class SGE extends javax.swing.JFrame {
     public void OcultarBanner() {
         pnlBanner.setVisible(false);
         pnlMenu.setVisible(false);
+        pnlMensajes.setVisible(false);
         for (JInternalFrame frame : jdpPrincipal.getAllFrames()) {
             try {
                 frame.setClosed(true);
@@ -94,6 +97,12 @@ public class SGE extends javax.swing.JFrame {
             }
         }
     };
+
+    private int mensajesSinLeer;
+
+    public void setMensajesSinLeer(int mensajesSinLeer) {
+        this.mensajesSinLeer = mensajesSinLeer;
+    }
 
     public void LlenarMenus(int idUsuario) {
         cliAdministracion cliente = new cliAdministracion();
@@ -173,17 +182,24 @@ public class SGE extends javax.swing.JFrame {
                 }
                 pnlMenu.setLayout(new BorderLayout());
                 pnlMenu.add(menuBar, BorderLayout.NORTH);
-                
+
                 int mensajesSinLeer = new Gson().fromJson(resultado[2], int.class);
-                if(mensajesSinLeer > 0){
-                    btnVerMensajes.setText(String.format("(%d)", mensajesSinLeer));
-                }
+                setMensajesSinLeer(mensajesSinLeer);
+                VerMensajesSinLeer();
             }
         } catch (Exception e) {
             Excepciones.Controlar(e, this);
         } finally {
             cliente.close();
             IniciarServidor();
+        }
+    }
+
+    public void VerMensajesSinLeer() {
+        if (this.mensajesSinLeer > 0) {
+            btnVerMensajes.setText(String.format("(%d)", mensajesSinLeer));
+        } else {
+            btnVerMensajes.setText("");
         }
     }
 
@@ -215,6 +231,109 @@ public class SGE extends javax.swing.JFrame {
             Excepciones.EscribirLog(e);
         } finally {
             FinalizarServidor();
+        }
+    }
+
+    public void VerUsuarios() {
+        cliAdministracion cliente = new cliAdministracion();
+        try {
+            String json = cliente.ObtenerUsuariosConMensajesSinLeer(new Gson().toJson(getUsuario().getIdUsuario()));
+            String[] resultado = new Gson().fromJson(json, String[].class);
+            if (resultado[0].equals("true")) {
+                Usuario[] usuarios = new Gson().fromJson(resultado[1], Usuario[].class);
+                lisUsuarios.removeAll();
+                txtMensajes.setText("");
+                DefaultListModel modelo = new DefaultListModel();
+                for (Usuario usuario : usuarios) {
+                    modelo.addElement(usuario);
+                }
+                lisUsuarios.setModel(modelo);
+                pnlMensajes.setVisible(true);
+            }
+        } catch (Exception e) {
+            Excepciones.EscribirLog(e);
+        } finally {
+            cliente.close();
+        }
+    }
+
+    SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
+    SimpleDateFormat formatoHoras = new SimpleDateFormat("kk:mm:ss");
+
+    private String fecha = "";
+    private String conversacion = "";
+    
+    private Usuario usuarioOrigen;
+
+    public void setUsuarioOrigen(Usuario usuario) {
+        this.usuarioOrigen = usuario;
+    }
+
+    public Usuario getUsuarioOrigen() {
+        return usuarioOrigen;
+    }
+
+    public void AgregarMensaje(Mensaje mensaje) {
+        String fecha_ = formatoFecha.format(mensaje.getFechaEnvio());
+        if (!fecha.equals(fecha_)) {
+            conversacion += "<b>" + fecha_ + "</b><br>";
+            fecha = fecha_;
+        }
+        String remitente = (mensaje.getIdUsuarioOrigen() == getUsuario().getIdUsuario()) ? "YO" : getUsuarioOrigen().getUsuario();
+        String hora = formatoHoras.format(mensaje.getFechaEnvio());
+        conversacion += "<b>" + remitente + " " + hora + " : </b><br>";
+        conversacion += mensaje.getMensaje() + "<br>";
+    }
+
+    public void VerMensajes() {
+        cliAdministracion cliente = new cliAdministracion();
+        try {
+            Mensaje mensaje_ = new Mensaje();
+            mensaje_.setIdUsuarioOrigen(getUsuarioOrigen().getIdUsuario());
+            mensaje_.setIdUsuarioDestino(getUsuario().getIdUsuario());
+            String json = cliente.ObtenerMensajesPorUsuarioOrigenYDestino(new Gson().toJson(mensaje_));
+            String[] resultado = new Gson().fromJson(json, String[].class);
+            if (resultado[0].equals("true")) {
+                Mensaje[] mensajes = new Gson().fromJson(resultado[1], Mensaje[].class);
+                conversacion = "";
+                for (Mensaje mensaje : mensajes) {
+                    AgregarMensaje(mensaje);
+                }
+                txtMensajes.setText(conversacion);
+                if (usuarioOrigen.getMensajesSinLeer() > 0) {
+                    cliente.CambiarALeido(new Gson().toJson(mensaje_));
+                    this.mensajesSinLeer -= usuarioOrigen.getMensajesSinLeer();
+                    VerMensajesSinLeer();
+                    usuarioOrigen.setMensajesSinLeer(0);
+                }
+            }
+        } catch (Exception e) {
+            Excepciones.EscribirLog(e);
+        } finally {
+            cliente.close();
+        }
+    }
+
+    public void EnviarMensaje() {
+        cliAdministracion cliente = new cliAdministracion();
+        try {
+            Mensaje mensaje = new Mensaje();
+            mensaje.setIdUsuarioOrigen(getUsuario().getIdUsuario());
+            mensaje.setIdUsuarioDestino(getUsuarioOrigen().getIdUsuario());
+            mensaje.setMensaje(txtMensaje.getText());
+            String json = cliente.RegistrarMensaje(new Gson().toJson(mensaje));
+            String[] resultado = new Gson().fromJson(json, String[].class);
+            if (resultado[0].equals("true")) {
+                Date fechaEnvio = new Gson().fromJson(resultado[1], Date.class);
+                mensaje.setFechaEnvio(fechaEnvio);
+                AgregarMensaje(mensaje);
+                txtMensajes.setText(conversacion);
+                txtMensaje.setText("");
+            }
+        } catch (Exception e) {
+            Excepciones.EscribirLog(e);
+        } finally {
+            cliente.close();
         }
     }
 
@@ -296,6 +415,16 @@ public class SGE extends javax.swing.JFrame {
         btnVerMensajes = new javax.swing.JButton();
         pnlMenu = new javax.swing.JPanel();
         jdpPrincipal = new javax.swing.JDesktopPane();
+        pnlMensajes = new javax.swing.JPanel();
+        pnlTitulo = new javax.swing.JPanel();
+        lblTitulo = new javax.swing.JLabel();
+        btnOcultarMensajes = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        lisUsuarios = new javax.swing.JList();
+        txtMensaje = new javax.swing.JTextField();
+        btnEnviarMensaje = new javax.swing.JButton();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        txtMensajes = new javax.swing.JEditorPane();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -415,13 +544,103 @@ public class SGE extends javax.swing.JFrame {
 
         jdpPrincipal.setBorder(null);
 
+        pnlMensajes.setBackground(java.awt.Color.white);
+        pnlMensajes.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
+        pnlTitulo.setBackground(new java.awt.Color(67, 100, 130));
+        pnlTitulo.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
+        lblTitulo.setFont(new java.awt.Font("Ubuntu", 1, 18)); // NOI18N
+        lblTitulo.setForeground(java.awt.Color.white);
+        lblTitulo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sge/base/imagenes/message-3-16.png"))); // NOI18N
+        lblTitulo.setText("MENSAJES");
+
+        btnOcultarMensajes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sge/base/imagenes/close-window-16.png"))); // NOI18N
+        btnOcultarMensajes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnOcultarMensajesActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout pnlTituloLayout = new javax.swing.GroupLayout(pnlTitulo);
+        pnlTitulo.setLayout(pnlTituloLayout);
+        pnlTituloLayout.setHorizontalGroup(
+            pnlTituloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlTituloLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(lblTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(27, 27, 27)
+                .addComponent(btnOcultarMensajes, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+        pnlTituloLayout.setVerticalGroup(
+            pnlTituloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlTituloLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(pnlTituloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnOcultarMensajes)
+                    .addComponent(lblTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        lisUsuarios.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                lisUsuariosValueChanged(evt);
+            }
+        });
+        jScrollPane1.setViewportView(lisUsuarios);
+
+        btnEnviarMensaje.setText(">>");
+        btnEnviarMensaje.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEnviarMensajeActionPerformed(evt);
+            }
+        });
+
+        txtMensajes.setContentType("text/html"); // NOI18N
+        jScrollPane4.setViewportView(txtMensajes);
+
+        javax.swing.GroupLayout pnlMensajesLayout = new javax.swing.GroupLayout(pnlMensajes);
+        pnlMensajes.setLayout(pnlMensajesLayout);
+        pnlMensajesLayout.setHorizontalGroup(
+            pnlMensajesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(pnlTitulo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(pnlMensajesLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(pnlMensajesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addGroup(pnlMensajesLayout.createSequentialGroup()
+                        .addComponent(txtMensaje, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnEnviarMensaje, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane4))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        pnlMensajesLayout.setVerticalGroup(
+            pnlMensajesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlMensajesLayout.createSequentialGroup()
+                .addComponent(pnlTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 54, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 113, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(pnlMensajesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btnEnviarMensaje, javax.swing.GroupLayout.DEFAULT_SIZE, 49, Short.MAX_VALUE)
+                    .addComponent(txtMensaje))
+                .addContainerGap())
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(pnlBanner, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(pnlMenu, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jdpPrincipal, javax.swing.GroupLayout.Alignment.TRAILING)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(pnlMensajes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(2, 2, 2)
+                .addComponent(jdpPrincipal))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -429,8 +648,9 @@ public class SGE extends javax.swing.JFrame {
                 .addComponent(pnlBanner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
                 .addComponent(pnlMenu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0)
-                .addComponent(jdpPrincipal, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(pnlMensajes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jdpPrincipal)))
         );
 
         pack();
@@ -467,7 +687,28 @@ public class SGE extends javax.swing.JFrame {
 
     private void btnVerMensajesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerMensajesActionPerformed
         // TODO add your handling code here:
+        VerUsuarios();
     }//GEN-LAST:event_btnVerMensajesActionPerformed
+
+    private void btnOcultarMensajesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOcultarMensajesActionPerformed
+        // TODO add your handling code here:
+        pnlMensajes.setVisible(false);
+    }//GEN-LAST:event_btnOcultarMensajesActionPerformed
+
+    private void lisUsuariosValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_lisUsuariosValueChanged
+        // TODO add your handling code here:
+        if (lisUsuarios.getSelectedValue() != null) {
+            setUsuarioOrigen((Usuario) lisUsuarios.getSelectedValue());
+            VerMensajes();
+        }
+    }//GEN-LAST:event_lisUsuariosValueChanged
+
+    private void btnEnviarMensajeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEnviarMensajeActionPerformed
+        // TODO add your handling code here:
+        if (lisUsuarios.getSelectedValue() != null) {
+            EnviarMensaje();
+        }
+    }//GEN-LAST:event_btnEnviarMensajeActionPerformed
 
     /**
      * @param args the command line arguments
@@ -505,16 +746,26 @@ public class SGE extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnEnviarMensaje;
+    private javax.swing.JButton btnOcultarMensajes;
     private javax.swing.JButton btnSalir;
     private javax.swing.JButton btnVerMensajes;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JDesktopPane jdpPrincipal;
     private javax.swing.JLabel lblFecha;
     private javax.swing.JLabel lblSeparador;
+    private javax.swing.JLabel lblTitulo;
     private javax.swing.JLabel lblTituloBanner;
     private javax.swing.JLabel lblUsuario;
+    private javax.swing.JList lisUsuarios;
     private javax.swing.JPanel pnlBanner;
+    private javax.swing.JPanel pnlMensajes;
     private javax.swing.JPanel pnlMenu;
+    private javax.swing.JPanel pnlTitulo;
     private javax.swing.JLabel txtFecha;
+    private javax.swing.JTextField txtMensaje;
+    private javax.swing.JEditorPane txtMensajes;
     private javax.swing.JLabel txtUsuario;
     // End of variables declaration//GEN-END:variables
 }

@@ -90,4 +90,9 @@ public class Usuario {
     public void setMensajesSinLeer(int mensajesSinLeer) {
         this.mensajesSinLeer = mensajesSinLeer;
     }
+    
+    @Override
+    public String toString(){
+        return String.format("%s (%d)", getUsuario(), getMensajesSinLeer());
+    }
 }
