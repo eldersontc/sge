@@ -262,7 +262,7 @@ public class SGE extends javax.swing.JFrame {
 
     private String fecha = "";
     private String conversacion = "";
-    
+
     private Usuario usuarioOrigen;
 
     public void setUsuarioOrigen(Usuario usuario) {
@@ -327,6 +327,7 @@ public class SGE extends javax.swing.JFrame {
                 Date fechaEnvio = new Gson().fromJson(resultado[1], Date.class);
                 mensaje.setFechaEnvio(fechaEnvio);
                 AgregarMensaje(mensaje);
+                EnviarMensajeSocket(new Gson().toJson(mensaje));
                 txtMensajes.setText(conversacion);
                 txtMensaje.setText("");
             }
@@ -334,6 +335,64 @@ public class SGE extends javax.swing.JFrame {
             Excepciones.EscribirLog(e);
         } finally {
             cliente.close();
+        }
+    }
+
+    public void EnviarMensajeSocket(String json) {
+        try {
+            //establish socket connection to server
+            Socket socket = new Socket(getUsuarioOrigen().getIp(), 9876);
+            //write to socket using ObjectOutputStream
+            ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
+            System.out.println("Sending request to Socket Server");
+            oos.writeObject(json);
+            //close resources
+            oos.close();
+        } catch (Exception e) {
+            Excepciones.EscribirLog(e);
+        }
+    }
+
+    public void CambiarALeido(Mensaje mensaje) {
+        cliAdministracion cliente = new cliAdministracion();
+        try {
+            cliente.CambiarALeido(mensaje);
+        } catch (Exception e) {
+            Excepciones.EscribirLog(e);
+        } finally {
+            cliente.close();
+        }
+    }
+    
+    public void VerNuevoMensaje(String json) {
+        Mensaje mensaje = new Gson().fromJson(json, Mensaje.class);
+        if (pnlMensajes.isVisible()) {
+            if (getUsuarioOrigen() != null) {
+                if (getUsuarioOrigen().getIdUsuario() == mensaje.getIdUsuarioOrigen()) {
+                    CambiarALeido(mensaje);
+                    AgregarMensaje(mensaje);
+                    txtMensajes.setText(conversacion);
+                } else {
+                    for (int i = 0; i < lisUsuarios.getModel().getSize(); i++) {
+                        Usuario usuario = (Usuario) lisUsuarios.getModel().getElementAt(i);
+                        if (usuario.getIdUsuario() == mensaje.getIdUsuarioOrigen()) {
+                            usuario.setMensajesSinLeer(usuario.getMensajesSinLeer() + 1);
+                            lisUsuarios.updateUI();
+                        }
+                    }
+                }
+            } else {
+                for (int i = 0; i < lisUsuarios.getModel().getSize(); i++) {
+                    Usuario usuario = (Usuario) lisUsuarios.getModel().getElementAt(i);
+                    if (usuario.getIdUsuario() == mensaje.getIdUsuarioOrigen()) {
+                        usuario.setMensajesSinLeer(usuario.getMensajesSinLeer() + 1);
+                        lisUsuarios.updateUI();
+                    }
+                }
+            }
+        } else {
+            this.mensajesSinLeer++;
+            VerMensajesSinLeer();
         }
     }
 
@@ -358,27 +417,17 @@ public class SGE extends javax.swing.JFrame {
                     //read from socket to ObjectInputStream object
                     ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
                     //convert ObjectInputStream object to String
-                    String message = (String) ois.readObject();
-                    System.out.println("Message Received: " + message);
-                    //create ObjectOutputStream object
-                    ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
-                    //write object to Socket
-                    oos.writeObject("Hi Client " + message);
+                    String json = (String) ois.readObject();
+                    VerNuevoMensaje(json);
                     //close resources
                     ois.close();
-                    oos.close();
                     socket.close();
-                    //terminate the server if client sends exit request
-                    if (message.equalsIgnoreCase("exit")) {
-                        break;
-                    }
                 }
             } catch (Exception e) {
                 Excepciones.EscribirLog(e);
             }
             return null;
         }
-
     }
 
     public void IniciarServidor() {
@@ -693,6 +742,7 @@ public class SGE extends javax.swing.JFrame {
     private void btnOcultarMensajesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOcultarMensajesActionPerformed
         // TODO add your handling code here:
         pnlMensajes.setVisible(false);
+        usuarioOrigen = null;
     }//GEN-LAST:event_btnOcultarMensajesActionPerformed
 
     private void lisUsuariosValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_lisUsuariosValueChanged
