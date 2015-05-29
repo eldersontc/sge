@@ -1,9 +1,8 @@
 package com.sge.modulos.administracion.servicios;
 
 import com.google.gson.Gson;
-import com.sge.modulos.administracion.entidades.Menu;
+import com.sge.modulos.administracion.entidades.Mensaje;
 import com.sge.modulos.administracion.negocios.MensajeDTO;
-import com.sge.modulos.administracion.negocios.MenuDTO;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ws.rs.Consumes;
@@ -17,48 +16,25 @@ import javax.ws.rs.core.UriInfo;
  *
  * @author elderson
  */
-@Path("MenuSRV")
-public class MenuSRV {
+@Path("MensajeSRV")
+public class MensajeSRV {
     
     @Context
     private UriInfo context;
 
-    public MenuSRV() {
+    public MensajeSRV() {
     }
-
+    
     @POST
-    @Path("ObtenerMenusPorUsuario")
+    @Path("ObtenerMensajesPorUsuarioOrigenYDestino")
     @Consumes("application/json")
     @Produces("application/json")
-    public String ObtenerMenusPorUsuario(String json) {
+    public String ObtenerMensajesPorUsuarioOrigenYDestino(String json) {
         List<String> resultado = new ArrayList<>();
-        int idUsuario = new Gson().fromJson(json, int.class);
         try {
-            MenuDTO menuDTO = new MenuDTO();
-            List<Menu> lista = menuDTO.ObtenerMenusPorUsuario(idUsuario);
+            Mensaje mensaje = new Gson().fromJson(json, Mensaje.class);
             MensajeDTO mensajeDTO = new MensajeDTO();
-            int mensajesSinLeer = mensajeDTO.ObtenerMensajesSinLeer(idUsuario);
-            resultado.add(new Gson().toJson(true));
-            resultado.add(new Gson().toJson(lista));
-            resultado.add(new Gson().toJson(mensajesSinLeer));
-        } catch (Exception e) {
-            resultado.clear();
-            resultado.add(new Gson().toJson(false));
-            resultado.add(new Gson().toJson(e));
-        }
-        return new Gson().toJson(resultado);
-    }
-    
-    @POST
-    @Path("ObtenerMenusPorPerfil")
-    @Consumes("application/json")
-    @Produces("application/json")
-    public String ObtenerMenusPorPerfil(String json) {
-        List<String> resultado = new ArrayList<>();
-        int idPerfil = new Gson().fromJson(json, int.class);
-        try {
-            MenuDTO menuDTO = new MenuDTO();
-            List<Menu> lista = menuDTO.ObtenerMenusPorPerfil(idPerfil);
+            List<Mensaje> lista = mensajeDTO.ObtenerMensajesPorUsuarioOrigenYDestino(mensaje.getIdUsuarioOrigen(), mensaje.getIdUsuarioDestino());
             resultado.add(new Gson().toJson(true));
             resultado.add(new Gson().toJson(lista));
         } catch (Exception e) {
@@ -70,17 +46,34 @@ public class MenuSRV {
     }
     
     @POST
-    @Path("ActualizarPermisos")
+    @Path("RegistrarMensaje")
     @Consumes("application/json")
     @Produces("application/json")
-    public String ActualizarPermisos(String json) {
+    public String RegistrarMensaje(String json) {
         List<String> resultado = new ArrayList<>();
-        String[] arrayJson = new Gson().fromJson(json, String[].class);
-        Menu[] menus = new Gson().fromJson(arrayJson[0], Menu[].class);
-        int idPerfil = new Gson().fromJson(arrayJson[1], int.class);
+        Mensaje mensaje = new Gson().fromJson(json, Mensaje.class);
         try {
-            MenuDTO menuDTO = new MenuDTO();
-            menuDTO.ActualizarPermisos(menus, idPerfil);
+            MensajeDTO mensajeDTO = new MensajeDTO();
+            mensajeDTO.RegistrarMensaje(mensaje);
+            resultado.add(new Gson().toJson(true));
+        } catch (Exception e) {
+            resultado.clear();
+            resultado.add(new Gson().toJson(false));
+            resultado.add(new Gson().toJson(e));
+        }
+        return new Gson().toJson(resultado);
+    }
+    
+    @POST
+    @Path("CambiarALeido")
+    @Consumes("application/json")
+    @Produces("application/json")
+    public String CambiarALeido(String json) {
+        List<String> resultado = new ArrayList<>();
+        Mensaje mensaje = new Gson().fromJson(json, Mensaje.class);
+        try {
+            MensajeDTO mensajeDTO = new MensajeDTO();
+            mensajeDTO.CambiarALeido(mensaje.getIdUsuarioOrigen(), mensaje.getIdUsuarioDestino());
             resultado.add(new Gson().toJson(true));
         } catch (Exception e) {
             resultado.clear();

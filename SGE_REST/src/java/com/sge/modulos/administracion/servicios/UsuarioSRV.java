@@ -48,6 +48,27 @@ public class UsuarioSRV {
     }
     
     @POST
+    @Path("ObtenerUsuariosConMensajesSinLeer")
+    @Consumes("application/json")
+    @Produces("application/json")
+    public String ObtenerUsuariosConMensajesSinLeer(String json) {
+        List<String> resultado = new ArrayList<>();
+        try {
+            int idUsuarioDestino = new Gson().fromJson(json, int.class);
+            UsuarioDTO usuarioDTO = new UsuarioDTO();
+            List<Usuario> lista = usuarioDTO.ObtenerUsuariosConMensajesSinLeer(idUsuarioDestino);
+            resultado.add(new Gson().toJson(true));
+            resultado.add(new Gson().toJson(lista));
+            resultado.add(new Gson().toJson(new Date()));
+        } catch (Exception e) {
+            resultado.clear();
+            resultado.add(new Gson().toJson(false));
+            resultado.add(new Gson().toJson(e));
+        }
+        return new Gson().toJson(resultado);
+    }
+    
+    @POST
     @Path("RegistrarUsuario")
     @Consumes("application/json")
     @Produces("application/json")

@@ -3,7 +3,6 @@ package com.sge.modulos.administracion.negocios;
 import com.sge.modulos.administracion.accesoDatos.MensajeDAO;
 import com.sge.modulos.administracion.accesoDatos.UsuarioDAO;
 import com.sge.modulos.administracion.entidades.Usuario;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -34,14 +33,15 @@ public class UsuarioDTO {
         try {
             usuarioDAO = new UsuarioDAO();
             usuarioDAO.AbrirSesion();
-            
+
             mensajeDAO = new MensajeDAO();
-            mensajeDAO.AbrirSesion();
+            mensajeDAO.AsignarSesion(usuarioDAO);
             
             lista = usuarioDAO.ObtenerUsuarios(String.format("WHERE Usuario.idUsuario NOT IN (%d)", idUsuarioDestino));
             
             for (Usuario usuario : lista) {
-                
+                int mensajesSinLeer = mensajeDAO.ObtenerMensajesSinLeer(usuario.getIdUsuario(), idUsuarioDestino);
+                usuario.setMensajesSinLeer(mensajesSinLeer);
             }
         } catch (Exception e) {
             throw e;
@@ -50,7 +50,7 @@ public class UsuarioDTO {
         }
         return lista;
     }
-    
+
     public boolean RegistrarUsuario(Usuario usuario) {
         try {
             usuarioDAO = new UsuarioDAO();
@@ -95,7 +95,7 @@ public class UsuarioDTO {
         }
         return true;
     }
-    
+
     public boolean ConectarUsuario(Usuario usuario) {
         try {
             usuarioDAO = new UsuarioDAO();
@@ -110,7 +110,7 @@ public class UsuarioDTO {
         }
         return true;
     }
-    
+
     public boolean DesconectarUsuario(int idUsuario) {
         try {
             usuarioDAO = new UsuarioDAO();
