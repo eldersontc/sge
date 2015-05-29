@@ -23,6 +23,16 @@ public class UsuarioDAO extends BaseDAO {
         return super.Ejecutar(sql);
     }
 
+    public int ConectarUsuario(int idUsuario, String ip) {
+        String sql = String.format("UPDATE Administracion.Usuario SET conectado = TRUE ,ip = '%s' WHERE idUsuario = %d", ip, idUsuario);
+        return super.Ejecutar(sql);
+    }
+
+    public int DesconectarUsuario(int idUsuario) {
+        String sql = String.format("UPDATE Administracion.Usuario SET conectado = FALSE WHERE idUsuario = %d", idUsuario);
+        return super.Ejecutar(sql);
+    }
+
     public int EliminarUsuario(int idUsuario) {
         String sql = "DELETE FROM Administracion.Usuario WHERE idUsuario = " + idUsuario;
         return super.Ejecutar(sql);

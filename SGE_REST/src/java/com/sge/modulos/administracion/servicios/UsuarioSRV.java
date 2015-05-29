@@ -103,4 +103,42 @@ public class UsuarioSRV {
         }
         return new Gson().toJson(resultado);
     }
+    
+    @POST
+    @Path("ConectarUsuario")
+    @Consumes("application/json")
+    @Produces("application/json")
+    public String ConectarUsuario(String json) {
+        List<String> resultado = new ArrayList<>();
+        Usuario usuario = new Gson().fromJson(json, Usuario.class);
+        try {
+            UsuarioDTO usuarioDTO = new UsuarioDTO();
+            usuarioDTO.ConectarUsuario(usuario);
+            resultado.add(new Gson().toJson(true));
+        } catch (Exception e) {
+            resultado.clear();
+            resultado.add(new Gson().toJson(false));
+            resultado.add(new Gson().toJson(e));
+        }
+        return new Gson().toJson(resultado);
+    }
+    
+    @POST
+    @Path("DesconectarUsuario")
+    @Consumes("application/json")
+    @Produces("application/json")
+    public String DesconectarUsuario(String json) {
+        List<String> resultado = new ArrayList<>();
+        int idUsuario = new Gson().fromJson(json, int.class);
+        try {
+            UsuarioDTO usuarioDTO = new UsuarioDTO();
+            usuarioDTO.DesconectarUsuario(idUsuario);
+            resultado.add(new Gson().toJson(true));
+        } catch (Exception e) {
+            resultado.clear();
+            resultado.add(new Gson().toJson(false));
+            resultado.add(new Gson().toJson(e));
+        }
+        return new Gson().toJson(resultado);
+    }
 }

@@ -14,5 +14,7 @@
         <property name="idPerfil" column="idPerfil"/>
         <property name="nombrePerfil" column="nombrePerfil"/>
         <property name="activo" column="activo"/>
+        <property name="conectado" column="conectado" insert="false"/>
+        <property name="ip" column="ip" insert="false"/>
     </class>
 </hibernate-mapping>
