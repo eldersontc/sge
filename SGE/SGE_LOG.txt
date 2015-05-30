@@ -1,0 +1,63 @@
+05/29/2015 17:20:54 : java.lang.NullPointerException : null 
+05/29/2015 17:20:54 : java.lang.NullPointerException : null 
+05/29/2015 17:21:29 : java.net.PlainSocketImpl : socketConnect : -2 
+05/29/2015 17:21:30 : java.net.AbstractPlainSocketImpl : doConnect : 345 
+05/29/2015 17:21:32 : java.net.AbstractPlainSocketImpl : connectToAddress : 206 
+05/29/2015 17:21:33 : java.net.AbstractPlainSocketImpl : connect : 188 
+05/29/2015 17:21:34 : java.net.SocksSocketImpl : connect : 392 
+05/29/2015 17:21:35 : java.net.Socket : connect : 589 
+05/29/2015 17:21:36 : sun.net.NetworkClient : doConnect : 175 
+05/29/2015 17:21:37 : sun.net.www.http.HttpClient : openServer : 432 
+05/29/2015 17:21:38 : sun.net.www.http.HttpClient : openServer : 527 
+05/29/2015 17:21:39 : sun.net.www.http.HttpClient : <init> : 211 
+05/29/2015 17:21:40 : sun.net.www.http.HttpClient : New : 308 
+05/29/2015 17:21:40 : sun.net.www.http.HttpClient : New : 326 
+05/29/2015 17:21:41 : sun.net.www.protocol.http.HttpURLConnection : getNewHttpClient : 1168 
+05/29/2015 17:21:42 : sun.net.www.protocol.http.HttpURLConnection : plainConnect0 : 1104 
+05/29/2015 17:21:42 : sun.net.www.protocol.http.HttpURLConnection : plainConnect : 998 
+05/29/2015 17:21:43 : sun.net.www.protocol.http.HttpURLConnection : connect : 932 
+05/29/2015 17:21:44 : sun.net.www.protocol.http.HttpURLConnection : getOutputStream0 : 1282 
+05/29/2015 17:21:44 : sun.net.www.protocol.http.HttpURLConnection : getOutputStream : 1257 
+05/29/2015 17:21:45 : org.glassfish.jersey.client.HttpUrlConnector$3 : getOutputStream : 267 
+05/29/2015 17:21:46 : org.glassfish.jersey.message.internal.CommittingOutputStream : commitStream : 200 
+05/29/2015 17:21:49 : org.glassfish.jersey.message.internal.CommittingOutputStream : commitStream : 194 
+05/29/2015 17:21:49 : org.glassfish.jersey.message.internal.CommittingOutputStream : write : 228 
+05/29/2015 17:21:49 : sun.nio.cs.StreamEncoder : writeBytes : 221 
+05/29/2015 17:21:49 : sun.nio.cs.StreamEncoder : implFlushBuffer : 291 
+05/29/2015 17:21:49 : sun.nio.cs.StreamEncoder : implFlush : 295 
+05/29/2015 17:21:49 : sun.nio.cs.StreamEncoder : flush : 141 
+05/29/2015 17:21:49 : java.io.OutputStreamWriter : flush : 229 
+05/29/2015 17:21:49 : java.io.BufferedWriter : flush : 254 
+05/29/2015 17:21:49 : org.glassfish.jersey.message.internal.ReaderWriter : writeToAsString : 192 
+05/29/2015 17:21:49 : org.glassfish.jersey.message.internal.AbstractMessageReaderWriterProvider : writeToAsString : 129 
+05/29/2015 17:21:49 : org.glassfish.jersey.message.internal.StringMessageProvider : writeTo : 99 
+05/29/2015 17:21:49 : org.glassfish.jersey.message.internal.StringMessageProvider : writeTo : 59 
+05/29/2015 17:21:49 : org.glassfish.jersey.message.internal.WriterInterceptorExecutor$TerminalWriterInterceptor : invokeWriteTo : 243 
+05/29/2015 17:21:49 : org.glassfish.jersey.message.internal.WriterInterceptorExecutor$TerminalWriterInterceptor : aroundWriteTo : 230 
+05/29/2015 17:21:49 : org.glassfish.jersey.message.internal.WriterInterceptorExecutor : proceed : 149 
+05/29/2015 17:21:49 : org.glassfish.jersey.message.internal.MessageBodyFactory : writeTo : 1139 
+05/29/2015 17:21:49 : org.glassfish.jersey.client.ClientRequest : writeEntity : 495 
+05/29/2015 17:21:49 : org.glassfish.jersey.client.HttpUrlConnector : _apply : 270 
+05/29/2015 17:21:49 : org.glassfish.jersey.client.HttpUrlConnector : apply : 182 
+05/29/2015 17:21:49 : org.glassfish.jersey.client.ClientRuntime : invoke : 227 
+05/29/2015 17:21:49 : org.glassfish.jersey.client.JerseyInvocation$2 : call : 671 
+05/29/2015 17:21:49 : org.glassfish.jersey.internal.Errors : process : 315 
+05/29/2015 17:21:49 : org.glassfish.jersey.internal.Errors : process : 297 
+05/29/2015 17:21:49 : org.glassfish.jersey.internal.Errors : process : 228 
+05/29/2015 17:21:49 : org.glassfish.jersey.process.internal.RequestScope : runInScope : 422 
+05/29/2015 17:21:49 : org.glassfish.jersey.client.JerseyInvocation : invoke : 667 
+05/29/2015 17:21:49 : org.glassfish.jersey.client.JerseyInvocation$Builder : method : 423 
+05/29/2015 17:21:49 : org.glassfish.jersey.client.JerseyInvocation$Builder : post : 326 
+05/29/2015 17:21:49 : com.sge.modulos.administracion.cliente.cliAdministracion : ObtenerUsuarios : 52 
+05/29/2015 17:21:49 : com.sge.base.formularios.frameLogin$swAutenticar : doInBackground : 60 
+05/29/2015 17:21:49 : javax.swing.SwingWorker$1 : call : 295 
+05/29/2015 17:21:49 : java.util.concurrent.FutureTask : run : 266 
+05/29/2015 17:21:49 : javax.swing.SwingWorker : run : 334 
+05/29/2015 17:21:49 : java.util.concurrent.ThreadPoolExecutor : runWorker : 1142 
+05/29/2015 17:21:49 : java.util.concurrent.ThreadPoolExecutor$Worker : run : 617 
+05/29/2015 17:21:49 : java.lang.Thread : run : 745 
+05/29/2015 19:44:46 : java.net.UnknownHostException : ALMACEN-PC 
+05/29/2015 19:47:34 : java.net.UnknownHostException : ALMACEN-PC 
+05/29/2015 19:51:45 : java.lang.Exception : EL USUARIO YA SE ENCUENTRA CONECTADO. 
+05/29/2015 19:53:58 : java.net.UnknownHostException : ALMACEN-PC 
+05/29/2015 20:00:49 : java.lang.Exception : EL USUARIO YA SE ENCUENTRA CONECTADO. 

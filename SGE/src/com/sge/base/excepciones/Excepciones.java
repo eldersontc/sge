@@ -18,7 +18,7 @@ public class Excepciones {
     public static void EscribirLog(Throwable throwable) {
         FileWriter writer = null;
         try {
-            writer = new FileWriter("/home/elderson/SGE_LOG.txt", true);
+            writer = new FileWriter(System.getProperty("user.dir") + "/SGE_LOG.txt", true);
             if (throwable.getStackTrace().length == 0) {
                 DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
                 writer.append(String.format("%s : %s \n", df.format(new Date()), throwable.getMessage()));
@@ -36,11 +36,11 @@ public class Excepciones {
             }
         }
     }
-
+    
     public static void EscribirLog(Exception exception) {
         FileWriter writer = null;
         try {
-            writer = new FileWriter("/home/elderson/SGE_LOG.txt", true);
+            writer = new FileWriter(System.getProperty("user.dir") + "/SGE_LOG.txt", true);
             DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
             writer.append(String.format("%s : %s : %s \n", df.format(new Date()), exception.getClass().getName(), exception.getMessage()));
         } catch (Exception e) {

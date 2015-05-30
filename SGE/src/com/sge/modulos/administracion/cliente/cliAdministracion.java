@@ -19,7 +19,7 @@ import javax.ws.rs.client.WebTarget;
 public class cliAdministracion {
 
     private Client client;
-    private static final String BASE_URI = "http://localhost:8084/SGE_REST//Servicios";
+    private static final String BASE_URI = "http://192.168.1.35:8084/SGE_REST//Servicios";
 
     public cliAdministracion() {
         client = javax.ws.rs.client.ClientBuilder.newClient();

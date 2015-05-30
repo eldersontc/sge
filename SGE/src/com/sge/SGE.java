@@ -227,9 +227,9 @@ public class SGE extends javax.swing.JFrame {
         try {
             cliente.DesconectarUsuario(new Gson().toJson(getUsuario().getIdUsuario()));
         } catch (Exception e) {
-            cliente.close();
             Excepciones.EscribirLog(e);
         } finally {
+            cliente.close();
             FinalizarServidor();
         }
     }

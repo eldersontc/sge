@@ -43,9 +43,9 @@ public class frameLogin extends javax.swing.JInternalFrame {
         this.fechaServidor = fechaServidor;
     }
 
-    public void AsignarNombrePC() throws UnknownHostException{
+    public void AsignarIp() throws UnknownHostException{
         InetAddress host = InetAddress.getLocalHost();
-        this.usuario.setIp(host.getHostName());
+        this.usuario.setIp(host.getHostAddress());
     }
     
     public class swAutenticar extends SwingWorker<Object, Object> {
@@ -70,7 +70,7 @@ public class frameLogin extends javax.swing.JInternalFrame {
                             } else {
                                 setUsuario(usuarios[0]);
                                 setFechaServidor(new Gson().fromJson(resultado[2], Date.class));
-                                AsignarNombrePC();
+                                AsignarIp();
                                 cliente.ConectarUsuario(new Gson().toJson(getUsuario()));
                                 setClosed(true);
                             }
