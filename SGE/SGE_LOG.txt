@@ -61,3 +61,90 @@
 05/29/2015 19:51:45 : java.lang.Exception : EL USUARIO YA SE ENCUENTRA CONECTADO. 
 05/29/2015 19:53:58 : java.net.UnknownHostException : ALMACEN-PC 
 05/29/2015 20:00:49 : java.lang.Exception : EL USUARIO YA SE ENCUENTRA CONECTADO. 
+05/30/2015 12:51:43 : java.net.SocketException : Socket closed 
+05/30/2015 12:52:21 : java.net.SocketException : Socket closed 
+05/30/2015 12:52:35 : java.net.SocketException : Socket closed 
+05/31/2015 11:13:19 : sun.net.www.protocol.http.HttpURLConnection : setRequestProperty : 3013 
+05/31/2015 11:13:19 : org.glassfish.jersey.client.HttpUrlConnector : setOutboundHeaders : 292 
+05/31/2015 11:13:19 : org.glassfish.jersey.client.HttpUrlConnector : access$100 : 83 
+05/31/2015 11:13:19 : org.glassfish.jersey.client.HttpUrlConnector$3 : getOutputStream : 266 
+05/31/2015 11:13:19 : org.glassfish.jersey.message.internal.CommittingOutputStream : commitStream : 200 
+05/31/2015 11:13:19 : org.glassfish.jersey.message.internal.CommittingOutputStream : commitStream : 194 
+05/31/2015 11:13:19 : org.glassfish.jersey.message.internal.CommittingOutputStream : commit : 262 
+05/31/2015 11:13:19 : org.glassfish.jersey.message.internal.OutboundMessageContext : commitStream : 812 
+05/31/2015 11:13:19 : org.glassfish.jersey.client.ClientRequest : writeEntity : 526 
+05/31/2015 11:13:19 : org.glassfish.jersey.client.HttpUrlConnector : _apply : 270 
+05/31/2015 11:13:19 : org.glassfish.jersey.client.HttpUrlConnector : apply : 182 
+05/31/2015 11:13:19 : org.glassfish.jersey.client.ClientRuntime : invoke : 227 
+05/31/2015 11:13:19 : org.glassfish.jersey.client.JerseyInvocation$2 : call : 671 
+05/31/2015 11:13:19 : org.glassfish.jersey.internal.Errors : process : 315 
+05/31/2015 11:13:19 : org.glassfish.jersey.internal.Errors : process : 297 
+05/31/2015 11:13:19 : org.glassfish.jersey.internal.Errors : process : 228 
+05/31/2015 11:13:19 : org.glassfish.jersey.process.internal.RequestScope : runInScope : 422 
+05/31/2015 11:13:19 : org.glassfish.jersey.client.JerseyInvocation : invoke : 667 
+05/31/2015 11:13:19 : org.glassfish.jersey.client.JerseyInvocation$Builder : method : 423 
+05/31/2015 11:13:19 : org.glassfish.jersey.client.JerseyInvocation$Builder : post : 326 
+05/31/2015 11:13:19 : com.sge.modulos.administracion.cliente.cliAdministracion : ObtenerUsuarios : 52 
+05/31/2015 11:13:19 : com.sge.base.formularios.frameLogin$swAutenticar : doInBackground : 60 
+05/31/2015 11:13:19 : javax.swing.SwingWorker$1 : call : 295 
+05/31/2015 11:13:19 : java.util.concurrent.FutureTask : run : 266 
+05/31/2015 11:13:19 : javax.swing.SwingWorker : run : 334 
+05/31/2015 11:13:19 : java.util.concurrent.ThreadPoolExecutor : runWorker : 1142 
+05/31/2015 11:13:19 : java.util.concurrent.ThreadPoolExecutor$Worker : run : 617 
+05/31/2015 11:13:19 : java.lang.Thread : run : 745 
+05/31/2015 11:13:47 : sun.net.www.protocol.http.HttpURLConnection : setRequestProperty : 3013 
+05/31/2015 11:13:47 : org.glassfish.jersey.client.HttpUrlConnector : setOutboundHeaders : 292 
+05/31/2015 11:13:47 : org.glassfish.jersey.client.HttpUrlConnector : access$100 : 83 
+05/31/2015 11:13:47 : org.glassfish.jersey.client.HttpUrlConnector$3 : getOutputStream : 266 
+05/31/2015 11:13:47 : org.glassfish.jersey.message.internal.CommittingOutputStream : commitStream : 200 
+05/31/2015 11:13:47 : org.glassfish.jersey.message.internal.CommittingOutputStream : commitStream : 194 
+05/31/2015 11:13:47 : org.glassfish.jersey.message.internal.CommittingOutputStream : commit : 262 
+05/31/2015 11:13:47 : org.glassfish.jersey.message.internal.OutboundMessageContext : commitStream : 812 
+05/31/2015 11:13:47 : org.glassfish.jersey.client.ClientRequest : writeEntity : 526 
+05/31/2015 11:13:47 : org.glassfish.jersey.client.HttpUrlConnector : _apply : 270 
+05/31/2015 11:13:47 : org.glassfish.jersey.client.HttpUrlConnector : apply : 182 
+05/31/2015 11:13:47 : org.glassfish.jersey.client.ClientRuntime : invoke : 227 
+05/31/2015 11:13:47 : org.glassfish.jersey.client.JerseyInvocation$2 : call : 671 
+05/31/2015 11:13:47 : org.glassfish.jersey.internal.Errors : process : 315 
+05/31/2015 11:13:47 : org.glassfish.jersey.internal.Errors : process : 297 
+05/31/2015 11:13:47 : org.glassfish.jersey.internal.Errors : process : 228 
+05/31/2015 11:13:47 : org.glassfish.jersey.process.internal.RequestScope : runInScope : 422 
+05/31/2015 11:13:47 : org.glassfish.jersey.client.JerseyInvocation : invoke : 667 
+05/31/2015 11:13:47 : org.glassfish.jersey.client.JerseyInvocation$Builder : method : 423 
+05/31/2015 11:13:47 : org.glassfish.jersey.client.JerseyInvocation$Builder : post : 326 
+05/31/2015 11:13:47 : com.sge.modulos.administracion.cliente.cliAdministracion : ObtenerUsuarios : 52 
+05/31/2015 11:13:47 : com.sge.base.formularios.frameLogin$swAutenticar : doInBackground : 60 
+05/31/2015 11:13:47 : javax.swing.SwingWorker$1 : call : 295 
+05/31/2015 11:13:47 : java.util.concurrent.FutureTask : run : 266 
+05/31/2015 11:13:47 : javax.swing.SwingWorker : run : 334 
+05/31/2015 11:13:47 : java.util.concurrent.ThreadPoolExecutor : runWorker : 1142 
+05/31/2015 11:13:47 : java.util.concurrent.ThreadPoolExecutor$Worker : run : 617 
+05/31/2015 11:13:47 : java.lang.Thread : run : 745 
+05/31/2015 11:13:57 : java.lang.NullPointerException : null 
+05/31/2015 11:13:57 : java.lang.NullPointerException : null 
+05/31/2015 11:18:25 : java.net.SocketException : Socket closed 
+05/31/2015 11:18:55 : java.net.SocketException : Socket closed 
+05/31/2015 11:19:09 : javax.ws.rs.InternalServerErrorException : HTTP 500 Error Interno del Servidor 
+05/31/2015 11:19:39 : javax.ws.rs.InternalServerErrorException : HTTP 500 Error Interno del Servidor 
+05/31/2015 11:24:19 : java.net.SocketException : Socket closed 
+05/31/2015 11:27:31 : java.net.SocketException : Socket closed 
+05/31/2015 11:47:34 : java.net.SocketException : Socket closed 
+05/31/2015 11:48:29 : javax.ws.rs.InternalServerErrorException : HTTP 500 Error Interno del Servidor 
+05/31/2015 11:48:43 : java.net.SocketException : Socket closed 
+05/31/2015 11:58:10 : javax.ws.rs.InternalServerErrorException : HTTP 500 Error Interno del Servidor 
+05/31/2015 11:58:35 : javax.ws.rs.InternalServerErrorException : HTTP 500 Error Interno del Servidor 
+05/31/2015 11:58:46 : javax.ws.rs.InternalServerErrorException : HTTP 500 Error Interno del Servidor 
+05/31/2015 11:58:51 : javax.ws.rs.InternalServerErrorException : HTTP 500 Error Interno del Servidor 
+05/31/2015 11:58:57 : javax.ws.rs.InternalServerErrorException : HTTP 500 Error Interno del Servidor 
+05/31/2015 11:59:30 : java.net.SocketException : Socket closed 
+05/31/2015 12:01:07 : javax.ws.rs.InternalServerErrorException : HTTP 500 Error Interno del Servidor 
+05/31/2015 12:01:36 : java.net.SocketException : Socket closed 
+05/31/2015 12:13:05 : java.net.SocketException : Socket closed 
+05/31/2015 12:25:05 : javax.ws.rs.InternalServerErrorException : HTTP 500 Error Interno del Servidor 
+05/31/2015 12:26:15 : javax.ws.rs.InternalServerErrorException : HTTP 500 Error Interno del Servidor 
+05/31/2015 12:26:54 : java.net.SocketException : Socket closed 
+05/31/2015 12:27:15 : javax.ws.rs.InternalServerErrorException : HTTP 500 Error Interno del Servidor 
+05/31/2015 12:27:34 : java.net.SocketException : Socket closed 
+05/31/2015 12:28:31 : javax.ws.rs.InternalServerErrorException : HTTP 500 Error Interno del Servidor 
+05/31/2015 12:28:43 : java.net.SocketException : Socket closed 
+05/31/2015 12:29:39 : java.net.SocketException : Socket closed 

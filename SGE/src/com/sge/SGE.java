@@ -14,6 +14,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.lang.reflect.Constructor;
@@ -33,6 +34,9 @@ import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.html.HTMLDocument;
+import javax.swing.text.html.HTMLEditorKit;
 
 /**
  *
@@ -197,9 +201,11 @@ public class SGE extends javax.swing.JFrame {
 
     public void VerMensajesSinLeer() {
         if (this.mensajesSinLeer > 0) {
-            btnVerMensajes.setText(String.format("(%d)", mensajesSinLeer));
+            btnVerMensajes.setText(String.format("(%d)", this.mensajesSinLeer));
+            btnVerMensajes.setToolTipText(String.format("TIENES (%d) MENSAJE(S) NUEVO(S)", this.mensajesSinLeer));
         } else {
             btnVerMensajes.setText("");
+            btnVerMensajes.setToolTipText("NO HAY NUEVOS MENSAJES");
         }
     }
 
@@ -261,7 +267,6 @@ public class SGE extends javax.swing.JFrame {
     SimpleDateFormat formatoHoras = new SimpleDateFormat("kk:mm:ss");
 
     private String fecha = "";
-    private String conversacion = "";
 
     private Usuario usuarioOrigen;
 
@@ -273,16 +278,23 @@ public class SGE extends javax.swing.JFrame {
         return usuarioOrigen;
     }
 
-    public void AgregarMensaje(Mensaje mensaje) {
+    public void AgregarMensaje(Mensaje mensaje) throws BadLocationException, IOException {
+
+        HTMLEditorKit kit = (HTMLEditorKit) txtMensajes.getEditorKit();
+        HTMLDocument html = (HTMLDocument) txtMensajes.getDocument();
+
         String fecha_ = formatoFecha.format(mensaje.getFechaEnvio());
+
         if (!fecha.equals(fecha_)) {
-            conversacion += "<b>" + fecha_ + "</b><br>";
+            kit.insertHTML(html, html.getLength(), "<b>" + fecha_ + "</b><br>", 0, 0, null);
             fecha = fecha_;
         }
+
         String remitente = (mensaje.getIdUsuarioOrigen() == getUsuario().getIdUsuario()) ? "YO" : getUsuarioOrigen().getUsuario();
         String hora = formatoHoras.format(mensaje.getFechaEnvio());
-        conversacion += "<b>" + remitente + " " + hora + " : </b><br>";
-        conversacion += mensaje.getMensaje() + "<br>";
+
+        kit.insertHTML(html, html.getLength(), "<b>" + remitente + " " + hora + " : </b><br>", 0, 0, null);
+        kit.insertHTML(html, html.getLength(), mensaje.getMensaje() + "<br>", 0, 0, null);
     }
 
     public void VerMensajes() {
@@ -295,11 +307,10 @@ public class SGE extends javax.swing.JFrame {
             String[] resultado = new Gson().fromJson(json, String[].class);
             if (resultado[0].equals("true")) {
                 Mensaje[] mensajes = new Gson().fromJson(resultado[1], Mensaje[].class);
-                conversacion = "";
+                txtMensajes.setText("");
                 for (Mensaje mensaje : mensajes) {
                     AgregarMensaje(mensaje);
                 }
-                txtMensajes.setText(conversacion);
                 if (usuarioOrigen.getMensajesSinLeer() > 0) {
                     cliente.CambiarALeido(new Gson().toJson(mensaje_));
                     this.mensajesSinLeer -= usuarioOrigen.getMensajesSinLeer();
@@ -328,7 +339,6 @@ public class SGE extends javax.swing.JFrame {
                 mensaje.setFechaEnvio(fechaEnvio);
                 AgregarMensaje(mensaje);
                 EnviarMensajeSocket(new Gson().toJson(mensaje));
-                txtMensajes.setText(conversacion);
                 txtMensaje.setText("");
             }
         } catch (Exception e) {
@@ -363,15 +373,15 @@ public class SGE extends javax.swing.JFrame {
             cliente.close();
         }
     }
-    
-    public void VerNuevoMensaje(String json) {
+
+    public void VerNuevoMensaje(String json) throws BadLocationException, IOException {
         Mensaje mensaje = new Gson().fromJson(json, Mensaje.class);
         if (pnlMensajes.isVisible()) {
             if (getUsuarioOrigen() != null) {
                 if (getUsuarioOrigen().getIdUsuario() == mensaje.getIdUsuarioOrigen()) {
                     CambiarALeido(mensaje);
                     AgregarMensaje(mensaje);
-                    txtMensajes.setText(conversacion);
+                    txtMensajes.setCaretPosition(txtMensajes.getDocument().getLength());
                 } else {
                     for (int i = 0; i < lisUsuarios.getModel().getSize(); i++) {
                         Usuario usuario = (Usuario) lisUsuarios.getModel().getElementAt(i);
@@ -616,8 +626,8 @@ public class SGE extends javax.swing.JFrame {
         pnlTituloLayout.setHorizontalGroup(
             pnlTituloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlTituloLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(lblTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(21, 21, 21)
+                .addComponent(lblTitulo, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
                 .addGap(27, 27, 27)
                 .addComponent(btnOcultarMensajes, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -628,8 +638,10 @@ public class SGE extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(pnlTituloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnOcultarMensajes)
-                    .addComponent(lblTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(pnlTituloLayout.createSequentialGroup()
+                        .addComponent(lblTitulo, javax.swing.GroupLayout.DEFAULT_SIZE, 33, Short.MAX_VALUE)
+                        .addGap(7, 7, 7)))
+                .addContainerGap())
         );
 
         lisUsuarios.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
@@ -656,14 +668,14 @@ public class SGE extends javax.swing.JFrame {
             .addComponent(pnlTitulo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(pnlMensajesLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(pnlMensajesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(pnlMensajesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                     .addGroup(pnlMensajesLayout.createSequentialGroup()
-                        .addComponent(txtMensaje, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtMensaje, javax.swing.GroupLayout.DEFAULT_SIZE, 168, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnEnviarMensaje, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane4))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         pnlMensajesLayout.setVerticalGroup(
             pnlMensajesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
