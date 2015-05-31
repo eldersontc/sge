@@ -240,6 +240,22 @@ public class SGE extends javax.swing.JFrame {
         }
     }
 
+    ////////////////////////////// MENSAJES ////////////////////////////////////
+    SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
+    SimpleDateFormat formatoHoras = new SimpleDateFormat("kk:mm:ss");
+
+    private String fecha = "";
+
+    private Usuario usuarioOrigen;
+
+    public void setUsuarioOrigen(Usuario usuario) {
+        this.usuarioOrigen = usuario;
+    }
+
+    public Usuario getUsuarioOrigen() {
+        return usuarioOrigen;
+    }
+
     public void VerUsuarios() {
         cliAdministracion cliente = new cliAdministracion();
         try {
@@ -261,21 +277,6 @@ public class SGE extends javax.swing.JFrame {
         } finally {
             cliente.close();
         }
-    }
-
-    SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
-    SimpleDateFormat formatoHoras = new SimpleDateFormat("kk:mm:ss");
-
-    private String fecha = "";
-
-    private Usuario usuarioOrigen;
-
-    public void setUsuarioOrigen(Usuario usuario) {
-        this.usuarioOrigen = usuario;
-    }
-
-    public Usuario getUsuarioOrigen() {
-        return usuarioOrigen;
     }
 
     public void AgregarMensaje(Mensaje mensaje) throws BadLocationException, IOException {
@@ -406,6 +407,7 @@ public class SGE extends javax.swing.JFrame {
         }
     }
 
+    ////////////////////////////////////////////////////////////////////////////
     /////////////////////////// SERVIDOR SOCKET ////////////////////////////////
     //static ServerSocket variable
     private static ServerSocket server;
