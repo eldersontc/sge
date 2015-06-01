@@ -180,3 +180,9 @@
 05/31/2015 21:26:49 : java.lang.Thread : run : 745 
 05/31/2015 21:29:38 : java.net.SocketException : Socket closed 
 05/31/2015 21:35:24 : java.net.SocketException : Socket closed 
+05/31/2015 21:58:47 : javax.ws.rs.InternalServerErrorException : HTTP 500 Error Interno del Servidor 
+05/31/2015 21:58:56 : java.lang.NullPointerException : null 
+05/31/2015 21:58:57 : java.lang.NullPointerException : null 
+05/31/2015 22:06:53 : javax.ws.rs.InternalServerErrorException : HTTP 500 Error Interno del Servidor 
+05/31/2015 22:09:26 : javax.ws.rs.InternalServerErrorException : HTTP 500 Error Interno del Servidor 
+05/31/2015 22:10:07 : javax.ws.rs.InternalServerErrorException : HTTP 500 Error Interno del Servidor 

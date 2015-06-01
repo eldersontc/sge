@@ -1,5 +1,6 @@
 package com.sge.modulos.produccion.cliente;
 
+import com.sge.base.cliente.cliBase;
 import com.sge.base.excepciones.Excepciones;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -21,7 +22,7 @@ import javax.ws.rs.client.WebTarget;
  *
  * @author elderson
  */
-public class cliProduccion {
+public class cliProduccion extends cliBase {
 
     private Client client;
     private String BASE_URI;
@@ -29,21 +30,6 @@ public class cliProduccion {
     public cliProduccion() {
         client = javax.ws.rs.client.ClientBuilder.newClient();
         BASE_URI = "http://" + getIpServidor() + "/SGE_REST//Servicios";
-    }
-
-    public String getIpServidor() {
-        Properties prop = new Properties();
-        InputStream input = null;
-        String ipServidor = null;
-        try {
-            input = new FileInputStream(System.getProperty("user.dir") + "/SGE_CONF/config.properties");
-            prop.load(input);
-            ipServidor = prop.getProperty("ipServidor");
-            input.close();
-        } catch (IOException ex) {
-            Excepciones.EscribirLog(ex);
-        }
-        return ipServidor;
     }
 
     ////////////////////////////// ORDEN TRABAJO ///////////////////////////////
@@ -76,13 +62,13 @@ public class cliProduccion {
         resource = resource.path("EliminarOrdenTrabajo");
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
     }
-    
+
     public String GenerarSalidaInventario(Object requestEntity) throws ClientErrorException {
         WebTarget resource = client.target(BASE_URI).path("OrdenTrabajoSRV");
         resource = resource.path("GenerarSalidaInventario");
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
     }
-    
+
     public String GenerarSalidaCaja(Object requestEntity) throws ClientErrorException {
         WebTarget resource = client.target(BASE_URI).path("OrdenTrabajoSRV");
         resource = resource.path("GenerarSalidaCaja");

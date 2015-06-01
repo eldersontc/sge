@@ -1,10 +1,6 @@
 package com.sge.modulos.compras.cliente;
 
-import com.sge.base.excepciones.Excepciones;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Properties;
+import com.sge.base.cliente.cliBase;
 import javax.ws.rs.ClientErrorException;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.WebTarget;
@@ -21,7 +17,7 @@ import javax.ws.rs.client.WebTarget;
  *
  * @author elderson
  */
-public class cliCompras {
+public class cliCompras extends cliBase {
 
     private Client client;
     private String BASE_URI;
@@ -29,21 +25,6 @@ public class cliCompras {
     public cliCompras() {
         client = javax.ws.rs.client.ClientBuilder.newClient();
         BASE_URI = "http://" + getIpServidor() + "/SGE_REST//Servicios";
-    }
-
-    public String getIpServidor() {
-        Properties prop = new Properties();
-        InputStream input = null;
-        String ipServidor = null;
-        try {
-            input = new FileInputStream(System.getProperty("user.dir") + "/SGE_CONF/config.properties");
-            prop.load(input);
-            ipServidor = prop.getProperty("ipServidor");
-            input.close();
-        } catch (IOException ex) {
-            Excepciones.EscribirLog(ex);
-        }
-        return ipServidor;
     }
 
     ///////////////////////////////// PROVEEDOR ////////////////////////////////
