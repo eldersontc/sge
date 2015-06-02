@@ -186,3 +186,8 @@
 05/31/2015 22:06:53 : javax.ws.rs.InternalServerErrorException : HTTP 500 Error Interno del Servidor 
 05/31/2015 22:09:26 : javax.ws.rs.InternalServerErrorException : HTTP 500 Error Interno del Servidor 
 05/31/2015 22:10:07 : javax.ws.rs.InternalServerErrorException : HTTP 500 Error Interno del Servidor 
+05/31/2015 22:25:25 : javax.ws.rs.InternalServerErrorException : HTTP 500 Error Interno del Servidor 
+05/31/2015 22:25:51 : java.net.SocketException : Socket closed 
+05/31/2015 22:30:59 : java.net.SocketException : Socket closed 
+05/31/2015 22:31:33 : java.net.SocketException : Socket closed 
+06/01/2015 00:08:59 : java.net.SocketException : Socket closed 
