@@ -1,5 +1,6 @@
 package com.sge.modulos.administracion.negocios;
 
+import com.sge.base.negocios.BaseDTO;
 import com.sge.modulos.administracion.accesoDatos.ItemReporteDAO;
 import com.sge.modulos.administracion.accesoDatos.ReporteDAO;
 import com.sge.modulos.administracion.entidades.ItemReporte;
@@ -17,7 +18,7 @@ import net.sf.jasperreports.engine.JasperPrint;
  *
  * @author elderson
  */
-public class ReporteDTO {
+public class ReporteDTO extends BaseDTO {
 
     ReporteDAO reporteDAO;
     ItemReporteDAO itemReporteDAO;
@@ -150,8 +151,7 @@ public class ReporteDTO {
                 }
             }
             
-            String carpetaReportes = "/home/elderson/REPORTES/";
-            JasperPrint jasperPrint = JasperFillManager.fillReport(carpetaReportes + reporte.getUbicacion(), parametros, reporteDAO.getConexion());
+            JasperPrint jasperPrint = JasperFillManager.fillReport(getCarpetaReportes() + reporte.getUbicacion(), parametros, reporteDAO.getConexion());
             ByteArrayOutputStream out = new ByteArrayOutputStream();
             ObjectOutputStream os = new ObjectOutputStream(out);
             os.writeObject(jasperPrint);
@@ -185,8 +185,7 @@ public class ReporteDTO {
                 parametros.put(item.getNombre(), item.getValor());
             }
             
-            String carpetaReportes = "/home/elderson/REPORTES/";
-            JasperPrint jasperPrint = JasperFillManager.fillReport(carpetaReportes + reporte.getUbicacion(), parametros, reporteDAO.getConexion());
+            JasperPrint jasperPrint = JasperFillManager.fillReport(getCarpetaReportes() + reporte.getUbicacion(), parametros, reporteDAO.getConexion());
             ByteArrayOutputStream out = new ByteArrayOutputStream();
             ObjectOutputStream os = new ObjectOutputStream(out);
             os.writeObject(jasperPrint);

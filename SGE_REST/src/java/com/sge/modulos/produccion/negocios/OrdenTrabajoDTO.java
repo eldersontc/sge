@@ -1,5 +1,6 @@
 package com.sge.modulos.produccion.negocios;
 
+import com.sge.base.negocios.BaseDTO;
 import com.sge.modulos.administracion.accesoDatos.NumeracionDAO;
 import com.sge.modulos.produccion.accesoDatos.ItemOrdenTrabajoDAO;
 import com.sge.modulos.produccion.accesoDatos.OrdenTrabajoDAO;
@@ -18,7 +19,7 @@ import javax.imageio.ImageIO;
  *
  * @author elderson
  */
-public class OrdenTrabajoDTO {
+public class OrdenTrabajoDTO extends BaseDTO {
     
     OrdenTrabajoDAO ordenTrabajoDAO;
     ItemOrdenTrabajoDAO itemOrdenTrabajoDAO;
@@ -52,8 +53,6 @@ public class OrdenTrabajoDTO {
             servicioOrdenTrabajoDAO = new ServicioOrdenTrabajoDAO();
             servicioOrdenTrabajoDAO.AsignarSesion(ordenTrabajoDAO);
             
-            String carpetaGraficos = "/home/elderson/GRAFICOS/";
-            
             List<Object[]> filtros = new ArrayList<>();
             filtros.add(new Object[]{"idOrdenTrabajo", idOrdenTrabajo});
             List<ItemOrdenTrabajo> items = itemOrdenTrabajoDAO.ObtenerLista(ItemOrdenTrabajo.class, filtros);
@@ -67,14 +66,14 @@ public class OrdenTrabajoDTO {
                 item.setAcabados(acabados);
                 
                 if (item.getUbicacionGraficoPrecorte() != null && !item.getUbicacionGraficoPrecorte().isEmpty()) {
-                    BufferedImage grafico = ImageIO.read(new File(carpetaGraficos + item.getUbicacionGraficoPrecorte()));
+                    BufferedImage grafico = ImageIO.read(new File(getCarpetaGraficos() + item.getUbicacionGraficoPrecorte()));
                     ByteArrayOutputStream arrayBytesOut = new ByteArrayOutputStream();
                     ImageIO.write(grafico, "jpg", arrayBytesOut);
                     item.setGraficoPrecorte(arrayBytesOut.toByteArray());
                 }
                 
                 if (item.getUbicacionGraficoImpresion() != null && !item.getUbicacionGraficoImpresion().isEmpty()) {
-                    BufferedImage grafico = ImageIO.read(new File(carpetaGraficos + item.getUbicacionGraficoImpresion()));
+                    BufferedImage grafico = ImageIO.read(new File(getCarpetaGraficos() + item.getUbicacionGraficoImpresion()));
                     ByteArrayOutputStream arrayBytesOut = new ByteArrayOutputStream();
                     ImageIO.write(grafico, "jpg", arrayBytesOut);
                     item.setGraficoImpresion(arrayBytesOut.toByteArray());

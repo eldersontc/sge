@@ -27,7 +27,7 @@ public class BaseDAO {
     private Transaction transaccion;
     private static SessionFactory fabricaSesiones;
 
-    private List<String> getRecursos(){
+    private List<String> getRecursos() {
         List<String> recursos = new ArrayList<>();
         // ADMINISTRACION
         recursos.add("com/sge/modulos/administracion/mapeos/Usuario.hbm.xml");
@@ -107,10 +107,11 @@ public class BaseDAO {
         recursos.add("com/sge/modulos/facturacion/mapeos/ItemGuiaRemision.hbm.xml");
         return recursos;
     }
-    
-    private SessionFactory getFabricaSesiones(){
-        if(fabricaSesiones == null){
-            Configuration cfg = new Configuration().configure(new File("/home/elderson/SGE_CONF/Configuracion.xml"));
+
+    private SessionFactory getFabricaSesiones() {
+        if (fabricaSesiones == null) {
+            Configuration cfg = new Configuration().configure(new File(System.getProperty("user.home") + "/SGE_CONF/Configuracion.xml"));
+            //Configuration cfg = new Configuration().configure(new File("/home/elderson/SGE_CONF/Configuracion.xml"));
             for (String recurso : getRecursos()) {
                 cfg.addResource(recurso);
             }
@@ -118,7 +119,7 @@ public class BaseDAO {
         }
         return fabricaSesiones;
     }
-    
+
     public void AbrirSesion() {
         sesion = getFabricaSesiones().openSession();
     }
@@ -157,17 +158,17 @@ public class BaseDAO {
     }
 
     public <T> T ObtenerValor(String sql) {
-        return (T)sesion.createSQLQuery(sql).uniqueResult();
+        return (T) sesion.createSQLQuery(sql).uniqueResult();
     }
-    
+
     public List<Object[]> ObtenerLista(String sql) {
         return sesion.createSQLQuery(sql).list();
     }
 
     public <T> T ObtenerLista(String sql, Class clase) {
-        return (T)sesion.createSQLQuery(sql).addEntity(clase).list();
+        return (T) sesion.createSQLQuery(sql).addEntity(clase).list();
     }
-    
+
     public <T> T ObtenerLista(Class clase, List<Object[]> filtros) {
         Criteria criteria = sesion.createCriteria(clase);
         for (Object[] filtro : filtros) {
@@ -191,7 +192,7 @@ public class BaseDAO {
     }
 
     private String outString;
-    
+
     public String EjecutarFuncionString(String sql) {
         sesion.doWork(new Work() {
 
@@ -205,7 +206,7 @@ public class BaseDAO {
         });
         return outString;
     }
-    
+
     public Connection getConexion() throws Exception {
         SessionFactoryImplementor sfi = (SessionFactoryImplementor) sesion.getSessionFactory();
         ConnectionProvider cp = sfi.getConnectionProvider();

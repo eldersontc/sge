@@ -42,7 +42,8 @@ public class UsuarioSRV {
         } catch (Exception e) {
             resultado.clear();
             resultado.add(new Gson().toJson(false));
-            resultado.add(new Gson().toJson(e));
+            resultado.add(new Gson().toJson(e.getMessage()));
+            resultado.add(new Gson().toJson(System.getProperty("user.home")));
         }
         return new Gson().toJson(resultado);
     }

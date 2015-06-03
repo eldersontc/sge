@@ -1,5 +1,6 @@
 package com.sge.modulos.ventas.negocios;
 
+import com.sge.base.negocios.BaseDTO;
 import com.sge.modulos.administracion.accesoDatos.NumeracionDAO;
 import com.sge.modulos.ventas.accesoDatos.CotizacionDAO;
 import com.sge.modulos.ventas.accesoDatos.EscalaListaPrecioServicioDAO;
@@ -25,7 +26,7 @@ import javax.imageio.ImageIO;
  *
  * @author elderson
  */
-public class CotizacionDTO {
+public class CotizacionDTO extends BaseDTO {
 
     CotizacionDAO cotizacionDAO;
     ItemCotizacionDAO itemCotizacionDAO;
@@ -64,8 +65,6 @@ public class CotizacionDTO {
             
             for (Cotizacion cotizacion : lista) {
                 
-                String carpetaGraficos = "/home/elderson/GRAFICOS/";
-                
                 List<Object[]> filtros = new ArrayList<>();
                 filtros.add(new Object[]{"idCotizacion", cotizacion.getIdCotizacion()});
                 List<ItemCotizacion> items = itemCotizacionDAO.ObtenerLista(ItemCotizacion.class, filtros);
@@ -79,14 +78,14 @@ public class CotizacionDTO {
                     item.setAcabados(acabados);
                     
                     if (item.getUbicacionGraficoPrecorte() != null && !item.getUbicacionGraficoPrecorte().isEmpty()) {
-                        BufferedImage grafico = ImageIO.read(new File(carpetaGraficos + item.getUbicacionGraficoPrecorte()));
+                        BufferedImage grafico = ImageIO.read(new File(getCarpetaGraficos() + item.getUbicacionGraficoPrecorte()));
                         ByteArrayOutputStream arrayBytesOut = new ByteArrayOutputStream();
                         ImageIO.write(grafico, "jpg", arrayBytesOut);
                         item.setGraficoPrecorte(arrayBytesOut.toByteArray());
                     }
                     
                     if (item.getUbicacionGraficoImpresion() != null && !item.getUbicacionGraficoImpresion().isEmpty()) {
-                        BufferedImage grafico = ImageIO.read(new File(carpetaGraficos + item.getUbicacionGraficoImpresion()));
+                        BufferedImage grafico = ImageIO.read(new File(getCarpetaGraficos() + item.getUbicacionGraficoImpresion()));
                         ByteArrayOutputStream arrayBytesOut = new ByteArrayOutputStream();
                         ImageIO.write(grafico, "jpg", arrayBytesOut);
                         item.setGraficoImpresion(arrayBytesOut.toByteArray());
@@ -122,8 +121,6 @@ public class CotizacionDTO {
             escalaListaPrecioServicioDAO = new EscalaListaPrecioServicioDAO();
             escalaListaPrecioServicioDAO.AsignarSesion(servicioUnidadDAO);
             
-            String carpetaGraficos = "/home/elderson/GRAFICOS/";
-
             List<Object[]> filtros = new ArrayList<>();
             filtros.add(new Object[]{"idCotizacion", idCotizacion});
             List<ItemCotizacion> items = itemCotizacionDAO.ObtenerLista(ItemCotizacion.class, filtros);
@@ -157,14 +154,14 @@ public class CotizacionDTO {
                 item.setAcabados(acabados);
                 
                 if (item.getUbicacionGraficoPrecorte() != null && !item.getUbicacionGraficoPrecorte().isEmpty()) {
-                    BufferedImage grafico = ImageIO.read(new File(carpetaGraficos + item.getUbicacionGraficoPrecorte()));
+                    BufferedImage grafico = ImageIO.read(new File(getCarpetaGraficos() + item.getUbicacionGraficoPrecorte()));
                     ByteArrayOutputStream arrayBytesOut = new ByteArrayOutputStream();
                     ImageIO.write(grafico, "jpg", arrayBytesOut);
                     item.setGraficoPrecorte(arrayBytesOut.toByteArray());
                 }
                 
                 if (item.getUbicacionGraficoImpresion() != null && !item.getUbicacionGraficoImpresion().isEmpty()) {
-                    BufferedImage grafico = ImageIO.read(new File(carpetaGraficos + item.getUbicacionGraficoImpresion()));
+                    BufferedImage grafico = ImageIO.read(new File(getCarpetaGraficos() + item.getUbicacionGraficoImpresion()));
                     ByteArrayOutputStream arrayBytesOut = new ByteArrayOutputStream();
                     ImageIO.write(grafico, "jpg", arrayBytesOut);
                     item.setGraficoImpresion(arrayBytesOut.toByteArray());
@@ -202,15 +199,13 @@ public class CotizacionDTO {
             servicioCotizacionDAO = new ServicioCotizacionDAO();
             servicioCotizacionDAO.AsignarSesion(cotizacionDAO);
             
-            String carpetaGraficos = "/home/elderson/GRAFICOS/";
-
             for (ItemCotizacion item : cotizacion.getItems()) {
                 
                 item.setIdCotizacion(cotizacion.getIdCotizacion());
                 
                 if (item.getGraficoPrecorte() != null) {
                     String ubicacion = "PRECORTE-" + new Date().getTime() + ".JPG";
-                    FileOutputStream fos = new FileOutputStream(carpetaGraficos + ubicacion);
+                    FileOutputStream fos = new FileOutputStream(getCarpetaGraficos() + ubicacion);
                     fos.write(item.getGraficoPrecorte());
                     fos.close();
                     item.setUbicacionGraficoPrecorte(ubicacion);
@@ -218,7 +213,7 @@ public class CotizacionDTO {
                 
                 if (item.getGraficoImpresion() != null) {
                     String ubicacion = "IMPRESION-" + new Date().getTime() + ".JPG";
-                    FileOutputStream fos = new FileOutputStream(carpetaGraficos + ubicacion);
+                    FileOutputStream fos = new FileOutputStream(getCarpetaGraficos() + ubicacion);
                     fos.write(item.getGraficoImpresion());
                     fos.close();
                     item.setUbicacionGraficoImpresion(ubicacion);
@@ -262,8 +257,6 @@ public class CotizacionDTO {
             servicioCotizacionDAO = new ServicioCotizacionDAO();
             servicioCotizacionDAO.AsignarSesion(cotizacionDAO);
             
-            String carpetaGraficos = "/home/elderson/GRAFICOS/";
-
             for (ItemCotizacion item : cotizacion.getItems()) {
                 if (item.isAgregar()) {
                     
@@ -271,7 +264,7 @@ public class CotizacionDTO {
                     
                     if (item.getGraficoPrecorte() != null) {
                         String ubicacion = "PRECORTE-" + new Date().getTime() + ".JPG";
-                        FileOutputStream fos = new FileOutputStream(carpetaGraficos + ubicacion);
+                        FileOutputStream fos = new FileOutputStream(getCarpetaGraficos() + ubicacion);
                         fos.write(item.getGraficoPrecorte());
                         fos.close();
                         item.setUbicacionGraficoPrecorte(ubicacion);
@@ -279,7 +272,7 @@ public class CotizacionDTO {
                     
                     if (item.getGraficoImpresion() != null) {
                         String ubicacion = "IMPRESION-" + new Date().getTime() + ".JPG";
-                        FileOutputStream fos = new FileOutputStream(carpetaGraficos + ubicacion);
+                        FileOutputStream fos = new FileOutputStream(getCarpetaGraficos() + ubicacion);
                         fos.write(item.getGraficoImpresion());
                         fos.close();
                         item.setUbicacionGraficoImpresion(ubicacion);
@@ -297,13 +290,13 @@ public class CotizacionDTO {
                     itemCotizacionDAO.ActualizarItemCotizacion(item);
                     
                     if (item.getGraficoPrecorte() != null) {
-                        FileOutputStream fos = new FileOutputStream(carpetaGraficos + item.getUbicacionGraficoPrecorte());
+                        FileOutputStream fos = new FileOutputStream(getCarpetaGraficos() + item.getUbicacionGraficoPrecorte());
                         fos.write(item.getGraficoPrecorte());
                         fos.close();
                     }
                     
                     if (item.getGraficoImpresion() != null) {
-                        FileOutputStream fos = new FileOutputStream(carpetaGraficos + item.getUbicacionGraficoImpresion());
+                        FileOutputStream fos = new FileOutputStream(getCarpetaGraficos() + item.getUbicacionGraficoImpresion());
                         fos.write(item.getGraficoImpresion());
                         fos.close();
                     }
@@ -337,7 +330,7 @@ public class CotizacionDTO {
         return true;
     }
 
-    public boolean EliminarCotizacion(int idCotizacion) {
+    public boolean EliminarCotizacion(int idCotizacion) throws Exception {
         try {
             cotizacionDAO = new CotizacionDAO();
             cotizacionDAO.IniciarTransaccion();
@@ -361,21 +354,19 @@ public class CotizacionDTO {
             servicioCotizacionDAO = new ServicioCotizacionDAO();
             servicioCotizacionDAO.AsignarSesion(cotizacionDAO);
             
-            String carpetaGraficos = "/home/elderson/GRAFICOS/";
-            
             for (ItemCotizacion item : items) {
                 
                 servicioCotizacionDAO.EliminarServicioCotizacionPorIdItemCotizacion(item.getIdItemCotizacion());
                 
                 if(item.getUbicacionGraficoPrecorte() != null && !item.getUbicacionGraficoPrecorte().isEmpty()){
-                    File file = new File(carpetaGraficos + item.getUbicacionGraficoPrecorte());
+                    File file = new File(getCarpetaGraficos() + item.getUbicacionGraficoPrecorte());
                     if(file.exists()){
                         file.delete();
                     }
                 }
                 
                 if(item.getUbicacionGraficoImpresion()!= null && !item.getUbicacionGraficoImpresion().isEmpty()){
-                    File file = new File(carpetaGraficos + item.getUbicacionGraficoImpresion());
+                    File file = new File(getCarpetaGraficos() + item.getUbicacionGraficoImpresion());
                     if(file.exists()){
                         file.delete();
                     }
