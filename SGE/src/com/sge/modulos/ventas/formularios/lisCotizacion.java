@@ -475,7 +475,7 @@ public class lisCotizacion extends frameBase<Cotizacion> {
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
         // TODO add your handling code here:
-        regCotizacion regCotizacion = new regCotizacion(0);
+        regCotizacion2 regCotizacion = new regCotizacion2(0);
         regCotizacion.setUsuario(getUsuario());
         this.getParent().add(regCotizacion);
         regCotizacion.setVisible(true);

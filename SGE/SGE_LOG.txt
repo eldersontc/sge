@@ -217,3 +217,10 @@
 06/04/2015 15:43:43 : java.net.SocketException : Socket closed 
 06/04/2015 15:44:59 : java.lang.Exception : EL USUARIO YA SE ENCUENTRA CONECTADO. 
 06/04/2015 15:45:58 : java.net.SocketException : Socket closed 
+06/04/2015 18:06:17 : java.net.SocketException : Socket closed 
+06/04/2015 18:12:11 : java.net.SocketException : Socket closed 
+06/04/2015 18:14:07 : java.lang.NullPointerException : null 
+06/04/2015 18:14:07 : java.lang.NullPointerException : null 
+06/04/2015 18:17:59 : java.net.SocketException : Socket closed 
+06/04/2015 18:24:27 : java.net.SocketException : Socket closed 
+06/04/2015 18:25:32 : java.net.SocketException : Socket closed 
