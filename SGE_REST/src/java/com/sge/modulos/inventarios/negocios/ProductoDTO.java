@@ -208,4 +208,18 @@ public class ProductoDTO {
         }
         return lista;
     }
+    
+    public List<ProductoAlmacen> ObtenerProductoAlmacenes(String filtro) {
+        List<ProductoAlmacen> lista = new ArrayList<>();
+        try {
+            productoAlmacenDAO = new ProductoAlmacenDAO();
+            productoAlmacenDAO.AbrirSesion();
+            lista = productoAlmacenDAO.ObtenerProductoAlmacenes(filtro);
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            productoAlmacenDAO.CerrarSesion();
+        }
+        return lista;
+    }
 }
