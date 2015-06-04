@@ -127,6 +127,12 @@ public class cliInventarios extends cliBase {
         resource = resource.path("ObtenerProductoUnidades");
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
     }
+    
+    public String ObtenerProductoAlmacenes(Object requestEntity) throws ClientErrorException {
+        WebTarget resource = client.target(BASE_URI).path("ProductoSRV");
+        resource = resource.path("ObtenerProductoAlmacenes");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
+    }
 
     ////////////////////////////////////////////////////////////////////////////
     /////////////////////////// ENTRADA DE INVENTARIO //////////////////////////

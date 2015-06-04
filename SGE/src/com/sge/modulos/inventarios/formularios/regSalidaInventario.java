@@ -522,6 +522,7 @@ public class regSalidaInventario extends frameBase<SalidaInventario> {
         tbItems = new javax.swing.JTable();
         btnNuevoItem = new javax.swing.JButton();
         btnEliminarItem = new javax.swing.JButton();
+        btnVerStock = new javax.swing.JButton();
         pnlTitulo = new javax.swing.JPanel();
         lblTitulo = new javax.swing.JLabel();
         lblNumero = new javax.swing.JLabel();
@@ -623,6 +624,7 @@ public class regSalidaInventario extends frameBase<SalidaInventario> {
         }
 
         btnNuevoItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sge/base/imagenes/add-16.png"))); // NOI18N
+        btnNuevoItem.setToolTipText("NUEVO");
         btnNuevoItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnNuevoItemActionPerformed(evt);
@@ -630,9 +632,18 @@ public class regSalidaInventario extends frameBase<SalidaInventario> {
         });
 
         btnEliminarItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sge/base/imagenes/delete-16.png"))); // NOI18N
+        btnEliminarItem.setToolTipText("ELIMINAR");
         btnEliminarItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnEliminarItemActionPerformed(evt);
+            }
+        });
+
+        btnVerStock.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sge/base/imagenes/almacen.png"))); // NOI18N
+        btnVerStock.setToolTipText("VER STOCK");
+        btnVerStock.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnVerStockActionPerformed(evt);
             }
         });
 
@@ -641,11 +652,13 @@ public class regSalidaInventario extends frameBase<SalidaInventario> {
         pnlUnidadesLayout.setHorizontalGroup(
             pnlUnidadesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlUnidadesLayout.createSequentialGroup()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 692, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(pnlUnidadesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(btnEliminarItem, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnNuevoItem, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 697, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(pnlUnidadesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnlUnidadesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(btnEliminarItem, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnNuevoItem, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(btnVerStock, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         pnlUnidadesLayout.setVerticalGroup(
@@ -655,7 +668,9 @@ public class regSalidaInventario extends frameBase<SalidaInventario> {
                 .addComponent(btnNuevoItem)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnEliminarItem)
-                .addContainerGap(136, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnVerStock)
+                .addContainerGap(102, Short.MAX_VALUE))
             .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
         );
 
@@ -926,6 +941,15 @@ public class regSalidaInventario extends frameBase<SalidaInventario> {
         }
     }//GEN-LAST:event_btnEliminarItemActionPerformed
 
+    private void btnVerStockActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerStockActionPerformed
+        // TODO add your handling code here:
+        if(FilaActiva(tbItems)){
+            int idProducto = ObtenerValorCelda(tbItems, 1);
+            String filtro = String.format("WHERE ProductoAlmacen.idAlmacen = %d AND ProductoAlmacen.idProducto = %d", schAlmacen.getId(), idProducto);
+            VerModal(new lisProductoAlmacen(1, filtro));
+        }
+    }//GEN-LAST:event_btnVerStockActionPerformed
+
     private void schNumeracionSearch() {
         String filtro = "WHERE Numeracion.idEntidad = 2";
         VerModal(new lisNumeracion(1, filtro), select_nume);
@@ -952,6 +976,7 @@ public class regSalidaInventario extends frameBase<SalidaInventario> {
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnEliminarItem;
     private javax.swing.JButton btnNuevoItem;
+    private javax.swing.JButton btnVerStock;
     private javax.swing.JPanel frame;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTabbedPane jTabbedPane1;
