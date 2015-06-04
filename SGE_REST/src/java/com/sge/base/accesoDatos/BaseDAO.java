@@ -107,11 +107,10 @@ public class BaseDAO {
         recursos.add("com/sge/modulos/facturacion/mapeos/ItemGuiaRemision.hbm.xml");
         return recursos;
     }
-
+    
     private SessionFactory getFabricaSesiones() {
         if (fabricaSesiones == null) {
-            Configuration cfg = new Configuration().configure(new File(System.getProperty("user.home") + "/SGE_CONF/Configuracion.xml"));
-            //Configuration cfg = new Configuration().configure(new File("/home/elderson/SGE_CONF/Configuracion.xml"));
+            Configuration cfg = new Configuration().configure(new File(System.getProperty("user.home") + "/SGE_REST_CONF/Configuracion.xml"));
             for (String recurso : getRecursos()) {
                 cfg.addResource(recurso);
             }
