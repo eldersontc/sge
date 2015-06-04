@@ -71,16 +71,21 @@ public class EntradaInventarioDTO {
             itemEntradaInventarioDAO = new ItemEntradaInventarioDAO();
             itemEntradaInventarioDAO.AsignarSesion(entradaInventarioDAO);
 
-            productoAlmacenDAO = new ProductoAlmacenDAO();
-            productoAlmacenDAO.AsignarSesion(entradaInventarioDAO);
-
             for (ItemEntradaInventario item : entradaInventario.getItems()) {
                 item.setIdEntradaInventario(entradaInventario.getIdEntradaInventario());
                 item.setIdAlmacen(entradaInventario.getIdAlmacen());
                 itemEntradaInventarioDAO.Agregar(item);
+            }
+            
+            entradaInventarioDAO.PreconfirmarTransaccion();
+            
+            productoAlmacenDAO = new ProductoAlmacenDAO();
+            productoAlmacenDAO.AsignarSesion(entradaInventarioDAO);
+            
+            for (ItemEntradaInventario item : entradaInventario.getItems()) {
                 productoAlmacenDAO.ActualizarStockFisico(item.getIdProducto(), item.getIdAlmacen(), item.getCantidad() * item.getFactor());
             }
-
+            
             entradaInventarioDAO.ConfirmarTransaccion();
         } catch (Exception e) {
             entradaInventarioDAO.AbortarTransaccion();

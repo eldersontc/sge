@@ -144,6 +144,12 @@ public class BaseDAO {
         transaccion.rollback();
     }
 
+    public void PreconfirmarTransaccion() {
+        if(sesion != null){
+            sesion.flush();
+        }
+    }
+    
     public void Agregar(Object obj) {
         sesion.save(obj);
     }
