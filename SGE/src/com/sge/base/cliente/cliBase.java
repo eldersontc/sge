@@ -17,7 +17,7 @@ public class cliBase {
         InputStream input = null;
         String ipServidor = null;
         try {
-            input = new FileInputStream(System.getProperty("user.dir") + "/SGE_CONF/config.properties");
+            input = new FileInputStream(System.getProperty("user.home") + "/SGE_CONF/config.properties");
             prop.load(input);
             ipServidor = prop.getProperty("ipServidor");
             input.close();

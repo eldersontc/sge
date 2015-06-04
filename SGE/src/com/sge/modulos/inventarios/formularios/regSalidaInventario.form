@@ -53,46 +53,39 @@
                   <EmptySpace min="-2" pref="23" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="1" attributes="0">
-                          <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
                               <Group type="102" attributes="0">
-                                  <Group type="103" groupAlignment="0" attributes="0">
-                                      <Component id="lblAlmacen" alignment="0" min="-2" max="-2" attributes="0"/>
-                                      <Component id="lblCliente" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                      <Component id="lblCliente" max="32767" attributes="0"/>
+                                      <Component id="lblAlmacen" pref="101" max="32767" attributes="0"/>
                                   </Group>
-                                  <EmptySpace min="44" pref="44" max="-2" attributes="0"/>
-                                  <Group type="103" groupAlignment="0" attributes="0">
-                                      <Component id="schCliente" min="-2" pref="255" max="-2" attributes="0"/>
-                                      <Component id="schAlmacen" alignment="0" min="-2" pref="255" max="-2" attributes="0"/>
+                                  <EmptySpace min="32" pref="32" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                      <Component id="schCliente" pref="235" max="32767" attributes="0"/>
+                                      <Component id="schAlmacen" max="32767" attributes="0"/>
                                   </Group>
                               </Group>
                               <Group type="102" attributes="0">
                                   <Component id="lblNombre" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="schResponsable" min="-2" pref="255" max="-2" attributes="0"/>
+                                  <EmptySpace pref="32" max="32767" attributes="0"/>
+                                  <Component id="schResponsable" min="-2" pref="235" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                              <Component id="lblNumero" alignment="0" max="32767" attributes="0"/>
+                              <Component id="lblMoneda" alignment="0" max="32767" attributes="0"/>
+                              <Component id="lblOT" max="32767" attributes="0"/>
+                          </Group>
+                          <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="txtOT" max="32767" attributes="0"/>
                               <Group type="102" attributes="0">
-                                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                      <Component id="lblMoneda" pref="81" max="32767" attributes="0"/>
-                                      <Component id="lblNumero" max="32767" attributes="0"/>
-                                  </Group>
+                                  <Component id="schMoneda" min="-2" pref="67" max="-2" attributes="0"/>
                                   <EmptySpace max="32767" attributes="0"/>
-                                  <Group type="103" groupAlignment="0" attributes="0">
-                                      <Group type="102" attributes="0">
-                                          <Component id="schMoneda" min="-2" pref="67" max="-2" attributes="0"/>
-                                          <EmptySpace max="32767" attributes="0"/>
-                                          <Component id="lblFechaCreacion" min="-2" max="-2" attributes="0"/>
-                                      </Group>
-                                      <Component id="schNumeracion" max="32767" attributes="0"/>
-                                  </Group>
+                                  <Component id="lblFechaCreacion" min="-2" max="-2" attributes="0"/>
                               </Group>
-                              <Group type="102" attributes="0">
-                                  <Component id="lblOT" min="-2" pref="81" max="-2" attributes="0"/>
-                                  <EmptySpace type="separate" max="-2" attributes="0"/>
-                                  <Component id="txtOT" max="32767" attributes="0"/>
-                              </Group>
+                              <Component id="schNumeracion" max="32767" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
@@ -158,11 +151,11 @@
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" attributes="0">
                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                              <Component id="lblMoneda" alignment="0" min="-2" pref="27" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="3" attributes="0">
                                   <Component id="lblNombre" alignment="3" min="-2" max="-2" attributes="0"/>
                                   <Component id="txtFechaCreacion" alignment="3" min="-2" max="-2" attributes="0"/>
                                   <Component id="lblFechaCreacion" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="lblMoneda" alignment="0" min="-2" pref="27" max="-2" attributes="0"/>
                               </Group>
                               <Component id="schResponsable" min="-2" max="-2" attributes="0"/>
                           </Group>
@@ -201,7 +194,7 @@
                       <Component id="btnCancelar" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="btnAceptar" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="20" max="32767" attributes="0"/>
+                  <EmptySpace pref="22" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
