@@ -1,8 +1,31 @@
 <h1>Listado de Solicitudes de Cotización</h1>
-<div>
-    <label>Name:</label>
-    <input type="text" ng-model="yourName" placeholder="Enter a name here">
-    <button type="button" ng-click="click()">Click!</button>
-    <hr>
-    <h1>Hello {{yourName}}!</h1>
+<div class="row">
+    <div ng-show="verPreload"><i class="icon-preload-64"></i>Cargando...</div>
+    <div ng-show="!verPreload">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>N°</th>
+                    <th>Descripción</th>
+                    <th>Cliente</th>
+                    <th>Vendedor</th>
+                    <th>Descargar</th>
+            </thead>
+            <tbody>
+                <tr ng-repeat="solicitud in solicitudes">
+                    <td>{{$index + 1}}</td>
+                    <td>{{solicitud.numero}}</td>
+                    <td>{{solicitud.descripcion}}</td>
+                    <td>{{solicitud.razonSocialCliente}}</td>
+                    <td>{{solicitud.nombreVendedor}}</td>
+                    <td class="text-center">
+                        <button class="btn btn_link" ng-click="descargar(solicitud)">
+                            <i class="glyphicon glyphicon-cloud-download"></i>
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </div>

@@ -2,13 +2,13 @@
 
 define(['services/routeResolver'], function () {
 
-    var app = angular.module('app', ['routeResolverServices']);
+    var app = angular.module('app', ['ngRoute', 'routeResolverServices']);
 
     app.config(['$routeProvider', 'routeResolverProvider', '$controllerProvider',
         '$compileProvider', '$filterProvider', '$provide',
         function ($routeProvider, routeResolverProvider, $controllerProvider,
                 $compileProvider, $filterProvider, $provide) {
-            debugger;
+            
             app.register =
                     {
                         controller: $controllerProvider.register,
@@ -24,8 +24,8 @@ define(['services/routeResolver'], function () {
                     .when('/inicio', route.resolve('inicio'))
                     .when('/404', route.resolve('404'))
                     .when('/lisSolicitudCotizacion', route.resolve('lisSolicitudCotizacion'))
-                    .when('/', {redirectTo: '/inicio'})
-                    .otherwise({redirectTo: '/404'});
+                    .when('/', { redirectTo: '/inicio' })
+                    .otherwise({ redirectTo: '/404' });
 
         }]);
 

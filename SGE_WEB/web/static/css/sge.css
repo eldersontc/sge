@@ -5,3 +5,6 @@ body {
   padding: 40px 15px;
   text-align: center;
 }
+.icon-preload-64{
+    background: url('../img/preload_64x64.GIF') center top no-repeat;
+}
