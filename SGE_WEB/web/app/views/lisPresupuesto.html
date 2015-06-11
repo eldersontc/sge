@@ -1,0 +1,27 @@
+<h1>Listado de Presupuesto</h1>
+<div class="row">
+    <div ng-show="verPreload"><i class="icon-preload-64"></i>Cargando...</div>
+    <div ng-show="!verPreload">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>N°</th>
+                    <th>Cliente</th>
+                    <th>Descargar</th>
+            </thead>
+            <tbody>
+                <tr ng-repeat="presupuesto in presupuestos">
+                    <td>{{$index + 1}}</td>
+                    <td>{{presupuesto.numero}}</td>
+                    <td>{{presupuesto.razonSocialCliente}}</td>
+                    <td class="text-center">
+                        <button class="btn btn_link" ng-click="descargar(presupuesto)">
+                            <i class="glyphicon glyphicon-cloud-download"></i>
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

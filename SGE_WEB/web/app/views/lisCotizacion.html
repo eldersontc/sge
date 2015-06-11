@@ -1,0 +1,31 @@
+<h1>Listado de Cotizaciones</h1>
+<div class="row">
+    <div ng-show="verPreload"><i class="icon-preload-64"></i>Cargando...</div>
+    <div ng-show="!verPreload">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>N°</th>
+                    <th>Descripción</th>
+                    <th>Cliente</th>
+                    <th>Vendedor</th>
+                    <th>Descargar</th>
+            </thead>
+            <tbody>
+                <tr ng-repeat="cotizacion in cotizaciones">
+                    <td>{{$index + 1}}</td>
+                    <td>{{cotizacion.numero}}</td>
+                    <td>{{cotizacion.descripcion}}</td>
+                    <td>{{cotizacion.razonSocialCliente}}</td>
+                    <td>{{cotizacion.nombreVendedor}}</td>
+                    <td class="text-center">
+                        <button class="btn btn_link" ng-click="descargar(cotizacion)">
+                            <i class="glyphicon glyphicon-cloud-download"></i>
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

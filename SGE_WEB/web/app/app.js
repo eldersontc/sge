@@ -24,6 +24,8 @@ define(['services/routeResolver'], function () {
                     .when('/inicio', route.resolve('inicio'))
                     .when('/404', route.resolve('404'))
                     .when('/lisSolicitudCotizacion', route.resolve('lisSolicitudCotizacion'))
+                    .when('/lisCotizacion', route.resolve('lisCotizacion'))
+                    .when('/lisPresupuesto', route.resolve('lisPresupuesto'))
                     .when('/', { redirectTo: '/inicio' })
                     .otherwise({ redirectTo: '/404' });
 

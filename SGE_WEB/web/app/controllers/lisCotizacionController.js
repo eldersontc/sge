@@ -2,20 +2,20 @@
 
 define(['app'], function (app) {
 
-    app.register.controller('lisSolicitudCotizacionController', ['$scope', '$http', function ($scope, $http) {
+    app.register.controller('lisCotizacionController', ['$scope', '$http', function ($scope, $http) {
 
-            var urlObtenerSolicitudes = URL_BASE + 'SolicitudCotizacionSRV/ObtenerSolicitudesCotizacion';
-
-            $scope.solicitudes = [];
+            var urlObtenerCotizaciones = URL_BASE + 'CotizacionSRV/ObtenerCotizaciones';
+            
+            $scope.cotizaciones = [];
             $scope.verPreload = false;
 
-            $scope.obtenerSolicitudes = function (){
+            $scope.obtenerCotizaciones = function (){
                 $scope.verPreload = true;
-                $http.post(urlObtenerSolicitudes, angular.toJson('')).
+                $http.post(urlObtenerCotizaciones, angular.toJson('')).
                     success(function (data, status, headers, config) {
                         if(angular.isDefined(data)){
                             if(data[0] === 'true'){
-                                $scope.solicitudes = angular.fromJson(data[1]);
+                                $scope.cotizaciones = angular.fromJson(data[1]);
                             }
                         }
                         $scope.verPreload = false;
@@ -29,7 +29,7 @@ define(['app'], function (app) {
                 
             };
             
-            $scope.obtenerSolicitudes();
+            $scope.obtenerCotizaciones();
 
         }]);
 });
