@@ -3,13 +3,20 @@ package com.sge.modulos.administracion.servicios;
 import com.google.gson.Gson;
 import com.sge.modulos.administracion.entidades.Reporte;
 import com.sge.modulos.administracion.negocios.ReporteDTO;
+import java.io.File;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.FormParam;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.ResponseBuilder;
 import javax.ws.rs.core.UriInfo;
 
 /**
@@ -18,7 +25,7 @@ import javax.ws.rs.core.UriInfo;
  */
 @Path("ReporteSRV")
 public class ReporteSRV {
-    
+
     @Context
     private UriInfo context;
 
@@ -44,7 +51,7 @@ public class ReporteSRV {
         }
         return new Gson().toJson(resultado);
     }
-    
+
     @POST
     @Path("ObtenerReporte")
     @Consumes("application/json")
@@ -64,7 +71,7 @@ public class ReporteSRV {
         }
         return new Gson().toJson(resultado);
     }
-    
+
     @POST
     @Path("RegistrarReporte")
     @Consumes("application/json")
@@ -83,7 +90,7 @@ public class ReporteSRV {
         }
         return new Gson().toJson(resultado);
     }
-    
+
     @POST
     @Path("ActualizarReporte")
     @Consumes("application/json")
@@ -102,7 +109,7 @@ public class ReporteSRV {
         }
         return new Gson().toJson(resultado);
     }
-    
+
     @POST
     @Path("EliminarReporte")
     @Consumes("application/json")
@@ -121,7 +128,7 @@ public class ReporteSRV {
         }
         return new Gson().toJson(resultado);
     }
-    
+
     //////////////////// GENERACION DE REPORTES ////////////////////////////////
     @POST
     @Path("GenerarReporteConEntidad")
@@ -144,7 +151,7 @@ public class ReporteSRV {
         }
         return new Gson().toJson(resultado);
     }
-    
+
     @POST
     @Path("GenerarReporteSinEntidad")
     @Consumes("application/json")
@@ -163,5 +170,22 @@ public class ReporteSRV {
             resultado.add(new Gson().toJson(e));
         }
         return new Gson().toJson(resultado);
+    }
+
+    @POST
+    @Path("GenerarPdfConEntidad")
+    @Produces("application/pdf")
+    public Response GenerarPdfConEntidad(@FormParam("r") int r, @FormParam("i") int i) {
+        ResponseBuilder response = null;
+        try {
+            ReporteDTO reporteDTO = new ReporteDTO();
+            File pdf = reporteDTO.GenerarPdfConEntidad(r, i);
+            response = Response.ok((Object) pdf);
+            response.header("Content-Disposition",
+                    "attachment; filename=file_" + new Date().getTime() + ".pdf");
+        } catch (Exception e) {
+            response = Response.serverError();
+        }
+        return response.build();
     }
 }
