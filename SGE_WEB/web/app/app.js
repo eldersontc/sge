@@ -2,7 +2,7 @@
 
 define(['services/routeResolver'], function () {
 
-    var app = angular.module('app', ['ngRoute', 'routeResolverServices']);
+    var app = angular.module('app', ['ngRoute', 'ui.bootstrap', 'routeResolverServices']);
 
     app.config(['$routeProvider', 'routeResolverProvider', '$controllerProvider',
         '$compileProvider', '$filterProvider', '$provide',
@@ -32,6 +32,18 @@ define(['services/routeResolver'], function () {
         }]);
 
     app.controller('appController', function ($scope) {
+        
+        $scope.menus = [
+            { 
+                nombre: 'VENTAS', 
+                subMenus:[
+                    { nombre: 'SOLICITUD DE COTIZACIÓN', path: 'lisSolicitudCotizacion' },
+                    { nombre: 'COTIZACIÓN', path: 'lisCotizacion' },
+                    { nombre: 'PRESUPUESTO', path: 'lisPresupuesto' }
+                ]
+            }
+        ];
+        
     });
 
     return app;

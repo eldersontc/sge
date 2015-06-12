@@ -5,7 +5,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-        <title>SGE - Sistema de Gestión Empresarial</title>
+        <title>SGE | SISTEMA DE GESTIÓN EMPRESARIAL</title>
 
         <!-- Bootstrap -->
         <link href="static/css/bootstrap.min.css" rel="stylesheet">
@@ -37,12 +37,12 @@
                     </div>
                     <div id="navbar" class="collapse navbar-collapse">
                         <ul class="nav navbar-nav">
-                            <li class="dropdown">
-                                <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Ventas <span class="caret"></span></a>
-                                <ul class="dropdown-menu" role="menu">
-                                    <li><a href="#/lisSolicitudCotizacion">Solicitud de Cotización</a></li>
-                                    <li><a href="#/lisCotizacion">Cotización</a></li>
-                                    <li><a href="#/lisPresupuesto">Presupuesto</a></li>
+                            <li class="dropdown" ng-repeat="menu in menus">
+                                <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{menu.nombre}} <span class="caret"></span></a>
+                                <ul class="dropdown-menu" role="menu" ng-if="menu.subMenus.length > 0">
+                                    <li ng-repeat="subMenu in menu.subMenus">
+                                        <a href="#/{{subMenu.path}}">{{subMenu.nombre}}</a>
+                                    </li>
                                 </ul>
                             </li>
                         </ul>
@@ -61,12 +61,14 @@
         <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
         <script src="static/js/jquery.min.js"></script>
         <script src="static/js/jquery.fileDownload.js"></script>
-        <!-- Include all compiled plugins (below), or include individual files as needed -->
+        <!-- Bootstrap -->
         <script src="static/js/bootstrap.min.js"></script>
         <!-- AngularJS -->
         <script src="static/js/angular.min.js"></script>
         <script src="static/js/angular-resource.min.js"></script>
         <script src="static/js/angular-route.min.js"></script>
+        <!-- UI Bootstrap  -->
+        <script src="static/js/ui-bootstrap-tpls-0.13.0.min.js"></script>
         <!-- Config -->
         <script src="app/data/config.js"></script>
         <!-- Require -->

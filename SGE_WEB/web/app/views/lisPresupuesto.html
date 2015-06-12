@@ -1,22 +1,29 @@
-<h1>Listado de Presupuesto</h1>
+<h1>LISTADO DE PRESUPUESTOS</h1>
 <div class="row">
     <div ng-show="verPreload"><i class="icon-preload-64"></i>Cargando...</div>
-    <div ng-show="!verPreload">
+    <alert ng-if="alerta.ver" type="{{alerta.tipo}}">{{alerta.mensaje}}</alert>
+    <div ng-show="verTabla">
         <table class="table table-bordered">
             <thead>
                 <tr>
-                    <th>#</th>
                     <th>N°</th>
-                    <th>Cliente</th>
-                    <th>Descargar</th>
+                    <th>CLIENTE</th>
+                    <th>ESTADO</th>
+                    <th>CAMBIAR ESTADO</th>
+                    <th>DESCARGAR</th>
             </thead>
             <tbody>
                 <tr ng-repeat="presupuesto in presupuestos">
-                    <td>{{$index + 1}}</td>
                     <td>{{presupuesto.numero}}</td>
                     <td>{{presupuesto.razonSocialCliente}}</td>
+                    <td>{{presupuesto.estado}}</td>
                     <td class="text-center">
-                        <button class="btn btn_link" ng-click="descargar(presupuesto)">
+                        <button class="btn btn_link" ng-click="verModalEstados(presupuesto)">
+                            <i class="glyphicon glyphicon-flag"></i>
+                        </button>
+                    </td>
+                    <td class="text-center">
+                        <button class="btn btn_link" ng-click="obtenerReportes(presupuesto)">
                             <i class="glyphicon glyphicon-cloud-download"></i>
                         </button>
                     </td>
@@ -25,3 +32,37 @@
         </table>
     </div>
 </div>
+<script type="text/ng-template" id="modalEstados">
+    <div class="modal-header">
+        <h3 class="modal-title" style="font-size: 18px;"><strong>SELECCIONE UN ESTADO</strong></h3>
+    </div>
+    <div class="modal-body">
+        <div class="text-center">
+            <select ng-model="$parent.idEstado" convert-to-number>
+                <option ng-repeat="estado in estados" value="{{estado.id}}">{{estado.nombre}}</option>
+            </select>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" ng-click="cambiarEstado()">CAMBIAR</button>
+        <button class="btn btn-default" ng-click="cerrarModalEstados()">CANCELAR</button>
+    </div>
+</script>
+<script type="text/ng-template" id="modalReportes">
+    <div class="modal-header">
+        <h3 class="modal-title" style="font-size: 18px;"><strong>SELECCIONE UN REPORTE</strong></h3>
+    </div>
+    <div class="modal-body">
+        <form name="formReportes" novalidate>
+            <div class="text-center">
+                <select ng-model="$parent.idReporte" convert-to-number required>
+                    <option ng-repeat="reporte in reportes" value="{{reporte.idReporte}}">{{reporte.nombre}}</option>
+                </select>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" ng-click="descargar()" ng-disabled="formReportes.$invalid">DESCARGAR</button>
+        <button class="btn btn-default" ng-click="cerrarModalReportes()">CANCELAR</button>
+    </div>
+</script>

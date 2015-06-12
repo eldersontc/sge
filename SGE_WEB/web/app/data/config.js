@@ -1,1 +1,1 @@
-var URL_BASE = 'http://192.168.1.35:8084/SGE_REST/Servicios/';
+var URL_BASE = 'http://192.168.1.104:8084/SGE_REST/Servicios/';

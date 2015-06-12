@@ -6,8 +6,9 @@ require.config({
 require(
     [
         'app',
-        'services/routeResolver'
+        'services/routeResolver',
+        'directives/directives'
     ],
     function () {
-        angular.bootstrap(document, ['app']);
+        angular.bootstrap(document, ['app', 'ui.sge.directives']);
     });
