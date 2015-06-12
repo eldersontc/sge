@@ -167,6 +167,65 @@ public class PresupuestoDTO {
         return true;
     }
     
+    public boolean CambiarEstadoPresupuesto(int idPresupuesto, int idEstado) throws Exception {
+        try {
+            presupuestoDAO = new PresupuestoDAO();
+            presupuestoDAO.IniciarTransaccion();
+            
+            Presupuesto presupuesto = presupuestoDAO.ObtenerPorId(Presupuesto.class, idPresupuesto);
+            
+            String estado = "";
+            
+            switch(idEstado){
+                case 1:
+                    if(presupuesto.getEstado().equals("PENDIENTE DE APROBACIÓN") || presupuesto.getEstado().equals("RECHAZADO")){
+                        estado = "APROBADO";
+                    } else {
+                        throw new Exception("SÓLO SE PUEDE APROBAR CUANDO ESTÁ EN ESTADO : PENDIENTE DE APROBACIÓN Ó RECHAZADO.");
+                    }
+                    break;
+                case 2:
+                    if(presupuesto.getEstado().equals("APROBADO")){
+                        estado = "PENDIENTE DE APROBACIÓN";
+                    } else {
+                        throw new Exception("SÓLO SE PUEDE DESAPROBAR CUANDO ESTÁ EN ESTADO : APROBADO.");
+                    }
+                    break;
+                case 3:
+                    if(presupuesto.getEstado().equals("APROBADO")){
+                        estado = "ENVIADO AL CLIENTE";
+                    } else {
+                        throw new Exception("SÓLO SE PUEDE ENVIAR CUANDO ESTÁ EN ESTADO : APROBADO.");
+                    }
+                    break;
+                case 4:
+                    if(presupuesto.getEstado().equals("ENVIADO AL CLIENTE")){
+                        estado = "ACEPTADO";
+                    } else {
+                        throw new Exception("SÓLO SE PUEDE ACEPTAR CUANDO ESTÁ EN ESTADO : ENVIADO AL CLIENTE.");
+                    }
+                    break;
+                case 5:
+                    if(presupuesto.getEstado().equals("ENVIADO AL CLIENTE")){
+                        estado = "RECHAZADO";
+                    } else {
+                        throw new Exception("SÓLO SE PUEDE RECHAZAR CUANDO ESTÁ EN ESTADO : ENVIADO AL CLIENTE.");
+                    }
+                    break;
+            }
+            
+            presupuestoDAO.ActualizarEstadoPresupuesto(idPresupuesto, estado);
+            
+            presupuestoDAO.ConfirmarTransaccion();
+        } catch (Exception e) {
+            presupuestoDAO.AbortarTransaccion();
+            throw e;
+        } finally {
+            presupuestoDAO.CerrarSesion();
+        }
+        return true;
+    }
+    
     public boolean AprobarPresupuesto(int idPresupuesto) {
         try {
             presupuestoDAO = new PresupuestoDAO();

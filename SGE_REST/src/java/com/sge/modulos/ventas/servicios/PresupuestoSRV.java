@@ -128,6 +128,25 @@ public class PresupuestoSRV {
     }
     
     @POST
+    @Path("CambiarEstadoPresupuesto")
+    @Consumes("application/json")
+    @Produces("application/json")
+    public String CambiarEstadoPresupuesto(String json) {
+        List<String> resultado = new ArrayList<>();
+        int[] ids = new Gson().fromJson(json, int[].class);
+        try {
+            PresupuestoDTO PresupuestoDTO = new PresupuestoDTO();
+            PresupuestoDTO.CambiarEstadoPresupuesto(ids[0], ids[1]);
+            resultado.add(new Gson().toJson(true));
+        } catch (Exception e) {
+            resultado.clear();
+            resultado.add(new Gson().toJson(false));
+            resultado.add(new Gson().toJson(e.getMessage()));
+        }
+        return new Gson().toJson(resultado);
+    }
+    
+    @POST
     @Path("AprobarPresupuesto")
     @Consumes("application/json")
     @Produces("application/json")

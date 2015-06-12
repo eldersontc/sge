@@ -9,10 +9,8 @@ import java.util.Date;
 import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
-import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
@@ -42,6 +40,26 @@ public class ReporteSRV {
             String filtro = new Gson().fromJson(json, String.class);
             ReporteDTO reporteDTO = new ReporteDTO();
             List<Reporte> lista = reporteDTO.ObtenerReportes(filtro);
+            resultado.add(new Gson().toJson(true));
+            resultado.add(new Gson().toJson(lista));
+        } catch (Exception e) {
+            resultado.clear();
+            resultado.add(new Gson().toJson(false));
+            resultado.add(new Gson().toJson(e));
+        }
+        return new Gson().toJson(resultado);
+    }
+    
+    @POST
+    @Path("ObtenerReportesPorEntidad")
+    @Consumes("application/json")
+    @Produces("application/json")
+    public String ObtenerReportesPorEntidad(String json) {
+        List<String> resultado = new ArrayList<>();
+        try {
+            int idEntidad = new Gson().fromJson(json, int.class);
+            ReporteDTO reporteDTO = new ReporteDTO();
+            List<Reporte> lista = reporteDTO.ObtenerReportesPorEntidad(idEntidad);
             resultado.add(new Gson().toJson(true));
             resultado.add(new Gson().toJson(lista));
         } catch (Exception e) {

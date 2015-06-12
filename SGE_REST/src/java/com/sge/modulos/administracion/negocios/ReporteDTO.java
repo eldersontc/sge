@@ -40,6 +40,22 @@ public class ReporteDTO extends BaseDTO {
         return lista;
     }
 
+    public List<Reporte> ObtenerReportesPorEntidad(int idEntidad) {
+        List<Reporte> lista;
+        try {
+            reporteDAO = new ReporteDAO();
+            reporteDAO.AbrirSesion();
+            List<Object[]> filtros = new ArrayList<>();
+            filtros.add(new Object[]{"idEntidad", idEntidad});
+            lista = reporteDAO.ObtenerLista(Reporte.class, filtros);
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            reporteDAO.CerrarSesion();
+        }
+        return lista;
+    }
+    
     public Reporte ObtenerReporte(int idReporte) {
         Reporte reporte;
         try {
