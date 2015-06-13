@@ -7,6 +7,7 @@ require(
     [
         'app',
         'services/routeResolver',
+        'services/alertFactory',
         'directives/directives'
     ],
     function () {

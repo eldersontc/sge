@@ -2,7 +2,7 @@
 
 define(['app'], function (app) {
 
-    app.register.controller('lisPresupuestoController', ['$scope', '$http', '$modal', function ($scope, $http, $modal) {
+    app.register.controller('lisPresupuestoController', ['$scope', '$http', '$modal', 'alertFactory', function ($scope, $http, $modal, alertFactory) {
 
             var urlObtenerPresupuestos = URL_BASE + 'PresupuestoSRV/ObtenerPresupuestos',
                 urlObtenerReportes = URL_BASE + 'ReporteSRV/ObtenerReportesPorEntidad',
@@ -10,11 +10,11 @@ define(['app'], function (app) {
                 urlDescargarPdf = URL_BASE + 'ReporteSRV/GenerarPdfConEntidad';
 
             $scope.estados = [
-                { id: 1, nombre: 'APROBAR' },
-                { id: 2, nombre: 'DESAPROBAR' },
-                { id: 3, nombre: 'ENVIAR AL CLIENTE' },
-                { id: 4, nombre: 'ACEPTAR' },
-                { id: 5, nombre: 'RECHAZAR' }
+                { id: 1, nombre: 'APROBADO' },
+                { id: 2, nombre: 'PENDIENTE DE APROBACIÓN' },
+                { id: 3, nombre: 'ENVIADO' },
+                { id: 4, nombre: 'ACEPTADO' },
+                { id: 5, nombre: 'RECHAZADO' }
             ];
             $scope.alerta = { ver: false, tipo: 'info', mensaje: '' };
             $scope.presupuestos = [];
@@ -92,7 +92,7 @@ define(['app'], function (app) {
                                 $scope.cerrarModalEstados();
                                 $scope.obtenerPresupuestos();
                             } else {
-                                alert(angular.fromJson(data[1]));
+                                alertFactory.view('warning', angular.fromJson(data[1]));
                             }
                         }
                     }).
@@ -124,7 +124,7 @@ define(['app'], function (app) {
                         
                     });
             };
-                
+            
             $scope.descargar = function (){
                 $.fileDownload(urlDescargarPdf, { httpMethod: "POST", data: { r: $scope.idReporte, i: $scope.idPresupuesto } })
                     .done(function () {

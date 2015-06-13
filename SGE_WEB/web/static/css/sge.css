@@ -1,10 +1,112 @@
+/* HTML */
 body {
-  padding-top: 50px;
+    padding-top: 50px;
 }
+thead {
+    color: #FFF;
+    background-color: #436482;
+}
+/* NAVBAR */
+.navbar-default {
+    background-color: #436482;
+    border-color: #436482;
+}
+.navbar-default .navbar-brand {
+    color: #FFF;
+}
+.navbar-default .navbar-brand:hover {
+    color: #000;
+}
+.navbar-default .navbar-brand:focus, 
+.navbar-default .navbar-brand:hover {
+    color: #FFF;
+    background-color: #30506F;
+}
+.navbar-default .navbar-toggle:focus, 
+.navbar-default .navbar-toggle:hover {
+    background-color: #30506F;
+}
+.navbar-default .navbar-toggle {
+    border-color: #FFF;
+}
+.navbar-toggle {
+    border-radius: 0px;
+}
+.navbar-default .navbar-nav > li > a:focus, 
+.navbar-default .navbar-nav > li > a:hover {
+    color: #FFF;
+    background-color: #30506F;
+}
+.dropdown-menu {
+    background-color: #436482;
+    border-radius: 0px;
+}
+.navbar-default .navbar-nav > li > a {
+    color: #FFF;
+}
+.navbar-default .navbar-nav > .open > a, 
+.navbar-default .navbar-nav > .open > a:focus, 
+.navbar-default .navbar-nav > .open > a:hover {
+    color: #FFF;
+    background-color: #30506F;
+}
+.navbar-default .navbar-nav .open .dropdown-menu > li > a {
+    color: #FFF;
+}
+.navbar-default .navbar-nav .open .dropdown-menu > li > a:focus, 
+.navbar-default .navbar-nav .open .dropdown-menu > li > a:hover {
+    color: #FFF;
+    background-color: #30506F;
+}
+/* MODAL */
+.modal-header{
+    color: #FFF;
+    background-color: #436482;
+}
+.modal-content {
+    border-radius: 0px;
+}
+.modal-backdrop {
+    background-color: #FFF;
+}
+.modal-backdrop.in {
+    opacity: 0.7;
+}
+.modal-dialog {
+    margin: 44px auto;
+}
+/* BUTTON */
+.btn {
+    border-radius: 0px;
+}
+.btn-primary {
+    color: #FFF;
+    background-color: #436482;
+    border-color: #436482;
+}
+.btn-primary:hover, 
+.open > .dropdown-toggle.btn-primary {
+    color: #FFF;
+    background-color: #30506F;
+    border-color: #30506F;
+}
+/* ALERT */
+.alert {
+    padding: 10px;
+    border-radius: 0px;
+}
+/* SGE */
 .starter-template {
-  padding: 40px 15px;
-  text-align: center;
+    padding: 40px 15px;
+    text-align: center;
 }
-.icon-preload-64{
-    background: url('../img/preload_64x64.GIF') center top no-repeat;
+.icon-preload-64 {
+    background: url('../img/preload-64.gif') center top no-repeat;
+}
+.alert-floating {
+    position: fixed;
+    text-align: center;
+    width: 100%;
+    top: 0px;
+    z-index: 1051;
 }

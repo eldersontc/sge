@@ -35,11 +35,12 @@ define(['services/routeResolver'], function () {
         
         $scope.menus = [
             { 
-                nombre: 'VENTAS', 
+                nombre: 'VENTAS',
+                imagen: 'buy-16.png',
                 subMenus:[
-                    { nombre: 'SOLICITUD DE COTIZACIÓN', path: 'lisSolicitudCotizacion' },
-                    { nombre: 'COTIZACIÓN', path: 'lisCotizacion' },
-                    { nombre: 'PRESUPUESTO', path: 'lisPresupuesto' }
+                    { nombre: 'SOLICITUD DE COTIZACIÓN', path: 'lisSolicitudCotizacion', imagen: 'text-file-16.png' },
+                    { nombre: 'COTIZACIÓN', path: 'lisCotizacion', imagen: 'text-file-16.png' },
+                    { nombre: 'PRESUPUESTO', path: 'lisPresupuesto', imagen: 'text-file-16.png' }
                 ]
             }
         ];
