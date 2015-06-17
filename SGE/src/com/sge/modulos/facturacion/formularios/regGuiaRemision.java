@@ -406,7 +406,7 @@ public class regGuiaRemision extends frameBase<GuiaRemision> {
         schNumeracion = new com.sge.base.controles.JSearch();
 
         frame.setBackground(java.awt.Color.white);
-        frame.setBorder(null);
+        frame.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         lblResponsable.setText("RESPONSABLE");
 

@@ -531,3 +531,5 @@
 06/17/2015 14:01:32 : java.net.SocketException : Socket closed 
 06/17/2015 14:12:17 : java.net.SocketException : Socket closed 
 06/17/2015 14:13:22 : java.net.SocketException : Socket closed 
+06/17/2015 15:32:39 : java.net.SocketException : Socket closed 
+06/17/2015 15:34:12 : java.net.SocketException : Socket closed 

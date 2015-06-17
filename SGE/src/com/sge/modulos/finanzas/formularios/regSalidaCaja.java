@@ -2,7 +2,7 @@ package com.sge.modulos.finanzas.formularios;
 
 import com.google.gson.Gson;
 import com.sge.base.controles.SearchListener;
-import com.sge.base.formularios.frameBasex;
+import com.sge.base.formularios.frameBase;
 import com.sge.modulos.administracion.clases.Empleado;
 import com.sge.modulos.administracion.clases.Moneda;
 import com.sge.modulos.administracion.clases.Numeracion;
@@ -21,18 +21,16 @@ import java.util.Date;
 import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
-import javax.swing.DefaultCellEditor;
-import javax.swing.JTextField;
 import javax.swing.SwingWorker;
 
 /**
  *
  * @author elderson
  */
-public class regSalidaCaja extends frameBasex<SalidaCaja> {
+public class regSalidaCaja extends frameBase<SalidaCaja> {
 
     /**
-     * Creates new form regSalidaCaja
+     * Creates new form regSalidaCajax
      */
     public regSalidaCaja(int id) {
         initComponents();
@@ -303,7 +301,7 @@ public class regSalidaCaja extends frameBasex<SalidaCaja> {
                 String json = get().toString();
                 String[] resultado = new Gson().fromJson(json, String[].class);
                 if (resultado[0].equals("true")) {
-                    setClosed(true);
+                    Cerrar();
                 } else {
                     OcultarProcesando(frame);
                     ControlarExcepcion(resultado);
@@ -349,19 +347,7 @@ public class regSalidaCaja extends frameBasex<SalidaCaja> {
         jTabbedPane1 = new javax.swing.JTabbedPane();
         pnlUnidades = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        tbItems = new javax.swing.JTable(){
-            public void changeSelection(final int row, final int column, boolean toggle, boolean extend)
-            {
-                super.changeSelection(row, column, toggle, extend);
-                DefaultCellEditor cell = (DefaultCellEditor)tbItems.getCellEditor(row, column);
-                if(cell.getComponent() instanceof JTextField){
-                    tbItems.editCellAt(row, column);
-                    tbItems.transferFocus();
-                    ((JTextField)cell.getComponent()).selectAll();
-                }
-            }
-        }
-        ;
+        tbItems = new javax.swing.JTable();
         btnNuevoItem = new javax.swing.JButton();
         btnEliminarItem = new javax.swing.JButton();
         pnlTitulo = new javax.swing.JPanel();
@@ -384,10 +370,8 @@ public class regSalidaCaja extends frameBasex<SalidaCaja> {
         schNumeracion = new com.sge.base.controles.JSearch();
         lblPorcentajeImpuesto = new javax.swing.JLabel();
 
-        setClosable(true);
-
         frame.setBackground(java.awt.Color.white);
-        frame.setBorder(null);
+        frame.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         lblNombre.setText("RESPONSABLE");
 
@@ -414,7 +398,7 @@ public class regSalidaCaja extends frameBasex<SalidaCaja> {
 
             },
             new String [] {
-                "IDITEM", "DESCRIPCION", "CANTIDAD", "PRECIO", "TOTAL"
+                "ID", "DESCRIPCION", "CANTIDAD", "PRECIO", "TOTAL"
             }
         ) {
             Class[] types = new Class [] {
@@ -432,12 +416,12 @@ public class regSalidaCaja extends frameBasex<SalidaCaja> {
                 return canEdit [columnIndex];
             }
         });
+        tbItems.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane2.setViewportView(tbItems);
         if (tbItems.getColumnModel().getColumnCount() > 0) {
             tbItems.getColumnModel().getColumn(0).setMinWidth(0);
             tbItems.getColumnModel().getColumn(0).setPreferredWidth(0);
             tbItems.getColumnModel().getColumn(0).setMaxWidth(0);
-            tbItems.getColumnModel().getColumn(1).setPreferredWidth(300);
         }
 
         btnNuevoItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sge/base/imagenes/add-16.png"))); // NOI18N
@@ -678,8 +662,8 @@ public class regSalidaCaja extends frameBasex<SalidaCaja> {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(frame, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -688,8 +672,6 @@ public class regSalidaCaja extends frameBasex<SalidaCaja> {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(frame, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
-
-        pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void schNumeracionSearch() {
@@ -708,7 +690,7 @@ public class regSalidaCaja extends frameBasex<SalidaCaja> {
     private void schMonedaSearch() {
         VerModal(new lisMoneda(1), select_mone);
     }
-    
+
     private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
         // TODO add your handling code here:
         Aceptar();
@@ -732,6 +714,7 @@ public class regSalidaCaja extends frameBasex<SalidaCaja> {
             CalcularTotales();
         }
     }//GEN-LAST:event_btnEliminarItemActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAceptar;

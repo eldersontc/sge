@@ -370,7 +370,7 @@ public class regFactura extends frameBase<Factura> {
         lblPorcentajeImpuesto = new javax.swing.JLabel();
 
         frame.setBackground(java.awt.Color.white);
-        frame.setBorder(null);
+        frame.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         lblNombre.setText("RESPONSABLE");
 
