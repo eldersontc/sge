@@ -2,7 +2,7 @@ package com.sge.modulos.inventarios.formularios;
 
 import com.google.gson.Gson;
 import com.sge.base.controles.SearchListener;
-import com.sge.base.formularios.frameBasex;
+import com.sge.base.formularios.frameBase;
 import com.sge.modulos.administracion.clases.Empleado;
 import com.sge.modulos.administracion.clases.Moneda;
 import com.sge.modulos.administracion.clases.Numeracion;
@@ -12,9 +12,9 @@ import com.sge.modulos.administracion.formularios.lisEmpleado;
 import com.sge.modulos.administracion.formularios.lisMoneda;
 import com.sge.modulos.administracion.formularios.lisNumeracion;
 import com.sge.modulos.inventarios.clases.Almacen;
-import com.sge.modulos.inventarios.clases.SalidaInventario;
 import com.sge.modulos.inventarios.clases.ItemSalidaInventario;
 import com.sge.modulos.inventarios.clases.ProductoUnidad;
+import com.sge.modulos.inventarios.clases.SalidaInventario;
 import com.sge.modulos.inventarios.clases.SeleccionProducto;
 import com.sge.modulos.inventarios.cliente.cliInventarios;
 import com.sge.modulos.ventas.clases.Cliente;
@@ -32,10 +32,10 @@ import javax.swing.SwingWorker;
  *
  * @author elderson
  */
-public class regSalidaInventario extends frameBasex<SalidaInventario> {
+public class regSalidaInventario extends frameBase<SalidaInventario> {
 
     /**
-     * Creates new form regSalidaInventario
+     * Creates new form regSalidaInventariox
      */
     public regSalidaInventario() {
         initComponents();
@@ -95,7 +95,7 @@ public class regSalidaInventario extends frameBasex<SalidaInventario> {
     };
 
     private String itemsSinStock = "";
-    
+
     public List<ItemSalidaInventario> getItemsConStock(List<ItemSalidaInventario> items) {
         cliInventarios cliente = new cliInventarios();
         ItemSalidaInventario[] itemsConStock = null;
@@ -118,13 +118,13 @@ public class regSalidaInventario extends frameBasex<SalidaInventario> {
         return Arrays.asList(itemsConStock);
     }
 
-    public void VerItemsSinStock(){
+    public void VerItemsSinStock() {
         if (!itemsSinStock.isEmpty()) {
             VerAdvertencia(itemsSinStock, frame);
         }
     }
-    
-    public void AsignarControlesConStocks(){
+
+    public void AsignarControlesConStocks() {
         schNumeracion.asingValues(getEntidad().getIdNumeracion(), getEntidad().getDescripcionNumeracion());
         schCliente.asingValues(getEntidad().getIdCliente(), getEntidad().getRazonSocialCliente());
         txtNumero.setEnabled(getEntidad().isNumeracionManual());
@@ -160,7 +160,7 @@ public class regSalidaInventario extends frameBasex<SalidaInventario> {
         AgregarBoton(tbItems, clic_unid, 6);
         AgregarEventoChange(tbItems, change_item);
     }
-    
+
     @Override
     public void AsignarControles() {
         schNumeracion.asingValues(getEntidad().getIdNumeracion(), getEntidad().getDescripcionNumeracion());
@@ -472,7 +472,7 @@ public class regSalidaInventario extends frameBasex<SalidaInventario> {
                 String json = get().toString();
                 String[] resultado = new Gson().fromJson(json, String[].class);
                 if (resultado[0].equals("true")) {
-                    setClosed(true);
+                    Cerrar();
                 } else {
                     OcultarProcesando(frame);
                     ControlarExcepcion(resultado);
@@ -546,10 +546,8 @@ public class regSalidaInventario extends frameBasex<SalidaInventario> {
         lblOT = new javax.swing.JLabel();
         txtOT = new javax.swing.JTextField();
 
-        setClosable(true);
-
         frame.setBackground(java.awt.Color.white);
-        frame.setBorder(null);
+        frame.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         lblCliente.setText("CLIENTE");
 
@@ -578,7 +576,7 @@ public class regSalidaInventario extends frameBasex<SalidaInventario> {
 
             },
             new String [] {
-                "IDITEM", "IDPRODUCTO", "CODIGO", "PRODUCTO", "IDUNIDAD", "FACTOR", "UNIDAD", "CANTIDAD", "PRECIO", "TOTAL", "CANTIDADMAXIMA", "CANTIDAANTERIOR", "PRECIOBASE"
+                "ID", "IDPRODUCTO", "CODIGO", "PRODUCTO", "IDUNIDAD", "FACTOR", "UNIDAD", "CANTIDAD", "PRECIO", "TOTAL", "CANTIDADMAXIMA", "CANTIDAANTERIOR", "PRECIOBASE"
             }
         ) {
             Class[] types = new Class [] {
@@ -597,6 +595,7 @@ public class regSalidaInventario extends frameBasex<SalidaInventario> {
             }
         });
         tbItems.setRowHeight(25);
+        tbItems.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane2.setViewportView(tbItems);
         if (tbItems.getColumnModel().getColumnCount() > 0) {
             tbItems.getColumnModel().getColumn(0).setMinWidth(0);
@@ -605,7 +604,6 @@ public class regSalidaInventario extends frameBasex<SalidaInventario> {
             tbItems.getColumnModel().getColumn(1).setMinWidth(0);
             tbItems.getColumnModel().getColumn(1).setPreferredWidth(0);
             tbItems.getColumnModel().getColumn(1).setMaxWidth(0);
-            tbItems.getColumnModel().getColumn(3).setPreferredWidth(230);
             tbItems.getColumnModel().getColumn(4).setMinWidth(0);
             tbItems.getColumnModel().getColumn(4).setPreferredWidth(0);
             tbItems.getColumnModel().getColumn(4).setMaxWidth(0);
@@ -652,7 +650,7 @@ public class regSalidaInventario extends frameBasex<SalidaInventario> {
         pnlUnidadesLayout.setHorizontalGroup(
             pnlUnidadesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlUnidadesLayout.createSequentialGroup()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 697, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 687, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnlUnidadesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnlUnidadesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -897,11 +895,11 @@ public class regSalidaInventario extends frameBasex<SalidaInventario> {
                 .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCancelar)
                     .addComponent(btnAceptar))
-                .addContainerGap(22, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(frame, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -912,9 +910,28 @@ public class regSalidaInventario extends frameBasex<SalidaInventario> {
                 .addComponent(frame, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(3, 3, 3))
         );
-
-        pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void schNumeracionSearch() {
+        String filtro = "WHERE Numeracion.idEntidad = 2";
+        VerModal(new lisNumeracion(1, filtro), select_nume);
+    }
+
+    private void schClienteSearch() {
+        VerModal(new lisCliente(1), select_clie);
+    }
+
+    private void schResponsableSearch() {
+        VerModal(new lisEmpleado(1), select_resp);
+    }
+
+    private void schAlmacenSearch() {
+        VerModal(new lisAlmacen(1), select_alma);
+    }
+
+    private void schMonedaSearch() {
+        VerModal(new lisMoneda(1), select_mone);
+    }
 
     private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
         // TODO add your handling code here:
@@ -943,33 +960,13 @@ public class regSalidaInventario extends frameBasex<SalidaInventario> {
 
     private void btnVerStockActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerStockActionPerformed
         // TODO add your handling code here:
-        if(FilaActiva(tbItems)){
+        if (FilaActiva(tbItems)) {
             int idProducto = ObtenerValorCelda(tbItems, 1);
             String filtro = String.format("WHERE ProductoAlmacen.idAlmacen = %d AND ProductoAlmacen.idProducto = %d", schAlmacen.getId(), idProducto);
             VerModal(new lisProductoAlmacen(1, filtro));
         }
     }//GEN-LAST:event_btnVerStockActionPerformed
 
-    private void schNumeracionSearch() {
-        String filtro = "WHERE Numeracion.idEntidad = 2";
-        VerModal(new lisNumeracion(1, filtro), select_nume);
-    }
-
-    private void schClienteSearch() {
-        VerModal(new lisCliente(1), select_clie);
-    }
-
-    private void schResponsableSearch() {
-        VerModal(new lisEmpleado(1), select_resp);
-    }
-
-    private void schAlmacenSearch() {
-        VerModal(new lisAlmacen(1), select_alma);
-    }
-
-    private void schMonedaSearch() {
-        VerModal(new lisMoneda(1), select_mone);
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAceptar;

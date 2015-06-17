@@ -1,8 +1,7 @@
 package com.sge.modulos.inventarios.formularios;
 
 import com.google.gson.Gson;
-import com.sge.base.formularios.frameBasex;
-import com.sge.modulos.inventarios.clases.Producto;
+import com.sge.base.formularios.frameBase;
 import com.sge.modulos.inventarios.clases.SeleccionProducto;
 import com.sge.modulos.inventarios.cliente.cliInventarios;
 import java.util.ArrayList;
@@ -13,10 +12,10 @@ import javax.swing.SwingWorker;
  *
  * @author elderson
  */
-public class selProducto extends frameBasex<Producto> {
+public class selProducto extends frameBase<SeleccionProducto> {
 
     /**
-     * Creates new form selProducto
+     * Creates new form selProductox
      */
     public selProducto(int modo, int idAlmacen) {
         initComponents();
@@ -108,10 +107,8 @@ public class selProducto extends frameBasex<Producto> {
         btnRefrescar = new javax.swing.JButton();
         cboCosto = new javax.swing.JComboBox();
 
-        setClosable(true);
-
         frame.setBackground(java.awt.Color.white);
-        frame.setBorder(null);
+        frame.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         tbProductos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -143,8 +140,6 @@ public class selProducto extends frameBasex<Producto> {
             tbProductos.getColumnModel().getColumn(1).setMinWidth(0);
             tbProductos.getColumnModel().getColumn(1).setPreferredWidth(0);
             tbProductos.getColumnModel().getColumn(1).setMaxWidth(0);
-            tbProductos.getColumnModel().getColumn(3).setPreferredWidth(400);
-            tbProductos.getColumnModel().getColumn(4).setPreferredWidth(40);
             tbProductos.getColumnModel().getColumn(5).setMinWidth(0);
             tbProductos.getColumnModel().getColumn(5).setPreferredWidth(0);
             tbProductos.getColumnModel().getColumn(5).setMaxWidth(0);
@@ -168,7 +163,7 @@ public class selProducto extends frameBasex<Producto> {
             .addGroup(pnlTituloLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lblTitulo)
-                .addContainerGap(742, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         pnlTituloLayout.setVerticalGroup(
             pnlTituloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -226,12 +221,10 @@ public class selProducto extends frameBasex<Producto> {
                         .addComponent(cboCosto, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(frameLayout.createSequentialGroup()
-                        .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(frameLayout.createSequentialGroup()
-                                .addGap(869, 869, 869)
-                                .addComponent(btnSeleccionar, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 0, Short.MAX_VALUE))))
+                        .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(btnSeleccionar, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 556, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 7, Short.MAX_VALUE))))
         );
         frameLayout.setVerticalGroup(
             frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -245,14 +238,14 @@ public class selProducto extends frameBasex<Producto> {
                     .addComponent(btnRefrescar, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(cboCosto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 366, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnSeleccionar)
-                .addContainerGap())
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(frame, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -261,8 +254,6 @@ public class selProducto extends frameBasex<Producto> {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(frame, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
-
-        pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSeleccionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeleccionarActionPerformed
@@ -315,6 +306,7 @@ public class selProducto extends frameBasex<Producto> {
                 break;
         }
     }//GEN-LAST:event_cboCostoItemStateChanged
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnRefrescar;

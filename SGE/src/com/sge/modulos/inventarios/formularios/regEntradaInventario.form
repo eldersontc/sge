@@ -1,12 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<Form version="1.5" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JInternalFrameFormInfo">
-  <Properties>
-    <Property name="closable" type="boolean" value="true"/>
-  </Properties>
-  <SyntheticProperties>
-    <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
-  </SyntheticProperties>
+<Form version="1.6" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JPanelFormInfo">
   <AuxValues>
     <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
     <AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="false"/>
@@ -22,7 +16,7 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="frame" max="32767" attributes="0"/>
+          <Component id="frame" alignment="0" max="32767" attributes="0"/>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
@@ -38,7 +32,9 @@
           <Color blue="ff" green="ff" id="white" palette="1" red="ff" type="palette"/>
         </Property>
         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-          <Border info="null"/>
+          <Border info="org.netbeans.modules.form.compat2.border.EtchedBorderInfo">
+            <EtchetBorder/>
+          </Border>
         </Property>
       </Properties>
 
@@ -54,42 +50,42 @@
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="lblNombre" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Component id="lblProveedor" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="lblAlmacen" min="-2" max="-2" attributes="0"/>
+                              <Component id="lblAlmacen" alignment="0" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace min="-2" pref="24" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="schProveedor" min="-2" pref="255" max="-2" attributes="0"/>
-                              <Component id="schAlmacen" min="-2" pref="255" max="-2" attributes="0"/>
-                              <Component id="schResponsable" min="-2" pref="255" max="-2" attributes="0"/>
+                              <Component id="schProveedor" alignment="0" min="-2" pref="255" max="-2" attributes="0"/>
+                              <Component id="schAlmacen" alignment="0" min="-2" pref="255" max="-2" attributes="0"/>
+                              <Component id="schResponsable" alignment="0" min="-2" pref="255" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace min="-2" pref="29" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="1" attributes="0">
-                              <Group type="102" attributes="0">
+                              <Group type="102" alignment="1" attributes="0">
                                   <Component id="lblNumero" min="-2" pref="23" max="-2" attributes="0"/>
                                   <EmptySpace min="-2" pref="7" max="-2" attributes="0"/>
                                   <Component id="schNumeracion" pref="0" max="32767" attributes="0"/>
                                   <EmptySpace type="separate" max="-2" attributes="0"/>
                                   <Component id="txtNumero" min="-2" pref="91" max="-2" attributes="0"/>
                               </Group>
-                              <Group type="102" attributes="0">
+                              <Group type="102" alignment="1" attributes="0">
                                   <Group type="103" groupAlignment="0" attributes="0">
-                                      <Component id="lblFechaCreacion" min="-2" pref="97" max="-2" attributes="0"/>
-                                      <Component id="lblMoneda" min="-2" pref="81" max="-2" attributes="0"/>
+                                      <Component id="lblFechaCreacion" alignment="0" min="-2" pref="97" max="-2" attributes="0"/>
+                                      <Component id="lblMoneda" alignment="0" min="-2" pref="81" max="-2" attributes="0"/>
                                   </Group>
                                   <EmptySpace max="32767" attributes="0"/>
                                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                      <Component id="txtFechaCreacion" pref="91" max="32767" attributes="0"/>
-                                      <Component id="schMoneda" pref="0" max="32767" attributes="0"/>
+                                      <Component id="txtFechaCreacion" alignment="0" pref="91" max="32767" attributes="0"/>
+                                      <Component id="schMoneda" alignment="0" pref="0" max="32767" attributes="0"/>
                                   </Group>
                               </Group>
                           </Group>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
                           <Group type="103" groupAlignment="1" attributes="0">
-                              <Group type="102" attributes="0">
+                              <Group type="102" alignment="1" attributes="0">
                                   <Group type="103" groupAlignment="1" attributes="0">
-                                      <Component id="lblTotal" min="-2" pref="81" max="-2" attributes="0"/>
-                                      <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="lblTotal" alignment="1" min="-2" pref="81" max="-2" attributes="0"/>
+                                      <Group type="103" alignment="1" groupAlignment="0" attributes="0">
                                           <Group type="102" alignment="0" attributes="0">
                                               <EmptySpace min="-2" pref="411" max="-2" attributes="0"/>
                                               <Component id="lblImpuesto" min="-2" pref="81" max="-2" attributes="0"/>
@@ -100,22 +96,22 @@
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Component id="lblPorcentajeImpuesto" min="-2" pref="63" max="-2" attributes="0"/>
                               </Group>
-                              <Component id="btnAceptar" min="-2" pref="93" max="-2" attributes="0"/>
+                              <Component id="btnAceptar" alignment="1" min="-2" pref="93" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="btnCancelar" alignment="1" min="-2" pref="96" max="-2" attributes="0"/>
                               <Group type="103" alignment="1" groupAlignment="0" attributes="0">
                                   <Group type="103" alignment="0" groupAlignment="1" attributes="0">
-                                      <Component id="txtSubTotal" min="-2" pref="94" max="-2" attributes="0"/>
-                                      <Component id="txtImpuesto" min="-2" pref="94" max="-2" attributes="0"/>
+                                      <Component id="txtSubTotal" alignment="1" min="-2" pref="94" max="-2" attributes="0"/>
+                                      <Component id="txtImpuesto" alignment="1" min="-2" pref="94" max="-2" attributes="0"/>
                                   </Group>
                                   <Component id="txtTotal" alignment="1" min="-2" pref="94" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                       </Group>
                   </Group>
-                  <EmptySpace pref="31" max="32767" attributes="0"/>
+                  <EmptySpace max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -131,23 +127,23 @@
                           <Component id="txtNumero" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <Component id="schNumeracion" alignment="0" min="-2" max="-2" attributes="0"/>
-                      <Component id="schProveedor" min="-2" max="-2" attributes="0"/>
+                      <Component id="schProveedor" alignment="0" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" attributes="0">
+                      <Group type="102" alignment="0" attributes="0">
                           <Component id="txtFechaCreacion" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="schMoneda" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <Group type="102" attributes="0">
+                      <Group type="102" alignment="0" attributes="0">
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="lblNombre" min="-2" pref="27" max="-2" attributes="0"/>
-                              <Component id="schResponsable" min="-2" max="-2" attributes="0"/>
+                              <Component id="lblNombre" alignment="0" min="-2" pref="27" max="-2" attributes="0"/>
+                              <Component id="schResponsable" alignment="0" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="schAlmacen" min="-2" max="-2" attributes="0"/>
+                              <Component id="schAlmacen" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Component id="lblAlmacen" alignment="0" min="-2" pref="29" max="-2" attributes="0"/>
                           </Group>
                       </Group>
@@ -177,7 +173,7 @@
                   </Group>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="btnAceptar" min="-2" max="-2" attributes="0"/>
+                      <Component id="btnAceptar" alignment="0" min="-2" max="-2" attributes="0"/>
                       <Component id="btnCancelar" alignment="0" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="32767" attributes="0"/>
@@ -244,9 +240,9 @@
                           <Component id="jScrollPane2" pref="614" max="32767" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                  <Component id="btnEliminarItem" max="32767" attributes="0"/>
-                                  <Component id="btnNuevoItem" max="32767" attributes="0"/>
+                              <Group type="103" alignment="0" groupAlignment="0" max="-2" attributes="0">
+                                  <Component id="btnEliminarItem" alignment="0" max="32767" attributes="0"/>
+                                  <Component id="btnNuevoItem" alignment="0" max="32767" attributes="0"/>
                               </Group>
                               <Component id="btnVerStock" alignment="1" max="32767" attributes="0"/>
                           </Group>
@@ -281,7 +277,7 @@
                       <Properties>
                         <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
                           <Table columnCount="10" rowCount="0">
-                            <Column editable="false" title="IDITEM" type="java.lang.Integer"/>
+                            <Column editable="false" title="ID" type="java.lang.Integer"/>
                             <Column editable="false" title="IDPRODUCTO" type="java.lang.Integer"/>
                             <Column editable="true" title="CODIGO" type="java.lang.String"/>
                             <Column editable="true" title="PRODUCTO" type="java.lang.String"/>
@@ -305,12 +301,12 @@
                               <Editor/>
                               <Renderer/>
                             </Column>
-                            <Column maxWidth="-1" minWidth="-1" prefWidth="100" resizable="true">
+                            <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
                               <Title/>
                               <Editor/>
                               <Renderer/>
                             </Column>
-                            <Column maxWidth="-1" minWidth="-1" prefWidth="200" resizable="true">
+                            <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
                               <Title/>
                               <Editor/>
                               <Renderer/>
@@ -330,7 +326,7 @@
                               <Editor/>
                               <Renderer/>
                             </Column>
-                            <Column maxWidth="-1" minWidth="-1" prefWidth="80" resizable="true">
+                            <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
                               <Title/>
                               <Editor/>
                               <Renderer/>
@@ -348,6 +344,9 @@
                           </TableColumnModel>
                         </Property>
                         <Property name="rowHeight" type="int" value="25"/>
+                        <Property name="selectionModel" type="javax.swing.ListSelectionModel" editor="org.netbeans.modules.form.editors2.JTableSelectionModelEditor">
+                          <JTableSelectionModel selectionMode="0"/>
+                        </Property>
                         <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
                           <TableHeader reorderingAllowed="true" resizingAllowed="true"/>
                         </Property>

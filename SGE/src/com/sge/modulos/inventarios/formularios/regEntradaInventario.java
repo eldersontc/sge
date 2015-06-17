@@ -2,7 +2,7 @@ package com.sge.modulos.inventarios.formularios;
 
 import com.google.gson.Gson;
 import com.sge.base.controles.SearchListener;
-import com.sge.base.formularios.frameBasex;
+import com.sge.base.formularios.frameBase;
 import com.sge.modulos.administracion.clases.Empleado;
 import com.sge.modulos.administracion.clases.Moneda;
 import com.sge.modulos.administracion.clases.Numeracion;
@@ -31,10 +31,10 @@ import javax.swing.SwingWorker;
  *
  * @author elderson
  */
-public class regEntradaInventario extends frameBasex<EntradaInventario> {
+public class regEntradaInventario extends frameBase<EntradaInventario> {
 
     /**
-     * Creates new form regEntradaInventario
+     * Creates new form regEntradaInventariox
      */
     public regEntradaInventario(int id) {
         initComponents();
@@ -80,7 +80,7 @@ public class regEntradaInventario extends frameBasex<EntradaInventario> {
             VerModal(new lisProductoUnidad(1, filtro), sele_unid);
         }
     };
-    
+
     @Override
     public void AsignarControles() {
         schNumeracion.asingValues(getEntidad().getIdNumeracion(), getEntidad().getDescripcionNumeracion());
@@ -378,7 +378,7 @@ public class regEntradaInventario extends frameBasex<EntradaInventario> {
                 String json = get().toString();
                 String[] resultado = new Gson().fromJson(json, String[].class);
                 if (resultado[0].equals("true")) {
-                    setClosed(true);
+                    Cerrar();
                 } else {
                     OcultarProcesando(frame);
                     ControlarExcepcion(resultado);
@@ -450,10 +450,8 @@ public class regEntradaInventario extends frameBasex<EntradaInventario> {
         schNumeracion = new com.sge.base.controles.JSearch();
         lblPorcentajeImpuesto = new javax.swing.JLabel();
 
-        setClosable(true);
-
         frame.setBackground(java.awt.Color.white);
-        frame.setBorder(null);
+        frame.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         lblProveedor.setText("PROVEEDOR");
 
@@ -482,7 +480,7 @@ public class regEntradaInventario extends frameBasex<EntradaInventario> {
 
             },
             new String [] {
-                "IDITEM", "IDPRODUCTO", "CODIGO", "PRODUCTO", "IDUNIDAD", "FACTOR", "UNIDAD", "CANTIDAD", "PRECIO", "TOTAL"
+                "ID", "IDPRODUCTO", "CODIGO", "PRODUCTO", "IDUNIDAD", "FACTOR", "UNIDAD", "CANTIDAD", "PRECIO", "TOTAL"
             }
         ) {
             Class[] types = new Class [] {
@@ -501,6 +499,7 @@ public class regEntradaInventario extends frameBasex<EntradaInventario> {
             }
         });
         tbItems.setRowHeight(25);
+        tbItems.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane2.setViewportView(tbItems);
         if (tbItems.getColumnModel().getColumnCount() > 0) {
             tbItems.getColumnModel().getColumn(0).setMinWidth(0);
@@ -509,15 +508,12 @@ public class regEntradaInventario extends frameBasex<EntradaInventario> {
             tbItems.getColumnModel().getColumn(1).setMinWidth(0);
             tbItems.getColumnModel().getColumn(1).setPreferredWidth(0);
             tbItems.getColumnModel().getColumn(1).setMaxWidth(0);
-            tbItems.getColumnModel().getColumn(2).setPreferredWidth(100);
-            tbItems.getColumnModel().getColumn(3).setPreferredWidth(200);
             tbItems.getColumnModel().getColumn(4).setMinWidth(0);
             tbItems.getColumnModel().getColumn(4).setPreferredWidth(0);
             tbItems.getColumnModel().getColumn(4).setMaxWidth(0);
             tbItems.getColumnModel().getColumn(5).setMinWidth(0);
             tbItems.getColumnModel().getColumn(5).setPreferredWidth(0);
             tbItems.getColumnModel().getColumn(5).setMaxWidth(0);
-            tbItems.getColumnModel().getColumn(7).setPreferredWidth(80);
         }
 
         btnNuevoItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sge/base/imagenes/add-16.png"))); // NOI18N
@@ -731,7 +727,7 @@ public class regEntradaInventario extends frameBasex<EntradaInventario> {
                                     .addComponent(txtSubTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(txtImpuesto, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addComponent(txtTotal, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap(31, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         frameLayout.setVerticalGroup(
             frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -785,8 +781,8 @@ public class regEntradaInventario extends frameBasex<EntradaInventario> {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(frame, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -795,43 +791,7 @@ public class regEntradaInventario extends frameBasex<EntradaInventario> {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(frame, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
-
-        pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
-        // TODO add your handling code here:
-        Aceptar();
-    }//GEN-LAST:event_btnAceptarActionPerformed
-
-    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
-        // TODO add your handling code here:
-        Cancelar();
-    }//GEN-LAST:event_btnCancelarActionPerformed
-
-    private void btnNuevoItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoItemActionPerformed
-        // TODO add your handling code here:
-        if(schAlmacen.getId() > 0){
-            VerModal(new selProducto(1, schAlmacen.getId()), select_item);
-        }
-    }//GEN-LAST:event_btnNuevoItemActionPerformed
-
-    private void btnEliminarItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarItemActionPerformed
-        // TODO add your handling code here:
-        if (FilaActiva(tbItems)) {
-            EliminarFila(tbItems);
-            CalcularTotales();
-        }
-    }//GEN-LAST:event_btnEliminarItemActionPerformed
-
-    private void btnVerStockActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerStockActionPerformed
-        // TODO add your handling code here:
-        if(FilaActiva(tbItems)){
-            int idProducto = ObtenerValorCelda(tbItems, 1);
-            String filtro = String.format("WHERE ProductoAlmacen.idAlmacen = %d AND ProductoAlmacen.idProducto = %d", schAlmacen.getId(), idProducto);
-            VerModal(new lisProductoAlmacen(1, filtro));
-        }
-    }//GEN-LAST:event_btnVerStockActionPerformed
 
     private void schNumeracionSearch() {
         String filtro = "WHERE Numeracion.idEntidad = 1";
@@ -853,6 +813,40 @@ public class regEntradaInventario extends frameBasex<EntradaInventario> {
     private void schMonedaSearch() {
         VerModal(new lisMoneda(1), select_mone);
     }
+
+    private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
+        // TODO add your handling code here:
+        Aceptar();
+    }//GEN-LAST:event_btnAceptarActionPerformed
+
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+        // TODO add your handling code here:
+        Cancelar();
+    }//GEN-LAST:event_btnCancelarActionPerformed
+
+    private void btnNuevoItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoItemActionPerformed
+        // TODO add your handling code here:
+        if (schAlmacen.getId() > 0) {
+            VerModal(new selProducto(1, schAlmacen.getId()), select_item);
+        }
+    }//GEN-LAST:event_btnNuevoItemActionPerformed
+
+    private void btnEliminarItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarItemActionPerformed
+        // TODO add your handling code here:
+        if (FilaActiva(tbItems)) {
+            EliminarFila(tbItems);
+            CalcularTotales();
+        }
+    }//GEN-LAST:event_btnEliminarItemActionPerformed
+
+    private void btnVerStockActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerStockActionPerformed
+        // TODO add your handling code here:
+        if (FilaActiva(tbItems)) {
+            int idProducto = ObtenerValorCelda(tbItems, 1);
+            String filtro = String.format("WHERE ProductoAlmacen.idAlmacen = %d AND ProductoAlmacen.idProducto = %d", schAlmacen.getId(), idProducto);
+            VerModal(new lisProductoAlmacen(1, filtro));
+        }
+    }//GEN-LAST:event_btnVerStockActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

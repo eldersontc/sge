@@ -1,7 +1,7 @@
 package com.sge.modulos.inventarios.formularios;
 
 import com.google.gson.Gson;
-import com.sge.base.formularios.frameBasex;
+import com.sge.base.formularios.frameBase;
 import com.sge.modulos.inventarios.clases.Producto;
 import com.sge.modulos.inventarios.cliente.cliInventarios;
 import java.awt.event.ActionEvent;
@@ -16,10 +16,10 @@ import javax.swing.SwingWorker;
  *
  * @author elderson
  */
-public class lisProducto extends frameBasex<Producto> {
+public class lisProducto extends frameBase<Producto> {
 
     /**
-     * Creates new form lisProducto
+     * Creates new form lisProductox
      */
     public lisProducto(int modo) {
         initComponents();
@@ -53,6 +53,13 @@ public class lisProducto extends frameBasex<Producto> {
         @Override
         public void actionPerformed(ActionEvent e) {
             EliminarProducto();
+        }
+    };
+
+    Action refr = new AbstractAction() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            new swObtenerProductos().execute();
         }
     };
 
@@ -157,9 +164,7 @@ public class lisProducto extends frameBasex<Producto> {
 
     public void EditarProducto() {
         int idProducto = ObtenerValorCelda(tbProductos, 1);
-        regProducto regProducto = new regProducto("EDITAR ", idProducto);
-        this.getParent().add(regProducto);
-        regProducto.setVisible(true);
+        VerFrame(new regProducto("EDITAR ", idProducto), refr);
     }
 
     public void EliminarProducto() {
@@ -197,17 +202,15 @@ public class lisProducto extends frameBasex<Producto> {
         txtFiltro = new javax.swing.JTextField();
         btnRefrescar = new javax.swing.JButton();
 
-        setClosable(true);
-
         frame.setBackground(java.awt.Color.white);
-        frame.setBorder(null);
+        frame.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         tbProductos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "CHECK", "IDPRODUCTO", "CODIGO", "DESCRIPCION", "ALTO", "LARGO", "IDUNIDADBASE", "UNID.BASE", "FACTOR", "ACTIVO", "EDITAR", "ELIMINAR"
+                "CHECK", "ID", "CODIGO", "DESCRIPCION", "ALTO", "LARGO", "IDUNIDADBASE", "UNID.BASE", "FACTOR", "ACTIVO", "EDITAR", "ELIMINAR"
             }
         ) {
             Class[] types = new Class [] {
@@ -229,17 +232,12 @@ public class lisProducto extends frameBasex<Producto> {
         tbProductos.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane1.setViewportView(tbProductos);
         if (tbProductos.getColumnModel().getColumnCount() > 0) {
-            tbProductos.getColumnModel().getColumn(0).setPreferredWidth(30);
             tbProductos.getColumnModel().getColumn(1).setMinWidth(0);
             tbProductos.getColumnModel().getColumn(1).setPreferredWidth(0);
             tbProductos.getColumnModel().getColumn(1).setMaxWidth(0);
-            tbProductos.getColumnModel().getColumn(3).setPreferredWidth(200);
             tbProductos.getColumnModel().getColumn(6).setMinWidth(0);
             tbProductos.getColumnModel().getColumn(6).setPreferredWidth(0);
             tbProductos.getColumnModel().getColumn(6).setMaxWidth(0);
-            tbProductos.getColumnModel().getColumn(8).setMinWidth(0);
-            tbProductos.getColumnModel().getColumn(8).setPreferredWidth(0);
-            tbProductos.getColumnModel().getColumn(8).setMaxWidth(0);
         }
 
         pnlTitulo.setBackground(new java.awt.Color(67, 100, 130));
@@ -265,7 +263,7 @@ public class lisProducto extends frameBasex<Producto> {
             .addGroup(pnlTituloLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lblTitulo)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 828, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 262, Short.MAX_VALUE)
                 .addComponent(btnNuevo)
                 .addContainerGap())
         );
@@ -310,7 +308,7 @@ public class lisProducto extends frameBasex<Producto> {
             .addGroup(frameLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1154, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 588, Short.MAX_VALUE)
                     .addGroup(frameLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btnSeleccionar, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -334,14 +332,14 @@ public class lisProducto extends frameBasex<Producto> {
                         .addComponent(lblFiltro))
                     .addComponent(btnRefrescar, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 360, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 162, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnSeleccionar)
                 .addGap(27, 27, 27))
         );
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(frame, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -350,21 +348,12 @@ public class lisProducto extends frameBasex<Producto> {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(frame, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
-
-        pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
         // TODO add your handling code here:
-        regProducto regProducto = new regProducto("NUEVO ", 0);
-        this.getParent().add(regProducto);
-        regProducto.setVisible(true);
+        VerFrame(new regProducto("NUEVO ", 0), refr);
     }//GEN-LAST:event_btnNuevoActionPerformed
-
-    private void txtFiltroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFiltroActionPerformed
-        // TODO add your handling code here:
-        Filtrar(tbProductos, txtFiltro.getText());
-    }//GEN-LAST:event_txtFiltroActionPerformed
 
     private void btnSeleccionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeleccionarActionPerformed
         // TODO add your handling code here:
@@ -405,6 +394,11 @@ public class lisProducto extends frameBasex<Producto> {
                 break;
         }
     }//GEN-LAST:event_btnSeleccionarActionPerformed
+
+    private void txtFiltroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFiltroActionPerformed
+        // TODO add your handling code here:
+        Filtrar(tbProductos, txtFiltro.getText());
+    }//GEN-LAST:event_txtFiltroActionPerformed
 
     private void btnRefrescarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefrescarActionPerformed
         // TODO add your handling code here:

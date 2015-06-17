@@ -1,7 +1,7 @@
 package com.sge.modulos.inventarios.formularios;
 
 import com.google.gson.Gson;
-import com.sge.base.formularios.frameBasex;
+import com.sge.base.formularios.frameBase;
 import com.sge.modulos.inventarios.clases.Unidad;
 import com.sge.modulos.inventarios.cliente.cliInventarios;
 import java.awt.event.ActionEvent;
@@ -16,16 +16,16 @@ import javax.swing.SwingWorker;
  *
  * @author elderson
  */
-public class lisUnidad extends frameBasex<Unidad> {
+public class lisUnidad extends frameBase<Unidad> {
 
     /**
-     * Creates new form lisUnidad
+     * Creates new form lisUnidadx
      */
     public lisUnidad(int modo) {
         initComponents();
         Init(modo, "");
     }
-    
+
     public lisUnidad(int modo, String filtro) {
         initComponents();
         Init(modo, filtro);
@@ -34,7 +34,7 @@ public class lisUnidad extends frameBasex<Unidad> {
     private int modo;
 
     private String filtro;
-    
+
     private Unidad seleccionado;
 
     private List<Unidad> seleccionados = new ArrayList<>();
@@ -240,17 +240,15 @@ public class lisUnidad extends frameBasex<Unidad> {
         txtFiltro = new javax.swing.JTextField();
         btnRefrescar = new javax.swing.JButton();
 
-        setClosable(true);
-
         frame.setBackground(java.awt.Color.white);
-        frame.setBorder(null);
+        frame.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         tbUnidades.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "CHECK", "IDUNIDAD", "ABREVIACION", "DESCRIPCION", "ACTIVO", "GUARDAR", "ELIMINAR"
+                "CHECK", "ID", "ABREVIACION", "DESCRIPCION", "ACTIVO", "GUARDAR", "ELIMINAR"
             }
         ) {
             Class[] types = new Class [] {
@@ -272,12 +270,9 @@ public class lisUnidad extends frameBasex<Unidad> {
         tbUnidades.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane1.setViewportView(tbUnidades);
         if (tbUnidades.getColumnModel().getColumnCount() > 0) {
-            tbUnidades.getColumnModel().getColumn(0).setPreferredWidth(30);
             tbUnidades.getColumnModel().getColumn(1).setMinWidth(0);
             tbUnidades.getColumnModel().getColumn(1).setPreferredWidth(0);
             tbUnidades.getColumnModel().getColumn(1).setMaxWidth(0);
-            tbUnidades.getColumnModel().getColumn(5).setPreferredWidth(30);
-            tbUnidades.getColumnModel().getColumn(6).setPreferredWidth(30);
         }
 
         pnlTitulo.setBackground(new java.awt.Color(67, 100, 130));
@@ -303,7 +298,7 @@ public class lisUnidad extends frameBasex<Unidad> {
             .addGroup(pnlTituloLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lblTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 253, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 816, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 285, Short.MAX_VALUE)
                 .addComponent(btnNuevo)
                 .addContainerGap())
         );
@@ -348,7 +343,7 @@ public class lisUnidad extends frameBasex<Unidad> {
             .addGroup(frameLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1156, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 625, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, frameLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btnSeleccionar, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -372,14 +367,14 @@ public class lisUnidad extends frameBasex<Unidad> {
                         .addComponent(txtFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(btnRefrescar, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 356, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 206, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnSeleccionar)
                 .addGap(15, 15, 15))
         );
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(frame, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -388,8 +383,6 @@ public class lisUnidad extends frameBasex<Unidad> {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(frame, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
-
-        pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed

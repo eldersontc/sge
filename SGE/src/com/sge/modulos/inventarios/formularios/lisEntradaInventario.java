@@ -1,7 +1,7 @@
 package com.sge.modulos.inventarios.formularios;
 
 import com.google.gson.Gson;
-import com.sge.base.formularios.frameBasex;
+import com.sge.base.formularios.frameBase;
 import com.sge.modulos.inventarios.clases.EntradaInventario;
 import com.sge.modulos.inventarios.cliente.cliInventarios;
 import java.awt.event.ActionEvent;
@@ -16,10 +16,10 @@ import javax.swing.SwingWorker;
  *
  * @author elderson
  */
-public class lisEntradaInventario extends frameBasex<EntradaInventario> {
+public class lisEntradaInventario extends frameBase<EntradaInventario> {
 
     /**
-     * Creates new form lisEntradaInventario
+     * Creates new form lisEntradaInventariox
      */
     public lisEntradaInventario(int modo) {
         initComponents();
@@ -30,11 +30,11 @@ public class lisEntradaInventario extends frameBasex<EntradaInventario> {
         initComponents();
         Init(modo, filtro);
     }
-    
+
     private int modo;
 
     private String filtro;
-    
+
     private EntradaInventario seleccionado;
 
     private List<EntradaInventario> seleccionados = new ArrayList<>();
@@ -53,6 +53,13 @@ public class lisEntradaInventario extends frameBasex<EntradaInventario> {
         @Override
         public void actionPerformed(ActionEvent e) {
             EliminarEntradaInventario();
+        }
+    };
+
+    Action refr = new AbstractAction() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            new swObtenerEntradaInventarios().execute();
         }
     };
 
@@ -154,9 +161,7 @@ public class lisEntradaInventario extends frameBasex<EntradaInventario> {
 
     public void VerEntradaInventario() {
         int idEntradaInventario = ObtenerValorCelda(tbEntradaInventarios, 1);
-        regEntradaInventario regEntradaInventario = new regEntradaInventario(idEntradaInventario);
-        this.getParent().add(regEntradaInventario);
-        regEntradaInventario.setVisible(true);
+        VerFrame(new regEntradaInventario(idEntradaInventario));
     }
 
     public void EliminarEntradaInventario() {
@@ -187,17 +192,15 @@ public class lisEntradaInventario extends frameBasex<EntradaInventario> {
         btnRefrescar = new javax.swing.JButton();
         btnImprimir = new javax.swing.JButton();
 
-        setClosable(true);
-
         frame.setBackground(java.awt.Color.white);
-        frame.setBorder(null);
+        frame.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         tbEntradaInventarios.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "CHECK", "IDENTRADAINVENTARIO", "NUMERO", "F. CREACION", "PROVEEDOR", "RESPONSABLE", "MONEDA", "TOTAL", "VER", "ELIMINAR"
+                "CHECK", "ID", "NUMERO", "F. CREACION", "PROVEEDOR", "RESPONSABLE", "MONEDA", "TOTAL", "VER", "ELIMINAR"
             }
         ) {
             Class[] types = new Class [] {
@@ -219,14 +222,9 @@ public class lisEntradaInventario extends frameBasex<EntradaInventario> {
         tbEntradaInventarios.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane1.setViewportView(tbEntradaInventarios);
         if (tbEntradaInventarios.getColumnModel().getColumnCount() > 0) {
-            tbEntradaInventarios.getColumnModel().getColumn(0).setPreferredWidth(30);
             tbEntradaInventarios.getColumnModel().getColumn(1).setMinWidth(0);
             tbEntradaInventarios.getColumnModel().getColumn(1).setPreferredWidth(0);
             tbEntradaInventarios.getColumnModel().getColumn(1).setMaxWidth(0);
-            tbEntradaInventarios.getColumnModel().getColumn(4).setPreferredWidth(200);
-            tbEntradaInventarios.getColumnModel().getColumn(5).setPreferredWidth(200);
-            tbEntradaInventarios.getColumnModel().getColumn(8).setPreferredWidth(30);
-            tbEntradaInventarios.getColumnModel().getColumn(9).setPreferredWidth(50);
         }
 
         pnlTitulo.setBackground(new java.awt.Color(67, 100, 130));
@@ -252,7 +250,7 @@ public class lisEntradaInventario extends frameBasex<EntradaInventario> {
             .addGroup(pnlTituloLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lblTitulo)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 726, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 166, Short.MAX_VALUE)
                 .addComponent(btnNuevo)
                 .addContainerGap())
         );
@@ -305,7 +303,7 @@ public class lisEntradaInventario extends frameBasex<EntradaInventario> {
             .addGroup(frameLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1182, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 622, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, frameLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btnSeleccionar, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -332,14 +330,14 @@ public class lisEntradaInventario extends frameBasex<EntradaInventario> {
                     .addComponent(btnRefrescar, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnImprimir, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 383, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 219, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnSeleccionar)
                 .addGap(6, 6, 6))
         );
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(frame, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -348,17 +346,18 @@ public class lisEntradaInventario extends frameBasex<EntradaInventario> {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(frame, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
-
-        pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
         // TODO add your handling code here:
         regEntradaInventario regEntradaInventario = new regEntradaInventario(0);
         regEntradaInventario.setUsuario(getUsuario());
-        this.getDesktopPane().add(regEntradaInventario);
-        regEntradaInventario.setVisible(true);
+        VerFrame(regEntradaInventario, refr);
     }//GEN-LAST:event_btnNuevoActionPerformed
+
+    private void btnSeleccionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeleccionarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnSeleccionarActionPerformed
 
     private void txtFiltroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFiltroActionPerformed
         // TODO add your handling code here:
@@ -377,9 +376,6 @@ public class lisEntradaInventario extends frameBasex<EntradaInventario> {
         }
     }//GEN-LAST:event_btnImprimirActionPerformed
 
-    private void btnSeleccionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeleccionarActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnSeleccionarActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnImprimir;

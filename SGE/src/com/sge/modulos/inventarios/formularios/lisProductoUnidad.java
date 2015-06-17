@@ -1,7 +1,7 @@
 package com.sge.modulos.inventarios.formularios;
 
 import com.google.gson.Gson;
-import com.sge.base.formularios.frameBasex;
+import com.sge.base.formularios.frameBase;
 import com.sge.modulos.inventarios.clases.ProductoUnidad;
 import com.sge.modulos.inventarios.cliente.cliInventarios;
 import java.util.ArrayList;
@@ -12,10 +12,10 @@ import javax.swing.SwingWorker;
  *
  * @author elderson
  */
-public class lisProductoUnidad extends frameBasex<ProductoUnidad> {
+public class lisProductoUnidad extends frameBase<ProductoUnidad> {
 
     /**
-     * Creates new form lisProductoUnidad
+     * Creates new form lisProductoUnidadx
      */
     public lisProductoUnidad(int modo, String filtro) {
         initComponents();
@@ -74,7 +74,7 @@ public class lisProductoUnidad extends frameBasex<ProductoUnidad> {
     public void Init(int modo, String filtro) {
         this.modo = modo;
         this.filtro = filtro;
-        if(this.modo == 1){
+        if (this.modo == 1) {
             OcultarColumna(tbUnidades, 0);
         }
         new swObtenerUnidades().execute();
@@ -107,10 +107,8 @@ public class lisProductoUnidad extends frameBasex<ProductoUnidad> {
         txtFiltro = new javax.swing.JTextField();
         btnRefrescar = new javax.swing.JButton();
 
-        setClosable(true);
-
         frame.setBackground(java.awt.Color.white);
-        frame.setBorder(null);
+        frame.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         tbUnidades.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -145,7 +143,6 @@ public class lisProductoUnidad extends frameBasex<ProductoUnidad> {
             tbUnidades.getColumnModel().getColumn(2).setMinWidth(0);
             tbUnidades.getColumnModel().getColumn(2).setPreferredWidth(0);
             tbUnidades.getColumnModel().getColumn(2).setMaxWidth(0);
-            tbUnidades.getColumnModel().getColumn(3).setPreferredWidth(200);
         }
 
         pnlTitulo.setBackground(new java.awt.Color(67, 100, 130));
@@ -163,7 +160,7 @@ public class lisProductoUnidad extends frameBasex<ProductoUnidad> {
             .addGroup(pnlTituloLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lblTitulo)
-                .addContainerGap(163, Short.MAX_VALUE))
+                .addContainerGap(160, Short.MAX_VALUE))
         );
         pnlTituloLayout.setVerticalGroup(
             pnlTituloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -201,7 +198,7 @@ public class lisProductoUnidad extends frameBasex<ProductoUnidad> {
             .addGroup(frameLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 375, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 372, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, frameLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btnSeleccionar, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -228,11 +225,11 @@ public class lisProductoUnidad extends frameBasex<ProductoUnidad> {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnSeleccionar)
-                .addContainerGap(23, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(frame, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -241,8 +238,6 @@ public class lisProductoUnidad extends frameBasex<ProductoUnidad> {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(frame, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
-
-        pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSeleccionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeleccionarActionPerformed

@@ -1,7 +1,7 @@
 package com.sge.modulos.inventarios.formularios;
 
 import com.google.gson.Gson;
-import com.sge.base.formularios.frameBasex;
+import com.sge.base.formularios.frameBase;
 import com.sge.modulos.inventarios.clases.Almacen;
 import com.sge.modulos.inventarios.clases.Producto;
 import com.sge.modulos.inventarios.clases.ProductoAlmacen;
@@ -19,10 +19,10 @@ import javax.swing.SwingWorker;
  *
  * @author elderson
  */
-public class regProducto extends frameBasex<Producto> {
+public class regProducto extends frameBase<Producto> {
 
     /**
-     * Creates new form regProducto
+     * Creates new form regProductox
      */
     public regProducto(String operacion, int idProducto) {
         initComponents();
@@ -211,7 +211,7 @@ public class regProducto extends frameBasex<Producto> {
                 String json = get().toString();
                 String[] resultado = new Gson().fromJson(json, String[].class);
                 if (resultado[0].equals("true")) {
-                    setClosed(true);
+                    Cerrar();
                 } else {
                     OcultarProcesando(frame);
                 }
@@ -260,10 +260,8 @@ public class regProducto extends frameBasex<Producto> {
         lblLargo = new javax.swing.JLabel();
         lblAlto = new javax.swing.JLabel();
 
-        setClosable(true);
-
         frame.setBackground(java.awt.Color.white);
-        frame.setBorder(null);
+        frame.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         lblCodigo.setText("CODIGO");
 
@@ -295,7 +293,7 @@ public class regProducto extends frameBasex<Producto> {
 
             },
             new String [] {
-                "IDPRODUCTOUNIDAD", "IDUNIDAD", "UNIDAD", "FACTOR", "BASE"
+                "ID", "IDUNIDAD", "UNIDAD", "FACTOR", "BASE"
             }
         ) {
             Class[] types = new Class [] {
@@ -313,7 +311,7 @@ public class regProducto extends frameBasex<Producto> {
                 return canEdit [columnIndex];
             }
         });
-        tbUnidades.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
+        tbUnidades.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane2.setViewportView(tbUnidades);
         if (tbUnidades.getColumnModel().getColumnCount() > 0) {
             tbUnidades.getColumnModel().getColumn(0).setMinWidth(0);
@@ -322,7 +320,6 @@ public class regProducto extends frameBasex<Producto> {
             tbUnidades.getColumnModel().getColumn(1).setMinWidth(0);
             tbUnidades.getColumnModel().getColumn(1).setPreferredWidth(0);
             tbUnidades.getColumnModel().getColumn(1).setMaxWidth(0);
-            tbUnidades.getColumnModel().getColumn(2).setPreferredWidth(200);
         }
 
         btnNuevaUnidad.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sge/base/imagenes/add-16.png"))); // NOI18N
@@ -374,7 +371,7 @@ public class regProducto extends frameBasex<Producto> {
 
             },
             new String [] {
-                "IDPRODUCTOALMACEN", "IDALMACEN", "ALMACEN", "S. FISICO", "S. COMPROMETIDO", "S. SOLICITADO", "S. DISPONIBLE"
+                "ID", "IDALMACEN", "ALMACEN", "S. FISICO", "S. COMPROMETIDO", "S. SOLICITADO", "S. DISPONIBLE"
             }
         ) {
             Class[] types = new Class [] {
@@ -392,7 +389,7 @@ public class regProducto extends frameBasex<Producto> {
                 return canEdit [columnIndex];
             }
         });
-        tbAlmacenes.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
+        tbAlmacenes.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane1.setViewportView(tbAlmacenes);
         if (tbAlmacenes.getColumnModel().getColumnCount() > 0) {
             tbAlmacenes.getColumnModel().getColumn(0).setMinWidth(0);
@@ -401,10 +398,6 @@ public class regProducto extends frameBasex<Producto> {
             tbAlmacenes.getColumnModel().getColumn(1).setMinWidth(0);
             tbAlmacenes.getColumnModel().getColumn(1).setPreferredWidth(0);
             tbAlmacenes.getColumnModel().getColumn(1).setMaxWidth(0);
-            tbAlmacenes.getColumnModel().getColumn(2).setPreferredWidth(200);
-            tbAlmacenes.getColumnModel().getColumn(4).setPreferredWidth(150);
-            tbAlmacenes.getColumnModel().getColumn(5).setPreferredWidth(120);
-            tbAlmacenes.getColumnModel().getColumn(6).setPreferredWidth(120);
         }
 
         btnNuevoAlmacen.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sge/base/imagenes/add-16.png"))); // NOI18N
@@ -525,7 +518,7 @@ public class regProducto extends frameBasex<Producto> {
                                     .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addComponent(txtLargo, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addComponent(chkVentas, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)))))))
-                .addContainerGap(25, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         frameLayout.setVerticalGroup(
             frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -551,7 +544,7 @@ public class regProducto extends frameBasex<Producto> {
                     .addComponent(chkInventarios)
                     .addComponent(chkCompras)
                     .addComponent(chkVentas))
-                .addGap(0, 51, Short.MAX_VALUE)
+                .addGap(0, 9, Short.MAX_VALUE)
                 .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -560,8 +553,8 @@ public class regProducto extends frameBasex<Producto> {
                 .addContainerGap())
         );
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(frame, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -570,8 +563,6 @@ public class regProducto extends frameBasex<Producto> {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(frame, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
-
-        pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
@@ -583,6 +574,25 @@ public class regProducto extends frameBasex<Producto> {
         // TODO add your handling code here:
         Cerrar();
     }//GEN-LAST:event_btnCancelarActionPerformed
+
+    private void btnNuevaUnidadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevaUnidadActionPerformed
+        // TODO add your handling code here:
+        VerModal(new lisUnidad(2), sele_unidad);
+    }//GEN-LAST:event_btnNuevaUnidadActionPerformed
+
+    private void btnEliminarUnidadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarUnidadActionPerformed
+        // TODO add your handling code here:
+        if (FilaActiva(tbUnidades)) {
+            int idProductoUnidad = ObtenerValorCelda(tbUnidades, 0);
+            if (idProductoUnidad > 0) {
+                ProductoUnidad productoUnidad = new ProductoUnidad();
+                productoUnidad.setIdProductoUnidad(idProductoUnidad);
+                productoUnidad.setEliminar(true);
+                unidades.add(productoUnidad);
+            }
+            EliminarFila(tbUnidades);
+        }
+    }//GEN-LAST:event_btnEliminarUnidadActionPerformed
 
     private void btnNuevoAlmacenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoAlmacenActionPerformed
         // TODO add your handling code here:
@@ -604,25 +614,6 @@ public class regProducto extends frameBasex<Producto> {
             EliminarFila(tbAlmacenes);
         }
     }//GEN-LAST:event_btnEliminarAlmacenActionPerformed
-
-    private void btnNuevaUnidadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevaUnidadActionPerformed
-        // TODO add your handling code here:
-        VerModal(new lisUnidad(2), sele_unidad);
-    }//GEN-LAST:event_btnNuevaUnidadActionPerformed
-
-    private void btnEliminarUnidadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarUnidadActionPerformed
-        // TODO add your handling code here:
-        if (FilaActiva(tbUnidades)) {
-            int idProductoUnidad = ObtenerValorCelda(tbUnidades, 0);
-            if (idProductoUnidad > 0) {
-                ProductoUnidad productoUnidad = new ProductoUnidad();
-                productoUnidad.setIdProductoUnidad(idProductoUnidad);
-                productoUnidad.setEliminar(true);
-                unidades.add(productoUnidad);
-            }
-            EliminarFila(tbUnidades);
-        }
-    }//GEN-LAST:event_btnEliminarUnidadActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

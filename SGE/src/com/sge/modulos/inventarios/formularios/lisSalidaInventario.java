@@ -1,7 +1,8 @@
 package com.sge.modulos.inventarios.formularios;
 
 import com.google.gson.Gson;
-import com.sge.base.formularios.frameBasex;
+import com.sge.base.formularios.frameBase;
+import com.sge.modulos.finanzas.formularios.regSalidaCaja;
 import com.sge.modulos.inventarios.clases.SalidaInventario;
 import com.sge.modulos.inventarios.cliente.cliInventarios;
 import java.awt.event.ActionEvent;
@@ -16,10 +17,10 @@ import javax.swing.SwingWorker;
  *
  * @author elderson
  */
-public class lisSalidaInventario extends frameBasex<SalidaInventario> {
+public class lisSalidaInventario extends frameBase<SalidaInventario> {
 
     /**
-     * Creates new form lisSalidaInventario
+     * Creates new form lisSalidaInventariox
      */
     public lisSalidaInventario(int modo) {
         initComponents();
@@ -53,6 +54,13 @@ public class lisSalidaInventario extends frameBasex<SalidaInventario> {
         @Override
         public void actionPerformed(ActionEvent e) {
             EliminarSalidaInventario();
+        }
+    };
+
+    Action refr = new AbstractAction() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            new swObtenerSalidaInventarios().execute();
         }
     };
 
@@ -154,9 +162,7 @@ public class lisSalidaInventario extends frameBasex<SalidaInventario> {
 
     public void VerSalidaInventario() {
         int idSalidaInventario = ObtenerValorCelda(tbSalidaInventarios, 1);
-        regSalidaInventario regSalidaInventario = new regSalidaInventario(idSalidaInventario);
-        this.getParent().add(regSalidaInventario);
-        regSalidaInventario.setVisible(true);
+        VerFrame(new regSalidaInventario(idSalidaInventario));
     }
 
     public void EliminarSalidaInventario() {
@@ -187,17 +193,15 @@ public class lisSalidaInventario extends frameBasex<SalidaInventario> {
         btnRefrescar = new javax.swing.JButton();
         btnImprimir = new javax.swing.JButton();
 
-        setClosable(true);
-
         frame.setBackground(java.awt.Color.white);
-        frame.setBorder(null);
+        frame.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         tbSalidaInventarios.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "CHECK", "IDSALIDAINVENTARIO", "NUMERO", "F. CREACION", "CLIENTE", "RESPONSABLE", "MONEDA", "TOTAL", "VER", "ELIMINAR"
+                "CHECK", "ID", "NUMERO", "F. CREACION", "CLIENTE", "RESPONSABLE", "MONEDA", "TOTAL", "VER", "ELIMINAR"
             }
         ) {
             Class[] types = new Class [] {
@@ -222,10 +226,6 @@ public class lisSalidaInventario extends frameBasex<SalidaInventario> {
             tbSalidaInventarios.getColumnModel().getColumn(1).setMinWidth(0);
             tbSalidaInventarios.getColumnModel().getColumn(1).setPreferredWidth(0);
             tbSalidaInventarios.getColumnModel().getColumn(1).setMaxWidth(0);
-            tbSalidaInventarios.getColumnModel().getColumn(4).setPreferredWidth(200);
-            tbSalidaInventarios.getColumnModel().getColumn(5).setPreferredWidth(200);
-            tbSalidaInventarios.getColumnModel().getColumn(8).setPreferredWidth(40);
-            tbSalidaInventarios.getColumnModel().getColumn(9).setPreferredWidth(40);
         }
 
         pnlTitulo.setBackground(new java.awt.Color(67, 100, 130));
@@ -251,7 +251,7 @@ public class lisSalidaInventario extends frameBasex<SalidaInventario> {
             .addGroup(pnlTituloLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lblTitulo)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 748, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 184, Short.MAX_VALUE)
                 .addComponent(btnNuevo)
                 .addContainerGap())
         );
@@ -299,7 +299,7 @@ public class lisSalidaInventario extends frameBasex<SalidaInventario> {
             .addGroup(frameLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1181, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 617, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, frameLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btnSeleccionar, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -326,14 +326,14 @@ public class lisSalidaInventario extends frameBasex<SalidaInventario> {
                     .addComponent(btnRefrescar, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnImprimir, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 384, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 211, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnSeleccionar)
                 .addGap(6, 6, 6))
         );
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(frame, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -342,16 +342,13 @@ public class lisSalidaInventario extends frameBasex<SalidaInventario> {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(frame, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
-
-        pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
         // TODO add your handling code here:
         regSalidaInventario regSalidaInventario = new regSalidaInventario(0);
         regSalidaInventario.setUsuario(getUsuario());
-        this.getDesktopPane().add(regSalidaInventario);
-        regSalidaInventario.setVisible(true);
+        VerFrame(regSalidaInventario, refr);
     }//GEN-LAST:event_btnNuevoActionPerformed
 
     private void txtFiltroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFiltroActionPerformed

@@ -1,7 +1,7 @@
 package com.sge.modulos.inventarios.formularios;
 
 import com.google.gson.Gson;
-import com.sge.base.formularios.frameBasex;
+import com.sge.base.formularios.frameBase;
 import com.sge.modulos.inventarios.clases.Almacen;
 import com.sge.modulos.inventarios.cliente.cliInventarios;
 import java.awt.event.ActionEvent;
@@ -16,10 +16,10 @@ import javax.swing.SwingWorker;
  *
  * @author elderson
  */
-public class lisAlmacen extends frameBasex<Almacen> {
+public class lisAlmacen extends frameBase<Almacen> {
 
     /**
-     * Creates new form lisAlmacen
+     * Creates new form lisAlmacenx
      */
     public lisAlmacen(int modo) {
         initComponents();
@@ -241,17 +241,15 @@ public class lisAlmacen extends frameBasex<Almacen> {
         txtFiltro = new javax.swing.JTextField();
         btnRefrescar = new javax.swing.JButton();
 
-        setClosable(true);
-
         frame.setBackground(java.awt.Color.white);
-        frame.setBorder(null);
+        frame.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         tbAlmacenes.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "CHECK", "IDALMACEN", "CODIGO", "DESCRIPCION", "ACTIVO", "GUARDAR", "ELIMINAR"
+                "CHECK", "ID", "CODIGO", "DESCRIPCION", "ACTIVO", "GUARDAR", "ELIMINAR"
             }
         ) {
             Class[] types = new Class [] {
@@ -273,12 +271,9 @@ public class lisAlmacen extends frameBasex<Almacen> {
         tbAlmacenes.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane1.setViewportView(tbAlmacenes);
         if (tbAlmacenes.getColumnModel().getColumnCount() > 0) {
-            tbAlmacenes.getColumnModel().getColumn(0).setPreferredWidth(30);
             tbAlmacenes.getColumnModel().getColumn(1).setMinWidth(0);
             tbAlmacenes.getColumnModel().getColumn(1).setPreferredWidth(0);
             tbAlmacenes.getColumnModel().getColumn(1).setMaxWidth(0);
-            tbAlmacenes.getColumnModel().getColumn(5).setPreferredWidth(30);
-            tbAlmacenes.getColumnModel().getColumn(6).setPreferredWidth(30);
         }
 
         pnlTitulo.setBackground(new java.awt.Color(67, 100, 130));
@@ -304,7 +299,7 @@ public class lisAlmacen extends frameBasex<Almacen> {
             .addGroup(pnlTituloLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lblTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 253, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 806, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 251, Short.MAX_VALUE)
                 .addComponent(btnNuevo)
                 .addContainerGap())
         );
@@ -349,7 +344,7 @@ public class lisAlmacen extends frameBasex<Almacen> {
             .addGroup(frameLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1146, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 591, Short.MAX_VALUE)
                     .addGroup(frameLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btnSeleccionar, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -373,14 +368,14 @@ public class lisAlmacen extends frameBasex<Almacen> {
                         .addComponent(txtFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(btnRefrescar, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 347, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 173, Short.MAX_VALUE)
                 .addGap(14, 14, 14)
                 .addComponent(btnSeleccionar)
                 .addContainerGap())
         );
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(frame, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -389,8 +384,6 @@ public class lisAlmacen extends frameBasex<Almacen> {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(frame, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
-
-        pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
@@ -436,6 +429,7 @@ public class lisAlmacen extends frameBasex<Almacen> {
         // TODO add your handling code here:
         new swObtenerAlmacenes().execute();
     }//GEN-LAST:event_btnRefrescarActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnNuevo;
