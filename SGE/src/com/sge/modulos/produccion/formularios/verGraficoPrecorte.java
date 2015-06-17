@@ -1,6 +1,6 @@
 package com.sge.modulos.produccion.formularios;
 
-import com.sge.base.formularios.frameBasex;
+import com.sge.base.formularios.frameBase;
 import com.sge.modulos.produccion.clases.ItemOrdenTrabajo;
 import com.sge.modulos.produccion.clases.OrdenTrabajo;
 import javax.swing.ImageIcon;
@@ -9,10 +9,10 @@ import javax.swing.ImageIcon;
  *
  * @author elderson
  */
-public class verGraficoPrecorte extends frameBasex<OrdenTrabajo> {
+public class verGraficoPrecorte extends frameBase<OrdenTrabajo> {
 
     /**
-     * Creates new form verGraficoPrecorte
+     * Creates new form verGraficoPrecortex
      */
     public verGraficoPrecorte(ItemOrdenTrabajo item) {
         initComponents();
@@ -38,7 +38,6 @@ public class verGraficoPrecorte extends frameBasex<OrdenTrabajo> {
             lblGrafico.setIcon(new ImageIcon(this.item.getGraficoPrecorte()));
         }
     }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -69,11 +68,8 @@ public class verGraficoPrecorte extends frameBasex<OrdenTrabajo> {
         jScrollPane2 = new javax.swing.JScrollPane();
         txtOtros = new javax.swing.JTextArea();
 
-        setClosable(true);
-        setMaximizable(true);
-
         frame.setBackground(java.awt.Color.white);
-        frame.setBorder(null);
+        frame.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         pnlTitulo.setBackground(new java.awt.Color(67, 100, 130));
         pnlTitulo.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -90,7 +86,7 @@ public class verGraficoPrecorte extends frameBasex<OrdenTrabajo> {
             .addGroup(pnlTituloLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lblTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 318, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(643, Short.MAX_VALUE))
+                .addContainerGap(669, Short.MAX_VALUE))
         );
         pnlTituloLayout.setVerticalGroup(
             pnlTituloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -201,14 +197,14 @@ public class verGraficoPrecorte extends frameBasex<OrdenTrabajo> {
                                     .addComponent(lblCantidadPiezas1, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 109, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 153, Short.MAX_VALUE)
                         .addComponent(btnAceptar))
                     .addComponent(jScrollPane1))
                 .addContainerGap())
         );
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(frame, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -217,8 +213,6 @@ public class verGraficoPrecorte extends frameBasex<OrdenTrabajo> {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(frame, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
-
-        pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed

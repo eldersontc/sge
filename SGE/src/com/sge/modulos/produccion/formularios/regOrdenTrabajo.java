@@ -2,7 +2,7 @@ package com.sge.modulos.produccion.formularios;
 
 import com.google.gson.Gson;
 import com.sge.base.controles.SearchListener;
-import com.sge.base.formularios.frameBasex;
+import com.sge.base.formularios.frameBase;
 import com.sge.modulos.administracion.clases.Empleado;
 import com.sge.modulos.administracion.clases.Moneda;
 import com.sge.modulos.administracion.clases.Numeracion;
@@ -34,10 +34,10 @@ import javax.swing.SwingWorker;
  *
  * @author elderson
  */
-public class regOrdenTrabajo extends frameBasex<OrdenTrabajo> {
+public class regOrdenTrabajo extends frameBase<OrdenTrabajo> {
 
     /**
-     * Creates new form regOrdenTrabajo
+     * Creates new form regOrdenTrabajox
      */
     public regOrdenTrabajo() {
         initComponents();
@@ -319,7 +319,7 @@ public class regOrdenTrabajo extends frameBasex<OrdenTrabajo> {
                 String json = get().toString();
                 String[] resultado = new Gson().fromJson(json, String[].class);
                 if (resultado[0].equals("true")) {
-                    setClosed(true);
+                    Cerrar();
                 } else {
                     OcultarProcesando(frame);
                     ControlarExcepcion(resultado);
@@ -428,68 +428,8 @@ public class regOrdenTrabajo extends frameBasex<OrdenTrabajo> {
         this.item.setMaterial(chkMaterial.isSelected());
         this.item.setIdMaterial(schMaterial.getId());
         this.item.setNombreMaterial(schMaterial.getText());
-
     }
 
-    private void schClienteSearch() {
-        VerModal(new lisCliente(1), sele_clie);
-    }
-
-    private void schClienteClear() {
-        schListaPrecioProducto.asingValues(0, null);
-        schListaPrecioServicio.asingValues(0, null);
-        schListaPrecioMaquina.asingValues(0, null);
-        getEntidad().setIdListaPrecioProducto(0);
-        getEntidad().setNombreListaPrecioProducto(null);
-        getEntidad().setIdListaPrecioServicio(0);
-        getEntidad().setNombreListaPrecioServicio(null);
-        getEntidad().setIdListaPrecioMaquina(0);
-        getEntidad().setNombreListaPrecioMaquina(null);
-    }
-
-    private void schCotizadorSearch() {
-        VerModal(new lisEmpleado(1), sele_coti);
-    }
-
-    private void schVendedorSearch() {
-        VerModal(new lisEmpleado(1), sele_vend);
-    }
-
-    private void schNumeracionSearch() {
-        String filtro = "WHERE Numeracion.idEntidad = 6";
-        VerModal(new lisNumeracion(1, filtro), sele_nume);
-    }
-
-    private void schMonedaSearch() {
-        VerModal(new lisMoneda(1), sele_mone);
-    }
-
-    private void schResponsableSearch() {
-        VerModal(new lisEmpleado(1), sele_resp);
-    }
-
-    private void schMaquinaSearch() {
-        VerModal(new lisMaquina(1), sele_maqu);
-    }
-
-    private void schServicioImpresionSearch() {
-        String filtro = "WHERE Servicio.servicioImpresion = TRUE";
-        VerModal(new lisServicio(1, filtro), sele_serv);
-    }
-
-    private void schMaterialSearch() {
-        VerModal(new lisProducto(1), sele_mate);
-    }
-
-    private void schMaterialClear() {
-        this.item.setAltoMaterial(0);
-        this.item.setLargoMaterial(0);
-        this.item.setIdUnidadMaterial(0);
-        this.item.setAbreviacionUnidadMaterial(null);
-        this.item.setFactorUnidadMaterial(0);
-        this.item.setCodigoMaterial(null);
-    }
-    
     public void Aceptar() {
         if (super.isFromJson()) {
             AsignarValores();
@@ -594,10 +534,8 @@ public class regOrdenTrabajo extends frameBasex<OrdenTrabajo> {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
 
-        setClosable(true);
-
         frame.setBackground(java.awt.Color.white);
-        frame.setBorder(null);
+        frame.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         btnAceptar.setText("ACEPTAR");
         btnAceptar.addActionListener(new java.awt.event.ActionListener() {
@@ -954,15 +892,6 @@ public class regOrdenTrabajo extends frameBasex<OrdenTrabajo> {
         tbAcabados.setRowHeight(25);
         tbAcabados.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane4.setViewportView(tbAcabados);
-        if (tbAcabados.getColumnModel().getColumnCount() > 0) {
-            tbAcabados.getColumnModel().getColumn(0).setMinWidth(0);
-            tbAcabados.getColumnModel().getColumn(0).setPreferredWidth(0);
-            tbAcabados.getColumnModel().getColumn(0).setMaxWidth(0);
-            tbAcabados.getColumnModel().getColumn(1).setMinWidth(0);
-            tbAcabados.getColumnModel().getColumn(1).setPreferredWidth(0);
-            tbAcabados.getColumnModel().getColumn(1).setMaxWidth(0);
-            tbAcabados.getColumnModel().getColumn(2).setPreferredWidth(300);
-        }
 
         javax.swing.GroupLayout tabAcabadosLayout = new javax.swing.GroupLayout(tabAcabados);
         tabAcabados.setLayout(tabAcabadosLayout);
@@ -1219,7 +1148,7 @@ public class regOrdenTrabajo extends frameBasex<OrdenTrabajo> {
                         .addComponent(btnAceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(20, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         frameLayout.setVerticalGroup(
             frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1273,8 +1202,8 @@ public class regOrdenTrabajo extends frameBasex<OrdenTrabajo> {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(frame, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -1283,10 +1212,67 @@ public class regOrdenTrabajo extends frameBasex<OrdenTrabajo> {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(frame, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
-
-        pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void schClienteSearch() {
+        VerModal(new lisCliente(1), sele_clie);
+    }
+
+    private void schClienteClear() {
+        schListaPrecioProducto.asingValues(0, null);
+        schListaPrecioServicio.asingValues(0, null);
+        schListaPrecioMaquina.asingValues(0, null);
+        getEntidad().setIdListaPrecioProducto(0);
+        getEntidad().setNombreListaPrecioProducto(null);
+        getEntidad().setIdListaPrecioServicio(0);
+        getEntidad().setNombreListaPrecioServicio(null);
+        getEntidad().setIdListaPrecioMaquina(0);
+        getEntidad().setNombreListaPrecioMaquina(null);
+    }
+
+    private void schCotizadorSearch() {
+        VerModal(new lisEmpleado(1), sele_coti);
+    }
+
+    private void schVendedorSearch() {
+        VerModal(new lisEmpleado(1), sele_vend);
+    }
+
+    private void schNumeracionSearch() {
+        String filtro = "WHERE Numeracion.idEntidad = 6";
+        VerModal(new lisNumeracion(1, filtro), sele_nume);
+    }
+
+    private void schMonedaSearch() {
+        VerModal(new lisMoneda(1), sele_mone);
+    }
+
+    private void schResponsableSearch() {
+        VerModal(new lisEmpleado(1), sele_resp);
+    }
+
+    private void schMaquinaSearch() {
+        VerModal(new lisMaquina(1), sele_maqu);
+    }
+
+    private void schServicioImpresionSearch() {
+        String filtro = "WHERE Servicio.servicioImpresion = TRUE";
+        VerModal(new lisServicio(1, filtro), sele_serv);
+    }
+
+    private void schMaterialSearch() {
+        VerModal(new lisProducto(1), sele_mate);
+    }
+
+    private void schMaterialClear() {
+        this.item.setAltoMaterial(0);
+        this.item.setLargoMaterial(0);
+        this.item.setIdUnidadMaterial(0);
+        this.item.setAbreviacionUnidadMaterial(null);
+        this.item.setFactorUnidadMaterial(0);
+        this.item.setCodigoMaterial(null);
+    }
+    
     private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
         // TODO add your handling code here:
         Aceptar();

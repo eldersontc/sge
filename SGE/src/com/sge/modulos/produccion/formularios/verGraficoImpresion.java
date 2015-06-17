@@ -1,7 +1,7 @@
 package com.sge.modulos.produccion.formularios;
 
 import com.sge.base.controles.SearchListener;
-import com.sge.base.formularios.frameBasex;
+import com.sge.base.formularios.frameBase;
 import com.sge.modulos.produccion.clases.ItemOrdenTrabajo;
 import com.sge.modulos.produccion.clases.OrdenTrabajo;
 import javax.swing.ImageIcon;
@@ -10,16 +10,16 @@ import javax.swing.ImageIcon;
  *
  * @author elderson
  */
-public class verGraficoImpresion extends frameBasex<OrdenTrabajo> {
+public class verGraficoImpresion extends frameBase<OrdenTrabajo> {
 
     /**
-     * Creates new form verGraficoImpresion
+     * Creates new form verGraficoImpresionx
      */
     public verGraficoImpresion(ItemOrdenTrabajo item) {
         initComponents();
         Init(item);
     }
-    
+
     private ItemOrdenTrabajo item;
 
     public void Init(ItemOrdenTrabajo item) {
@@ -82,11 +82,8 @@ public class verGraficoImpresion extends frameBasex<OrdenTrabajo> {
         txtCantidadCambios = new javax.swing.JTextField();
         txtTiraje = new javax.swing.JTextField();
 
-        setClosable(true);
-        setMaximizable(true);
-
         frame.setBackground(java.awt.Color.white);
-        frame.setBorder(null);
+        frame.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         pnlTitulo.setBackground(new java.awt.Color(67, 100, 130));
         pnlTitulo.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -103,7 +100,7 @@ public class verGraficoImpresion extends frameBasex<OrdenTrabajo> {
             .addGroup(pnlTituloLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lblTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 318, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(569, Short.MAX_VALUE))
+                .addContainerGap(665, Short.MAX_VALUE))
         );
         pnlTituloLayout.setVerticalGroup(
             pnlTituloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -266,15 +263,15 @@ public class verGraficoImpresion extends frameBasex<OrdenTrabajo> {
                             .addComponent(lblTiraje, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtTiraje, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 86, Short.MAX_VALUE)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 138, Short.MAX_VALUE)
                         .addGap(41, 41, 41)
                         .addComponent(btnAceptar))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 538, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 590, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
@@ -285,10 +282,8 @@ public class verGraficoImpresion extends frameBasex<OrdenTrabajo> {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(frame, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
-
-        pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    
     private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
         // TODO add your handling code here:
         Cerrar();

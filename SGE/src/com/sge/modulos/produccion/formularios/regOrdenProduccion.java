@@ -2,7 +2,7 @@ package com.sge.modulos.produccion.formularios;
 
 import com.google.gson.Gson;
 import com.sge.base.controles.SearchListener;
-import com.sge.base.formularios.frameBasex;
+import com.sge.base.formularios.frameBase;
 import com.sge.modulos.administracion.clases.Empleado;
 import com.sge.modulos.administracion.clases.Numeracion;
 import com.sge.modulos.administracion.clases.ValorDefinido;
@@ -26,10 +26,10 @@ import javax.swing.SwingWorker;
  *
  * @author elderson
  */
-public class regOrdenProduccion extends frameBasex<OrdenProduccion> {
+public class regOrdenProduccion extends frameBase<OrdenProduccion> {
 
     /**
-     * Creates new form regOrdenProduccion
+     * Creates new form regOrdenProduccionx
      */
     public regOrdenProduccion(int id) {
         initComponents();
@@ -40,7 +40,7 @@ public class regOrdenProduccion extends frameBasex<OrdenProduccion> {
         initComponents();
         super.Init(valorDefinido);
     }
-    
+
     int id = 0;
 
     Action sele_clie = new AbstractAction() {
@@ -238,7 +238,7 @@ public class regOrdenProduccion extends frameBasex<OrdenProduccion> {
                 String json = get().toString();
                 String[] resultado = new Gson().fromJson(json, String[].class);
                 if (resultado[0].equals("true")) {
-                    setClosed(true);
+                    Cerrar();
                 } else {
                     OcultarProcesando(frame);
                     ControlarExcepcion(resultado);
@@ -249,7 +249,17 @@ public class regOrdenProduccion extends frameBasex<OrdenProduccion> {
             }
         }
     }
-    
+
+    public void Aceptar() {
+        if (super.isFromJson()) {
+            AsignarValores();
+            setJson(new Gson().toJson(super.getEntidad()));
+            Cerrar();
+        } else {
+            new swGuardarOrdenProduccion().execute();
+        }
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -280,10 +290,8 @@ public class regOrdenProduccion extends frameBasex<OrdenProduccion> {
         btnNuevoItem = new javax.swing.JButton();
         btnEliminarItem = new javax.swing.JButton();
 
-        setClosable(true);
-
         frame.setBackground(java.awt.Color.white);
-        frame.setBorder(null);
+        frame.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         btnAceptar.setText("ACEPTAR");
         btnAceptar.addActionListener(new java.awt.event.ActionListener() {
@@ -398,7 +406,6 @@ public class regOrdenProduccion extends frameBasex<OrdenProduccion> {
             tbItems.getColumnModel().getColumn(1).setMinWidth(0);
             tbItems.getColumnModel().getColumn(1).setPreferredWidth(0);
             tbItems.getColumnModel().getColumn(1).setMaxWidth(0);
-            tbItems.getColumnModel().getColumn(3).setPreferredWidth(250);
         }
 
         btnNuevoItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sge/base/imagenes/add-16.png"))); // NOI18N
@@ -497,15 +504,15 @@ public class regOrdenProduccion extends frameBasex<OrdenProduccion> {
                     .addComponent(schResponsable, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(8, 8, 8)
                 .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 303, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCancelar)
                     .addComponent(btnAceptar))
                 .addContainerGap())
         );
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(frame, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -514,8 +521,6 @@ public class regOrdenProduccion extends frameBasex<OrdenProduccion> {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(frame, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
-
-        pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void schClienteSearch() {
@@ -533,17 +538,7 @@ public class regOrdenProduccion extends frameBasex<OrdenProduccion> {
     private void schResponsableSearch() {
         VerModal(new lisEmpleado(1), sele_resp);
     }
-    
-    public void Aceptar() {
-        if (super.isFromJson()) {
-            AsignarValores();
-            setJson(new Gson().toJson(super.getEntidad()));
-            Cerrar();
-        } else {
-            new swGuardarOrdenProduccion().execute();
-        }
-    }
-    
+
     private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
         // TODO add your handling code here:
         Aceptar();

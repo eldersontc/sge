@@ -1,7 +1,7 @@
 package com.sge.modulos.produccion.formularios;
 
 import com.google.gson.Gson;
-import com.sge.base.formularios.frameBasex;
+import com.sge.base.formularios.frameBase;
 import com.sge.modulos.produccion.clases.OrdenProduccion;
 import com.sge.modulos.produccion.cliente.cliProduccion;
 import java.awt.event.ActionEvent;
@@ -14,10 +14,10 @@ import javax.swing.SwingWorker;
  *
  * @author elderson
  */
-public class lisOrdenProduccion extends frameBasex<OrdenProduccion> {
+public class lisOrdenProduccion extends frameBase<OrdenProduccion> {
 
     /**
-     * Creates new form lisOrdenProduccion
+     * Creates new form lisOrdenProduccionx
      */
     public lisOrdenProduccion(int modo) {
         initComponents();
@@ -49,6 +49,13 @@ public class lisOrdenProduccion extends frameBasex<OrdenProduccion> {
         @Override
         public void actionPerformed(ActionEvent e) {
             EliminarOrdenProduccion();
+        }
+    };
+
+    Action refr = new AbstractAction() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            new swObtenerOrdenesProduccion().execute();
         }
     };
 
@@ -150,9 +157,7 @@ public class lisOrdenProduccion extends frameBasex<OrdenProduccion> {
 
     public void EditarOrdenProduccion() {
         int idOrdenProduccion = ObtenerValorCelda(tbOrdenesProduccion, 1);
-        regOrdenProduccion regOrdenProduccion = new regOrdenProduccion(idOrdenProduccion);
-        this.getParent().add(regOrdenProduccion);
-        regOrdenProduccion.setVisible(true);
+        VerFrame(new regOrdenProduccion(idOrdenProduccion), refr);
     }
 
     public void EliminarOrdenProduccion() {
@@ -186,10 +191,8 @@ public class lisOrdenProduccion extends frameBasex<OrdenProduccion> {
         txtFiltro = new javax.swing.JTextField();
         btnRefrescar = new javax.swing.JButton();
 
-        setClosable(true);
-
         frame.setBackground(java.awt.Color.white);
-        frame.setBorder(null);
+        frame.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         tbOrdenesProduccion.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -221,8 +224,6 @@ public class lisOrdenProduccion extends frameBasex<OrdenProduccion> {
             tbOrdenesProduccion.getColumnModel().getColumn(1).setMinWidth(0);
             tbOrdenesProduccion.getColumnModel().getColumn(1).setPreferredWidth(0);
             tbOrdenesProduccion.getColumnModel().getColumn(1).setMaxWidth(0);
-            tbOrdenesProduccion.getColumnModel().getColumn(4).setPreferredWidth(200);
-            tbOrdenesProduccion.getColumnModel().getColumn(5).setPreferredWidth(200);
         }
 
         pnlTitulo.setBackground(new java.awt.Color(67, 100, 130));
@@ -248,7 +249,7 @@ public class lisOrdenProduccion extends frameBasex<OrdenProduccion> {
             .addGroup(pnlTituloLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lblTitulo)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 724, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 282, Short.MAX_VALUE)
                 .addComponent(btnNuevo)
                 .addContainerGap())
         );
@@ -293,7 +294,7 @@ public class lisOrdenProduccion extends frameBasex<OrdenProduccion> {
             .addGroup(frameLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1177, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 735, Short.MAX_VALUE)
                     .addGroup(frameLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btnSeleccionar, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -317,14 +318,14 @@ public class lisOrdenProduccion extends frameBasex<OrdenProduccion> {
                         .addComponent(txtFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(btnRefrescar, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 381, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 213, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnSeleccionar)
                 .addGap(9, 9, 9))
         );
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(frame, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -333,16 +334,13 @@ public class lisOrdenProduccion extends frameBasex<OrdenProduccion> {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(frame, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
-
-        pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
         // TODO add your handling code here:
         regOrdenProduccion regOrdenProduccion = new regOrdenProduccion(0);
         regOrdenProduccion.setUsuario(getUsuario());
-        this.getParent().add(regOrdenProduccion);
-        regOrdenProduccion.setVisible(true);
+        VerFrame(regOrdenProduccion, refr);
     }//GEN-LAST:event_btnNuevoActionPerformed
 
     private void btnSeleccionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeleccionarActionPerformed
