@@ -2,7 +2,7 @@ package com.sge.modulos.ventas.formularios;
 
 import com.google.gson.Gson;
 import com.sge.base.controles.SearchListener;
-import com.sge.base.formularios.frameBase;
+import com.sge.base.formularios.frameBasex;
 import com.sge.modulos.administracion.clases.Moneda;
 import com.sge.modulos.administracion.clases.Numeracion;
 import com.sge.modulos.administracion.clases.ValorDefinido;
@@ -29,7 +29,7 @@ import javax.swing.SwingWorker;
  *
  * @author elderson
  */
-public class regPresupuesto extends frameBase<Presupuesto> {
+public class regPresupuesto extends frameBasex<Presupuesto> {
 
     /**
      * Creates new form NewJInternalFrame

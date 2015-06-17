@@ -1,7 +1,7 @@
 package com.sge.modulos.administracion.formularios;
 
 import com.google.gson.Gson;
-import com.sge.base.formularios.lisBase;
+import com.sge.base.formularios.frameBase;
 import com.sge.modulos.administracion.clases.Perfil;
 import com.sge.modulos.administracion.cliente.cliAdministracion;
 import java.awt.event.ActionEvent;
@@ -14,7 +14,7 @@ import javax.swing.SwingWorker;
  *
  * @author elderson
  */
-public class lisPerfil extends lisBase<Perfil> {
+public class lisPerfil extends frameBase<Perfil> {
 
     /**
      * Creates new form lisPerfil

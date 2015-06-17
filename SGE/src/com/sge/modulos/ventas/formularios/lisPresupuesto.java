@@ -1,7 +1,7 @@
 package com.sge.modulos.ventas.formularios;
 
 import com.google.gson.Gson;
-import com.sge.base.formularios.frameBase;
+import com.sge.base.formularios.frameBasex;
 import com.sge.modulos.produccion.clases.ItemOrdenTrabajo;
 import com.sge.modulos.produccion.clases.OrdenTrabajo;
 import com.sge.modulos.produccion.clases.ServicioOrdenTrabajo;
@@ -23,7 +23,7 @@ import javax.swing.SwingWorker;
  *
  * @author elderson
  */
-public class lisPresupuesto extends frameBase<Presupuesto> {
+public class lisPresupuesto extends frameBasex<Presupuesto> {
 
     /**
      * Creates new form lisPresupuesto

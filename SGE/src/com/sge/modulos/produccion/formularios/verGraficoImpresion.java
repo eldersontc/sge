@@ -1,7 +1,7 @@
 package com.sge.modulos.produccion.formularios;
 
 import com.sge.base.controles.SearchListener;
-import com.sge.base.formularios.frameBase;
+import com.sge.base.formularios.frameBasex;
 import com.sge.modulos.produccion.clases.ItemOrdenTrabajo;
 import com.sge.modulos.produccion.clases.OrdenTrabajo;
 import javax.swing.ImageIcon;
@@ -10,7 +10,7 @@ import javax.swing.ImageIcon;
  *
  * @author elderson
  */
-public class verGraficoImpresion extends frameBase<OrdenTrabajo> {
+public class verGraficoImpresion extends frameBasex<OrdenTrabajo> {
 
     /**
      * Creates new form verGraficoImpresion

@@ -1,6 +1,6 @@
 package com.sge.modulos.ventas.formularios;
 
-import com.sge.base.formularios.frameBase;
+import com.sge.base.formularios.frameBasex;
 import com.sge.modulos.ventas.clases.Cotizacion;
 import com.sge.modulos.ventas.clases.ItemCotizacion;
 import java.awt.Color;
@@ -17,7 +17,7 @@ import javax.swing.ImageIcon;
  *
  * @author elderson
  */
-public class genGraficoPrecorte extends frameBase<Cotizacion> {
+public class genGraficoPrecorte extends frameBasex<Cotizacion> {
 
     /**
      * Creates new form genGraficoPrecorte

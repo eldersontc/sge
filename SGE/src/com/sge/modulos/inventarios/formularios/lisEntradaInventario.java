@@ -1,7 +1,7 @@
 package com.sge.modulos.inventarios.formularios;
 
 import com.google.gson.Gson;
-import com.sge.base.formularios.frameBase;
+import com.sge.base.formularios.frameBasex;
 import com.sge.modulos.inventarios.clases.EntradaInventario;
 import com.sge.modulos.inventarios.cliente.cliInventarios;
 import java.awt.event.ActionEvent;
@@ -16,7 +16,7 @@ import javax.swing.SwingWorker;
  *
  * @author elderson
  */
-public class lisEntradaInventario extends frameBase<EntradaInventario> {
+public class lisEntradaInventario extends frameBasex<EntradaInventario> {
 
     /**
      * Creates new form lisEntradaInventario

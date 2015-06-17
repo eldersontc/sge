@@ -43,7 +43,7 @@ public class regValorDefinido extends frameBase<ValorDefinido> {
     Action select_usuario = new AbstractAction() {
         @Override
         public void actionPerformed(ActionEvent evt) {
-            Usuario seleccionado = ((lisUsuariox) evt.getSource()).getSeleccionado();
+            Usuario seleccionado = ((lisUsuario) evt.getSource()).getSeleccionado();
             if (!(seleccionado == null)) {
                 schUsuario.asingValues(seleccionado.getIdUsuario(), seleccionado.getUsuario());
             }
@@ -53,7 +53,7 @@ public class regValorDefinido extends frameBase<ValorDefinido> {
     Action sele_enti = new AbstractAction() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            Entidad seleccionado = ((lisEntidadx) e.getSource()).getSeleccionado();
+            Entidad seleccionado = ((lisEntidad) e.getSource()).getSeleccionado();
             if (!(seleccionado == null)) {
                 schEntidad.asingValues(seleccionado.getIdEntidad(), seleccionado.getNombre());
             }
@@ -306,9 +306,13 @@ public class regValorDefinido extends frameBase<ValorDefinido> {
     }// </editor-fold>//GEN-END:initComponents
 
     private void schEntidadSearch() {
-        VerModal(new lisEntidadx(1), sele_enti);
+        VerModal(new lisEntidad(1), sele_enti);
     }
 
+    private void schUsuarioSearch() {
+        VerModal(new lisUsuario(1), select_usuario);
+    }
+    
     private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
         // TODO add your handling code here:
         new swGuardarValorDefinido().execute();
@@ -338,11 +342,6 @@ public class regValorDefinido extends frameBase<ValorDefinido> {
             cliente.close();
         }
     }//GEN-LAST:event_btnEstablecerValoresActionPerformed
-
-    private void schUsuarioSearch() {
-        VerModal(new lisUsuariox(1), select_usuario);
-    }
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAceptar;

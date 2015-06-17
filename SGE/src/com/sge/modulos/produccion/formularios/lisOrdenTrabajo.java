@@ -1,7 +1,7 @@
 package com.sge.modulos.produccion.formularios;
 
 import com.google.gson.Gson;
-import com.sge.base.formularios.frameBase;
+import com.sge.base.formularios.frameBasex;
 import com.sge.modulos.inventarios.clases.ItemSalidaInventario;
 import com.sge.modulos.inventarios.clases.SalidaInventario;
 import com.sge.modulos.inventarios.formularios.regSalidaInventario;
@@ -21,7 +21,7 @@ import javax.swing.SwingWorker;
  *
  * @author elderson
  */
-public class lisOrdenTrabajo extends frameBase<OrdenTrabajo> {
+public class lisOrdenTrabajo extends frameBasex<OrdenTrabajo> {
 
     /**
      * Creates new form lisOrdenTrabajo

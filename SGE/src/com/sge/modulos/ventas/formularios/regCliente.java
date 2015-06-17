@@ -2,7 +2,7 @@ package com.sge.modulos.ventas.formularios;
 
 import com.google.gson.Gson;
 import com.sge.base.controles.SearchListener;
-import com.sge.base.formularios.frameBase;
+import com.sge.base.formularios.frameBasex;
 import com.sge.modulos.administracion.clases.Departamento;
 import com.sge.modulos.administracion.clases.Distrito;
 import com.sge.modulos.administracion.clases.Empleado;
@@ -29,7 +29,7 @@ import javax.swing.SwingWorker;
  *
  * @author elderson
  */
-public class regCliente extends frameBase<Cliente> {
+public class regCliente extends frameBasex<Cliente> {
 
     /**
      * Creates new form regCliente

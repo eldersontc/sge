@@ -1,7 +1,7 @@
 package com.sge.modulos.administracion.formularios;
 
 import com.google.gson.Gson;
-import com.sge.base.formularios.frameBase;
+import com.sge.base.formularios.frameBasex;
 import com.sge.modulos.administracion.clases.Moneda;
 import com.sge.modulos.administracion.cliente.cliAdministracion;
 import java.awt.event.ActionEvent;
@@ -14,7 +14,7 @@ import javax.swing.SwingWorker;
  *
  * @author elderson
  */
-public class lisMoneda extends frameBase<Moneda> {
+public class lisMoneda extends frameBasex<Moneda> {
 
     /**
      * Creates new form lisMoneda

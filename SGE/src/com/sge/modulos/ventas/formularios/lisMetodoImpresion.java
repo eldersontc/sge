@@ -2,7 +2,7 @@ package com.sge.modulos.ventas.formularios;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.sge.base.formularios.frameBase;
+import com.sge.base.formularios.frameBasex;
 import com.sge.modulos.ventas.clases.MetodoImpresion;
 import com.sge.modulos.ventas.cliente.cliVentas;
 import java.awt.event.ActionEvent;
@@ -16,7 +16,7 @@ import javax.swing.SwingWorker;
  *
  * @author elderson
  */
-public class lisMetodoImpresion extends frameBase<MetodoImpresion> {
+public class lisMetodoImpresion extends frameBasex<MetodoImpresion> {
 
     /**
      * Creates new form lisMetodoImpresion

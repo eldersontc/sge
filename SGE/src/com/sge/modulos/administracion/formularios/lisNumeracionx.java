@@ -1,7 +1,7 @@
 package com.sge.modulos.administracion.formularios;
 
 import com.google.gson.Gson;
-import com.sge.base.formularios.frameBase;
+import com.sge.base.formularios.frameBasex;
 import com.sge.modulos.administracion.clases.Numeracion;
 import com.sge.modulos.administracion.cliente.cliAdministracion;
 import java.awt.event.ActionEvent;
@@ -14,17 +14,17 @@ import javax.swing.SwingWorker;
  *
  * @author elderson
  */
-public class lisNumeracion extends frameBase<Numeracion> {
+public class lisNumeracionx extends frameBasex<Numeracion> {
 
     /**
      * Creates new form lisNumeracion
      */
-    public lisNumeracion(int modo) {
+    public lisNumeracionx(int modo) {
         initComponents();
         Init(modo, "");
     }
 
-    public lisNumeracion(int modo, String filtro) {
+    public lisNumeracionx(int modo, String filtro) {
         initComponents();
         Init(modo, filtro);
     }
@@ -157,7 +157,7 @@ public class lisNumeracion extends frameBase<Numeracion> {
 
     public void EditarNumeracion() {
         int idNumeracion = ObtenerValorCelda(tbNumeraciones, 1);
-        VerFrame(new regNumeracion("EDITAR ", idNumeracion), refr);
+        //VerFrame(new regNumeracion("EDITAR ", idNumeracion), refr);
     }
 
     public void EliminarNumeracion() {
@@ -341,7 +341,7 @@ public class lisNumeracion extends frameBase<Numeracion> {
         //regNumeracionx regNumeracion = new regNumeracionx("NUEVO ", 0);
         //this.getParent().add(regNumeracion);
         //regNumeracion.setVisible(true);
-        VerFrame(new regNumeracion("NUEVO ", 0), refr);
+        //VerFrame(new regNumeracion("NUEVO ", 0), refr);
     }//GEN-LAST:event_btnNuevoActionPerformed
 
     private void txtFiltroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFiltroActionPerformed

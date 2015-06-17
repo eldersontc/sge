@@ -2,7 +2,7 @@ package com.sge.modulos.ventas.formularios;
 
 import com.google.gson.Gson;
 import com.sge.base.controles.SearchListener;
-import com.sge.base.formularios.frameBase;
+import com.sge.base.formularios.frameBasex;
 import com.sge.modulos.inventarios.clases.Producto;
 import com.sge.modulos.inventarios.formularios.lisProducto;
 import com.sge.modulos.ventas.clases.ItemPlantillaSolicitudCotizacion;
@@ -20,7 +20,7 @@ import javax.swing.SwingWorker;
  *
  * @author elderson
  */
-public class regPlantillaSC extends frameBase<PlantillaSolicitudCotizacion> {
+public class regPlantillaSC extends frameBasex<PlantillaSolicitudCotizacion> {
 
     /**
      * Creates new form regPlantillaSolicitudCotizacion

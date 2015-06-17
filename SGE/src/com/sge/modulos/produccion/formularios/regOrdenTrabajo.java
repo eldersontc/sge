@@ -2,7 +2,7 @@ package com.sge.modulos.produccion.formularios;
 
 import com.google.gson.Gson;
 import com.sge.base.controles.SearchListener;
-import com.sge.base.formularios.frameBase;
+import com.sge.base.formularios.frameBasex;
 import com.sge.modulos.administracion.clases.Empleado;
 import com.sge.modulos.administracion.clases.Moneda;
 import com.sge.modulos.administracion.clases.Numeracion;
@@ -34,7 +34,7 @@ import javax.swing.SwingWorker;
  *
  * @author elderson
  */
-public class regOrdenTrabajo extends frameBase<OrdenTrabajo> {
+public class regOrdenTrabajo extends frameBasex<OrdenTrabajo> {
 
     /**
      * Creates new form regOrdenTrabajo

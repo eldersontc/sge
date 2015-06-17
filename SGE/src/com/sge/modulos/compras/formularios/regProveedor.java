@@ -1,7 +1,7 @@
 package com.sge.modulos.compras.formularios;
 
 import com.google.gson.Gson;
-import com.sge.base.formularios.frameBase;
+import com.sge.base.formularios.frameBasex;
 import com.sge.modulos.compras.clases.Proveedor;
 import com.sge.modulos.compras.cliente.cliCompras;
 import javax.swing.SwingWorker;
@@ -10,7 +10,7 @@ import javax.swing.SwingWorker;
  *
  * @author elderson
  */
-public class regProveedor extends frameBase<Proveedor> {
+public class regProveedor extends frameBasex<Proveedor> {
 
     /**
      * Creates new form regProveedor

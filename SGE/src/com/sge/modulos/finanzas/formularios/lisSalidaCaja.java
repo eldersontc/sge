@@ -1,7 +1,7 @@
 package com.sge.modulos.finanzas.formularios;
 
 import com.google.gson.Gson;
-import com.sge.base.formularios.frameBase;
+import com.sge.base.formularios.frameBasex;
 import com.sge.modulos.finanzas.clases.SalidaCaja;
 import com.sge.modulos.finanzas.cliente.cliFinanzas;
 import java.awt.event.ActionEvent;
@@ -14,7 +14,7 @@ import javax.swing.SwingWorker;
  *
  * @author elderson
  */
-public class lisSalidaCaja extends frameBase<SalidaCaja> {
+public class lisSalidaCaja extends frameBasex<SalidaCaja> {
 
     /**
      * Creates new form lisSalidaCaja

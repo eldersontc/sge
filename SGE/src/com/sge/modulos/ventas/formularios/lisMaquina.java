@@ -2,7 +2,7 @@ package com.sge.modulos.ventas.formularios;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.sge.base.formularios.frameBase;
+import com.sge.base.formularios.frameBasex;
 import com.sge.modulos.ventas.clases.Maquina;
 import com.sge.modulos.ventas.cliente.cliVentas;
 import java.awt.event.ActionEvent;
@@ -17,7 +17,7 @@ import javax.swing.SwingWorker;
  *
  * @author elderson
  */
-public class lisMaquina extends frameBase<Maquina> {
+public class lisMaquina extends frameBasex<Maquina> {
 
     /**
      * Creates new form lisMaquina

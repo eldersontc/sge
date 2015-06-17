@@ -14,6 +14,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.ParameterizedType;
 import java.util.List;
 import javax.swing.Action;
+import javax.swing.JInternalFrame;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
@@ -25,8 +26,8 @@ import javax.swing.tree.TreePath;
  *
  * @author elderson
  */
-public class frameBase<T> extends JPanel {
-    
+public class frameBasex<T> extends JInternalFrame {
+
     /////////////////////////////// VARIABLES //////////////////////////////////
     private T entidad;
 
@@ -183,6 +184,14 @@ public class frameBase<T> extends JPanel {
 
     public void VerModal(JPanel panel) {
         FabricaControles.VerModal(getParent(), panel);
+    }
+    
+    public void VerModal(JInternalFrame panel) {
+        //FabricaControles.VerModal(getParent(), panel, action);
+    }
+    
+    public void VerModal(JInternalFrame panel, Action action) {
+        //FabricaControles.VerModal(getParent(), panel, action);
     }
     
     public void VerModal(JPanel panel, Action action) {

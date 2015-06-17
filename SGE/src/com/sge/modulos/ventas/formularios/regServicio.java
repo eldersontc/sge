@@ -1,7 +1,7 @@
 package com.sge.modulos.ventas.formularios;
 
 import com.google.gson.Gson;
-import com.sge.base.formularios.frameBase;
+import com.sge.base.formularios.frameBasex;
 import com.sge.modulos.inventarios.clases.Unidad;
 import com.sge.modulos.inventarios.formularios.lisUnidad;
 import com.sge.modulos.ventas.clases.Maquina;
@@ -20,7 +20,7 @@ import javax.swing.SwingWorker;
  *
  * @author elderson
  */
-public class regServicio extends frameBase<Servicio> {
+public class regServicio extends frameBasex<Servicio> {
 
     /**
      * Creates new form regServicio

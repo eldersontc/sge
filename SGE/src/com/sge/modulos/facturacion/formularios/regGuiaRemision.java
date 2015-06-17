@@ -2,7 +2,7 @@ package com.sge.modulos.facturacion.formularios;
 
 import com.google.gson.Gson;
 import com.sge.base.controles.SearchListener;
-import com.sge.base.formularios.frameBase;
+import com.sge.base.formularios.frameBasex;
 import com.sge.modulos.administracion.clases.Departamento;
 import com.sge.modulos.administracion.clases.Distrito;
 import com.sge.modulos.administracion.clases.Empleado;
@@ -34,7 +34,7 @@ import javax.swing.SwingWorker;
  *
  * @author elderson
  */
-public class regGuiaRemision extends frameBase<GuiaRemision> {
+public class regGuiaRemision extends frameBasex<GuiaRemision> {
 
     /**
      * Creates new form regGuiaRemision

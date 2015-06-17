@@ -1,7 +1,7 @@
 package com.sge.modulos.ventas.formularios;
 
 import com.google.gson.Gson;
-import com.sge.base.formularios.frameBase;
+import com.sge.base.formularios.frameBasex;
 import com.sge.modulos.ventas.clases.EscalaListaPrecioMaquina;
 import com.sge.modulos.ventas.clases.ItemListaPrecioMaquina;
 import com.sge.modulos.ventas.clases.ListaPrecioMaquina;
@@ -18,7 +18,7 @@ import javax.swing.SwingWorker;
  *
  * @author elderson
  */
-public class regListaPrecioMaquina extends frameBase<ListaPrecioMaquina> {
+public class regListaPrecioMaquina extends frameBasex<ListaPrecioMaquina> {
 
     /**
      * Creates new form regListaPrecioMaquina

@@ -1,7 +1,7 @@
 package com.sge.modulos.facturacion.formularios;
 
 import com.google.gson.Gson;
-import com.sge.base.formularios.frameBase;
+import com.sge.base.formularios.frameBasex;
 import com.sge.modulos.facturacion.clases.GuiaRemision;
 import com.sge.modulos.facturacion.cliente.cliFacturacion;
 import java.awt.event.ActionEvent;
@@ -14,7 +14,7 @@ import javax.swing.SwingWorker;
  *
  * @author elderson
  */
-public class lisGuiaRemision extends frameBase<GuiaRemision> {
+public class lisGuiaRemision extends frameBasex<GuiaRemision> {
 
     /**
      * Creates new form lisGuiaRemision

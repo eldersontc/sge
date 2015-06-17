@@ -1,7 +1,7 @@
 package com.sge.modulos.administracion.formularios;
 
 import com.google.gson.Gson;
-import com.sge.base.formularios.frameBase;
+import com.sge.base.formularios.frameBasex;
 import com.sge.modulos.administracion.clases.Menu;
 import com.sge.modulos.administracion.clases.Perfil;
 import com.sge.modulos.administracion.cliente.cliAdministracion;
@@ -16,7 +16,7 @@ import javax.swing.tree.TreePath;
  *
  * @author elderson
  */
-public class perMenu extends frameBase<Menu> {
+public class perMenu extends frameBasex<Menu> {
 
     /**
      * Creates new form perMenu

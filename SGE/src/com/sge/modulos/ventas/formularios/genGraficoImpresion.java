@@ -1,7 +1,7 @@
 package com.sge.modulos.ventas.formularios;
 
 import com.sge.base.controles.SearchListener;
-import com.sge.base.formularios.frameBase;
+import com.sge.base.formularios.frameBasex;
 import com.sge.modulos.ventas.clases.Cotizacion;
 import com.sge.modulos.ventas.clases.ItemCotizacion;
 import com.sge.modulos.ventas.clases.MetodoImpresion;
@@ -20,7 +20,7 @@ import javax.swing.ImageIcon;
  *
  * @author elderson
  */
-public class genGraficoImpresion extends frameBase<Cotizacion> {
+public class genGraficoImpresion extends frameBasex<Cotizacion> {
 
     /**
      * Creates new form genGraficoImpresion

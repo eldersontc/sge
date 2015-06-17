@@ -2,7 +2,7 @@ package com.sge.modulos.ventas.formularios;
 
 import com.google.gson.Gson;
 import com.sge.base.controles.SearchListener;
-import com.sge.base.formularios.frameBase;
+import com.sge.base.formularios.frameBasex;
 import com.sge.modulos.administracion.clases.Empleado;
 import com.sge.modulos.administracion.clases.Moneda;
 import com.sge.modulos.administracion.clases.Numeracion;
@@ -33,7 +33,7 @@ import javax.swing.SwingWorker;
  *
  * @author elderson
  */
-public class regSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
+public class regSolicitudCotizacion extends frameBasex<SolicitudCotizacion> {
 
     /**
      * Creates new form regSolicitudCotizacion

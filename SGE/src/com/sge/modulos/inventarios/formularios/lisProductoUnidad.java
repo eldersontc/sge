@@ -1,7 +1,7 @@
 package com.sge.modulos.inventarios.formularios;
 
 import com.google.gson.Gson;
-import com.sge.base.formularios.frameBase;
+import com.sge.base.formularios.frameBasex;
 import com.sge.modulos.inventarios.clases.ProductoUnidad;
 import com.sge.modulos.inventarios.cliente.cliInventarios;
 import java.util.ArrayList;
@@ -12,7 +12,7 @@ import javax.swing.SwingWorker;
  *
  * @author elderson
  */
-public class lisProductoUnidad extends frameBase<ProductoUnidad> {
+public class lisProductoUnidad extends frameBasex<ProductoUnidad> {
 
     /**
      * Creates new form lisProductoUnidad

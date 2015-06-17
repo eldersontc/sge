@@ -1,7 +1,7 @@
 package com.sge.modulos.ventas.formularios;
 
 import com.google.gson.Gson;
-import com.sge.base.formularios.frameBase;
+import com.sge.base.formularios.frameBasex;
 import com.sge.modulos.ventas.clases.ContactoCliente;
 import com.sge.modulos.ventas.cliente.cliVentas;
 import javax.swing.SwingWorker;
@@ -10,7 +10,7 @@ import javax.swing.SwingWorker;
  *
  * @author elderson
  */
-public class lisContactoCliente extends frameBase<ContactoCliente> {
+public class lisContactoCliente extends frameBasex<ContactoCliente> {
 
     /**
      * Creates new form lisContactoCliente

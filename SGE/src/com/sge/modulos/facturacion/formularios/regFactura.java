@@ -2,7 +2,7 @@ package com.sge.modulos.facturacion.formularios;
 
 import com.google.gson.Gson;
 import com.sge.base.controles.SearchListener;
-import com.sge.base.formularios.frameBase;
+import com.sge.base.formularios.frameBasex;
 import com.sge.modulos.administracion.clases.Empleado;
 import com.sge.modulos.administracion.clases.Moneda;
 import com.sge.modulos.administracion.clases.Numeracion;
@@ -30,7 +30,7 @@ import javax.swing.SwingWorker;
  *
  * @author elderson
  */
-public class regFactura extends frameBase<Factura> {
+public class regFactura extends frameBasex<Factura> {
 
     /**
      * Creates new form regFactura

@@ -2,7 +2,7 @@ package com.sge.modulos.administracion.formularios;
 
 import com.google.gson.Gson;
 import com.sge.base.controles.SearchListener;
-import com.sge.base.formularios.frameBase;
+import com.sge.base.formularios.frameBasex;
 import com.sge.modulos.administracion.clases.Entidad;
 import com.sge.modulos.administracion.clases.ItemReporte;
 import com.sge.modulos.administracion.clases.Reporte;
@@ -18,7 +18,7 @@ import javax.swing.SwingWorker;
  *
  * @author elderson
  */
-public class regReporte extends frameBase<Reporte> {
+public class regReporte extends frameBasex<Reporte> {
 
     /**
      * Creates new form regReporte
@@ -43,7 +43,7 @@ public class regReporte extends frameBase<Reporte> {
     Action sele_enti = new AbstractAction() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            Entidad seleccionado = ((lisEntidadx) e.getSource()).getSeleccionado();
+            Entidad seleccionado = ((lisEntidad) e.getSource()).getSeleccionado();
             if (!(seleccionado == null)) {
                 schEntidad.asingValues(seleccionado.getIdEntidad(), seleccionado.getNombre());
             }
@@ -394,7 +394,7 @@ public class regReporte extends frameBase<Reporte> {
     }// </editor-fold>//GEN-END:initComponents
 
     private void schEntidadSearch() {
-        VerModal(new lisEntidadx(1), sele_enti);
+        VerModal(new lisEntidad(1), sele_enti);
     }
     
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed

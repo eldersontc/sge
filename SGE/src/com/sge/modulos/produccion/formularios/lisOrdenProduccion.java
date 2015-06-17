@@ -1,7 +1,7 @@
 package com.sge.modulos.produccion.formularios;
 
 import com.google.gson.Gson;
-import com.sge.base.formularios.frameBase;
+import com.sge.base.formularios.frameBasex;
 import com.sge.modulos.produccion.clases.OrdenProduccion;
 import com.sge.modulos.produccion.cliente.cliProduccion;
 import java.awt.event.ActionEvent;
@@ -14,7 +14,7 @@ import javax.swing.SwingWorker;
  *
  * @author elderson
  */
-public class lisOrdenProduccion extends frameBase<OrdenProduccion> {
+public class lisOrdenProduccion extends frameBasex<OrdenProduccion> {
 
     /**
      * Creates new form lisOrdenProduccion

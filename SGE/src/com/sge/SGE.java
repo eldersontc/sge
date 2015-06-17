@@ -3,9 +3,9 @@ package com.sge;
 import com.google.gson.Gson;
 import com.sge.base.controles.FabricaControles;
 import com.sge.base.excepciones.Excepciones;
-import com.sge.base.formularios.frameBase;
+import com.sge.base.formularios.frameBasex;
 import com.sge.base.formularios.frameLogin;
-import com.sge.base.formularios.lisBase;
+import com.sge.base.formularios.frameBase;
 import com.sge.modulos.administracion.clases.Mensaje;
 import com.sge.modulos.administracion.clases.Menu;
 import com.sge.modulos.administracion.clases.Usuario;
@@ -225,7 +225,7 @@ public class SGE extends javax.swing.JFrame {
         try {
             Class<?> clazz = Class.forName(frameName);
             Constructor<?> constructor = clazz.getConstructor(int.class);
-            lisBase lis = (lisBase) constructor.newInstance(new Object[]{0});
+            frameBase lis = (frameBase) constructor.newInstance(new Object[]{0});
             lis.setUsuario(getUsuario());
             tpnlTabs.addTab(title, lis);
         } catch (Exception e) {
@@ -237,7 +237,7 @@ public class SGE extends javax.swing.JFrame {
         try {
             Class<?> clazz = Class.forName(frameName);
             Constructor<?> constructor = clazz.getConstructor(int.class);
-            frameBase frame = (frameBase) constructor.newInstance(new Object[]{0});
+            frameBasex frame = (frameBasex) constructor.newInstance(new Object[]{0});
             frame.setUsuario(getUsuario());
             dpPrincipal.add(frame);
             frame.setVisible(true);

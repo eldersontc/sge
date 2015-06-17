@@ -28,11 +28,11 @@ public class lisDepartamento extends frameBase<Departamento> {
         initComponents();
         Init(modo, filtro);
     }
-    
+
     private int modo;
 
     private String filtro;
-    
+
     private Departamento seleccionado;
 
     ImageIcon Icon_Save = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/save-16.png"));
@@ -135,8 +135,6 @@ public class lisDepartamento extends frameBase<Departamento> {
         txtFiltro = new javax.swing.JTextField();
         btnRefrescar = new javax.swing.JButton();
 
-        setClosable(true);
-
         frame.setBackground(java.awt.Color.white);
         frame.setBorder(null);
 
@@ -170,9 +168,6 @@ public class lisDepartamento extends frameBase<Departamento> {
             tbDepartamentos.getColumnModel().getColumn(1).setMinWidth(0);
             tbDepartamentos.getColumnModel().getColumn(1).setPreferredWidth(0);
             tbDepartamentos.getColumnModel().getColumn(1).setMaxWidth(0);
-            tbDepartamentos.getColumnModel().getColumn(2).setPreferredWidth(200);
-            tbDepartamentos.getColumnModel().getColumn(3).setPreferredWidth(20);
-            tbDepartamentos.getColumnModel().getColumn(4).setPreferredWidth(20);
         }
 
         pnlTitulo.setBackground(new java.awt.Color(67, 100, 130));
@@ -243,7 +238,7 @@ public class lisDepartamento extends frameBase<Departamento> {
             .addGroup(frameLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 673, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 690, Short.MAX_VALUE)
                     .addGroup(frameLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btnSeleccionar, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -273,8 +268,8 @@ public class lisDepartamento extends frameBase<Departamento> {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(frame, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -283,8 +278,6 @@ public class lisDepartamento extends frameBase<Departamento> {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(frame, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
-
-        pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed

@@ -1,7 +1,7 @@
 package com.sge.modulos.ventas.formularios;
 
 import com.google.gson.Gson;
-import com.sge.base.formularios.frameBase;
+import com.sge.base.formularios.frameBasex;
 import com.sge.modulos.ventas.clases.Cotizacion;
 import com.sge.modulos.ventas.clases.ItemCotizacion;
 import com.sge.modulos.ventas.clases.ItemSolicitudCotizacion;
@@ -18,7 +18,7 @@ import javax.swing.SwingWorker;
  *
  * @author elderson
  */
-public class lisSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
+public class lisSolicitudCotizacion extends frameBasex<SolicitudCotizacion> {
 
     /**
      * Creates new form lisSolicitudCotizacion

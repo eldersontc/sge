@@ -2,7 +2,7 @@ package com.sge.modulos.ventas.formularios;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.sge.base.formularios.frameBase;
+import com.sge.base.formularios.frameBasex;
 import com.sge.modulos.ventas.clases.ServicioUnidad;
 import com.sge.modulos.ventas.cliente.cliVentas;
 import java.util.ArrayList;
@@ -13,7 +13,7 @@ import javax.swing.SwingWorker;
  *
  * @author elderson
  */
-public class lisServicioUnidad extends frameBase<ServicioUnidad> {
+public class lisServicioUnidad extends frameBasex<ServicioUnidad> {
 
     /**
      * Creates new form lisServicioUnidad
