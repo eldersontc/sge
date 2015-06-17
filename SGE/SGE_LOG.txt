@@ -230,3 +230,298 @@
 06/06/2015 09:41:20 : java.net.SocketException : Socket closed 
 06/06/2015 09:52:51 : java.net.SocketException : Socket closed 
 06/11/2015 21:07:04 : java.net.SocketException : Socket closed 
+06/16/2015 17:31:14 : java.net.SocketException : Socket closed 
+06/16/2015 17:31:37 : java.net.SocketException : Socket closed 
+06/16/2015 17:35:26 : java.net.SocketException : Socket closed 
+06/16/2015 17:40:53 : java.net.SocketException : Socket closed 
+06/16/2015 17:41:13 : java.net.SocketException : Socket closed 
+06/16/2015 17:43:28 : java.net.SocketException : Socket closed 
+06/16/2015 17:45:59 : java.net.SocketException : Socket closed 
+06/16/2015 17:47:36 : java.net.SocketException : Socket closed 
+06/16/2015 17:48:07 : java.net.SocketException : Socket closed 
+06/16/2015 17:48:29 : java.net.SocketException : Socket closed 
+06/16/2015 17:48:59 : java.net.SocketException : Socket closed 
+06/16/2015 17:49:30 : java.net.SocketException : Socket closed 
+06/16/2015 17:50:12 : java.net.SocketException : Socket closed 
+06/16/2015 17:51:01 : java.net.SocketException : Socket closed 
+06/16/2015 17:52:21 : java.net.SocketException : Socket closed 
+06/16/2015 17:53:15 : java.net.SocketException : Socket closed 
+06/16/2015 17:54:05 : java.net.SocketException : Socket closed 
+06/16/2015 17:54:37 : java.net.SocketException : Socket closed 
+06/16/2015 17:55:33 : java.net.SocketException : Socket closed 
+06/16/2015 17:57:17 : java.net.SocketException : Socket closed 
+06/16/2015 17:57:47 : java.net.SocketException : Socket closed 
+06/16/2015 17:58:01 : java.net.SocketException : Socket closed 
+06/16/2015 17:59:37 : java.net.SocketException : Socket closed 
+06/16/2015 18:00:13 : java.net.SocketException : Socket closed 
+06/16/2015 18:00:44 : java.net.SocketException : Socket closed 
+06/16/2015 18:01:03 : java.net.SocketException : Socket closed 
+06/16/2015 18:01:59 : java.net.SocketException : Socket closed 
+06/16/2015 18:02:14 : java.net.SocketException : Socket closed 
+06/16/2015 18:02:19 : java.net.SocketException : Socket closed 
+06/16/2015 18:02:30 : java.net.SocketException : Socket closed 
+06/16/2015 18:03:02 : java.net.SocketException : Socket closed 
+06/16/2015 18:03:32 : java.net.SocketException : Socket closed 
+06/16/2015 18:06:12 : java.net.SocketException : Socket closed 
+06/16/2015 18:08:52 : java.net.SocketException : Socket closed 
+06/16/2015 18:10:20 : java.net.SocketException : Socket closed 
+06/16/2015 18:10:47 : java.net.SocketException : Socket closed 
+06/16/2015 18:11:33 : java.net.SocketException : Socket closed 
+06/16/2015 18:13:09 : java.net.SocketException : Socket closed 
+06/16/2015 18:16:48 : java.net.SocketException : Socket closed 
+06/16/2015 18:17:06 : java.net.SocketException : Socket closed 
+06/16/2015 18:19:32 : java.net.SocketException : Socket closed 
+06/16/2015 18:20:01 : java.net.SocketException : Socket closed 
+06/16/2015 18:20:37 : java.net.SocketException : Socket closed 
+06/16/2015 18:20:42 : java.net.SocketException : Socket closed 
+06/16/2015 18:21:17 : java.net.SocketException : Socket closed 
+06/16/2015 18:21:54 : java.net.SocketException : Socket closed 
+06/16/2015 18:22:06 : java.net.SocketException : Socket closed 
+06/16/2015 18:24:07 : java.net.SocketException : Socket closed 
+06/16/2015 18:28:16 : java.net.SocketException : Socket closed 
+06/16/2015 18:31:30 : java.net.SocketException : Socket closed 
+06/16/2015 18:34:09 : java.lang.Exception : EL USUARIO YA SE ENCUENTRA CONECTADO. 
+06/16/2015 18:35:34 : java.net.SocketException : Socket closed 
+06/16/2015 18:37:20 : java.net.SocketException : Socket closed 
+06/16/2015 18:39:29 : java.net.SocketException : Socket closed 
+06/16/2015 19:28:10 : java.net.SocketException : Socket closed 
+06/16/2015 22:20:34 : java.lang.NullPointerException : null 
+06/16/2015 22:20:34 : java.lang.NullPointerException : null 
+06/16/2015 22:21:06 : java.lang.NullPointerException : null 
+06/16/2015 22:21:06 : java.lang.NullPointerException : null 
+06/16/2015 22:21:39 : java.net.SocketException : Socket closed 
+06/16/2015 22:28:56 : java.net.SocketException : Socket closed 
+06/16/2015 22:43:11 : java.lang.Exception : CLAVE INCORRECTA. 
+06/16/2015 22:45:12 : com.sge.base.utils.Utils : OcultarColumna : 73 
+06/16/2015 22:45:12 : com.sge.base.formularios.lisBase : OcultarColumna : 103 
+06/16/2015 22:45:12 : com.sge.modulos.administracion.formularios.lisUsuario : Init : 207 
+06/16/2015 22:45:12 : com.sge.modulos.administracion.formularios.lisUsuario : <init> : 25 
+06/16/2015 22:45:12 : sun.reflect.NativeConstructorAccessorImpl : newInstance0 : -2 
+06/16/2015 22:45:12 : sun.reflect.NativeConstructorAccessorImpl : newInstance : 62 
+06/16/2015 22:45:12 : sun.reflect.DelegatingConstructorAccessorImpl : newInstance : 45 
+06/16/2015 22:45:12 : java.lang.reflect.Constructor : newInstance : 408 
+06/16/2015 22:45:12 : com.sge.SGE : AgregarTab : 228 
+06/16/2015 22:45:12 : com.sge.SGE : ClickMenuItem : 221 
+06/16/2015 22:45:12 : com.sge.SGE : access$200 : 46 
+06/16/2015 22:45:12 : com.sge.SGE$4 : actionPerformed : 184 
+06/16/2015 22:45:12 : javax.swing.AbstractButton : fireActionPerformed : 2022 
+06/16/2015 22:45:12 : javax.swing.AbstractButton$Handler : actionPerformed : 2346 
+06/16/2015 22:45:12 : javax.swing.DefaultButtonModel : fireActionPerformed : 402 
+06/16/2015 22:45:12 : javax.swing.DefaultButtonModel : setPressed : 259 
+06/16/2015 22:45:12 : javax.swing.AbstractButton : doClick : 376 
+06/16/2015 22:45:12 : javax.swing.plaf.basic.BasicMenuItemUI : doClick : 833 
+06/16/2015 22:45:12 : javax.swing.plaf.basic.BasicMenuItemUI$Handler : mouseReleased : 877 
+06/16/2015 22:45:12 : java.awt.Component : processMouseEvent : 6525 
+06/16/2015 22:45:12 : javax.swing.JComponent : processMouseEvent : 3322 
+06/16/2015 22:45:12 : java.awt.Component : processEvent : 6290 
+06/16/2015 22:45:12 : java.awt.Container : processEvent : 2234 
+06/16/2015 22:45:12 : java.awt.Component : dispatchEventImpl : 4881 
+06/16/2015 22:45:12 : java.awt.Container : dispatchEventImpl : 2292 
+06/16/2015 22:45:12 : java.awt.Component : dispatchEvent : 4703 
+06/16/2015 22:45:12 : java.awt.LightweightDispatcher : retargetMouseEvent : 4898 
+06/16/2015 22:45:12 : java.awt.LightweightDispatcher : processMouseEvent : 4533 
+06/16/2015 22:45:12 : java.awt.LightweightDispatcher : dispatchEvent : 4462 
+06/16/2015 22:45:12 : java.awt.Container : dispatchEventImpl : 2278 
+06/16/2015 22:45:12 : java.awt.Window : dispatchEventImpl : 2739 
+06/16/2015 22:45:12 : java.awt.Component : dispatchEvent : 4703 
+06/16/2015 22:45:12 : java.awt.EventQueue : dispatchEventImpl : 751 
+06/16/2015 22:45:12 : java.awt.EventQueue : access$500 : 97 
+06/16/2015 22:45:12 : java.awt.EventQueue$3 : run : 702 
+06/16/2015 22:45:12 : java.awt.EventQueue$3 : run : 696 
+06/16/2015 22:45:12 : java.security.AccessController : doPrivileged : -2 
+06/16/2015 22:45:12 : java.security.ProtectionDomain$1 : doIntersectionPrivilege : 75 
+06/16/2015 22:45:12 : java.security.ProtectionDomain$1 : doIntersectionPrivilege : 86 
+06/16/2015 22:45:12 : java.awt.EventQueue$4 : run : 724 
+06/16/2015 22:45:12 : java.awt.EventQueue$4 : run : 722 
+06/16/2015 22:45:12 : java.security.AccessController : doPrivileged : -2 
+06/16/2015 22:45:12 : java.security.ProtectionDomain$1 : doIntersectionPrivilege : 75 
+06/16/2015 22:45:12 : java.awt.EventQueue : dispatchEvent : 721 
+06/16/2015 22:45:12 : java.awt.EventDispatchThread : pumpOneEventForFilters : 201 
+06/16/2015 22:45:12 : java.awt.EventDispatchThread : pumpEventsForFilter : 116 
+06/16/2015 22:45:12 : java.awt.EventDispatchThread : pumpEventsForHierarchy : 105 
+06/16/2015 22:45:12 : java.awt.EventDispatchThread : pumpEvents : 101 
+06/16/2015 22:45:12 : java.awt.EventDispatchThread : pumpEvents : 93 
+06/16/2015 22:45:12 : java.awt.EventDispatchThread : run : 82 
+06/16/2015 22:46:04 : com.sge.base.utils.Utils : OcultarColumna : 73 
+06/16/2015 22:46:04 : com.sge.base.formularios.lisBase : OcultarColumna : 103 
+06/16/2015 22:46:04 : com.sge.modulos.administracion.formularios.lisUsuario : Init : 207 
+06/16/2015 22:46:04 : com.sge.modulos.administracion.formularios.lisUsuario : <init> : 25 
+06/16/2015 22:46:04 : sun.reflect.NativeConstructorAccessorImpl : newInstance0 : -2 
+06/16/2015 22:46:04 : sun.reflect.NativeConstructorAccessorImpl : newInstance : 62 
+06/16/2015 22:46:04 : sun.reflect.DelegatingConstructorAccessorImpl : newInstance : 45 
+06/16/2015 22:46:04 : java.lang.reflect.Constructor : newInstance : 408 
+06/16/2015 22:46:04 : com.sge.SGE : AgregarTab : 228 
+06/16/2015 22:46:04 : com.sge.SGE : ClickMenuItem : 221 
+06/16/2015 22:46:04 : com.sge.SGE : access$200 : 46 
+06/16/2015 22:46:04 : com.sge.SGE$4 : actionPerformed : 184 
+06/16/2015 22:46:04 : javax.swing.AbstractButton : fireActionPerformed : 2022 
+06/16/2015 22:46:04 : javax.swing.AbstractButton$Handler : actionPerformed : 2346 
+06/16/2015 22:46:04 : javax.swing.DefaultButtonModel : fireActionPerformed : 402 
+06/16/2015 22:46:04 : javax.swing.DefaultButtonModel : setPressed : 259 
+06/16/2015 22:46:04 : javax.swing.AbstractButton : doClick : 376 
+06/16/2015 22:46:04 : javax.swing.plaf.basic.BasicMenuItemUI : doClick : 833 
+06/16/2015 22:46:04 : javax.swing.plaf.basic.BasicMenuItemUI$Handler : mouseReleased : 877 
+06/16/2015 22:46:04 : java.awt.Component : processMouseEvent : 6525 
+06/16/2015 22:46:04 : javax.swing.JComponent : processMouseEvent : 3322 
+06/16/2015 22:46:04 : java.awt.Component : processEvent : 6290 
+06/16/2015 22:46:04 : java.awt.Container : processEvent : 2234 
+06/16/2015 22:46:04 : java.awt.Component : dispatchEventImpl : 4881 
+06/16/2015 22:46:04 : java.awt.Container : dispatchEventImpl : 2292 
+06/16/2015 22:46:04 : java.awt.Component : dispatchEvent : 4703 
+06/16/2015 22:46:04 : java.awt.LightweightDispatcher : retargetMouseEvent : 4898 
+06/16/2015 22:46:04 : java.awt.LightweightDispatcher : processMouseEvent : 4533 
+06/16/2015 22:46:04 : java.awt.LightweightDispatcher : dispatchEvent : 4462 
+06/16/2015 22:46:04 : java.awt.Container : dispatchEventImpl : 2278 
+06/16/2015 22:46:04 : java.awt.Window : dispatchEventImpl : 2739 
+06/16/2015 22:46:04 : java.awt.Component : dispatchEvent : 4703 
+06/16/2015 22:46:04 : java.awt.EventQueue : dispatchEventImpl : 751 
+06/16/2015 22:46:04 : java.awt.EventQueue : access$500 : 97 
+06/16/2015 22:46:04 : java.awt.EventQueue$3 : run : 702 
+06/16/2015 22:46:04 : java.awt.EventQueue$3 : run : 696 
+06/16/2015 22:46:04 : java.security.AccessController : doPrivileged : -2 
+06/16/2015 22:46:04 : java.security.ProtectionDomain$1 : doIntersectionPrivilege : 75 
+06/16/2015 22:46:04 : java.security.ProtectionDomain$1 : doIntersectionPrivilege : 86 
+06/16/2015 22:46:04 : java.awt.EventQueue$4 : run : 724 
+06/16/2015 22:46:04 : java.awt.EventQueue$4 : run : 722 
+06/16/2015 22:46:04 : java.security.AccessController : doPrivileged : -2 
+06/16/2015 22:46:04 : java.security.ProtectionDomain$1 : doIntersectionPrivilege : 75 
+06/16/2015 22:46:04 : java.awt.EventQueue : dispatchEvent : 721 
+06/16/2015 22:46:04 : java.awt.EventDispatchThread : pumpOneEventForFilters : 201 
+06/16/2015 22:46:04 : java.awt.EventDispatchThread : pumpEventsForFilter : 116 
+06/16/2015 22:46:04 : java.awt.EventDispatchThread : pumpEventsForHierarchy : 105 
+06/16/2015 22:46:04 : java.awt.EventDispatchThread : pumpEvents : 101 
+06/16/2015 22:46:04 : java.awt.EventDispatchThread : pumpEvents : 93 
+06/16/2015 22:46:04 : java.awt.EventDispatchThread : run : 82 
+06/16/2015 22:46:09 : java.net.SocketException : Socket closed 
+06/16/2015 22:48:06 : com.sge.base.utils.Utils : OcultarColumna : 73 
+06/16/2015 22:48:06 : com.sge.base.formularios.lisBase : OcultarColumna : 103 
+06/16/2015 22:48:06 : com.sge.modulos.administracion.formularios.lisUsuario : Init : 207 
+06/16/2015 22:48:06 : com.sge.modulos.administracion.formularios.lisUsuario : <init> : 25 
+06/16/2015 22:48:06 : sun.reflect.NativeConstructorAccessorImpl : newInstance0 : -2 
+06/16/2015 22:48:06 : sun.reflect.NativeConstructorAccessorImpl : newInstance : 62 
+06/16/2015 22:48:06 : sun.reflect.DelegatingConstructorAccessorImpl : newInstance : 45 
+06/16/2015 22:48:06 : java.lang.reflect.Constructor : newInstance : 408 
+06/16/2015 22:48:06 : com.sge.SGE : AgregarTab : 228 
+06/16/2015 22:48:06 : com.sge.SGE : ClickMenuItem : 221 
+06/16/2015 22:48:06 : com.sge.SGE : access$200 : 46 
+06/16/2015 22:48:06 : com.sge.SGE$4 : actionPerformed : 184 
+06/16/2015 22:48:06 : javax.swing.AbstractButton : fireActionPerformed : 2022 
+06/16/2015 22:48:06 : javax.swing.AbstractButton$Handler : actionPerformed : 2346 
+06/16/2015 22:48:06 : javax.swing.DefaultButtonModel : fireActionPerformed : 402 
+06/16/2015 22:48:06 : javax.swing.DefaultButtonModel : setPressed : 259 
+06/16/2015 22:48:06 : javax.swing.AbstractButton : doClick : 376 
+06/16/2015 22:48:06 : javax.swing.plaf.basic.BasicMenuItemUI : doClick : 833 
+06/16/2015 22:48:06 : javax.swing.plaf.basic.BasicMenuItemUI$Handler : mouseReleased : 877 
+06/16/2015 22:48:06 : java.awt.Component : processMouseEvent : 6525 
+06/16/2015 22:48:06 : javax.swing.JComponent : processMouseEvent : 3322 
+06/16/2015 22:48:06 : java.awt.Component : processEvent : 6290 
+06/16/2015 22:48:06 : java.awt.Container : processEvent : 2234 
+06/16/2015 22:48:06 : java.awt.Component : dispatchEventImpl : 4881 
+06/16/2015 22:48:06 : java.awt.Container : dispatchEventImpl : 2292 
+06/16/2015 22:48:06 : java.awt.Component : dispatchEvent : 4703 
+06/16/2015 22:48:06 : java.awt.LightweightDispatcher : retargetMouseEvent : 4898 
+06/16/2015 22:48:06 : java.awt.LightweightDispatcher : processMouseEvent : 4533 
+06/16/2015 22:48:06 : java.awt.LightweightDispatcher : dispatchEvent : 4462 
+06/16/2015 22:48:06 : java.awt.Container : dispatchEventImpl : 2278 
+06/16/2015 22:48:06 : java.awt.Window : dispatchEventImpl : 2739 
+06/16/2015 22:48:06 : java.awt.Component : dispatchEvent : 4703 
+06/16/2015 22:48:06 : java.awt.EventQueue : dispatchEventImpl : 751 
+06/16/2015 22:48:06 : java.awt.EventQueue : access$500 : 97 
+06/16/2015 22:48:06 : java.awt.EventQueue$3 : run : 702 
+06/16/2015 22:48:06 : java.awt.EventQueue$3 : run : 696 
+06/16/2015 22:48:06 : java.security.AccessController : doPrivileged : -2 
+06/16/2015 22:48:06 : java.security.ProtectionDomain$1 : doIntersectionPrivilege : 75 
+06/16/2015 22:48:06 : java.security.ProtectionDomain$1 : doIntersectionPrivilege : 86 
+06/16/2015 22:48:06 : java.awt.EventQueue$4 : run : 724 
+06/16/2015 22:48:06 : java.awt.EventQueue$4 : run : 722 
+06/16/2015 22:48:06 : java.security.AccessController : doPrivileged : -2 
+06/16/2015 22:48:06 : java.security.ProtectionDomain$1 : doIntersectionPrivilege : 75 
+06/16/2015 22:48:06 : java.awt.EventQueue : dispatchEvent : 721 
+06/16/2015 22:48:06 : java.awt.EventDispatchThread : pumpOneEventForFilters : 201 
+06/16/2015 22:48:06 : java.awt.EventDispatchThread : pumpEventsForFilter : 116 
+06/16/2015 22:48:06 : java.awt.EventDispatchThread : pumpEventsForHierarchy : 105 
+06/16/2015 22:48:06 : java.awt.EventDispatchThread : pumpEvents : 101 
+06/16/2015 22:48:06 : java.awt.EventDispatchThread : pumpEvents : 93 
+06/16/2015 22:48:06 : java.awt.EventDispatchThread : run : 82 
+06/16/2015 22:51:29 : java.lang.Exception : EL USUARIO YA SE ENCUENTRA CONECTADO. 
+06/16/2015 23:06:06 : java.net.SocketException : Socket closed 
+06/16/2015 23:08:11 : java.net.SocketException : Socket closed 
+06/16/2015 23:26:51 : java.lang.Exception : EL USUARIO YA SE ENCUENTRA CONECTADO. 
+06/16/2015 23:29:44 : java.net.SocketException : Socket closed 
+06/16/2015 23:31:01 : java.net.SocketException : Socket closed 
+06/16/2015 23:34:52 : java.net.SocketException : Socket closed 
+06/16/2015 23:36:03 : java.net.SocketException : Socket closed 
+06/16/2015 23:38:33 : java.net.SocketException : Socket closed 
+06/16/2015 23:43:29 : java.lang.Exception : EL USUARIO YA SE ENCUENTRA CONECTADO. 
+06/16/2015 23:43:36 : java.net.BindException : La dirección ya se está usando 
+06/16/2015 23:44:27 : java.lang.NullPointerException : null 
+06/16/2015 23:45:13 : java.net.BindException : La dirección ya se está usando 
+06/16/2015 23:45:16 : com.sge.base.controles.FabricaControles : VerCargando : 267 
+06/16/2015 23:45:16 : com.sge.base.formularios.lisBase : VerCargando : 176 
+06/16/2015 23:45:16 : com.sge.modulos.administracion.formularios.lisUsuario$swObtenerUsuarios : doInBackground : 90 
+06/16/2015 23:45:16 : javax.swing.SwingWorker$1 : call : 295 
+06/16/2015 23:45:16 : java.util.concurrent.FutureTask : run : 266 
+06/16/2015 23:45:16 : javax.swing.SwingWorker : run : 334 
+06/16/2015 23:45:16 : java.util.concurrent.ThreadPoolExecutor : runWorker : 1142 
+06/16/2015 23:45:16 : java.util.concurrent.ThreadPoolExecutor$Worker : run : 617 
+06/16/2015 23:45:16 : java.lang.Thread : run : 745 
+06/16/2015 23:46:10 : com.sge.base.controles.FabricaControles : VerCargando : 267 
+06/16/2015 23:46:10 : com.sge.base.formularios.lisBase : VerCargando : 176 
+06/16/2015 23:46:10 : com.sge.modulos.administracion.formularios.lisUsuario$swObtenerUsuarios : doInBackground : 90 
+06/16/2015 23:46:10 : javax.swing.SwingWorker$1 : call : 295 
+06/16/2015 23:46:10 : java.util.concurrent.FutureTask : run : 266 
+06/16/2015 23:46:10 : javax.swing.SwingWorker : run : 334 
+06/16/2015 23:46:10 : java.util.concurrent.ThreadPoolExecutor : runWorker : 1142 
+06/16/2015 23:46:10 : java.util.concurrent.ThreadPoolExecutor$Worker : run : 617 
+06/16/2015 23:46:10 : java.lang.Thread : run : 745 
+06/16/2015 23:49:09 : java.net.SocketException : Socket closed 
+06/16/2015 23:56:41 : java.net.SocketException : Socket closed 
+06/16/2015 23:57:58 : java.net.SocketException : Socket closed 
+06/17/2015 00:00:52 : java.net.SocketException : Socket closed 
+06/17/2015 00:06:32 : java.net.SocketException : Socket closed 
+06/17/2015 00:07:19 : java.net.SocketException : Socket closed 
+06/17/2015 00:07:53 : java.net.SocketException : Socket closed 
+06/17/2015 00:08:32 : java.net.SocketException : Socket closed 
+06/17/2015 00:09:37 : java.net.SocketException : Socket closed 
+06/17/2015 00:10:23 : java.lang.Exception : CLAVE INCORRECTA. 
+06/17/2015 00:10:27 : java.lang.Exception : CLAVE INCORRECTA. 
+06/17/2015 00:10:27 : java.lang.Exception : CLAVE INCORRECTA. 
+06/17/2015 00:14:14 : java.net.SocketException : Socket closed 
+06/17/2015 00:30:10 : java.net.SocketException : Socket closed 
+06/17/2015 00:30:35 : java.net.SocketException : Socket closed 
+06/17/2015 00:32:46 : java.net.SocketException : Socket closed 
+06/17/2015 00:36:56 : java.net.SocketException : Socket closed 
+06/17/2015 01:05:58 : java.net.SocketException : Socket closed 
+06/17/2015 01:07:57 : java.net.SocketException : Socket closed 
+06/17/2015 01:13:25 : java.net.SocketException : Socket closed 
+06/17/2015 01:14:45 : java.net.SocketException : Socket closed 
+06/17/2015 01:16:10 : java.net.SocketException : Socket closed 
+06/17/2015 01:18:01 : java.net.SocketException : Socket closed 
+06/17/2015 01:18:18 : java.net.SocketException : Socket closed 
+06/17/2015 01:21:28 : java.net.SocketException : Socket closed 
+06/17/2015 01:24:56 : java.net.SocketException : Socket closed 
+06/17/2015 01:25:26 : java.net.SocketException : Socket closed 
+06/17/2015 01:27:51 : java.net.SocketException : Socket closed 
+06/17/2015 01:28:34 : java.net.SocketException : Socket closed 
+06/17/2015 01:29:42 : java.net.SocketException : Socket closed 
+06/17/2015 01:30:24 : java.net.SocketException : Socket closed 
+06/17/2015 01:31:12 : java.net.SocketException : Socket closed 
+06/17/2015 01:31:59 : java.net.SocketException : Socket closed 
+06/17/2015 01:33:33 : java.net.SocketException : Socket closed 
+06/17/2015 01:34:28 : java.net.SocketException : Socket closed 
+06/17/2015 01:43:11 : com.sge.base.controles.FabricaControles : VerProcesando : 305 
+06/17/2015 01:43:11 : com.sge.base.formularios.lisBase : VerProcesando : 159 
+06/17/2015 01:43:11 : com.sge.modulos.administracion.formularios.regNumeracion$swGuardarNumeracion : doInBackground : 100 
+06/17/2015 01:43:11 : javax.swing.SwingWorker$1 : call : 295 
+06/17/2015 01:43:11 : java.util.concurrent.FutureTask : run : 266 
+06/17/2015 01:43:11 : javax.swing.SwingWorker : run : 334 
+06/17/2015 01:43:11 : java.util.concurrent.ThreadPoolExecutor : runWorker : 1142 
+06/17/2015 01:43:11 : java.util.concurrent.ThreadPoolExecutor$Worker : run : 617 
+06/17/2015 01:43:11 : java.lang.Thread : run : 745 
+06/17/2015 01:44:05 : java.lang.NullPointerException : null 
+06/17/2015 01:44:05 : java.lang.NullPointerException : null 
+06/17/2015 01:46:26 : java.net.SocketException : Socket closed 
+06/17/2015 01:48:57 : java.net.SocketException : Socket closed 
+06/17/2015 01:49:29 : java.net.SocketException : Socket closed 
+06/17/2015 01:54:17 : java.net.SocketException : Socket closed 
+06/17/2015 01:54:41 : java.net.SocketException : Socket closed 

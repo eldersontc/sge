@@ -5,6 +5,7 @@ import com.sge.base.controles.FabricaControles;
 import com.sge.base.excepciones.Excepciones;
 import com.sge.base.formularios.frameBase;
 import com.sge.base.formularios.frameLogin;
+import com.sge.base.formularios.lisBase;
 import com.sge.modulos.administracion.clases.Mensaje;
 import com.sge.modulos.administracion.clases.Menu;
 import com.sge.modulos.administracion.clases.Usuario;
@@ -67,14 +68,16 @@ public class SGE extends javax.swing.JFrame {
     public void Init() {
         OcultarBanner();
         setExtendedState(java.awt.Frame.MAXIMIZED_BOTH);
-        FabricaControles.VerModal(jdpPrincipal, new frameLogin(), close);
+        FabricaControles.VerModal(dpPrincipal, new frameLogin(), close);
     }
 
     public void OcultarBanner() {
         pnlBanner.setVisible(false);
         pnlMenu.setVisible(false);
         pnlMensajes.setVisible(false);
-        for (JInternalFrame frame : jdpPrincipal.getAllFrames()) {
+        pnlTabs.setVisible(false);
+        dpPrincipal.setVisible(true);
+        for (JInternalFrame frame : dpPrincipal.getAllFrames()) {
             try {
                 frame.setClosed(true);
             } catch (Exception ex) {
@@ -85,6 +88,8 @@ public class SGE extends javax.swing.JFrame {
     public void VerBanner() {
         pnlBanner.setVisible(true);
         pnlMenu.setVisible(true);
+        pnlTabs.setVisible(true);
+        dpPrincipal.setVisible(false);
         txtUsuario.setText(getUsuario().getUsuario());
         txtFecha.setText(new SimpleDateFormat("dd/MM/yyyy").format(this.fechaServidor));
     }
@@ -212,16 +217,29 @@ public class SGE extends javax.swing.JFrame {
     private void ClickMenuItem(ActionEvent e) {
         // TODO add your handling code here:
         JMenuItem menuItem = (JMenuItem) e.getSource();
-        LanzarFormulario(menuItem.getName());
+        //LanzarFormulario(menuItem.getName());
+        AgregarTab(menuItem.getName(), menuItem.getText());
     }
 
+    public void AgregarTab(String frameName, String title){
+        try {
+            Class<?> clazz = Class.forName(frameName);
+            Constructor<?> constructor = clazz.getConstructor(int.class);
+            lisBase lis = (lisBase) constructor.newInstance(new Object[]{0});
+            lis.setUsuario(getUsuario());
+            tpnlTabs.addTab(title, lis);
+        } catch (Exception e) {
+            Excepciones.Controlar(e, this);
+        }
+    }
+    
     public void LanzarFormulario(String frameName) {
         try {
             Class<?> clazz = Class.forName(frameName);
             Constructor<?> constructor = clazz.getConstructor(int.class);
             frameBase frame = (frameBase) constructor.newInstance(new Object[]{0});
             frame.setUsuario(getUsuario());
-            jdpPrincipal.add(frame);
+            dpPrincipal.add(frame);
             frame.setVisible(true);
         } catch (Exception e) {
             Excepciones.Controlar(e, this);
@@ -475,7 +493,7 @@ public class SGE extends javax.swing.JFrame {
         txtFecha = new javax.swing.JLabel();
         btnVerMensajes = new javax.swing.JButton();
         pnlMenu = new javax.swing.JPanel();
-        jdpPrincipal = new javax.swing.JDesktopPane();
+        dpPrincipal = new javax.swing.JDesktopPane();
         pnlMensajes = new javax.swing.JPanel();
         pnlTitulo = new javax.swing.JPanel();
         lblTitulo = new javax.swing.JLabel();
@@ -486,6 +504,8 @@ public class SGE extends javax.swing.JFrame {
         btnEnviarMensaje = new javax.swing.JButton();
         jScrollPane4 = new javax.swing.JScrollPane();
         txtMensajes = new javax.swing.JEditorPane();
+        pnlTabs = new javax.swing.JPanel();
+        tpnlTabs = new javax.swing.JTabbedPane();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -603,7 +623,7 @@ public class SGE extends javax.swing.JFrame {
             .addGap(0, 53, Short.MAX_VALUE)
         );
 
-        jdpPrincipal.setBorder(null);
+        dpPrincipal.setBorder(null);
 
         pnlMensajes.setBackground(java.awt.Color.white);
         pnlMensajes.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -673,7 +693,7 @@ public class SGE extends javax.swing.JFrame {
                 .addGroup(pnlMensajesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                     .addGroup(pnlMensajesLayout.createSequentialGroup()
-                        .addComponent(txtMensaje, javax.swing.GroupLayout.DEFAULT_SIZE, 168, Short.MAX_VALUE)
+                        .addComponent(txtMensaje)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnEnviarMensaje, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane4))
@@ -684,14 +704,27 @@ public class SGE extends javax.swing.JFrame {
             .addGroup(pnlMensajesLayout.createSequentialGroup()
                 .addComponent(pnlTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 54, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 71, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 113, Short.MAX_VALUE)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 96, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnlMensajesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(btnEnviarMensaje, javax.swing.GroupLayout.DEFAULT_SIZE, 49, Short.MAX_VALUE)
                     .addComponent(txtMensaje))
                 .addContainerGap())
+        );
+
+        pnlTabs.setBackground(java.awt.Color.white);
+
+        javax.swing.GroupLayout pnlTabsLayout = new javax.swing.GroupLayout(pnlTabs);
+        pnlTabs.setLayout(pnlTabsLayout);
+        pnlTabsLayout.setHorizontalGroup(
+            pnlTabsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(tpnlTabs)
+        );
+        pnlTabsLayout.setVerticalGroup(
+            pnlTabsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(tpnlTabs)
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -703,7 +736,10 @@ public class SGE extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(pnlMensajes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(2, 2, 2)
-                .addComponent(jdpPrincipal))
+                .addComponent(dpPrincipal)
+                .addGap(1, 1, 1)
+                .addComponent(pnlTabs, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(2, 2, 2))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -713,7 +749,11 @@ public class SGE extends javax.swing.JFrame {
                 .addComponent(pnlMenu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(pnlMensajes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jdpPrincipal)))
+                    .addComponent(dpPrincipal)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(1, 1, 1)
+                        .addComponent(pnlTabs, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(1, 1, 1))))
         );
 
         pack();
@@ -723,7 +763,7 @@ public class SGE extends javax.swing.JFrame {
         // TODO add your handling code here:
         OcultarBanner();
         DesconectarUsuario();
-        FabricaControles.VerModal(jdpPrincipal, new frameLogin(), close);
+        FabricaControles.VerModal(dpPrincipal, new frameLogin(), close);
     }//GEN-LAST:event_btnSalirActionPerformed
 
     private void pnlBannerMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pnlBannerMouseReleased
@@ -814,9 +854,9 @@ public class SGE extends javax.swing.JFrame {
     private javax.swing.JButton btnOcultarMensajes;
     private javax.swing.JButton btnSalir;
     private javax.swing.JButton btnVerMensajes;
+    private javax.swing.JDesktopPane dpPrincipal;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane4;
-    private javax.swing.JDesktopPane jdpPrincipal;
     private javax.swing.JLabel lblFecha;
     private javax.swing.JLabel lblSeparador;
     private javax.swing.JLabel lblTitulo;
@@ -826,7 +866,9 @@ public class SGE extends javax.swing.JFrame {
     private javax.swing.JPanel pnlBanner;
     private javax.swing.JPanel pnlMensajes;
     private javax.swing.JPanel pnlMenu;
+    private javax.swing.JPanel pnlTabs;
     private javax.swing.JPanel pnlTitulo;
+    private javax.swing.JTabbedPane tpnlTabs;
     private javax.swing.JLabel txtFecha;
     private javax.swing.JTextField txtMensaje;
     private javax.swing.JEditorPane txtMensajes;

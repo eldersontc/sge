@@ -8,6 +8,8 @@ import com.sge.base.utils.Utils;
 import com.sge.modulos.administracion.clases.Usuario;
 import com.sge.modulos.administracion.clases.ValorDefinido;
 import java.awt.Component;
+import java.awt.Window;
+import java.awt.event.WindowEvent;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.ParameterizedType;
 import java.util.List;
@@ -24,7 +26,7 @@ import javax.swing.tree.TreePath;
  *
  * @author elderson
  */
-public class frameBase<T> extends javax.swing.JInternalFrame {
+public class frameBase<T> extends JInternalFrame {
 
     /////////////////////////////// VARIABLES //////////////////////////////////
     private T entidad;
@@ -180,12 +182,20 @@ public class frameBase<T> extends javax.swing.JInternalFrame {
         FabricaControles.OcultarCargando(panel);
     }
 
-    public void VerModal(JInternalFrame frame, Action action) {
-        FabricaControles.VerModal(this.getDesktopPane(), frame, action);
+    public void VerModal(JPanel panel) {
+        FabricaControles.VerModal(getParent(), panel);
+    }
+    
+    public void VerModal(JPanel panel, Action action) {
+        FabricaControles.VerModal(getParent(), panel, action);
     }
 
-    public void VerModal(JInternalFrame frame) {
-        FabricaControles.VerModal(this.getDesktopPane(), frame);
+    public void VerFrame(JPanel panel){
+        FabricaControles.VerFrame(getParent(), panel);
+    }
+    
+    public void VerFrame(JPanel panel, Action action){
+        FabricaControles.VerFrame(getParent(), panel, action);
     }
 
     public int VerModal(JPanel panel, Component component, String title) {
@@ -219,12 +229,10 @@ public class frameBase<T> extends javax.swing.JInternalFrame {
     }
 
     //////////////////////////////// METODOS BASE //////////////////////////////
-    public void Cerrar() {
-        try {
-            this.setClosed(true);
-        } catch (Exception e) {
-            ControlarExcepcion(e);
-        }
+    public void Cerrar(){
+        Window window = (Window)this.getParent().getParent().getParent().getParent();
+        window.dispose();
+        window.dispatchEvent(new WindowEvent(window, WindowEvent.WINDOW_CLOSING));
     }
 
     private ValorDefinido valorDefinido;

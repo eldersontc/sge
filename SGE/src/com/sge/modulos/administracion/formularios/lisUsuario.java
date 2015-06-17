@@ -1,10 +1,10 @@
 package com.sge.modulos.administracion.formularios;
 
-import com.sge.modulos.administracion.cliente.cliAdministracion;
 import com.google.gson.Gson;
 import com.sge.base.formularios.frameBase;
 import com.sge.modulos.administracion.clases.Perfil;
 import com.sge.modulos.administracion.clases.Usuario;
+import com.sge.modulos.administracion.cliente.cliAdministracion;
 import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -49,14 +49,14 @@ public class lisUsuario extends frameBase<Usuario> {
             }
         }
     };
-    
+
     Action search = new AbstractAction() {
         @Override
         public void actionPerformed(ActionEvent e) {
             VerModal(new lisPerfil(1), sele_perf);
         }
     };
-    
+
     Action save = new AbstractAction() {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -251,8 +251,6 @@ public class lisUsuario extends frameBase<Usuario> {
         txtFiltro = new javax.swing.JTextField();
         btnRefrescar = new javax.swing.JButton();
 
-        setClosable(true);
-
         frame.setBackground(java.awt.Color.white);
         frame.setBorder(null);
 
@@ -283,19 +281,12 @@ public class lisUsuario extends frameBase<Usuario> {
         tbUsuarios.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane1.setViewportView(tbUsuarios);
         if (tbUsuarios.getColumnModel().getColumnCount() > 0) {
-            tbUsuarios.getColumnModel().getColumn(0).setMinWidth(0);
-            tbUsuarios.getColumnModel().getColumn(0).setPreferredWidth(0);
-            tbUsuarios.getColumnModel().getColumn(0).setMaxWidth(0);
             tbUsuarios.getColumnModel().getColumn(1).setMinWidth(0);
             tbUsuarios.getColumnModel().getColumn(1).setPreferredWidth(0);
             tbUsuarios.getColumnModel().getColumn(1).setMaxWidth(0);
-            tbUsuarios.getColumnModel().getColumn(2).setPreferredWidth(200);
             tbUsuarios.getColumnModel().getColumn(4).setMinWidth(0);
             tbUsuarios.getColumnModel().getColumn(4).setPreferredWidth(0);
             tbUsuarios.getColumnModel().getColumn(4).setMaxWidth(0);
-            tbUsuarios.getColumnModel().getColumn(5).setPreferredWidth(200);
-            tbUsuarios.getColumnModel().getColumn(7).setPreferredWidth(10);
-            tbUsuarios.getColumnModel().getColumn(8).setPreferredWidth(10);
         }
 
         pnlTitulo.setBackground(new java.awt.Color(67, 100, 130));
@@ -366,7 +357,7 @@ public class lisUsuario extends frameBase<Usuario> {
             .addGroup(frameLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1160, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 675, Short.MAX_VALUE)
                     .addGroup(frameLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btnSeleccionar, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -390,14 +381,14 @@ public class lisUsuario extends frameBase<Usuario> {
                         .addComponent(txtFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(btnRefrescar, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 361, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 243, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnSeleccionar)
                 .addGap(15, 15, 15))
         );
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(frame, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -406,8 +397,6 @@ public class lisUsuario extends frameBase<Usuario> {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(frame, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
-
-        pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed

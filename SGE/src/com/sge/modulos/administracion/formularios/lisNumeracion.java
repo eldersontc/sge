@@ -1,12 +1,10 @@
 package com.sge.modulos.administracion.formularios;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.sge.base.formularios.frameBase;
 import com.sge.modulos.administracion.clases.Numeracion;
 import com.sge.modulos.administracion.cliente.cliAdministracion;
 import java.awt.event.ActionEvent;
-import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ImageIcon;
@@ -30,9 +28,9 @@ public class lisNumeracion extends frameBase<Numeracion> {
         initComponents();
         Init(modo, filtro);
     }
-    
+
     private int modo;
-    
+
     private String filtro;
 
     private Numeracion seleccionado;
@@ -51,6 +49,13 @@ public class lisNumeracion extends frameBase<Numeracion> {
         @Override
         public void actionPerformed(ActionEvent e) {
             EliminarNumeracion();
+        }
+    };
+    
+    Action refr = new AbstractAction() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            new swObtenerNumeraciones().execute();
         }
     };
 
@@ -152,9 +157,7 @@ public class lisNumeracion extends frameBase<Numeracion> {
 
     public void EditarNumeracion() {
         int idNumeracion = ObtenerValorCelda(tbNumeraciones, 1);
-        regNumeracion regNumeracion = new regNumeracion("EDITAR ", idNumeracion);
-        this.getParent().add(regNumeracion);
-        regNumeracion.setVisible(true);
+        VerFrame(new regNumeracion("EDITAR ", idNumeracion), refr);
     }
 
     public void EliminarNumeracion() {
@@ -167,7 +170,7 @@ public class lisNumeracion extends frameBase<Numeracion> {
     public Numeracion getSeleccionado() {
         return seleccionado;
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -187,8 +190,6 @@ public class lisNumeracion extends frameBase<Numeracion> {
         txtFiltro = new javax.swing.JTextField();
         btnSeleccionar = new javax.swing.JButton();
         btnRefrescar = new javax.swing.JButton();
-
-        setClosable(true);
 
         frame.setBackground(java.awt.Color.white);
         frame.setBorder(null);
@@ -223,12 +224,6 @@ public class lisNumeracion extends frameBase<Numeracion> {
             tbNumeraciones.getColumnModel().getColumn(1).setMinWidth(0);
             tbNumeraciones.getColumnModel().getColumn(1).setPreferredWidth(0);
             tbNumeraciones.getColumnModel().getColumn(1).setMaxWidth(0);
-            tbNumeraciones.getColumnModel().getColumn(2).setPreferredWidth(200);
-            tbNumeraciones.getColumnModel().getColumn(3).setPreferredWidth(200);
-            tbNumeraciones.getColumnModel().getColumn(4).setPreferredWidth(100);
-            tbNumeraciones.getColumnModel().getColumn(5).setPreferredWidth(100);
-            tbNumeraciones.getColumnModel().getColumn(6).setPreferredWidth(100);
-            tbNumeraciones.getColumnModel().getColumn(7).setPreferredWidth(100);
         }
 
         pnlTitulo.setBackground(new java.awt.Color(67, 100, 130));
@@ -299,7 +294,7 @@ public class lisNumeracion extends frameBase<Numeracion> {
             .addGroup(frameLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1165, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 755, Short.MAX_VALUE)
                     .addGroup(frameLayout.createSequentialGroup()
                         .addComponent(lblFiltro)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -323,14 +318,14 @@ public class lisNumeracion extends frameBase<Numeracion> {
                         .addComponent(txtFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(btnRefrescar, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 371, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 220, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnSeleccionar)
                 .addGap(15, 15, 15))
         );
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(frame, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -339,15 +334,14 @@ public class lisNumeracion extends frameBase<Numeracion> {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(frame, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
-
-        pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
         // TODO add your handling code here:
-        regNumeracion regNumeracion = new regNumeracion("NUEVO ", 0);
-        this.getParent().add(regNumeracion);
-        regNumeracion.setVisible(true);
+        //regNumeracionx regNumeracion = new regNumeracionx("NUEVO ", 0);
+        //this.getParent().add(regNumeracion);
+        //regNumeracion.setVisible(true);
+        VerFrame(new regNumeracion("NUEVO ", 0), refr);
     }//GEN-LAST:event_btnNuevoActionPerformed
 
     private void txtFiltroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFiltroActionPerformed
@@ -359,18 +353,18 @@ public class lisNumeracion extends frameBase<Numeracion> {
         // TODO add your handling code here:
         switch (this.modo) {
             case 1:
-            if (FilaActiva(tbNumeraciones)) {
-                Numeracion numeracion = new Numeracion();
-                numeracion.setIdNumeracion(ObtenerValorCelda(tbNumeraciones, 1));
-                numeracion.setDescripcion(ObtenerValorCelda(tbNumeraciones, 2));
-                numeracion.setManual(ObtenerValorCelda(tbNumeraciones, 4));
-                numeracion.setActivo(ObtenerValorCelda(tbNumeraciones, 5));
-                seleccionado = numeracion;
-            }
-            Cerrar();
-            break;
+                if (FilaActiva(tbNumeraciones)) {
+                    Numeracion numeracion = new Numeracion();
+                    numeracion.setIdNumeracion(ObtenerValorCelda(tbNumeraciones, 1));
+                    numeracion.setDescripcion(ObtenerValorCelda(tbNumeraciones, 2));
+                    numeracion.setManual(ObtenerValorCelda(tbNumeraciones, 4));
+                    numeracion.setActivo(ObtenerValorCelda(tbNumeraciones, 5));
+                    seleccionado = numeracion;
+                }
+                Cerrar();
+                break;
             case 2:
-            break;
+                break;
         }
     }//GEN-LAST:event_btnSeleccionarActionPerformed
 

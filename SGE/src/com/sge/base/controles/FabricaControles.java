@@ -22,6 +22,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDesktopPane;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
@@ -295,39 +297,39 @@ public class FabricaControles {
     }
 
     public static void VerProcesando(JPanel panel) {
-        for (Component component : panel.getParent().getComponents()) {
-            if ("panelProcesando".equals(component.getName())) {
-                return;
-            }
-        }
-        JInternalFrame frame = (JInternalFrame) panel.getParent().getParent().getParent().getParent();
-        JPanel panelProcesando = new JPanel();
-        panelProcesando.setName("panelProcesando");
-        panelProcesando.setBackground(Color.white);
-        panelProcesando.setLayout(new BorderLayout());
-        ImageIcon iconoProcesando = new ImageIcon(frame.getClass().getResource("/com/sge/base/imagenes/process-32.gif"));
-        JLabel labelProcesando = new JLabel();
-        labelProcesando.setText("Procesando...");
-        labelProcesando.setIcon(iconoProcesando);
-        labelProcesando.setHorizontalAlignment(SwingConstants.CENTER);
-        panelProcesando.add(labelProcesando, BorderLayout.CENTER);
-        frame.setLayout(new BorderLayout());
-        frame.add(panelProcesando, 0);
-        panel.setVisible(false);
+//        for (Component component : panel.getParent().getComponents()) {
+//            if ("panelProcesando".equals(component.getName())) {
+//                return;
+//            }
+//        }
+//        JInternalFrame frame = (JInternalFrame) panel.getParent().getParent().getParent().getParent();
+//        JPanel panelProcesando = new JPanel();
+//        panelProcesando.setName("panelProcesando");
+//        panelProcesando.setBackground(Color.white);
+//        panelProcesando.setLayout(new BorderLayout());
+//        ImageIcon iconoProcesando = new ImageIcon(frame.getClass().getResource("/com/sge/base/imagenes/process-32.gif"));
+//        JLabel labelProcesando = new JLabel();
+//        labelProcesando.setText("Procesando...");
+//        labelProcesando.setIcon(iconoProcesando);
+//        labelProcesando.setHorizontalAlignment(SwingConstants.CENTER);
+//        panelProcesando.add(labelProcesando, BorderLayout.CENTER);
+//        frame.setLayout(new BorderLayout());
+//        frame.add(panelProcesando, 0);
+//        panel.setVisible(false);
     }
 
     public static void OcultarProcesando(JPanel panel) {
-        Component panelProcesando = null;
-        for (Component component : panel.getParent().getComponents()) {
-            if ("panelProcesando".equals(component.getName())) {
-                panelProcesando = component;
-                break;
-            }
-        }
-        if (!(panelProcesando == null)) {
-            panel.getParent().remove(panelProcesando);
-        }
-        panel.setVisible(true);
+//        Component panelProcesando = null;
+//        for (Component component : panel.getParent().getComponents()) {
+//            if ("panelProcesando".equals(component.getName())) {
+//                panelProcesando = component;
+//                break;
+//            }
+//        }
+//        if (!(panelProcesando == null)) {
+//            panel.getParent().remove(panelProcesando);
+//        }
+//        panel.setVisible(true);
     }
 
     public static void VerModal(JDesktopPane desktop, JInternalFrame frame, Action action) {
@@ -407,6 +409,56 @@ public class FabricaControles {
         });
     }
 
+    public static void VerModal(Component parent, JPanel panel){
+        JDialog dialog = new JDialog();
+        dialog.setModal(true);
+        dialog.setSize(800, 400);
+        dialog.setLayout(new BorderLayout());
+        dialog.setLocationRelativeTo(parent);
+        dialog.add(panel);
+        dialog.show();
+    }
+    
+    public static void VerModal(Component parent, JPanel panel, Action action){
+        JDialog dialog = new JDialog();
+        dialog.setModal(true);
+        dialog.setSize(800, 400);
+        dialog.setLayout(new BorderLayout());
+        dialog.setLocationRelativeTo(parent);
+        dialog.add(panel);
+        dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                action.actionPerformed(new ActionEvent(panel, 0, null));
+            }
+        });
+        dialog.show();
+    }
+    
+    public static void VerFrame(Component parent, JPanel panel){
+        JFrame frame = new JFrame();
+        frame.setSize(panel.getPreferredSize().width, panel.getPreferredSize().height + 30);
+        frame.setResizable(false);
+        frame.setLayout(new BorderLayout());
+        frame.setLocationRelativeTo(parent);
+        frame.add(panel);
+        frame.show();
+    }
+    
+    public static void VerFrame(Component parent, JPanel panel, Action action){
+        JFrame frame = new JFrame();
+        frame.setSize(panel.getPreferredSize().width, panel.getPreferredSize().height + 30);
+        frame.setResizable(false);
+        frame.setLayout(new BorderLayout());
+        frame.setLocationRelativeTo(parent);
+        frame.add(panel);
+        frame.addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                action.actionPerformed(new ActionEvent(evt.getSource(), evt.getID(), null));
+            }
+        });
+        frame.show();
+    }
+    
     public static int VerModal(Component parentComponent, Component component, String title) {
         return JOptionPane.showInternalConfirmDialog(parentComponent, component, title, JOptionPane.OK_CANCEL_OPTION);
     }

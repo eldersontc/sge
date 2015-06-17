@@ -10,7 +10,7 @@ import com.sge.modulos.administracion.clases.ValorDefinido;
 import com.sge.modulos.administracion.cliente.cliAdministracion;
 import com.sge.modulos.administracion.formularios.lisEmpleado;
 import com.sge.modulos.administracion.formularios.lisMoneda;
-import com.sge.modulos.administracion.formularios.lisNumeracion;
+import com.sge.modulos.administracion.formularios.lisNumeracionx;
 import com.sge.modulos.facturacion.clases.Factura;
 import com.sge.modulos.facturacion.clases.ItemFactura;
 import com.sge.modulos.facturacion.cliente.cliFacturacion;
@@ -128,7 +128,7 @@ public class regFactura extends frameBase<Factura> {
     Action select_nume = new AbstractAction() {
         @Override
         public void actionPerformed(ActionEvent evt) {
-            Numeracion seleccionado = ((lisNumeracion) evt.getSource()).getSeleccionado();
+            Numeracion seleccionado = ((lisNumeracionx) evt.getSource()).getSeleccionado();
             if (!(seleccionado == null)) {
                 cliAdministracion cliente = new cliAdministracion();
                 String json = cliente.ObtenerNumeracion(new Gson().toJson(seleccionado.getIdNumeracion()));
@@ -684,7 +684,7 @@ public class regFactura extends frameBase<Factura> {
 
     private void schNumeracionSearch() {
         String filtro = "WHERE Numeracion.idEntidad = 10";
-        VerModal(new lisNumeracion(1, filtro), select_nume);
+        VerModal(new lisNumeracionx(1, filtro), select_nume);
     }
 
     private void schResponsableSearch() {

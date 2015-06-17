@@ -10,7 +10,7 @@ import com.sge.modulos.administracion.clases.ValorDefinido;
 import com.sge.modulos.administracion.cliente.cliAdministracion;
 import com.sge.modulos.administracion.formularios.lisEmpleado;
 import com.sge.modulos.administracion.formularios.lisMoneda;
-import com.sge.modulos.administracion.formularios.lisNumeracion;
+import com.sge.modulos.administracion.formularios.lisNumeracionx;
 import com.sge.modulos.compras.clases.Proveedor;
 import com.sge.modulos.compras.formularios.lisProveedor;
 import com.sge.modulos.inventarios.clases.Almacen;
@@ -207,7 +207,7 @@ public class regEntradaInventario extends frameBase<EntradaInventario> {
     Action select_nume = new AbstractAction() {
         @Override
         public void actionPerformed(ActionEvent evt) {
-            Numeracion seleccionado = ((lisNumeracion) evt.getSource()).getSeleccionado();
+            Numeracion seleccionado = ((lisNumeracionx) evt.getSource()).getSeleccionado();
             if (!(seleccionado == null)) {
                 cliAdministracion cliente = new cliAdministracion();
                 String json = cliente.ObtenerNumeracion(new Gson().toJson(seleccionado.getIdNumeracion()));
@@ -835,7 +835,7 @@ public class regEntradaInventario extends frameBase<EntradaInventario> {
 
     private void schNumeracionSearch() {
         String filtro = "WHERE Numeracion.idEntidad = 1";
-        VerModal(new lisNumeracion(1, filtro), select_nume);
+        VerModal(new lisNumeracionx(1, filtro), select_nume);
     }
 
     private void schProveedorSearch() {

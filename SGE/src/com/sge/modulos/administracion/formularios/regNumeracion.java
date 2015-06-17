@@ -15,7 +15,7 @@ import javax.swing.SwingWorker;
  *
  * @author elderson
  */
-public class regNumeracion extends frameBase {
+public class regNumeracion extends frameBase<Numeracion> {
 
     /**
      * Creates new form regNumeracion
@@ -134,7 +134,7 @@ public class regNumeracion extends frameBase {
                 String json = get().toString();
                 String[] resultado = new Gson().fromJson(json, String[].class);
                 if (resultado[0].equals("true")) {
-                    setVisible(false);
+                    Cerrar();
                 } else {
                     OcultarProcesando(frame);
                 }
@@ -175,10 +175,8 @@ public class regNumeracion extends frameBase {
         txtNumeroActual = new javax.swing.JTextField();
         schEntidad = new com.sge.base.controles.JSearch();
 
-        setClosable(true);
-
         frame.setBackground(java.awt.Color.white);
-        frame.setBorder(null);
+        frame.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         lblDescripcion.setText("DESCRIPCIÓN");
 
@@ -302,7 +300,7 @@ public class regNumeracion extends frameBase {
                                 .addComponent(chkActivo, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addComponent(chkTieneImpuesto, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtPorcentajeImpuesto, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(27, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         frameLayout.setVerticalGroup(
             frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -344,8 +342,8 @@ public class regNumeracion extends frameBase {
                 .addGap(19, 19, 19))
         );
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(frame, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -354,24 +352,12 @@ public class regNumeracion extends frameBase {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(frame, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
-
-        pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void schEntidadSearch() {
         VerModal(new lisEntidad(1), sele_enti);
     }
     
-    private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
-        // TODO add your handling code here:
-        new swGuardarNumeracion().execute();
-    }//GEN-LAST:event_btnAceptarActionPerformed
-
-    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
-        // TODO add your handling code here:
-        Cerrar();
-    }//GEN-LAST:event_btnCancelarActionPerformed
-
     private void chkManualStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chkManualStateChanged
         // TODO add your handling code here:
         if (chkManual.isSelected()) {
@@ -384,6 +370,16 @@ public class regNumeracion extends frameBase {
             txtLongitudNumero.setEnabled(true);
         }
     }//GEN-LAST:event_chkManualStateChanged
+
+    private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
+        // TODO add your handling code here:
+        new swGuardarNumeracion().execute();
+    }//GEN-LAST:event_btnAceptarActionPerformed
+
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+        // TODO add your handling code here:
+        Cerrar();
+    }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void chkTieneImpuestoStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chkTieneImpuestoStateChanged
         // TODO add your handling code here:

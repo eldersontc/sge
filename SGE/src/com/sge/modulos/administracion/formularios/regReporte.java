@@ -43,7 +43,7 @@ public class regReporte extends frameBase<Reporte> {
     Action sele_enti = new AbstractAction() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            Entidad seleccionado = ((lisEntidad) e.getSource()).getSeleccionado();
+            Entidad seleccionado = ((lisEntidadx) e.getSource()).getSeleccionado();
             if (!(seleccionado == null)) {
                 schEntidad.asingValues(seleccionado.getIdEntidad(), seleccionado.getNombre());
             }
@@ -394,7 +394,7 @@ public class regReporte extends frameBase<Reporte> {
     }// </editor-fold>//GEN-END:initComponents
 
     private void schEntidadSearch() {
-        VerModal(new lisEntidad(1), sele_enti);
+        VerModal(new lisEntidadx(1), sele_enti);
     }
     
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
