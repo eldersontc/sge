@@ -10,7 +10,7 @@ import com.sge.modulos.administracion.clases.ValorDefinido;
 import com.sge.modulos.administracion.cliente.cliAdministracion;
 import com.sge.modulos.administracion.formularios.lisEmpleado;
 import com.sge.modulos.administracion.formularios.lisMoneda;
-import com.sge.modulos.administracion.formularios.lisNumeracionx;
+import com.sge.modulos.administracion.formularios.lisNumeracion;
 import com.sge.modulos.finanzas.clases.Caja;
 import com.sge.modulos.finanzas.clases.EntradaCaja;
 import com.sge.modulos.finanzas.clases.ItemEntradaCaja;
@@ -144,7 +144,7 @@ public class regEntradaCaja extends frameBasex<EntradaCaja> {
     Action select_nume = new AbstractAction() {
         @Override
         public void actionPerformed(ActionEvent evt) {
-            Numeracion seleccionado = ((lisNumeracionx) evt.getSource()).getSeleccionado();
+            Numeracion seleccionado = ((lisNumeracion) evt.getSource()).getSeleccionado();
             if (!(seleccionado == null)) {
                 cliAdministracion cliente = new cliAdministracion();
                 String json = cliente.ObtenerNumeracion(new Gson().toJson(seleccionado.getIdNumeracion()));
@@ -694,7 +694,7 @@ public class regEntradaCaja extends frameBasex<EntradaCaja> {
 
     private void schNumeracionSearch() {
         String filtro = "WHERE Numeracion.idEntidad = 8";
-        VerModal(new lisNumeracionx(1, filtro), select_nume);
+        VerModal(new lisNumeracion(1, filtro), select_nume);
     }
 
     private void schResponsableSearch() {

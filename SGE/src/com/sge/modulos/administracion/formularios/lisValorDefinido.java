@@ -1,7 +1,7 @@
 package com.sge.modulos.administracion.formularios;
 
 import com.google.gson.Gson;
-import com.sge.base.formularios.frameBasex;
+import com.sge.base.formularios.frameBase;
 import com.sge.modulos.administracion.clases.ValorDefinido;
 import com.sge.modulos.administracion.cliente.cliAdministracion;
 import java.awt.event.ActionEvent;
@@ -14,10 +14,10 @@ import javax.swing.SwingWorker;
  *
  * @author elderson
  */
-public class lisValorDefinido extends frameBasex<ValorDefinido> {
+public class lisValorDefinido extends frameBase<ValorDefinido> {
 
     /**
-     * Creates new form lisValoresDefinidos
+     * Creates new form lisValorDefinidox
      */
     public lisValorDefinido(int modo) {
         initComponents();
@@ -47,6 +47,13 @@ public class lisValorDefinido extends frameBasex<ValorDefinido> {
         @Override
         public void actionPerformed(ActionEvent e) {
             EliminarValorDefinido();
+        }
+    };
+
+    Action refr = new AbstractAction() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            new swObtenerValoresDefinidos().execute();
         }
     };
 
@@ -146,9 +153,7 @@ public class lisValorDefinido extends frameBasex<ValorDefinido> {
 
     public void EditarValorDefinido() {
         int idValorDefinido = ObtenerValorCelda(tbValoresDefinidos, 1);
-        regValorDefinido regValorDefinido = new regValorDefinido("EDITAR ", idValorDefinido);
-        this.getParent().add(regValorDefinido);
-        regValorDefinido.setVisible(true);
+        VerFrame(new regValorDefinido("EDITAR ", idValorDefinido), refr);
     }
 
     public void EliminarValorDefinido() {
@@ -176,8 +181,6 @@ public class lisValorDefinido extends frameBasex<ValorDefinido> {
         lblFiltro = new javax.swing.JLabel();
         txtFiltro = new javax.swing.JTextField();
         btnRefrescar = new javax.swing.JButton();
-
-        setClosable(true);
 
         frame.setBackground(java.awt.Color.white);
         frame.setBorder(null);
@@ -212,8 +215,6 @@ public class lisValorDefinido extends frameBasex<ValorDefinido> {
             tbValoresDefinidos.getColumnModel().getColumn(1).setMinWidth(0);
             tbValoresDefinidos.getColumnModel().getColumn(1).setPreferredWidth(0);
             tbValoresDefinidos.getColumnModel().getColumn(1).setMaxWidth(0);
-            tbValoresDefinidos.getColumnModel().getColumn(5).setPreferredWidth(20);
-            tbValoresDefinidos.getColumnModel().getColumn(6).setPreferredWidth(20);
         }
 
         pnlTitulo.setBackground(new java.awt.Color(67, 100, 130));
@@ -239,7 +240,7 @@ public class lisValorDefinido extends frameBasex<ValorDefinido> {
             .addGroup(pnlTituloLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lblTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 331, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 742, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 235, Short.MAX_VALUE)
                 .addComponent(btnNuevo)
                 .addContainerGap())
         );
@@ -277,7 +278,7 @@ public class lisValorDefinido extends frameBasex<ValorDefinido> {
             .addGroup(frameLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1160, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 653, Short.MAX_VALUE)
                     .addGroup(frameLayout.createSequentialGroup()
                         .addComponent(lblFiltro)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -298,12 +299,12 @@ public class lisValorDefinido extends frameBasex<ValorDefinido> {
                         .addComponent(txtFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(btnRefrescar, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 413, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 261, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(frame, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -312,15 +313,11 @@ public class lisValorDefinido extends frameBasex<ValorDefinido> {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(frame, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
-
-        pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
         // TODO add your handling code here:
-        regValorDefinido regValorDefinido = new regValorDefinido("NUEVO ", 0);
-        this.getParent().add(regValorDefinido);
-        regValorDefinido.setVisible(true);
+        VerFrame(new regValorDefinido("NUEVO ", 0), refr);
     }//GEN-LAST:event_btnNuevoActionPerformed
 
     private void txtFiltroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFiltroActionPerformed

@@ -1,7 +1,7 @@
 package com.sge.modulos.administracion.formularios;
 
 import com.google.gson.Gson;
-import com.sge.base.formularios.frameBasex;
+import com.sge.base.formularios.frameBase;
 import com.sge.modulos.administracion.clases.Empleado;
 import com.sge.modulos.administracion.cliente.cliAdministracion;
 import javax.swing.SwingWorker;
@@ -10,10 +10,10 @@ import javax.swing.SwingWorker;
  *
  * @author elderson
  */
-public class regEmpleado extends frameBasex<Empleado> {
+public class regEmpleado extends frameBase<Empleado> {
 
     /**
-     * Creates new form regEmpleado
+     * Creates new form regEmpleadox
      */
     public regEmpleado(String operacion, int idEmpleado) {
         initComponents();
@@ -110,7 +110,7 @@ public class regEmpleado extends frameBasex<Empleado> {
                 String json = get().toString();
                 String[] resultado = new Gson().fromJson(json, String[].class);
                 if (resultado[0].equals("true")) {
-                    setVisible(false);
+                    Cerrar();
                 } else {
                     OcultarProcesando(frame);
                 }
@@ -148,8 +148,6 @@ public class regEmpleado extends frameBasex<Empleado> {
         btnCancelar = new javax.swing.JButton();
         pnlTitulo = new javax.swing.JPanel();
         lblTitulo = new javax.swing.JLabel();
-
-        setClosable(true);
 
         frame.setBackground(java.awt.Color.white);
         frame.setBorder(null);
@@ -199,7 +197,7 @@ public class regEmpleado extends frameBasex<Empleado> {
             .addGroup(pnlTituloLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lblTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(273, Short.MAX_VALUE))
+                .addContainerGap(285, Short.MAX_VALUE))
         );
         pnlTituloLayout.setVerticalGroup(
             pnlTituloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -287,11 +285,11 @@ public class regEmpleado extends frameBasex<Empleado> {
                 .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCancelar)
                     .addComponent(btnAceptar))
-                .addContainerGap(21, Short.MAX_VALUE))
+                .addContainerGap(17, Short.MAX_VALUE))
         );
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(frame, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -300,8 +298,6 @@ public class regEmpleado extends frameBasex<Empleado> {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(frame, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
-
-        pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed

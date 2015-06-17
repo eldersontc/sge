@@ -1,12 +1,10 @@
 package com.sge.modulos.administracion.formularios;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import com.sge.base.formularios.frameBasex;
+import com.sge.base.formularios.frameBase;
 import com.sge.modulos.administracion.clases.Provincia;
 import com.sge.modulos.administracion.cliente.cliAdministracion;
 import java.awt.event.ActionEvent;
-import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ImageIcon;
@@ -16,10 +14,10 @@ import javax.swing.SwingWorker;
  *
  * @author elderson
  */
-public class lisProvincia extends frameBasex<Provincia> {
+public class lisProvincia extends frameBase<Provincia> {
 
     /**
-     * Creates new form lisProvincia
+     * Creates new form lisProvinciax
      */
     public lisProvincia(int modo) {
         initComponents();
@@ -137,8 +135,6 @@ public class lisProvincia extends frameBasex<Provincia> {
         txtFiltro = new javax.swing.JTextField();
         btnRefrescar = new javax.swing.JButton();
 
-        setClosable(true);
-
         frame.setBackground(java.awt.Color.white);
         frame.setBorder(null);
 
@@ -172,9 +168,6 @@ public class lisProvincia extends frameBasex<Provincia> {
             tbProvincias.getColumnModel().getColumn(1).setMinWidth(0);
             tbProvincias.getColumnModel().getColumn(1).setPreferredWidth(0);
             tbProvincias.getColumnModel().getColumn(1).setMaxWidth(0);
-            tbProvincias.getColumnModel().getColumn(2).setPreferredWidth(200);
-            tbProvincias.getColumnModel().getColumn(3).setPreferredWidth(20);
-            tbProvincias.getColumnModel().getColumn(4).setPreferredWidth(20);
         }
 
         pnlTitulo.setBackground(new java.awt.Color(67, 100, 130));
@@ -245,7 +238,7 @@ public class lisProvincia extends frameBasex<Provincia> {
             .addGroup(frameLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 675, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 718, Short.MAX_VALUE)
                     .addGroup(frameLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btnSeleccionar, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -275,8 +268,8 @@ public class lisProvincia extends frameBasex<Provincia> {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(frame, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -285,8 +278,6 @@ public class lisProvincia extends frameBasex<Provincia> {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(frame, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
-
-        pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed

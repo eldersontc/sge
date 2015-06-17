@@ -2,7 +2,7 @@ package com.sge.modulos.administracion.formularios;
 
 import com.google.gson.Gson;
 import com.sge.base.controles.SearchListener;
-import com.sge.base.formularios.frameBasex;
+import com.sge.base.formularios.frameBase;
 import com.sge.modulos.administracion.clases.Entidad;
 import com.sge.modulos.administracion.clases.Numeracion;
 import com.sge.modulos.administracion.cliente.cliAdministracion;
@@ -15,10 +15,10 @@ import javax.swing.SwingWorker;
  *
  * @author elderson
  */
-public class regNumeracion extends frameBasex<Numeracion> {
+public class regNumeracion extends frameBase<Numeracion> {
 
     /**
-     * Creates new form regNumeracion
+     * Creates new form regNumeracionx
      */
     public regNumeracion(String operacion, int idNumeracion) {
         initComponents();

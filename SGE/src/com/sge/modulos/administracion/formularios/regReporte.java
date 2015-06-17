@@ -2,7 +2,7 @@ package com.sge.modulos.administracion.formularios;
 
 import com.google.gson.Gson;
 import com.sge.base.controles.SearchListener;
-import com.sge.base.formularios.frameBasex;
+import com.sge.base.formularios.frameBase;
 import com.sge.modulos.administracion.clases.Entidad;
 import com.sge.modulos.administracion.clases.ItemReporte;
 import com.sge.modulos.administracion.clases.Reporte;
@@ -18,10 +18,10 @@ import javax.swing.SwingWorker;
  *
  * @author elderson
  */
-public class regReporte extends frameBasex<Reporte> {
+public class regReporte extends frameBase<Reporte> {
 
     /**
-     * Creates new form regReporte
+     * Creates new form regReportex
      */
     public regReporte(String operacion, int idReporte) {
         initComponents();
@@ -49,7 +49,7 @@ public class regReporte extends frameBasex<Reporte> {
             }
         }
     };
-    
+
     public List<ItemReporte> getItems() {
         for (int i = 0; i < tbItems.getRowCount(); i++) {
             int idItemReporte = ObtenerValorCelda(tbItems, i, 0);
@@ -158,7 +158,7 @@ public class regReporte extends frameBasex<Reporte> {
                 String json = get().toString();
                 String[] resultado = new Gson().fromJson(json, String[].class);
                 if (resultado[0].equals("true")) {
-                    setVisible(false);
+                    Cerrar();
                 } else {
                     OcultarProcesando(frame);
                 }
@@ -196,8 +196,6 @@ public class regReporte extends frameBasex<Reporte> {
         btnEliminarItem = new javax.swing.JButton();
         btnNuevoItem = new javax.swing.JButton();
         schEntidad = new com.sge.base.controles.JSearch();
-
-        setClosable(true);
 
         frame.setBackground(java.awt.Color.white);
         frame.setBorder(null);
@@ -237,7 +235,7 @@ public class regReporte extends frameBasex<Reporte> {
             .addGroup(pnlTituloLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lblTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(339, Short.MAX_VALUE))
+                .addContainerGap(327, Short.MAX_VALUE))
         );
         pnlTituloLayout.setVerticalGroup(
             pnlTituloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -256,7 +254,7 @@ public class regReporte extends frameBasex<Reporte> {
 
             },
             new String [] {
-                "IDITEM", "NOMBRE", "ASIGNAR ID", "VALOR"
+                "ID", "NOMBRE", "ASIGNAR ID", "VALOR"
             }
         ) {
             Class[] types = new Class [] {
@@ -350,7 +348,7 @@ public class regReporte extends frameBasex<Reporte> {
                                     .addComponent(chkActivo, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addComponent(txtNombre, javax.swing.GroupLayout.DEFAULT_SIZE, 409, Short.MAX_VALUE)
                                 .addComponent(txtUbicacion)))))
-                .addContainerGap(26, Short.MAX_VALUE))
+                .addContainerGap(14, Short.MAX_VALUE))
         );
         frameLayout.setVerticalGroup(
             frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -376,11 +374,11 @@ public class regReporte extends frameBasex<Reporte> {
                 .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCancelar)
                     .addComponent(btnAceptar))
-                .addContainerGap(25, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(frame, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -389,28 +387,21 @@ public class regReporte extends frameBasex<Reporte> {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(frame, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
-
-        pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void schEntidadSearch() {
         VerModal(new lisEntidad(1), sele_enti);
     }
-    
-    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
-        // TODO add your handling code here:
-        Cerrar();
-    }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
         // TODO add your handling code here:
         new swGuardarReporte().execute();
     }//GEN-LAST:event_btnAceptarActionPerformed
 
-    private void btnNuevoItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoItemActionPerformed
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
         // TODO add your handling code here:
-        AgregarFila(tbItems, new Object[]{0, "", false, ""});
-    }//GEN-LAST:event_btnNuevoItemActionPerformed
+        Cerrar();
+    }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void btnEliminarItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarItemActionPerformed
         // TODO add your handling code here:
@@ -422,6 +413,11 @@ public class regReporte extends frameBasex<Reporte> {
             EliminarFila(tbItems);
         }
     }//GEN-LAST:event_btnEliminarItemActionPerformed
+
+    private void btnNuevoItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoItemActionPerformed
+        // TODO add your handling code here:
+        AgregarFila(tbItems, new Object[]{0, "", false, ""});
+    }//GEN-LAST:event_btnNuevoItemActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

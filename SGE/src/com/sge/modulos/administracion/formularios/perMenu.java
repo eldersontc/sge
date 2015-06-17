@@ -1,7 +1,7 @@
 package com.sge.modulos.administracion.formularios;
 
 import com.google.gson.Gson;
-import com.sge.base.formularios.frameBasex;
+import com.sge.base.formularios.frameBase;
 import com.sge.modulos.administracion.clases.Menu;
 import com.sge.modulos.administracion.clases.Perfil;
 import com.sge.modulos.administracion.cliente.cliAdministracion;
@@ -16,10 +16,10 @@ import javax.swing.tree.TreePath;
  *
  * @author elderson
  */
-public class perMenu extends frameBasex<Menu> {
+public class perMenu extends frameBase<Menu> {
 
     /**
-     * Creates new form perMenu
+     * Creates new form perMenux
      */
     public perMenu(int modo) {
         initComponents();
@@ -135,12 +135,12 @@ public class perMenu extends frameBasex<Menu> {
     }
 
     private List<Menu> menus;
-    
+
     private void getSubMenus(DefaultMutableTreeNode node) {
-        if(node.getUserObject() instanceof Menu){
-            Menu menu = (Menu)node.getUserObject();
-            if(menu.isCheck() != menu.isNuevoCheck()){
-                if(menu.isNuevoCheck()){
+        if (node.getUserObject() instanceof Menu) {
+            Menu menu = (Menu) node.getUserObject();
+            if (menu.isCheck() != menu.isNuevoCheck()) {
+                if (menu.isNuevoCheck()) {
                     menu.setAgregar(true);
                 } else {
                     menu.setEliminar(true);
@@ -149,18 +149,18 @@ public class perMenu extends frameBasex<Menu> {
             }
         }
         TreePath tp = new TreePath(node.getPath());
-        for (int i = 0 ; i < node.getChildCount() ; i++) {              
+        for (int i = 0; i < node.getChildCount(); i++) {
             getSubMenus((DefaultMutableTreeNode) tp.pathByAddingChild(node.getChildAt(i)).getLastPathComponent());
         }
     }
-    
-    public List<Menu> getMenus(){
+
+    public List<Menu> getMenus() {
         this.menus = new ArrayList<>();
-        DefaultMutableTreeNode nodo = (DefaultMutableTreeNode)treeMenus.getModel().getRoot();
+        DefaultMutableTreeNode nodo = (DefaultMutableTreeNode) treeMenus.getModel().getRoot();
         getSubMenus(nodo);
         return menus;
     }
-    
+
     public class swActualizarPermisos extends SwingWorker<Object, Object> {
 
         @Override
@@ -169,8 +169,8 @@ public class perMenu extends frameBasex<Menu> {
             cliAdministracion cliente = new cliAdministracion();
             String json = "";
             try {
-                Perfil perfil = (Perfil)cboPerfiles.getSelectedItem();
-                String[] arrayJson = new String[]{ new Gson().toJson(getMenus()), new Gson().toJson(perfil.getIdPerfil()) };
+                Perfil perfil = (Perfil) cboPerfiles.getSelectedItem();
+                String[] arrayJson = new String[]{new Gson().toJson(getMenus()), new Gson().toJson(perfil.getIdPerfil())};
                 json = cliente.ActualizarPermisos(new Gson().toJson(arrayJson));
             } catch (Exception e) {
                 OcultarProcesando(frame);
@@ -198,7 +198,7 @@ public class perMenu extends frameBasex<Menu> {
             }
         }
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -219,8 +219,6 @@ public class perMenu extends frameBasex<Menu> {
         btnAceptar = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
 
-        setClosable(true);
-
         frame.setBackground(java.awt.Color.white);
         frame.setBorder(null);
 
@@ -239,7 +237,7 @@ public class perMenu extends frameBasex<Menu> {
             .addGroup(pnlTitulo1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lblTitulo1, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(313, Short.MAX_VALUE))
+                .addContainerGap(315, Short.MAX_VALUE))
         );
         pnlTitulo1Layout.setVerticalGroup(
             pnlTitulo1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -298,7 +296,7 @@ public class perMenu extends frameBasex<Menu> {
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 507, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(24, Short.MAX_VALUE))
+                .addContainerGap(26, Short.MAX_VALUE))
         );
         frameLayout.setVerticalGroup(
             frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -316,11 +314,11 @@ public class perMenu extends frameBasex<Menu> {
                 .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAceptar)
                     .addComponent(btnCancelar))
-                .addContainerGap(21, Short.MAX_VALUE))
+                .addContainerGap(15, Short.MAX_VALUE))
         );
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(frame, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -329,10 +327,8 @@ public class perMenu extends frameBasex<Menu> {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(frame, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
-
-        pack();
     }// </editor-fold>//GEN-END:initComponents
-    
+
     private void btnVerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerActionPerformed
         // TODO add your handling code here:
         new swObtenerMenusPorPerfil().execute();
@@ -345,7 +341,7 @@ public class perMenu extends frameBasex<Menu> {
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
         // TODO add your handling code here:
-        Cerrar();
+        new swObtenerMenusPorPerfil().execute();
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

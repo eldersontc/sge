@@ -13,7 +13,7 @@ import com.sge.modulos.administracion.cliente.cliAdministracion;
 import com.sge.modulos.administracion.formularios.lisDepartamento;
 import com.sge.modulos.administracion.formularios.lisDistrito;
 import com.sge.modulos.administracion.formularios.lisEmpleado;
-import com.sge.modulos.administracion.formularios.lisNumeracionx;
+import com.sge.modulos.administracion.formularios.lisNumeracion;
 import com.sge.modulos.administracion.formularios.lisProvincia;
 import com.sge.modulos.facturacion.clases.GuiaRemision;
 import com.sge.modulos.facturacion.clases.ItemGuiaRemision;
@@ -117,7 +117,7 @@ public class regGuiaRemision extends frameBasex<GuiaRemision> {
     Action select_nume = new AbstractAction() {
         @Override
         public void actionPerformed(ActionEvent evt) {
-            Numeracion seleccionado = ((lisNumeracionx) evt.getSource()).getSeleccionado();
+            Numeracion seleccionado = ((lisNumeracion) evt.getSource()).getSeleccionado();
             if (!(seleccionado == null)) {
                 schNumeracion.asingValues(seleccionado.getIdNumeracion(), seleccionado.getDescripcion());
                 getEntidad().setNumeracionManual(seleccionado.isManual());
@@ -826,7 +826,7 @@ public class regGuiaRemision extends frameBasex<GuiaRemision> {
 
     private void schNumeracionSearch() {
         String filtro = "WHERE Numeracion.idEntidad = 11";
-        VerModal(new lisNumeracionx(1, filtro), select_nume);
+        VerModal(new lisNumeracion(1, filtro), select_nume);
     }
 
     private void schResponsableSearch() {

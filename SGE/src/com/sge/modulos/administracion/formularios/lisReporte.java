@@ -1,7 +1,7 @@
 package com.sge.modulos.administracion.formularios;
 
 import com.google.gson.Gson;
-import com.sge.base.formularios.frameBasex;
+import com.sge.base.formularios.frameBase;
 import com.sge.modulos.administracion.clases.Reporte;
 import com.sge.modulos.administracion.cliente.cliAdministracion;
 import java.awt.event.ActionEvent;
@@ -14,10 +14,10 @@ import javax.swing.SwingWorker;
  *
  * @author elderson
  */
-public class lisReporte extends frameBasex<Reporte> {
+public class lisReporte extends frameBase<Reporte> {
 
     /**
-     * Creates new form lisReporte
+     * Creates new form lisReportex
      */
     public lisReporte(int modo) {
         initComponents();
@@ -49,6 +49,13 @@ public class lisReporte extends frameBasex<Reporte> {
         @Override
         public void actionPerformed(ActionEvent e) {
             EliminarReporte();
+        }
+    };
+
+    Action refr = new AbstractAction() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            new swObtenerReportes().execute();
         }
     };
 
@@ -150,9 +157,7 @@ public class lisReporte extends frameBasex<Reporte> {
 
     public void EditarReporte() {
         int idReporte = ObtenerValorCelda(tbReportes, 1);
-        regReporte regReporte = new regReporte("EDITAR ", idReporte);
-        this.getParent().add(regReporte);
-        regReporte.setVisible(true);
+        VerFrame(new regReporte("EDITAR ", idReporte), refr);
     }
 
     public void EliminarReporte() {
@@ -187,8 +192,6 @@ public class lisReporte extends frameBasex<Reporte> {
         btnRefrescar = new javax.swing.JButton();
         btnImprimir = new javax.swing.JButton();
 
-        setClosable(true);
-
         frame.setBackground(java.awt.Color.white);
         frame.setBorder(null);
 
@@ -222,8 +225,6 @@ public class lisReporte extends frameBasex<Reporte> {
             tbReportes.getColumnModel().getColumn(1).setMinWidth(0);
             tbReportes.getColumnModel().getColumn(1).setPreferredWidth(0);
             tbReportes.getColumnModel().getColumn(1).setMaxWidth(0);
-            tbReportes.getColumnModel().getColumn(5).setPreferredWidth(20);
-            tbReportes.getColumnModel().getColumn(6).setPreferredWidth(20);
         }
 
         pnlTitulo.setBackground(new java.awt.Color(67, 100, 130));
@@ -249,7 +250,7 @@ public class lisReporte extends frameBasex<Reporte> {
             .addGroup(pnlTituloLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lblTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 822, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 287, Short.MAX_VALUE)
                 .addComponent(btnNuevo)
                 .addContainerGap())
         );
@@ -302,7 +303,7 @@ public class lisReporte extends frameBasex<Reporte> {
             .addGroup(frameLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1157, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 622, Short.MAX_VALUE)
                     .addGroup(frameLayout.createSequentialGroup()
                         .addComponent(lblFiltro)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -329,14 +330,14 @@ public class lisReporte extends frameBasex<Reporte> {
                     .addComponent(btnRefrescar, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnImprimir, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 366, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 239, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnSeleccionar)
                 .addGap(15, 15, 15))
         );
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(frame, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -345,15 +346,11 @@ public class lisReporte extends frameBasex<Reporte> {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(frame, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
-
-        pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
         // TODO add your handling code here:
-        regReporte regReporte = new regReporte("NUEVO ", 0);
-        this.getParent().add(regReporte);
-        regReporte.setVisible(true);
+        VerFrame(new regReporte("NUEVO ", 0), refr);
     }//GEN-LAST:event_btnNuevoActionPerformed
 
     private void txtFiltroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFiltroActionPerformed

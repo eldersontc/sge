@@ -1,7 +1,7 @@
 package com.sge.modulos.administracion.formularios;
 
 import com.google.gson.Gson;
-import com.sge.base.formularios.frameBasex;
+import com.sge.base.formularios.frameBase;
 import com.sge.modulos.administracion.clases.Empleado;
 import com.sge.modulos.administracion.cliente.cliAdministracion;
 import java.awt.event.ActionEvent;
@@ -14,10 +14,10 @@ import javax.swing.SwingWorker;
  *
  * @author elderson
  */
-public class lisEmpleado extends frameBasex<Empleado> {
+public class lisEmpleado extends frameBase<Empleado> {
 
     /**
-     * Creates new form lisEmpleado
+     * Creates new form lisEmpleadox
      */
     public lisEmpleado(int modo) {
         initComponents();
@@ -49,6 +49,13 @@ public class lisEmpleado extends frameBasex<Empleado> {
         @Override
         public void actionPerformed(ActionEvent e) {
             EliminarEmpleado();
+        }
+    };
+    
+    Action refr = new AbstractAction() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            new swObtenerEmpleados().execute();
         }
     };
 
@@ -149,9 +156,7 @@ public class lisEmpleado extends frameBasex<Empleado> {
 
     public void EditarEmpleado() {
         int idEmpleado = ObtenerValorCelda(tbEmpleados, 1);
-        regEmpleado regEmpleado = new regEmpleado("EDITAR ", idEmpleado);
-        this.getParent().add(regEmpleado);
-        regEmpleado.setVisible(true);
+        VerFrame(new regEmpleado("EDITAR ", idEmpleado), refr);
     }
 
     public void EliminarEmpleado() {
@@ -185,8 +190,6 @@ public class lisEmpleado extends frameBasex<Empleado> {
         btnSeleccionar = new javax.swing.JButton();
         btnRefrescar = new javax.swing.JButton();
 
-        setClosable(true);
-
         frame.setBackground(java.awt.Color.white);
         frame.setBorder(null);
 
@@ -195,7 +198,7 @@ public class lisEmpleado extends frameBasex<Empleado> {
 
             },
             new String [] {
-                "CHECK", "IDEMPLEADO", "CODIGO", "NOMBRE", "DNI", "ACTIVO", "EDITAR", "ELIMINAR"
+                "CHECK", "ID", "CODIGO", "NOMBRE", "DNI", "ACTIVO", "EDITAR", "ELIMINAR"
             }
         ) {
             Class[] types = new Class [] {
@@ -217,13 +220,9 @@ public class lisEmpleado extends frameBasex<Empleado> {
         tbEmpleados.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane1.setViewportView(tbEmpleados);
         if (tbEmpleados.getColumnModel().getColumnCount() > 0) {
-            tbEmpleados.getColumnModel().getColumn(0).setPreferredWidth(30);
             tbEmpleados.getColumnModel().getColumn(1).setMinWidth(0);
             tbEmpleados.getColumnModel().getColumn(1).setPreferredWidth(0);
             tbEmpleados.getColumnModel().getColumn(1).setMaxWidth(0);
-            tbEmpleados.getColumnModel().getColumn(3).setPreferredWidth(300);
-            tbEmpleados.getColumnModel().getColumn(6).setPreferredWidth(40);
-            tbEmpleados.getColumnModel().getColumn(7).setPreferredWidth(50);
         }
 
         pnlTitulo.setBackground(new java.awt.Color(67, 100, 130));
@@ -249,7 +248,7 @@ public class lisEmpleado extends frameBasex<Empleado> {
             .addGroup(pnlTituloLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lblTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 835, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 419, Short.MAX_VALUE)
                 .addComponent(btnNuevo)
                 .addContainerGap())
         );
@@ -262,8 +261,6 @@ public class lisEmpleado extends frameBasex<Empleado> {
                     .addComponent(btnNuevo))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-
-        lblTitulo.getAccessibleContext().setAccessibleDescription("");
 
         lblFiltro.setText("FILTRO");
 
@@ -296,7 +293,7 @@ public class lisEmpleado extends frameBasex<Empleado> {
             .addGroup(frameLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1170, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 754, Short.MAX_VALUE)
                     .addGroup(frameLayout.createSequentialGroup()
                         .addComponent(lblFiltro)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -320,14 +317,14 @@ public class lisEmpleado extends frameBasex<Empleado> {
                         .addComponent(txtFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(btnRefrescar, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 371, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 290, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnSeleccionar)
                 .addGap(15, 15, 15))
         );
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(frame, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -336,15 +333,11 @@ public class lisEmpleado extends frameBasex<Empleado> {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(frame, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
-
-        pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
         // TODO add your handling code here:
-        regEmpleado regEmpleado = new regEmpleado("NUEVO ", 0);
-        this.getParent().add(regEmpleado);
-        regEmpleado.setVisible(true);
+        VerFrame(new regEmpleado("NUEVO ", 0), refr);
     }//GEN-LAST:event_btnNuevoActionPerformed
 
     private void txtFiltroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFiltroActionPerformed

@@ -11,7 +11,6 @@ import java.awt.event.ActionEvent;
 import java.lang.reflect.Constructor;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
-import javax.swing.JInternalFrame;
 import javax.swing.SwingWorker;
 
 /**
@@ -21,7 +20,7 @@ import javax.swing.SwingWorker;
 public class regValorDefinido extends frameBase<ValorDefinido> {
 
     /**
-     * Creates new form regValoresDefinidos
+     * Creates new form regValorDefinidox
      */
     public regValorDefinido(String operacion, int idValoresDefinidos) {
         initComponents();
@@ -133,7 +132,7 @@ public class regValorDefinido extends frameBase<ValorDefinido> {
                 String json = get().toString();
                 String[] resultado = new Gson().fromJson(json, String[].class);
                 if (resultado[0].equals("true")) {
-                    setVisible(false);
+                    Cerrar();
                 } else {
                     OcultarProcesando(frame);
                 }
@@ -164,8 +163,6 @@ public class regValorDefinido extends frameBase<ValorDefinido> {
         btnEstablecerValores = new javax.swing.JButton();
         schUsuario = new com.sge.base.controles.JSearch();
         schEntidad = new com.sge.base.controles.JSearch();
-
-        setClosable(true);
 
         frame.setBackground(java.awt.Color.white);
         frame.setBorder(null);
@@ -259,14 +256,14 @@ public class regValorDefinido extends frameBase<ValorDefinido> {
                             .addComponent(btnEstablecerValores, javax.swing.GroupLayout.DEFAULT_SIZE, 263, Short.MAX_VALUE)
                             .addComponent(schUsuario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(schEntidad, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
                         .addComponent(chkActivo, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(frameLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btnAceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(22, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         frameLayout.setVerticalGroup(
             frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -288,11 +285,11 @@ public class regValorDefinido extends frameBase<ValorDefinido> {
                 .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAceptar)
                     .addComponent(btnCancelar))
-                .addContainerGap(23, Short.MAX_VALUE))
+                .addContainerGap(21, Short.MAX_VALUE))
         );
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(frame, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -301,8 +298,6 @@ public class regValorDefinido extends frameBase<ValorDefinido> {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(frame, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
-
-        pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void schEntidadSearch() {
@@ -333,7 +328,7 @@ public class regValorDefinido extends frameBase<ValorDefinido> {
                 Entidad entidad = new Gson().fromJson(resultado[1], Entidad.class);
                 Class<?> clazz = Class.forName(entidad.getFormulario());
                 Constructor<?> constructor = clazz.getConstructor(ValorDefinido.class);
-                JInternalFrame frame = (JInternalFrame) constructor.newInstance(new Object[]{getEntidad()});
+                frameBase frame = (frameBase) constructor.newInstance(new Object[]{getEntidad()});
                 VerModal(frame);
             }
         } catch (Exception e) {
@@ -342,6 +337,7 @@ public class regValorDefinido extends frameBase<ValorDefinido> {
             cliente.close();
         }
     }//GEN-LAST:event_btnEstablecerValoresActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAceptar;

@@ -525,3 +525,7 @@
 06/17/2015 01:49:29 : java.net.SocketException : Socket closed 
 06/17/2015 01:54:17 : java.net.SocketException : Socket closed 
 06/17/2015 01:54:41 : java.net.SocketException : Socket closed 
+06/17/2015 13:46:29 : java.net.BindException : La dirección ya se está usando 
+06/17/2015 13:49:37 : java.net.SocketException : Socket closed 
+06/17/2015 13:57:34 : java.net.SocketException : Socket closed 
+06/17/2015 14:01:32 : java.net.SocketException : Socket closed 

@@ -10,7 +10,7 @@ import com.sge.modulos.administracion.clases.ValorDefinido;
 import com.sge.modulos.administracion.cliente.cliAdministracion;
 import com.sge.modulos.administracion.formularios.lisEmpleado;
 import com.sge.modulos.administracion.formularios.lisMoneda;
-import com.sge.modulos.administracion.formularios.lisNumeracionx;
+import com.sge.modulos.administracion.formularios.lisNumeracion;
 import com.sge.modulos.inventarios.clases.Producto;
 import com.sge.modulos.inventarios.formularios.lisProducto;
 import com.sge.modulos.ventas.clases.Cliente;
@@ -91,7 +91,7 @@ public class regCotizacion extends frameBasex<Cotizacion> {
     Action sele_nume = new AbstractAction() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            Numeracion seleccionado = ((lisNumeracionx) e.getSource()).getSeleccionado();
+            Numeracion seleccionado = ((lisNumeracion) e.getSource()).getSeleccionado();
             if (!(seleccionado == null)) {
                 schNumeracion.asingValues(seleccionado.getIdNumeracion(), seleccionado.getDescripcion());
                 getEntidad().setNumeracionManual(seleccionado.isManual());
@@ -635,7 +635,7 @@ public class regCotizacion extends frameBasex<Cotizacion> {
 
     private void schNumeracionSearch() {
         String filtro = "WHERE Numeracion.idEntidad = 4";
-        VerModal(new lisNumeracionx(1, filtro), sele_nume);
+        VerModal(new lisNumeracion(1, filtro), sele_nume);
     }
 
     private void schMonedaSearch() {

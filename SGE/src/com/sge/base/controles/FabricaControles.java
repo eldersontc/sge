@@ -459,17 +459,17 @@ public class FabricaControles {
         frame.show();
     }
     
-    public static int VerModal(Component parentComponent, Component component, String title) {
-        return JOptionPane.showInternalConfirmDialog(parentComponent, component, title, JOptionPane.OK_CANCEL_OPTION);
+    public static int VerModal(Component parent, Component component, String title) {
+        return JOptionPane.showConfirmDialog(parent, component, title, JOptionPane.OK_CANCEL_OPTION);
     }
 
-    public static int VerConfirmacion(Component parentComponent) {
-        return JOptionPane.showInternalConfirmDialog(parentComponent, "¿SEGURO DE CONTINUAR?", "CONFIRMACIÓN", JOptionPane.YES_NO_OPTION);
+    public static int VerConfirmacion(Component parent) {
+        return JOptionPane.showConfirmDialog(parent, "¿SEGURO DE CONTINUAR?", "CONFIRMACIÓN", JOptionPane.YES_NO_OPTION);
     }
 
-    public static void VerAdvertencia(String message, Component parentComponent) {
-        if (parentComponent instanceof JInternalFrame || parentComponent instanceof JPanel) {
-            JOptionPane.showInternalMessageDialog(parentComponent, message, "MENSAJE", JOptionPane.WARNING_MESSAGE);
+    public static void VerAdvertencia(String message, Component parent) {
+        if (parent instanceof JInternalFrame || parent instanceof JPanel) {
+            JOptionPane.showInternalMessageDialog(parent, message, "MENSAJE", JOptionPane.WARNING_MESSAGE);
         } else {
             JOptionPane.showMessageDialog(null, message, "MENSAJE", JOptionPane.WARNING_MESSAGE);
         }
@@ -480,7 +480,7 @@ public class FabricaControles {
 
             @Override
             public void tableChanged(TableModelEvent e) {
-                action.actionPerformed(new ActionEvent(new int[]{e.getFirstRow(), e.getColumn()}, 0, ""));
+                action.actionPerformed(new ActionEvent(new int[]{e.getFirstRow(), e.getColumn()}, 0, null));
             }
         });
     }

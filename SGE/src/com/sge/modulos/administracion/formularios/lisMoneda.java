@@ -1,7 +1,7 @@
 package com.sge.modulos.administracion.formularios;
 
 import com.google.gson.Gson;
-import com.sge.base.formularios.frameBasex;
+import com.sge.base.formularios.frameBase;
 import com.sge.modulos.administracion.clases.Moneda;
 import com.sge.modulos.administracion.cliente.cliAdministracion;
 import java.awt.event.ActionEvent;
@@ -14,10 +14,10 @@ import javax.swing.SwingWorker;
  *
  * @author elderson
  */
-public class lisMoneda extends frameBasex<Moneda> {
+public class lisMoneda extends frameBase<Moneda> {
 
     /**
-     * Creates new form lisMoneda
+     * Creates new form lisMonedax
      */
     public lisMoneda(int modo) {
         initComponents();
@@ -227,8 +227,6 @@ public class lisMoneda extends frameBasex<Moneda> {
         txtFiltro = new javax.swing.JTextField();
         btnRefrescar = new javax.swing.JButton();
 
-        setClosable(true);
-
         frame.setBackground(java.awt.Color.white);
         frame.setBorder(null);
 
@@ -237,7 +235,7 @@ public class lisMoneda extends frameBasex<Moneda> {
 
             },
             new String [] {
-                "CHECK", "IDMONEDA", "SIMBOLO", "NOMBRE", "ACTIVO", "GUARDAR", "ELIMINAR"
+                "CHECK", "ID", "SIMBOLO", "NOMBRE", "ACTIVO", "GUARDAR", "ELIMINAR"
             }
         ) {
             Class[] types = new Class [] {
@@ -259,13 +257,9 @@ public class lisMoneda extends frameBasex<Moneda> {
         tbMonedas.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane1.setViewportView(tbMonedas);
         if (tbMonedas.getColumnModel().getColumnCount() > 0) {
-            tbMonedas.getColumnModel().getColumn(0).setPreferredWidth(30);
             tbMonedas.getColumnModel().getColumn(1).setMinWidth(0);
             tbMonedas.getColumnModel().getColumn(1).setPreferredWidth(0);
             tbMonedas.getColumnModel().getColumn(1).setMaxWidth(0);
-            tbMonedas.getColumnModel().getColumn(3).setPreferredWidth(300);
-            tbMonedas.getColumnModel().getColumn(5).setPreferredWidth(20);
-            tbMonedas.getColumnModel().getColumn(6).setPreferredWidth(20);
         }
 
         pnlTitulo.setBackground(new java.awt.Color(67, 100, 130));
@@ -291,7 +285,7 @@ public class lisMoneda extends frameBasex<Moneda> {
             .addGroup(pnlTituloLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lblTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 848, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 346, Short.MAX_VALUE)
                 .addComponent(btnNuevo)
                 .addContainerGap())
         );
@@ -336,7 +330,7 @@ public class lisMoneda extends frameBasex<Moneda> {
             .addGroup(frameLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1163, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 661, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, frameLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btnSeleccionar, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -360,14 +354,14 @@ public class lisMoneda extends frameBasex<Moneda> {
                         .addComponent(txtFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(btnRefrescar, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 365, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 228, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnSeleccionar)
                 .addContainerGap())
         );
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(frame, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -376,8 +370,6 @@ public class lisMoneda extends frameBasex<Moneda> {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(frame, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
-
-        pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed

@@ -1,7 +1,7 @@
 package com.sge.modulos.administracion.formularios;
 
 import com.google.gson.Gson;
-import com.sge.base.formularios.frameBasex;
+import com.sge.base.formularios.frameBase;
 import com.sge.modulos.administracion.clases.Numeracion;
 import com.sge.modulos.administracion.cliente.cliAdministracion;
 import java.awt.event.ActionEvent;
@@ -14,17 +14,17 @@ import javax.swing.SwingWorker;
  *
  * @author elderson
  */
-public class lisNumeracionx extends frameBasex<Numeracion> {
+public class lisNumeracion extends frameBase<Numeracion> {
 
     /**
-     * Creates new form lisNumeracion
+     * Creates new form lisNumeracionx
      */
-    public lisNumeracionx(int modo) {
+    public lisNumeracion(int modo) {
         initComponents();
         Init(modo, "");
     }
 
-    public lisNumeracionx(int modo, String filtro) {
+    public lisNumeracion(int modo, String filtro) {
         initComponents();
         Init(modo, filtro);
     }
@@ -51,7 +51,7 @@ public class lisNumeracionx extends frameBasex<Numeracion> {
             EliminarNumeracion();
         }
     };
-    
+
     Action refr = new AbstractAction() {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -157,7 +157,7 @@ public class lisNumeracionx extends frameBasex<Numeracion> {
 
     public void EditarNumeracion() {
         int idNumeracion = ObtenerValorCelda(tbNumeraciones, 1);
-        //VerFrame(new regNumeracion("EDITAR ", idNumeracion), refr);
+        VerFrame(new regNumeracion("EDITAR ", idNumeracion), refr);
     }
 
     public void EliminarNumeracion() {
@@ -294,7 +294,7 @@ public class lisNumeracionx extends frameBasex<Numeracion> {
             .addGroup(frameLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 755, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 728, Short.MAX_VALUE)
                     .addGroup(frameLayout.createSequentialGroup()
                         .addComponent(lblFiltro)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -318,7 +318,7 @@ public class lisNumeracionx extends frameBasex<Numeracion> {
                         .addComponent(txtFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(btnRefrescar, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 220, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 216, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnSeleccionar)
                 .addGap(15, 15, 15))
@@ -338,10 +338,7 @@ public class lisNumeracionx extends frameBasex<Numeracion> {
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
         // TODO add your handling code here:
-        //regNumeracionx regNumeracion = new regNumeracionx("NUEVO ", 0);
-        //this.getParent().add(regNumeracion);
-        //regNumeracion.setVisible(true);
-        //VerFrame(new regNumeracion("NUEVO ", 0), refr);
+        VerFrame(new regNumeracion("NUEVO ", 0), refr);
     }//GEN-LAST:event_btnNuevoActionPerformed
 
     private void txtFiltroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFiltroActionPerformed

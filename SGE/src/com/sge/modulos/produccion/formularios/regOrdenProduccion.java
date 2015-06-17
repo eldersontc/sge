@@ -8,7 +8,7 @@ import com.sge.modulos.administracion.clases.Numeracion;
 import com.sge.modulos.administracion.clases.ValorDefinido;
 import com.sge.modulos.administracion.cliente.cliAdministracion;
 import com.sge.modulos.administracion.formularios.lisEmpleado;
-import com.sge.modulos.administracion.formularios.lisNumeracionx;
+import com.sge.modulos.administracion.formularios.lisNumeracion;
 import com.sge.modulos.produccion.clases.ItemOrdenProduccion;
 import com.sge.modulos.produccion.clases.OrdenProduccion;
 import com.sge.modulos.produccion.clases.OrdenTrabajo;
@@ -56,7 +56,7 @@ public class regOrdenProduccion extends frameBasex<OrdenProduccion> {
     Action sele_nume = new AbstractAction() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            Numeracion seleccionado = ((lisNumeracionx) e.getSource()).getSeleccionado();
+            Numeracion seleccionado = ((lisNumeracion) e.getSource()).getSeleccionado();
             if (!(seleccionado == null)) {
                 schNumeracion.asingValues(seleccionado.getIdNumeracion(), seleccionado.getDescripcion());
                 getEntidad().setNumeracionManual(seleccionado.isManual());
@@ -527,7 +527,7 @@ public class regOrdenProduccion extends frameBasex<OrdenProduccion> {
 
     private void schNumeracionSearch() {
         String filtro = "WHERE Numeracion.idEntidad = 7";
-        VerModal(new lisNumeracionx(1, filtro), sele_nume);
+        VerModal(new lisNumeracion(1, filtro), sele_nume);
     }
 
     private void schResponsableSearch() {
