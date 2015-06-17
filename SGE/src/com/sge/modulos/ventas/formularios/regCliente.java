@@ -2,7 +2,7 @@ package com.sge.modulos.ventas.formularios;
 
 import com.google.gson.Gson;
 import com.sge.base.controles.SearchListener;
-import com.sge.base.formularios.frameBasex;
+import com.sge.base.formularios.frameBase;
 import com.sge.modulos.administracion.clases.Departamento;
 import com.sge.modulos.administracion.clases.Distrito;
 import com.sge.modulos.administracion.clases.Empleado;
@@ -29,10 +29,10 @@ import javax.swing.SwingWorker;
  *
  * @author elderson
  */
-public class regCliente extends frameBasex<Cliente> {
+public class regCliente extends frameBase<Cliente> {
 
     /**
-     * Creates new form regCliente
+     * Creates new form regClientex
      */
     public regCliente(String operacion, int idCliente) {
         initComponents();
@@ -115,7 +115,7 @@ public class regCliente extends frameBasex<Cliente> {
             }
         }
     };
-    
+
     Action sele_vend = new AbstractAction() {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -135,7 +135,7 @@ public class regCliente extends frameBasex<Cliente> {
             }
         }
     };
-    
+
     Action sele_lpse = new AbstractAction() {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -145,7 +145,7 @@ public class regCliente extends frameBasex<Cliente> {
             }
         }
     };
-    
+
     Action sele_lpma = new AbstractAction() {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -155,7 +155,7 @@ public class regCliente extends frameBasex<Cliente> {
             }
         }
     };
-    
+
     public void Init(String operacion, int idCliente) {
         lblTitulo.setText(operacion + lblTitulo.getText());
         this.idCliente = idCliente;
@@ -316,7 +316,7 @@ public class regCliente extends frameBasex<Cliente> {
                 String json = get().toString();
                 String[] resultado = new Gson().fromJson(json, String[].class);
                 if (resultado[0].equals("true")) {
-                    setClosed(true);
+                    Cerrar();
                 } else {
                     OcultarProcesando(frame);
                     ControlarExcepcion(resultado);
@@ -374,10 +374,8 @@ public class regCliente extends frameBasex<Cliente> {
         lblVendedor = new javax.swing.JLabel();
         schVendedor = new com.sge.base.controles.JSearch();
 
-        setClosable(true);
-
         frame.setBackground(java.awt.Color.white);
-        frame.setBorder(null);
+        frame.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         btnAceptar.setText("ACEPTAR");
         btnAceptar.addActionListener(new java.awt.event.ActionListener() {
@@ -420,8 +418,8 @@ public class regCliente extends frameBasex<Cliente> {
                 return canEdit [columnIndex];
             }
         });
-        tbDirecciones.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
         tbDirecciones.setRowHeight(25);
+        tbDirecciones.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane2.setViewportView(tbDirecciones);
         if (tbDirecciones.getColumnModel().getColumnCount() > 0) {
             tbDirecciones.getColumnModel().getColumn(0).setMinWidth(0);
@@ -430,16 +428,12 @@ public class regCliente extends frameBasex<Cliente> {
             tbDirecciones.getColumnModel().getColumn(1).setMinWidth(0);
             tbDirecciones.getColumnModel().getColumn(1).setPreferredWidth(0);
             tbDirecciones.getColumnModel().getColumn(1).setMaxWidth(0);
-            tbDirecciones.getColumnModel().getColumn(2).setPreferredWidth(150);
             tbDirecciones.getColumnModel().getColumn(3).setMinWidth(0);
             tbDirecciones.getColumnModel().getColumn(3).setPreferredWidth(0);
             tbDirecciones.getColumnModel().getColumn(3).setMaxWidth(0);
-            tbDirecciones.getColumnModel().getColumn(4).setPreferredWidth(150);
             tbDirecciones.getColumnModel().getColumn(5).setMinWidth(0);
             tbDirecciones.getColumnModel().getColumn(5).setPreferredWidth(0);
             tbDirecciones.getColumnModel().getColumn(5).setMaxWidth(0);
-            tbDirecciones.getColumnModel().getColumn(6).setPreferredWidth(150);
-            tbDirecciones.getColumnModel().getColumn(7).setPreferredWidth(250);
         }
 
         btnNuevaDireccion.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sge/base/imagenes/add-16.png"))); // NOI18N
@@ -506,17 +500,13 @@ public class regCliente extends frameBasex<Cliente> {
                 return canEdit [columnIndex];
             }
         });
-        tbContactos.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
         tbContactos.setRowHeight(25);
+        tbContactos.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane1.setViewportView(tbContactos);
         if (tbContactos.getColumnModel().getColumnCount() > 0) {
             tbContactos.getColumnModel().getColumn(0).setMinWidth(0);
             tbContactos.getColumnModel().getColumn(0).setPreferredWidth(0);
             tbContactos.getColumnModel().getColumn(0).setMaxWidth(0);
-            tbContactos.getColumnModel().getColumn(1).setPreferredWidth(200);
-            tbContactos.getColumnModel().getColumn(2).setPreferredWidth(150);
-            tbContactos.getColumnModel().getColumn(3).setPreferredWidth(100);
-            tbContactos.getColumnModel().getColumn(4).setPreferredWidth(100);
         }
 
         btnNuevoContacto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sge/base/imagenes/add-16.png"))); // NOI18N
@@ -724,7 +714,7 @@ public class regCliente extends frameBasex<Cliente> {
                                         .addComponent(txtRazonSocial))))
                             .addComponent(jTabbedPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 517, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(lblVendedor))
-                        .addContainerGap(34, Short.MAX_VALUE))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(frameLayout.createSequentialGroup()
                         .addComponent(btnAceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -764,15 +754,15 @@ public class regCliente extends frameBasex<Cliente> {
                     .addComponent(schVendedor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(9, 9, 9)
                 .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAceptar)
                     .addComponent(btnCancelar))
                 .addContainerGap())
         );
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(frame, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -781,26 +771,24 @@ public class regCliente extends frameBasex<Cliente> {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(frame, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
-
-        pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void schVendedorSearch(){
+    private void schVendedorSearch() {
         VerModal(new lisEmpleado(1), sele_vend);
     }
-    
-    private void schListaPrecioProductoSearch(){
+
+    private void schListaPrecioProductoSearch() {
         VerModal(new lisListaPrecioProducto(1), sele_lppr);
     }
-    
-    private void schListaPrecioServicioSearch(){
+
+    private void schListaPrecioServicioSearch() {
         VerModal(new lisListaPrecioServicio(1), sele_lpse);
     }
-    
-    private void schListaPrecioMaquinaSearch(){
+
+    private void schListaPrecioMaquinaSearch() {
         VerModal(new lisListaPrecioMaquina(1), sele_lpma);
     }
-    
+
     private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
         // TODO add your handling code here:
         new swGuardarCliente().execute();

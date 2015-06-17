@@ -1,7 +1,7 @@
 package com.sge.modulos.ventas.formularios;
 
 import com.sge.base.controles.SearchListener;
-import com.sge.base.formularios.frameBasex;
+import com.sge.base.formularios.frameBase;
 import com.sge.modulos.ventas.clases.Cotizacion;
 import com.sge.modulos.ventas.clases.ItemCotizacion;
 import com.sge.modulos.ventas.clases.MetodoImpresion;
@@ -20,10 +20,10 @@ import javax.swing.ImageIcon;
  *
  * @author elderson
  */
-public class genGraficoImpresion extends frameBasex<Cotizacion> {
+public class genGraficoImpresion extends frameBase<Cotizacion> {
 
     /**
-     * Creates new form genGraficoImpresion
+     * Creates new form genGraficoImpresionx
      */
     public genGraficoImpresion(ItemCotizacion item) {
         initComponents();
@@ -150,11 +150,11 @@ public class genGraficoImpresion extends frameBasex<Cotizacion> {
         }
 
         this.item.setCantidadPiezasImpresion(cantidadPiezas);
-        
+
         ByteArrayOutputStream arrayBytesOut = new ByteArrayOutputStream();
         ImageIO.write(imagen, "jpg", arrayBytesOut);
         byte[] arrayBytes = arrayBytesOut.toByteArray();
-        
+
         this.item.setGraficoImpresion(arrayBytes);
     }
 
@@ -257,12 +257,8 @@ public class genGraficoImpresion extends frameBasex<Cotizacion> {
         txtCantidadCambios = new javax.swing.JTextField();
         txtTiraje = new javax.swing.JTextField();
 
-        setClosable(true);
-        setMaximizable(true);
-        setPreferredSize(new java.awt.Dimension(903, 653));
-
         frame.setBackground(java.awt.Color.white);
-        frame.setBorder(null);
+        frame.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         pnlTitulo.setBackground(new java.awt.Color(67, 100, 130));
         pnlTitulo.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -279,7 +275,7 @@ public class genGraficoImpresion extends frameBasex<Cotizacion> {
             .addGroup(pnlTituloLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lblTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 318, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(579, Short.MAX_VALUE))
+                .addContainerGap(571, Short.MAX_VALUE))
         );
         pnlTituloLayout.setVerticalGroup(
             pnlTituloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -470,12 +466,12 @@ public class genGraficoImpresion extends frameBasex<Cotizacion> {
                         .addComponent(jScrollPane2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnAceptar))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 567, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 572, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
@@ -486,8 +482,6 @@ public class genGraficoImpresion extends frameBasex<Cotizacion> {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(frame, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
-
-        pack();
     }// </editor-fold>//GEN-END:initComponents
 
     public void schMetodoImpresionSearch() {

@@ -1,7 +1,7 @@
 package com.sge.modulos.ventas.formularios;
 
 import com.google.gson.Gson;
-import com.sge.base.formularios.frameBasex;
+import com.sge.base.formularios.frameBase;
 import com.sge.modulos.produccion.clases.ItemOrdenTrabajo;
 import com.sge.modulos.produccion.clases.OrdenTrabajo;
 import com.sge.modulos.produccion.clases.ServicioOrdenTrabajo;
@@ -23,10 +23,10 @@ import javax.swing.SwingWorker;
  *
  * @author elderson
  */
-public class lisPresupuesto extends frameBasex<Presupuesto> {
+public class lisPresupuesto extends frameBase<Presupuesto> {
 
     /**
-     * Creates new form lisPresupuesto
+     * Creates new form lisPresupuestox
      */
     public lisPresupuesto(int modo) {
         initComponents();
@@ -37,11 +37,11 @@ public class lisPresupuesto extends frameBasex<Presupuesto> {
         initComponents();
         Init(modo, filtro);
     }
-    
+
     private int modo;
 
     private String filtro;
-    
+
     private Presupuesto seleccionado;
 
     ImageIcon Icon_Edit = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/edit-16.png"));
@@ -177,7 +177,7 @@ public class lisPresupuesto extends frameBasex<Presupuesto> {
             }
         }
     }
-    
+
     public class swDesaprobarPresupuesto extends SwingWorker {
 
         @Override
@@ -214,7 +214,7 @@ public class lisPresupuesto extends frameBasex<Presupuesto> {
             }
         }
     }
-    
+
     public class swEnviarPresupuesto extends SwingWorker {
 
         @Override
@@ -251,7 +251,7 @@ public class lisPresupuesto extends frameBasex<Presupuesto> {
             }
         }
     }
-    
+
     public class swAceptarPresupuesto extends SwingWorker {
 
         @Override
@@ -288,7 +288,7 @@ public class lisPresupuesto extends frameBasex<Presupuesto> {
             }
         }
     }
-    
+
     public class swRechazarPresupuesto extends SwingWorker {
 
         @Override
@@ -325,7 +325,7 @@ public class lisPresupuesto extends frameBasex<Presupuesto> {
             }
         }
     }
-    
+
     public class swGenerarOrdenTrabajo extends SwingWorker<Object, Object> {
 
         @Override
@@ -375,7 +375,7 @@ public class lisPresupuesto extends frameBasex<Presupuesto> {
                         ordenTrabajo.setPorcentajeUtilidad(cotizacion.getPorcentajeUtilidad());
                         ordenTrabajo.setMontoUtilidad(cotizacion.getMontoUtilidad());
                         ordenTrabajo.setTotal(cotizacion.getTotal());
-                        
+
                         for (ItemCotizacion itemCotizacion : cotizacion.getItems()) {
                             ItemOrdenTrabajo itemOrdenTrabajo = new ItemOrdenTrabajo();
                             itemOrdenTrabajo.setNombre(itemCotizacion.getNombre());
@@ -444,7 +444,7 @@ public class lisPresupuesto extends frameBasex<Presupuesto> {
                             itemOrdenTrabajo.setTotalMaquina(itemCotizacion.getTotalMaquina());
                             itemOrdenTrabajo.setTotalMaterial(itemCotizacion.getCantidadMaterial());
                             itemOrdenTrabajo.setTotalAcabados(itemCotizacion.getTotalAcabados());
-                            
+
                             for (ServicioCotizacion acabadoCotizacion : itemCotizacion.getAcabados()) {
                                 ServicioOrdenTrabajo acabadoOT = new ServicioOrdenTrabajo();
                                 acabadoOT.setIdServicio(acabadoCotizacion.getIdServicio());
@@ -521,7 +521,7 @@ public class lisPresupuesto extends frameBasex<Presupuesto> {
             VerAdvertencia("SÓLO SE PUEDE APROBAR CUANDO ESTÁ EN ESTADO : PENDIENTE DE APROBACIÓN Ó RECHAZADO.", frame);
         }
     }
-    
+
     public void DesaprobarPresupuesto() {
         String estado = ObtenerValorCelda(tbPresupuestos, 6);
         if (estado.equals("APROBADO")) {
@@ -539,7 +539,7 @@ public class lisPresupuesto extends frameBasex<Presupuesto> {
             VerAdvertencia("SÓLO SE PUEDE ENVIAR CUANDO ESTÁ EN ESTADO : APROBADO.", frame);
         }
     }
-    
+
     public void AceptarPresupuesto() {
         String estado = ObtenerValorCelda(tbPresupuestos, 6);
         if (estado.equals("ENVIADO AL CLIENTE")) {
@@ -548,7 +548,7 @@ public class lisPresupuesto extends frameBasex<Presupuesto> {
             VerAdvertencia("SÓLO SE PUEDE ACEPTAR CUANDO ESTÁ EN ESTADO : ENVIADO AL CLIENTE.", frame);
         }
     }
-    
+
     public void RechazarPresupuesto() {
         String estado = ObtenerValorCelda(tbPresupuestos, 6);
         if (estado.equals("ENVIADO AL CLIENTE")) {
@@ -557,7 +557,7 @@ public class lisPresupuesto extends frameBasex<Presupuesto> {
             VerAdvertencia("SÓLO SE PUEDE RECHAZAR CUANDO ESTÁ EN ESTADO : ENVIADO AL CLIENTE.", frame);
         }
     }
-    
+
     public void GenerarOrdenTrabajo() {
         String estado = ObtenerValorCelda(tbPresupuestos, 6);
         if (estado.equals("ACEPTADO")) {
@@ -566,7 +566,7 @@ public class lisPresupuesto extends frameBasex<Presupuesto> {
             VerAdvertencia("SÓLO SE PUEDE GENERAR OT CUANDO ESTÁ EN ESTADO : ACEPTADO.", frame);
         }
     }
-    
+
     public Presupuesto getSeleccionado() {
         return seleccionado;
     }
@@ -598,10 +598,8 @@ public class lisPresupuesto extends frameBasex<Presupuesto> {
         btnRechazar = new javax.swing.JButton();
         btnImprimir = new javax.swing.JButton();
 
-        setClosable(true);
-
         frame.setBackground(java.awt.Color.white);
-        frame.setBorder(null);
+        frame.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         tbPresupuestos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -633,7 +631,6 @@ public class lisPresupuesto extends frameBasex<Presupuesto> {
             tbPresupuestos.getColumnModel().getColumn(1).setMinWidth(0);
             tbPresupuestos.getColumnModel().getColumn(1).setPreferredWidth(0);
             tbPresupuestos.getColumnModel().getColumn(1).setMaxWidth(0);
-            tbPresupuestos.getColumnModel().getColumn(4).setPreferredWidth(300);
         }
 
         pnlTitulo.setBackground(new java.awt.Color(67, 100, 130));
@@ -659,7 +656,7 @@ public class lisPresupuesto extends frameBasex<Presupuesto> {
             .addGroup(pnlTituloLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lblTitulo)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 823, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 345, Short.MAX_VALUE)
                 .addComponent(btnNuevo)
                 .addContainerGap())
         );
@@ -760,7 +757,7 @@ public class lisPresupuesto extends frameBasex<Presupuesto> {
             .addGroup(frameLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1177, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 699, Short.MAX_VALUE)
                     .addGroup(frameLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btnSeleccionar, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -805,14 +802,14 @@ public class lisPresupuesto extends frameBasex<Presupuesto> {
                     .addComponent(btnRechazar, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnImprimir, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 373, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 240, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnSeleccionar)
                 .addGap(9, 9, 9))
         );
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(frame, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -821,8 +818,6 @@ public class lisPresupuesto extends frameBasex<Presupuesto> {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(frame, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
-
-        pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
@@ -862,7 +857,7 @@ public class lisPresupuesto extends frameBasex<Presupuesto> {
 
     private void btnGenerarOTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarOTActionPerformed
         // TODO add your handling code here:
-        if(FilaActiva(tbPresupuestos)){
+        if (FilaActiva(tbPresupuestos)) {
             GenerarOrdenTrabajo();
         }
     }//GEN-LAST:event_btnGenerarOTActionPerformed
@@ -908,6 +903,7 @@ public class lisPresupuesto extends frameBasex<Presupuesto> {
             ImprimirConEntidad(5, ObtenerValorCelda(tbPresupuestos, 1), frame);
         }
     }//GEN-LAST:event_btnImprimirActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAceptar;

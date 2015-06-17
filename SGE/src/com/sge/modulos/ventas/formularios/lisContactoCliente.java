@@ -1,7 +1,7 @@
 package com.sge.modulos.ventas.formularios;
 
 import com.google.gson.Gson;
-import com.sge.base.formularios.frameBasex;
+import com.sge.base.formularios.frameBase;
 import com.sge.modulos.ventas.clases.ContactoCliente;
 import com.sge.modulos.ventas.cliente.cliVentas;
 import javax.swing.SwingWorker;
@@ -10,10 +10,10 @@ import javax.swing.SwingWorker;
  *
  * @author elderson
  */
-public class lisContactoCliente extends frameBasex<ContactoCliente> {
+public class lisContactoCliente extends frameBase<ContactoCliente> {
 
     /**
-     * Creates new form lisContactoCliente
+     * Creates new form lisContactoClientex
      */
     public lisContactoCliente(String filtro) {
         initComponents();
@@ -93,10 +93,8 @@ public class lisContactoCliente extends frameBasex<ContactoCliente> {
         txtFiltro = new javax.swing.JTextField();
         btnRefrescar = new javax.swing.JButton();
 
-        setClosable(true);
-
         frame.setBackground(java.awt.Color.white);
-        frame.setBorder(null);
+        frame.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         tbContactos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -125,14 +123,9 @@ public class lisContactoCliente extends frameBasex<ContactoCliente> {
         tbContactos.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane1.setViewportView(tbContactos);
         if (tbContactos.getColumnModel().getColumnCount() > 0) {
-            tbContactos.getColumnModel().getColumn(0).setMinWidth(0);
-            tbContactos.getColumnModel().getColumn(0).setPreferredWidth(0);
-            tbContactos.getColumnModel().getColumn(0).setMaxWidth(0);
             tbContactos.getColumnModel().getColumn(1).setMinWidth(0);
             tbContactos.getColumnModel().getColumn(1).setPreferredWidth(0);
             tbContactos.getColumnModel().getColumn(1).setMaxWidth(0);
-            tbContactos.getColumnModel().getColumn(2).setPreferredWidth(300);
-            tbContactos.getColumnModel().getColumn(3).setPreferredWidth(200);
         }
 
         pnlTitulo.setBackground(new java.awt.Color(67, 100, 130));
@@ -150,7 +143,7 @@ public class lisContactoCliente extends frameBasex<ContactoCliente> {
             .addGroup(pnlTituloLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lblTitulo)
-                .addContainerGap(461, Short.MAX_VALUE))
+                .addContainerGap(406, Short.MAX_VALUE))
         );
         pnlTituloLayout.setVerticalGroup(
             pnlTituloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -188,7 +181,7 @@ public class lisContactoCliente extends frameBasex<ContactoCliente> {
             .addGroup(frameLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 692, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 637, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, frameLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btnSeleccionar, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -215,11 +208,11 @@ public class lisContactoCliente extends frameBasex<ContactoCliente> {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnSeleccionar)
-                .addContainerGap(20, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(frame, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -228,13 +221,11 @@ public class lisContactoCliente extends frameBasex<ContactoCliente> {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(frame, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
-
-        pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSeleccionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeleccionarActionPerformed
         // TODO add your handling code here:
-        if(FilaActiva(tbContactos)){
+        if (FilaActiva(tbContactos)) {
             ContactoCliente contacto = new ContactoCliente();
             contacto.setIdContactoCliente(ObtenerValorCelda(tbContactos, 1));
             contacto.setNombre(ObtenerValorCelda(tbContactos, 2));
@@ -253,6 +244,7 @@ public class lisContactoCliente extends frameBasex<ContactoCliente> {
         // TODO add your handling code here:
         new swObtenerContactos().execute();
     }//GEN-LAST:event_btnRefrescarActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnRefrescar;
