@@ -2,7 +2,7 @@ package com.sge.modulos.facturacion.formularios;
 
 import com.google.gson.Gson;
 import com.sge.base.controles.SearchListener;
-import com.sge.base.formularios.frameBasex;
+import com.sge.base.formularios.frameBase;
 import com.sge.modulos.administracion.clases.Empleado;
 import com.sge.modulos.administracion.clases.Moneda;
 import com.sge.modulos.administracion.clases.Numeracion;
@@ -30,10 +30,10 @@ import javax.swing.SwingWorker;
  *
  * @author elderson
  */
-public class regFactura extends frameBasex<Factura> {
+public class regFactura extends frameBase<Factura> {
 
     /**
-     * Creates new form regFactura
+     * Creates new form regFacturax
      */
     public regFactura(int id) {
         initComponents();
@@ -300,7 +300,7 @@ public class regFactura extends frameBasex<Factura> {
                 String json = get().toString();
                 String[] resultado = new Gson().fromJson(json, String[].class);
                 if (resultado[0].equals("true")) {
-                    setClosed(true);
+                    Cerrar();
                 } else {
                     OcultarProcesando(frame);
                     ControlarExcepcion(resultado);
@@ -369,8 +369,6 @@ public class regFactura extends frameBasex<Factura> {
         schNumeracion = new com.sge.base.controles.JSearch();
         lblPorcentajeImpuesto = new javax.swing.JLabel();
 
-        setClosable(true);
-
         frame.setBackground(java.awt.Color.white);
         frame.setBorder(null);
 
@@ -399,7 +397,7 @@ public class regFactura extends frameBasex<Factura> {
 
             },
             new String [] {
-                "IDITEM", "IDOT", "N°", "DESCRIPCION", "CANTIDAD", "PRECIO", "TOTAL"
+                "ID", "IDOT", "N°", "DESCRIPCION", "CANTIDAD", "PRECIO", "TOTAL"
             }
         ) {
             Class[] types = new Class [] {
@@ -426,7 +424,6 @@ public class regFactura extends frameBasex<Factura> {
             tbItems.getColumnModel().getColumn(1).setMinWidth(0);
             tbItems.getColumnModel().getColumn(1).setPreferredWidth(0);
             tbItems.getColumnModel().getColumn(1).setMaxWidth(0);
-            tbItems.getColumnModel().getColumn(3).setPreferredWidth(250);
         }
 
         btnNuevoItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sge/base/imagenes/add-16.png"))); // NOI18N
@@ -615,7 +612,7 @@ public class regFactura extends frameBasex<Factura> {
                                     .addComponent(txtSubTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(txtImpuesto, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addComponent(txtTotal, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap(25, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addComponent(pnlTitulo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         frameLayout.setVerticalGroup(
@@ -668,8 +665,8 @@ public class regFactura extends frameBasex<Factura> {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(frame, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -678,8 +675,6 @@ public class regFactura extends frameBasex<Factura> {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(frame, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
-
-        pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void schNumeracionSearch() {

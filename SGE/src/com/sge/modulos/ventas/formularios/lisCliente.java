@@ -1,7 +1,7 @@
 package com.sge.modulos.ventas.formularios;
 
 import com.google.gson.Gson;
-import com.sge.base.formularios.frameBasex;
+import com.sge.base.formularios.frameBase;
 import com.sge.modulos.ventas.clases.Cliente;
 import com.sge.modulos.ventas.cliente.cliVentas;
 import java.awt.event.ActionEvent;
@@ -14,16 +14,16 @@ import javax.swing.SwingWorker;
  *
  * @author elderson
  */
-public class lisCliente extends frameBasex<Cliente> {
+public class lisCliente extends frameBase<Cliente> {
 
     /**
-     * Creates new form lisCliente
+     * Creates new form lisClientex
      */
     public lisCliente(int modo) {
         initComponents();
         Init(modo, "");
     }
-    
+
     public lisCliente(int modo, String filtro) {
         initComponents();
         Init(modo, filtro);
@@ -32,7 +32,7 @@ public class lisCliente extends frameBasex<Cliente> {
     private int modo;
 
     private String filtro;
-    
+
     private Cliente seleccionado;
 
     ImageIcon Icon_Edit = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/edit-16.png"));
@@ -185,8 +185,6 @@ public class lisCliente extends frameBasex<Cliente> {
         txtFiltro = new javax.swing.JTextField();
         btnRefrescar = new javax.swing.JButton();
 
-        setClosable(true);
-
         frame.setBackground(java.awt.Color.white);
         frame.setBorder(null);
 
@@ -195,7 +193,7 @@ public class lisCliente extends frameBasex<Cliente> {
 
             },
             new String [] {
-                "CHECK", "IDCLIENTE", "RAZON SOCIAL", "F. U. VENTA", "IDLPPRODUCTO", "L.P.PRODUCTO", "IDLPSERVICIO", "L.P.SERVICIO", "IDLPMAQUINA", "L.P.MAQUINA", "ACTIVO", "EDITAR", "ELIMINAR"
+                "CHECK", "ID", "RAZON SOCIAL", "F. U. VENTA", "IDLPPRODUCTO", "L.P.PRODUCTO", "IDLPSERVICIO", "L.P.SERVICIO", "IDLPMAQUINA", "L.P.MAQUINA", "ACTIVO", "EDITAR", "ELIMINAR"
             }
         ) {
             Class[] types = new Class [] {
@@ -220,8 +218,6 @@ public class lisCliente extends frameBasex<Cliente> {
             tbClientes.getColumnModel().getColumn(1).setMinWidth(0);
             tbClientes.getColumnModel().getColumn(1).setPreferredWidth(0);
             tbClientes.getColumnModel().getColumn(1).setMaxWidth(0);
-            tbClientes.getColumnModel().getColumn(2).setPreferredWidth(200);
-            tbClientes.getColumnModel().getColumn(3).setPreferredWidth(100);
             tbClientes.getColumnModel().getColumn(4).setMinWidth(0);
             tbClientes.getColumnModel().getColumn(4).setPreferredWidth(0);
             tbClientes.getColumnModel().getColumn(4).setMaxWidth(0);
@@ -256,7 +252,7 @@ public class lisCliente extends frameBasex<Cliente> {
             .addGroup(pnlTituloLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lblTitulo)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 870, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 305, Short.MAX_VALUE)
                 .addComponent(btnNuevo)
                 .addContainerGap())
         );
@@ -301,7 +297,7 @@ public class lisCliente extends frameBasex<Cliente> {
             .addGroup(frameLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1169, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 604, Short.MAX_VALUE)
                     .addGroup(frameLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btnSeleccionar, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -325,14 +321,14 @@ public class lisCliente extends frameBasex<Cliente> {
                         .addComponent(txtFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(btnRefrescar, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 372, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 153, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnSeleccionar)
                 .addGap(9, 9, 9))
         );
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(frame, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -341,8 +337,6 @@ public class lisCliente extends frameBasex<Cliente> {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(frame, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
-
-        pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed

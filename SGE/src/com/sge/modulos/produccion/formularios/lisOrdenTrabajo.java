@@ -1,7 +1,7 @@
 package com.sge.modulos.produccion.formularios;
 
 import com.google.gson.Gson;
-import com.sge.base.formularios.frameBasex;
+import com.sge.base.formularios.frameBase;
 import com.sge.modulos.inventarios.clases.ItemSalidaInventario;
 import com.sge.modulos.inventarios.clases.SalidaInventario;
 import com.sge.modulos.inventarios.formularios.regSalidaInventario;
@@ -21,10 +21,10 @@ import javax.swing.SwingWorker;
  *
  * @author elderson
  */
-public class lisOrdenTrabajo extends frameBasex<OrdenTrabajo> {
+public class lisOrdenTrabajo extends frameBase<OrdenTrabajo> {
 
     /**
-     * Creates new form lisOrdenTrabajo
+     * Creates new form lisOrdenTrabajox
      */
     public lisOrdenTrabajo(int modo) {
         initComponents();
@@ -142,7 +142,7 @@ public class lisOrdenTrabajo extends frameBasex<OrdenTrabajo> {
     }
 
     public class swGenerarSalidaInventario extends SwingWorker<Object, Object> {
-        
+
         @Override
         protected Object doInBackground() {
             VerCargando(frame);
@@ -161,11 +161,11 @@ public class lisOrdenTrabajo extends frameBasex<OrdenTrabajo> {
                     } else {
                         salidaInventario = new Gson().fromJson(resultado[3], SalidaInventario.class);
                     }
-                    
-                    if(salidaInventario.getIdAlmacen() == 0){
+
+                    if (salidaInventario.getIdAlmacen() == 0) {
                         throw new Exception("NO SE HA ASIGNADO NINGÚN ALMACEN.");
                     }
-                    
+
                     salidaInventario.setIdCliente(ordenTrabajo.getIdCliente());
                     salidaInventario.setRazonSocialCliente(ordenTrabajo.getRazonSocialCliente());
                     salidaInventario.setFechaCreacion(fechaServidor);
@@ -186,7 +186,7 @@ public class lisOrdenTrabajo extends frameBasex<OrdenTrabajo> {
                         itemSalidaInventario.setIdAlmacen(salidaInventario.getIdAlmacen());
                         salidaInventario.getItems().add(itemSalidaInventario);
                     }
-                    
+
                     regSalidaInventario regSalidaInventario = new regSalidaInventario();
                     regSalidaInventario.setUsuario(getUsuario());
                     regSalidaInventario.setEntidad(salidaInventario);
@@ -213,7 +213,7 @@ public class lisOrdenTrabajo extends frameBasex<OrdenTrabajo> {
     }
 
     public class swGenerarSalidaCaja extends SwingWorker<Object, Object> {
-        
+
         @Override
         protected Object doInBackground() {
             VerCargando(frame);
@@ -232,11 +232,11 @@ public class lisOrdenTrabajo extends frameBasex<OrdenTrabajo> {
                     } else {
                         salidaInventario = new Gson().fromJson(resultado[3], SalidaInventario.class);
                     }
-                    
-                    if(salidaInventario.getIdAlmacen() == 0){
+
+                    if (salidaInventario.getIdAlmacen() == 0) {
                         throw new Exception("NO SE HA ASIGNADO NINGÚN ALMACEN.");
                     }
-                    
+
                     salidaInventario.setIdCliente(ordenTrabajo.getIdCliente());
                     salidaInventario.setRazonSocialCliente(ordenTrabajo.getRazonSocialCliente());
                     salidaInventario.setFechaCreacion(fechaServidor);
@@ -257,7 +257,7 @@ public class lisOrdenTrabajo extends frameBasex<OrdenTrabajo> {
                         itemSalidaInventario.setIdAlmacen(salidaInventario.getIdAlmacen());
                         salidaInventario.getItems().add(itemSalidaInventario);
                     }
-                    
+
                     regSalidaInventario regSalidaInventario = new regSalidaInventario();
                     regSalidaInventario.setUsuario(getUsuario());
                     regSalidaInventario.setEntidad(salidaInventario);
@@ -282,7 +282,7 @@ public class lisOrdenTrabajo extends frameBasex<OrdenTrabajo> {
             OcultarCargando(frame);
         }
     }
-    
+
     public void Init(int modo, String filtro) {
         this.modo = modo;
         this.filtro = filtro;
@@ -344,8 +344,6 @@ public class lisOrdenTrabajo extends frameBasex<OrdenTrabajo> {
         btnGenerarSalidaInventario = new javax.swing.JButton();
         btnGenerarSalidaCaja = new javax.swing.JButton();
 
-        setClosable(true);
-
         frame.setBackground(java.awt.Color.white);
         frame.setBorder(null);
 
@@ -396,7 +394,7 @@ public class lisOrdenTrabajo extends frameBasex<OrdenTrabajo> {
             .addGroup(pnlTituloLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lblTitulo)
-                .addContainerGap(863, Short.MAX_VALUE))
+                .addContainerGap(357, Short.MAX_VALUE))
         );
         pnlTituloLayout.setVerticalGroup(
             pnlTituloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -453,7 +451,7 @@ public class lisOrdenTrabajo extends frameBasex<OrdenTrabajo> {
             .addGroup(frameLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1185, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 679, Short.MAX_VALUE)
                     .addGroup(frameLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btnSeleccionar, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -483,14 +481,14 @@ public class lisOrdenTrabajo extends frameBasex<OrdenTrabajo> {
                     .addComponent(btnGenerarSalidaInventario, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnGenerarSalidaCaja, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 391, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 197, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnSeleccionar)
                 .addGap(9, 9, 9))
         );
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(frame, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -499,8 +497,6 @@ public class lisOrdenTrabajo extends frameBasex<OrdenTrabajo> {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(frame, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
-
-        pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSeleccionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeleccionarActionPerformed

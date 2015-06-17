@@ -2,7 +2,7 @@ package com.sge.modulos.facturacion.formularios;
 
 import com.google.gson.Gson;
 import com.sge.base.controles.SearchListener;
-import com.sge.base.formularios.frameBasex;
+import com.sge.base.formularios.frameBase;
 import com.sge.modulos.administracion.clases.Departamento;
 import com.sge.modulos.administracion.clases.Distrito;
 import com.sge.modulos.administracion.clases.Empleado;
@@ -23,7 +23,6 @@ import com.sge.modulos.produccion.formularios.lisOrdenTrabajo;
 import com.sge.modulos.ventas.clases.Cliente;
 import com.sge.modulos.ventas.formularios.lisCliente;
 import java.awt.event.ActionEvent;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.swing.AbstractAction;
@@ -34,10 +33,10 @@ import javax.swing.SwingWorker;
  *
  * @author elderson
  */
-public class regGuiaRemision extends frameBasex<GuiaRemision> {
+public class regGuiaRemision extends frameBase<GuiaRemision> {
 
     /**
-     * Creates new form regGuiaRemision
+     * Creates new form regGuiaRemisionx
      */
     public regGuiaRemision(int id) {
         initComponents();
@@ -328,7 +327,7 @@ public class regGuiaRemision extends frameBasex<GuiaRemision> {
                 String json = get().toString();
                 String[] resultado = new Gson().fromJson(json, String[].class);
                 if (resultado[0].equals("true")) {
-                    setClosed(true);
+                    Cerrar();
                 } else {
                     OcultarProcesando(frame);
                     ControlarExcepcion(resultado);
@@ -406,8 +405,6 @@ public class regGuiaRemision extends frameBasex<GuiaRemision> {
         schResponsable = new com.sge.base.controles.JSearch();
         schNumeracion = new com.sge.base.controles.JSearch();
 
-        setClosable(true);
-
         frame.setBackground(java.awt.Color.white);
         frame.setBorder(null);
 
@@ -437,7 +434,7 @@ public class regGuiaRemision extends frameBasex<GuiaRemision> {
 
             },
             new String [] {
-                "IDITEM", "IDOT", "N°", "DESCRIPCION", "CANTIDAD"
+                "ID", "IDOT", "N°", "DESCRIPCION", "CANTIDAD"
             }
         ) {
             Class[] types = new Class [] {
@@ -464,7 +461,6 @@ public class regGuiaRemision extends frameBasex<GuiaRemision> {
             tbItems.getColumnModel().getColumn(1).setMinWidth(0);
             tbItems.getColumnModel().getColumn(1).setPreferredWidth(0);
             tbItems.getColumnModel().getColumn(1).setMaxWidth(0);
-            tbItems.getColumnModel().getColumn(3).setPreferredWidth(300);
         }
 
         btnNuevoItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sge/base/imagenes/add-16.png"))); // NOI18N
@@ -807,11 +803,11 @@ public class regGuiaRemision extends frameBasex<GuiaRemision> {
                 .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnAceptar)
                     .addComponent(btnCancelar))
-                .addContainerGap(15, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(frame, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -820,8 +816,6 @@ public class regGuiaRemision extends frameBasex<GuiaRemision> {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(frame, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
-
-        pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void schNumeracionSearch() {

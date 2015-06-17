@@ -1,7 +1,7 @@
 package com.sge.modulos.facturacion.formularios;
 
 import com.google.gson.Gson;
-import com.sge.base.formularios.frameBasex;
+import com.sge.base.formularios.frameBase;
 import com.sge.modulos.facturacion.clases.Factura;
 import com.sge.modulos.facturacion.cliente.cliFacturacion;
 import java.awt.event.ActionEvent;
@@ -14,10 +14,10 @@ import javax.swing.SwingWorker;
  *
  * @author elderson
  */
-public class lisFactura extends frameBasex<Factura> {
+public class lisFactura extends frameBase<Factura> {
 
     /**
-     * Creates new form lisFactura
+     * Creates new form lisFacturax
      */
     public lisFactura(int modo) {
         initComponents();
@@ -47,6 +47,13 @@ public class lisFactura extends frameBasex<Factura> {
         @Override
         public void actionPerformed(ActionEvent e) {
             EliminarFactura();
+        }
+    };
+
+    Action refr = new AbstractAction() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            new swObtenerFacturas().execute();
         }
     };
 
@@ -148,9 +155,7 @@ public class lisFactura extends frameBasex<Factura> {
 
     public void VerFactura() {
         int idFactura = ObtenerValorCelda(tbFacturas, 1);
-        regFactura regFactura = new regFactura(idFactura);
-        this.getParent().add(regFactura);
-        regFactura.setVisible(true);
+        VerFrame(new regFactura(idFactura));
     }
 
     public void EliminarFactura() {
@@ -179,8 +184,6 @@ public class lisFactura extends frameBasex<Factura> {
         lblFiltro = new javax.swing.JLabel();
         txtFiltro = new javax.swing.JTextField();
         btnRefrescar = new javax.swing.JButton();
-
-        setClosable(true);
 
         frame.setBackground(java.awt.Color.white);
         frame.setBorder(null);
@@ -215,7 +218,6 @@ public class lisFactura extends frameBasex<Factura> {
             tbFacturas.getColumnModel().getColumn(1).setMinWidth(0);
             tbFacturas.getColumnModel().getColumn(1).setPreferredWidth(0);
             tbFacturas.getColumnModel().getColumn(1).setMaxWidth(0);
-            tbFacturas.getColumnModel().getColumn(4).setPreferredWidth(200);
         }
 
         pnlTitulo.setBackground(new java.awt.Color(67, 100, 130));
@@ -286,7 +288,7 @@ public class lisFactura extends frameBasex<Factura> {
             .addGroup(frameLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1163, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 681, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, frameLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btnSeleccionar, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -310,14 +312,14 @@ public class lisFactura extends frameBasex<Factura> {
                         .addComponent(txtFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(btnRefrescar, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 372, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 198, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnSeleccionar)
                 .addContainerGap())
         );
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(frame, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -326,16 +328,11 @@ public class lisFactura extends frameBasex<Factura> {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(frame, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
-
-        pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
         // TODO add your handling code here:
-        regFactura regFactura = new regFactura(0);
-        regFactura.setUsuario(getUsuario());
-        this.getDesktopPane().add(regFactura);
-        regFactura.setVisible(true);
+        VerFrame(new regFactura(0), refr);
     }//GEN-LAST:event_btnNuevoActionPerformed
 
     private void btnSeleccionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeleccionarActionPerformed

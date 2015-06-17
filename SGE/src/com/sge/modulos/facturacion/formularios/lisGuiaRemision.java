@@ -1,7 +1,7 @@
 package com.sge.modulos.facturacion.formularios;
 
 import com.google.gson.Gson;
-import com.sge.base.formularios.frameBasex;
+import com.sge.base.formularios.frameBase;
 import com.sge.modulos.facturacion.clases.GuiaRemision;
 import com.sge.modulos.facturacion.cliente.cliFacturacion;
 import java.awt.event.ActionEvent;
@@ -14,10 +14,10 @@ import javax.swing.SwingWorker;
  *
  * @author elderson
  */
-public class lisGuiaRemision extends frameBasex<GuiaRemision> {
+public class lisGuiaRemision extends frameBase<GuiaRemision> {
 
     /**
-     * Creates new form lisGuiaRemision
+     * Creates new form lisGuiaRemisionx
      */
     public lisGuiaRemision() {
         initComponents();
@@ -53,6 +53,13 @@ public class lisGuiaRemision extends frameBasex<GuiaRemision> {
         @Override
         public void actionPerformed(ActionEvent e) {
             EliminarGuiaRemision();
+        }
+    };
+
+    Action refr = new AbstractAction() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            new swObtenerGuiasRemision().execute();
         }
     };
 
@@ -154,9 +161,7 @@ public class lisGuiaRemision extends frameBasex<GuiaRemision> {
 
     public void EditarGuiaRemision() {
         int idGuiaRemision = ObtenerValorCelda(tbGuiasRemision, 1);
-        regGuiaRemision regGuiaRemision = new regGuiaRemision(idGuiaRemision);
-        this.getParent().add(regGuiaRemision);
-        regGuiaRemision.setVisible(true);
+        VerFrame(new regGuiaRemision(idGuiaRemision), refr);
     }
 
     public void EliminarGuiaRemision() {
@@ -189,8 +194,6 @@ public class lisGuiaRemision extends frameBasex<GuiaRemision> {
         lblFiltro = new javax.swing.JLabel();
         txtFiltro = new javax.swing.JTextField();
         btnRefrescar = new javax.swing.JButton();
-
-        setClosable(true);
 
         frame.setBackground(java.awt.Color.white);
         frame.setBorder(null);
@@ -225,8 +228,6 @@ public class lisGuiaRemision extends frameBasex<GuiaRemision> {
             tbGuiasRemision.getColumnModel().getColumn(1).setMinWidth(0);
             tbGuiasRemision.getColumnModel().getColumn(1).setPreferredWidth(0);
             tbGuiasRemision.getColumnModel().getColumn(1).setMaxWidth(0);
-            tbGuiasRemision.getColumnModel().getColumn(4).setPreferredWidth(200);
-            tbGuiasRemision.getColumnModel().getColumn(5).setPreferredWidth(200);
         }
 
         pnlTitulo.setBackground(new java.awt.Color(67, 100, 130));
@@ -297,7 +298,7 @@ public class lisGuiaRemision extends frameBasex<GuiaRemision> {
             .addGroup(frameLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1176, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 644, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, frameLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btnSeleccionar, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -321,14 +322,14 @@ public class lisGuiaRemision extends frameBasex<GuiaRemision> {
                         .addComponent(txtFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(btnRefrescar, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 370, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 184, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnSeleccionar)
                 .addContainerGap())
         );
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(frame, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -337,16 +338,11 @@ public class lisGuiaRemision extends frameBasex<GuiaRemision> {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(frame, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
-
-        pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
         // TODO add your handling code here:
-        regGuiaRemision regGuiaRemision = new regGuiaRemision(0);
-        regGuiaRemision.setUsuario(getUsuario());
-        this.getDesktopPane().add(regGuiaRemision);
-        regGuiaRemision.setVisible(true);
+        VerFrame(new regGuiaRemision(0), refr);
     }//GEN-LAST:event_btnNuevoActionPerformed
 
     private void btnSeleccionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeleccionarActionPerformed

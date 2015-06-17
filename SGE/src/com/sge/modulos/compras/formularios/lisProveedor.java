@@ -1,7 +1,7 @@
 package com.sge.modulos.compras.formularios;
 
 import com.google.gson.Gson;
-import com.sge.base.formularios.frameBasex;
+import com.sge.base.formularios.frameBase;
 import com.sge.modulos.compras.clases.Proveedor;
 import com.sge.modulos.compras.cliente.cliCompras;
 import java.awt.event.ActionEvent;
@@ -14,10 +14,10 @@ import javax.swing.SwingWorker;
  *
  * @author elderson
  */
-public class lisProveedor extends frameBasex<Proveedor> {
+public class lisProveedor extends frameBase<Proveedor> {
 
     /**
-     * Creates new form lisProveedor
+     * Creates new form lisProveedorx
      */
     public lisProveedor(int modo) {
         initComponents();
@@ -28,11 +28,11 @@ public class lisProveedor extends frameBasex<Proveedor> {
         initComponents();
         Init(modo, filtro);
     }
-    
+
     private int modo;
 
     private String filtro;
-    
+
     private Proveedor seleccionado;
 
     ImageIcon Icon_Edit = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/edit-16.png"));
@@ -49,6 +49,13 @@ public class lisProveedor extends frameBasex<Proveedor> {
         @Override
         public void actionPerformed(ActionEvent e) {
             EliminarProveedor();
+        }
+    };
+
+    Action refr = new AbstractAction() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            new swObtenerProveedores().execute();
         }
     };
 
@@ -150,9 +157,7 @@ public class lisProveedor extends frameBasex<Proveedor> {
 
     public void EditarProveedor() {
         int idProveedor = ObtenerValorCelda(tbProveedores, 1);
-        regProveedor regProveedor = new regProveedor("EDITAR ", idProveedor);
-        this.getParent().add(regProveedor);
-        regProveedor.setVisible(true);
+        VerFrame(new regProveedor("EDITAR ", idProveedor), refr);
     }
 
     public void EliminarProveedor() {
@@ -186,8 +191,6 @@ public class lisProveedor extends frameBasex<Proveedor> {
         txtFiltro = new javax.swing.JTextField();
         btnRefrescar = new javax.swing.JButton();
 
-        setClosable(true);
-
         frame.setBackground(java.awt.Color.white);
         frame.setBorder(null);
 
@@ -196,7 +199,7 @@ public class lisProveedor extends frameBasex<Proveedor> {
 
             },
             new String [] {
-                "CHECK", "IDPROVEEDOR", "RAZON SOCIAL", "F. ULTIMA COMPRA", "ACTIVO", "EDITAR", "ELIMINAR"
+                "CHECK", "ID", "RAZON SOCIAL", "F. ULTIMA COMPRA", "ACTIVO", "EDITAR", "ELIMINAR"
             }
         ) {
             Class[] types = new Class [] {
@@ -218,13 +221,9 @@ public class lisProveedor extends frameBasex<Proveedor> {
         tbProveedores.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane1.setViewportView(tbProveedores);
         if (tbProveedores.getColumnModel().getColumnCount() > 0) {
-            tbProveedores.getColumnModel().getColumn(0).setPreferredWidth(30);
             tbProveedores.getColumnModel().getColumn(1).setMinWidth(0);
             tbProveedores.getColumnModel().getColumn(1).setPreferredWidth(0);
             tbProveedores.getColumnModel().getColumn(1).setMaxWidth(0);
-            tbProveedores.getColumnModel().getColumn(4).setPreferredWidth(10);
-            tbProveedores.getColumnModel().getColumn(5).setPreferredWidth(10);
-            tbProveedores.getColumnModel().getColumn(6).setPreferredWidth(20);
         }
 
         pnlTitulo.setBackground(new java.awt.Color(67, 100, 130));
@@ -250,7 +249,7 @@ public class lisProveedor extends frameBasex<Proveedor> {
             .addGroup(pnlTituloLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lblTitulo)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 815, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 369, Short.MAX_VALUE)
                 .addComponent(btnNuevo)
                 .addContainerGap())
         );
@@ -295,7 +294,7 @@ public class lisProveedor extends frameBasex<Proveedor> {
             .addGroup(frameLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1163, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 717, Short.MAX_VALUE)
                     .addGroup(frameLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btnSeleccionar, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -319,14 +318,14 @@ public class lisProveedor extends frameBasex<Proveedor> {
                         .addComponent(txtFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(btnRefrescar, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(9, 9, 9)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 367, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 223, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnSeleccionar)
                 .addGap(9, 9, 9))
         );
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(frame, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -335,21 +334,12 @@ public class lisProveedor extends frameBasex<Proveedor> {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(frame, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
-
-        pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
         // TODO add your handling code here:
-        regProveedor regProveedor = new regProveedor("NUEVO ", 0);
-        this.getParent().add(regProveedor);
-        regProveedor.setVisible(true);
+        VerFrame(new regProveedor("NUEVO ", 0), refr);
     }//GEN-LAST:event_btnNuevoActionPerformed
-
-    private void txtFiltroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFiltroActionPerformed
-        // TODO add your handling code here:
-        Filtrar(tbProveedores, txtFiltro.getText());
-    }//GEN-LAST:event_txtFiltroActionPerformed
 
     private void btnSeleccionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeleccionarActionPerformed
         // TODO add your handling code here:
@@ -367,6 +357,11 @@ public class lisProveedor extends frameBasex<Proveedor> {
                 break;
         }
     }//GEN-LAST:event_btnSeleccionarActionPerformed
+
+    private void txtFiltroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFiltroActionPerformed
+        // TODO add your handling code here:
+        Filtrar(tbProveedores, txtFiltro.getText());
+    }//GEN-LAST:event_txtFiltroActionPerformed
 
     private void btnRefrescarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefrescarActionPerformed
         // TODO add your handling code here:
