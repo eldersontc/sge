@@ -2,7 +2,7 @@ package com.sge.modulos.ventas.formularios;
 
 import com.google.gson.Gson;
 import com.sge.base.controles.SearchListener;
-import com.sge.base.formularios.frameBasex;
+import com.sge.base.formularios.frameBase;
 import com.sge.modulos.administracion.clases.Moneda;
 import com.sge.modulos.administracion.clases.Numeracion;
 import com.sge.modulos.administracion.clases.ValorDefinido;
@@ -21,18 +21,16 @@ import java.util.Date;
 import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
-import javax.swing.DefaultCellEditor;
-import javax.swing.JTextField;
 import javax.swing.SwingWorker;
 
 /**
  *
  * @author elderson
  */
-public class regPresupuesto extends frameBasex<Presupuesto> {
+public class regPresupuesto extends frameBase<Presupuesto> {
 
     /**
-     * Creates new form NewJInternalFrame
+     * Creates new form regPresupuestox
      */
     public regPresupuesto(int id) {
         initComponents();
@@ -277,7 +275,7 @@ public class regPresupuesto extends frameBasex<Presupuesto> {
                 String json = get().toString();
                 String[] resultado = new Gson().fromJson(json, String[].class);
                 if (resultado[0].equals("true")) {
-                    setClosed(true);
+                    Cerrar();
                 } else {
                     OcultarProcesando(frame);
                     ControlarExcepcion(resultado);
@@ -285,6 +283,20 @@ public class regPresupuesto extends frameBasex<Presupuesto> {
             } catch (Exception e) {
                 OcultarProcesando(frame);
                 ControlarExcepcion(e);
+            }
+        }
+    }
+
+    public void Aceptar() {
+        if (super.isFromJson()) {
+            AsignarValores();
+            setJson(new Gson().toJson(super.getEntidad()));
+            Cerrar();
+        } else {
+            if (getEntidad().getIdPresupuesto() == 0 || "PENDIENTE DE APROBACIÓN".equals(getEntidad().getEstado()) || "RECHAZADO".equals(getEntidad().getEstado())) {
+                new swGuardarPresupuesto().execute();
+            } else {
+                VerAdvertencia("SÓLO SE PUEDE MODIFICAR CUANDO EL ESTADO ES : PENDIENTE DE APROBACIÓN Ó RECHAZADO.", frame);
             }
         }
     }
@@ -315,27 +327,14 @@ public class regPresupuesto extends frameBasex<Presupuesto> {
         jTabbedPane1 = new javax.swing.JTabbedPane();
         tabItems = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tbItems = new javax.swing.JTable(){
-            public void changeSelection(final int row, final int column, boolean toggle, boolean extend)
-            {
-                super.changeSelection(row, column, toggle, extend);
-                DefaultCellEditor cell = (DefaultCellEditor)tbItems.getCellEditor(row, column);
-                if(cell.getComponent() instanceof JTextField){
-                    tbItems.editCellAt(row, column);
-                    tbItems.transferFocus();
-                    ((JTextField)cell.getComponent()).selectAll();
-                }
-            }
-        };
+        tbItems = new javax.swing.JTable();
         btnNuevoItem = new javax.swing.JButton();
         btnEliminarItem = new javax.swing.JButton();
         lblTotal = new javax.swing.JLabel();
         txtTotal = new javax.swing.JTextField();
 
-        setClosable(true);
-
         frame.setBackground(java.awt.Color.white);
-        frame.setBorder(null);
+        frame.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         btnAceptar.setText("ACEPTAR");
         btnAceptar.addActionListener(new java.awt.event.ActionListener() {
@@ -450,7 +449,6 @@ public class regPresupuesto extends frameBasex<Presupuesto> {
             tbItems.getColumnModel().getColumn(1).setMinWidth(0);
             tbItems.getColumnModel().getColumn(1).setPreferredWidth(0);
             tbItems.getColumnModel().getColumn(1).setMaxWidth(0);
-            tbItems.getColumnModel().getColumn(3).setPreferredWidth(300);
         }
 
         btnNuevoItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sge/base/imagenes/add-16.png"))); // NOI18N
@@ -538,7 +536,7 @@ public class regPresupuesto extends frameBasex<Presupuesto> {
                                 .addComponent(btnAceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap(17, Short.MAX_VALUE))
+                .addContainerGap(18, Short.MAX_VALUE))
         );
         frameLayout.setVerticalGroup(
             frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -572,8 +570,8 @@ public class regPresupuesto extends frameBasex<Presupuesto> {
                 .addContainerGap())
         );
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(frame, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -582,8 +580,6 @@ public class regPresupuesto extends frameBasex<Presupuesto> {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(frame, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
-
-        pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void schClienteSearch() {
@@ -591,7 +587,6 @@ public class regPresupuesto extends frameBasex<Presupuesto> {
     }
 
     private void schClienteClear() {
-
     }
 
     private void schNumeracionSearch() {
@@ -601,20 +596,6 @@ public class regPresupuesto extends frameBasex<Presupuesto> {
 
     private void schMonedaSearch() {
         VerModal(new lisMoneda(1), sele_mone);
-    }
-
-    public void Aceptar() {
-        if (super.isFromJson()) {
-            AsignarValores();
-            setJson(new Gson().toJson(super.getEntidad()));
-            Cerrar();
-        } else {
-            if (getEntidad().getIdPresupuesto() == 0 || "PENDIENTE DE APROBACIÓN".equals(getEntidad().getEstado()) || "RECHAZADO".equals(getEntidad().getEstado())) {
-                new swGuardarPresupuesto().execute();
-            } else {
-                VerAdvertencia("SÓLO SE PUEDE MODIFICAR CUANDO EL ESTADO ES : PENDIENTE DE APROBACIÓN Ó RECHAZADO.", frame);
-            }
-        }
     }
 
     private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed

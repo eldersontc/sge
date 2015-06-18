@@ -1,12 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<Form version="1.7" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JInternalFrameFormInfo">
-  <Properties>
-    <Property name="closable" type="boolean" value="true"/>
-  </Properties>
-  <SyntheticProperties>
-    <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
-  </SyntheticProperties>
+<Form version="1.3" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JPanelFormInfo">
   <AuxValues>
     <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
     <AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="false"/>
@@ -38,7 +32,9 @@
           <Color blue="ff" green="ff" id="white" palette="1" red="ff" type="palette"/>
         </Property>
         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-          <Border info="null"/>
+          <Border info="org.netbeans.modules.form.compat2.border.EtchedBorderInfo">
+            <EtchetBorder/>
+          </Border>
         </Property>
       </Properties>
 
@@ -60,9 +56,9 @@
                   </Group>
                   <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="txtNombre" min="-2" pref="490" max="-2" attributes="0"/>
-                          <Group type="102" attributes="0">
+                      <Group type="103" alignment="0" groupAlignment="0" max="-2" attributes="0">
+                          <Component id="txtNombre" alignment="0" min="-2" pref="490" max="-2" attributes="0"/>
+                          <Group type="102" alignment="0" attributes="0">
                               <Component id="cboLineaProduccion" min="-2" pref="191" max="-2" attributes="0"/>
                               <EmptySpace max="32767" attributes="0"/>
                               <Component id="chkActivo" min="-2" max="-2" attributes="0"/>
@@ -70,15 +66,15 @@
                           </Group>
                       </Group>
                       <Group type="103" alignment="0" groupAlignment="1" attributes="0">
-                          <Group type="102" attributes="0">
+                          <Group type="102" alignment="1" attributes="0">
                               <Component id="btnAceptar" min="-2" pref="93" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="btnCancelar" min="-2" pref="96" max="-2" attributes="0"/>
                           </Group>
-                          <Component id="tpnlItems" min="-2" pref="489" max="-2" attributes="0"/>
+                          <Component id="tpnlItems" alignment="1" min="-2" pref="489" max="-2" attributes="0"/>
                       </Group>
                   </Group>
-                  <EmptySpace pref="24" max="32767" attributes="0"/>
+                  <EmptySpace pref="19" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -99,12 +95,12 @@
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="tpnlItems" min="-2" pref="290" max="-2" attributes="0"/>
-                      <Component id="jScrollPane2" max="32767" attributes="0"/>
+                      <Component id="tpnlItems" alignment="0" min="-2" pref="290" max="-2" attributes="0"/>
+                      <Component id="jScrollPane2" alignment="0" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="103" groupAlignment="3" attributes="0">
+                      <Group type="103" alignment="0" groupAlignment="3" attributes="0">
                           <Component id="btnNuevoItem" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="btnEliminarItem" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
@@ -239,7 +235,7 @@
               <Layout>
                 <DimensionLayout dim="0">
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" attributes="0">
+                      <Group type="102" alignment="0" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="102" alignment="1" attributes="0">
@@ -249,15 +245,15 @@
                                           <Component id="chkMedidaCerrada" min="-2" max="-2" attributes="0"/>
                                           <EmptySpace min="-2" pref="47" max="-2" attributes="0"/>
                                           <Group type="103" groupAlignment="0" attributes="0">
-                                              <Component id="chkFondo" min="-2" max="-2" attributes="0"/>
-                                              <Component id="chkTiraRetira" min="-2" max="-2" attributes="0"/>
+                                              <Component id="chkFondo" alignment="0" min="-2" max="-2" attributes="0"/>
+                                              <Component id="chkTiraRetira" alignment="0" min="-2" max="-2" attributes="0"/>
                                           </Group>
                                       </Group>
                                   </Group>
                                   <EmptySpace max="32767" attributes="0"/>
                                   <Component id="btnGuardarItem" min="-2" max="-2" attributes="0"/>
                               </Group>
-                              <Group type="102" attributes="0">
+                              <Group type="102" alignment="0" attributes="0">
                                   <Group type="103" groupAlignment="0" attributes="0">
                                       <Group type="102" alignment="0" attributes="0">
                                           <Group type="103" groupAlignment="0" attributes="0">
@@ -267,9 +263,9 @@
                                           </Group>
                                           <EmptySpace min="-2" pref="54" max="-2" attributes="0"/>
                                           <Group type="103" groupAlignment="0" attributes="0">
-                                              <Component id="schMaterial" min="-2" pref="255" max="-2" attributes="0"/>
-                                              <Component id="cboUnidadMedidaAbierta" min="-2" pref="132" max="-2" attributes="0"/>
-                                              <Component id="cboTipoUnidad" min="-2" pref="172" max="-2" attributes="0"/>
+                                              <Component id="schMaterial" alignment="0" min="-2" pref="255" max="-2" attributes="0"/>
+                                              <Component id="cboUnidadMedidaAbierta" alignment="0" min="-2" pref="132" max="-2" attributes="0"/>
+                                              <Component id="cboTipoUnidad" alignment="0" min="-2" pref="172" max="-2" attributes="0"/>
                                           </Group>
                                       </Group>
                                       <Group type="102" alignment="0" attributes="0">
@@ -279,8 +275,8 @@
                                           </Group>
                                           <EmptySpace max="-2" attributes="0"/>
                                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                              <Component id="txtNombreItem" max="32767" attributes="0"/>
-                                              <Component id="schServicioImpresion" pref="255" max="32767" attributes="0"/>
+                                              <Component id="txtNombreItem" alignment="0" max="32767" attributes="0"/>
+                                              <Component id="schServicioImpresion" alignment="0" pref="255" max="32767" attributes="0"/>
                                           </Group>
                                       </Group>
                                   </Group>
@@ -301,18 +297,18 @@
                           </Group>
                           <EmptySpace pref="8" max="32767" attributes="0"/>
                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                              <Component id="schServicioImpresion" max="32767" attributes="0"/>
-                              <Component id="chkServicioImpresion" max="32767" attributes="0"/>
+                              <Component id="schServicioImpresion" alignment="0" max="32767" attributes="0"/>
+                              <Component id="chkServicioImpresion" alignment="0" max="32767" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                              <Component id="schMaterial" max="32767" attributes="0"/>
-                              <Component id="chkMaterial" max="32767" attributes="0"/>
+                              <Component id="schMaterial" alignment="0" max="32767" attributes="0"/>
+                              <Component id="chkMaterial" alignment="0" max="32767" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="chkTipoUnidad" min="-2" max="-2" attributes="0"/>
-                              <Component id="cboTipoUnidad" min="-2" max="-2" attributes="0"/>
+                              <Component id="chkTipoUnidad" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="cboTipoUnidad" alignment="0" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">

@@ -2,7 +2,7 @@ package com.sge.modulos.ventas.formularios;
 
 import com.google.gson.Gson;
 import com.sge.base.controles.SearchListener;
-import com.sge.base.formularios.frameBasex;
+import com.sge.base.formularios.frameBase;
 import com.sge.modulos.administracion.clases.Empleado;
 import com.sge.modulos.administracion.clases.Moneda;
 import com.sge.modulos.administracion.clases.Numeracion;
@@ -33,10 +33,10 @@ import javax.swing.SwingWorker;
  *
  * @author elderson
  */
-public class regSolicitudCotizacion extends frameBasex<SolicitudCotizacion> {
+public class regSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
 
     /**
-     * Creates new form regSolicitudCotizacion
+     * Creates new form regSolicitudCotizacionx
      */
     public regSolicitudCotizacion() {
         initComponents();
@@ -155,7 +155,7 @@ public class regSolicitudCotizacion extends frameBasex<SolicitudCotizacion> {
             }
         }
     };
-    
+
     Action sele_cont = new AbstractAction() {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -334,7 +334,7 @@ public class regSolicitudCotizacion extends frameBasex<SolicitudCotizacion> {
                 String json = get().toString();
                 String[] resultado = new Gson().fromJson(json, String[].class);
                 if (resultado[0].equals("true")) {
-                    setClosed(true);
+                    Cerrar();
                 } else {
                     OcultarProcesando(frame);
                     ControlarExcepcion(resultado);
@@ -416,6 +416,24 @@ public class regSolicitudCotizacion extends frameBasex<SolicitudCotizacion> {
         this.item.setIdMaterial(schMaterial.getId());
         this.item.setNombreMaterial(schMaterial.getText());
         this.item.setAcabados(txtAcabados.getText());
+    }
+
+    public void Aceptar() {
+        if (super.isFromJson()) {
+            AsignarValores();
+            setJson(new Gson().toJson(super.getEntidad()));
+            Cerrar();
+        } else {
+            if (getEntidad().getIdSolicitudCotizacion() == 0 || "PENDIENTE DE APROBACIÓN".equals(getEntidad().getEstado())) {
+                new swGuardarSolicitud().execute();
+            } else {
+                VerAdvertencia("SÓLO SE PUEDE MODIFICAR CUANDO EL ESTADO ES : PENDIENTE DE APROBACIÓN.", frame);
+            }
+        }
+    }
+
+    public void Cancelar() {
+        Cerrar();
     }
 
     /**
@@ -504,10 +522,8 @@ public class regSolicitudCotizacion extends frameBasex<SolicitudCotizacion> {
         lblFormaPago = new javax.swing.JLabel();
         schFormaPago = new com.sge.base.controles.JSearch();
 
-        setClosable(true);
-
         frame.setBackground(java.awt.Color.white);
-        frame.setBorder(null);
+        frame.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         btnAceptar.setText("ACEPTAR");
         btnAceptar.addActionListener(new java.awt.event.ActionListener() {
@@ -1170,11 +1186,11 @@ public class regSolicitudCotizacion extends frameBasex<SolicitudCotizacion> {
                     .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(btnCancelar)
                         .addComponent(btnAceptar)))
-                .addContainerGap(15, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(frame, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -1183,8 +1199,6 @@ public class regSolicitudCotizacion extends frameBasex<SolicitudCotizacion> {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(frame, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
-
-        pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void schClienteSearch() {
@@ -1251,24 +1265,6 @@ public class regSolicitudCotizacion extends frameBasex<SolicitudCotizacion> {
         String filtro = "WHERE ContactoCliente.idCliente = " + schCliente.getId();
         VerModal(new lisContactoCliente(filtro), sele_cont);
     }
-    
-    public void Aceptar() {
-        if (super.isFromJson()) {
-            AsignarValores();
-            setJson(new Gson().toJson(super.getEntidad()));
-            Cerrar();
-        } else {
-            if(getEntidad().getIdSolicitudCotizacion() == 0 || "PENDIENTE DE APROBACIÓN".equals(getEntidad().getEstado())){
-                new swGuardarSolicitud().execute();
-            } else {
-                VerAdvertencia("SÓLO SE PUEDE MODIFICAR CUANDO EL ESTADO ES : PENDIENTE DE APROBACIÓN.", frame);
-            }
-        }
-    }
-
-    public void Cancelar() {
-        Cerrar();
-    }
 
     private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
         // TODO add your handling code here:
@@ -1302,6 +1298,23 @@ public class regSolicitudCotizacion extends frameBasex<SolicitudCotizacion> {
         txtLargoMedidaAbierta.setEnabled(chkMedidaAbierta.isSelected());
         cboUnidadMedidaAbierta.setEnabled(chkMedidaAbierta.isSelected());
     }//GEN-LAST:event_chkMedidaAbiertaStateChanged
+
+    private void chkMedidaCerradaStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chkMedidaCerradaStateChanged
+        // TODO add your handling code here:
+        txtAltoMedidaCerrada.setEnabled(chkMedidaCerrada.isSelected());
+        txtLargoMedidaCerrada.setEnabled(chkMedidaCerrada.isSelected());
+    }//GEN-LAST:event_chkMedidaCerradaStateChanged
+
+    private void chkTiraRetiraStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chkTiraRetiraStateChanged
+        // TODO add your handling code here:
+        txtTiraColor.setEnabled(chkTiraRetira.isSelected());
+        txtRetiraColor.setEnabled(chkTiraRetira.isSelected());
+    }//GEN-LAST:event_chkTiraRetiraStateChanged
+
+    private void chkFondoStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chkFondoStateChanged
+        // TODO add your handling code here:
+        txtFondo.setEnabled(chkFondo.isSelected());
+    }//GEN-LAST:event_chkFondoStateChanged
 
     private void btnGuardarItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarItemActionPerformed
         // TODO add your handling code here:
@@ -1340,23 +1353,6 @@ public class regSolicitudCotizacion extends frameBasex<SolicitudCotizacion> {
             OcultarControl(tpnlItems);
         }
     }//GEN-LAST:event_lisItemsValueChanged
-
-    private void chkMedidaCerradaStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chkMedidaCerradaStateChanged
-        // TODO add your handling code here:
-        txtAltoMedidaCerrada.setEnabled(chkMedidaCerrada.isSelected());
-        txtLargoMedidaCerrada.setEnabled(chkMedidaCerrada.isSelected());
-    }//GEN-LAST:event_chkMedidaCerradaStateChanged
-
-    private void chkTiraRetiraStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chkTiraRetiraStateChanged
-        // TODO add your handling code here:
-        txtTiraColor.setEnabled(chkTiraRetira.isSelected());
-        txtRetiraColor.setEnabled(chkTiraRetira.isSelected());
-    }//GEN-LAST:event_chkTiraRetiraStateChanged
-
-    private void chkFondoStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chkFondoStateChanged
-        // TODO add your handling code here:
-        txtFondo.setEnabled(chkFondo.isSelected());
-    }//GEN-LAST:event_chkFondoStateChanged
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

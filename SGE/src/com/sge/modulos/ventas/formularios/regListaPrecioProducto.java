@@ -1,7 +1,7 @@
 package com.sge.modulos.ventas.formularios;
 
 import com.google.gson.Gson;
-import com.sge.base.formularios.frameBasex;
+import com.sge.base.formularios.frameBase;
 import com.sge.modulos.inventarios.clases.Producto;
 import com.sge.modulos.inventarios.clases.ProductoUnidad;
 import com.sge.modulos.inventarios.formularios.lisProducto;
@@ -22,10 +22,10 @@ import javax.swing.SwingWorker;
  *
  * @author elderson
  */
-public class regListaPrecioProducto extends frameBasex<ListaPrecioProducto> {
+public class regListaPrecioProducto extends frameBase<ListaPrecioProducto> {
 
     /**
-     * Creates new form regListaPrecioProducto
+     * Creates new form regListaPrecioProductox
      */
     public regListaPrecioProducto(String operacion, int id) {
         initComponents();
@@ -319,7 +319,7 @@ public class regListaPrecioProducto extends frameBasex<ListaPrecioProducto> {
                 String json = get().toString();
                 String[] resultado = new Gson().fromJson(json, String[].class);
                 if (resultado[0].equals("true")) {
-                    setClosed(true);
+                    Cerrar();
                 } else {
                     OcultarProcesando(frame);
                     ControlarExcepcion(resultado);
@@ -368,10 +368,8 @@ public class regListaPrecioProducto extends frameBasex<ListaPrecioProducto> {
         btnGuardarEscala = new javax.swing.JButton();
         btnEliminarEscala = new javax.swing.JButton();
 
-        setClosable(true);
-
         frame.setBackground(java.awt.Color.white);
-        frame.setBorder(null);
+        frame.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         btnAceptar.setText("ACEPTAR");
         btnAceptar.addActionListener(new java.awt.event.ActionListener() {
@@ -454,9 +452,6 @@ public class regListaPrecioProducto extends frameBasex<ListaPrecioProducto> {
             tbItems.getColumnModel().getColumn(0).setMinWidth(0);
             tbItems.getColumnModel().getColumn(0).setPreferredWidth(0);
             tbItems.getColumnModel().getColumn(0).setMaxWidth(0);
-            tbItems.getColumnModel().getColumn(1).setMinWidth(0);
-            tbItems.getColumnModel().getColumn(1).setPreferredWidth(0);
-            tbItems.getColumnModel().getColumn(1).setMaxWidth(0);
         }
 
         btnNuevoItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sge/base/imagenes/add-16.png"))); // NOI18N
@@ -480,7 +475,7 @@ public class regListaPrecioProducto extends frameBasex<ListaPrecioProducto> {
         tabItemsLayout.setHorizontalGroup(
             tabItemsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(tabItemsLayout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 666, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 665, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(tabItemsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnNuevoItem, javax.swing.GroupLayout.Alignment.TRAILING)
@@ -495,7 +490,7 @@ public class regListaPrecioProducto extends frameBasex<ListaPrecioProducto> {
                 .addComponent(btnNuevoItem)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnEliminarItem)
-                .addContainerGap(174, Short.MAX_VALUE))
+                .addContainerGap(178, Short.MAX_VALUE))
         );
 
         tpnlItems.addTab("PRODUCTOS", tabItems);
@@ -542,9 +537,6 @@ public class regListaPrecioProducto extends frameBasex<ListaPrecioProducto> {
             tbUnidades.getColumnModel().getColumn(1).setMinWidth(0);
             tbUnidades.getColumnModel().getColumn(1).setPreferredWidth(0);
             tbUnidades.getColumnModel().getColumn(1).setMaxWidth(0);
-            tbUnidades.getColumnModel().getColumn(3).setMinWidth(0);
-            tbUnidades.getColumnModel().getColumn(3).setPreferredWidth(0);
-            tbUnidades.getColumnModel().getColumn(3).setMaxWidth(0);
         }
 
         btnNuevaUnidad.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sge/base/imagenes/add-16.png"))); // NOI18N
@@ -568,7 +560,7 @@ public class regListaPrecioProducto extends frameBasex<ListaPrecioProducto> {
         tabUnidadesLayout.setHorizontalGroup(
             tabUnidadesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(tabUnidadesLayout.createSequentialGroup()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 193, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 197, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(tabUnidadesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnNuevaUnidad, javax.swing.GroupLayout.Alignment.TRAILING)
@@ -577,7 +569,7 @@ public class regListaPrecioProducto extends frameBasex<ListaPrecioProducto> {
         );
         tabUnidadesLayout.setVerticalGroup(
             tabUnidadesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 136, Short.MAX_VALUE)
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 140, Short.MAX_VALUE)
             .addGroup(tabUnidadesLayout.createSequentialGroup()
                 .addGap(26, 26, 26)
                 .addComponent(btnNuevaUnidad)
@@ -659,11 +651,11 @@ public class regListaPrecioProducto extends frameBasex<ListaPrecioProducto> {
                     .addComponent(btnGuardarEscala)
                     .addComponent(btnEliminarEscala)
                     .addComponent(btnNuevaEscala))
-                .addContainerGap(13, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         tabEscalasLayout.setVerticalGroup(
             tabEscalasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 136, Short.MAX_VALUE)
+            .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 140, Short.MAX_VALUE)
             .addGroup(tabEscalasLayout.createSequentialGroup()
                 .addGap(27, 27, 27)
                 .addComponent(btnNuevaEscala)
@@ -726,11 +718,11 @@ public class regListaPrecioProducto extends frameBasex<ListaPrecioProducto> {
                 .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnCancelar)
                     .addComponent(btnAceptar))
-                .addContainerGap(23, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(frame, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -739,8 +731,6 @@ public class regListaPrecioProducto extends frameBasex<ListaPrecioProducto> {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(frame, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
-
-        pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
@@ -753,17 +743,34 @@ public class regListaPrecioProducto extends frameBasex<ListaPrecioProducto> {
         Cerrar();
     }//GEN-LAST:event_btnCancelarActionPerformed
 
+    private void tbItemsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbItemsMouseClicked
+        // TODO add your handling code here:
+        if (FilaActiva(tbItems)) {
+            idItem = ObtenerValorCelda(tbItems, 0);
+            idProducto = ObtenerValorCelda(tbItems, 1);
+            ObtenerUnidades();
+        }
+    }//GEN-LAST:event_tbItemsMouseClicked
+
     private void btnNuevoItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoItemActionPerformed
         // TODO add your handling code here:
         VerModal(new lisProducto(2), select_item);
     }//GEN-LAST:event_btnNuevoItemActionPerformed
 
-    private void btnNuevaEscalaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevaEscalaActionPerformed
+    private void btnEliminarItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarItemActionPerformed
+        // TODO add your handling code here:
+        if (FilaActiva(tbItems)) {
+            EliminarItem();
+        }
+    }//GEN-LAST:event_btnEliminarItemActionPerformed
+
+    private void tbUnidadesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbUnidadesMouseClicked
         // TODO add your handling code here:
         if (FilaActiva(tbUnidades)) {
-            AgregarFila(tbEscalas, new Object[]{0, 0, 0, 0.0});
+            idUnidad = ObtenerValorCelda(tbUnidades, 0);
+            ObtenerEscalas();
         }
-    }//GEN-LAST:event_btnNuevaEscalaActionPerformed
+    }//GEN-LAST:event_tbUnidadesMouseClicked
 
     private void btnNuevaUnidadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevaUnidadActionPerformed
         // TODO add your handling code here:
@@ -773,19 +780,19 @@ public class regListaPrecioProducto extends frameBasex<ListaPrecioProducto> {
         }
     }//GEN-LAST:event_btnNuevaUnidadActionPerformed
 
-    private void btnEliminarItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarItemActionPerformed
-        // TODO add your handling code here:
-        if (FilaActiva(tbItems)) {
-            EliminarItem();
-        }
-    }//GEN-LAST:event_btnEliminarItemActionPerformed
-
     private void btnEliminarUnidadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarUnidadActionPerformed
         // TODO add your handling code here:
         if (FilaActiva(tbUnidades)) {
             EliminarUnidad();
         }
     }//GEN-LAST:event_btnEliminarUnidadActionPerformed
+
+    private void btnNuevaEscalaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevaEscalaActionPerformed
+        // TODO add your handling code here:
+        if (FilaActiva(tbUnidades)) {
+            AgregarFila(tbEscalas, new Object[]{0, 0, 0, 0.0});
+        }
+    }//GEN-LAST:event_btnNuevaEscalaActionPerformed
 
     private void btnGuardarEscalaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarEscalaActionPerformed
         // TODO add your handling code here:
@@ -801,22 +808,6 @@ public class regListaPrecioProducto extends frameBasex<ListaPrecioProducto> {
         }
     }//GEN-LAST:event_btnEliminarEscalaActionPerformed
 
-    private void tbItemsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbItemsMouseClicked
-        // TODO add your handling code here:
-        if (FilaActiva(tbItems)) {
-            idItem = ObtenerValorCelda(tbItems, 0);
-            idProducto = ObtenerValorCelda(tbItems, 1);
-            ObtenerUnidades();
-        }
-    }//GEN-LAST:event_tbItemsMouseClicked
-
-    private void tbUnidadesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbUnidadesMouseClicked
-        // TODO add your handling code here:
-        if (FilaActiva(tbUnidades)) {
-            idUnidad = ObtenerValorCelda(tbUnidades, 0);
-            ObtenerEscalas();
-        }
-    }//GEN-LAST:event_tbUnidadesMouseClicked
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAceptar;

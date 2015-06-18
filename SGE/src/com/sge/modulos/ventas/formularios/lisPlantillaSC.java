@@ -56,6 +56,13 @@ public class lisPlantillaSC extends frameBase<PlantillaSolicitudCotizacion> {
         }
     };
 
+    Action refr = new AbstractAction() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            new swObtenerPlantillasSC().execute();
+        }
+    };
+
     public class swObtenerPlantillasSC extends SwingWorker {
 
         @Override
@@ -228,9 +235,7 @@ public class lisPlantillaSC extends frameBase<PlantillaSolicitudCotizacion> {
 
     public void EditarPlantillaSC() {
         int idPlantillaSC = ObtenerValorCelda(tbPlantillas, 1);
-        regPlantillaSC regPlantillaSC = new regPlantillaSC("EDITAR ", idPlantillaSC);
-        this.getParent().add(regPlantillaSC);
-        regPlantillaSC.setVisible(true);
+        VerFrame(new regPlantillaSC("EDITAR ", idPlantillaSC), refr);
     }
 
     public void EliminarPlantillaSC() {
@@ -423,9 +428,7 @@ public class lisPlantillaSC extends frameBase<PlantillaSolicitudCotizacion> {
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
         // TODO add your handling code here:
-        regPlantillaSC regPlantillaSolicitudCotizacion = new regPlantillaSC("NUEVO ", 0);
-        this.getParent().add(regPlantillaSolicitudCotizacion);
-        regPlantillaSolicitudCotizacion.setVisible(true);
+        VerFrame(new regPlantillaSC("NUEVO ", 0), refr);
     }//GEN-LAST:event_btnNuevoActionPerformed
 
     private void btnSeleccionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeleccionarActionPerformed

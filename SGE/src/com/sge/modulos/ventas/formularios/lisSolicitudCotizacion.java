@@ -52,12 +52,14 @@ public class lisSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
     Action dele = new AbstractAction() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            String estado = ObtenerValorCelda(tbSolicitudes, 7);
-            if (estado.equals("COTIZACIÓN GENERADA")) {
-                VerAdvertencia("NO SE PUEDE ELIMINAR PORQUE TIENE UNA COTIZACIÓN GENERADA.", frame);
-            } else {
-                EliminarSolicitudCotizacion();
-            }
+            EliminarSolicitudCotizacion();
+        }
+    };
+
+    Action refr = new AbstractAction() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            new swObtenerSolicitudesCotizacion().execute();
         }
     };
 
@@ -347,9 +349,7 @@ public class lisSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
 
     public void EditarSolicitudCotizacion() {
         int idSolicitudCotizacion = ObtenerValorCelda(tbSolicitudes, 1);
-        regSolicitudCotizacion regSolicitudCotizacion = new regSolicitudCotizacion(idSolicitudCotizacion);
-        this.getParent().add(regSolicitudCotizacion);
-        regSolicitudCotizacion.setVisible(true);
+        VerFrame(new regSolicitudCotizacion(idSolicitudCotizacion), refr);
     }
 
     public void EliminarSolicitudCotizacion() {
@@ -595,8 +595,7 @@ public class lisSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
         // TODO add your handling code here:
         regSolicitudCotizacion regSolicitudCotizacion = new regSolicitudCotizacion(0);
         regSolicitudCotizacion.setUsuario(getUsuario());
-        this.getParent().add(regSolicitudCotizacion);
-        regSolicitudCotizacion.setVisible(true);
+        VerFrame(regSolicitudCotizacion, refr);
     }//GEN-LAST:event_btnNuevoActionPerformed
 
     private void btnSeleccionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeleccionarActionPerformed

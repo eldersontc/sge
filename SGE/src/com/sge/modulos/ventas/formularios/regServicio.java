@@ -1,7 +1,7 @@
 package com.sge.modulos.ventas.formularios;
 
 import com.google.gson.Gson;
-import com.sge.base.formularios.frameBasex;
+import com.sge.base.formularios.frameBase;
 import com.sge.modulos.inventarios.clases.Unidad;
 import com.sge.modulos.inventarios.formularios.lisUnidad;
 import com.sge.modulos.ventas.clases.Maquina;
@@ -20,10 +20,10 @@ import javax.swing.SwingWorker;
  *
  * @author elderson
  */
-public class regServicio extends frameBasex<Servicio> {
+public class regServicio extends frameBase<Servicio> {
 
     /**
-     * Creates new form regServicio
+     * Creates new form regServiciox
      */
     public regServicio(String operacion, int idServicio) {
         initComponents();
@@ -180,7 +180,7 @@ public class regServicio extends frameBasex<Servicio> {
                 String json = get().toString();
                 String[] resultado = new Gson().fromJson(json, String[].class);
                 if (resultado[0].equals("true")) {
-                    setClosed(true);
+                    Cerrar();
                 } else {
                     OcultarProcesando(frame);
                 }
@@ -223,10 +223,8 @@ public class regServicio extends frameBasex<Servicio> {
         pnlTitulo = new javax.swing.JPanel();
         lblTitulo = new javax.swing.JLabel();
 
-        setClosable(true);
-
         frame.setBackground(java.awt.Color.white);
-        frame.setBorder(null);
+        frame.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         lblCodigo.setText("CODIGO");
 
@@ -275,6 +273,7 @@ public class regServicio extends frameBasex<Servicio> {
                 return canEdit [columnIndex];
             }
         });
+        tbUnidades.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane2.setViewportView(tbUnidades);
         if (tbUnidades.getColumnModel().getColumnCount() > 0) {
             tbUnidades.getColumnModel().getColumn(0).setMinWidth(0);
@@ -285,14 +284,14 @@ public class regServicio extends frameBasex<Servicio> {
             tbUnidades.getColumnModel().getColumn(1).setMaxWidth(0);
         }
 
-        btnNuevaUnidad.setText("NUEVO");
+        btnNuevaUnidad.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sge/base/imagenes/add-16.png"))); // NOI18N
         btnNuevaUnidad.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnNuevaUnidadActionPerformed(evt);
             }
         });
 
-        btnEliminarUnidad.setText("ELIMINAR");
+        btnEliminarUnidad.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sge/base/imagenes/delete-16.png"))); // NOI18N
         btnEliminarUnidad.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnEliminarUnidadActionPerformed(evt);
@@ -304,11 +303,11 @@ public class regServicio extends frameBasex<Servicio> {
         tabUnidadesLayout.setHorizontalGroup(
             tabUnidadesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(tabUnidadesLayout.createSequentialGroup()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 408, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(tabUnidadesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnEliminarUnidad, javax.swing.GroupLayout.DEFAULT_SIZE, 83, Short.MAX_VALUE)
-                    .addComponent(btnNuevaUnidad, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 457, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(tabUnidadesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btnNuevaUnidad, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnEliminarUnidad, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         tabUnidadesLayout.setVerticalGroup(
@@ -351,6 +350,7 @@ public class regServicio extends frameBasex<Servicio> {
                 return canEdit [columnIndex];
             }
         });
+        tbMaquinas.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane1.setViewportView(tbMaquinas);
         if (tbMaquinas.getColumnModel().getColumnCount() > 0) {
             tbMaquinas.getColumnModel().getColumn(0).setMinWidth(0);
@@ -361,14 +361,14 @@ public class regServicio extends frameBasex<Servicio> {
             tbMaquinas.getColumnModel().getColumn(1).setMaxWidth(0);
         }
 
-        btnNuevaMaquina.setText("NUEVO");
+        btnNuevaMaquina.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sge/base/imagenes/add-16.png"))); // NOI18N
         btnNuevaMaquina.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnNuevaMaquinaActionPerformed(evt);
             }
         });
 
-        btnEliminarMaquina.setText("ELIMINAR");
+        btnEliminarMaquina.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sge/base/imagenes/delete-16.png"))); // NOI18N
         btnEliminarMaquina.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnEliminarMaquinaActionPerformed(evt);
@@ -380,11 +380,11 @@ public class regServicio extends frameBasex<Servicio> {
         tabMaquinasLayout.setHorizontalGroup(
             tabMaquinasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(tabMaquinasLayout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 408, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(tabMaquinasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnEliminarMaquina, javax.swing.GroupLayout.DEFAULT_SIZE, 83, Short.MAX_VALUE)
-                    .addComponent(btnNuevaMaquina, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 457, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(tabMaquinasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btnNuevaMaquina, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnEliminarMaquina, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         tabMaquinasLayout.setVerticalGroup(
@@ -455,7 +455,7 @@ public class regServicio extends frameBasex<Servicio> {
                                     .addComponent(chkActivo, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addComponent(txtDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, 399, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 517, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(26, Short.MAX_VALUE))
+                .addContainerGap(42, Short.MAX_VALUE))
         );
         frameLayout.setVerticalGroup(
             frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -481,8 +481,8 @@ public class regServicio extends frameBasex<Servicio> {
                 .addGap(24, 24, 24))
         );
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(frame, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -491,8 +491,6 @@ public class regServicio extends frameBasex<Servicio> {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(frame, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
-
-        pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed

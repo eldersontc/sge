@@ -61,6 +61,13 @@ public class lisPresupuesto extends frameBase<Presupuesto> {
         }
     };
 
+    Action refr = new AbstractAction() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            new swObtenerPresupuestos().execute();
+        }
+    };
+
     public class swObtenerPresupuestos extends SwingWorker {
 
         @Override
@@ -501,9 +508,7 @@ public class lisPresupuesto extends frameBase<Presupuesto> {
 
     public void EditarPresupuesto() {
         int idPresupuesto = ObtenerValorCelda(tbPresupuestos, 1);
-        regPresupuesto regPresupuesto = new regPresupuesto(idPresupuesto);
-        this.getParent().add(regPresupuesto);
-        regPresupuesto.setVisible(true);
+        VerFrame(new regPresupuesto(idPresupuesto), refr);
     }
 
     public void EliminarPresupuesto() {
@@ -824,8 +829,7 @@ public class lisPresupuesto extends frameBase<Presupuesto> {
         // TODO add your handling code here:
         regPresupuesto regPresupuesto = new regPresupuesto(0);
         regPresupuesto.setUsuario(getUsuario());
-        this.getParent().add(regPresupuesto);
-        regPresupuesto.setVisible(true);
+        VerFrame(regPresupuesto, refr);
     }//GEN-LAST:event_btnNuevoActionPerformed
 
     private void btnSeleccionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeleccionarActionPerformed

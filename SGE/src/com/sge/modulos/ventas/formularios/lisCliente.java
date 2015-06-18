@@ -52,6 +52,13 @@ public class lisCliente extends frameBase<Cliente> {
         }
     };
 
+    Action refr = new AbstractAction() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            new swObtenerClientes().execute();
+        }
+    };
+
     public class swObtenerClientes extends SwingWorker {
 
         @Override
@@ -149,9 +156,7 @@ public class lisCliente extends frameBase<Cliente> {
 
     public void EditarCliente() {
         int idCliente = ObtenerValorCelda(tbClientes, 1);
-        regCliente regCliente = new regCliente("EDITAR ", idCliente);
-        this.getParent().add(regCliente);
-        regCliente.setVisible(true);
+        VerFrame(new regCliente("EDITAR ", idCliente), refr);
     }
 
     public void EliminarCliente() {
@@ -341,9 +346,7 @@ public class lisCliente extends frameBase<Cliente> {
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
         // TODO add your handling code here:
-        regCliente regCliente = new regCliente("NUEVO ", 0);
-        this.getParent().add(regCliente);
-        regCliente.setVisible(true);
+        VerFrame(new regCliente("NUEVO ", 0), refr);
     }//GEN-LAST:event_btnNuevoActionPerformed
 
     private void btnSeleccionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeleccionarActionPerformed

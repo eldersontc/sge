@@ -56,6 +56,13 @@ public class lisMaquina extends frameBase<Maquina> {
         }
     };
 
+    Action refr = new AbstractAction() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            new swObtenerMaquinas().execute();
+        }
+    };
+
     public class swObtenerMaquinas extends SwingWorker {
 
         @Override
@@ -157,9 +164,7 @@ public class lisMaquina extends frameBase<Maquina> {
 
     public void EditarMaquina() {
         int idMaquina = ObtenerValorCelda(tbMaquinas, 1);
-        regMaquina regMaquina = new regMaquina("EDITAR ", idMaquina);
-        this.getParent().add(regMaquina);
-        regMaquina.setVisible(true);
+        VerFrame(new regMaquina("EDITAR ", idMaquina), refr);
     }
 
     public void EliminarMaquina() {
@@ -344,9 +349,7 @@ public class lisMaquina extends frameBase<Maquina> {
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
         // TODO add your handling code here:
-        regMaquina regMaquina = new regMaquina("NUEVO ", 0);
-        this.getParent().add(regMaquina);
-        regMaquina.setVisible(true);
+        VerFrame(new regMaquina("NUEVO ", 0), refr);
     }//GEN-LAST:event_btnNuevoActionPerformed
 
     private void btnSeleccionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeleccionarActionPerformed

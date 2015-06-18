@@ -2,7 +2,7 @@ package com.sge.modulos.ventas.formularios;
 
 import com.google.gson.Gson;
 import com.sge.base.controles.SearchListener;
-import com.sge.base.formularios.frameBasex;
+import com.sge.base.formularios.frameBase;
 import com.sge.modulos.administracion.clases.Empleado;
 import com.sge.modulos.administracion.clases.Moneda;
 import com.sge.modulos.administracion.clases.Numeracion;
@@ -15,15 +15,15 @@ import com.sge.modulos.inventarios.clases.Producto;
 import com.sge.modulos.inventarios.formularios.lisProducto;
 import com.sge.modulos.ventas.clases.Cliente;
 import com.sge.modulos.ventas.clases.ContactoCliente;
-import com.sge.modulos.ventas.clases.FormaPago;
-import com.sge.modulos.ventas.clases.ItemCotizacion;
-import com.sge.modulos.ventas.clases.Maquina;
-import com.sge.modulos.ventas.clases.Servicio;
 import com.sge.modulos.ventas.clases.Cotizacion;
 import com.sge.modulos.ventas.clases.EscalaListaPrecioMaquina;
 import com.sge.modulos.ventas.clases.EscalaListaPrecioProducto;
 import com.sge.modulos.ventas.clases.EscalaListaPrecioServicio;
+import com.sge.modulos.ventas.clases.FormaPago;
+import com.sge.modulos.ventas.clases.ItemCotizacion;
 import com.sge.modulos.ventas.clases.ItemListaPrecioMaquina;
+import com.sge.modulos.ventas.clases.Maquina;
+import com.sge.modulos.ventas.clases.Servicio;
 import com.sge.modulos.ventas.clases.ServicioCotizacion;
 import com.sge.modulos.ventas.clases.ServicioUnidad;
 import com.sge.modulos.ventas.cliente.cliVentas;
@@ -43,10 +43,10 @@ import javax.swing.SwingWorker;
  *
  * @author elderson
  */
-public class regCotizacion extends frameBasex<Cotizacion> {
+public class regCotizacion extends frameBase<Cotizacion> {
 
     /**
-     * Creates new form regCotizacion
+     * Creates new form regCotizacionx
      */
     public regCotizacion() {
         initComponents();
@@ -460,7 +460,7 @@ public class regCotizacion extends frameBasex<Cotizacion> {
                 String json = get().toString();
                 String[] resultado = new Gson().fromJson(json, String[].class);
                 if (resultado[0].equals("true")) {
-                    setClosed(true);
+                    Cerrar();
                 } else {
                     OcultarProcesando(frame);
                     ControlarExcepcion(resultado);
@@ -607,70 +607,6 @@ public class regCotizacion extends frameBasex<Cotizacion> {
         this.item.setIncluirEnPresupuesto(chkIncluirEnPresupuesto.isSelected());
         this.item.setVerPrecioEnPresupuesto(chkMostrarPrecioEnPresupuesto.isSelected());
         this.item.setAcabados(getAcabados());
-    }
-
-    private void schClienteSearch() {
-        VerModal(new lisCliente(1), sele_clie);
-    }
-
-    private void schClienteClear() {
-        schListaPrecioProducto.asingValues(0, null);
-        schListaPrecioServicio.asingValues(0, null);
-        schListaPrecioMaquina.asingValues(0, null);
-        getEntidad().setIdListaPrecioProducto(0);
-        getEntidad().setNombreListaPrecioProducto(null);
-        getEntidad().setIdListaPrecioServicio(0);
-        getEntidad().setNombreListaPrecioServicio(null);
-        getEntidad().setIdListaPrecioMaquina(0);
-        getEntidad().setNombreListaPrecioMaquina(null);
-    }
-
-    private void schCotizadorSearch() {
-        VerModal(new lisEmpleado(1), sele_coti);
-    }
-
-    private void schVendedorSearch() {
-        VerModal(new lisEmpleado(1), sele_vend);
-    }
-
-    private void schNumeracionSearch() {
-        String filtro = "WHERE Numeracion.idEntidad = 4";
-        VerModal(new lisNumeracion(1, filtro), sele_nume);
-    }
-
-    private void schMonedaSearch() {
-        VerModal(new lisMoneda(1), sele_mone);
-    }
-
-    private void schFormaPagoSearch() {
-        VerModal(new lisFormaPago(1), sele_form);
-    }
-
-    private void schMaquinaSearch() {
-        VerModal(new lisMaquina(1), sele_maqu);
-    }
-
-    private void schServicioImpresionSearch() {
-        String filtro = "WHERE Servicio.servicioImpresion = TRUE";
-        VerModal(new lisServicio(1, filtro), sele_serv);
-    }
-
-    private void schMaterialSearch() {
-        VerModal(new lisProducto(1), sele_mate);
-    }
-    
-    private void schMaterialClear() {
-        this.item.setAltoMaterial(0);
-        this.item.setLargoMaterial(0);
-        this.item.setIdUnidadMaterial(0);
-        this.item.setAbreviacionUnidadMaterial(null);
-        this.item.setFactorUnidadMaterial(0);
-        this.item.setCodigoMaterial(null);
-    }
-    
-    private void schContactoSearch() {
-        String filtro = "WHERE ContactoCliente.idCliente = " + schCliente.getId();
-        VerModal(new lisContactoCliente(filtro), sele_cont);
     }
 
     public void Aceptar() {
@@ -952,10 +888,8 @@ public class regCotizacion extends frameBasex<Cotizacion> {
         lblTotal = new javax.swing.JLabel();
         txtTotal = new javax.swing.JTextField();
 
-        setClosable(true);
-
         frame.setBackground(java.awt.Color.white);
-        frame.setBorder(null);
+        frame.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         btnAceptar.setText("ACEPTAR");
         btnAceptar.addActionListener(new java.awt.event.ActionListener() {
@@ -1350,19 +1284,6 @@ public class regCotizacion extends frameBasex<Cotizacion> {
         tbAcabados.setRowHeight(25);
         tbAcabados.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane4.setViewportView(tbAcabados);
-        if (tbAcabados.getColumnModel().getColumnCount() > 0) {
-            tbAcabados.getColumnModel().getColumn(0).setMinWidth(0);
-            tbAcabados.getColumnModel().getColumn(0).setPreferredWidth(0);
-            tbAcabados.getColumnModel().getColumn(0).setMaxWidth(0);
-            tbAcabados.getColumnModel().getColumn(1).setMinWidth(0);
-            tbAcabados.getColumnModel().getColumn(1).setPreferredWidth(0);
-            tbAcabados.getColumnModel().getColumn(1).setMaxWidth(0);
-            tbAcabados.getColumnModel().getColumn(2).setPreferredWidth(300);
-            tbAcabados.getColumnModel().getColumn(3).setMinWidth(0);
-            tbAcabados.getColumnModel().getColumn(3).setPreferredWidth(0);
-            tbAcabados.getColumnModel().getColumn(3).setMaxWidth(0);
-            tbAcabados.getColumnModel().getColumn(7).setPreferredWidth(30);
-        }
 
         btnNuevoAcabado.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sge/base/imagenes/add-16.png"))); // NOI18N
         btnNuevoAcabado.addActionListener(new java.awt.event.ActionListener() {
@@ -1821,8 +1742,8 @@ public class regCotizacion extends frameBasex<Cotizacion> {
                 .addContainerGap())
         );
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(frame, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -1831,9 +1752,71 @@ public class regCotizacion extends frameBasex<Cotizacion> {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(frame, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
-
-        pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void schClienteSearch() {
+        VerModal(new lisCliente(1), sele_clie);
+    }
+
+    private void schClienteClear() {
+        schListaPrecioProducto.asingValues(0, null);
+        schListaPrecioServicio.asingValues(0, null);
+        schListaPrecioMaquina.asingValues(0, null);
+        getEntidad().setIdListaPrecioProducto(0);
+        getEntidad().setNombreListaPrecioProducto(null);
+        getEntidad().setIdListaPrecioServicio(0);
+        getEntidad().setNombreListaPrecioServicio(null);
+        getEntidad().setIdListaPrecioMaquina(0);
+        getEntidad().setNombreListaPrecioMaquina(null);
+    }
+
+    private void schCotizadorSearch() {
+        VerModal(new lisEmpleado(1), sele_coti);
+    }
+
+    private void schVendedorSearch() {
+        VerModal(new lisEmpleado(1), sele_vend);
+    }
+
+    private void schNumeracionSearch() {
+        String filtro = "WHERE Numeracion.idEntidad = 4";
+        VerModal(new lisNumeracion(1, filtro), sele_nume);
+    }
+
+    private void schMonedaSearch() {
+        VerModal(new lisMoneda(1), sele_mone);
+    }
+
+    private void schFormaPagoSearch() {
+        VerModal(new lisFormaPago(1), sele_form);
+    }
+
+    private void schMaquinaSearch() {
+        VerModal(new lisMaquina(1), sele_maqu);
+    }
+
+    private void schServicioImpresionSearch() {
+        String filtro = "WHERE Servicio.servicioImpresion = TRUE";
+        VerModal(new lisServicio(1, filtro), sele_serv);
+    }
+
+    private void schMaterialSearch() {
+        VerModal(new lisProducto(1), sele_mate);
+    }
+
+    private void schMaterialClear() {
+        this.item.setAltoMaterial(0);
+        this.item.setLargoMaterial(0);
+        this.item.setIdUnidadMaterial(0);
+        this.item.setAbreviacionUnidadMaterial(null);
+        this.item.setFactorUnidadMaterial(0);
+        this.item.setCodigoMaterial(null);
+    }
+
+    private void schContactoSearch() {
+        String filtro = "WHERE ContactoCliente.idCliente = " + schCliente.getId();
+        VerModal(new lisContactoCliente(filtro), sele_cont);
+    }
 
     private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
         // TODO add your handling code here:
@@ -1851,6 +1834,36 @@ public class regCotizacion extends frameBasex<Cotizacion> {
         lisItems.updateUI();
         VerAdvertencia("ITEM GUARDADO!", this);
     }//GEN-LAST:event_btnGuardarItemActionPerformed
+
+    private void btnGenerarGraficoPrecorteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarGraficoPrecorteActionPerformed
+        // TODO add your handling code here:
+        VerModal(new genGraficoPrecorte(this.item));
+    }//GEN-LAST:event_btnGenerarGraficoPrecorteActionPerformed
+
+    private void btnGenerarGraficoImpresionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarGraficoImpresionActionPerformed
+        // TODO add your handling code here:
+        VerModal(new genGraficoImpresion(this.item));
+    }//GEN-LAST:event_btnGenerarGraficoImpresionActionPerformed
+
+    private void btnNuevoAcabadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoAcabadoActionPerformed
+        // TODO add your handling code here:
+        VerModal(new lisServicio(2), sele_acab);
+    }//GEN-LAST:event_btnNuevoAcabadoActionPerformed
+
+    private void btnEliminarAcabadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarAcabadoActionPerformed
+        // TODO add your handling code here:
+        if (FilaActiva(tbAcabados)) {
+            int idServicioCotizacion = ObtenerValorCelda(tbAcabados, 0);
+            if (idServicioCotizacion > 0) {
+                ServicioCotizacion servicioCotizacion = new ServicioCotizacion();
+                servicioCotizacion.setIdServicioCotizacion(idServicioCotizacion);
+                servicioCotizacion.setEliminar(true);
+                this.item.getAcabados().add(servicioCotizacion);
+            }
+            EliminarFila(tbAcabados);
+            CalcularTotalAcabados();
+        }
+    }//GEN-LAST:event_btnEliminarAcabadoActionPerformed
 
     private void btnNuevoItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoItemActionPerformed
         // TODO add your handling code here:
@@ -1883,40 +1896,10 @@ public class regCotizacion extends frameBasex<Cotizacion> {
         }
     }//GEN-LAST:event_lisItemsValueChanged
 
-    private void btnGenerarGraficoPrecorteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarGraficoPrecorteActionPerformed
-        // TODO add your handling code here:
-        VerModal(new genGraficoPrecorte(this.item));
-    }//GEN-LAST:event_btnGenerarGraficoPrecorteActionPerformed
-
-    private void btnGenerarGraficoImpresionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarGraficoImpresionActionPerformed
-        // TODO add your handling code here:
-        VerModal(new genGraficoImpresion(this.item));
-    }//GEN-LAST:event_btnGenerarGraficoImpresionActionPerformed
-
     private void btnCalcularActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCalcularActionPerformed
         // TODO add your handling code here:
         Calcular();
     }//GEN-LAST:event_btnCalcularActionPerformed
-
-    private void btnNuevoAcabadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoAcabadoActionPerformed
-        // TODO add your handling code here:
-        VerModal(new lisServicio(2), sele_acab);
-    }//GEN-LAST:event_btnNuevoAcabadoActionPerformed
-
-    private void btnEliminarAcabadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarAcabadoActionPerformed
-        // TODO add your handling code here:
-        if (FilaActiva(tbAcabados)) {
-            int idServicioCotizacion = ObtenerValorCelda(tbAcabados, 0);
-            if (idServicioCotizacion > 0) {
-                ServicioCotizacion servicioCotizacion = new ServicioCotizacion();
-                servicioCotizacion.setIdServicioCotizacion(idServicioCotizacion);
-                servicioCotizacion.setEliminar(true);
-                this.item.getAcabados().add(servicioCotizacion);
-            }
-            EliminarFila(tbAcabados);
-            CalcularTotalAcabados();
-        }
-    }//GEN-LAST:event_btnEliminarAcabadoActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

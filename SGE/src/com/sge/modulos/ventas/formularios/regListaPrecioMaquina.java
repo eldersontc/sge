@@ -1,7 +1,7 @@
 package com.sge.modulos.ventas.formularios;
 
 import com.google.gson.Gson;
-import com.sge.base.formularios.frameBasex;
+import com.sge.base.formularios.frameBase;
 import com.sge.modulos.ventas.clases.EscalaListaPrecioMaquina;
 import com.sge.modulos.ventas.clases.ItemListaPrecioMaquina;
 import com.sge.modulos.ventas.clases.ListaPrecioMaquina;
@@ -18,10 +18,10 @@ import javax.swing.SwingWorker;
  *
  * @author elderson
  */
-public class regListaPrecioMaquina extends frameBasex<ListaPrecioMaquina> {
+public class regListaPrecioMaquina extends frameBase<ListaPrecioMaquina> {
 
     /**
-     * Creates new form regListaPrecioMaquina
+     * Creates new form regListaPrecioMaquinax
      */
     public regListaPrecioMaquina(String operacion, int id) {
         initComponents();
@@ -35,7 +35,7 @@ public class regListaPrecioMaquina extends frameBasex<ListaPrecioMaquina> {
     public void Init(String operacion, int id) {
         lblTitulo.setText(operacion + lblTitulo.getText());
         this.id = id;
-        if(this.id == 0){
+        if (this.id == 0) {
             OcultarControl(btnNuevoItem);
             OcultarControl(btnNuevaEscala);
         } else {
@@ -81,7 +81,7 @@ public class regListaPrecioMaquina extends frameBasex<ListaPrecioMaquina> {
             cliente.close();
         }
     }
-    
+
     public void GuardarEscala() {
         cliVentas cliente = new cliVentas();
         try {
@@ -261,7 +261,7 @@ public class regListaPrecioMaquina extends frameBasex<ListaPrecioMaquina> {
                 String json = get().toString();
                 String[] resultado = new Gson().fromJson(json, String[].class);
                 if (resultado[0].equals("true")) {
-                    setClosed(true);
+                    Cerrar();
                 } else {
                     OcultarProcesando(frame);
                     ControlarExcepcion(resultado);
@@ -272,7 +272,7 @@ public class regListaPrecioMaquina extends frameBasex<ListaPrecioMaquina> {
             }
         }
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -305,10 +305,8 @@ public class regListaPrecioMaquina extends frameBasex<ListaPrecioMaquina> {
         btnGuardarEscala = new javax.swing.JButton();
         btnEliminarEscala = new javax.swing.JButton();
 
-        setClosable(true);
-
         frame.setBackground(java.awt.Color.white);
-        frame.setBorder(null);
+        frame.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         btnAceptar.setText("ACEPTAR");
         btnAceptar.addActionListener(new java.awt.event.ActionListener() {
@@ -394,7 +392,6 @@ public class regListaPrecioMaquina extends frameBasex<ListaPrecioMaquina> {
             tbItems.getColumnModel().getColumn(1).setMinWidth(0);
             tbItems.getColumnModel().getColumn(1).setPreferredWidth(0);
             tbItems.getColumnModel().getColumn(1).setMaxWidth(0);
-            tbItems.getColumnModel().getColumn(2).setPreferredWidth(300);
         }
 
         btnNuevoItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sge/base/imagenes/add-16.png"))); // NOI18N
@@ -525,7 +522,7 @@ public class regListaPrecioMaquina extends frameBasex<ListaPrecioMaquina> {
         );
         tabEscalasLayout.setVerticalGroup(
             tabEscalasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 232, Short.MAX_VALUE)
+            .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 236, Short.MAX_VALUE)
             .addGroup(tabEscalasLayout.createSequentialGroup()
                 .addGap(22, 22, 22)
                 .addComponent(btnNuevaEscala)
@@ -589,8 +586,8 @@ public class regListaPrecioMaquina extends frameBasex<ListaPrecioMaquina> {
                 .addGap(69, 69, 69))
         );
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(frame, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -599,8 +596,6 @@ public class regListaPrecioMaquina extends frameBasex<ListaPrecioMaquina> {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(frame, javax.swing.GroupLayout.PREFERRED_SIZE, 573, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
-
-        pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
@@ -633,6 +628,13 @@ public class regListaPrecioMaquina extends frameBasex<ListaPrecioMaquina> {
         }
     }//GEN-LAST:event_btnEliminarItemActionPerformed
 
+    private void btnGuardarItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarItemActionPerformed
+        // TODO add your handling code here:
+        if (FilaActiva(tbItems)) {
+            ActualizarItem();
+        }
+    }//GEN-LAST:event_btnGuardarItemActionPerformed
+
     private void btnNuevaEscalaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevaEscalaActionPerformed
         // TODO add your handling code here:
         if (FilaActiva(tbItems)) {
@@ -654,13 +656,6 @@ public class regListaPrecioMaquina extends frameBasex<ListaPrecioMaquina> {
             EliminarEscala();
         }
     }//GEN-LAST:event_btnEliminarEscalaActionPerformed
-
-    private void btnGuardarItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarItemActionPerformed
-        // TODO add your handling code here:
-        if (FilaActiva(tbItems)) {
-            ActualizarItem();
-        }
-    }//GEN-LAST:event_btnGuardarItemActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

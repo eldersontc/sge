@@ -1,7 +1,7 @@
 package com.sge.modulos.ventas.formularios;
 
 import com.google.gson.Gson;
-import com.sge.base.formularios.frameBasex;
+import com.sge.base.formularios.frameBase;
 import com.sge.modulos.ventas.clases.EscalaListaPrecioServicio;
 import com.sge.modulos.ventas.clases.ItemListaPrecioServicio;
 import com.sge.modulos.ventas.clases.ListaPrecioServicio;
@@ -20,16 +20,16 @@ import javax.swing.SwingWorker;
  *
  * @author elderson
  */
-public class regListaPrecioServicio extends frameBasex<ListaPrecioServicio> {
+public class regListaPrecioServicio extends frameBase<ListaPrecioServicio> {
 
     /**
-     * Creates new form regListaPrecioServicio
+     * Creates new form regListaPrecioServiciox
      */
     public regListaPrecioServicio(String operacion, int id) {
         initComponents();
         Init(operacion, id);
     }
-    
+
     int id = 0;
     int idItem = 0;
     int idServicio = 0;
@@ -39,7 +39,7 @@ public class regListaPrecioServicio extends frameBasex<ListaPrecioServicio> {
     public void Init(String operacion, int id) {
         lblTitulo.setText(operacion + lblTitulo.getText());
         this.id = id;
-        if(this.id == 0){
+        if (this.id == 0) {
             OcultarControl(btnNuevoItem);
             OcultarControl(btnNuevaUnidad);
             OcultarControl(btnNuevaEscala);
@@ -317,7 +317,7 @@ public class regListaPrecioServicio extends frameBasex<ListaPrecioServicio> {
                 String json = get().toString();
                 String[] resultado = new Gson().fromJson(json, String[].class);
                 if (resultado[0].equals("true")) {
-                    setClosed(true);
+                    Cerrar();
                 } else {
                     OcultarProcesando(frame);
                     ControlarExcepcion(resultado);
@@ -366,10 +366,8 @@ public class regListaPrecioServicio extends frameBasex<ListaPrecioServicio> {
         btnGuardarEscala = new javax.swing.JButton();
         btnEliminarEscala = new javax.swing.JButton();
 
-        setClosable(true);
-
         frame.setBackground(java.awt.Color.white);
-        frame.setBorder(null);
+        frame.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         btnAceptar.setText("ACEPTAR");
         btnAceptar.addActionListener(new java.awt.event.ActionListener() {
@@ -540,9 +538,6 @@ public class regListaPrecioServicio extends frameBasex<ListaPrecioServicio> {
             tbUnidades.getColumnModel().getColumn(1).setMinWidth(0);
             tbUnidades.getColumnModel().getColumn(1).setPreferredWidth(0);
             tbUnidades.getColumnModel().getColumn(1).setMaxWidth(0);
-            tbUnidades.getColumnModel().getColumn(3).setMinWidth(0);
-            tbUnidades.getColumnModel().getColumn(3).setPreferredWidth(0);
-            tbUnidades.getColumnModel().getColumn(3).setMaxWidth(0);
         }
 
         btnNuevaUnidad.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sge/base/imagenes/add-16.png"))); // NOI18N
@@ -727,8 +722,8 @@ public class regListaPrecioServicio extends frameBasex<ListaPrecioServicio> {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(frame, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -737,8 +732,6 @@ public class regListaPrecioServicio extends frameBasex<ListaPrecioServicio> {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(frame, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
-
-        pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed

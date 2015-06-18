@@ -52,6 +52,13 @@ public class lisListaPrecioMaquina extends frameBase<ListaPrecioMaquina> {
         }
     };
 
+    Action refr = new AbstractAction() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            new swObtenerListaPrecioMaquinas().execute();
+        }
+    };
+
     public class swObtenerListaPrecioMaquinas extends SwingWorker {
 
         @Override
@@ -149,9 +156,7 @@ public class lisListaPrecioMaquina extends frameBase<ListaPrecioMaquina> {
 
     public void EditarListaPrecioMaquina() {
         int idListaPrecioMaquina = ObtenerValorCelda(tbListasPrecio, 1);
-        regListaPrecioMaquina regListaPrecioMaquina = new regListaPrecioMaquina("EDITAR ", idListaPrecioMaquina);
-        this.getParent().add(regListaPrecioMaquina);
-        regListaPrecioMaquina.setVisible(true);
+        VerFrame(new regListaPrecioMaquina("EDITAR ", idListaPrecioMaquina), refr);
     }
 
     public void EliminarListaPrecioMaquina() {
@@ -332,9 +337,7 @@ public class lisListaPrecioMaquina extends frameBase<ListaPrecioMaquina> {
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
         // TODO add your handling code here:
-        regListaPrecioMaquina regListaPrecioMaquina = new regListaPrecioMaquina("NUEVO ", 0);
-        this.getParent().add(regListaPrecioMaquina);
-        regListaPrecioMaquina.setVisible(true);
+        VerFrame(new regListaPrecioMaquina("NUEVO ", 0), refr);
     }//GEN-LAST:event_btnNuevoActionPerformed
 
     private void btnSeleccionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeleccionarActionPerformed

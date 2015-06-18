@@ -51,12 +51,14 @@ public class lisCotizacion extends frameBase<Cotizacion> {
     Action dele = new AbstractAction() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            String estado = ObtenerValorCelda(tbCotizaciones, 9);
-            if (estado.equals("EN PRESUPUESTO")) {
-                VerAdvertencia("NO SE PUEDE ELIMINAR PORQUE ESTÁ INCLUIDO EN UN PRESUPUESTO.", frame);
-            } else {
-                EliminarCotizacion();
-            }
+            EliminarCotizacion();
+        }
+    };
+
+    Action refr = new AbstractAction() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            new swObtenerCotizaciones().execute();
         }
     };
 
@@ -236,9 +238,7 @@ public class lisCotizacion extends frameBase<Cotizacion> {
 
     public void EditarCotizacion() {
         int idCotizacion = ObtenerValorCelda(tbCotizaciones, 1);
-        regCotizacion regCotizacion = new regCotizacion(idCotizacion);
-        this.getParent().add(regCotizacion);
-        regCotizacion.setVisible(true);
+        VerFrame(new regCotizacion(idCotizacion), refr);
     }
 
     public void EliminarCotizacion() {
@@ -465,10 +465,9 @@ public class lisCotizacion extends frameBase<Cotizacion> {
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
         // TODO add your handling code here:
-        regCotizacion2 regCotizacion = new regCotizacion2(0);
+        regCotizacion regCotizacion = new regCotizacion(0);
         regCotizacion.setUsuario(getUsuario());
-        this.getParent().add(regCotizacion);
-        regCotizacion.setVisible(true);
+        VerFrame(regCotizacion, refr);
     }//GEN-LAST:event_btnNuevoActionPerformed
 
     private void btnSeleccionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeleccionarActionPerformed

@@ -1,12 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<Form version="1.6" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JInternalFrameFormInfo">
-  <Properties>
-    <Property name="closable" type="boolean" value="true"/>
-  </Properties>
-  <SyntheticProperties>
-    <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
-  </SyntheticProperties>
+<Form version="1.6" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JPanelFormInfo">
   <AuxValues>
     <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
     <AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="false"/>
@@ -38,7 +32,9 @@
           <Color blue="ff" green="ff" id="white" palette="1" red="ff" type="palette"/>
         </Property>
         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-          <Border info="null"/>
+          <Border info="org.netbeans.modules.form.compat2.border.EtchedBorderInfo">
+            <EtchetBorder/>
+          </Border>
         </Property>
       </Properties>
 
@@ -46,9 +42,9 @@
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
               <Component id="pnlTitulo" alignment="1" max="32767" attributes="0"/>
-              <Group type="102" attributes="0">
+              <Group type="102" alignment="0" attributes="0">
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" attributes="0">
+                      <Group type="102" alignment="0" attributes="0">
                           <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
                           <Component id="lblNombre" min="-2" max="-2" attributes="0"/>
                           <EmptySpace type="separate" min="-2" max="-2" attributes="0"/>
@@ -60,12 +56,12 @@
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="tpnlItems" max="32767" attributes="0"/>
-                              <Group type="102" attributes="0">
+                              <Component id="tpnlItems" alignment="0" max="32767" attributes="0"/>
+                              <Group type="102" alignment="0" attributes="0">
                                   <Component id="tpnlUnidades" min="-2" pref="257" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" attributes="0">
-                                      <Component id="tpnlEscalas" max="32767" attributes="0"/>
+                                      <Component id="tpnlEscalas" alignment="0" max="32767" attributes="0"/>
                                       <Group type="102" alignment="0" attributes="0">
                                           <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                                           <Component id="btnAceptar" min="-2" pref="93" max="-2" attributes="0"/>
@@ -95,15 +91,15 @@
                   <Component id="tpnlItems" min="-2" pref="301" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="tpnlUnidades" min="-2" pref="177" max="-2" attributes="0"/>
-                      <Component id="tpnlEscalas" min="-2" pref="177" max="-2" attributes="0"/>
+                      <Component id="tpnlUnidades" alignment="0" min="-2" pref="177" max="-2" attributes="0"/>
+                      <Component id="tpnlEscalas" alignment="0" min="-2" pref="177" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="btnCancelar" alignment="0" min="-2" max="-2" attributes="0"/>
-                      <Component id="btnAceptar" min="-2" max="-2" attributes="0"/>
+                      <Component id="btnAceptar" alignment="0" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="23" max="32767" attributes="0"/>
+                  <EmptySpace max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -214,7 +210,7 @@
                 <DimensionLayout dim="0">
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
-                          <Component id="jScrollPane1" pref="666" max="32767" attributes="0"/>
+                          <Component id="jScrollPane1" pref="665" max="32767" attributes="0"/>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="btnNuevoItem" alignment="1" min="-2" max="-2" attributes="0"/>
@@ -232,7 +228,7 @@
                           <Component id="btnNuevoItem" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="btnEliminarItem" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace pref="174" max="32767" attributes="0"/>
+                          <EmptySpace pref="178" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -262,7 +258,7 @@
                               <Editor/>
                               <Renderer/>
                             </Column>
-                            <Column maxWidth="0" minWidth="0" prefWidth="0" resizable="true">
+                            <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
                               <Title/>
                               <Editor/>
                               <Renderer/>
@@ -346,7 +342,7 @@
                 <DimensionLayout dim="0">
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
-                          <Component id="jScrollPane2" pref="193" max="32767" attributes="0"/>
+                          <Component id="jScrollPane2" pref="197" max="32767" attributes="0"/>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="btnNuevaUnidad" alignment="1" min="-2" max="-2" attributes="0"/>
@@ -358,7 +354,7 @@
                 </DimensionLayout>
                 <DimensionLayout dim="1">
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="jScrollPane2" alignment="1" pref="136" max="32767" attributes="0"/>
+                      <Component id="jScrollPane2" alignment="1" pref="140" max="32767" attributes="0"/>
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
                           <Component id="btnNuevaUnidad" min="-2" max="-2" attributes="0"/>
@@ -404,7 +400,7 @@
                               <Editor/>
                               <Renderer/>
                             </Column>
-                            <Column maxWidth="0" minWidth="0" prefWidth="0" resizable="true">
+                            <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
                               <Title/>
                               <Editor/>
                               <Renderer/>
@@ -485,17 +481,17 @@
                           <Component id="jScrollPane3" min="-2" pref="402" max="-2" attributes="0"/>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="btnGuardarEscala" min="-2" max="-2" attributes="0"/>
-                              <Component id="btnEliminarEscala" min="-2" max="-2" attributes="0"/>
-                              <Component id="btnNuevaEscala" min="-2" max="-2" attributes="0"/>
+                              <Component id="btnGuardarEscala" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="btnEliminarEscala" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="btnNuevaEscala" alignment="0" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace pref="13" max="32767" attributes="0"/>
+                          <EmptySpace max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
                 <DimensionLayout dim="1">
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="jScrollPane3" alignment="1" pref="136" max="32767" attributes="0"/>
+                      <Component id="jScrollPane3" alignment="1" pref="140" max="32767" attributes="0"/>
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
                           <Component id="btnNuevaEscala" min="-2" max="-2" attributes="0"/>

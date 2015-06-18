@@ -1,7 +1,7 @@
 package com.sge.modulos.ventas.formularios;
 
 import com.google.gson.Gson;
-import com.sge.base.formularios.frameBasex;
+import com.sge.base.formularios.frameBase;
 import com.sge.modulos.ventas.clases.Maquina;
 import com.sge.modulos.ventas.cliente.cliVentas;
 import javax.swing.SwingWorker;
@@ -10,10 +10,10 @@ import javax.swing.SwingWorker;
  *
  * @author elderson
  */
-public class regMaquina extends frameBasex<Maquina> {
+public class regMaquina extends frameBase<Maquina> {
 
     /**
-     * Creates new form regMaquina
+     * Creates new form regMaquinax
      */
     public regMaquina(String operacion, int idMaquina) {
         initComponents();
@@ -21,7 +21,7 @@ public class regMaquina extends frameBasex<Maquina> {
     }
 
     int idMaquina = 0;
-    
+
     public void Init(String operacion, int idMaquina) {
         lblTitulo.setText(operacion + lblTitulo.getText());
         this.idMaquina = idMaquina;
@@ -29,7 +29,7 @@ public class regMaquina extends frameBasex<Maquina> {
             new swObtenerMaquina().execute();
         }
     }
-    
+
     public class swObtenerMaquina extends SwingWorker<Object, Object> {
 
         @Override
@@ -124,7 +124,7 @@ public class regMaquina extends frameBasex<Maquina> {
                 String json = get().toString();
                 String[] resultado = new Gson().fromJson(json, String[].class);
                 if (resultado[0].equals("true")) {
-                    setClosed(true);
+                    Cerrar();
                 } else {
                     OcultarProcesando(frame);
                     ControlarExcepcion(resultado);
@@ -135,7 +135,7 @@ public class regMaquina extends frameBasex<Maquina> {
             }
         }
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -189,10 +189,8 @@ public class regMaquina extends frameBasex<Maquina> {
         txtDescripcion = new javax.swing.JTextField();
         lblDescripcion = new javax.swing.JLabel();
 
-        setClosable(true);
-
         frame.setBackground(java.awt.Color.white);
-        frame.setBorder(null);
+        frame.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         btnAceptar.setText("ACEPTAR");
         btnAceptar.addActionListener(new java.awt.event.ActionListener() {
@@ -503,7 +501,7 @@ public class regMaquina extends frameBasex<Maquina> {
                                             .addComponent(chkActivo))
                                         .addComponent(txtDescripcion)))))
                         .addComponent(jTabbedPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 517, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(20, Short.MAX_VALUE))
+                .addContainerGap(26, Short.MAX_VALUE))
         );
         frameLayout.setVerticalGroup(
             frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -528,11 +526,11 @@ public class regMaquina extends frameBasex<Maquina> {
                 .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCancelar)
                     .addComponent(btnAceptar))
-                .addContainerGap(25, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(frame, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -541,8 +539,6 @@ public class regMaquina extends frameBasex<Maquina> {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(frame, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
-
-        pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
