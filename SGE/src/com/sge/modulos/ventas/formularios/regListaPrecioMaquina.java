@@ -306,7 +306,7 @@ public class regListaPrecioMaquina extends frameBase<ListaPrecioMaquina> {
         btnEliminarEscala = new javax.swing.JButton();
 
         frame.setBackground(java.awt.Color.white);
-        frame.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        frame.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         btnAceptar.setText("ACEPTAR");
         btnAceptar.addActionListener(new java.awt.event.ActionListener() {
@@ -518,7 +518,7 @@ public class regListaPrecioMaquina extends frameBase<ListaPrecioMaquina> {
                     .addComponent(btnGuardarEscala)
                     .addComponent(btnEliminarEscala)
                     .addComponent(btnNuevaEscala))
-                .addContainerGap(13, Short.MAX_VALUE))
+                .addContainerGap(15, Short.MAX_VALUE))
         );
         tabEscalasLayout.setVerticalGroup(
             tabEscalasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

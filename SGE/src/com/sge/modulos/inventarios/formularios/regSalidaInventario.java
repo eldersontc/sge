@@ -547,7 +547,7 @@ public class regSalidaInventario extends frameBase<SalidaInventario> {
         txtOT = new javax.swing.JTextField();
 
         frame.setBackground(java.awt.Color.white);
-        frame.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        frame.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         lblCliente.setText("CLIENTE");
 
@@ -650,7 +650,7 @@ public class regSalidaInventario extends frameBase<SalidaInventario> {
         pnlUnidadesLayout.setHorizontalGroup(
             pnlUnidadesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlUnidadesLayout.createSequentialGroup()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 687, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 688, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnlUnidadesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnlUnidadesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)

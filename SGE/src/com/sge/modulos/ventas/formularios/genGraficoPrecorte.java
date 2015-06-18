@@ -294,7 +294,7 @@ public class genGraficoPrecorte extends frameBase<Cotizacion> {
         txtOtros = new javax.swing.JTextArea();
 
         frame.setBackground(java.awt.Color.white);
-        frame.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        frame.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         pnlTitulo.setBackground(new java.awt.Color(67, 100, 130));
         pnlTitulo.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -311,7 +311,7 @@ public class genGraficoPrecorte extends frameBase<Cotizacion> {
             .addGroup(pnlTituloLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lblTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 318, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(553, Short.MAX_VALUE))
+                .addContainerGap(555, Short.MAX_VALUE))
         );
         pnlTituloLayout.setVerticalGroup(
             pnlTituloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -442,7 +442,7 @@ public class genGraficoPrecorte extends frameBase<Cotizacion> {
                             .addComponent(lblCantidadPiezas1, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 104, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 106, Short.MAX_VALUE)
                         .addComponent(btnAceptar))
                     .addComponent(jScrollPane1))
                 .addContainerGap())

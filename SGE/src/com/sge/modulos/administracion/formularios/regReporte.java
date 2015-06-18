@@ -198,7 +198,7 @@ public class regReporte extends frameBase<Reporte> {
         schEntidad = new com.sge.base.controles.JSearch();
 
         frame.setBackground(java.awt.Color.white);
-        frame.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        frame.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         lblNombre.setText("NOMBRE");
 

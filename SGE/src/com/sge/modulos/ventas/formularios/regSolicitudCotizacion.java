@@ -523,7 +523,7 @@ public class regSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
         schFormaPago = new com.sge.base.controles.JSearch();
 
         frame.setBackground(java.awt.Color.white);
-        frame.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        frame.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         btnAceptar.setText("ACEPTAR");
         btnAceptar.addActionListener(new java.awt.event.ActionListener() {

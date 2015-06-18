@@ -451,7 +451,7 @@ public class regEntradaInventario extends frameBase<EntradaInventario> {
         lblPorcentajeImpuesto = new javax.swing.JLabel();
 
         frame.setBackground(java.awt.Color.white);
-        frame.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        frame.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         lblProveedor.setText("PROVEEDOR");
 

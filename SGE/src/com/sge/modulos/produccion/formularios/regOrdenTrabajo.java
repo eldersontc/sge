@@ -535,7 +535,7 @@ public class regOrdenTrabajo extends frameBase<OrdenTrabajo> {
         jTextArea1 = new javax.swing.JTextArea();
 
         frame.setBackground(java.awt.Color.white);
-        frame.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        frame.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         btnAceptar.setText("ACEPTAR");
         btnAceptar.addActionListener(new java.awt.event.ActionListener() {

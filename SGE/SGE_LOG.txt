@@ -533,3 +533,19 @@
 06/17/2015 14:13:22 : java.net.SocketException : Socket closed 
 06/17/2015 15:32:39 : java.net.SocketException : Socket closed 
 06/17/2015 15:34:12 : java.net.SocketException : Socket closed 
+06/17/2015 21:51:04 : ERROR: column "lima" does not exist
+  Position: 123 
+06/17/2015 21:51:34 : ERROR: column "lima" does not exist
+  Position: 123 
+06/17/2015 21:55:02 : java.net.SocketException : Socket closed 
+06/17/2015 21:56:59 : ERROR: column "lima" does not exist
+  Position: 123 
+06/17/2015 21:57:21 : java.net.SocketException : Socket closed 
+06/17/2015 22:01:46 : java.net.SocketException : Socket closed 
+06/17/2015 22:03:43 : java.net.SocketException : Socket closed 
+06/17/2015 22:07:26 : ERROR: column "lima" does not exist
+  Position: 123 
+06/17/2015 22:07:51 : java.net.SocketException : Socket closed 
+06/17/2015 22:08:22 : java.net.SocketException : Socket closed 
+06/17/2015 22:24:54 : java.net.SocketException : Socket closed 
+06/17/2015 22:32:06 : java.net.SocketException : Socket closed 

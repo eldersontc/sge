@@ -261,7 +261,7 @@ public class regProducto extends frameBase<Producto> {
         lblAlto = new javax.swing.JLabel();
 
         frame.setBackground(java.awt.Color.white);
-        frame.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        frame.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         lblCodigo.setText("CODIGO");
 
@@ -544,7 +544,7 @@ public class regProducto extends frameBase<Producto> {
                     .addComponent(chkInventarios)
                     .addComponent(chkCompras)
                     .addComponent(chkVentas))
-                .addGap(0, 9, Short.MAX_VALUE)
+                .addGap(0, 11, Short.MAX_VALUE)
                 .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
