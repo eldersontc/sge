@@ -24,25 +24,44 @@ import javax.swing.SwingWorker;
 public class lisOrdenTrabajo extends frameBase<OrdenTrabajo> {
 
     /**
-     * Creates new form lisOrdenTrabajox
+     * Creates new form lisOrdenTrabajo
+     *
+     * @param modo
      */
     public lisOrdenTrabajo(int modo) {
         initComponents();
-        Init(modo, "");
+        setModo(modo);
+        setFiltro("");
     }
 
+    /**
+     * Creates new form lisOrdenTrabajo
+     *
+     * @param modo
+     * @param filtro
+     */
     public lisOrdenTrabajo(int modo, String filtro) {
         initComponents();
-        Init(modo, filtro);
+        setModo(modo);
+        setFiltro(filtro);
     }
 
-    private int modo;
-
-    private String filtro;
-
-    private OrdenTrabajo seleccionado;
-
-    private List<OrdenTrabajo> seleccionados = new ArrayList<>();
+    @Override
+    public void Init() {
+        switch (getModo()) {
+            case 0:
+                OcultarColumna(tbOrdenesTrabajo, 0);
+                OcultarControl(btnSeleccionar);
+                break;
+            case 1:
+                OcultarColumnas(tbOrdenesTrabajo, new int[]{0, 10, 11});
+                break;
+            case 2:
+                OcultarColumnas(tbOrdenesTrabajo, new int[]{10, 11});
+                break;
+        }
+        new swObtenerOrdenesTrabajo().execute();
+    }
 
     ImageIcon Icon_Edit = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/edit-16.png"));
     ImageIcon Icon_Dele = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/delete-16.png"));
@@ -60,7 +79,7 @@ public class lisOrdenTrabajo extends frameBase<OrdenTrabajo> {
             EliminarOrdenTrabajo();
         }
     };
-    
+
     Action refr = new AbstractAction() {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -76,7 +95,7 @@ public class lisOrdenTrabajo extends frameBase<OrdenTrabajo> {
             cliProduccion cliente = new cliProduccion();
             String json = "";
             try {
-                json = cliente.ObtenerOrdenesTrabajo(new Gson().toJson(filtro));
+                json = cliente.ObtenerOrdenesTrabajo(new Gson().toJson(getFiltro()));
             } catch (Exception e) {
                 OcultarCargando(frame);
                 cancel(false);
@@ -290,24 +309,6 @@ public class lisOrdenTrabajo extends frameBase<OrdenTrabajo> {
         }
     }
 
-    public void Init(int modo, String filtro) {
-        this.modo = modo;
-        this.filtro = filtro;
-        switch (this.modo) {
-            case 0:
-                OcultarColumna(tbOrdenesTrabajo, 0);
-                OcultarControl(btnSeleccionar);
-                break;
-            case 1:
-                OcultarColumnas(tbOrdenesTrabajo, new int[]{0, 10, 11});
-                break;
-            case 2:
-                OcultarColumnas(tbOrdenesTrabajo, new int[]{10, 11});
-                break;
-        }
-        new swObtenerOrdenesTrabajo().execute();
-    }
-
     public void EditarOrdenTrabajo() {
         int idOrdenTrabajo = ObtenerValorCelda(tbOrdenesTrabajo, 1);
         VerFrame(new regOrdenTrabajo(idOrdenTrabajo), refr);
@@ -318,14 +319,6 @@ public class lisOrdenTrabajo extends frameBase<OrdenTrabajo> {
         if (confirmacion == 0) {
             new swEliminarOrdenTrabajo().execute();
         }
-    }
-
-    public OrdenTrabajo getSeleccionado() {
-        return seleccionado;
-    }
-
-    public List<OrdenTrabajo> getSeleccionados() {
-        return seleccionados;
     }
 
     /**
@@ -350,7 +343,6 @@ public class lisOrdenTrabajo extends frameBase<OrdenTrabajo> {
         btnGenerarSalidaCaja = new javax.swing.JButton();
 
         frame.setBackground(java.awt.Color.white);
-        frame.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         tbOrdenesTrabajo.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -399,7 +391,7 @@ public class lisOrdenTrabajo extends frameBase<OrdenTrabajo> {
             .addGroup(pnlTituloLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lblTitulo)
-                .addContainerGap(400, Short.MAX_VALUE))
+                .addContainerGap(402, Short.MAX_VALUE))
         );
         pnlTituloLayout.setVerticalGroup(
             pnlTituloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -456,7 +448,7 @@ public class lisOrdenTrabajo extends frameBase<OrdenTrabajo> {
             .addGroup(frameLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 722, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 724, Short.MAX_VALUE)
                     .addGroup(frameLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btnSeleccionar, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -486,7 +478,7 @@ public class lisOrdenTrabajo extends frameBase<OrdenTrabajo> {
                     .addComponent(btnGenerarSalidaInventario, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnGenerarSalidaCaja, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 235, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 237, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnSeleccionar)
                 .addGap(9, 9, 9))
@@ -506,7 +498,7 @@ public class lisOrdenTrabajo extends frameBase<OrdenTrabajo> {
 
     private void btnSeleccionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeleccionarActionPerformed
         // TODO add your handling code here:
-        switch (this.modo) {
+        switch (getModo()) {
             case 1:
                 if (FilaActiva(tbOrdenesTrabajo)) {
                     OrdenTrabajo ordenTrabajo = new OrdenTrabajo();
@@ -515,11 +507,12 @@ public class lisOrdenTrabajo extends frameBase<OrdenTrabajo> {
                     ordenTrabajo.setDescripcion(ObtenerValorCelda(tbOrdenesTrabajo, 3));
                     ordenTrabajo.setCantidad(ObtenerValorCelda(tbOrdenesTrabajo, 4));
                     ordenTrabajo.setTotal(ObtenerValorCelda(tbOrdenesTrabajo, 9));
-                    seleccionado = ordenTrabajo;
+                    setSeleccionado(ordenTrabajo);
                 }
                 Cerrar();
                 break;
             case 2:
+                setSeleccionados(new ArrayList<>());
                 for (int i = 0; i < tbOrdenesTrabajo.getRowCount(); i++) {
                     boolean check = ObtenerValorCelda(tbOrdenesTrabajo, i, 0);
                     if (check) {
@@ -529,7 +522,7 @@ public class lisOrdenTrabajo extends frameBase<OrdenTrabajo> {
                         ordenTrabajo.setDescripcion(ObtenerValorCelda(tbOrdenesTrabajo, i, 3));
                         ordenTrabajo.setCantidad(ObtenerValorCelda(tbOrdenesTrabajo, i, 4));
                         ordenTrabajo.setTotal(ObtenerValorCelda(tbOrdenesTrabajo, i, 9));
-                        seleccionados.add(ordenTrabajo);
+                        getSeleccionados().add(ordenTrabajo);
                     }
                 }
                 Cerrar();
@@ -560,7 +553,6 @@ public class lisOrdenTrabajo extends frameBase<OrdenTrabajo> {
             new swGenerarSalidaCaja().execute();
         }
     }//GEN-LAST:event_btnGenerarSalidaCajaActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnGenerarSalidaCaja;

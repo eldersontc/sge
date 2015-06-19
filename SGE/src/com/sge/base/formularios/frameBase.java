@@ -26,12 +26,46 @@ import javax.swing.tree.TreePath;
  * @author elderson
  */
 public class frameBase<T> extends JPanel {
-    
+
     /////////////////////////////// VARIABLES //////////////////////////////////
+    private int id;
+    
+    private int modo;
+    
+    private String filtro;
+    
     private T entidad;
 
+    private T seleccionado;
+    
+    private List<T> seleccionados;
+    
     private Usuario usuario;
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+    
+    public int getModo() {
+        return modo;
+    }
+
+    public void setModo(int modo) {
+        this.modo = modo;
+    }
+
+    public String getFiltro() {
+        return filtro;
+    }
+
+    public void setFiltro(String filtro) {
+        this.filtro = filtro;
+    }
+    
     public T getEntidad() {
         return entidad;
     }
@@ -40,6 +74,22 @@ public class frameBase<T> extends JPanel {
         this.entidad = entidad;
     }
 
+    public T getSeleccionado() {
+        return seleccionado;
+    }
+
+    public void setSeleccionado(T seleccionado) {
+        this.seleccionado = seleccionado;
+    }
+    
+    public List<T> getSeleccionados() {
+        return seleccionados;
+    }
+
+    public void setSeleccionados(List<T> seleccionados) {
+        this.seleccionados = seleccionados;
+    }
+    
     public Usuario getUsuario() {
         return usuario;
     }
@@ -95,7 +145,7 @@ public class frameBase<T> extends JPanel {
     public void EliminarFila(JTable tabla) {
         Utils.EliminarFila(tabla);
     }
-    
+
     public void MostrarColumna(JTable tabla, int columna, int ancho) {
         Utils.MostrarColumna(tabla, columna, ancho);
     }
@@ -181,20 +231,20 @@ public class frameBase<T> extends JPanel {
         FabricaControles.OcultarCargando(panel);
     }
 
-    public void VerModal(JPanel panel) {
-        FabricaControles.VerModal(getParent(), panel);
-    }
-    
-    public void VerModal(JPanel panel, Action action) {
-        FabricaControles.VerModal(getParent(), panel, action);
+    public void VerModal(frameBase frameBase) {
+        FabricaControles.VerModal(getParent(), frameBase);
     }
 
-    public void VerFrame(JPanel panel){
-        FabricaControles.VerFrame(getParent(), panel);
+    public void VerModal(frameBase frameBase, Action action) {
+        FabricaControles.VerModal(getParent(), frameBase, action);
     }
-    
-    public void VerFrame(JPanel panel, Action action){
-        FabricaControles.VerFrame(getParent(), panel, action);
+
+    public void VerFrame(frameBase frameBase) {
+        FabricaControles.VerFrame(getParent(), frameBase);
+    }
+
+    public void VerFrame(frameBase frameBase, Action action) {
+        FabricaControles.VerFrame(getParent(), frameBase, action);
     }
 
     public int VerModal(JPanel panel, Component component, String title) {
@@ -228,14 +278,18 @@ public class frameBase<T> extends JPanel {
     }
 
     //////////////////////////////// METODOS BASE //////////////////////////////
-    public void Cerrar(){
-        Window window = (Window)this.getParent().getParent().getParent().getParent().getParent().getParent();
+    public void Cerrar() {
+        Window window = (Window) this.getParent().getParent().getParent().getParent().getParent().getParent();
         window.dispose();
         window.dispatchEvent(new WindowEvent(window, WindowEvent.WINDOW_CLOSING));
     }
 
     private ValorDefinido valorDefinido;
 
+    public void setValorDefinido(ValorDefinido valorDefinido){
+        this.valorDefinido = valorDefinido;
+    }
+    
     public void setJson(String json) {
         this.valorDefinido.setJson(json);
     }
@@ -246,7 +300,7 @@ public class frameBase<T> extends JPanel {
 
     public void Init(ValorDefinido valorDefinido) {
         try {
-            this.valorDefinido = valorDefinido;
+            setValorDefinido(valorDefinido);
             OcultarControles();
             if (valorDefinido.getJson() == null || valorDefinido.getJson().isEmpty()) {
                 setEntidad(nuevaIntancia());
@@ -257,6 +311,9 @@ public class frameBase<T> extends JPanel {
         } catch (Exception e) {
             ControlarExcepcion(e);
         }
+    }
+
+    public void Init() {
     }
 
     public void AsignarControles() {

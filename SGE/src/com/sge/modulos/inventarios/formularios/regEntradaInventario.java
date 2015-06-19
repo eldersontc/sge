@@ -34,11 +34,13 @@ import javax.swing.SwingWorker;
 public class regEntradaInventario extends frameBase<EntradaInventario> {
 
     /**
-     * Creates new form regEntradaInventariox
+     * Creates new form regEntradaInventario
+     *
+     * @param id
      */
     public regEntradaInventario(int id) {
         initComponents();
-        Init(id);
+        setId(id);
     }
 
     public regEntradaInventario(ValorDefinido valorDefinido) {
@@ -46,11 +48,9 @@ public class regEntradaInventario extends frameBase<EntradaInventario> {
         super.Init(valorDefinido);
     }
 
-    public int id = 0;
-
-    public void Init(int id) {
-        this.id = id;
-        if (this.id == 0) {
+    @Override
+    public void Init() {
+        if (getId() == 0) {
             lblTitulo.setText("NUEVA " + lblTitulo.getText());
             new swObtenerValoresDefinidos().execute();
         } else {
@@ -308,7 +308,7 @@ public class regEntradaInventario extends frameBase<EntradaInventario> {
             cliInventarios cliente = new cliInventarios();
             String json = "";
             try {
-                json = cliente.ObtenerEntradaInventario(new Gson().toJson(id));
+                json = cliente.ObtenerEntradaInventario(new Gson().toJson(getId()));
             } catch (Exception e) {
                 OcultarCargando(frame);
                 cancel(false);
@@ -396,7 +396,7 @@ public class regEntradaInventario extends frameBase<EntradaInventario> {
             setJson(new Gson().toJson(super.getEntidad()));
             Cerrar();
         } else {
-            if (this.id == 0) {
+            if (getId() == 0) {
                 new swGuardarEntradaInventario().execute();
             } else {
                 Cerrar();
@@ -451,7 +451,6 @@ public class regEntradaInventario extends frameBase<EntradaInventario> {
         lblPorcentajeImpuesto = new javax.swing.JLabel();
 
         frame.setBackground(java.awt.Color.white);
-        frame.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         lblProveedor.setText("PROVEEDOR");
 
@@ -847,7 +846,6 @@ public class regEntradaInventario extends frameBase<EntradaInventario> {
             VerModal(new lisProductoAlmacen(1, filtro));
         }
     }//GEN-LAST:event_btnVerStockActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAceptar;

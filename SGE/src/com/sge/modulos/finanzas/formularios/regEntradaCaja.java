@@ -30,11 +30,13 @@ import javax.swing.SwingWorker;
 public class regEntradaCaja extends frameBase<EntradaCaja> {
 
     /**
-     * Creates new form regEntradaCajax
+     * Creates new form regEntradaCaja
+     *
+     * @param id
      */
     public regEntradaCaja(int id) {
         initComponents();
-        Init(id);
+        setId(id);
     }
 
     public regEntradaCaja(ValorDefinido valorDefinido) {
@@ -42,11 +44,9 @@ public class regEntradaCaja extends frameBase<EntradaCaja> {
         super.Init(valorDefinido);
     }
 
-    public int id = 0;
-
-    public void Init(int id) {
-        this.id = id;
-        if (this.id == 0) {
+    @Override
+    public void Init() {
+        if (getId() == 0) {
             lblTitulo.setText("NUEVA " + lblTitulo.getText());
             new swObtenerValoresDefinidos().execute();
         } else {
@@ -233,7 +233,7 @@ public class regEntradaCaja extends frameBase<EntradaCaja> {
             cliFinanzas cliente = new cliFinanzas();
             String json = "";
             try {
-                json = cliente.ObtenerEntradaCaja(new Gson().toJson(id));
+                json = cliente.ObtenerEntradaCaja(new Gson().toJson(getId()));
             } catch (Exception e) {
                 OcultarCargando(frame);
                 cancel(false);
@@ -319,7 +319,7 @@ public class regEntradaCaja extends frameBase<EntradaCaja> {
             setJson(new Gson().toJson(super.getEntidad()));
             Cerrar();
         } else {
-            if (this.id == 0) {
+            if (getId() == 0) {
                 new swGuardarEntradaCaja().execute();
             } else {
                 Cerrar();
@@ -371,7 +371,6 @@ public class regEntradaCaja extends frameBase<EntradaCaja> {
         lblPorcentajeImpuesto = new javax.swing.JLabel();
 
         frame.setBackground(java.awt.Color.white);
-        frame.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         lblNombre.setText("RESPONSABLE");
 

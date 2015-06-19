@@ -5,7 +5,6 @@ import com.sge.base.formularios.frameBase;
 import com.sge.modulos.inventarios.clases.ProductoUnidad;
 import com.sge.modulos.inventarios.cliente.cliInventarios;
 import java.util.ArrayList;
-import java.util.List;
 import javax.swing.SwingWorker;
 
 /**
@@ -15,20 +14,24 @@ import javax.swing.SwingWorker;
 public class lisProductoUnidad extends frameBase<ProductoUnidad> {
 
     /**
-     * Creates new form lisProductoUnidadx
+     * Creates new form lisProductoUnidad
+     *
+     * @param modo
+     * @param filtro
      */
     public lisProductoUnidad(int modo, String filtro) {
         initComponents();
-        Init(modo, filtro);
+        setModo(modo);
+        setFiltro(filtro);
     }
 
-    private int modo;
-
-    private String filtro;
-
-    private ProductoUnidad seleccionado;
-
-    private List<ProductoUnidad> seleccionados = new ArrayList<>();
+    @Override
+    public void Init() {
+        if (getModo() == 1) {
+            OcultarColumna(tbUnidades, 0);
+        }
+        new swObtenerUnidades().execute();
+    }
 
     public class swObtenerUnidades extends SwingWorker {
 
@@ -38,7 +41,7 @@ public class lisProductoUnidad extends frameBase<ProductoUnidad> {
             cliInventarios cliente = new cliInventarios();
             String json = "";
             try {
-                json = cliente.ObtenerProductoUnidades(new Gson().toJson(filtro));
+                json = cliente.ObtenerProductoUnidades(new Gson().toJson(getFiltro()));
             } catch (Exception e) {
                 OcultarCargando(frame);
                 cancel(false);
@@ -71,23 +74,6 @@ public class lisProductoUnidad extends frameBase<ProductoUnidad> {
         }
     }
 
-    public void Init(int modo, String filtro) {
-        this.modo = modo;
-        this.filtro = filtro;
-        if (this.modo == 1) {
-            OcultarColumna(tbUnidades, 0);
-        }
-        new swObtenerUnidades().execute();
-    }
-
-    public List<ProductoUnidad> getSeleccionados() {
-        return seleccionados;
-    }
-
-    public ProductoUnidad getSeleccionado() {
-        return seleccionado;
-    }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -108,7 +94,6 @@ public class lisProductoUnidad extends frameBase<ProductoUnidad> {
         btnRefrescar = new javax.swing.JButton();
 
         frame.setBackground(java.awt.Color.white);
-        frame.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         tbUnidades.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -160,7 +145,7 @@ public class lisProductoUnidad extends frameBase<ProductoUnidad> {
             .addGroup(pnlTituloLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lblTitulo)
-                .addContainerGap(162, Short.MAX_VALUE))
+                .addContainerGap(164, Short.MAX_VALUE))
         );
         pnlTituloLayout.setVerticalGroup(
             pnlTituloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -198,7 +183,7 @@ public class lisProductoUnidad extends frameBase<ProductoUnidad> {
             .addGroup(frameLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 374, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 376, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, frameLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btnSeleccionar, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -242,7 +227,7 @@ public class lisProductoUnidad extends frameBase<ProductoUnidad> {
 
     private void btnSeleccionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeleccionarActionPerformed
         // TODO add your handling code here:
-        switch (this.modo) {
+        switch (getModo()) {
             case 1:
                 if (FilaActiva(tbUnidades)) {
                     ProductoUnidad productoUnidad = new ProductoUnidad();
@@ -250,11 +235,12 @@ public class lisProductoUnidad extends frameBase<ProductoUnidad> {
                     productoUnidad.setIdUnidad(ObtenerValorCelda(tbUnidades, 2));
                     productoUnidad.setAbreviacionUnidad(ObtenerValorCelda(tbUnidades, 3));
                     productoUnidad.setFactor(ObtenerValorCelda(tbUnidades, 4));
-                    seleccionado = productoUnidad;
+                    setSeleccionado(productoUnidad);
                     Cerrar();
                 }
                 break;
             case 2:
+                setSeleccionados(new ArrayList<>());
                 for (int i = 0; i < tbUnidades.getRowCount(); i++) {
                     boolean check = ObtenerValorCelda(tbUnidades, i, 0);
                     if (check) {
@@ -263,7 +249,7 @@ public class lisProductoUnidad extends frameBase<ProductoUnidad> {
                         productoUnidad.setIdUnidad(ObtenerValorCelda(tbUnidades, i, 2));
                         productoUnidad.setAbreviacionUnidad(ObtenerValorCelda(tbUnidades, i, 3));
                         productoUnidad.setFactor(ObtenerValorCelda(tbUnidades, i, 4));
-                        seleccionados.add(productoUnidad);
+                        getSeleccionados().add(productoUnidad);
                     }
                 }
                 Cerrar();
@@ -280,7 +266,6 @@ public class lisProductoUnidad extends frameBase<ProductoUnidad> {
         // TODO add your handling code here:
         new swObtenerUnidades().execute();
     }//GEN-LAST:event_btnRefrescarActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnRefrescar;

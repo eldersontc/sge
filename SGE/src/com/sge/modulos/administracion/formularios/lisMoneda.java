@@ -17,23 +17,42 @@ import javax.swing.SwingWorker;
 public class lisMoneda extends frameBase<Moneda> {
 
     /**
-     * Creates new form lisMonedax
+     * Creates new form lisMoneda
+     *
+     * @param modo
      */
     public lisMoneda(int modo) {
         initComponents();
-        Init(modo, "");
+        setModo(modo);
+        setFiltro("");
     }
 
+    /**
+     * Creates new form lisMoneda
+     *
+     * @param modo
+     * @param filtro
+     */
     public lisMoneda(int modo, String filtro) {
         initComponents();
-        Init(modo, filtro);
+        setModo(modo);
+        setFiltro(filtro);
     }
 
-    private int modo;
-
-    private String filtro;
-
-    private Moneda seleccionado;
+    @Override
+    public void Init() {
+        switch (getModo()) {
+            case 0:
+                OcultarColumna(tbMonedas, 0);
+                OcultarControl(btnSeleccionar);
+                break;
+            case 1:
+                OcultarColumnas(tbMonedas, new int[]{0, 5, 6});
+                OcultarControl(btnNuevo);
+                break;
+        }
+        new swObtenerMonedas().execute();
+    }
 
     ImageIcon Icon_Save = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/save-16.png"));
     ImageIcon Icon_Dele = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/delete-16.png"));
@@ -60,7 +79,7 @@ public class lisMoneda extends frameBase<Moneda> {
             cliAdministracion cliente = new cliAdministracion();
             String json = "";
             try {
-                json = cliente.ObtenerMonedas(new Gson().toJson(filtro));
+                json = cliente.ObtenerMonedas(new Gson().toJson(getFiltro()));
             } catch (Exception e) {
                 OcultarCargando(frame);
                 cancel(false);
@@ -77,14 +96,19 @@ public class lisMoneda extends frameBase<Moneda> {
                 String json = get().toString();
                 String[] resultado = new Gson().fromJson(json, String[].class);
                 if (resultado[0].equals("true")) {
-                    EliminarTodasFilas(tbMonedas);
                     Moneda[] monedas = new Gson().fromJson(resultado[1], Moneda[].class);
-                    for (Moneda moneda : monedas) {
-                        AgregarFila(tbMonedas, new Object[]{false, moneda.getIdMoneda(), moneda.getSimbolo(), moneda.getNombre(), moneda.isActivo(), Icon_Save, Icon_Dele});
+                    if (getModo() == 1 && monedas.length == 1) {
+                        setSeleccionado(monedas[0]);
+                        Cerrar();
+                    } else {
+                        EliminarTodasFilas(tbMonedas);
+                        for (Moneda moneda : monedas) {
+                            AgregarFila(tbMonedas, new Object[]{false, moneda.getIdMoneda(), moneda.getSimbolo(), moneda.getNombre(), moneda.isActivo(), Icon_Save, Icon_Dele});
+                        }
+                        AgregarBoton(tbMonedas, save, 5);
+                        AgregarBoton(tbMonedas, dele, 6);
+                        AgregarOrdenamiento(tbMonedas);
                     }
-                    AgregarBoton(tbMonedas, save, 5);
-                    AgregarBoton(tbMonedas, dele, 6);
-                    AgregarOrdenamiento(tbMonedas);
                 }
                 OcultarCargando(frame);
             } catch (Exception e) {
@@ -175,22 +199,6 @@ public class lisMoneda extends frameBase<Moneda> {
         }
     }
 
-    public void Init(int modo, String filtro) {
-        this.modo = modo;
-        this.filtro = filtro;
-        switch (this.modo) {
-            case 0:
-                OcultarColumna(tbMonedas, 0);
-                OcultarControl(btnSeleccionar);
-                break;
-            case 1:
-                OcultarColumnas(tbMonedas, new int[]{0, 5, 6});
-                OcultarControl(btnNuevo);
-                break;
-        }
-        new swObtenerMonedas().execute();
-    }
-
     public void EliminarMoneda() {
         int confirmacion = VerConfirmacion(this);
         if (confirmacion == 0) {
@@ -201,10 +209,6 @@ public class lisMoneda extends frameBase<Moneda> {
                 new swEliminarMoneda().execute();
             }
         }
-    }
-
-    public Moneda getSeleccionado() {
-        return seleccionado;
     }
 
     /**
@@ -228,7 +232,6 @@ public class lisMoneda extends frameBase<Moneda> {
         btnRefrescar = new javax.swing.JButton();
 
         frame.setBackground(java.awt.Color.white);
-        frame.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         tbMonedas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -285,7 +288,7 @@ public class lisMoneda extends frameBase<Moneda> {
             .addGroup(pnlTituloLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lblTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 344, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 346, Short.MAX_VALUE)
                 .addComponent(btnNuevo)
                 .addContainerGap())
         );
@@ -330,7 +333,7 @@ public class lisMoneda extends frameBase<Moneda> {
             .addGroup(frameLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 659, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 661, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, frameLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btnSeleccionar, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -354,7 +357,7 @@ public class lisMoneda extends frameBase<Moneda> {
                         .addComponent(txtFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(btnRefrescar, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 226, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 228, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnSeleccionar)
                 .addContainerGap())
@@ -379,13 +382,13 @@ public class lisMoneda extends frameBase<Moneda> {
 
     private void btnSeleccionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeleccionarActionPerformed
         // TODO add your handling code here:
-        switch (this.modo) {
+        switch (getModo()) {
             case 1:
                 if (FilaActiva(tbMonedas)) {
                     Moneda moneda = new Moneda();
                     moneda.setIdMoneda(ObtenerValorCelda(tbMonedas, 1));
                     moneda.setSimbolo(ObtenerValorCelda(tbMonedas, 2));
-                    seleccionado = moneda;
+                    setSeleccionado(moneda);
                 }
                 Cerrar();
                 break;

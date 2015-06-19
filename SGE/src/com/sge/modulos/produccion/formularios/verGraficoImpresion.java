@@ -13,7 +13,8 @@ import javax.swing.ImageIcon;
 public class verGraficoImpresion extends frameBase<OrdenTrabajo> {
 
     /**
-     * Creates new form verGraficoImpresionx
+     * Creates new form verGraficoImpresion
+     * @param item
      */
     public verGraficoImpresion(ItemOrdenTrabajo item) {
         initComponents();
@@ -83,7 +84,6 @@ public class verGraficoImpresion extends frameBase<OrdenTrabajo> {
         txtTiraje = new javax.swing.JTextField();
 
         frame.setBackground(java.awt.Color.white);
-        frame.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         pnlTitulo.setBackground(new java.awt.Color(67, 100, 130));
         pnlTitulo.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -100,7 +100,7 @@ public class verGraficoImpresion extends frameBase<OrdenTrabajo> {
             .addGroup(pnlTituloLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lblTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 318, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(667, Short.MAX_VALUE))
+                .addContainerGap(669, Short.MAX_VALUE))
         );
         pnlTituloLayout.setVerticalGroup(
             pnlTituloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -263,10 +263,10 @@ public class verGraficoImpresion extends frameBase<OrdenTrabajo> {
                             .addComponent(lblTiraje, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtTiraje, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 140, Short.MAX_VALUE)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 142, Short.MAX_VALUE)
                         .addGap(41, 41, 41)
                         .addComponent(btnAceptar))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 592, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 594, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -288,8 +288,7 @@ public class verGraficoImpresion extends frameBase<OrdenTrabajo> {
         // TODO add your handling code here:
         Cerrar();
     }//GEN-LAST:event_btnAceptarActionPerformed
-
-
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAceptar;
     private javax.swing.JPanel frame;

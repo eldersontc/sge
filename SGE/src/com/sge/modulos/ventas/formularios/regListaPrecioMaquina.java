@@ -21,24 +21,25 @@ import javax.swing.SwingWorker;
 public class regListaPrecioMaquina extends frameBase<ListaPrecioMaquina> {
 
     /**
-     * Creates new form regListaPrecioMaquinax
+     * Creates new form regListaPrecioMaquina
+     *
+     * @param id
      */
-    public regListaPrecioMaquina(String operacion, int id) {
+    public regListaPrecioMaquina(int id) {
         initComponents();
-        Init(operacion, id);
+        setId(id);
     }
 
-    int id = 0;
     int idItem = 0;
     int idEscala = 0;
 
-    public void Init(String operacion, int id) {
-        lblTitulo.setText(operacion + lblTitulo.getText());
-        this.id = id;
-        if (this.id == 0) {
+    public void Init() {
+        if (getId() == 0) {
+            lblTitulo.setText("NUEVA " + lblTitulo.getText());
             OcultarControl(btnNuevoItem);
             OcultarControl(btnNuevaEscala);
         } else {
+            lblTitulo.setText("EDITAR " + lblTitulo.getText());
             new swObtenerListaPrecio().execute();
         }
     }
@@ -156,7 +157,7 @@ public class regListaPrecioMaquina extends frameBase<ListaPrecioMaquina> {
                 List<ItemListaPrecioMaquina> itemsListaPrecio = new ArrayList<>();
                 for (Maquina seleccionado : seleccionados) {
                     ItemListaPrecioMaquina item = new ItemListaPrecioMaquina();
-                    item.setIdListaPrecioMaquina(id);
+                    item.setIdListaPrecioMaquina(getId());
                     item.setIdMaquina(seleccionado.getIdMaquina());
                     item.setNombreMaquina(seleccionado.getDescripcion());
                     item.setFactor(1);
@@ -193,7 +194,7 @@ public class regListaPrecioMaquina extends frameBase<ListaPrecioMaquina> {
             VerCargando(frame);
             cliVentas cliVentas = new cliVentas();
             try {
-                String json = cliVentas.ObtenerListaPrecioMaquina(new Gson().toJson(id));
+                String json = cliVentas.ObtenerListaPrecioMaquina(new Gson().toJson(getId()));
                 String[] resultado = new Gson().fromJson(json, String[].class);
 
                 if (resultado[0].equals("true")) {
@@ -239,10 +240,10 @@ public class regListaPrecioMaquina extends frameBase<ListaPrecioMaquina> {
                 listaPrecio.setNombre(txtNombre.getText());
 
                 listaPrecio.setActivo(chkActivo.isSelected());
-                if (id == 0) {
+                if (getId() == 0) {
                     json = cliVentas.RegistrarListaPrecioMaquina(new Gson().toJson(listaPrecio));
                 } else {
-                    listaPrecio.setIdListaPrecioMaquina(id);
+                    listaPrecio.setIdListaPrecioMaquina(getId());
                     json = cliVentas.ActualizarListaPrecioMaquina(new Gson().toJson(listaPrecio));
                 }
             } catch (Exception e) {
@@ -306,7 +307,6 @@ public class regListaPrecioMaquina extends frameBase<ListaPrecioMaquina> {
         btnEliminarEscala = new javax.swing.JButton();
 
         frame.setBackground(java.awt.Color.white);
-        frame.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         btnAceptar.setText("ACEPTAR");
         btnAceptar.addActionListener(new java.awt.event.ActionListener() {
@@ -518,7 +518,7 @@ public class regListaPrecioMaquina extends frameBase<ListaPrecioMaquina> {
                     .addComponent(btnGuardarEscala)
                     .addComponent(btnEliminarEscala)
                     .addComponent(btnNuevaEscala))
-                .addContainerGap(15, Short.MAX_VALUE))
+                .addContainerGap(17, Short.MAX_VALUE))
         );
         tabEscalasLayout.setVerticalGroup(
             tabEscalasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -656,7 +656,6 @@ public class regListaPrecioMaquina extends frameBase<ListaPrecioMaquina> {
             EliminarEscala();
         }
     }//GEN-LAST:event_btnEliminarEscalaActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAceptar;

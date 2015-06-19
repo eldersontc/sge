@@ -20,22 +20,23 @@ import javax.swing.SwingWorker;
 public class regValorDefinido extends frameBase<ValorDefinido> {
 
     /**
-     * Creates new form regValorDefinidox
+     * Creates new form regValorDefinido
+     *
+     * @param id
      */
-    public regValorDefinido(String operacion, int idValoresDefinidos) {
+    public regValorDefinido(int id) {
         initComponents();
-        Init(operacion, idValoresDefinidos);
+        setId(id);
     }
 
-    private int idValorDefinido = 0;
-
-    public void Init(String operacion, int idValorDefinido) {
-        lblTitulo.setText(operacion + lblTitulo.getText());
-        this.idValorDefinido = idValorDefinido;
-        if (this.idValorDefinido > 0) {
-            new swObtenerValorDefinido().execute();
-        } else {
+    @Override
+    public void Init() {
+        if (getId() == 0) {
+            lblTitulo.setText("NUEVO " + lblTitulo.getText());
             setEntidad(new ValorDefinido());
+        } else {
+            lblTitulo.setText("EDITAR " + lblTitulo.getText());
+            new swObtenerValorDefinido().execute();
         }
     }
 
@@ -67,7 +68,7 @@ public class regValorDefinido extends frameBase<ValorDefinido> {
             cliAdministracion cliente = new cliAdministracion();
             String json = "";
             try {
-                json = cliente.ObtenerValorDefinido(new Gson().toJson(idValorDefinido));
+                json = cliente.ObtenerValorDefinido(new Gson().toJson(getId()));
             } catch (Exception e) {
                 OcultarCargando(frame);
                 cancel(false);
@@ -110,10 +111,10 @@ public class regValorDefinido extends frameBase<ValorDefinido> {
                 getEntidad().setIdEntidad(schEntidad.getId());
                 getEntidad().setNombreEntidad(schEntidad.getText());
                 getEntidad().setActivo(chkActivo.isSelected());
-                if (idValorDefinido == 0) {
+                if (getId() == 0) {
                     json = cliente.RegistrarValorDefinido(new Gson().toJson(getEntidad()));
                 } else {
-                    getEntidad().setIdValorDefinido(idValorDefinido);
+                    getEntidad().setIdValorDefinido(getId());
                     json = cliente.ActualizarValorDefinido(new Gson().toJson(getEntidad()));
                 }
             } catch (Exception e) {
@@ -165,7 +166,6 @@ public class regValorDefinido extends frameBase<ValorDefinido> {
         schEntidad = new com.sge.base.controles.JSearch();
 
         frame.setBackground(java.awt.Color.white);
-        frame.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         lblUsuario.setText("USUARIO");
 
@@ -256,7 +256,7 @@ public class regValorDefinido extends frameBase<ValorDefinido> {
                             .addComponent(btnEstablecerValores, javax.swing.GroupLayout.DEFAULT_SIZE, 263, Short.MAX_VALUE)
                             .addComponent(schUsuario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(schEntidad, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 8, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 9, Short.MAX_VALUE)
                         .addComponent(chkActivo, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(frameLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
@@ -285,7 +285,7 @@ public class regValorDefinido extends frameBase<ValorDefinido> {
                 .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAceptar)
                     .addComponent(btnCancelar))
-                .addContainerGap(18, Short.MAX_VALUE))
+                .addContainerGap(19, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -307,7 +307,7 @@ public class regValorDefinido extends frameBase<ValorDefinido> {
     private void schUsuarioSearch() {
         VerModal(new lisUsuario(1), select_usuario);
     }
-    
+
     private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
         // TODO add your handling code here:
         new swGuardarValorDefinido().execute();
@@ -337,7 +337,6 @@ public class regValorDefinido extends frameBase<ValorDefinido> {
             cliente.close();
         }
     }//GEN-LAST:event_btnEstablecerValoresActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAceptar;

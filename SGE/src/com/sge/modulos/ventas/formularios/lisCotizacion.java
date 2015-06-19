@@ -19,24 +19,46 @@ import javax.swing.SwingWorker;
 public class lisCotizacion extends frameBase<Cotizacion> {
 
     /**
-     * Creates new form lisCotizacionx
+     * Creates new form lisCotizacion
+     *
+     * @param modo
      */
     public lisCotizacion(int modo) {
         initComponents();
-        Init(modo, "");
+        setModo(modo);
+        setFiltro("");
     }
 
+    /**
+     * Creates new form lisCotizacion
+     *
+     * @param modo
+     * @param filtro
+     */
     public lisCotizacion(int modo, String filtro) {
         initComponents();
-        Init(modo, filtro);
+        setModo(modo);
+        setFiltro(filtro);
     }
 
-    private int modo;
-
-    private String filtro;
-
-    private Cotizacion seleccionado;
-    private List<Cotizacion> seleccionados = new ArrayList<>();
+    @Override
+    public void Init() {
+        switch (getModo()) {
+            case 0:
+                OcultarColumna(tbCotizaciones, 0);
+                OcultarControl(btnSeleccionar);
+                break;
+            case 1:
+                OcultarColumnas(tbCotizaciones, new int[]{0, 10, 11});
+                OcultarControl(btnNuevo);
+                break;
+            case 2:
+                OcultarColumnas(tbCotizaciones, new int[]{10, 11});
+                OcultarControl(btnNuevo);
+                break;
+        }
+        new swObtenerCotizaciones().execute();
+    }
 
     ImageIcon Icon_Edit = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/edit-16.png"));
     ImageIcon Icon_Dele = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/delete-16.png"));
@@ -70,7 +92,7 @@ public class lisCotizacion extends frameBase<Cotizacion> {
             cliVentas cliente = new cliVentas();
             String json = "";
             try {
-                json = cliente.ObtenerCotizaciones(new Gson().toJson(filtro));
+                json = cliente.ObtenerCotizaciones(new Gson().toJson(getFiltro()));
             } catch (Exception e) {
                 OcultarCargando(frame);
                 cancel(false);
@@ -216,26 +238,6 @@ public class lisCotizacion extends frameBase<Cotizacion> {
         }
     }
 
-    public void Init(int modo, String filtro) {
-        this.modo = modo;
-        this.filtro = filtro;
-        switch (this.modo) {
-            case 0:
-                OcultarColumna(tbCotizaciones, 0);
-                OcultarControl(btnSeleccionar);
-                break;
-            case 1:
-                OcultarColumnas(tbCotizaciones, new int[]{0, 10, 11});
-                OcultarControl(btnNuevo);
-                break;
-            case 2:
-                OcultarColumnas(tbCotizaciones, new int[]{10, 11});
-                OcultarControl(btnNuevo);
-                break;
-        }
-        new swObtenerCotizaciones().execute();
-    }
-
     public void EditarCotizacion() {
         int idCotizacion = ObtenerValorCelda(tbCotizaciones, 1);
         VerFrame(new regCotizacion(idCotizacion), refr);
@@ -266,14 +268,6 @@ public class lisCotizacion extends frameBase<Cotizacion> {
         }
     }
 
-    public Cotizacion getSeleccionado() {
-        return seleccionado;
-    }
-
-    public List<Cotizacion> getSeleccionados() {
-        return seleccionados;
-    }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -297,7 +291,6 @@ public class lisCotizacion extends frameBase<Cotizacion> {
         btnDesaprobar = new javax.swing.JButton();
 
         frame.setBackground(java.awt.Color.white);
-        frame.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         tbCotizaciones.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -354,7 +347,7 @@ public class lisCotizacion extends frameBase<Cotizacion> {
             .addGroup(pnlTituloLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lblTitulo)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 370, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 372, Short.MAX_VALUE)
                 .addComponent(btnNuevo)
                 .addContainerGap())
         );
@@ -415,7 +408,7 @@ public class lisCotizacion extends frameBase<Cotizacion> {
             .addGroup(frameLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 717, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 719, Short.MAX_VALUE)
                     .addGroup(frameLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btnSeleccionar, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -445,7 +438,7 @@ public class lisCotizacion extends frameBase<Cotizacion> {
                     .addComponent(btnAprobar, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnDesaprobar, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 177, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 179, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnSeleccionar)
                 .addGap(9, 9, 9))
@@ -472,7 +465,7 @@ public class lisCotizacion extends frameBase<Cotizacion> {
 
     private void btnSeleccionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeleccionarActionPerformed
         // TODO add your handling code here:
-        switch (this.modo) {
+        switch (getModo()) {
             case 1:
                 if (FilaActiva(tbCotizaciones)) {
                     Cotizacion cotizacion = new Cotizacion();
@@ -480,11 +473,12 @@ public class lisCotizacion extends frameBase<Cotizacion> {
                     cotizacion.setNumero(ObtenerValorCelda(tbCotizaciones, 2));
                     cotizacion.setDescripcion(ObtenerValorCelda(tbCotizaciones, 3));
                     cotizacion.setTotal(ObtenerValorCelda(tbCotizaciones, 8));
-                    seleccionado = cotizacion;
+                    setSeleccionado(cotizacion);
                 }
                 Cerrar();
                 break;
             case 2:
+                setSeleccionados(new ArrayList<>());
                 for (int i = 0; i < tbCotizaciones.getRowCount(); i++) {
                     boolean check = ObtenerValorCelda(tbCotizaciones, i, 0);
                     if (check) {
@@ -493,7 +487,7 @@ public class lisCotizacion extends frameBase<Cotizacion> {
                         cotizacion.setNumero(ObtenerValorCelda(tbCotizaciones, i, 2));
                         cotizacion.setDescripcion(ObtenerValorCelda(tbCotizaciones, i, 3));
                         cotizacion.setTotal(ObtenerValorCelda(tbCotizaciones, i, 8));
-                        seleccionados.add(cotizacion);
+                        getSeleccionados().add(cotizacion);
                     }
                 }
                 Cerrar();
@@ -524,7 +518,6 @@ public class lisCotizacion extends frameBase<Cotizacion> {
             DesaprobarCotizacion();
         }
     }//GEN-LAST:event_btnDesaprobarActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAprobar;

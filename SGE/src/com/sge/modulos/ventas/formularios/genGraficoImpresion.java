@@ -23,7 +23,9 @@ import javax.swing.ImageIcon;
 public class genGraficoImpresion extends frameBase<Cotizacion> {
 
     /**
-     * Creates new form genGraficoImpresionx
+     * Creates new form genGraficoImpresion
+     *
+     * @param item
      */
     public genGraficoImpresion(ItemCotizacion item) {
         initComponents();
@@ -258,7 +260,6 @@ public class genGraficoImpresion extends frameBase<Cotizacion> {
         txtTiraje = new javax.swing.JTextField();
 
         frame.setBackground(java.awt.Color.white);
-        frame.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         pnlTitulo.setBackground(new java.awt.Color(67, 100, 130));
         pnlTitulo.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -275,7 +276,7 @@ public class genGraficoImpresion extends frameBase<Cotizacion> {
             .addGroup(pnlTituloLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lblTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 318, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(573, Short.MAX_VALUE))
+                .addContainerGap(575, Short.MAX_VALUE))
         );
         pnlTituloLayout.setVerticalGroup(
             pnlTituloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -466,7 +467,7 @@ public class genGraficoImpresion extends frameBase<Cotizacion> {
                         .addComponent(jScrollPane2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnAceptar))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 574, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 576, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -522,7 +523,6 @@ public class genGraficoImpresion extends frameBase<Cotizacion> {
         // TODO add your handling code here:
         Cerrar();
     }//GEN-LAST:event_btnAceptarActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAceptar;

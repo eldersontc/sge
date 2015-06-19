@@ -36,15 +36,20 @@ import javax.swing.SwingWorker;
 public class regSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
 
     /**
-     * Creates new form regSolicitudCotizacionx
+     * Creates new form regSolicitudCotizacion
      */
     public regSolicitudCotizacion() {
         initComponents();
     }
 
+    /**
+     * Creates new form regSolicitudCotizacion
+     *
+     * @param id
+     */
     public regSolicitudCotizacion(int id) {
         initComponents();
-        Init(id);
+        setId(id);
     }
 
     public regSolicitudCotizacion(ValorDefinido valorDefinido) {
@@ -53,7 +58,17 @@ public class regSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
         super.Init(valorDefinido);
     }
 
-    int id = 0;
+    @Override
+    public void Init() {
+        if (getId() == 0) {
+            lblTitulo.setText("NUEVA " + lblTitulo.getText());
+            new swObtenerValoresDefinidos().execute();
+        } else {
+            lblTitulo.setText("MODIFICAR " + lblTitulo.getText());
+            new swObtenerSolicitud().execute();
+        }
+        OcultarControl(tpnlItems);
+    }
 
     private ItemSolicitudCotizacion item;
 
@@ -166,18 +181,6 @@ public class regSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
         }
     };
 
-    public void Init(int id) {
-        this.id = id;
-        if (this.id == 0) {
-            lblTitulo.setText("NUEVA " + lblTitulo.getText());
-            new swObtenerValoresDefinidos().execute();
-        } else {
-            lblTitulo.setText("MODIFICAR " + lblTitulo.getText());
-            new swObtenerSolicitud().execute();
-        }
-        OcultarControl(tpnlItems);
-    }
-
     private void AsignarValores() {
         getEntidad().setIdCliente(schCliente.getId());
         getEntidad().setRazonSocialCliente(schCliente.getText());
@@ -269,7 +272,7 @@ public class regSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
             VerCargando(frame);
             cliVentas cliVentas = new cliVentas();
             try {
-                String json = cliVentas.ObtenerSolicitudCotizacion(new Gson().toJson(id));
+                String json = cliVentas.ObtenerSolicitudCotizacion(new Gson().toJson(getId()));
                 String[] resultado = new Gson().fromJson(json, String[].class);
 
                 if (resultado[0].equals("true")) {
@@ -312,10 +315,10 @@ public class regSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
             String json = "";
             try {
                 AsignarValores();
-                if (id == 0) {
+                if (getId() == 0) {
                     json = cliVentas.RegistrarSolicitudCotizacion(new Gson().toJson(getEntidad()));
                 } else {
-                    getEntidad().setIdSolicitudCotizacion(id);
+                    getEntidad().setIdSolicitudCotizacion(getId());
                     json = cliVentas.ActualizarSolicitudCotizacion(new Gson().toJson(getEntidad()));
                 }
             } catch (Exception e) {
@@ -523,7 +526,6 @@ public class regSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
         schFormaPago = new com.sge.base.controles.JSearch();
 
         frame.setBackground(java.awt.Color.white);
-        frame.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         btnAceptar.setText("ACEPTAR");
         btnAceptar.addActionListener(new java.awt.event.ActionListener() {
@@ -1334,7 +1336,7 @@ public class regSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
     private void btnEliminarItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarItemActionPerformed
         // TODO add your handling code here:
         ItemSolicitudCotizacion itemPlantilla = (ItemSolicitudCotizacion) lisItems.getSelectedValue();
-        if (id == 0) {
+        if (getId() == 0) {
             getEntidad().getItems().remove(itemPlantilla);
         } else {
             itemPlantilla.setEliminar(true);
@@ -1353,7 +1355,6 @@ public class regSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
             OcultarControl(tpnlItems);
         }
     }//GEN-LAST:event_lisItemsValueChanged
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAceptar;

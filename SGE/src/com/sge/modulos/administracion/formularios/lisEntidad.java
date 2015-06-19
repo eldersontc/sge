@@ -17,27 +17,42 @@ import javax.swing.SwingWorker;
 public class lisEntidad extends frameBase<Entidad> {
 
     /**
-     * Creates new form lisEntidadx
+     * Creates new form lisEntidad
+     *
+     * @param modo
      */
-    public lisEntidad() {
-        initComponents();
-    }
-
     public lisEntidad(int modo) {
         initComponents();
-        Init(modo, "");
+        setModo(modo);
+        setFiltro("");
     }
 
+    /**
+     * Creates new form lisEntidad
+     *
+     * @param modo
+     * @param filtro
+     */
     public lisEntidad(int modo, String filtro) {
         initComponents();
-        Init(modo, filtro);
+        setModo(modo);
+        setFiltro(filtro);
     }
 
-    private int modo;
-
-    private String filtro;
-
-    private Entidad seleccionado;
+    @Override
+    public void Init() {
+        switch (getModo()) {
+            case 0:
+                OcultarColumna(tbEntidades, 0);
+                OcultarControl(btnSeleccionar);
+                break;
+            case 1:
+                OcultarColumnas(tbEntidades, new int[]{0, 3, 4});
+                OcultarControl(btnNuevo);
+                break;
+        }
+        new swObtenerEntidades().execute();
+    }
 
     ImageIcon Icon_Save = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/save-16.png"));
     ImageIcon Icon_Dele = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/delete-16.png"));
@@ -64,7 +79,7 @@ public class lisEntidad extends frameBase<Entidad> {
             cliAdministracion cliente = new cliAdministracion();
             String json = "";
             try {
-                json = cliente.ObtenerEntidades(new Gson().toJson(filtro));
+                json = cliente.ObtenerEntidades(new Gson().toJson(getFiltro()));
             } catch (Exception e) {
                 OcultarCargando(frame);
                 cancel(false);
@@ -82,14 +97,19 @@ public class lisEntidad extends frameBase<Entidad> {
                 String[] resultado = new Gson().fromJson(json, String[].class);
 
                 if (resultado[0].equals("true")) {
-                    EliminarTodasFilas(tbEntidades);
                     Entidad[] entidades = new Gson().fromJson(resultado[1], Entidad[].class);
-                    for (Entidad entidad : entidades) {
-                        AgregarFila(tbEntidades, new Object[]{false, entidad.getIdEntidad(), entidad.getNombre(), Icon_Save, Icon_Dele});
+                    if (getModo() == 1 && entidades.length == 1) {
+                        setSeleccionado(entidades[0]);
+                        Cerrar();
+                    } else {
+                        EliminarTodasFilas(tbEntidades);
+                        for (Entidad entidad : entidades) {
+                            AgregarFila(tbEntidades, new Object[]{false, entidad.getIdEntidad(), entidad.getNombre(), Icon_Save, Icon_Dele});
+                        }
+                        AgregarBoton(tbEntidades, save, 3);
+                        AgregarBoton(tbEntidades, dele, 4);
+                        AgregarOrdenamiento(tbEntidades);
                     }
-                    AgregarBoton(tbEntidades, save, 3);
-                    AgregarBoton(tbEntidades, dele, 4);
-                    AgregarOrdenamiento(tbEntidades);
                 }
                 OcultarCargando(frame);
             } catch (Exception e) {
@@ -97,26 +117,6 @@ public class lisEntidad extends frameBase<Entidad> {
                 ControlarExcepcion(e);
             }
         }
-    }
-
-    public void Init(int modo, String filtro) {
-        this.modo = modo;
-        this.filtro = filtro;
-        switch (this.modo) {
-            case 0:
-                OcultarColumna(tbEntidades, 0);
-                OcultarControl(btnSeleccionar);
-                break;
-            case 1:
-                OcultarColumnas(tbEntidades, new int[]{0, 3, 4});
-                OcultarControl(btnNuevo);
-                break;
-        }
-        new swObtenerEntidades().execute();
-    }
-
-    public Entidad getSeleccionado() {
-        return seleccionado;
     }
 
     /**
@@ -140,7 +140,6 @@ public class lisEntidad extends frameBase<Entidad> {
         btnRefrescar = new javax.swing.JButton();
 
         frame.setBackground(java.awt.Color.white);
-        frame.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         tbEntidades.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -242,7 +241,7 @@ public class lisEntidad extends frameBase<Entidad> {
             .addGroup(frameLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 602, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 604, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, frameLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btnSeleccionar, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -266,7 +265,7 @@ public class lisEntidad extends frameBase<Entidad> {
                         .addComponent(txtFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(btnRefrescar, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 195, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 197, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnSeleccionar)
                 .addContainerGap())
@@ -291,13 +290,13 @@ public class lisEntidad extends frameBase<Entidad> {
 
     private void btnSeleccionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeleccionarActionPerformed
         // TODO add your handling code here:
-        switch (this.modo) {
+        switch (getModo()) {
             case 1:
                 if (FilaActiva(tbEntidades)) {
                     Entidad entidad = new Entidad();
                     entidad.setIdEntidad(ObtenerValorCelda(tbEntidades, 1));
                     entidad.setNombre(ObtenerValorCelda(tbEntidades, 2));
-                    seleccionado = entidad;
+                    setSeleccionado(entidad);
                 }
                 Cerrar();
                 break;
@@ -315,7 +314,6 @@ public class lisEntidad extends frameBase<Entidad> {
         // TODO add your handling code here:
         new swObtenerEntidades().execute();
     }//GEN-LAST:event_btnRefrescarActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnNuevo;

@@ -17,21 +17,42 @@ import javax.swing.SwingWorker;
 public class lisFactura extends frameBase<Factura> {
 
     /**
-     * Creates new form lisFacturax
+     * Creates new form lisFactura
+     *
+     * @param modo
      */
     public lisFactura(int modo) {
         initComponents();
-        Init(modo, "");
+        setModo(modo);
+        setFiltro("");
     }
 
+    /**
+     * Creates new form lisFactura
+     *
+     * @param modo
+     * @param filtro
+     */
     public lisFactura(int modo, String filtro) {
         initComponents();
-        Init(modo, filtro);
+        setModo(modo);
+        setFiltro(filtro);
     }
 
-    private int modo;
-
-    private String filtro;
+    @Override
+    public void Init() {
+        switch (getModo()) {
+            case 0:
+                OcultarColumna(tbFacturas, 0);
+                OcultarControl(btnSeleccionar);
+                break;
+            case 1:
+                OcultarColumnas(tbFacturas, new int[]{0, 7, 8});
+                OcultarControl(btnNuevo);
+                break;
+        }
+        new swObtenerFacturas().execute();
+    }
 
     ImageIcon Icon_View = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/view-16.png"));
     ImageIcon Icon_Dele = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/delete-16.png"));
@@ -65,7 +86,7 @@ public class lisFactura extends frameBase<Factura> {
             cliFacturacion cliente = new cliFacturacion();
             String json = "";
             try {
-                json = cliente.ObtenerFacturas(new Gson().toJson(filtro));
+                json = cliente.ObtenerFacturas(new Gson().toJson(getFiltro()));
             } catch (Exception e) {
                 OcultarCargando(frame);
                 cancel(false);
@@ -137,22 +158,6 @@ public class lisFactura extends frameBase<Factura> {
         }
     }
 
-    public void Init(int modo, String filtro) {
-        this.modo = modo;
-        this.filtro = filtro;
-        switch (this.modo) {
-            case 0:
-                OcultarColumna(tbFacturas, 0);
-                OcultarControl(btnSeleccionar);
-                break;
-            case 1:
-                OcultarColumnas(tbFacturas, new int[]{0, 7, 8});
-                OcultarControl(btnNuevo);
-                break;
-        }
-        new swObtenerFacturas().execute();
-    }
-
     public void VerFactura() {
         int idFactura = ObtenerValorCelda(tbFacturas, 1);
         VerFrame(new regFactura(idFactura));
@@ -186,7 +191,6 @@ public class lisFactura extends frameBase<Factura> {
         btnRefrescar = new javax.swing.JButton();
 
         frame.setBackground(java.awt.Color.white);
-        frame.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         tbFacturas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -288,7 +292,7 @@ public class lisFactura extends frameBase<Factura> {
             .addGroup(frameLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 679, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 681, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, frameLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btnSeleccionar, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -312,7 +316,7 @@ public class lisFactura extends frameBase<Factura> {
                         .addComponent(txtFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(btnRefrescar, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 196, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 198, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnSeleccionar)
                 .addContainerGap())
@@ -348,7 +352,6 @@ public class lisFactura extends frameBase<Factura> {
         // TODO add your handling code here:
         new swObtenerFacturas().execute();
     }//GEN-LAST:event_btnRefrescarActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnNuevo;

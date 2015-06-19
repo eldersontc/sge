@@ -19,25 +19,42 @@ import javax.swing.SwingWorker;
 public class lisEntradaInventario extends frameBase<EntradaInventario> {
 
     /**
-     * Creates new form lisEntradaInventariox
+     * Creates new form lisEntradaInventario
+     *
+     * @param modo
      */
     public lisEntradaInventario(int modo) {
         initComponents();
-        Init(modo, "");
+        setModo(modo);
+        setFiltro("");
     }
 
+    /**
+     * Creates new form lisEntradaInventario
+     *
+     * @param modo
+     * @param filtro
+     */
     public lisEntradaInventario(int modo, String filtro) {
         initComponents();
-        Init(modo, filtro);
+        setModo(modo);
+        setFiltro(filtro);
     }
 
-    private int modo;
-
-    private String filtro;
-
-    private EntradaInventario seleccionado;
-
-    private List<EntradaInventario> seleccionados = new ArrayList<>();
+    @Override
+    public void Init() {
+        switch (getModo()) {
+            case 0:
+                OcultarColumna(tbEntradaInventarios, 0);
+                OcultarControl(btnSeleccionar);
+                break;
+            case 1:
+                OcultarColumnas(tbEntradaInventarios, new int[]{0, 8, 9});
+                OcultarControl(btnNuevo);
+                break;
+        }
+        new swObtenerEntradaInventarios().execute();
+    }
 
     ImageIcon Icon_View = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/view-16.png"));
     ImageIcon Icon_Dele = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/delete-16.png"));
@@ -71,7 +88,7 @@ public class lisEntradaInventario extends frameBase<EntradaInventario> {
             cliInventarios cliente = new cliInventarios();
             String json = "";
             try {
-                json = cliente.ObtenerEntradaInventarios(new Gson().toJson(filtro));
+                json = cliente.ObtenerEntradaInventarios(new Gson().toJson(getFiltro()));
             } catch (Exception e) {
                 OcultarCargando(frame);
                 cancel(false);
@@ -143,22 +160,6 @@ public class lisEntradaInventario extends frameBase<EntradaInventario> {
         }
     }
 
-    public void Init(int modo, String filtro) {
-        this.modo = modo;
-        this.filtro = filtro;
-        switch (this.modo) {
-            case 0:
-                OcultarColumna(tbEntradaInventarios, 0);
-                OcultarControl(btnSeleccionar);
-                break;
-            case 1:
-                OcultarColumnas(tbEntradaInventarios, new int[]{0, 8, 9});
-                OcultarControl(btnNuevo);
-                break;
-        }
-        new swObtenerEntradaInventarios().execute();
-    }
-
     public void VerEntradaInventario() {
         int idEntradaInventario = ObtenerValorCelda(tbEntradaInventarios, 1);
         VerFrame(new regEntradaInventario(idEntradaInventario));
@@ -193,7 +194,6 @@ public class lisEntradaInventario extends frameBase<EntradaInventario> {
         btnImprimir = new javax.swing.JButton();
 
         frame.setBackground(java.awt.Color.white);
-        frame.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         tbEntradaInventarios.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -250,7 +250,7 @@ public class lisEntradaInventario extends frameBase<EntradaInventario> {
             .addGroup(pnlTituloLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lblTitulo)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 168, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 170, Short.MAX_VALUE)
                 .addComponent(btnNuevo)
                 .addContainerGap())
         );
@@ -303,7 +303,7 @@ public class lisEntradaInventario extends frameBase<EntradaInventario> {
             .addGroup(frameLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 624, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 626, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, frameLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btnSeleccionar, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -330,7 +330,7 @@ public class lisEntradaInventario extends frameBase<EntradaInventario> {
                     .addComponent(btnRefrescar, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnImprimir, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 221, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 223, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnSeleccionar)
                 .addGap(6, 6, 6))
@@ -375,7 +375,6 @@ public class lisEntradaInventario extends frameBase<EntradaInventario> {
             ImprimirConEntidad(1, ObtenerValorCelda(tbEntradaInventarios, 1), frame);
         }
     }//GEN-LAST:event_btnImprimirActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnImprimir;

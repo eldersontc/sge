@@ -6,7 +6,6 @@ import com.sge.modulos.ventas.clases.Maquina;
 import com.sge.modulos.ventas.cliente.cliVentas;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
-import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ImageIcon;
@@ -19,25 +18,27 @@ import javax.swing.SwingWorker;
 public class lisMaquina extends frameBase<Maquina> {
 
     /**
-     * Creates new form lisMaquinax
+     * Creates new form lisMaquina
+     *
+     * @param modo
      */
     public lisMaquina(int modo) {
         initComponents();
-        Init(modo, "");
+        setModo(modo);
+        setFiltro("");
     }
 
+    /**
+     * Creates new form lisMaquina
+     *
+     * @param modo
+     * @param filtro
+     */
     public lisMaquina(int modo, String filtro) {
         initComponents();
-        Init(modo, filtro);
+        setModo(modo);
+        setFiltro(filtro);
     }
-
-    private int modo;
-
-    private String filtro;
-
-    private Maquina seleccionado;
-
-    private List<Maquina> seleccionados = new ArrayList<>();
 
     ImageIcon Icon_Edit = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/edit-16.png"));
     ImageIcon Icon_Dele = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/delete-16.png"));
@@ -71,7 +72,7 @@ public class lisMaquina extends frameBase<Maquina> {
             cliVentas cliente = new cliVentas();
             String json = "";
             try {
-                json = cliente.ObtenerMaquinas(new Gson().toJson(filtro));
+                json = cliente.ObtenerMaquinas(new Gson().toJson(getFiltro()));
             } catch (Exception e) {
                 OcultarCargando(frame);
                 cancel(false);
@@ -142,10 +143,9 @@ public class lisMaquina extends frameBase<Maquina> {
         }
     }
 
-    public void Init(int modo, String filtro) {
-        this.modo = modo;
-        this.filtro = filtro;
-        switch (this.modo) {
+    @Override
+    public void Init() {
+        switch (getModo()) {
             case 0:
                 OcultarColumna(tbMaquinas, 0);
                 OcultarControl(btnSeleccionar);
@@ -164,7 +164,7 @@ public class lisMaquina extends frameBase<Maquina> {
 
     public void EditarMaquina() {
         int idMaquina = ObtenerValorCelda(tbMaquinas, 1);
-        VerFrame(new regMaquina("EDITAR ", idMaquina), refr);
+        VerFrame(new regMaquina(idMaquina), refr);
     }
 
     public void EliminarMaquina() {
@@ -172,14 +172,6 @@ public class lisMaquina extends frameBase<Maquina> {
         if (confirmacion == 0) {
             new swEliminarMaquina().execute();
         }
-    }
-
-    public Maquina getSeleccionado() {
-        return seleccionado;
-    }
-
-    public List<Maquina> getSeleccionados() {
-        return seleccionados;
     }
 
     /**
@@ -203,7 +195,6 @@ public class lisMaquina extends frameBase<Maquina> {
         btnRefrescar = new javax.swing.JButton();
 
         frame.setBackground(java.awt.Color.white);
-        frame.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         tbMaquinas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -260,7 +251,7 @@ public class lisMaquina extends frameBase<Maquina> {
             .addGroup(pnlTituloLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lblTitulo)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 302, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 304, Short.MAX_VALUE)
                 .addComponent(btnNuevo)
                 .addContainerGap())
         );
@@ -305,7 +296,7 @@ public class lisMaquina extends frameBase<Maquina> {
             .addGroup(frameLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 616, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 618, Short.MAX_VALUE)
                     .addGroup(frameLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btnSeleccionar, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -329,7 +320,7 @@ public class lisMaquina extends frameBase<Maquina> {
                         .addComponent(txtFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(btnRefrescar, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 160, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 162, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnSeleccionar)
                 .addGap(9, 9, 9))
@@ -349,12 +340,12 @@ public class lisMaquina extends frameBase<Maquina> {
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
         // TODO add your handling code here:
-        VerFrame(new regMaquina("NUEVO ", 0), refr);
+        VerFrame(new regMaquina(0), refr);
     }//GEN-LAST:event_btnNuevoActionPerformed
 
     private void btnSeleccionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeleccionarActionPerformed
         // TODO add your handling code here:
-        switch (this.modo) {
+        switch (getModo()) {
             case 1:
                 if (FilaActiva(tbMaquinas)) {
                     Maquina maquina = new Maquina();
@@ -362,11 +353,12 @@ public class lisMaquina extends frameBase<Maquina> {
                     maquina.setDescripcion(ObtenerValorCelda(tbMaquinas, 2));
                     maquina.setAltoMaximoPliego(ObtenerValorCelda(tbMaquinas, 4));
                     maquina.setLargoMaximoPliego(ObtenerValorCelda(tbMaquinas, 5));
-                    seleccionado = maquina;
+                    setSeleccionado(maquina);
                 }
                 Cerrar();
                 break;
             case 2:
+                setSeleccionados(new ArrayList<>());
                 for (int i = 0; i < tbMaquinas.getRowCount(); i++) {
                     boolean check = ObtenerValorCelda(tbMaquinas, i, 0);
                     if (check) {
@@ -375,7 +367,7 @@ public class lisMaquina extends frameBase<Maquina> {
                         maquina.setDescripcion(ObtenerValorCelda(tbMaquinas, i, 2));
                         maquina.setAltoMaximoPliego(ObtenerValorCelda(tbMaquinas, i, 4));
                         maquina.setLargoMaximoPliego(ObtenerValorCelda(tbMaquinas, i, 5));
-                        seleccionados.add(maquina);
+                        getSeleccionados().add(maquina);
                     }
                 }
                 Cerrar();
@@ -392,7 +384,6 @@ public class lisMaquina extends frameBase<Maquina> {
         // TODO add your handling code here:
         new swObtenerMaquinas().execute();
     }//GEN-LAST:event_btnRefrescarActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnNuevo;

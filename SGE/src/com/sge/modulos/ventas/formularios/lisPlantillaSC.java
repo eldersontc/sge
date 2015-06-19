@@ -21,23 +21,42 @@ import javax.swing.SwingWorker;
 public class lisPlantillaSC extends frameBase<PlantillaSolicitudCotizacion> {
 
     /**
-     * Creates new form lisPlantillaSCx
+     * Creates new form lisPlantillaSC
+     *
+     * @param modo
      */
     public lisPlantillaSC(int modo) {
         initComponents();
-        Init(modo, "");
+        setModo(modo);
+        setFiltro("");
     }
 
+    /**
+     * Creates new form lisPlantillaSC
+     *
+     * @param modo
+     * @param filtro
+     */
     public lisPlantillaSC(int modo, String filtro) {
         initComponents();
-        Init(modo, filtro);
+        setModo(modo);
+        setFiltro(filtro);
     }
 
-    private int modo;
-
-    private String filtro;
-
-    private PlantillaSolicitudCotizacion seleccionado;
+    @Override
+    public void Init() {
+        switch (getModo()) {
+            case 0:
+                OcultarColumna(tbPlantillas, 0);
+                OcultarControl(btnSeleccionar);
+                break;
+            case 1:
+                OcultarColumnas(tbPlantillas, new int[]{0, 5, 6});
+                OcultarControl(btnNuevo);
+                break;
+        }
+        new swObtenerPlantillasSC().execute();
+    }
 
     ImageIcon Icon_Edit = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/edit-16.png"));
     ImageIcon Icon_Dele = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/delete-16.png"));
@@ -71,7 +90,7 @@ public class lisPlantillaSC extends frameBase<PlantillaSolicitudCotizacion> {
             cliVentas cliente = new cliVentas();
             String json = "";
             try {
-                json = cliente.ObtenerPlantillasSolicitudCotizacion(new Gson().toJson(filtro));
+                json = cliente.ObtenerPlantillasSolicitudCotizacion(new Gson().toJson(getFiltro()));
             } catch (Exception e) {
                 OcultarCargando(frame);
                 cancel(false);
@@ -217,25 +236,9 @@ public class lisPlantillaSC extends frameBase<PlantillaSolicitudCotizacion> {
         }
     }
 
-    public void Init(int modo, String filtro) {
-        this.modo = modo;
-        this.filtro = filtro;
-        switch (this.modo) {
-            case 0:
-                OcultarColumna(tbPlantillas, 0);
-                OcultarControl(btnSeleccionar);
-                break;
-            case 1:
-                OcultarColumnas(tbPlantillas, new int[]{0, 5, 6});
-                OcultarControl(btnNuevo);
-                break;
-        }
-        new swObtenerPlantillasSC().execute();
-    }
-
     public void EditarPlantillaSC() {
         int idPlantillaSC = ObtenerValorCelda(tbPlantillas, 1);
-        VerFrame(new regPlantillaSC("EDITAR ", idPlantillaSC), refr);
+        VerFrame(new regPlantillaSC(idPlantillaSC), refr);
     }
 
     public void EliminarPlantillaSC() {
@@ -243,10 +246,6 @@ public class lisPlantillaSC extends frameBase<PlantillaSolicitudCotizacion> {
         if (confirmacion == 0) {
             new swEliminarPlantillaSC().execute();
         }
-    }
-
-    public PlantillaSolicitudCotizacion getSeleccionado() {
-        return seleccionado;
     }
 
     /**
@@ -271,7 +270,6 @@ public class lisPlantillaSC extends frameBase<PlantillaSolicitudCotizacion> {
         btnGenerarSolicitudCotizacion = new javax.swing.JButton();
 
         frame.setBackground(java.awt.Color.white);
-        frame.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         tbPlantillas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -328,7 +326,7 @@ public class lisPlantillaSC extends frameBase<PlantillaSolicitudCotizacion> {
             .addGroup(pnlTituloLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lblTitulo)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
                 .addComponent(btnNuevo)
                 .addContainerGap())
         );
@@ -381,7 +379,7 @@ public class lisPlantillaSC extends frameBase<PlantillaSolicitudCotizacion> {
             .addGroup(frameLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 615, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 617, Short.MAX_VALUE)
                     .addGroup(frameLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btnSeleccionar, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -408,7 +406,7 @@ public class lisPlantillaSC extends frameBase<PlantillaSolicitudCotizacion> {
                     .addComponent(btnRefrescar, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnGenerarSolicitudCotizacion, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 161, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 163, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnSeleccionar)
                 .addGap(9, 9, 9))
@@ -428,18 +426,18 @@ public class lisPlantillaSC extends frameBase<PlantillaSolicitudCotizacion> {
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
         // TODO add your handling code here:
-        VerFrame(new regPlantillaSC("NUEVO ", 0), refr);
+        VerFrame(new regPlantillaSC(0), refr);
     }//GEN-LAST:event_btnNuevoActionPerformed
 
     private void btnSeleccionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeleccionarActionPerformed
         // TODO add your handling code here:
-        switch (this.modo) {
+        switch (getModo()) {
             case 1:
                 if (FilaActiva(tbPlantillas)) {
                     PlantillaSolicitudCotizacion plantillaSC = new PlantillaSolicitudCotizacion();
                     plantillaSC.setIdPlantillaSolicitudCotizacion(ObtenerValorCelda(tbPlantillas, 1));
                     plantillaSC.setNombre(ObtenerValorCelda(tbPlantillas, 2));
-                    seleccionado = plantillaSC;
+                    setSeleccionado(plantillaSC);
                 }
                 Cerrar();
                 break;
@@ -462,7 +460,6 @@ public class lisPlantillaSC extends frameBase<PlantillaSolicitudCotizacion> {
         // TODO add your handling code here:
         new swGenerarSolicitudCotizacion().execute();
     }//GEN-LAST:event_btnGenerarSolicitudCotizacionActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnGenerarSolicitudCotizacion;

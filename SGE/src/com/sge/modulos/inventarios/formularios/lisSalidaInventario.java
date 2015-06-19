@@ -2,7 +2,6 @@ package com.sge.modulos.inventarios.formularios;
 
 import com.google.gson.Gson;
 import com.sge.base.formularios.frameBase;
-import com.sge.modulos.finanzas.formularios.regSalidaCaja;
 import com.sge.modulos.inventarios.clases.SalidaInventario;
 import com.sge.modulos.inventarios.cliente.cliInventarios;
 import java.awt.event.ActionEvent;
@@ -20,25 +19,42 @@ import javax.swing.SwingWorker;
 public class lisSalidaInventario extends frameBase<SalidaInventario> {
 
     /**
-     * Creates new form lisSalidaInventariox
+     * Creates new form lisSalidaInventario
+     *
+     * @param modo
      */
     public lisSalidaInventario(int modo) {
         initComponents();
-        Init(modo, "");
+        setModo(modo);
+        setFiltro("");
     }
 
+    /**
+     * Creates new form lisSalidaInventario
+     *
+     * @param modo
+     * @param filtro
+     */
     public lisSalidaInventario(int modo, String filtro) {
         initComponents();
-        Init(modo, filtro);
+        setModo(modo);
+        setFiltro(filtro);
     }
 
-    private int modo;
-
-    private String filtro;
-
-    private SalidaInventario seleccionado;
-
-    private List<SalidaInventario> seleccionados = new ArrayList<>();
+    @Override
+    public void Init() {
+        switch (getModo()) {
+            case 0:
+                OcultarColumna(tbSalidaInventarios, 0);
+                OcultarControl(btnSeleccionar);
+                break;
+            case 1:
+                OcultarColumnas(tbSalidaInventarios, new int[]{0, 8, 9});
+                OcultarControl(btnNuevo);
+                break;
+        }
+        new swObtenerSalidaInventarios().execute();
+    }
 
     ImageIcon Icon_View = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/view-16.png"));
     ImageIcon Icon_Dele = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/delete-16.png"));
@@ -72,7 +88,7 @@ public class lisSalidaInventario extends frameBase<SalidaInventario> {
             cliInventarios cliente = new cliInventarios();
             String json = "";
             try {
-                json = cliente.ObtenerSalidaInventarios(new Gson().toJson(filtro));
+                json = cliente.ObtenerSalidaInventarios(new Gson().toJson(getFiltro()));
             } catch (Exception e) {
                 OcultarCargando(frame);
                 cancel(false);
@@ -144,22 +160,6 @@ public class lisSalidaInventario extends frameBase<SalidaInventario> {
         }
     }
 
-    public void Init(int modo, String filtro) {
-        this.modo = modo;
-        this.filtro = filtro;
-        switch (this.modo) {
-            case 0:
-                OcultarColumna(tbSalidaInventarios, 0);
-                OcultarControl(btnSeleccionar);
-                break;
-            case 1:
-                OcultarColumnas(tbSalidaInventarios, new int[]{0, 8, 9});
-                OcultarControl(btnNuevo);
-                break;
-        }
-        new swObtenerSalidaInventarios().execute();
-    }
-
     public void VerSalidaInventario() {
         int idSalidaInventario = ObtenerValorCelda(tbSalidaInventarios, 1);
         VerFrame(new regSalidaInventario(idSalidaInventario));
@@ -194,7 +194,6 @@ public class lisSalidaInventario extends frameBase<SalidaInventario> {
         btnImprimir = new javax.swing.JButton();
 
         frame.setBackground(java.awt.Color.white);
-        frame.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         tbSalidaInventarios.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -251,7 +250,7 @@ public class lisSalidaInventario extends frameBase<SalidaInventario> {
             .addGroup(pnlTituloLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lblTitulo)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 186, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 188, Short.MAX_VALUE)
                 .addComponent(btnNuevo)
                 .addContainerGap())
         );
@@ -299,7 +298,7 @@ public class lisSalidaInventario extends frameBase<SalidaInventario> {
             .addGroup(frameLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 619, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 621, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, frameLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btnSeleccionar, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -326,7 +325,7 @@ public class lisSalidaInventario extends frameBase<SalidaInventario> {
                     .addComponent(btnRefrescar, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnImprimir, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 213, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 215, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnSeleccionar)
                 .addGap(6, 6, 6))
@@ -367,7 +366,6 @@ public class lisSalidaInventario extends frameBase<SalidaInventario> {
             ImprimirConEntidad(2, ObtenerValorCelda(tbSalidaInventarios, 1), frame);
         }
     }//GEN-LAST:event_btnImprimirActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnImprimir;

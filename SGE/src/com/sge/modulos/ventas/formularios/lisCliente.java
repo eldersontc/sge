@@ -17,23 +17,42 @@ import javax.swing.SwingWorker;
 public class lisCliente extends frameBase<Cliente> {
 
     /**
-     * Creates new form lisClientex
+     * Creates new form lisCliente
+     *
+     * @param modo
      */
     public lisCliente(int modo) {
         initComponents();
-        Init(modo, "");
+        setModo(modo);
+        setFiltro("");
     }
 
+    /**
+     * Creates new form lisCliente
+     *
+     * @param modo
+     * @param filtro
+     */
     public lisCliente(int modo, String filtro) {
         initComponents();
-        Init(modo, filtro);
+        setModo(modo);
+        setFiltro(filtro);
     }
 
-    private int modo;
-
-    private String filtro;
-
-    private Cliente seleccionado;
+    @Override
+    public void Init() {
+        switch (getModo()) {
+            case 0:
+                OcultarColumna(tbClientes, 0);
+                OcultarControl(btnSeleccionar);
+                break;
+            case 1:
+                OcultarColumnas(tbClientes, new int[]{0, 11, 12});
+                OcultarControl(btnNuevo);
+                break;
+        }
+        new swObtenerClientes().execute();
+    }
 
     ImageIcon Icon_Edit = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/edit-16.png"));
     ImageIcon Icon_Dele = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/delete-16.png"));
@@ -67,7 +86,7 @@ public class lisCliente extends frameBase<Cliente> {
             cliVentas cliente = new cliVentas();
             String json = "";
             try {
-                json = cliente.ObtenerClientes(new Gson().toJson(filtro));
+                json = cliente.ObtenerClientes(new Gson().toJson(getFiltro()));
             } catch (Exception e) {
                 OcultarCargando(frame);
                 cancel(false);
@@ -138,25 +157,9 @@ public class lisCliente extends frameBase<Cliente> {
         }
     }
 
-    public void Init(int modo, String filtro) {
-        this.modo = modo;
-        this.filtro = filtro;
-        switch (this.modo) {
-            case 0:
-                OcultarColumna(tbClientes, 0);
-                OcultarControl(btnSeleccionar);
-                break;
-            case 1:
-                OcultarColumnas(tbClientes, new int[]{0, 11, 12});
-                OcultarControl(btnNuevo);
-                break;
-        }
-        new swObtenerClientes().execute();
-    }
-
     public void EditarCliente() {
         int idCliente = ObtenerValorCelda(tbClientes, 1);
-        VerFrame(new regCliente("EDITAR ", idCliente), refr);
+        VerFrame(new regCliente(idCliente), refr);
     }
 
     public void EliminarCliente() {
@@ -164,10 +167,6 @@ public class lisCliente extends frameBase<Cliente> {
         if (confirmacion == 0) {
             new swEliminarCliente().execute();
         }
-    }
-
-    public Cliente getSeleccionado() {
-        return seleccionado;
     }
 
     /**
@@ -191,7 +190,6 @@ public class lisCliente extends frameBase<Cliente> {
         btnRefrescar = new javax.swing.JButton();
 
         frame.setBackground(java.awt.Color.white);
-        frame.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         tbClientes.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -257,7 +255,7 @@ public class lisCliente extends frameBase<Cliente> {
             .addGroup(pnlTituloLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lblTitulo)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 303, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 305, Short.MAX_VALUE)
                 .addComponent(btnNuevo)
                 .addContainerGap())
         );
@@ -302,7 +300,7 @@ public class lisCliente extends frameBase<Cliente> {
             .addGroup(frameLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 602, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 604, Short.MAX_VALUE)
                     .addGroup(frameLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btnSeleccionar, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -326,7 +324,7 @@ public class lisCliente extends frameBase<Cliente> {
                         .addComponent(txtFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(btnRefrescar, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 151, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 153, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnSeleccionar)
                 .addGap(9, 9, 9))
@@ -346,12 +344,12 @@ public class lisCliente extends frameBase<Cliente> {
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
         // TODO add your handling code here:
-        VerFrame(new regCliente("NUEVO ", 0), refr);
+        VerFrame(new regCliente(0), refr);
     }//GEN-LAST:event_btnNuevoActionPerformed
 
     private void btnSeleccionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeleccionarActionPerformed
         // TODO add your handling code here:
-        switch (this.modo) {
+        switch (getModo()) {
             case 1:
                 if (FilaActiva(tbClientes)) {
                     Cliente cliente = new Cliente();
@@ -363,7 +361,7 @@ public class lisCliente extends frameBase<Cliente> {
                     cliente.setNombreListaPrecioServicio(ObtenerValorCelda(tbClientes, 7));
                     cliente.setIdListaPrecioMaquina(ObtenerValorCelda(tbClientes, 8));
                     cliente.setNombreListaPrecioMaquina(ObtenerValorCelda(tbClientes, 9));
-                    seleccionado = cliente;
+                    setSeleccionado(cliente);
                 }
                 Cerrar();
                 break;
@@ -381,7 +379,6 @@ public class lisCliente extends frameBase<Cliente> {
         // TODO add your handling code here:
         new swObtenerClientes().execute();
     }//GEN-LAST:event_btnRefrescarActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnNuevo;

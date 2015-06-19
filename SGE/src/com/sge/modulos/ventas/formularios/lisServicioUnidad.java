@@ -5,7 +5,6 @@ import com.sge.base.formularios.frameBase;
 import com.sge.modulos.ventas.clases.ServicioUnidad;
 import com.sge.modulos.ventas.cliente.cliVentas;
 import java.util.ArrayList;
-import java.util.List;
 import javax.swing.SwingWorker;
 
 /**
@@ -15,16 +14,19 @@ import javax.swing.SwingWorker;
 public class lisServicioUnidad extends frameBase<ServicioUnidad> {
 
     /**
-     * Creates new form lisServicioUnidadx
+     * Creates new form lisServicioUnidad
+     *
+     * @param filtro
      */
     public lisServicioUnidad(String filtro) {
         initComponents();
-        Init(filtro);
+        setFiltro(filtro);
     }
 
-    private String filtro;
-
-    private List<ServicioUnidad> seleccionados = new ArrayList<>();
+    @Override
+    public void Init() {
+        new swObtenerUnidades().execute();
+    }
 
     public class swObtenerUnidades extends SwingWorker {
 
@@ -34,7 +36,7 @@ public class lisServicioUnidad extends frameBase<ServicioUnidad> {
             cliVentas cliente = new cliVentas();
             String json = "";
             try {
-                json = cliente.ObtenerServicioUnidades(new Gson().toJson(filtro));
+                json = cliente.ObtenerServicioUnidades(new Gson().toJson(getFiltro()));
             } catch (Exception e) {
                 OcultarCargando(frame);
                 cancel(false);
@@ -67,15 +69,6 @@ public class lisServicioUnidad extends frameBase<ServicioUnidad> {
         }
     }
 
-    public void Init(String filtro) {
-        this.filtro = filtro;
-        new swObtenerUnidades().execute();
-    }
-
-    public List<ServicioUnidad> getSeleccionados() {
-        return seleccionados;
-    }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -96,7 +89,6 @@ public class lisServicioUnidad extends frameBase<ServicioUnidad> {
         btnRefrescar = new javax.swing.JButton();
 
         frame.setBackground(java.awt.Color.white);
-        frame.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         tbUnidades.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -148,7 +140,7 @@ public class lisServicioUnidad extends frameBase<ServicioUnidad> {
             .addGroup(pnlTituloLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lblTitulo)
-                .addContainerGap(126, Short.MAX_VALUE))
+                .addContainerGap(128, Short.MAX_VALUE))
         );
         pnlTituloLayout.setVerticalGroup(
             pnlTituloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -186,7 +178,7 @@ public class lisServicioUnidad extends frameBase<ServicioUnidad> {
             .addGroup(frameLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 338, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 340, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, frameLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btnSeleccionar, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -213,7 +205,7 @@ public class lisServicioUnidad extends frameBase<ServicioUnidad> {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnSeleccionar)
-                .addContainerGap(17, Short.MAX_VALUE))
+                .addContainerGap(19, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -230,6 +222,7 @@ public class lisServicioUnidad extends frameBase<ServicioUnidad> {
 
     private void btnSeleccionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeleccionarActionPerformed
         // TODO add your handling code here:
+        setSeleccionados(new ArrayList<>());
         for (int i = 0; i < tbUnidades.getRowCount(); i++) {
             boolean check = ObtenerValorCelda(tbUnidades, i, 0);
             if (check) {
@@ -238,7 +231,7 @@ public class lisServicioUnidad extends frameBase<ServicioUnidad> {
                 servicioUnidad.setIdUnidad(ObtenerValorCelda(tbUnidades, i, 2));
                 servicioUnidad.setAbreviacionUnidad(ObtenerValorCelda(tbUnidades, i, 3));
                 servicioUnidad.setFactor(ObtenerValorCelda(tbUnidades, i, 4));
-                seleccionados.add(servicioUnidad);
+                getSeleccionados().add(servicioUnidad);
             }
         }
         Cerrar();
@@ -253,7 +246,6 @@ public class lisServicioUnidad extends frameBase<ServicioUnidad> {
         // TODO add your handling code here:
         new swObtenerUnidades().execute();
     }//GEN-LAST:event_btnRefrescarActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnRefrescar;

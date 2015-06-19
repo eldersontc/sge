@@ -13,19 +13,21 @@ import javax.swing.SwingWorker;
 public class regProveedor extends frameBase<Proveedor> {
 
     /**
-     * Creates new form regProveedorx
+     * Creates new form regProveedor
+     *
+     * @param id
      */
-    public regProveedor(String operacion, int idProveedor) {
+    public regProveedor(int id) {
         initComponents();
-        Init(operacion, idProveedor);
+        setId(id);
     }
 
-    int idProveedor = 0;
-
-    public void Init(String operacion, int idProveedor) {
-        lblTitulo.setText(operacion + lblTitulo.getText());
-        this.idProveedor = idProveedor;
-        if (this.idProveedor > 0) {
+    @Override
+    public void Init() {
+        if (getId() == 0) {
+            lblTitulo.setText("NUEVO " + lblTitulo.getText());
+        } else {
+            lblTitulo.setText("EDITAR " + lblTitulo.getText());
             new swObtenerProveedor().execute();
         }
     }
@@ -38,7 +40,7 @@ public class regProveedor extends frameBase<Proveedor> {
             cliCompras cliente = new cliCompras();
             String json = "";
             try {
-                json = cliente.ObtenerProveedor(new Gson().toJson(idProveedor));
+                json = cliente.ObtenerProveedor(new Gson().toJson(getId()));
             } catch (Exception e) {
                 OcultarCargando(frame);
                 cancel(false);
@@ -86,10 +88,10 @@ public class regProveedor extends frameBase<Proveedor> {
                 proveedor.setTipoDocumentoIdentidad(cboTipoDocumento.getSelectedItem().toString());
                 proveedor.setDocumentoIdentidad(txtDocumento.getText());
                 proveedor.setActivo(chkActivo.isSelected());
-                if (idProveedor == 0) {
+                if (getId() == 0) {
                     json = cliente.RegistrarProveedor(new Gson().toJson(proveedor));
                 } else {
-                    proveedor.setIdProveedor(idProveedor);
+                    proveedor.setIdProveedor(getId());
                     json = cliente.ActualizarProveedor(new Gson().toJson(proveedor));
                 }
             } catch (Exception e) {
@@ -146,7 +148,6 @@ public class regProveedor extends frameBase<Proveedor> {
         lblTitulo = new javax.swing.JLabel();
 
         frame.setBackground(java.awt.Color.white);
-        frame.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         lblRazonSocial.setText("RAZON SOCIAL");
 
@@ -191,7 +192,7 @@ public class regProveedor extends frameBase<Proveedor> {
             .addGroup(pnlTituloLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lblTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(298, Short.MAX_VALUE))
+                .addContainerGap(300, Short.MAX_VALUE))
         );
         pnlTituloLayout.setVerticalGroup(
             pnlTituloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -290,7 +291,6 @@ public class regProveedor extends frameBase<Proveedor> {
         // TODO add your handling code here:
         Cerrar();
     }//GEN-LAST:event_btnCancelarActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAceptar;

@@ -18,22 +18,41 @@ public class lisDepartamento extends frameBase<Departamento> {
 
     /**
      * Creates new form lisDepartamento
+     *
+     * @param modo
      */
     public lisDepartamento(int modo) {
         initComponents();
-        Init(modo, "");
+        setModo(modo);
+        setFiltro("");
     }
 
+    /**
+     * Creates new form lisDepartamento
+     *
+     * @param modo
+     * @param filtro
+     */
     public lisDepartamento(int modo, String filtro) {
         initComponents();
-        Init(modo, filtro);
+        setModo(modo);
+        setFiltro(filtro);
     }
 
-    private int modo;
-
-    private String filtro;
-
-    private Departamento seleccionado;
+    @Override
+    public void Init() {
+        switch (getModo()) {
+            case 0:
+                OcultarColumna(tbDepartamentos, 0);
+                OcultarControl(btnSeleccionar);
+                break;
+            case 1:
+                OcultarColumnas(tbDepartamentos, new int[]{0, 3, 4});
+                OcultarControl(btnNuevo);
+                break;
+        }
+        new swObtenerDepartamentos().execute();
+    }
 
     ImageIcon Icon_Save = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/save-16.png"));
     ImageIcon Icon_Dele = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/delete-16.png"));
@@ -60,7 +79,7 @@ public class lisDepartamento extends frameBase<Departamento> {
             cliAdministracion cliente = new cliAdministracion();
             String json = "";
             try {
-                json = cliente.ObtenerDepartamentos(new Gson().toJson(filtro));
+                json = cliente.ObtenerDepartamentos(new Gson().toJson(getFiltro()));
             } catch (Exception e) {
                 OcultarCargando(frame);
                 cancel(false);
@@ -78,14 +97,19 @@ public class lisDepartamento extends frameBase<Departamento> {
                 String[] resultado = new Gson().fromJson(json, String[].class);
 
                 if (resultado[0].equals("true")) {
-                    EliminarTodasFilas(tbDepartamentos);
                     Departamento[] departamentos = new Gson().fromJson(resultado[1], Departamento[].class);
-                    for (Departamento departamento : departamentos) {
-                        AgregarFila(tbDepartamentos, new Object[]{false, departamento.getIdDepartamento(), departamento.getNombre(), Icon_Save, Icon_Dele});
+                    if (getModo() == 1 && departamentos.length == 1) {
+                        setSeleccionado(departamentos[0]);
+                        Cerrar();
+                    } else {
+                        EliminarTodasFilas(tbDepartamentos);
+                        for (Departamento departamento : departamentos) {
+                            AgregarFila(tbDepartamentos, new Object[]{false, departamento.getIdDepartamento(), departamento.getNombre(), Icon_Save, Icon_Dele});
+                        }
+                        AgregarBoton(tbDepartamentos, save, 3);
+                        AgregarBoton(tbDepartamentos, dele, 4);
+                        AgregarOrdenamiento(tbDepartamentos);
                     }
-                    AgregarBoton(tbDepartamentos, save, 3);
-                    AgregarBoton(tbDepartamentos, dele, 4);
-                    AgregarOrdenamiento(tbDepartamentos);
                 }
                 OcultarCargando(frame);
             } catch (Exception e) {
@@ -93,26 +117,6 @@ public class lisDepartamento extends frameBase<Departamento> {
                 ControlarExcepcion(e);
             }
         }
-    }
-
-    public void Init(int modo, String filtro) {
-        this.modo = modo;
-        this.filtro = filtro;
-        switch (this.modo) {
-            case 0:
-                OcultarColumna(tbDepartamentos, 0);
-                OcultarControl(btnSeleccionar);
-                break;
-            case 1:
-                OcultarColumnas(tbDepartamentos, new int[]{0, 3, 4});
-                OcultarControl(btnNuevo);
-                break;
-        }
-        new swObtenerDepartamentos().execute();
-    }
-
-    public Departamento getSeleccionado() {
-        return seleccionado;
     }
 
     /**
@@ -136,7 +140,6 @@ public class lisDepartamento extends frameBase<Departamento> {
         btnRefrescar = new javax.swing.JButton();
 
         frame.setBackground(java.awt.Color.white);
-        frame.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         tbDepartamentos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -238,7 +241,7 @@ public class lisDepartamento extends frameBase<Departamento> {
             .addGroup(frameLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 688, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 690, Short.MAX_VALUE)
                     .addGroup(frameLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btnSeleccionar, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -287,13 +290,13 @@ public class lisDepartamento extends frameBase<Departamento> {
 
     private void btnSeleccionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeleccionarActionPerformed
         // TODO add your handling code here:
-        switch (this.modo) {
+        switch (getModo()) {
             case 1:
                 if (FilaActiva(tbDepartamentos)) {
                     Departamento departamento = new Departamento();
                     departamento.setIdDepartamento(ObtenerValorCelda(tbDepartamentos, 1));
                     departamento.setNombre(ObtenerValorCelda(tbDepartamentos, 2));
-                    seleccionado = departamento;
+                    setSeleccionado(departamento);
                 }
                 Cerrar();
                 break;

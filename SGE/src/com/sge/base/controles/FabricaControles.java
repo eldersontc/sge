@@ -1,5 +1,6 @@
 package com.sge.base.controles;
 
+import com.sge.base.formularios.frameBase;
 import com.sge.base.formularios.frameCargando;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -415,55 +416,59 @@ public class FabricaControles {
         });
     }
 
-    public static void VerModal(Component parent, JPanel panel){
-        frameCargando frameCargando = new frameCargando();
+    public static void VerModal(Component parent, frameBase framebBase){
         JDialog dialog = new JDialog();
         dialog.setModal(true);
         dialog.setSize(800, 400);
         dialog.setLayout(new BorderLayout());
         dialog.setLocationRelativeTo(parent);
-        frameCargando.AgregarFrame(panel);
+        frameCargando frameCargando = new frameCargando();
+        frameCargando.AgregarFrame(framebBase);
+        framebBase.Init();
         dialog.add(frameCargando);
         dialog.show();
     }
     
-    public static void VerModal(Component parent, JPanel panel, Action action){
-        frameCargando frameCargando = new frameCargando();
+    public static void VerModal(Component parent, frameBase frameBase, Action action){
         JDialog dialog = new JDialog();
         dialog.setModal(true);
         dialog.setSize(800, 400);
         dialog.setLayout(new BorderLayout());
         dialog.setLocationRelativeTo(parent);
-        frameCargando.AgregarFrame(panel);
+        frameCargando frameCargando = new frameCargando();
+        frameCargando.AgregarFrame(frameBase);
+        frameBase.Init();
         dialog.add(frameCargando);
         dialog.addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
-                action.actionPerformed(new ActionEvent(panel, 0, null));
+                action.actionPerformed(new ActionEvent(frameBase, 0, null));
             }
         });
         dialog.show();
     }
     
-    public static void VerFrame(Component parent, JPanel panel){
-        frameCargando frameCargando = new frameCargando();
+    public static void VerFrame(Component parent, frameBase frameBase){
         JFrame frame = new JFrame();
-        frame.setSize(panel.getPreferredSize().width, panel.getPreferredSize().height + 30);
+        frame.setSize(frameBase.getPreferredSize().width, frameBase.getPreferredSize().height + 30);
         frame.setResizable(false);
         frame.setLayout(new BorderLayout());
         frame.setLocationRelativeTo(parent);
-        frameCargando.AgregarFrame(panel);
+        frameCargando frameCargando = new frameCargando();
+        frameCargando.AgregarFrame(frameBase);
+        frameBase.Init();
         frame.add(frameCargando);
         frame.show();
     }
     
-    public static void VerFrame(Component parent, JPanel panel, Action action){
-        frameCargando frameCargando = new frameCargando();
+    public static void VerFrame(Component parent, frameBase frameBase, Action action){
         JFrame frame = new JFrame();
-        frame.setSize(panel.getPreferredSize().width, panel.getPreferredSize().height + 30);
+        frame.setSize(frameBase.getPreferredSize().width, frameBase.getPreferredSize().height + 30);
         frame.setResizable(false);
         frame.setLayout(new BorderLayout());
         frame.setLocationRelativeTo(parent);
-        frameCargando.AgregarFrame(panel);
+        frameCargando frameCargando = new frameCargando();
+        frameCargando.AgregarFrame(frameBase);
+        frameBase.Init();
         frame.add(frameCargando);
         frame.addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {

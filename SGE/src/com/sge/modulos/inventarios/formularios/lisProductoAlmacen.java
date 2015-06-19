@@ -13,17 +13,24 @@ import javax.swing.SwingWorker;
 public class lisProductoAlmacen extends frameBase<ProductoAlmacen> {
 
     /**
-     * Creates new form lisProductoAlmacenx
+     * Creates new form lisProductoAlmacen
+     * @param modo
+     * @param filtro
      */
     public lisProductoAlmacen(int modo, String filtro) {
         initComponents();
-        Init(modo, filtro);
+        setModo(modo);
+        setFiltro(filtro);
     }
-
-    private int modo;
-
-    private String filtro;
-
+    
+    @Override
+    public void Init() {
+        if (getModo() == 1) {
+            OcultarColumna(tbAlmacenes, 0);
+        }
+        new swObtenerAlmacenes().execute();
+    }
+    
     public class swObtenerAlmacenes extends SwingWorker {
 
         @Override
@@ -32,7 +39,7 @@ public class lisProductoAlmacen extends frameBase<ProductoAlmacen> {
             cliInventarios cliente = new cliInventarios();
             String json = "";
             try {
-                json = cliente.ObtenerProductoAlmacenes(new Gson().toJson(filtro));
+                json = cliente.ObtenerProductoAlmacenes(new Gson().toJson(getFiltro()));
             } catch (Exception e) {
                 OcultarCargando(frame);
                 cancel(false);
@@ -64,16 +71,7 @@ public class lisProductoAlmacen extends frameBase<ProductoAlmacen> {
             }
         }
     }
-
-    public void Init(int modo, String filtro) {
-        this.modo = modo;
-        this.filtro = filtro;
-        if (this.modo == 1) {
-            OcultarColumna(tbAlmacenes, 0);
-        }
-        new swObtenerAlmacenes().execute();
-    }
-
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -93,7 +91,6 @@ public class lisProductoAlmacen extends frameBase<ProductoAlmacen> {
         btnRefrescar = new javax.swing.JButton();
 
         frame.setBackground(java.awt.Color.white);
-        frame.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         tbAlmacenes.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -142,7 +139,7 @@ public class lisProductoAlmacen extends frameBase<ProductoAlmacen> {
             .addGroup(pnlTituloLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lblTitulo)
-                .addContainerGap(350, Short.MAX_VALUE))
+                .addContainerGap(352, Short.MAX_VALUE))
         );
         pnlTituloLayout.setVerticalGroup(
             pnlTituloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -173,7 +170,7 @@ public class lisProductoAlmacen extends frameBase<ProductoAlmacen> {
             .addGroup(frameLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 581, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 583, Short.MAX_VALUE)
                     .addGroup(frameLayout.createSequentialGroup()
                         .addComponent(lblFiltro)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -219,8 +216,7 @@ public class lisProductoAlmacen extends frameBase<ProductoAlmacen> {
         // TODO add your handling code here:
         new swObtenerAlmacenes().execute();
     }//GEN-LAST:event_btnRefrescarActionPerformed
-
-
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnRefrescar;
     private javax.swing.JPanel frame;

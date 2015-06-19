@@ -22,14 +22,25 @@ import javax.swing.SwingWorker;
 public class regProducto extends frameBase<Producto> {
 
     /**
-     * Creates new form regProductox
+     * Creates new form regProducto
+     *
+     * @param id
      */
-    public regProducto(String operacion, int idProducto) {
+    public regProducto(int id) {
         initComponents();
-        Init(operacion, idProducto);
+        setId(id);
     }
 
-    int idProducto = 0;
+    @Override
+    public void Init() {
+        if (getId() == 0) {
+            lblTitulo.setText("NUEVO " + lblTitulo.getText());
+            setEntidad(new Producto());
+        } else {
+            lblTitulo.setText("EDITAR " + lblTitulo.getText());
+            new swObtenerProducto().execute();
+        }
+    }
 
     private List<ProductoUnidad> unidades = new ArrayList<>();
     private List<ProductoAlmacen> almacenes = new ArrayList<>();
@@ -75,16 +86,6 @@ public class regProducto extends frameBase<Producto> {
         }
     };
 
-    public void Init(String operacion, int idProducto) {
-        lblTitulo.setText(operacion + lblTitulo.getText());
-        this.idProducto = idProducto;
-        if (this.idProducto == 0) {
-            setEntidad(new Producto());
-        } else {
-            new swObtenerProducto().execute();
-        }
-    }
-
     public List<ProductoUnidad> getProductoUnidades() {
         for (int i = 0; i < tbUnidades.getRowCount(); i++) {
             int idProductoUnidad = ObtenerValorCelda(tbUnidades, i, 0);
@@ -112,7 +113,7 @@ public class regProducto extends frameBase<Producto> {
             cliInventarios cliente = new cliInventarios();
             String json = "";
             try {
-                json = cliente.ObtenerProducto(new Gson().toJson(idProducto));
+                json = cliente.ObtenerProducto(new Gson().toJson(getId()));
             } catch (Exception e) {
                 OcultarCargando(frame);
                 cancel(false);
@@ -189,10 +190,10 @@ public class regProducto extends frameBase<Producto> {
                 getEntidad().setActivo(chkActivo.isSelected());
                 getEntidad().setUnidades(getProductoUnidades());
                 getEntidad().setAlmacenes(almacenes);
-                if (idProducto == 0) {
+                if (getId() == 0) {
                     json = cliente.RegistrarProducto(new Gson().toJson(getEntidad()));
                 } else {
-                    getEntidad().setIdProducto(idProducto);
+                    getEntidad().setIdProducto(getId());
                     json = cliente.ActualizarProducto(new Gson().toJson(getEntidad()));
                 }
             } catch (Exception e) {
@@ -261,7 +262,6 @@ public class regProducto extends frameBase<Producto> {
         lblAlto = new javax.swing.JLabel();
 
         frame.setBackground(java.awt.Color.white);
-        frame.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         lblCodigo.setText("CODIGO");
 
@@ -544,7 +544,7 @@ public class regProducto extends frameBase<Producto> {
                     .addComponent(chkInventarios)
                     .addComponent(chkCompras)
                     .addComponent(chkVentas))
-                .addGap(0, 11, Short.MAX_VALUE)
+                .addGap(0, 13, Short.MAX_VALUE)
                 .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -614,7 +614,6 @@ public class regProducto extends frameBase<Producto> {
             EliminarFila(tbAlmacenes);
         }
     }//GEN-LAST:event_btnEliminarAlmacenActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAceptar;

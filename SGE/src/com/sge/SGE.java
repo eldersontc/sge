@@ -3,7 +3,6 @@ package com.sge;
 import com.google.gson.Gson;
 import com.sge.base.controles.FabricaControles;
 import com.sge.base.excepciones.Excepciones;
-import com.sge.base.formularios.frameBasex;
 import com.sge.base.formularios.frameLogin;
 import com.sge.base.formularios.frameBase;
 import com.sge.base.formularios.frameCargando;
@@ -236,10 +235,11 @@ public class SGE extends javax.swing.JFrame {
     public void AgregarTab(String frameName, String title) throws Exception {
         int index = tpnlTabs.indexOfTab(title);
         if (index == -1) {
-            frameCargando frameCargando = new frameCargando();
             frameBase frame = CrearInstancia(frameName);
             frame.setUsuario(getUsuario());
+            frameCargando frameCargando = new frameCargando();
             frameCargando.AgregarFrame(frame);
+            frame.Init();
             tpnlTabs.addTab(title, frameCargando);
             tpnlTabs.setSelectedIndex(tpnlTabs.getTabCount() - 1);
         } else {

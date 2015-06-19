@@ -17,23 +17,42 @@ import javax.swing.SwingWorker;
 public class lisEmpleado extends frameBase<Empleado> {
 
     /**
-     * Creates new form lisEmpleadox
+     * Creates new form lisEmpleado
+     *
+     * @param modo
      */
     public lisEmpleado(int modo) {
         initComponents();
-        Init(modo, "");
+        setModo(modo);
+        setFiltro("");
     }
 
+    /**
+     * Creates new form lisEmpleado
+     *
+     * @param modo
+     * @param filtro
+     */
     public lisEmpleado(int modo, String filtro) {
         initComponents();
-        Init(modo, filtro);
+        setModo(modo);
+        setFiltro(filtro);
     }
 
-    private int modo;
-
-    private String filtro;
-
-    private Empleado seleccionado;
+    @Override
+    public void Init() {
+        switch (getModo()) {
+            case 0:
+                OcultarColumna(tbEmpleados, 0);
+                OcultarControl(btnSeleccionar);
+                break;
+            case 1:
+                OcultarColumnas(tbEmpleados, new int[]{0, 6, 7});
+                OcultarControl(btnNuevo);
+                break;
+        }
+        new swObtenerEmpleados().execute();
+    }
 
     ImageIcon Icon_Edit = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/edit-16.png"));
     ImageIcon Icon_Dele = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/delete-16.png"));
@@ -51,7 +70,7 @@ public class lisEmpleado extends frameBase<Empleado> {
             EliminarEmpleado();
         }
     };
-    
+
     Action refr = new AbstractAction() {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -67,7 +86,7 @@ public class lisEmpleado extends frameBase<Empleado> {
             cliAdministracion cliente = new cliAdministracion();
             String json = "";
             try {
-                json = cliente.ObtenerEmpleados(new Gson().toJson(filtro));
+                json = cliente.ObtenerEmpleados(new Gson().toJson(getFiltro()));
             } catch (Exception e) {
                 OcultarCargando(frame);
                 cancel(false);
@@ -84,14 +103,19 @@ public class lisEmpleado extends frameBase<Empleado> {
                 String json = get().toString();
                 String[] resultado = new Gson().fromJson(json, String[].class);
                 if (resultado[0].equals("true")) {
-                    EliminarTodasFilas(tbEmpleados);
                     Empleado[] empleados = new Gson().fromJson(resultado[1], Empleado[].class);
-                    for (Empleado empleado : empleados) {
-                        AgregarFila(tbEmpleados, new Object[]{false, empleado.getIdEmpleado(), empleado.getCodigo(), empleado.getNombre() + " " + empleado.getApellidoPaterno() + " " + empleado.getApellidoMaterno(), empleado.getDocumentoIdentidad(), empleado.isActivo(), Icon_Edit, Icon_Dele});
+                    if (getModo() == 1 && empleados.length == 1) {
+                        setSeleccionado(empleados[0]);
+                        Cerrar();
+                    } else {
+                        EliminarTodasFilas(tbEmpleados);
+                        for (Empleado empleado : empleados) {
+                            AgregarFila(tbEmpleados, new Object[]{false, empleado.getIdEmpleado(), empleado.getCodigo(), empleado.getNombre() + " " + empleado.getApellidoPaterno() + " " + empleado.getApellidoMaterno(), empleado.getDocumentoIdentidad(), empleado.isActivo(), Icon_Edit, Icon_Dele});
+                        }
+                        AgregarBoton(tbEmpleados, edit, 6);
+                        AgregarBoton(tbEmpleados, dele, 7);
+                        AgregarOrdenamiento(tbEmpleados);
                     }
-                    AgregarBoton(tbEmpleados, edit, 6);
-                    AgregarBoton(tbEmpleados, dele, 7);
-                    AgregarOrdenamiento(tbEmpleados);
                 }
                 OcultarCargando(frame);
             } catch (Exception e) {
@@ -138,25 +162,9 @@ public class lisEmpleado extends frameBase<Empleado> {
         }
     }
 
-    public void Init(int modo, String filtro) {
-        this.modo = modo;
-        this.filtro = filtro;
-        switch (this.modo) {
-            case 0:
-                OcultarColumna(tbEmpleados, 0);
-                OcultarControl(btnSeleccionar);
-                break;
-            case 1:
-                OcultarColumnas(tbEmpleados, new int[]{0, 6, 7});
-                OcultarControl(btnNuevo);
-                break;
-        }
-        new swObtenerEmpleados().execute();
-    }
-
     public void EditarEmpleado() {
         int idEmpleado = ObtenerValorCelda(tbEmpleados, 1);
-        VerFrame(new regEmpleado("EDITAR ", idEmpleado), refr);
+        VerFrame(new regEmpleado(idEmpleado), refr);
     }
 
     public void EliminarEmpleado() {
@@ -164,10 +172,6 @@ public class lisEmpleado extends frameBase<Empleado> {
         if (confirmacion == 0) {
             new swEliminarUnidad().execute();
         }
-    }
-
-    public Empleado getSeleccionado() {
-        return seleccionado;
     }
 
     /**
@@ -191,7 +195,6 @@ public class lisEmpleado extends frameBase<Empleado> {
         btnRefrescar = new javax.swing.JButton();
 
         frame.setBackground(java.awt.Color.white);
-        frame.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         tbEmpleados.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -248,7 +251,7 @@ public class lisEmpleado extends frameBase<Empleado> {
             .addGroup(pnlTituloLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lblTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 417, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 419, Short.MAX_VALUE)
                 .addComponent(btnNuevo)
                 .addContainerGap())
         );
@@ -293,7 +296,7 @@ public class lisEmpleado extends frameBase<Empleado> {
             .addGroup(frameLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 752, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 754, Short.MAX_VALUE)
                     .addGroup(frameLayout.createSequentialGroup()
                         .addComponent(lblFiltro)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -317,7 +320,7 @@ public class lisEmpleado extends frameBase<Empleado> {
                         .addComponent(txtFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(btnRefrescar, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 288, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 290, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnSeleccionar)
                 .addGap(15, 15, 15))
@@ -337,7 +340,7 @@ public class lisEmpleado extends frameBase<Empleado> {
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
         // TODO add your handling code here:
-        VerFrame(new regEmpleado("NUEVO ", 0), refr);
+        VerFrame(new regEmpleado(0), refr);
     }//GEN-LAST:event_btnNuevoActionPerformed
 
     private void txtFiltroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFiltroActionPerformed
@@ -347,13 +350,13 @@ public class lisEmpleado extends frameBase<Empleado> {
 
     private void btnSeleccionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeleccionarActionPerformed
         // TODO add your handling code here:
-        switch (this.modo) {
+        switch (getModo()) {
             case 1:
                 if (FilaActiva(tbEmpleados)) {
                     Empleado empleado = new Empleado();
                     empleado.setIdEmpleado(ObtenerValorCelda(tbEmpleados, 1));
                     empleado.setNombre(ObtenerValorCelda(tbEmpleados, 3));
-                    seleccionado = empleado;
+                    setSeleccionado(empleado);
                 }
                 Cerrar();
                 break;
@@ -366,7 +369,6 @@ public class lisEmpleado extends frameBase<Empleado> {
         // TODO add your handling code here:
         new swObtenerEmpleados().execute();
     }//GEN-LAST:event_btnRefrescarActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnNuevo;

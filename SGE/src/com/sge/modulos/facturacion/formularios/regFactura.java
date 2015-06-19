@@ -33,11 +33,13 @@ import javax.swing.SwingWorker;
 public class regFactura extends frameBase<Factura> {
 
     /**
-     * Creates new form regFacturax
+     * Creates new form regFactura
+     *
+     * @param id
      */
     public regFactura(int id) {
         initComponents();
-        Init(id);
+        setId(id);
     }
 
     public regFactura(ValorDefinido valorDefinido) {
@@ -45,11 +47,9 @@ public class regFactura extends frameBase<Factura> {
         super.Init(valorDefinido);
     }
 
-    public int id = 0;
-
-    public void Init(int id) {
-        this.id = id;
-        if (this.id == 0) {
+    @Override
+    public void Init() {
+        if (getId() == 0) {
             lblTitulo.setText("NUEVA " + lblTitulo.getText());
             new swObtenerValoresDefinidos().execute();
         } else {
@@ -181,7 +181,7 @@ public class regFactura extends frameBase<Factura> {
         @Override
         public void actionPerformed(ActionEvent evt) {
             List<OrdenTrabajo> seleccionados = ((lisOrdenTrabajo) evt.getSource()).getSeleccionados();
-            if(!seleccionados.isEmpty()){
+            if (!seleccionados.isEmpty()) {
                 for (OrdenTrabajo seleccionado : seleccionados) {
                     AgregarFila(tbItems, new Object[]{0, seleccionado.getIdOrdenTrabajo(), seleccionado.getNumero(), seleccionado.getDescripcion(), seleccionado.getCantidad(), seleccionado.getTotal() / seleccionado.getCantidad(), seleccionado.getTotal()});
                 }
@@ -189,7 +189,7 @@ public class regFactura extends frameBase<Factura> {
             }
         }
     };
-    
+
     public class swObtenerValoresDefinidos extends SwingWorker<Object, Object> {
 
         @Override
@@ -232,7 +232,7 @@ public class regFactura extends frameBase<Factura> {
             cliFacturacion cliente = new cliFacturacion();
             String json = "";
             try {
-                json = cliente.ObtenerFactura(new Gson().toJson(id));
+                json = cliente.ObtenerFactura(new Gson().toJson(getId()));
             } catch (Exception e) {
                 OcultarCargando(frame);
                 cancel(false);
@@ -318,7 +318,7 @@ public class regFactura extends frameBase<Factura> {
             setJson(new Gson().toJson(super.getEntidad()));
             Cerrar();
         } else {
-            if (this.id == 0) {
+            if (getId() == 0) {
                 new swGuardarFactura().execute();
             } else {
                 Cerrar();
@@ -370,7 +370,6 @@ public class regFactura extends frameBase<Factura> {
         lblPorcentajeImpuesto = new javax.swing.JLabel();
 
         frame.setBackground(java.awt.Color.white);
-        frame.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         lblNombre.setText("RESPONSABLE");
 
@@ -693,7 +692,7 @@ public class regFactura extends frameBase<Factura> {
     private void schMonedaSearch() {
         VerModal(new lisMoneda(1), select_mone);
     }
-    
+
     private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
         // TODO add your handling code here:
         Aceptar();
@@ -716,7 +715,6 @@ public class regFactura extends frameBase<Factura> {
             CalcularTotales();
         }
     }//GEN-LAST:event_btnEliminarItemActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAceptar;

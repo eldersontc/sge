@@ -12,7 +12,8 @@ import javax.swing.ImageIcon;
 public class verGraficoPrecorte extends frameBase<OrdenTrabajo> {
 
     /**
-     * Creates new form verGraficoPrecortex
+     * Creates new form verGraficoPrecorte
+     * @param item
      */
     public verGraficoPrecorte(ItemOrdenTrabajo item) {
         initComponents();
@@ -69,7 +70,6 @@ public class verGraficoPrecorte extends frameBase<OrdenTrabajo> {
         txtOtros = new javax.swing.JTextArea();
 
         frame.setBackground(java.awt.Color.white);
-        frame.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         pnlTitulo.setBackground(new java.awt.Color(67, 100, 130));
         pnlTitulo.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -86,7 +86,7 @@ public class verGraficoPrecorte extends frameBase<OrdenTrabajo> {
             .addGroup(pnlTituloLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lblTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 318, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(671, Short.MAX_VALUE))
+                .addContainerGap(673, Short.MAX_VALUE))
         );
         pnlTituloLayout.setVerticalGroup(
             pnlTituloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -197,7 +197,7 @@ public class verGraficoPrecorte extends frameBase<OrdenTrabajo> {
                                     .addComponent(lblCantidadPiezas1, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 155, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 157, Short.MAX_VALUE)
                         .addComponent(btnAceptar))
                     .addComponent(jScrollPane1))
                 .addContainerGap())
@@ -219,8 +219,7 @@ public class verGraficoPrecorte extends frameBase<OrdenTrabajo> {
         // TODO add your handling code here:
         Cerrar();
     }//GEN-LAST:event_btnAceptarActionPerformed
-
-
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAceptar;
     private javax.swing.JPanel frame;

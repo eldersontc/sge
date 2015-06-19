@@ -23,30 +23,32 @@ import javax.swing.SwingWorker;
 public class regListaPrecioServicio extends frameBase<ListaPrecioServicio> {
 
     /**
-     * Creates new form regListaPrecioServiciox
+     * Creates new form regListaPrecioServicio
+     *
+     * @param id
      */
-    public regListaPrecioServicio(String operacion, int id) {
+    public regListaPrecioServicio(int id) {
         initComponents();
-        Init(operacion, id);
+        setId(id);
     }
 
-    int id = 0;
-    int idItem = 0;
-    int idServicio = 0;
-    int idUnidad = 0;
-    int idEscala = 0;
-
-    public void Init(String operacion, int id) {
-        lblTitulo.setText(operacion + lblTitulo.getText());
-        this.id = id;
-        if (this.id == 0) {
+    @Override
+    public void Init() {
+        if (getId() == 0) {
+            lblTitulo.setText("NUEVA " + lblTitulo.getText());
             OcultarControl(btnNuevoItem);
             OcultarControl(btnNuevaUnidad);
             OcultarControl(btnNuevaEscala);
         } else {
+            lblTitulo.setText("EDITAR " + lblTitulo.getText());
             new swObtenerListaPrecio().execute();
         }
     }
+
+    int idItem = 0;
+    int idServicio = 0;
+    int idUnidad = 0;
+    int idEscala = 0;
 
     public void ObtenerUnidades() {
         cliVentas cliente = new cliVentas();
@@ -180,7 +182,7 @@ public class regListaPrecioServicio extends frameBase<ListaPrecioServicio> {
                 List<ItemListaPrecioServicio> itemsListaPrecio = new ArrayList<>();
                 for (Servicio seleccionado : seleccionados) {
                     ItemListaPrecioServicio item = new ItemListaPrecioServicio();
-                    item.setIdListaPrecioServicio(id);
+                    item.setIdListaPrecioServicio(getId());
                     item.setIdServicio(seleccionado.getIdServicio());
                     item.setNombreServicio(seleccionado.getDescripcion());
                     itemsListaPrecio.add(item);
@@ -251,7 +253,7 @@ public class regListaPrecioServicio extends frameBase<ListaPrecioServicio> {
             VerCargando(frame);
             cliVentas cliVentas = new cliVentas();
             try {
-                String json = cliVentas.ObtenerListaPrecioServicio(new Gson().toJson(id));
+                String json = cliVentas.ObtenerListaPrecioServicio(new Gson().toJson(getId()));
                 String[] resultado = new Gson().fromJson(json, String[].class);
 
                 if (resultado[0].equals("true")) {
@@ -295,10 +297,10 @@ public class regListaPrecioServicio extends frameBase<ListaPrecioServicio> {
                 listaPrecio.setNombre(txtNombre.getText());
 
                 listaPrecio.setActivo(chkActivo.isSelected());
-                if (id == 0) {
+                if (getId() == 0) {
                     json = cliVentas.RegistrarListaPrecioServicio(new Gson().toJson(listaPrecio));
                 } else {
-                    listaPrecio.setIdListaPrecioServicio(id);
+                    listaPrecio.setIdListaPrecioServicio(getId());
                     json = cliVentas.ActualizarListaPrecioServicio(new Gson().toJson(listaPrecio));
                 }
             } catch (Exception e) {
@@ -367,7 +369,6 @@ public class regListaPrecioServicio extends frameBase<ListaPrecioServicio> {
         btnEliminarEscala = new javax.swing.JButton();
 
         frame.setBackground(java.awt.Color.white);
-        frame.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         btnAceptar.setText("ACEPTAR");
         btnAceptar.addActionListener(new java.awt.event.ActionListener() {
@@ -476,7 +477,7 @@ public class regListaPrecioServicio extends frameBase<ListaPrecioServicio> {
         tabItemsLayout.setHorizontalGroup(
             tabItemsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(tabItemsLayout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 667, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 669, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(tabItemsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnNuevoItem, javax.swing.GroupLayout.Alignment.TRAILING)
@@ -808,7 +809,6 @@ public class regListaPrecioServicio extends frameBase<ListaPrecioServicio> {
             EliminarEscala();
         }
     }//GEN-LAST:event_btnEliminarEscalaActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAceptar;

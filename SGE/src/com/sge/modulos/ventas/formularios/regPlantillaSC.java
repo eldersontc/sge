@@ -23,14 +23,26 @@ import javax.swing.SwingWorker;
 public class regPlantillaSC extends frameBase<PlantillaSolicitudCotizacion> {
 
     /**
-     * Creates new form regPlantillaSCx
+     * Creates new form regPlantillaSC
+     *
+     * @param id
      */
-    public regPlantillaSC(String operacion, int idPlantilla) {
+    public regPlantillaSC(int id) {
         initComponents();
-        Init(operacion, idPlantilla);
+        setId(id);
     }
 
-    int idPlantilla = 0;
+    @Override
+    public void Init() {
+        if (getId() == 0) {
+            lblTitulo.setText("NUEVA " + lblTitulo.getText());
+            setEntidad(new PlantillaSolicitudCotizacion());
+        } else {
+            lblTitulo.setText("EDITAR " + lblTitulo.getText());
+            new swObtenerPlantilla().execute();
+        }
+        OcultarControl(tpnlItems);
+    }
 
     private ItemPlantillaSolicitudCotizacion item;
 
@@ -60,17 +72,6 @@ public class regPlantillaSC extends frameBase<PlantillaSolicitudCotizacion> {
         }
     };
 
-    public void Init(String operacion, int idPlantilla) {
-        lblTitulo.setText(operacion + lblTitulo.getText());
-        this.idPlantilla = idPlantilla;
-        if (this.idPlantilla > 0) {
-            new swObtenerPlantilla().execute();
-        } else {
-            setEntidad(new PlantillaSolicitudCotizacion());
-        }
-        OcultarControl(tpnlItems);
-    }
-
     public class swObtenerPlantilla extends SwingWorker<Object, Object> {
 
         @Override
@@ -78,7 +79,7 @@ public class regPlantillaSC extends frameBase<PlantillaSolicitudCotizacion> {
             VerCargando(frame);
             cliVentas cliVentas = new cliVentas();
             try {
-                String json = cliVentas.ObtenerPlantillaSolicitudCotizacion(new Gson().toJson(idPlantilla));
+                String json = cliVentas.ObtenerPlantillaSolicitudCotizacion(new Gson().toJson(getId()));
                 String[] resultado = new Gson().fromJson(json, String[].class);
 
                 if (resultado[0].equals("true")) {
@@ -130,10 +131,10 @@ public class regPlantillaSC extends frameBase<PlantillaSolicitudCotizacion> {
                 plantilla.setLineaProduccion(cboLineaProduccion.getSelectedItem().toString());
                 plantilla.setActivo(chkActivo.isSelected());
                 plantilla.setItems(getItems());
-                if (idPlantilla == 0) {
+                if (getId() == 0) {
                     json = cliVentas.RegistrarPlantillaSolicitudCotizacion(new Gson().toJson(plantilla));
                 } else {
-                    plantilla.setIdPlantillaSolicitudCotizacion(idPlantilla);
+                    plantilla.setIdPlantillaSolicitudCotizacion(getId());
                     json = cliVentas.ActualizarPlantillaSolicitudCotizacion(new Gson().toJson(plantilla));
                 }
             } catch (Exception e) {
@@ -249,7 +250,6 @@ public class regPlantillaSC extends frameBase<PlantillaSolicitudCotizacion> {
         lisItems = new javax.swing.JList();
 
         frame.setBackground(java.awt.Color.white);
-        frame.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         btnAceptar.setText("ACEPTAR");
         btnAceptar.addActionListener(new java.awt.event.ActionListener() {
@@ -504,7 +504,7 @@ public class regPlantillaSC extends frameBase<PlantillaSolicitudCotizacion> {
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addComponent(tpnlItems, javax.swing.GroupLayout.PREFERRED_SIZE, 489, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(21, Short.MAX_VALUE))
+                .addContainerGap(23, Short.MAX_VALUE))
         );
         frameLayout.setVerticalGroup(
             frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -612,7 +612,7 @@ public class regPlantillaSC extends frameBase<PlantillaSolicitudCotizacion> {
     private void btnEliminarItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarItemActionPerformed
         // TODO add your handling code here:
         ItemPlantillaSolicitudCotizacion itemPlantilla = (ItemPlantillaSolicitudCotizacion) lisItems.getSelectedValue();
-        if (idPlantilla == 0) {
+        if (getId() == 0) {
             getEntidad().getItems().remove(itemPlantilla);
         } else {
             itemPlantilla.setEliminar(true);
@@ -631,7 +631,6 @@ public class regPlantillaSC extends frameBase<PlantillaSolicitudCotizacion> {
             OcultarControl(tpnlItems);
         }
     }//GEN-LAST:event_lisItemsValueChanged
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAceptar;

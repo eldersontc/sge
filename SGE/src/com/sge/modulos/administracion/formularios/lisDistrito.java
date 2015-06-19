@@ -18,22 +18,41 @@ public class lisDistrito extends frameBase<Distrito> {
 
     /**
      * Creates new form lisDistrito
+     *
+     * @param modo
      */
     public lisDistrito(int modo) {
         initComponents();
-        Init(modo, "");
+        setModo(modo);
+        setFiltro("");
     }
 
+    /**
+     * Creates new form lisDistrito
+     *
+     * @param modo
+     * @param filtro
+     */
     public lisDistrito(int modo, String filtro) {
         initComponents();
-        Init(modo, filtro);
+        setModo(modo);
+        setFiltro(filtro);
     }
 
-    private int modo;
-
-    private String filtro;
-
-    private Distrito seleccionado;
+    @Override
+    public void Init() {
+        switch (getModo()) {
+            case 0:
+                OcultarColumna(tbDistritos, 0);
+                OcultarControl(btnSeleccionar);
+                break;
+            case 1:
+                OcultarColumnas(tbDistritos, new int[]{0, 3, 4});
+                OcultarControl(btnNuevo);
+                break;
+        }
+        new swObtenerDistritos().execute();
+    }
 
     ImageIcon Icon_Save = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/save-16.png"));
     ImageIcon Icon_Dele = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/delete-16.png"));
@@ -60,7 +79,7 @@ public class lisDistrito extends frameBase<Distrito> {
             cliAdministracion cliente = new cliAdministracion();
             String json = "";
             try {
-                json = cliente.ObtenerDistritos(new Gson().toJson(filtro));
+                json = cliente.ObtenerDistritos(new Gson().toJson(getFiltro()));
             } catch (Exception e) {
                 OcultarCargando(frame);
                 cancel(false);
@@ -78,14 +97,19 @@ public class lisDistrito extends frameBase<Distrito> {
                 String[] resultado = new Gson().fromJson(json, String[].class);
 
                 if (resultado[0].equals("true")) {
-                    EliminarTodasFilas(tbDistritos);
                     Distrito[] distritos = new Gson().fromJson(resultado[1], Distrito[].class);
-                    for (Distrito distrito : distritos) {
-                        AgregarFila(tbDistritos, new Object[]{false, distrito.getIdDistrito(), distrito.getNombre(), Icon_Save, Icon_Dele});
+                    if (getModo() == 1 && distritos.length == 1) {
+                        setSeleccionado(distritos[0]);
+                        Cerrar();
+                    } else {
+                        EliminarTodasFilas(tbDistritos);
+                        for (Distrito distrito : distritos) {
+                            AgregarFila(tbDistritos, new Object[]{false, distrito.getIdDistrito(), distrito.getNombre(), Icon_Save, Icon_Dele});
+                        }
+                        AgregarBoton(tbDistritos, save, 3);
+                        AgregarBoton(tbDistritos, dele, 4);
+                        AgregarOrdenamiento(tbDistritos);
                     }
-                    AgregarBoton(tbDistritos, save, 3);
-                    AgregarBoton(tbDistritos, dele, 4);
-                    AgregarOrdenamiento(tbDistritos);
                 }
                 OcultarCargando(frame);
             } catch (Exception e) {
@@ -93,26 +117,6 @@ public class lisDistrito extends frameBase<Distrito> {
                 ControlarExcepcion(e);
             }
         }
-    }
-
-    public void Init(int modo, String filtro) {
-        this.modo = modo;
-        this.filtro = filtro;
-        switch (this.modo) {
-            case 0:
-                OcultarColumna(tbDistritos, 0);
-                OcultarControl(btnSeleccionar);
-                break;
-            case 1:
-                OcultarColumnas(tbDistritos, new int[]{0, 3, 4});
-                OcultarControl(btnNuevo);
-                break;
-        }
-        new swObtenerDistritos().execute();
-    }
-
-    public Distrito getSeleccionado() {
-        return seleccionado;
     }
 
     /**
@@ -136,7 +140,6 @@ public class lisDistrito extends frameBase<Distrito> {
         btnRefrescar = new javax.swing.JButton();
 
         frame.setBackground(java.awt.Color.white);
-        frame.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         tbDistritos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -238,7 +241,7 @@ public class lisDistrito extends frameBase<Distrito> {
             .addGroup(frameLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 580, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 582, Short.MAX_VALUE)
                     .addGroup(frameLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btnSeleccionar, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -287,13 +290,13 @@ public class lisDistrito extends frameBase<Distrito> {
 
     private void btnSeleccionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeleccionarActionPerformed
         // TODO add your handling code here:
-        switch (this.modo) {
+        switch (getModo()) {
             case 1:
                 if (FilaActiva(tbDistritos)) {
                     Distrito distrito = new Distrito();
                     distrito.setIdDistrito(ObtenerValorCelda(tbDistritos, 1));
                     distrito.setNombre(ObtenerValorCelda(tbDistritos, 2));
-                    seleccionado = distrito;
+                    setSeleccionado(distrito);
                 }
                 Cerrar();
                 break;
@@ -311,7 +314,6 @@ public class lisDistrito extends frameBase<Distrito> {
         // TODO add your handling code here:
         new swObtenerDistritos().execute();
     }//GEN-LAST:event_btnRefrescarActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnNuevo;

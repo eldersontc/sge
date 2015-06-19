@@ -32,15 +32,28 @@ import javax.swing.SwingWorker;
 public class regCliente extends frameBase<Cliente> {
 
     /**
-     * Creates new form regClientex
+     * Creates new form regCliente
+     *
+     * @param id
      */
-    public regCliente(String operacion, int idCliente) {
+    public regCliente(int id) {
         initComponents();
-        Init(operacion, idCliente);
+        setId(id);
     }
 
-    int idCliente = 0;
-
+    @Override
+    public void Init() {
+        if (getId() == 0) {
+            lblTitulo.setText("NUEVO " + lblTitulo.getText());
+        } else {
+            lblTitulo.setText("EDITAR " + lblTitulo.getText());
+            new swObtenerCliente().execute();
+        }
+        AgregarBoton(tbDirecciones, click_depa, 2);
+        AgregarBoton(tbDirecciones, click_prov, 4);
+        AgregarBoton(tbDirecciones, click_dist, 6);
+    }
+    
     private List<DireccionCliente> direcciones = new ArrayList<>();
     private List<ContactoCliente> contactos = new ArrayList<>();
 
@@ -156,17 +169,6 @@ public class regCliente extends frameBase<Cliente> {
         }
     };
 
-    public void Init(String operacion, int idCliente) {
-        lblTitulo.setText(operacion + lblTitulo.getText());
-        this.idCliente = idCliente;
-        if (this.idCliente > 0) {
-            new swObtenerCliente().execute();
-        }
-        AgregarBoton(tbDirecciones, click_depa, 2);
-        AgregarBoton(tbDirecciones, click_prov, 4);
-        AgregarBoton(tbDirecciones, click_dist, 6);
-    }
-
     public List<DireccionCliente> getDirecciones() {
         for (int i = 0; i < tbDirecciones.getRowCount(); i++) {
             int idDireccionCliente = ObtenerValorCelda(tbDirecciones, i, 0);
@@ -215,7 +217,7 @@ public class regCliente extends frameBase<Cliente> {
             VerCargando(frame);
             cliVentas cliVentas = new cliVentas();
             try {
-                String json = cliVentas.ObtenerCliente(new Gson().toJson(idCliente));
+                String json = cliVentas.ObtenerCliente(new Gson().toJson(getId()));
                 String[] resultado = new Gson().fromJson(json, String[].class);
 
                 if (resultado[0].equals("true")) {
@@ -294,10 +296,10 @@ public class regCliente extends frameBase<Cliente> {
                 cliente.setActivo(chkActivo.isSelected());
                 cliente.setDirecciones(getDirecciones());
                 cliente.setContactos(getContactos());
-                if (idCliente == 0) {
+                if (getId() == 0) {
                     json = cliVentas.RegistrarCliente(new Gson().toJson(cliente));
                 } else {
-                    cliente.setIdCliente(idCliente);
+                    cliente.setIdCliente(getId());
                     json = cliVentas.ActualizarCliente(new Gson().toJson(cliente));
                 }
             } catch (Exception e) {
@@ -375,7 +377,6 @@ public class regCliente extends frameBase<Cliente> {
         schVendedor = new com.sge.base.controles.JSearch();
 
         frame.setBackground(java.awt.Color.white);
-        frame.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         btnAceptar.setText("ACEPTAR");
         btnAceptar.addActionListener(new java.awt.event.ActionListener() {
@@ -838,7 +839,6 @@ public class regCliente extends frameBase<Cliente> {
             EliminarFila(tbContactos);
         }
     }//GEN-LAST:event_btnEliminarContactoActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAceptar;

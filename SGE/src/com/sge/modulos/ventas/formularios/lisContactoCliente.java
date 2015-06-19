@@ -13,16 +13,19 @@ import javax.swing.SwingWorker;
 public class lisContactoCliente extends frameBase<ContactoCliente> {
 
     /**
-     * Creates new form lisContactoClientex
+     * Creates new form lisContactoCliente
+     *
+     * @param filtro
      */
     public lisContactoCliente(String filtro) {
         initComponents();
-        Init(filtro);
+        setFiltro(filtro);
     }
 
-    private String filtro = "";
-
-    private ContactoCliente seleccionado;
+    @Override
+    public void Init() {
+        new swObtenerContactos().execute();
+    }
 
     public class swObtenerContactos extends SwingWorker<Object, Object> {
 
@@ -32,7 +35,7 @@ public class lisContactoCliente extends frameBase<ContactoCliente> {
             cliVentas cliente = new cliVentas();
             String json = "";
             try {
-                json = cliente.ObtenerContactosCliente(new Gson().toJson(filtro));
+                json = cliente.ObtenerContactosCliente(new Gson().toJson(getFiltro()));
             } catch (Exception e) {
                 OcultarCargando(frame);
                 cancel(false);
@@ -65,15 +68,6 @@ public class lisContactoCliente extends frameBase<ContactoCliente> {
         }
     }
 
-    public void Init(String filtro) {
-        this.filtro = filtro;
-        new swObtenerContactos().execute();
-    }
-
-    public ContactoCliente getSeleccionado() {
-        return seleccionado;
-    }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -94,7 +88,6 @@ public class lisContactoCliente extends frameBase<ContactoCliente> {
         btnRefrescar = new javax.swing.JButton();
 
         frame.setBackground(java.awt.Color.white);
-        frame.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         tbContactos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -143,7 +136,7 @@ public class lisContactoCliente extends frameBase<ContactoCliente> {
             .addGroup(pnlTituloLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lblTitulo)
-                .addContainerGap(408, Short.MAX_VALUE))
+                .addContainerGap(410, Short.MAX_VALUE))
         );
         pnlTituloLayout.setVerticalGroup(
             pnlTituloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -181,7 +174,7 @@ public class lisContactoCliente extends frameBase<ContactoCliente> {
             .addGroup(frameLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 639, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 641, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, frameLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btnSeleccionar, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -230,7 +223,7 @@ public class lisContactoCliente extends frameBase<ContactoCliente> {
             contacto.setIdContactoCliente(ObtenerValorCelda(tbContactos, 1));
             contacto.setNombre(ObtenerValorCelda(tbContactos, 2));
             contacto.setCargo(ObtenerValorCelda(tbContactos, 3));
-            seleccionado = contacto;
+            setSeleccionado(contacto);
             Cerrar();
         }
     }//GEN-LAST:event_btnSeleccionarActionPerformed
@@ -244,7 +237,6 @@ public class lisContactoCliente extends frameBase<ContactoCliente> {
         // TODO add your handling code here:
         new swObtenerContactos().execute();
     }//GEN-LAST:event_btnRefrescarActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnRefrescar;

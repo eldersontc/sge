@@ -13,19 +13,19 @@ import javax.swing.SwingWorker;
 public class regMaquina extends frameBase<Maquina> {
 
     /**
-     * Creates new form regMaquinax
+     * Creates new form regMaquina
      */
-    public regMaquina(String operacion, int idMaquina) {
+    public regMaquina(int id) {
         initComponents();
-        Init(operacion, idMaquina);
+        setId(id);
     }
-
-    int idMaquina = 0;
-
-    public void Init(String operacion, int idMaquina) {
-        lblTitulo.setText(operacion + lblTitulo.getText());
-        this.idMaquina = idMaquina;
-        if (this.idMaquina > 0) {
+    
+    @Override
+    public void Init() {
+        if (getId() == 0) {
+            lblTitulo.setText("NUEVA " + lblTitulo.getText());
+        } else {
+            lblTitulo.setText("EDITAR " + lblTitulo.getText());
             new swObtenerMaquina().execute();
         }
     }
@@ -37,7 +37,7 @@ public class regMaquina extends frameBase<Maquina> {
             VerCargando(frame);
             cliVentas cliVentas = new cliVentas();
             try {
-                String json = cliVentas.ObtenerMaquina(new Gson().toJson(idMaquina));
+                String json = cliVentas.ObtenerMaquina(new Gson().toJson(getId()));
                 String[] resultado = new Gson().fromJson(json, String[].class);
 
                 if (resultado[0].equals("true")) {
@@ -102,10 +102,10 @@ public class regMaquina extends frameBase<Maquina> {
                 maquina.setMinimaResolucion(Integer.parseInt(txtResolucionMinimo.getText()));
                 maquina.setMaximaResolucion(Integer.parseInt(txtResolucionMaximo.getText()));
                 maquina.setActivo(chkActivo.isSelected());
-                if (idMaquina == 0) {
+                if (getId() == 0) {
                     json = cliVentas.RegistrarMaquina(new Gson().toJson(maquina));
                 } else {
-                    maquina.setIdMaquina(idMaquina);
+                    maquina.setIdMaquina(getId());
                     json = cliVentas.ActualizarMaquina(new Gson().toJson(maquina));
                 }
             } catch (Exception e) {
@@ -190,7 +190,6 @@ public class regMaquina extends frameBase<Maquina> {
         lblDescripcion = new javax.swing.JLabel();
 
         frame.setBackground(java.awt.Color.white);
-        frame.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         btnAceptar.setText("ACEPTAR");
         btnAceptar.addActionListener(new java.awt.event.ActionListener() {
@@ -501,7 +500,7 @@ public class regMaquina extends frameBase<Maquina> {
                                             .addComponent(chkActivo))
                                         .addComponent(txtDescripcion)))))
                         .addComponent(jTabbedPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 517, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(28, Short.MAX_VALUE))
+                .addContainerGap(30, Short.MAX_VALUE))
         );
         frameLayout.setVerticalGroup(
             frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -550,7 +549,6 @@ public class regMaquina extends frameBase<Maquina> {
         // TODO add your handling code here:
         Cerrar();
     }//GEN-LAST:event_btnCancelarActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAceptar;

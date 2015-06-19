@@ -19,25 +19,46 @@ import javax.swing.SwingWorker;
 public class lisUnidad extends frameBase<Unidad> {
 
     /**
-     * Creates new form lisUnidadx
+     * Creates new form lisUnidad
+     *
+     * @param modo
      */
     public lisUnidad(int modo) {
         initComponents();
-        Init(modo, "");
+        setModo(modo);
+        setFiltro("");
     }
 
+    /**
+     * Creates new form lisUnidad
+     *
+     * @param modo
+     * @param filtro
+     */
     public lisUnidad(int modo, String filtro) {
         initComponents();
-        Init(modo, filtro);
+        setModo(modo);
+        setFiltro(filtro);
     }
 
-    private int modo;
-
-    private String filtro;
-
-    private Unidad seleccionado;
-
-    private List<Unidad> seleccionados = new ArrayList<>();
+    @Override
+    public void Init() {
+        switch (getModo()) {
+            case 0:
+                OcultarColumna(tbUnidades, 0);
+                OcultarControl(btnSeleccionar);
+                break;
+            case 1:
+                OcultarColumnas(tbUnidades, new int[]{0, 5, 6});
+                OcultarControl(btnNuevo);
+                break;
+            case 2:
+                OcultarColumnas(tbUnidades, new int[]{5, 6});
+                OcultarControl(btnNuevo);
+                break;
+        }
+        new swObtenerUnidades().execute();
+    }
 
     ImageIcon Icon_Save = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/save-16.png"));
     ImageIcon Icon_Dele = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/delete-16.png"));
@@ -64,7 +85,7 @@ public class lisUnidad extends frameBase<Unidad> {
             cliInventarios cliente = new cliInventarios();
             String json = "";
             try {
-                json = cliente.ObtenerUnidades(new Gson().toJson(filtro));
+                json = cliente.ObtenerUnidades(new Gson().toJson(getFiltro()));
             } catch (Exception e) {
                 OcultarCargando(frame);
                 cancel(false);
@@ -180,26 +201,6 @@ public class lisUnidad extends frameBase<Unidad> {
         }
     }
 
-    public void Init(int modo, String filtro) {
-        this.modo = modo;
-        this.filtro = filtro;
-        switch (this.modo) {
-            case 0:
-                OcultarColumna(tbUnidades, 0);
-                OcultarControl(btnSeleccionar);
-                break;
-            case 1:
-                OcultarColumnas(tbUnidades, new int[]{0, 5, 6});
-                OcultarControl(btnNuevo);
-                break;
-            case 2:
-                OcultarColumnas(tbUnidades, new int[]{5, 6});
-                OcultarControl(btnNuevo);
-                break;
-        }
-        new swObtenerUnidades().execute();
-    }
-
     public void EliminarUnidad() {
         int confirmacion = VerConfirmacion(this);
         if (confirmacion == 0) {
@@ -210,14 +211,6 @@ public class lisUnidad extends frameBase<Unidad> {
                 new swEliminarUnidad().execute();
             }
         }
-    }
-
-    public Unidad getSeleccionado() {
-        return seleccionado;
-    }
-
-    public List<Unidad> getSeleccionados() {
-        return seleccionados;
     }
 
     /**
@@ -241,7 +234,6 @@ public class lisUnidad extends frameBase<Unidad> {
         btnRefrescar = new javax.swing.JButton();
 
         frame.setBackground(java.awt.Color.white);
-        frame.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         tbUnidades.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -298,7 +290,7 @@ public class lisUnidad extends frameBase<Unidad> {
             .addGroup(pnlTituloLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lblTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 253, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 287, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 289, Short.MAX_VALUE)
                 .addComponent(btnNuevo)
                 .addContainerGap())
         );
@@ -343,7 +335,7 @@ public class lisUnidad extends frameBase<Unidad> {
             .addGroup(frameLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 627, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 629, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, frameLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btnSeleccionar, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -367,7 +359,7 @@ public class lisUnidad extends frameBase<Unidad> {
                         .addComponent(txtFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(btnRefrescar, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 208, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 210, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnSeleccionar)
                 .addGap(15, 15, 15))
@@ -392,11 +384,12 @@ public class lisUnidad extends frameBase<Unidad> {
 
     private void btnSeleccionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeleccionarActionPerformed
         // TODO add your handling code here:
-        switch (this.modo) {
+        switch (getModo()) {
             case 1:
 
                 break;
             case 2:
+                setSeleccionados(new ArrayList<>());
                 for (int i = 0; i < tbUnidades.getRowCount(); i++) {
                     boolean check = ObtenerValorCelda(tbUnidades, i, 0);
                     if (check) {
@@ -405,7 +398,7 @@ public class lisUnidad extends frameBase<Unidad> {
                         unidad.setAbreviacion(ObtenerValorCelda(tbUnidades, i, 2));
                         unidad.setDescripcion(ObtenerValorCelda(tbUnidades, i, 3));
                         unidad.setActivo(ObtenerValorCelda(tbUnidades, i, 4));
-                        seleccionados.add(unidad);
+                        getSeleccionados().add(unidad);
                     }
                 }
                 Cerrar();
@@ -422,7 +415,6 @@ public class lisUnidad extends frameBase<Unidad> {
         // TODO add your handling code here:
         new swObtenerUnidades().execute();
     }//GEN-LAST:event_btnRefrescarActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnNuevo;

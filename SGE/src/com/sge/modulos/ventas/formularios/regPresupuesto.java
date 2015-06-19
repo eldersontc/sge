@@ -30,19 +30,30 @@ import javax.swing.SwingWorker;
 public class regPresupuesto extends frameBase<Presupuesto> {
 
     /**
-     * Creates new form regPresupuestox
+     * Creates new form regPresupuesto
+     *
+     * @param id
      */
     public regPresupuesto(int id) {
         initComponents();
-        Init(id);
+        setId(id);
     }
 
     public regPresupuesto(ValorDefinido valorDefinido) {
         initComponents();
         super.Init(valorDefinido);
     }
-
-    int id = 0;
+    
+    @Override
+    public void Init() {
+        if (getId() == 0) {
+            lblTitulo.setText("NUEVO " + lblTitulo.getText());
+            new swObtenerValoresDefinidos().execute();
+        } else {
+            lblTitulo.setText("MODIFICAR " + lblTitulo.getText());
+            new swObtenerPresupuesto().execute();
+        }
+    }
 
     Action change_item = new AbstractAction() {
         @Override
@@ -113,17 +124,6 @@ public class regPresupuesto extends frameBase<Presupuesto> {
         getEntidad().setTotal(total);
         NumberFormat formato = new DecimalFormat("#0.00");
         txtTotal.setText(getEntidad().getSimboloMoneda() + formato.format(getEntidad().getTotal()));
-    }
-
-    public void Init(int id) {
-        this.id = id;
-        if (this.id == 0) {
-            lblTitulo.setText("NUEVO " + lblTitulo.getText());
-            new swObtenerValoresDefinidos().execute();
-        } else {
-            lblTitulo.setText("MODIFICAR " + lblTitulo.getText());
-            new swObtenerPresupuesto().execute();
-        }
     }
 
     private void AsignarValores() {
@@ -200,7 +200,7 @@ public class regPresupuesto extends frameBase<Presupuesto> {
             VerCargando(frame);
             cliVentas cliVentas = new cliVentas();
             try {
-                String json = cliVentas.ObtenerPresupuesto(new Gson().toJson(id));
+                String json = cliVentas.ObtenerPresupuesto(new Gson().toJson(getId()));
                 String[] resultado = new Gson().fromJson(json, String[].class);
 
                 if (resultado[0].equals("true")) {
@@ -253,10 +253,10 @@ public class regPresupuesto extends frameBase<Presupuesto> {
             String json = "";
             try {
                 AsignarValores();
-                if (id == 0) {
+                if (getId() == 0) {
                     json = cliVentas.RegistrarPresupuesto(new Gson().toJson(getEntidad()));
                 } else {
-                    getEntidad().setIdPresupuesto(id);
+                    getEntidad().setIdPresupuesto(getId());
                     json = cliVentas.ActualizarPresupuesto(new Gson().toJson(getEntidad()));
                 }
             } catch (Exception e) {
@@ -334,7 +334,6 @@ public class regPresupuesto extends frameBase<Presupuesto> {
         txtTotal = new javax.swing.JTextField();
 
         frame.setBackground(java.awt.Color.white);
-        frame.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         btnAceptar.setText("ACEPTAR");
         btnAceptar.addActionListener(new java.awt.event.ActionListener() {
@@ -536,7 +535,7 @@ public class regPresupuesto extends frameBase<Presupuesto> {
                                 .addComponent(btnAceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap(20, Short.MAX_VALUE))
+                .addContainerGap(22, Short.MAX_VALUE))
         );
         frameLayout.setVerticalGroup(
             frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -629,7 +628,6 @@ public class regPresupuesto extends frameBase<Presupuesto> {
             CalcularTotal();
         }
     }//GEN-LAST:event_btnEliminarItemActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAceptar;

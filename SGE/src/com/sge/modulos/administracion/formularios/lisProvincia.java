@@ -17,23 +17,42 @@ import javax.swing.SwingWorker;
 public class lisProvincia extends frameBase<Provincia> {
 
     /**
-     * Creates new form lisProvinciax
+     * Creates new form lisProvincia
+     *
+     * @param modo
      */
     public lisProvincia(int modo) {
         initComponents();
-        Init(modo, "");
+        setModo(modo);
+        setFiltro("");
     }
 
+    /**
+     * Creates new form lisProvincia
+     *
+     * @param modo
+     * @param filtro
+     */
     public lisProvincia(int modo, String filtro) {
         initComponents();
-        Init(modo, filtro);
+        setModo(modo);
+        setFiltro(filtro);
     }
 
-    private int modo;
-
-    private String filtro;
-
-    private Provincia seleccionado;
+    @Override
+    public void Init() {
+        switch (getModo()) {
+            case 0:
+                OcultarColumna(tbProvincias, 0);
+                OcultarControl(btnSeleccionar);
+                break;
+            case 1:
+                OcultarColumnas(tbProvincias, new int[]{0, 3, 4});
+                OcultarControl(btnNuevo);
+                break;
+        }
+        new swObtenerProvincias().execute();
+    }
 
     ImageIcon Icon_Save = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/save-16.png"));
     ImageIcon Icon_Dele = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/delete-16.png"));
@@ -60,7 +79,7 @@ public class lisProvincia extends frameBase<Provincia> {
             cliAdministracion cliente = new cliAdministracion();
             String json = "";
             try {
-                json = cliente.ObtenerProvincias(new Gson().toJson(filtro));
+                json = cliente.ObtenerProvincias(new Gson().toJson(getFiltro()));
             } catch (Exception e) {
                 OcultarCargando(frame);
                 cancel(false);
@@ -78,14 +97,19 @@ public class lisProvincia extends frameBase<Provincia> {
                 String[] resultado = new Gson().fromJson(json, String[].class);
 
                 if (resultado[0].equals("true")) {
-                    EliminarTodasFilas(tbProvincias);
                     Provincia[] provincias = new Gson().fromJson(resultado[1], Provincia[].class);
-                    for (Provincia provincia : provincias) {
-                        AgregarFila(tbProvincias, new Object[]{false, provincia.getIdProvincia(), provincia.getNombre(), Icon_Save, Icon_Dele});
+                    if (getModo() == 1 && provincias.length == 1) {
+                        setSeleccionado(provincias[0]);
+                        Cerrar();
+                    } else {
+                        EliminarTodasFilas(tbProvincias);
+                        for (Provincia provincia : provincias) {
+                            AgregarFila(tbProvincias, new Object[]{false, provincia.getIdProvincia(), provincia.getNombre(), Icon_Save, Icon_Dele});
+                        }
+                        AgregarBoton(tbProvincias, save, 3);
+                        AgregarBoton(tbProvincias, dele, 4);
+                        AgregarOrdenamiento(tbProvincias);
                     }
-                    AgregarBoton(tbProvincias, save, 3);
-                    AgregarBoton(tbProvincias, dele, 4);
-                    AgregarOrdenamiento(tbProvincias);
                 }
                 OcultarCargando(frame);
             } catch (Exception e) {
@@ -93,26 +117,6 @@ public class lisProvincia extends frameBase<Provincia> {
                 ControlarExcepcion(e);
             }
         }
-    }
-
-    public void Init(int modo, String filtro) {
-        this.modo = modo;
-        this.filtro = filtro;
-        switch (this.modo) {
-            case 0:
-                OcultarColumna(tbProvincias, 0);
-                OcultarControl(btnSeleccionar);
-                break;
-            case 1:
-                OcultarColumnas(tbProvincias, new int[]{0, 3, 4});
-                OcultarControl(btnNuevo);
-                break;
-        }
-        new swObtenerProvincias().execute();
-    }
-
-    public Provincia getSeleccionado() {
-        return seleccionado;
     }
 
     /**
@@ -136,7 +140,6 @@ public class lisProvincia extends frameBase<Provincia> {
         btnRefrescar = new javax.swing.JButton();
 
         frame.setBackground(java.awt.Color.white);
-        frame.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         tbProvincias.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -238,7 +241,7 @@ public class lisProvincia extends frameBase<Provincia> {
             .addGroup(frameLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 716, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 718, Short.MAX_VALUE)
                     .addGroup(frameLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btnSeleccionar, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -287,13 +290,13 @@ public class lisProvincia extends frameBase<Provincia> {
 
     private void btnSeleccionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeleccionarActionPerformed
         // TODO add your handling code here:
-        switch (this.modo) {
+        switch (getModo()) {
             case 1:
                 if (FilaActiva(tbProvincias)) {
                     Provincia provincia = new Provincia();
                     provincia.setIdProvincia(ObtenerValorCelda(tbProvincias, 1));
                     provincia.setNombre(ObtenerValorCelda(tbProvincias, 2));
-                    seleccionado = provincia;
+                    setSeleccionado(provincia);
                 }
                 Cerrar();
                 break;
@@ -311,7 +314,6 @@ public class lisProvincia extends frameBase<Provincia> {
         // TODO add your handling code here:
         new swObtenerProvincias().execute();
     }//GEN-LAST:event_btnRefrescarActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnNuevo;

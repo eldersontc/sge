@@ -17,23 +17,42 @@ import javax.swing.SwingWorker;
 public class lisProveedor extends frameBase<Proveedor> {
 
     /**
-     * Creates new form lisProveedorx
+     * Creates new form lisProveedor
+     *
+     * @param modo
      */
     public lisProveedor(int modo) {
         initComponents();
-        Init(modo, "");
+        setModo(modo);
+        setFiltro("");
     }
 
+    /**
+     * Creates new form lisProveedor
+     *
+     * @param modo
+     * @param filtro
+     */
     public lisProveedor(int modo, String filtro) {
         initComponents();
-        Init(modo, filtro);
+        setModo(modo);
+        setFiltro(filtro);
     }
 
-    private int modo;
-
-    private String filtro;
-
-    private Proveedor seleccionado;
+    @Override
+    public void Init() {
+        switch (getModo()) {
+            case 0:
+                OcultarColumna(tbProveedores, 0);
+                OcultarControl(btnSeleccionar);
+                break;
+            case 1:
+                OcultarColumnas(tbProveedores, new int[]{0, 5, 6});
+                OcultarControl(btnNuevo);
+                break;
+        }
+        new swObtenerProveedores().execute();
+    }
 
     ImageIcon Icon_Edit = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/edit-16.png"));
     ImageIcon Icon_Dele = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/delete-16.png"));
@@ -67,7 +86,7 @@ public class lisProveedor extends frameBase<Proveedor> {
             cliCompras cliente = new cliCompras();
             String json = "";
             try {
-                json = cliente.ObtenerProveedores(new Gson().toJson(filtro));
+                json = cliente.ObtenerProveedores(new Gson().toJson(getFiltro()));
             } catch (Exception e) {
                 OcultarCargando(frame);
                 cancel(false);
@@ -85,14 +104,19 @@ public class lisProveedor extends frameBase<Proveedor> {
                 String[] resultado = new Gson().fromJson(json, String[].class);
 
                 if (resultado[0].equals("true")) {
-                    EliminarTodasFilas(tbProveedores);
                     Proveedor[] proveedores = new Gson().fromJson(resultado[1], Proveedor[].class);
-                    for (Proveedor proveedor : proveedores) {
-                        AgregarFila(tbProveedores, new Object[]{false, proveedor.getIdProveedor(), proveedor.getRazonSocial(), proveedor.getFechaUltimaCompra(), proveedor.isActivo(), Icon_Edit, Icon_Dele});
+                    if (getModo() == 1 && proveedores.length == 1) {
+                        setSeleccionado(proveedores[0]);
+                        Cerrar();
+                    } else {
+                        EliminarTodasFilas(tbProveedores);
+                        for (Proveedor proveedor : proveedores) {
+                            AgregarFila(tbProveedores, new Object[]{false, proveedor.getIdProveedor(), proveedor.getRazonSocial(), proveedor.getFechaUltimaCompra(), proveedor.isActivo(), Icon_Edit, Icon_Dele});
+                        }
+                        AgregarBoton(tbProveedores, edit, 5);
+                        AgregarBoton(tbProveedores, dele, 6);
+                        AgregarOrdenamiento(tbProveedores);
                     }
-                    AgregarBoton(tbProveedores, edit, 5);
-                    AgregarBoton(tbProveedores, dele, 6);
-                    AgregarOrdenamiento(tbProveedores);
                 }
                 OcultarCargando(frame);
             } catch (Exception e) {
@@ -139,25 +163,9 @@ public class lisProveedor extends frameBase<Proveedor> {
         }
     }
 
-    public void Init(int modo, String filtro) {
-        this.modo = modo;
-        this.filtro = filtro;
-        switch (this.modo) {
-            case 0:
-                OcultarColumna(tbProveedores, 0);
-                OcultarControl(btnSeleccionar);
-                break;
-            case 1:
-                OcultarColumnas(tbProveedores, new int[]{0, 5, 6});
-                OcultarControl(btnNuevo);
-                break;
-        }
-        new swObtenerProveedores().execute();
-    }
-
     public void EditarProveedor() {
         int idProveedor = ObtenerValorCelda(tbProveedores, 1);
-        VerFrame(new regProveedor("EDITAR ", idProveedor), refr);
+        VerFrame(new regProveedor(idProveedor), refr);
     }
 
     public void EliminarProveedor() {
@@ -165,10 +173,6 @@ public class lisProveedor extends frameBase<Proveedor> {
         if (confirmacion == 0) {
             new swEliminarProveedor().execute();
         }
-    }
-
-    public Proveedor getSeleccionado() {
-        return seleccionado;
     }
 
     /**
@@ -192,7 +196,6 @@ public class lisProveedor extends frameBase<Proveedor> {
         btnRefrescar = new javax.swing.JButton();
 
         frame.setBackground(java.awt.Color.white);
-        frame.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         tbProveedores.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -249,7 +252,7 @@ public class lisProveedor extends frameBase<Proveedor> {
             .addGroup(pnlTituloLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lblTitulo)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 367, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 369, Short.MAX_VALUE)
                 .addComponent(btnNuevo)
                 .addContainerGap())
         );
@@ -294,7 +297,7 @@ public class lisProveedor extends frameBase<Proveedor> {
             .addGroup(frameLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 715, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 717, Short.MAX_VALUE)
                     .addGroup(frameLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btnSeleccionar, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -318,7 +321,7 @@ public class lisProveedor extends frameBase<Proveedor> {
                         .addComponent(txtFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(btnRefrescar, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(9, 9, 9)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 221, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 223, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnSeleccionar)
                 .addGap(9, 9, 9))
@@ -338,18 +341,18 @@ public class lisProveedor extends frameBase<Proveedor> {
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
         // TODO add your handling code here:
-        VerFrame(new regProveedor("NUEVO ", 0), refr);
+        VerFrame(new regProveedor(0), refr);
     }//GEN-LAST:event_btnNuevoActionPerformed
 
     private void btnSeleccionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeleccionarActionPerformed
         // TODO add your handling code here:
-        switch (this.modo) {
+        switch (getModo()) {
             case 1:
                 if (FilaActiva(tbProveedores)) {
                     Proveedor proveedor = new Proveedor();
                     proveedor.setIdProveedor(ObtenerValorCelda(tbProveedores, 1));
                     proveedor.setRazonSocial(ObtenerValorCelda(tbProveedores, 2));
-                    seleccionado = proveedor;
+                    setSeleccionado(proveedor);
                 }
                 Cerrar();
                 break;
@@ -367,7 +370,6 @@ public class lisProveedor extends frameBase<Proveedor> {
         // TODO add your handling code here:
         new swObtenerProveedores().execute();
     }//GEN-LAST:event_btnRefrescarActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnNuevo;

@@ -18,21 +18,38 @@ public class lisValorDefinido extends frameBase<ValorDefinido> {
 
     /**
      * Creates new form lisValorDefinidox
+     * @param modo
      */
     public lisValorDefinido(int modo) {
         initComponents();
-        Init(modo, "");
+        setModo(modo);
+        setFiltro("");
     }
 
+    /**
+     * Creates new form lisValorDefinidox
+     * @param modo
+     * @param filtro
+     */
     public lisValorDefinido(int modo, String filtro) {
         initComponents();
-        Init(modo, filtro);
+        setModo(modo);
+        setFiltro(filtro);
     }
-
-    private int modo;
-
-    private String filtro;
-
+    
+    @Override
+    public void Init() {
+        switch (getModo()) {
+            case 0:
+                OcultarColumna(tbValoresDefinidos, 0);
+                break;
+            case 1:
+                OcultarColumna(tbValoresDefinidos, 0);
+                break;
+        }
+        new swObtenerValoresDefinidos().execute();
+    }
+    
     ImageIcon Icon_Edit = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/edit-16.png"));
     ImageIcon Icon_Dele = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/delete-16.png"));
 
@@ -65,7 +82,7 @@ public class lisValorDefinido extends frameBase<ValorDefinido> {
             cliAdministracion cliente = new cliAdministracion();
             String json = "";
             try {
-                json = cliente.ObtenerValoresDefinidos(new Gson().toJson(filtro));
+                json = cliente.ObtenerValoresDefinidos(new Gson().toJson(getFiltro()));
             } catch (Exception e) {
                 OcultarCargando(frame);
                 cancel(false);
@@ -83,8 +100,8 @@ public class lisValorDefinido extends frameBase<ValorDefinido> {
                 String[] resultado = new Gson().fromJson(json, String[].class);
 
                 if (resultado[0].equals("true")) {
-                    EliminarTodasFilas(tbValoresDefinidos);
                     ValorDefinido[] valoresDefinidos = new Gson().fromJson(resultado[1], ValorDefinido[].class);
+                    EliminarTodasFilas(tbValoresDefinidos);
                     for (ValorDefinido valorDefinido : valoresDefinidos) {
                         AgregarFila(tbValoresDefinidos, new Object[]{false, valorDefinido.getIdValorDefinido(), valorDefinido.getUsuario(), valorDefinido.getNombreEntidad(), valorDefinido.isActivo(), Icon_Edit, Icon_Dele});
                     }
@@ -136,24 +153,10 @@ public class lisValorDefinido extends frameBase<ValorDefinido> {
             }
         }
     }
-
-    public void Init(int modo, String filtro) {
-        this.modo = modo;
-        this.filtro = filtro;
-        switch (this.modo) {
-            case 0:
-                OcultarColumna(tbValoresDefinidos, 0);
-                break;
-            case 1:
-                OcultarColumna(tbValoresDefinidos, 0);
-                break;
-        }
-        new swObtenerValoresDefinidos().execute();
-    }
-
+    
     public void EditarValorDefinido() {
         int idValorDefinido = ObtenerValorCelda(tbValoresDefinidos, 1);
-        VerFrame(new regValorDefinido("EDITAR ", idValorDefinido), refr);
+        VerFrame(new regValorDefinido(idValorDefinido), refr);
     }
 
     public void EliminarValorDefinido() {
@@ -183,7 +186,6 @@ public class lisValorDefinido extends frameBase<ValorDefinido> {
         btnRefrescar = new javax.swing.JButton();
 
         frame.setBackground(java.awt.Color.white);
-        frame.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         tbValoresDefinidos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -240,7 +242,7 @@ public class lisValorDefinido extends frameBase<ValorDefinido> {
             .addGroup(pnlTituloLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lblTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 331, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 233, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 235, Short.MAX_VALUE)
                 .addComponent(btnNuevo)
                 .addContainerGap())
         );
@@ -278,7 +280,7 @@ public class lisValorDefinido extends frameBase<ValorDefinido> {
             .addGroup(frameLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 651, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 653, Short.MAX_VALUE)
                     .addGroup(frameLayout.createSequentialGroup()
                         .addComponent(lblFiltro)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -299,7 +301,7 @@ public class lisValorDefinido extends frameBase<ValorDefinido> {
                         .addComponent(txtFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(btnRefrescar, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 259, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 261, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -317,7 +319,7 @@ public class lisValorDefinido extends frameBase<ValorDefinido> {
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
         // TODO add your handling code here:
-        VerFrame(new regValorDefinido("NUEVO ", 0), refr);
+        VerFrame(new regValorDefinido(0), refr);
     }//GEN-LAST:event_btnNuevoActionPerformed
 
     private void txtFiltroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFiltroActionPerformed
@@ -329,7 +331,6 @@ public class lisValorDefinido extends frameBase<ValorDefinido> {
         // TODO add your handling code here:
         new swObtenerValoresDefinidos().execute();
     }//GEN-LAST:event_btnRefrescarActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnNuevo;

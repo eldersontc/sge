@@ -29,11 +29,13 @@ import javax.swing.SwingWorker;
 public class regOrdenProduccion extends frameBase<OrdenProduccion> {
 
     /**
-     * Creates new form regOrdenProduccionx
+     * Creates new form regOrdenProduccion
+     *
+     * @param id
      */
     public regOrdenProduccion(int id) {
         initComponents();
-        Init(id);
+        setId(id);
     }
 
     public regOrdenProduccion(ValorDefinido valorDefinido) {
@@ -41,7 +43,16 @@ public class regOrdenProduccion extends frameBase<OrdenProduccion> {
         super.Init(valorDefinido);
     }
 
-    int id = 0;
+    @Override
+    public void Init() {
+        if (getId() == 0) {
+            lblTitulo.setText("NUEVO " + lblTitulo.getText());
+            new swObtenerValoresDefinidos().execute();
+        } else {
+            lblTitulo.setText("MODIFICAR " + lblTitulo.getText());
+            new swObtenerOrdenProduccion().execute();
+        }
+    }
 
     Action sele_clie = new AbstractAction() {
         @Override
@@ -84,17 +95,6 @@ public class regOrdenProduccion extends frameBase<OrdenProduccion> {
             }
         }
     };
-
-    public void Init(int id) {
-        this.id = id;
-        if (this.id == 0) {
-            lblTitulo.setText("NUEVO " + lblTitulo.getText());
-            new swObtenerValoresDefinidos().execute();
-        } else {
-            lblTitulo.setText("MODIFICAR " + lblTitulo.getText());
-            new swObtenerOrdenProduccion().execute();
-        }
-    }
 
     private void AsignarValores() {
         getEntidad().setIdCliente(schCliente.getId());
@@ -166,7 +166,7 @@ public class regOrdenProduccion extends frameBase<OrdenProduccion> {
             VerCargando(frame);
             cliProduccion cliProduccion = new cliProduccion();
             try {
-                String json = cliProduccion.ObtenerOrdenProduccion(new Gson().toJson(id));
+                String json = cliProduccion.ObtenerOrdenProduccion(new Gson().toJson(getId()));
                 String[] resultado = new Gson().fromJson(json, String[].class);
 
                 if (resultado[0].equals("true")) {
@@ -216,10 +216,10 @@ public class regOrdenProduccion extends frameBase<OrdenProduccion> {
             try {
                 AsignarValores();
                 getEntidad().setItems(getItems());
-                if (id == 0) {
+                if (getId() == 0) {
                     json = cliProduccion.RegistrarOrdenProduccion(new Gson().toJson(getEntidad()));
                 } else {
-                    getEntidad().setIdOrdenProduccion(id);
+                    getEntidad().setIdOrdenProduccion(getId());
                     json = cliProduccion.ActualizarOrdenProduccion(new Gson().toJson(getEntidad()));
                 }
             } catch (Exception e) {
@@ -291,7 +291,6 @@ public class regOrdenProduccion extends frameBase<OrdenProduccion> {
         btnEliminarItem = new javax.swing.JButton();
 
         frame.setBackground(java.awt.Color.white);
-        frame.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         btnAceptar.setText("ACEPTAR");
         btnAceptar.addActionListener(new java.awt.event.ActionListener() {
@@ -567,7 +566,6 @@ public class regOrdenProduccion extends frameBase<OrdenProduccion> {
             EliminarFila(tbItems);
         }
     }//GEN-LAST:event_btnEliminarItemActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAceptar;

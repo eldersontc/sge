@@ -26,23 +26,42 @@ import javax.swing.SwingWorker;
 public class lisPresupuesto extends frameBase<Presupuesto> {
 
     /**
-     * Creates new form lisPresupuestox
+     * Creates new form lisPresupuesto
+     *
+     * @param modo
      */
     public lisPresupuesto(int modo) {
         initComponents();
-        Init(modo, "");
+        setModo(modo);
+        setFiltro("");
     }
 
+    /**
+     * Creates new form lisPresupuesto
+     *
+     * @param modo
+     * @param filtro
+     */
     public lisPresupuesto(int modo, String filtro) {
         initComponents();
-        Init(modo, filtro);
+        setModo(modo);
+        setFiltro(filtro);
     }
 
-    private int modo;
-
-    private String filtro;
-
-    private Presupuesto seleccionado;
+    @Override
+    public void Init() {
+        switch (getModo()) {
+            case 0:
+                OcultarColumna(tbPresupuestos, 0);
+                OcultarControl(btnSeleccionar);
+                break;
+            case 1:
+                OcultarColumnas(tbPresupuestos, new int[]{0, 7, 8});
+                OcultarControl(btnNuevo);
+                break;
+        }
+        new swObtenerPresupuestos().execute();
+    }
 
     ImageIcon Icon_Edit = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/edit-16.png"));
     ImageIcon Icon_Dele = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/delete-16.png"));
@@ -76,7 +95,7 @@ public class lisPresupuesto extends frameBase<Presupuesto> {
             cliVentas cliente = new cliVentas();
             String json = "";
             try {
-                json = cliente.ObtenerPresupuestos(new Gson().toJson(filtro));
+                json = cliente.ObtenerPresupuestos(new Gson().toJson(getFiltro()));
             } catch (Exception e) {
                 OcultarCargando(frame);
                 cancel(false);
@@ -490,22 +509,6 @@ public class lisPresupuesto extends frameBase<Presupuesto> {
         }
     }
 
-    public void Init(int modo, String filtro) {
-        this.modo = modo;
-        this.filtro = filtro;
-        switch (this.modo) {
-            case 0:
-                OcultarColumna(tbPresupuestos, 0);
-                OcultarControl(btnSeleccionar);
-                break;
-            case 1:
-                OcultarColumnas(tbPresupuestos, new int[]{0, 7, 8});
-                OcultarControl(btnNuevo);
-                break;
-        }
-        new swObtenerPresupuestos().execute();
-    }
-
     public void EditarPresupuesto() {
         int idPresupuesto = ObtenerValorCelda(tbPresupuestos, 1);
         VerFrame(new regPresupuesto(idPresupuesto), refr);
@@ -572,10 +575,6 @@ public class lisPresupuesto extends frameBase<Presupuesto> {
         }
     }
 
-    public Presupuesto getSeleccionado() {
-        return seleccionado;
-    }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -604,7 +603,6 @@ public class lisPresupuesto extends frameBase<Presupuesto> {
         btnImprimir = new javax.swing.JButton();
 
         frame.setBackground(java.awt.Color.white);
-        frame.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         tbPresupuestos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -661,7 +659,7 @@ public class lisPresupuesto extends frameBase<Presupuesto> {
             .addGroup(pnlTituloLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lblTitulo)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 347, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 349, Short.MAX_VALUE)
                 .addComponent(btnNuevo)
                 .addContainerGap())
         );
@@ -762,7 +760,7 @@ public class lisPresupuesto extends frameBase<Presupuesto> {
             .addGroup(frameLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 701, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 703, Short.MAX_VALUE)
                     .addGroup(frameLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btnSeleccionar, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -807,7 +805,7 @@ public class lisPresupuesto extends frameBase<Presupuesto> {
                     .addComponent(btnRechazar, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnImprimir, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 242, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 244, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnSeleccionar)
                 .addGap(9, 9, 9))
@@ -834,13 +832,13 @@ public class lisPresupuesto extends frameBase<Presupuesto> {
 
     private void btnSeleccionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeleccionarActionPerformed
         // TODO add your handling code here:
-        switch (this.modo) {
+        switch (getModo()) {
             case 1:
                 if (FilaActiva(tbPresupuestos)) {
                     Presupuesto presupuesto = new Presupuesto();
                     presupuesto.setIdPresupuesto(ObtenerValorCelda(tbPresupuestos, 1));
                     presupuesto.setNumero(ObtenerValorCelda(tbPresupuestos, 2));
-                    seleccionado = presupuesto;
+                    setSeleccionado(presupuesto);
                 }
                 Cerrar();
                 break;
@@ -907,7 +905,6 @@ public class lisPresupuesto extends frameBase<Presupuesto> {
             ImprimirConEntidad(5, ObtenerValorCelda(tbPresupuestos, 1), frame);
         }
     }//GEN-LAST:event_btnImprimirActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAceptar;

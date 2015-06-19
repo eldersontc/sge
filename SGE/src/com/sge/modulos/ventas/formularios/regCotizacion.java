@@ -46,15 +46,20 @@ import javax.swing.SwingWorker;
 public class regCotizacion extends frameBase<Cotizacion> {
 
     /**
-     * Creates new form regCotizacionx
+     * Creates new form regCotizacion
      */
     public regCotizacion() {
         initComponents();
     }
 
+    /**
+     * Creates new form regCotizacion
+     *
+     * @param id
+     */
     public regCotizacion(int id) {
         initComponents();
-        Init(id);
+        setId(id);
     }
 
     public regCotizacion(ValorDefinido valorDefinido) {
@@ -63,7 +68,18 @@ public class regCotizacion extends frameBase<Cotizacion> {
         super.Init(valorDefinido);
     }
 
-    int id = 0;
+    @Override
+    public void Init() {
+        if (getId() == 0) {
+            lblTitulo.setText("NUEVA " + lblTitulo.getText());
+            AgregarCombo(tbAcabados, 4);
+        } else {
+            lblTitulo.setText("EDITAR " + lblTitulo.getText());
+            AgregarCombo(tbAcabados, 4);
+            new swObtenerCotizacion().execute();
+        }
+        OcultarControl(tpnlItems);
+    }
 
     private ItemCotizacion item;
 
@@ -289,19 +305,6 @@ public class regCotizacion extends frameBase<Cotizacion> {
         }
     };
 
-    public void Init(int id) {
-        this.id = id;
-        if (this.id == 0) {
-            lblTitulo.setText("NUEVA " + lblTitulo.getText());
-            AgregarCombo(tbAcabados, 4);
-        } else {
-            lblTitulo.setText("MODIFICAR " + lblTitulo.getText());
-            AgregarCombo(tbAcabados, 4);
-            new swObtenerCotizacion().execute();
-        }
-        OcultarControl(tpnlItems);
-    }
-
     private void AsignarValores() {
         getEntidad().setIdCliente(schCliente.getId());
         getEntidad().setRazonSocialCliente(schCliente.getText());
@@ -395,7 +398,7 @@ public class regCotizacion extends frameBase<Cotizacion> {
             VerCargando(frame);
             cliVentas cliVentas = new cliVentas();
             try {
-                String json = cliVentas.ObtenerCotizacion(new Gson().toJson(id));
+                String json = cliVentas.ObtenerCotizacion(new Gson().toJson(getId()));
                 String[] resultado = new Gson().fromJson(json, String[].class);
 
                 if (resultado[0].equals("true")) {
@@ -438,10 +441,10 @@ public class regCotizacion extends frameBase<Cotizacion> {
             String json = "";
             try {
                 AsignarValores();
-                if (id == 0) {
+                if (getId() == 0) {
                     json = cliVentas.RegistrarCotizacion(new Gson().toJson(getEntidad()));
                 } else {
-                    getEntidad().setIdCotizacion(id);
+                    getEntidad().setIdCotizacion(getId());
                     json = cliVentas.ActualizarCotizacion(new Gson().toJson(getEntidad()));
                 }
             } catch (Exception e) {
@@ -889,7 +892,6 @@ public class regCotizacion extends frameBase<Cotizacion> {
         txtTotal = new javax.swing.JTextField();
 
         frame.setBackground(java.awt.Color.white);
-        frame.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         btnAceptar.setText("ACEPTAR");
         btnAceptar.addActionListener(new java.awt.event.ActionListener() {
@@ -1667,7 +1669,7 @@ public class regCotizacion extends frameBase<Cotizacion> {
                                         .addComponent(lblVendedor)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(schVendedor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))))
-                .addGap(16, 16, Short.MAX_VALUE))
+                .addGap(18, 18, Short.MAX_VALUE))
         );
         frameLayout.setVerticalGroup(
             frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1876,7 +1878,7 @@ public class regCotizacion extends frameBase<Cotizacion> {
     private void btnEliminarItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarItemActionPerformed
         // TODO add your handling code here:
         ItemCotizacion itemPlantilla = (ItemCotizacion) lisItems.getSelectedValue();
-        if (id == 0) {
+        if (getId() == 0) {
             getEntidad().getItems().remove(itemPlantilla);
         } else {
             itemPlantilla.setEliminar(true);
@@ -1900,7 +1902,6 @@ public class regCotizacion extends frameBase<Cotizacion> {
         // TODO add your handling code here:
         Calcular();
     }//GEN-LAST:event_btnCalcularActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAceptar;

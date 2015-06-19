@@ -18,22 +18,41 @@ public class lisPerfil extends frameBase<Perfil> {
 
     /**
      * Creates new form lisPerfil
+     *
+     * @param modo
      */
     public lisPerfil(int modo) {
         initComponents();
-        Init(modo, "");
+        setModo(modo);
+        setFiltro("");
     }
 
+    /**
+     * Creates new form lisPerfil
+     *
+     * @param modo
+     * @param filtro
+     */
     public lisPerfil(int modo, String filtro) {
         initComponents();
-        Init(modo, filtro);
+        setModo(modo);
+        setFiltro(filtro);
     }
 
-    private int modo;
-
-    private String filtro;
-
-    private Perfil seleccionado;
+    @Override
+    public void Init() {
+        switch (getModo()) {
+            case 0:
+                OcultarColumna(tbPerfiles, 0);
+                OcultarControl(btnSeleccionar);
+                break;
+            case 1:
+                OcultarColumnas(tbPerfiles, new int[]{0, 4, 5});
+                OcultarControl(btnNuevo);
+                break;
+        }
+        new swObtenerPerfiles().execute();
+    }
 
     ImageIcon Icon_Save = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/save-16.png"));
     ImageIcon Icon_Dele = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/delete-16.png"));
@@ -60,7 +79,7 @@ public class lisPerfil extends frameBase<Perfil> {
             cliAdministracion cliente = new cliAdministracion();
             String json = "";
             try {
-                json = cliente.ObtenerPerfiles(new Gson().toJson(filtro));
+                json = cliente.ObtenerPerfiles(new Gson().toJson(getFiltro()));
             } catch (Exception e) {
                 OcultarCargando(frame);
                 cancel(false);
@@ -78,14 +97,19 @@ public class lisPerfil extends frameBase<Perfil> {
                 String[] resultado = new Gson().fromJson(json, String[].class);
 
                 if (resultado[0].equals("true")) {
-                    EliminarTodasFilas(tbPerfiles);
                     Perfil[] perfiles = new Gson().fromJson(resultado[1], Perfil[].class);
-                    for (Perfil perfil : perfiles) {
-                        AgregarFila(tbPerfiles, new Object[]{false, perfil.getIdPerfil(), perfil.getNombre(), perfil.isActivo(), Icon_Save, Icon_Dele});
+                    if (getModo() == 1 && perfiles.length == 1) {
+                        setSeleccionado(perfiles[0]);
+                        Cerrar();
+                    } else {
+                        EliminarTodasFilas(tbPerfiles);
+                        for (Perfil perfil : perfiles) {
+                            AgregarFila(tbPerfiles, new Object[]{false, perfil.getIdPerfil(), perfil.getNombre(), perfil.isActivo(), Icon_Save, Icon_Dele});
+                        }
+                        AgregarBoton(tbPerfiles, save, 4);
+                        AgregarBoton(tbPerfiles, dele, 5);
+                        AgregarOrdenamiento(tbPerfiles);
                     }
-                    AgregarBoton(tbPerfiles, save, 4);
-                    AgregarBoton(tbPerfiles, dele, 5);
-                    AgregarOrdenamiento(tbPerfiles);
                 }
                 OcultarCargando(frame);
             } catch (Exception e) {
@@ -176,22 +200,6 @@ public class lisPerfil extends frameBase<Perfil> {
         }
     }
 
-    public void Init(int modo, String filtro) {
-        this.modo = modo;
-        this.filtro = filtro;
-        switch (this.modo) {
-            case 0:
-                OcultarColumna(tbPerfiles, 0);
-                OcultarControl(btnSeleccionar);
-                break;
-            case 1:
-                OcultarColumnas(tbPerfiles, new int[]{0, 4, 5});
-                OcultarControl(btnNuevo);
-                break;
-        }
-        new swObtenerPerfiles().execute();
-    }
-
     public void EliminarPerfil() {
         int confirmacion = VerConfirmacion(this);
         if (confirmacion == 0) {
@@ -202,10 +210,6 @@ public class lisPerfil extends frameBase<Perfil> {
                 new swEliminarPerfil().execute();
             }
         }
-    }
-
-    public Perfil getSeleccionado() {
-        return seleccionado;
     }
 
     /**
@@ -379,13 +383,13 @@ public class lisPerfil extends frameBase<Perfil> {
 
     private void btnSeleccionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeleccionarActionPerformed
         // TODO add your handling code here:
-        switch (this.modo) {
+        switch (getModo()) {
             case 1:
                 if (FilaActiva(tbPerfiles)) {
                     Perfil perfil = new Perfil();
                     perfil.setIdPerfil(ObtenerValorCelda(tbPerfiles, 1));
                     perfil.setNombre(ObtenerValorCelda(tbPerfiles, 2));
-                    seleccionado = perfil;
+                    setSeleccionado(perfil);
                 }
                 Cerrar();
                 break;
@@ -403,7 +407,6 @@ public class lisPerfil extends frameBase<Perfil> {
         // TODO add your handling code here:
         new swObtenerPerfiles().execute();
     }//GEN-LAST:event_btnRefrescarActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnNuevo;

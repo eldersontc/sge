@@ -19,16 +19,42 @@ import javax.swing.SwingWorker;
 public class lisCaja extends frameBase<Caja> {
 
     /**
-     * Creates new form lisCajax
+     * Creates new form lisCaja
+     *
+     * @param modo
      */
     public lisCaja(int modo) {
         initComponents();
-        Init(modo);
+        setModo(modo);
+        setFiltro("");
     }
 
-    private int modo = 0;
+    /**
+     * Creates new form lisCaja
+     *
+     * @param modo
+     * @param filtro
+     */
+    public lisCaja(int modo, String filtro) {
+        initComponents();
+        setModo(modo);
+        setFiltro(filtro);
+    }
 
-    private Caja seleccionado;
+    @Override
+    public void Init() {
+        switch (getModo()) {
+            case 0:
+                OcultarColumna(tbCajas, 0);
+                OcultarControl(btnSeleccionar);
+                break;
+            case 1:
+                OcultarColumnas(tbCajas, new int[]{0, 7, 8});
+                OcultarControl(btnNuevo);
+                break;
+        }
+        new swObtenerCajas().execute();
+    }
 
     ImageIcon Icon_Save = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/save-16.png"));
     ImageIcon Icon_Dele = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/delete-16.png"));
@@ -73,7 +99,7 @@ public class lisCaja extends frameBase<Caja> {
             cliFinanzas cliente = new cliFinanzas();
             String json = "";
             try {
-                json = cliente.ObtenerCajas(new Gson().toJson(""));
+                json = cliente.ObtenerCajas(new Gson().toJson(getFiltro()));
             } catch (Exception e) {
                 OcultarCargando(frame);
                 cancel(false);
@@ -90,15 +116,20 @@ public class lisCaja extends frameBase<Caja> {
                 String json = get().toString();
                 String[] resultado = new Gson().fromJson(json, String[].class);
                 if (resultado[0].equals("true")) {
-                    EliminarTodasFilas(tbCajas);
                     Caja[] cajas = new Gson().fromJson(resultado[1], Caja[].class);
-                    for (Caja caja : cajas) {
-                        AgregarFila(tbCajas, new Object[]{false, caja.getIdCaja(), caja.getDescripcion(), caja.getIdMoneda(), caja.getSimboloMoneda(), caja.getMontoActual(), caja.isActivo(), Icon_Save, Icon_Dele});
+                    if (getModo() == 1 && cajas.length == 1) {
+                        setSeleccionado(cajas[0]);
+                        Cerrar();
+                    } else {
+                        EliminarTodasFilas(tbCajas);
+                        for (Caja caja : cajas) {
+                            AgregarFila(tbCajas, new Object[]{false, caja.getIdCaja(), caja.getDescripcion(), caja.getIdMoneda(), caja.getSimboloMoneda(), caja.getMontoActual(), caja.isActivo(), Icon_Save, Icon_Dele});
+                        }
+                        AgregarBoton(tbCajas, search, 4);
+                        AgregarBoton(tbCajas, save, 7);
+                        AgregarBoton(tbCajas, delete, 8);
+                        AgregarOrdenamiento(tbCajas);
                     }
-                    AgregarBoton(tbCajas, search, 4);
-                    AgregarBoton(tbCajas, save, 7);
-                    AgregarBoton(tbCajas, delete, 8);
-                    AgregarOrdenamiento(tbCajas);
                 }
                 OcultarCargando(frame);
             } catch (Exception e) {
@@ -190,21 +221,6 @@ public class lisCaja extends frameBase<Caja> {
         }
     }
 
-    public void Init(int modo) {
-        this.modo = modo;
-        switch (this.modo) {
-            case 0:
-                OcultarColumna(tbCajas, 0);
-                OcultarControl(btnSeleccionar);
-                break;
-            case 1:
-                OcultarColumnas(tbCajas, new int[]{0, 7, 8});
-                OcultarControl(btnNuevo);
-                break;
-        }
-        new swObtenerCajas().execute();
-    }
-
     public void EliminarCaja() {
         int confirmacion = VerConfirmacion(this);
         if (confirmacion == 0) {
@@ -215,10 +231,6 @@ public class lisCaja extends frameBase<Caja> {
                 new swEliminarCaja().execute();
             }
         }
-    }
-
-    public Caja getSeleccionado() {
-        return seleccionado;
     }
 
     /**
@@ -242,7 +254,6 @@ public class lisCaja extends frameBase<Caja> {
         btnRefrescar = new javax.swing.JButton();
 
         frame.setBackground(java.awt.Color.white);
-        frame.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         tbCajas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -347,7 +358,7 @@ public class lisCaja extends frameBase<Caja> {
             .addGroup(frameLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 557, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 559, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, frameLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btnSeleccionar, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -371,7 +382,7 @@ public class lisCaja extends frameBase<Caja> {
                         .addComponent(txtFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(btnRefrescar, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 158, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 160, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnSeleccionar)
                 .addContainerGap())
@@ -396,7 +407,7 @@ public class lisCaja extends frameBase<Caja> {
 
     private void btnSeleccionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeleccionarActionPerformed
         // TODO add your handling code here:
-        switch (this.modo) {
+        switch (getModo()) {
             case 1:
                 if (FilaActiva(tbCajas)) {
                     Caja caja = new Caja();
@@ -405,7 +416,7 @@ public class lisCaja extends frameBase<Caja> {
                     caja.setIdMoneda(ObtenerValorCelda(tbCajas, 3));
                     caja.setSimboloMoneda(ObtenerValorCelda(tbCajas, 4));
                     caja.setActivo(ObtenerValorCelda(tbCajas, 6));
-                    seleccionado = caja;
+                    setSeleccionado(caja);
                 }
                 Cerrar();
                 break;
@@ -423,7 +434,6 @@ public class lisCaja extends frameBase<Caja> {
         // TODO add your handling code here:
         new swObtenerCajas().execute();
     }//GEN-LAST:event_btnRefrescarActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnNuevo;

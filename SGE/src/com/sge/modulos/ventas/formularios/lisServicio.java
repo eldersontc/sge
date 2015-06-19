@@ -19,25 +19,42 @@ import javax.swing.SwingWorker;
 public class lisServicio extends frameBase<Servicio> {
 
     /**
-     * Creates new form lisServiciox
+     * Creates new form lisServicio
+     *
+     * @param modo
      */
     public lisServicio(int modo) {
         initComponents();
-        Init(modo, "");
+        setModo(modo);
+        setFiltro("");
     }
 
+    /**
+     * Creates new form lisServicio
+     *
+     * @param modo
+     * @param filtro
+     */
     public lisServicio(int modo, String filtro) {
         initComponents();
-        Init(modo, filtro);
+        setModo(modo);
+        setFiltro(filtro);
     }
 
-    private int modo;
-
-    private String filtro;
-
-    private Servicio seleccionado;
-
-    private List<Servicio> seleccionados = new ArrayList<>();
+    @Override
+    public void Init() {
+        switch (getModo()) {
+            case 0:
+                OcultarColumna(tbServicios, 0);
+                OcultarControl(btnSeleccionar);
+                break;
+            case 1:
+                OcultarColumnas(tbServicios, new int[]{0, 5, 6});
+                OcultarControl(btnNuevo);
+                break;
+        }
+        new swObtenerServicios().execute();
+    }
 
     ImageIcon Icon_Edit = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/edit-16.png"));
     ImageIcon Icon_Dele = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/delete-16.png"));
@@ -71,7 +88,7 @@ public class lisServicio extends frameBase<Servicio> {
             cliVentas servicio = new cliVentas();
             String json = "";
             try {
-                json = servicio.ObtenerServicios(new Gson().toJson(filtro));
+                json = servicio.ObtenerServicios(new Gson().toJson(getFiltro()));
             } catch (Exception e) {
                 OcultarCargando(frame);
                 cancel(false);
@@ -142,25 +159,9 @@ public class lisServicio extends frameBase<Servicio> {
         }
     }
 
-    public void Init(int modo, String filtro) {
-        this.modo = modo;
-        this.filtro = filtro;
-        switch (this.modo) {
-            case 0:
-                OcultarColumna(tbServicios, 0);
-                OcultarControl(btnSeleccionar);
-                break;
-            case 1:
-                OcultarColumnas(tbServicios, new int[]{0, 5, 6});
-                OcultarControl(btnNuevo);
-                break;
-        }
-        new swObtenerServicios().execute();
-    }
-
     public void EditarServicio() {
         int idServicio = ObtenerValorCelda(tbServicios, 1);
-        VerFrame(new regServicio("EDITAR ", idServicio), refr);
+        VerFrame(new regServicio(idServicio), refr);
     }
 
     public void EliminarServicio() {
@@ -168,14 +169,6 @@ public class lisServicio extends frameBase<Servicio> {
         if (confirmacion == 0) {
             new swEliminarServicio().execute();
         }
-    }
-
-    public Servicio getSeleccionado() {
-        return seleccionado;
-    }
-
-    public List<Servicio> getSeleccionados() {
-        return seleccionados;
     }
 
     /**
@@ -199,7 +192,6 @@ public class lisServicio extends frameBase<Servicio> {
         btnRefrescar = new javax.swing.JButton();
 
         frame.setBackground(java.awt.Color.white);
-        frame.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         tbServicios.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -256,7 +248,7 @@ public class lisServicio extends frameBase<Servicio> {
             .addGroup(pnlTituloLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lblTitulo)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 335, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 337, Short.MAX_VALUE)
                 .addComponent(btnNuevo)
                 .addContainerGap())
         );
@@ -301,7 +293,7 @@ public class lisServicio extends frameBase<Servicio> {
             .addGroup(frameLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 642, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 644, Short.MAX_VALUE)
                     .addGroup(frameLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btnSeleccionar, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -325,7 +317,7 @@ public class lisServicio extends frameBase<Servicio> {
                         .addComponent(txtFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(btnRefrescar, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 206, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 208, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnSeleccionar)
                 .addGap(9, 9, 9))
@@ -345,23 +337,24 @@ public class lisServicio extends frameBase<Servicio> {
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
         // TODO add your handling code here:
-        VerFrame(new regServicio("NUEVO ", 0), refr);
+        VerFrame(new regServicio(0), refr);
     }//GEN-LAST:event_btnNuevoActionPerformed
 
     private void btnSeleccionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeleccionarActionPerformed
         // TODO add your handling code here:
-        switch (this.modo) {
+        switch (getModo()) {
             case 1:
                 if (FilaActiva(tbServicios)) {
                     Servicio servicio = new Servicio();
                     servicio.setIdServicio(ObtenerValorCelda(tbServicios, 1));
                     servicio.setCodigo(ObtenerValorCelda(tbServicios, 2));
                     servicio.setDescripcion(ObtenerValorCelda(tbServicios, 3));
-                    seleccionado = servicio;
+                    setSeleccionado(servicio);
                 }
                 Cerrar();
                 break;
             case 2:
+                setSeleccionados(new ArrayList<>());
                 for (int i = 0; i < tbServicios.getRowCount(); i++) {
                     boolean check = ObtenerValorCelda(tbServicios, i, 0);
                     if (check) {
@@ -370,7 +363,7 @@ public class lisServicio extends frameBase<Servicio> {
                         servicio.setCodigo(ObtenerValorCelda(tbServicios, i, 2));
                         servicio.setDescripcion(ObtenerValorCelda(tbServicios, i, 3));
                         servicio.setActivo(ObtenerValorCelda(tbServicios, i, 4));
-                        seleccionados.add(servicio);
+                        getSeleccionados().add(servicio);
                     }
                 }
                 Cerrar();
@@ -387,7 +380,6 @@ public class lisServicio extends frameBase<Servicio> {
         // TODO add your handling code here:
         new swObtenerServicios().execute();
     }//GEN-LAST:event_btnRefrescarActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnNuevo;

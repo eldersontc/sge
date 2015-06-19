@@ -23,14 +23,24 @@ import javax.swing.SwingWorker;
 public class regServicio extends frameBase<Servicio> {
 
     /**
-     * Creates new form regServiciox
+     * Creates new form regServicio
+     *
+     * @param id
      */
-    public regServicio(String operacion, int idServicio) {
+    public regServicio(int id) {
         initComponents();
-        Init(operacion, idServicio);
+        setId(id);
     }
 
-    int idServicio = 0;
+    @Override
+    public void Init() {
+        if (getId() == 0) {
+            lblTitulo.setText("NUEVO " + lblTitulo.getText());
+        } else {
+            lblTitulo.setText("EDITAR " + lblTitulo.getText());
+            new swObtenerServicio().execute();
+        }
+    }
 
     private List<ServicioUnidad> servicioUnidades = new ArrayList<>();
     private List<ServicioMaquina> servicioMaquinas = new ArrayList<>();
@@ -59,14 +69,6 @@ public class regServicio extends frameBase<Servicio> {
         }
     };
 
-    public void Init(String operacion, int idServicio) {
-        lblTitulo.setText(operacion + lblTitulo.getText());
-        this.idServicio = idServicio;
-        if (this.idServicio > 0) {
-            new swObtenerServicio().execute();
-        }
-    }
-
     public List<ServicioUnidad> getServicioUnidades() {
         for (int i = 0; i < tbUnidades.getRowCount(); i++) {
             int idServicioUnidad = ObtenerValorCelda(tbUnidades, i, 0);
@@ -94,7 +96,7 @@ public class regServicio extends frameBase<Servicio> {
             cliVentas cliente = new cliVentas();
             String json = "";
             try {
-                json = cliente.ObtenerServicio(new Gson().toJson(idServicio));
+                json = cliente.ObtenerServicio(new Gson().toJson(getId()));
             } catch (Exception e) {
                 OcultarCargando(frame);
                 cancel(false);
@@ -158,10 +160,10 @@ public class regServicio extends frameBase<Servicio> {
                 servicio.setUnidades(getServicioUnidades());
                 servicio.setMaquinas(servicioMaquinas);
                 servicio.setActivo(chkActivo.isSelected());
-                if (idServicio == 0) {
+                if (getId() == 0) {
                     json = cliente.RegistrarServicio(new Gson().toJson(servicio));
                 } else {
-                    servicio.setIdServicio(idServicio);
+                    servicio.setIdServicio(getId());
                     json = cliente.ActualizarServicio(new Gson().toJson(servicio));
                 }
             } catch (Exception e) {
@@ -224,7 +226,6 @@ public class regServicio extends frameBase<Servicio> {
         lblTitulo = new javax.swing.JLabel();
 
         frame.setBackground(java.awt.Color.white);
-        frame.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         lblCodigo.setText("CODIGO");
 
@@ -455,7 +456,7 @@ public class regServicio extends frameBase<Servicio> {
                                     .addComponent(chkActivo, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addComponent(txtDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, 399, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 517, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(44, Short.MAX_VALUE))
+                .addContainerGap(46, Short.MAX_VALUE))
         );
         frameLayout.setVerticalGroup(
             frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -542,7 +543,6 @@ public class regServicio extends frameBase<Servicio> {
             EliminarFila(tbMaquinas);
         }
     }//GEN-LAST:event_btnEliminarMaquinaActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAceptar;

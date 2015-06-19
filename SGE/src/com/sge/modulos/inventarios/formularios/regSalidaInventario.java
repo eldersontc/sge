@@ -35,15 +35,20 @@ import javax.swing.SwingWorker;
 public class regSalidaInventario extends frameBase<SalidaInventario> {
 
     /**
-     * Creates new form regSalidaInventariox
+     * Creates new form regSalidaInventario
      */
     public regSalidaInventario() {
         initComponents();
     }
 
+    /**
+     * Creates new form regSalidaInventario
+     *
+     * @param id
+     */
     public regSalidaInventario(int id) {
         initComponents();
-        Init(id);
+        setId(id);
     }
 
     public regSalidaInventario(ValorDefinido valorDefinido) {
@@ -51,11 +56,9 @@ public class regSalidaInventario extends frameBase<SalidaInventario> {
         super.Init(valorDefinido);
     }
 
-    private int id;
-
-    public void Init(int id) {
-        this.id = id;
-        if (this.id == 0) {
+    @Override
+    public void Init() {
+        if (getId() == 0) {
             lblTitulo.setText("NUEVA " + lblTitulo.getText());
             new swObtenerValoresDefinidos().execute();
         } else {
@@ -402,7 +405,7 @@ public class regSalidaInventario extends frameBase<SalidaInventario> {
             cliInventarios cliente = new cliInventarios();
             String json = "";
             try {
-                json = cliente.ObtenerSalidaInventario(new Gson().toJson(id));
+                json = cliente.ObtenerSalidaInventario(new Gson().toJson(getId()));
             } catch (Exception e) {
                 OcultarCargando(frame);
                 cancel(false);
@@ -490,7 +493,7 @@ public class regSalidaInventario extends frameBase<SalidaInventario> {
             setJson(new Gson().toJson(super.getEntidad()));
             Cerrar();
         } else {
-            if (this.id == 0) {
+            if (getId() == 0) {
                 new swGuardarSalidaInventario().execute();
             } else {
                 Cerrar();
@@ -547,7 +550,6 @@ public class regSalidaInventario extends frameBase<SalidaInventario> {
         txtOT = new javax.swing.JTextField();
 
         frame.setBackground(java.awt.Color.white);
-        frame.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         lblCliente.setText("CLIENTE");
 
@@ -650,7 +652,7 @@ public class regSalidaInventario extends frameBase<SalidaInventario> {
         pnlUnidadesLayout.setHorizontalGroup(
             pnlUnidadesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlUnidadesLayout.createSequentialGroup()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 688, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 689, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnlUnidadesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnlUnidadesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -966,7 +968,6 @@ public class regSalidaInventario extends frameBase<SalidaInventario> {
             VerModal(new lisProductoAlmacen(1, filtro));
         }
     }//GEN-LAST:event_btnVerStockActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAceptar;

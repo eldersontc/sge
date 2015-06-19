@@ -21,21 +21,23 @@ import javax.swing.SwingWorker;
 public class regReporte extends frameBase<Reporte> {
 
     /**
-     * Creates new form regReportex
+     * Creates new form regReporte
+     *
+     * @param id
      */
-    public regReporte(String operacion, int idReporte) {
+    public regReporte(int id) {
         initComponents();
-        Init(operacion, idReporte);
+        setId(id);
     }
-
-    private int idReporte = 0;
 
     private List<ItemReporte> items = new ArrayList<>();
 
-    public void Init(String operacion, int idReporte) {
-        lblTitulo.setText(operacion + lblTitulo.getText());
-        this.idReporte = idReporte;
-        if (this.idReporte > 0) {
+    @Override
+    public void Init() {
+        if (getId() == 0) {
+            lblTitulo.setText("NUEVO " + lblTitulo.getText());
+        } else {
+            lblTitulo.setText("EDITAR " + lblTitulo.getText());
             new swObtenerReporte().execute();
         }
     }
@@ -81,7 +83,7 @@ public class regReporte extends frameBase<Reporte> {
             cliAdministracion cliente = new cliAdministracion();
             String json = "";
             try {
-                json = cliente.ObtenerReporte(new Gson().toJson(idReporte));
+                json = cliente.ObtenerReporte(new Gson().toJson(getId()));
             } catch (Exception e) {
                 OcultarCargando(frame);
                 cancel(false);
@@ -136,10 +138,10 @@ public class regReporte extends frameBase<Reporte> {
                 reporte.setUbicacion(txtUbicacion.getText());
                 reporte.setActivo(chkActivo.isSelected());
                 reporte.setItems(getItems());
-                if (idReporte == 0) {
+                if (getId() == 0) {
                     json = cliente.RegistrarReporte(new Gson().toJson(reporte));
                 } else {
-                    reporte.setIdReporte(idReporte);
+                    reporte.setIdReporte(getId());
                     json = cliente.ActualizarReporte(new Gson().toJson(reporte));
                 }
             } catch (Exception e) {
@@ -198,7 +200,6 @@ public class regReporte extends frameBase<Reporte> {
         schEntidad = new com.sge.base.controles.JSearch();
 
         frame.setBackground(java.awt.Color.white);
-        frame.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         lblNombre.setText("NOMBRE");
 
@@ -418,7 +419,6 @@ public class regReporte extends frameBase<Reporte> {
         // TODO add your handling code here:
         AgregarFila(tbItems, new Object[]{0, "", false, ""});
     }//GEN-LAST:event_btnNuevoItemActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAceptar;

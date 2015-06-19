@@ -18,19 +18,20 @@ import javax.swing.SwingWorker;
 public class regNumeracion extends frameBase<Numeracion> {
 
     /**
-     * Creates new form regNumeracionx
+     * Creates new form regNumeracion
+     * @param id
      */
-    public regNumeracion(String operacion, int idNumeracion) {
+    public regNumeracion(int id) {
         initComponents();
-        Init(operacion, idNumeracion);
+        setId(id);
     }
 
-    private int idNumeracion = 0;
-
-    public void Init(String operacion, int idNumeracion) {
-        lblTitulo.setText(operacion + lblTitulo.getText());
-        this.idNumeracion = idNumeracion;
-        if (this.idNumeracion > 0) {
+    @Override
+    public void Init() {
+        if(getId() == 0){
+            lblTitulo.setText("NUEVA " + lblTitulo.getText());
+        } else {
+            lblTitulo.setText("EDITAR " + lblTitulo.getText());
             new swObtenerNumeracion().execute();
         }
     }
@@ -53,7 +54,7 @@ public class regNumeracion extends frameBase<Numeracion> {
             cliAdministracion cliente = new cliAdministracion();
             String json = "";
             try {
-                json = cliente.ObtenerNumeracion(new Gson().toJson(idNumeracion));
+                json = cliente.ObtenerNumeracion(new Gson().toJson(getId()));
             } catch (Exception e) {
                 OcultarCargando(frame);
                 cancel(false);
@@ -112,10 +113,10 @@ public class regNumeracion extends frameBase<Numeracion> {
                 numeracion.setTieneImpuesto(chkTieneImpuesto.isSelected());
                 numeracion.setPorcentajeImpuesto(Double.parseDouble(txtPorcentajeImpuesto.getText()));
                 numeracion.setActivo(chkActivo.isSelected());
-                if (idNumeracion == 0) {
+                if (getId() == 0) {
                     json = cliente.RegistrarNumeracion(new Gson().toJson(numeracion));
                 } else {
-                    numeracion.setIdNumeracion(idNumeracion);
+                    numeracion.setIdNumeracion(getId());
                     json = cliente.ActualizarNumeracion(new Gson().toJson(numeracion));
                 }
             } catch (Exception e) {
@@ -176,7 +177,6 @@ public class regNumeracion extends frameBase<Numeracion> {
         schEntidad = new com.sge.base.controles.JSearch();
 
         frame.setBackground(java.awt.Color.white);
-        frame.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         lblDescripcion.setText("DESCRIPCIÓN");
 
@@ -389,7 +389,6 @@ public class regNumeracion extends frameBase<Numeracion> {
             txtPorcentajeImpuesto.setEnabled(false);
         }
     }//GEN-LAST:event_chkTieneImpuestoStateChanged
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAceptar;

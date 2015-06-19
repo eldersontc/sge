@@ -17,23 +17,42 @@ import javax.swing.SwingWorker;
 public class lisOrdenProduccion extends frameBase<OrdenProduccion> {
 
     /**
-     * Creates new form lisOrdenProduccionx
+     * Creates new form lisOrdenProduccion
+     *
+     * @param modo
      */
     public lisOrdenProduccion(int modo) {
         initComponents();
-        Init(modo, "");
+        setModo(modo);
+        setFiltro("");
     }
 
+    /**
+     * Creates new form lisOrdenProduccion
+     *
+     * @param modo
+     * @param filtro
+     */
     public lisOrdenProduccion(int modo, String filtro) {
         initComponents();
-        Init(modo, filtro);
+        setModo(modo);
+        setFiltro(filtro);
     }
 
-    private int modo;
-
-    private String filtro;
-
-    private OrdenProduccion seleccionado;
+    @Override
+    public void Init() {
+        switch (getModo()) {
+            case 0:
+                OcultarColumna(tbOrdenesProduccion, 0);
+                OcultarControl(btnSeleccionar);
+                break;
+            case 1:
+                OcultarColumnas(tbOrdenesProduccion, new int[]{0, 6, 7});
+                OcultarControl(btnNuevo);
+                break;
+        }
+        new swObtenerOrdenesProduccion().execute();
+    }
 
     ImageIcon Icon_Edit = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/edit-16.png"));
     ImageIcon Icon_Dele = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/delete-16.png"));
@@ -67,7 +86,7 @@ public class lisOrdenProduccion extends frameBase<OrdenProduccion> {
             cliProduccion cliente = new cliProduccion();
             String json = "";
             try {
-                json = cliente.ObtenerOrdenesProduccion(new Gson().toJson(filtro));
+                json = cliente.ObtenerOrdenesProduccion(new Gson().toJson(getFiltro()));
             } catch (Exception e) {
                 OcultarCargando(frame);
                 cancel(false);
@@ -139,22 +158,6 @@ public class lisOrdenProduccion extends frameBase<OrdenProduccion> {
         }
     }
 
-    public void Init(int modo, String filtro) {
-        this.modo = modo;
-        this.filtro = filtro;
-        switch (this.modo) {
-            case 0:
-                OcultarColumna(tbOrdenesProduccion, 0);
-                OcultarControl(btnSeleccionar);
-                break;
-            case 1:
-                OcultarColumnas(tbOrdenesProduccion, new int[]{0, 6, 7});
-                OcultarControl(btnNuevo);
-                break;
-        }
-        new swObtenerOrdenesProduccion().execute();
-    }
-
     public void EditarOrdenProduccion() {
         int idOrdenProduccion = ObtenerValorCelda(tbOrdenesProduccion, 1);
         VerFrame(new regOrdenProduccion(idOrdenProduccion), refr);
@@ -165,10 +168,6 @@ public class lisOrdenProduccion extends frameBase<OrdenProduccion> {
         if (confirmacion == 0) {
             new swEliminarOrdenProduccion().execute();
         }
-    }
-
-    public OrdenProduccion getSeleccionado() {
-        return seleccionado;
     }
 
     /**
@@ -192,7 +191,6 @@ public class lisOrdenProduccion extends frameBase<OrdenProduccion> {
         btnRefrescar = new javax.swing.JButton();
 
         frame.setBackground(java.awt.Color.white);
-        frame.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         tbOrdenesProduccion.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -249,7 +247,7 @@ public class lisOrdenProduccion extends frameBase<OrdenProduccion> {
             .addGroup(pnlTituloLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lblTitulo)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 284, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 286, Short.MAX_VALUE)
                 .addComponent(btnNuevo)
                 .addContainerGap())
         );
@@ -294,7 +292,7 @@ public class lisOrdenProduccion extends frameBase<OrdenProduccion> {
             .addGroup(frameLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 737, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 739, Short.MAX_VALUE)
                     .addGroup(frameLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btnSeleccionar, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -318,7 +316,7 @@ public class lisOrdenProduccion extends frameBase<OrdenProduccion> {
                         .addComponent(txtFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(btnRefrescar, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 215, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 217, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnSeleccionar)
                 .addGap(9, 9, 9))
@@ -345,13 +343,13 @@ public class lisOrdenProduccion extends frameBase<OrdenProduccion> {
 
     private void btnSeleccionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeleccionarActionPerformed
         // TODO add your handling code here:
-        switch (this.modo) {
+        switch (getModo()) {
             case 1:
                 if (FilaActiva(tbOrdenesProduccion)) {
                     OrdenProduccion ordenProduccion = new OrdenProduccion();
                     ordenProduccion.setIdOrdenProduccion(ObtenerValorCelda(tbOrdenesProduccion, 1));
                     ordenProduccion.setNumero(ObtenerValorCelda(tbOrdenesProduccion, 2));
-                    seleccionado = ordenProduccion;
+                    setSeleccionado(ordenProduccion);
                 }
                 Cerrar();
                 break;
@@ -369,7 +367,6 @@ public class lisOrdenProduccion extends frameBase<OrdenProduccion> {
         // TODO add your handling code here:
         new swObtenerOrdenesProduccion().execute();
     }//GEN-LAST:event_btnRefrescarActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnNuevo;

@@ -20,24 +20,29 @@ public class perMenu extends frameBase<Menu> {
 
     /**
      * Creates new form perMenux
+     *
+     * @param modo
      */
     public perMenu(int modo) {
         initComponents();
-        Init(modo, "");
+        setModo(modo);
+        setFiltro("");
     }
 
+    /**
+     * Creates new form perMenux
+     *
+     * @param modo
+     * @param filtro
+     */
     public perMenu(int modo, String filtro) {
         initComponents();
-        Init(modo, filtro);
+        setModo(modo);
+        setFiltro(filtro);
     }
 
-    private int modo;
-
-    private String filtro;
-
-    public void Init(int modo, String filtro) {
-        this.modo = modo;
-        this.filtro = filtro;
+    @Override
+    public void Init() {
         OcultarControl(treeMenus);
         new swObtenerPerfiles().execute();
     }
@@ -50,7 +55,7 @@ public class perMenu extends frameBase<Menu> {
             cliAdministracion cliente = new cliAdministracion();
             String json = "";
             try {
-                json = cliente.ObtenerPerfiles(new Gson().toJson(filtro));
+                json = cliente.ObtenerPerfiles(new Gson().toJson(getFiltro()));
             } catch (Exception e) {
                 OcultarCargando(frame);
                 cancel(false);
@@ -220,7 +225,6 @@ public class perMenu extends frameBase<Menu> {
         btnCancelar = new javax.swing.JButton();
 
         frame.setBackground(java.awt.Color.white);
-        frame.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         pnlTitulo1.setBackground(new java.awt.Color(67, 100, 130));
         pnlTitulo1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -237,7 +241,7 @@ public class perMenu extends frameBase<Menu> {
             .addGroup(pnlTitulo1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lblTitulo1, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(313, Short.MAX_VALUE))
+                .addContainerGap(315, Short.MAX_VALUE))
         );
         pnlTitulo1Layout.setVerticalGroup(
             pnlTitulo1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -296,7 +300,7 @@ public class perMenu extends frameBase<Menu> {
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 507, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(24, Short.MAX_VALUE))
+                .addContainerGap(26, Short.MAX_VALUE))
         );
         frameLayout.setVerticalGroup(
             frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

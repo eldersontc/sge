@@ -37,15 +37,20 @@ import javax.swing.SwingWorker;
 public class regOrdenTrabajo extends frameBase<OrdenTrabajo> {
 
     /**
-     * Creates new form regOrdenTrabajox
+     * Creates new form regOrdenTrabajo
      */
     public regOrdenTrabajo() {
         initComponents();
     }
-    
+
+    /**
+     * Creates new form regOrdenTrabajo
+     *
+     * @param id
+     */
     public regOrdenTrabajo(int id) {
         initComponents();
-        Init(id);
+        setId(id);
     }
 
     public regOrdenTrabajo(ValorDefinido valorDefinido) {
@@ -54,7 +59,16 @@ public class regOrdenTrabajo extends frameBase<OrdenTrabajo> {
         super.Init(valorDefinido);
     }
 
-    int id = 0;
+    @Override
+    public void Init() {
+        if (getId() == 0) {
+            lblTitulo.setText("NUEVA " + lblTitulo.getText());
+        } else {
+            lblTitulo.setText("MODIFICAR " + lblTitulo.getText());
+            new swObtenerOrdenTrabajo().execute();
+        }
+        OcultarControl(tpnlItems);
+    }
 
     private ItemOrdenTrabajo item;
 
@@ -128,7 +142,7 @@ public class regOrdenTrabajo extends frameBase<OrdenTrabajo> {
             }
         }
     };
-    
+
     Action sele_maqu = new AbstractAction() {
         @Override
         public void actionPerformed(ActionEvent evt) {
@@ -165,18 +179,6 @@ public class regOrdenTrabajo extends frameBase<OrdenTrabajo> {
         }
     };
 
-    public void Init(int id) {
-        this.id = id;
-        if (this.id == 0) {
-            lblTitulo.setText("NUEVA " + lblTitulo.getText());
-            //new swObtenerValoresDefinidos().execute();
-        } else {
-            lblTitulo.setText("MODIFICAR " + lblTitulo.getText());
-            new swObtenerOrdenTrabajo().execute();
-        }
-        OcultarControl(tpnlItems);
-    }
-
     private void AsignarValores() {
         getEntidad().setIdCliente(schCliente.getId());
         getEntidad().setRazonSocialCliente(schCliente.getText());
@@ -194,7 +196,7 @@ public class regOrdenTrabajo extends frameBase<OrdenTrabajo> {
         getEntidad().setNombreResponsable(schResponsable.getText());
         getEntidad().setDescripcion(txtDescripcion.getText());
         getEntidad().setCantidad(Integer.valueOf(txtCantidad.getText()));
-        if(cboLineaProduccion.getSelectedItem() != null){
+        if (cboLineaProduccion.getSelectedItem() != null) {
             getEntidad().setLineaProduccion(cboLineaProduccion.getSelectedItem().toString());
         }
     }
@@ -265,7 +267,7 @@ public class regOrdenTrabajo extends frameBase<OrdenTrabajo> {
             VerCargando(frame);
             cliProduccion cliProduccion = new cliProduccion();
             try {
-                String json = cliProduccion.ObtenerOrdenTrabajo(new Gson().toJson(id));
+                String json = cliProduccion.ObtenerOrdenTrabajo(new Gson().toJson(getId()));
                 String[] resultado = new Gson().fromJson(json, String[].class);
 
                 if (resultado[0].equals("true")) {
@@ -297,10 +299,10 @@ public class regOrdenTrabajo extends frameBase<OrdenTrabajo> {
             String json = "";
             try {
                 AsignarValores();
-                if (id == 0) {
+                if (getId() == 0) {
                     json = cliProduccion.RegistrarOrdenTrabajo(new Gson().toJson(getEntidad()));
                 } else {
-                    getEntidad().setIdOrdenTrabajo(id);
+                    getEntidad().setIdOrdenTrabajo(getId());
                     json = cliProduccion.ActualizarOrdenTrabajo(new Gson().toJson(getEntidad()));
                 }
             } catch (Exception e) {
@@ -443,7 +445,7 @@ public class regOrdenTrabajo extends frameBase<OrdenTrabajo> {
     public void Cancelar() {
         Cerrar();
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -535,7 +537,6 @@ public class regOrdenTrabajo extends frameBase<OrdenTrabajo> {
         jTextArea1 = new javax.swing.JTextArea();
 
         frame.setBackground(java.awt.Color.white);
-        frame.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         btnAceptar.setText("ACEPTAR");
         btnAceptar.addActionListener(new java.awt.event.ActionListener() {
@@ -1272,7 +1273,7 @@ public class regOrdenTrabajo extends frameBase<OrdenTrabajo> {
         this.item.setFactorUnidadMaterial(0);
         this.item.setCodigoMaterial(null);
     }
-    
+
     private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
         // TODO add your handling code here:
         Aceptar();
@@ -1311,7 +1312,6 @@ public class regOrdenTrabajo extends frameBase<OrdenTrabajo> {
             OcultarControl(tpnlItems);
         }
     }//GEN-LAST:event_lisItemsValueChanged
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAceptar;

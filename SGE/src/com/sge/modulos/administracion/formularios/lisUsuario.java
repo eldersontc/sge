@@ -18,23 +18,42 @@ import javax.swing.SwingWorker;
 public class lisUsuario extends frameBase<Usuario> {
 
     /**
-     * Creates new form lisUsuariox
+     * Creates new form lisUsuario
+     *
+     * @param modo
      */
     public lisUsuario(int modo) {
         initComponents();
-        Init(modo, "");
+        setModo(modo);
+        setFiltro("");
     }
 
+    /**
+     * Creates new form lisUsuario
+     *
+     * @param modo
+     * @param filtro
+     */
     public lisUsuario(int modo, String filtro) {
         initComponents();
-        Init(modo, filtro);
+        setModo(modo);
+        setFiltro(filtro);
     }
 
-    private int modo;
-
-    private String filtro;
-
-    private Usuario seleccionado;
+    @Override
+    public void Init() {
+        switch (getModo()) {
+            case 0:
+                OcultarColumna(tbUsuarios, 0);
+                OcultarControl(btnSeleccionar);
+                break;
+            case 1:
+                OcultarColumnas(tbUsuarios, new int[]{0, 7, 8});
+                OcultarControl(btnNuevo);
+                break;
+        }
+        new swObtenerUsuarios().execute();
+    }
 
     ImageIcon Icon_Save = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/save-16.png"));
     ImageIcon Icon_Dele = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/delete-16.png"));
@@ -79,7 +98,7 @@ public class lisUsuario extends frameBase<Usuario> {
             cliAdministracion cliente = new cliAdministracion();
             String json = "";
             try {
-                json = cliente.ObtenerUsuarios(new Gson().toJson(filtro));
+                json = cliente.ObtenerUsuarios(new Gson().toJson(getFiltro()));
             } catch (Exception e) {
                 OcultarCargando(frame);
                 cancel(false);
@@ -97,15 +116,20 @@ public class lisUsuario extends frameBase<Usuario> {
                 String[] resultado = new Gson().fromJson(json, String[].class);
 
                 if (resultado[0].equals("true")) {
-                    EliminarTodasFilas(tbUsuarios);
                     Usuario[] usuarios = new Gson().fromJson(resultado[1], Usuario[].class);
-                    for (Usuario usuario : usuarios) {
-                        AgregarFila(tbUsuarios, new Object[]{false, usuario.getIdUsuario(), usuario.getUsuario(), usuario.getClave(), usuario.getIdPerfil(), usuario.getNombrePerfil(), usuario.isActivo(), Icon_Save, Icon_Dele});
+                    if (getModo() == 1 && usuarios.length == 1) {
+                        setSeleccionado(usuarios[0]);
+                        Cerrar();
+                    } else {
+                        EliminarTodasFilas(tbUsuarios);
+                        for (Usuario usuario : usuarios) {
+                            AgregarFila(tbUsuarios, new Object[]{false, usuario.getIdUsuario(), usuario.getUsuario(), usuario.getClave(), usuario.getIdPerfil(), usuario.getNombrePerfil(), usuario.isActivo(), Icon_Save, Icon_Dele});
+                        }
+                        AgregarBoton(tbUsuarios, search, 5);
+                        AgregarBoton(tbUsuarios, save, 7);
+                        AgregarBoton(tbUsuarios, dele, 8);
+                        AgregarOrdenamiento(tbUsuarios);
                     }
-                    AgregarBoton(tbUsuarios, search, 5);
-                    AgregarBoton(tbUsuarios, save, 7);
-                    AgregarBoton(tbUsuarios, dele, 8);
-                    AgregarOrdenamiento(tbUsuarios);
                 }
                 OcultarCargando(frame);
             } catch (Exception e) {
@@ -199,22 +223,6 @@ public class lisUsuario extends frameBase<Usuario> {
         }
     }
 
-    public void Init(int modo, String filtro) {
-        this.modo = modo;
-        this.filtro = filtro;
-        switch (this.modo) {
-            case 0:
-                OcultarColumna(tbUsuarios, 0);
-                OcultarControl(btnSeleccionar);
-                break;
-            case 1:
-                OcultarColumnas(tbUsuarios, new int[]{0, 7, 8});
-                OcultarControl(btnNuevo);
-                break;
-        }
-        new swObtenerUsuarios().execute();
-    }
-
     public void EliminarUsuario() {
         int confirmacion = VerConfirmacion(this);
         if (confirmacion == 0) {
@@ -225,10 +233,6 @@ public class lisUsuario extends frameBase<Usuario> {
                 new swEliminarUsuario().execute();
             }
         }
-    }
-
-    public Usuario getSeleccionado() {
-        return seleccionado;
     }
 
     /**
@@ -252,7 +256,6 @@ public class lisUsuario extends frameBase<Usuario> {
         btnRefrescar = new javax.swing.JButton();
 
         frame.setBackground(java.awt.Color.white);
-        frame.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         tbUsuarios.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -354,7 +357,7 @@ public class lisUsuario extends frameBase<Usuario> {
             .addGroup(frameLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 631, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 633, Short.MAX_VALUE)
                     .addGroup(frameLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btnSeleccionar, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -378,7 +381,7 @@ public class lisUsuario extends frameBase<Usuario> {
                         .addComponent(txtFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(btnRefrescar, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 227, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 229, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnSeleccionar)
                 .addGap(15, 15, 15))
@@ -403,13 +406,13 @@ public class lisUsuario extends frameBase<Usuario> {
 
     private void btnSeleccionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeleccionarActionPerformed
         // TODO add your handling code here:
-        switch (this.modo) {
+        switch (getModo()) {
             case 1:
                 if (FilaActiva(tbUsuarios)) {
                     Usuario usuario = new Usuario();
                     usuario.setIdUsuario(ObtenerValorCelda(tbUsuarios, 1));
                     usuario.setUsuario(ObtenerValorCelda(tbUsuarios, 2));
-                    seleccionado = usuario;
+                    setSeleccionado(usuario);
                 }
                 Cerrar();
                 break;
@@ -427,7 +430,6 @@ public class lisUsuario extends frameBase<Usuario> {
         // TODO add your handling code here:
         new swObtenerUsuarios().execute();
     }//GEN-LAST:event_btnRefrescarActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnNuevo;

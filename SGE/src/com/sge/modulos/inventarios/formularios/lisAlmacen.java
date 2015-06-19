@@ -19,25 +19,46 @@ import javax.swing.SwingWorker;
 public class lisAlmacen extends frameBase<Almacen> {
 
     /**
-     * Creates new form lisAlmacenx
+     * Creates new form lisAlmacen
+     *
+     * @param modo
      */
     public lisAlmacen(int modo) {
         initComponents();
-        Init(modo, "");
+        setModo(modo);
+        setFiltro("");
     }
 
+    /**
+     * Creates new form lisAlmacen
+     *
+     * @param modo
+     * @param filtro
+     */
     public lisAlmacen(int modo, String filtro) {
         initComponents();
-        Init(modo, filtro);
+        setModo(modo);
+        setFiltro(filtro);
     }
 
-    private int modo;
-
-    private String filtro;
-
-    private Almacen seleccionado;
-
-    private List<Almacen> seleccionados = new ArrayList<>();
+    @Override
+    public void Init() {
+        switch (getModo()) {
+            case 0:
+                OcultarColumna(tbAlmacenes, 0);
+                OcultarControl(btnSeleccionar);
+                break;
+            case 1:
+                OcultarColumnas(tbAlmacenes, new int[]{0, 5, 6});
+                OcultarControl(btnNuevo);
+                break;
+            case 2:
+                OcultarColumnas(tbAlmacenes, new int[]{5, 6});
+                OcultarControl(btnNuevo);
+                break;
+        }
+        new swObtenerAlmacenes().execute();
+    }
 
     ImageIcon Icon_Save = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/save-16.png"));
     ImageIcon Icon_Dele = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/delete-16.png"));
@@ -64,7 +85,7 @@ public class lisAlmacen extends frameBase<Almacen> {
             cliInventarios cliente = new cliInventarios();
             String json = "";
             try {
-                json = cliente.ObtenerAlmacenes(new Gson().toJson(filtro));
+                json = cliente.ObtenerAlmacenes(new Gson().toJson(getFiltro()));
             } catch (Exception e) {
                 OcultarCargando(frame);
                 cancel(false);
@@ -181,26 +202,6 @@ public class lisAlmacen extends frameBase<Almacen> {
         }
     }
 
-    public void Init(int modo, String filtro) {
-        this.modo = modo;
-        this.filtro = filtro;
-        switch (this.modo) {
-            case 0:
-                OcultarColumna(tbAlmacenes, 0);
-                OcultarControl(btnSeleccionar);
-                break;
-            case 1:
-                OcultarColumnas(tbAlmacenes, new int[]{0, 5, 6});
-                OcultarControl(btnNuevo);
-                break;
-            case 2:
-                OcultarColumnas(tbAlmacenes, new int[]{5, 6});
-                OcultarControl(btnNuevo);
-                break;
-        }
-        new swObtenerAlmacenes().execute();
-    }
-
     public void EliminarAlmacen() {
         int confirmacion = VerConfirmacion(this);
         if (confirmacion == 0) {
@@ -211,14 +212,6 @@ public class lisAlmacen extends frameBase<Almacen> {
                 new swEliminarAlmacen().execute();
             }
         }
-    }
-
-    public Almacen getSeleccionado() {
-        return seleccionado;
-    }
-
-    public List<Almacen> getSeleccionados() {
-        return seleccionados;
     }
 
     /**
@@ -242,7 +235,6 @@ public class lisAlmacen extends frameBase<Almacen> {
         btnRefrescar = new javax.swing.JButton();
 
         frame.setBackground(java.awt.Color.white);
-        frame.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         tbAlmacenes.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -299,7 +291,7 @@ public class lisAlmacen extends frameBase<Almacen> {
             .addGroup(pnlTituloLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lblTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 253, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 253, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 255, Short.MAX_VALUE)
                 .addComponent(btnNuevo)
                 .addContainerGap())
         );
@@ -344,7 +336,7 @@ public class lisAlmacen extends frameBase<Almacen> {
             .addGroup(frameLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 593, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 595, Short.MAX_VALUE)
                     .addGroup(frameLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btnSeleccionar, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -368,7 +360,7 @@ public class lisAlmacen extends frameBase<Almacen> {
                         .addComponent(txtFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(btnRefrescar, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 175, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 177, Short.MAX_VALUE)
                 .addGap(14, 14, 14)
                 .addComponent(btnSeleccionar)
                 .addContainerGap())
@@ -393,17 +385,18 @@ public class lisAlmacen extends frameBase<Almacen> {
 
     private void btnSeleccionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeleccionarActionPerformed
         // TODO add your handling code here:
-        switch (this.modo) {
+        switch (getModo()) {
             case 1:
                 if (FilaActiva(tbAlmacenes)) {
                     Almacen almacen = new Almacen();
                     almacen.setIdAlmacen(ObtenerValorCelda(tbAlmacenes, 1));
                     almacen.setDescripcion(ObtenerValorCelda(tbAlmacenes, 3));
-                    seleccionado = almacen;
+                    setSeleccionado(almacen);
                 }
                 Cerrar();
                 break;
             case 2:
+                setSeleccionados(new ArrayList<>());
                 for (int i = 0; i < tbAlmacenes.getRowCount(); i++) {
                     boolean check = ObtenerValorCelda(tbAlmacenes, i, 0);
                     if (check) {
@@ -412,7 +405,7 @@ public class lisAlmacen extends frameBase<Almacen> {
                         almacen.setCodigo(ObtenerValorCelda(tbAlmacenes, i, 2));
                         almacen.setDescripcion(ObtenerValorCelda(tbAlmacenes, i, 3));
                         almacen.setActivo(ObtenerValorCelda(tbAlmacenes, i, 4));
-                        seleccionados.add(almacen);
+                        getSeleccionados().add(almacen);
                     }
                 }
                 Cerrar();
@@ -429,7 +422,6 @@ public class lisAlmacen extends frameBase<Almacen> {
         // TODO add your handling code here:
         new swObtenerAlmacenes().execute();
     }//GEN-LAST:event_btnRefrescarActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnNuevo;

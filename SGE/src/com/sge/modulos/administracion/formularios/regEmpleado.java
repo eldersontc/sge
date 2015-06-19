@@ -13,19 +13,21 @@ import javax.swing.SwingWorker;
 public class regEmpleado extends frameBase<Empleado> {
 
     /**
-     * Creates new form regEmpleadox
+     * Creates new form regEmpleado
+     *
+     * @param id
      */
-    public regEmpleado(String operacion, int idEmpleado) {
+    public regEmpleado(int id) {
         initComponents();
-        Init(operacion, idEmpleado);
+        setId(id);
     }
 
-    int idEmpleado = 0;
-
-    public void Init(String operacion, int idEmpleado) {
-        lblTitulo.setText(operacion + lblTitulo.getText());
-        this.idEmpleado = idEmpleado;
-        if (this.idEmpleado > 0) {
+    @Override
+    public void Init() {
+        if (getId() == 0) {
+            lblTitulo.setText("NUEVO " + lblTitulo.getText());
+        } else {
+            lblTitulo.setText("EDITAR " + lblTitulo.getText());
             new swObtenerEmpleado().execute();
         }
     }
@@ -38,7 +40,7 @@ public class regEmpleado extends frameBase<Empleado> {
             cliAdministracion cliente = new cliAdministracion();
             String json = "";
             try {
-                json = cliente.ObtenerEmpleado(new Gson().toJson(idEmpleado));
+                json = cliente.ObtenerEmpleado(new Gson().toJson(getId()));
             } catch (Exception e) {
                 OcultarCargando(frame);
                 cancel(false);
@@ -88,10 +90,10 @@ public class regEmpleado extends frameBase<Empleado> {
                 empleado.setTipoDocumentoIdentidad(cboTipoDocumento.getSelectedItem().toString());
                 empleado.setDocumentoIdentidad(txtDocumento.getText());
                 empleado.setActivo(chkActivo.isSelected());
-                if (idEmpleado == 0) {
+                if (getId() == 0) {
                     json = cliente.RegistrarEmpleado(new Gson().toJson(empleado));
                 } else {
-                    empleado.setIdEmpleado(idEmpleado);
+                    empleado.setIdEmpleado(getId());
                     json = cliente.ActualizarEmpleado(new Gson().toJson(empleado));
                 }
             } catch (Exception e) {
@@ -150,7 +152,6 @@ public class regEmpleado extends frameBase<Empleado> {
         lblTitulo = new javax.swing.JLabel();
 
         frame.setBackground(java.awt.Color.white);
-        frame.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         lblCodigo.setText("CODIGO");
 
@@ -197,7 +198,7 @@ public class regEmpleado extends frameBase<Empleado> {
             .addGroup(pnlTituloLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lblTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(283, Short.MAX_VALUE))
+                .addContainerGap(285, Short.MAX_VALUE))
         );
         pnlTituloLayout.setVerticalGroup(
             pnlTituloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -285,7 +286,7 @@ public class regEmpleado extends frameBase<Empleado> {
                 .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCancelar)
                     .addComponent(btnAceptar))
-                .addContainerGap(15, Short.MAX_VALUE))
+                .addContainerGap(17, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -309,7 +310,6 @@ public class regEmpleado extends frameBase<Empleado> {
         // TODO add your handling code here:
         Cerrar();
     }//GEN-LAST:event_btnCancelarActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAceptar;

@@ -36,11 +36,13 @@ import javax.swing.SwingWorker;
 public class regGuiaRemision extends frameBase<GuiaRemision> {
 
     /**
-     * Creates new form regGuiaRemisionx
+     * Creates new form regGuiaRemision
+     *
+     * @param id
      */
     public regGuiaRemision(int id) {
         initComponents();
-        Init(id);
+        setId(id);
     }
 
     public regGuiaRemision(ValorDefinido valorDefinido) {
@@ -48,11 +50,8 @@ public class regGuiaRemision extends frameBase<GuiaRemision> {
         super.Init(valorDefinido);
     }
 
-    public int id = 0;
-
-    public void Init(int id) {
-        this.id = id;
-        if (this.id == 0) {
+    public void Init() {
+        if (getId() == 0) {
             lblTitulo.setText("NUEVA " + lblTitulo.getText());
             new swObtenerValoresDefinidos().execute();
         } else {
@@ -199,7 +198,7 @@ public class regGuiaRemision extends frameBase<GuiaRemision> {
             }
         }
     };
-    
+
     public class swObtenerValoresDefinidos extends SwingWorker<Object, Object> {
 
         @Override
@@ -242,7 +241,7 @@ public class regGuiaRemision extends frameBase<GuiaRemision> {
             cliFacturacion cliente = new cliFacturacion();
             String json = "";
             try {
-                json = cliente.ObtenerGuiaRemision(new Gson().toJson(id));
+                json = cliente.ObtenerGuiaRemision(new Gson().toJson(getId()));
             } catch (Exception e) {
                 OcultarCargando(frame);
                 cancel(false);
@@ -305,10 +304,10 @@ public class regGuiaRemision extends frameBase<GuiaRemision> {
             String json = "";
             try {
                 AsignarValores();
-                if (id == 0) {
+                if (getId() == 0) {
                     json = cliente.RegistrarGuiaRemision(new Gson().toJson(getEntidad()));
                 } else {
-                    getEntidad().setIdGuiaRemision(id);
+                    getEntidad().setIdGuiaRemision(getId());
                     json = cliente.ActualizarGuiaRemision(new Gson().toJson(getEntidad()));
                 }
             } catch (Exception e) {
@@ -406,7 +405,6 @@ public class regGuiaRemision extends frameBase<GuiaRemision> {
         schNumeracion = new com.sge.base.controles.JSearch();
 
         frame.setBackground(java.awt.Color.white);
-        frame.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         lblResponsable.setText("RESPONSABLE");
 
@@ -834,15 +832,15 @@ public class regGuiaRemision extends frameBase<GuiaRemision> {
     private void schChoferSearch() {
         VerModal(new lisEmpleado(1), select_chof);
     }
-    
+
     private void schContactoSearch() {
         //VerModal(new lisEmpleado(1), select_chof);
     }
-    
+
     private void schDepartamentoSearch() {
         VerModal(new lisDepartamento(1), select_depa);
     }
-    
+
     private void schProvinciaSearch() {
         int idDepartamento = schDepartamento.getId();
         if (idDepartamento == 0) {
@@ -852,7 +850,7 @@ public class regGuiaRemision extends frameBase<GuiaRemision> {
             VerModal(new lisProvincia(1, filtro), select_prov);
         }
     }
-    
+
     private void schDistritoSearch() {
         int idProvincia = schProvincia.getId();
         if (idProvincia == 0) {
@@ -862,7 +860,7 @@ public class regGuiaRemision extends frameBase<GuiaRemision> {
             VerModal(new lisDistrito(1, filtro), select_dist);
         }
     }
-    
+
     private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
         // TODO add your handling code here:
         Aceptar();
@@ -891,7 +889,6 @@ public class regGuiaRemision extends frameBase<GuiaRemision> {
             EliminarFila(tbItems);
         }
     }//GEN-LAST:event_btnEliminarItemActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAceptar;
