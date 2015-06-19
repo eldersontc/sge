@@ -5,7 +5,7 @@ import com.sge.base.controles.FabricaControles;
 import com.sge.base.excepciones.Excepciones;
 import com.sge.base.formularios.frameLogin;
 import com.sge.base.formularios.frameBase;
-import com.sge.base.formularios.frameCargando;
+import com.sge.base.formularios.framePreload;
 import com.sge.modulos.administracion.clases.Mensaje;
 import com.sge.modulos.administracion.clases.Menu;
 import com.sge.modulos.administracion.clases.Usuario;
@@ -76,6 +76,7 @@ public class SGE extends javax.swing.JFrame {
         pnlMenu.setVisible(false);
         pnlMensajes.setVisible(false);
         pnlTabs.setVisible(false);
+        tpnlTabs.removeAll();
         dpPrincipal.setVisible(true);
         for (JInternalFrame frame : dpPrincipal.getAllFrames()) {
             try {
@@ -237,7 +238,7 @@ public class SGE extends javax.swing.JFrame {
         if (index == -1) {
             frameBase frame = CrearInstancia(frameName);
             frame.setUsuario(getUsuario());
-            frameCargando frameCargando = new frameCargando();
+            framePreload frameCargando = new framePreload();
             frameCargando.AgregarFrame(frame);
             frame.Init();
             tpnlTabs.addTab(title, frameCargando);

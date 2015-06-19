@@ -1,18 +1,19 @@
 package com.sge.base.formularios;
 
 import java.awt.BorderLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
 /**
  *
  * @author elderson
  */
-public class frameCargando extends javax.swing.JPanel {
+public class framePreload extends javax.swing.JPanel {
 
     /**
      * Creates new form frameCargando
      */
-    public frameCargando() {
+    public framePreload() {
         initComponents();
     }
 
@@ -22,12 +23,23 @@ public class frameCargando extends javax.swing.JPanel {
     }
     
     public void VerCargando(){
-        pnlCargando.setVisible(true);
+        ImageIcon iconoCargando = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/preload-24.gif"));
+        lblPreload.setText("Cargando, espere un momento por favor...");
+        lblPreload.setIcon(iconoCargando);
+        pnlPreload.setVisible(true);
         pnlFrame.setVisible(false);
     }
     
-    public void OcultarCargando(){
-        pnlCargando.setVisible(false);
+    public void VerProcesando(){
+        ImageIcon iconoProcesando = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/process-32.gif"));
+        lblPreload.setText("Procesando...");
+        lblPreload.setIcon(iconoProcesando);
+        pnlPreload.setVisible(true);
+        pnlFrame.setVisible(false);
+    }
+    
+    public void Ocultar(){
+        pnlPreload.setVisible(false);
         pnlFrame.setVisible(true);
     }
     
@@ -40,21 +52,15 @@ public class frameCargando extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        pnlCargando = new javax.swing.JPanel();
+        pnlPreload = new javax.swing.JPanel();
+        lblPreload = new javax.swing.JLabel();
         pnlFrame = new javax.swing.JPanel();
 
-        pnlCargando.setBackground(java.awt.Color.white);
+        pnlPreload.setBackground(java.awt.Color.white);
+        pnlPreload.setLayout(new java.awt.BorderLayout());
 
-        javax.swing.GroupLayout pnlCargandoLayout = new javax.swing.GroupLayout(pnlCargando);
-        pnlCargando.setLayout(pnlCargandoLayout);
-        pnlCargandoLayout.setHorizontalGroup(
-            pnlCargandoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 200, Short.MAX_VALUE)
-        );
-        pnlCargandoLayout.setVerticalGroup(
-            pnlCargandoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
-        );
+        lblPreload.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        pnlPreload.add(lblPreload, java.awt.BorderLayout.CENTER);
 
         pnlFrame.setBackground(java.awt.Color.white);
 
@@ -62,7 +68,7 @@ public class frameCargando extends javax.swing.JPanel {
         pnlFrame.setLayout(pnlFrameLayout);
         pnlFrameLayout.setHorizontalGroup(
             pnlFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 200, Short.MAX_VALUE)
+            .addGap(0, 421, Short.MAX_VALUE)
         );
         pnlFrameLayout.setVerticalGroup(
             pnlFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -74,20 +80,21 @@ public class frameCargando extends javax.swing.JPanel {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(pnlCargando, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(pnlPreload, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(0, 0, 0)
                 .addComponent(pnlFrame, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(pnlCargando, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(pnlPreload, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(pnlFrame, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JPanel pnlCargando;
+    private javax.swing.JLabel lblPreload;
     private javax.swing.JPanel pnlFrame;
+    private javax.swing.JPanel pnlPreload;
     // End of variables declaration//GEN-END:variables
 }

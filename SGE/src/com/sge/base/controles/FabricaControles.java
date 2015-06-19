@@ -1,7 +1,7 @@
 package com.sge.base.controles;
 
 import com.sge.base.formularios.frameBase;
-import com.sge.base.formularios.frameCargando;
+import com.sge.base.formularios.framePreload;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -264,79 +264,23 @@ public class FabricaControles {
     }
 
     public static void VerCargando(JPanel panel) {
-        frameCargando frameCargando = (frameCargando)panel.getParent().getParent().getParent();
-        frameCargando.VerCargando();
-//        for (Component component : panel.getParent().getComponents()) {
-//            if ("panelCargando".equals(component.getName())) {
-//                return;
-//            }
-//        }
-//        JPanel parent = (JPanel) panel.getParent();
-//        JPanel panelCargando = new JPanel();
-//        panelCargando.setName("panelCargando");
-//        panelCargando.setBackground(Color.white);
-//        panelCargando.setLayout(new BorderLayout());
-//        ImageIcon iconoCargando = new ImageIcon(parent.getClass().getResource("/com/sge/base/imagenes/preload-24.gif"));
-//        JLabel labelCargando = new JLabel();
-//        labelCargando.setText("Cargando, espere un momento por favor...");
-//        labelCargando.setIcon(iconoCargando);
-//        labelCargando.setHorizontalAlignment(SwingConstants.CENTER);
-//        panelCargando.add(labelCargando, BorderLayout.CENTER);
-//        parent.setLayout(new BorderLayout());
-//        parent.add(panelCargando, 0);
-//        panel.setVisible(false);
+        framePreload framePreload = (framePreload)panel.getParent().getParent().getParent();
+        framePreload.VerCargando();
     }
 
     public static void OcultarCargando(JPanel panel) {
-        frameCargando frameCargando = (frameCargando)panel.getParent().getParent().getParent();
-        frameCargando.OcultarCargando();
-//        Component panelCargando = null;
-//        for (Component component : panel.getParent().getComponents()) {
-//            if ("panelCargando".equals(component.getName())) {
-//                panelCargando = component;
-//                break;
-//            }
-//        }
-//        if (!(panelCargando == null)) {
-//            panel.getParent().remove(panelCargando);
-//        }
-//        panel.setVisible(true);
+        framePreload framePreload = (framePreload)panel.getParent().getParent().getParent();
+        framePreload.Ocultar();
     }
 
     public static void VerProcesando(JPanel panel) {
-//        for (Component component : panel.getParent().getComponents()) {
-//            if ("panelProcesando".equals(component.getName())) {
-//                return;
-//            }
-//        }
-//        JInternalFrame frame = (JInternalFrame) panel.getParent().getParent().getParent().getParent();
-//        JPanel panelProcesando = new JPanel();
-//        panelProcesando.setName("panelProcesando");
-//        panelProcesando.setBackground(Color.white);
-//        panelProcesando.setLayout(new BorderLayout());
-//        ImageIcon iconoProcesando = new ImageIcon(frame.getClass().getResource("/com/sge/base/imagenes/process-32.gif"));
-//        JLabel labelProcesando = new JLabel();
-//        labelProcesando.setText("Procesando...");
-//        labelProcesando.setIcon(iconoProcesando);
-//        labelProcesando.setHorizontalAlignment(SwingConstants.CENTER);
-//        panelProcesando.add(labelProcesando, BorderLayout.CENTER);
-//        frame.setLayout(new BorderLayout());
-//        frame.add(panelProcesando, 0);
-//        panel.setVisible(false);
+        framePreload framePreload = (framePreload)panel.getParent().getParent().getParent();
+        framePreload.VerProcesando();
     }
 
     public static void OcultarProcesando(JPanel panel) {
-//        Component panelProcesando = null;
-//        for (Component component : panel.getParent().getComponents()) {
-//            if ("panelProcesando".equals(component.getName())) {
-//                panelProcesando = component;
-//                break;
-//            }
-//        }
-//        if (!(panelProcesando == null)) {
-//            panel.getParent().remove(panelProcesando);
-//        }
-//        panel.setVisible(true);
+        framePreload framePreload = (framePreload)panel.getParent().getParent().getParent();
+        framePreload.Ocultar();
     }
 
     public static void VerModal(JDesktopPane desktop, JInternalFrame frame, Action action) {
@@ -422,10 +366,10 @@ public class FabricaControles {
         dialog.setSize(800, 400);
         dialog.setLayout(new BorderLayout());
         dialog.setLocationRelativeTo(parent);
-        frameCargando frameCargando = new frameCargando();
-        frameCargando.AgregarFrame(framebBase);
+        framePreload framePreload = new framePreload();
+        framePreload.AgregarFrame(framebBase);
         framebBase.Init();
-        dialog.add(frameCargando);
+        dialog.add(framePreload);
         dialog.show();
     }
     
@@ -435,10 +379,10 @@ public class FabricaControles {
         dialog.setSize(800, 400);
         dialog.setLayout(new BorderLayout());
         dialog.setLocationRelativeTo(parent);
-        frameCargando frameCargando = new frameCargando();
-        frameCargando.AgregarFrame(frameBase);
+        framePreload framePreload = new framePreload();
+        framePreload.AgregarFrame(frameBase);
         frameBase.Init();
-        dialog.add(frameCargando);
+        dialog.add(framePreload);
         dialog.addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 action.actionPerformed(new ActionEvent(frameBase, 0, null));
@@ -453,10 +397,10 @@ public class FabricaControles {
         frame.setResizable(false);
         frame.setLayout(new BorderLayout());
         frame.setLocationRelativeTo(parent);
-        frameCargando frameCargando = new frameCargando();
-        frameCargando.AgregarFrame(frameBase);
+        framePreload framePreload = new framePreload();
+        framePreload.AgregarFrame(frameBase);
         frameBase.Init();
-        frame.add(frameCargando);
+        frame.add(framePreload);
         frame.show();
     }
     
@@ -466,10 +410,10 @@ public class FabricaControles {
         frame.setResizable(false);
         frame.setLayout(new BorderLayout());
         frame.setLocationRelativeTo(parent);
-        frameCargando frameCargando = new frameCargando();
-        frameCargando.AgregarFrame(frameBase);
+        framePreload framePreload = new framePreload();
+        framePreload.AgregarFrame(frameBase);
         frameBase.Init();
-        frame.add(frameCargando);
+        frame.add(framePreload);
         frame.addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 action.actionPerformed(new ActionEvent(evt.getSource(), evt.getID(), null));
