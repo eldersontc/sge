@@ -19,9 +19,11 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.lang.reflect.Constructor;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.URL;
+import java.net.UnknownHostException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.swing.AbstractAction;
@@ -61,14 +63,22 @@ public class SGE extends javax.swing.JFrame {
         return usuario;
     }
 
-    public void AsignarFechaServidor(Date fechaServidor) {
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+    
+    public void setFechaServidor(Date fechaServidor) {
         this.fechaServidor = fechaServidor;
     }
 
+    public void AsignarIp() throws UnknownHostException{
+        InetAddress host = InetAddress.getLocalHost();
+        this.usuario.setIp(host.getHostAddress());
+    }
+    
     public void Init() {
         OcultarBanner();
         setExtendedState(java.awt.Frame.MAXIMIZED_BOTH);
-        FabricaControles.VerModal(dpPrincipal, new frameLogin(), close);
     }
 
     public void OcultarBanner() {
@@ -77,43 +87,83 @@ public class SGE extends javax.swing.JFrame {
         pnlMensajes.setVisible(false);
         pnlTabs.setVisible(false);
         tpnlTabs.removeAll();
-        dpPrincipal.setVisible(true);
-        for (JInternalFrame frame : dpPrincipal.getAllFrames()) {
-            try {
-                frame.setClosed(true);
-            } catch (Exception ex) {
-            }
-        }
+        frameProcesando.setVisible(false);
+        pnlFondoLogin.setVisible(true);
     }
 
     public void VerBanner() {
         pnlBanner.setVisible(true);
         pnlMenu.setVisible(true);
         pnlTabs.setVisible(true);
-        dpPrincipal.setVisible(false);
+        pnlFondoLogin.setVisible(false);
         txtUsuario.setText(getUsuario().getUsuario());
         txtFecha.setText(new SimpleDateFormat("dd/MM/yyyy").format(this.fechaServidor));
     }
-
-    Action close = new AbstractAction() {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            frameLogin frame = ((frameLogin) e.getSource());
-            if (frame.getUsuario() != null) {
-                usuario = frame.getUsuario();
-                AsignarFechaServidor(frame.getFechaServidor());
-                LlenarMenus(getUsuario().getIdUsuario());
-                VerBanner();
-            }
-        }
-    };
-
+    
     private int mensajesSinLeer;
 
     public void setMensajesSinLeer(int mensajesSinLeer) {
         this.mensajesSinLeer = mensajesSinLeer;
     }
 
+    public void VerProcesandoLogin(){
+        frameLogin.setVisible(false);
+        frameProcesando.setVisible(true);
+    }
+    
+    public void OcultarProcesandoLogin(){
+        frameLogin.setVisible(true);
+        frameProcesando.setVisible(false);
+    }
+    
+    public class swAutenticar extends SwingWorker<Object, Object> {
+
+        @Override
+        protected Object doInBackground() {
+            VerProcesandoLogin();
+            cliAdministracion cliente = new cliAdministracion();
+            String json = "";
+            try {
+                String filtro = String.format("WHERE Usuario.usuario = '%s'", txtUsuarioLogin.getText());
+                json = cliente.ObtenerUsuarios(new Gson().toJson(filtro));
+                String[] resultado = new Gson().fromJson(json, String[].class);
+                if (resultado[0].equals("true")) {
+                    Usuario[] usuarios = new Gson().fromJson(resultado[1], Usuario[].class);
+                    if (usuarios.length == 0) {
+                        throw new Exception("USUARIO NO EXISTE.");
+                    } else {
+                        if (usuarios[0].getClave().equals(txtClaveLogin.getText())) {
+                            if (usuarios[0].isConectado()) {
+                                throw new Exception("EL USUARIO YA SE ENCUENTRA CONECTADO.");
+                            } else {
+                                setUsuario(usuarios[0]);
+                                setFechaServidor(new Gson().fromJson(resultado[2], Date.class));
+                                AsignarIp();
+                                cliente.ConectarUsuario(new Gson().toJson(getUsuario()));
+                                LlenarMenus(getUsuario().getIdUsuario());
+                                VerBanner();
+                            }
+                        } else {
+                            throw new Exception("CLAVE INCORRECTA.");
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                OcultarProcesandoLogin();
+                cancel(false);
+                //Excepciones.Controlar(e);
+            } finally {
+                cliente.close();
+            }
+            return json;
+        }
+
+        @Override
+        protected void done() {
+            OcultarProcesandoLogin();
+        }
+    }
+    
     public void LlenarMenus(int idUsuario) {
         cliAdministracion cliente = new cliAdministracion();
         try {
@@ -495,7 +545,6 @@ public class SGE extends javax.swing.JFrame {
         txtFecha = new javax.swing.JLabel();
         btnVerMensajes = new javax.swing.JButton();
         pnlMenu = new javax.swing.JPanel();
-        dpPrincipal = new javax.swing.JDesktopPane();
         pnlMensajes = new javax.swing.JPanel();
         pnlTitulo = new javax.swing.JPanel();
         lblTitulo = new javax.swing.JLabel();
@@ -508,6 +557,18 @@ public class SGE extends javax.swing.JFrame {
         txtMensajes = new javax.swing.JEditorPane();
         pnlTabs = new javax.swing.JPanel();
         tpnlTabs = new javax.swing.JTabbedPane();
+        pnlFondoLogin = new javax.swing.JPanel();
+        pnlLogin = new javax.swing.JPanel();
+        frameProcesando = new javax.swing.JPanel();
+        lblProcesandoLogin = new javax.swing.JLabel();
+        frameLogin = new javax.swing.JPanel();
+        pnlTituloLogin = new javax.swing.JPanel();
+        lblTituloLogin = new javax.swing.JLabel();
+        lblUsuarioLogin = new javax.swing.JLabel();
+        txtUsuarioLogin = new javax.swing.JTextField();
+        lblClaveLogin = new javax.swing.JLabel();
+        txtClaveLogin = new javax.swing.JPasswordField();
+        btnIngresar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -625,8 +686,6 @@ public class SGE extends javax.swing.JFrame {
             .addGap(0, 53, Short.MAX_VALUE)
         );
 
-        dpPrincipal.setBorder(null);
-
         pnlMensajes.setBackground(java.awt.Color.white);
         pnlMensajes.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
@@ -706,9 +765,9 @@ public class SGE extends javax.swing.JFrame {
             .addGroup(pnlMensajesLayout.createSequentialGroup()
                 .addComponent(pnlTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 71, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 96, Short.MAX_VALUE)
+                .addComponent(jScrollPane4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnlMensajesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(btnEnviarMensaje, javax.swing.GroupLayout.DEFAULT_SIZE, 49, Short.MAX_VALUE)
@@ -736,6 +795,142 @@ public class SGE extends javax.swing.JFrame {
             .addComponent(tpnlTabs)
         );
 
+        pnlFondoLogin.setBackground(java.awt.Color.white);
+
+        frameProcesando.setBackground(java.awt.Color.white);
+
+        lblProcesandoLogin.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblProcesandoLogin.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sge/base/imagenes/process-32.gif"))); // NOI18N
+        lblProcesandoLogin.setText("Procesando...");
+
+        javax.swing.GroupLayout frameProcesandoLayout = new javax.swing.GroupLayout(frameProcesando);
+        frameProcesando.setLayout(frameProcesandoLayout);
+        frameProcesandoLayout.setHorizontalGroup(
+            frameProcesandoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(lblProcesandoLogin, javax.swing.GroupLayout.DEFAULT_SIZE, 280, Short.MAX_VALUE)
+        );
+        frameProcesandoLayout.setVerticalGroup(
+            frameProcesandoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(lblProcesandoLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
+        );
+
+        frameLogin.setBackground(java.awt.Color.white);
+        frameLogin.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
+        pnlTituloLogin.setBackground(new java.awt.Color(67, 100, 130));
+        pnlTituloLogin.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
+        lblTituloLogin.setFont(new java.awt.Font("Ubuntu", 1, 18)); // NOI18N
+        lblTituloLogin.setForeground(java.awt.Color.white);
+        lblTituloLogin.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sge/base/imagenes/key-16.png"))); // NOI18N
+        lblTituloLogin.setText("INGRESAR AL SISTEMA");
+
+        javax.swing.GroupLayout pnlTituloLoginLayout = new javax.swing.GroupLayout(pnlTituloLogin);
+        pnlTituloLogin.setLayout(pnlTituloLoginLayout);
+        pnlTituloLoginLayout.setHorizontalGroup(
+            pnlTituloLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlTituloLoginLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(lblTituloLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 239, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+        pnlTituloLoginLayout.setVerticalGroup(
+            pnlTituloLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlTituloLoginLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblTituloLogin, javax.swing.GroupLayout.DEFAULT_SIZE, 26, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        lblUsuarioLogin.setText("USUARIO");
+
+        txtUsuarioLogin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtUsuarioLoginActionPerformed(evt);
+            }
+        });
+
+        lblClaveLogin.setText("CLAVE");
+
+        txtClaveLogin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtClaveLoginActionPerformed(evt);
+            }
+        });
+
+        btnIngresar.setText("INGRESAR");
+        btnIngresar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnIngresarActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout frameLoginLayout = new javax.swing.GroupLayout(frameLogin);
+        frameLogin.setLayout(frameLoginLayout);
+        frameLoginLayout.setHorizontalGroup(
+            frameLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(pnlTituloLogin, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(frameLoginLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(frameLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, frameLoginLayout.createSequentialGroup()
+                        .addGroup(frameLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblUsuarioLogin, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(lblClaveLogin, javax.swing.GroupLayout.Alignment.TRAILING))
+                        .addGap(18, 18, 18)
+                        .addGroup(frameLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(txtUsuarioLogin)
+                            .addComponent(txtClaveLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(btnIngresar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(15, Short.MAX_VALUE))
+        );
+        frameLoginLayout.setVerticalGroup(
+            frameLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(frameLoginLayout.createSequentialGroup()
+                .addComponent(pnlTituloLogin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(frameLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblUsuarioLogin)
+                    .addComponent(txtUsuarioLogin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(8, 8, 8)
+                .addGroup(frameLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblClaveLogin)
+                    .addComponent(txtClaveLogin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnIngresar)
+                .addGap(0, 17, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout pnlLoginLayout = new javax.swing.GroupLayout(pnlLogin);
+        pnlLogin.setLayout(pnlLoginLayout);
+        pnlLoginLayout.setHorizontalGroup(
+            pnlLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlLoginLayout.createSequentialGroup()
+                .addComponent(frameProcesando, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(0, 0, 0)
+                .addComponent(frameLogin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        pnlLoginLayout.setVerticalGroup(
+            pnlLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(frameProcesando, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(frameLogin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+        );
+
+        javax.swing.GroupLayout pnlFondoLoginLayout = new javax.swing.GroupLayout(pnlFondoLogin);
+        pnlFondoLogin.setLayout(pnlFondoLoginLayout);
+        pnlFondoLoginLayout.setHorizontalGroup(
+            pnlFondoLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlFondoLoginLayout.createSequentialGroup()
+                .addGap(30, 30, 30)
+                .addComponent(pnlLogin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+        pnlFondoLoginLayout.setVerticalGroup(
+            pnlFondoLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlFondoLoginLayout.createSequentialGroup()
+                .addGap(60, 60, 60)
+                .addComponent(pnlLogin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -744,11 +939,10 @@ public class SGE extends javax.swing.JFrame {
             .addComponent(pnlMenu, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(pnlMensajes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(2, 2, 2)
-                .addComponent(dpPrincipal)
                 .addGap(1, 1, 1)
-                .addComponent(pnlTabs, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(2, 2, 2))
+                .addComponent(pnlFondoLogin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(1, 1, 1)
+                .addComponent(pnlTabs, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -758,11 +952,12 @@ public class SGE extends javax.swing.JFrame {
                 .addComponent(pnlMenu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(pnlMensajes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(dpPrincipal)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(2, 2, 2)
+                        .addComponent(pnlFondoLogin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(1, 1, 1)
-                        .addComponent(pnlTabs, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(1, 1, 1))))
+                        .addComponent(pnlTabs, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
 
         pack();
@@ -772,7 +967,6 @@ public class SGE extends javax.swing.JFrame {
         // TODO add your handling code here:
         OcultarBanner();
         DesconectarUsuario();
-        FabricaControles.VerModal(dpPrincipal, new frameLogin(), close);
     }//GEN-LAST:event_btnSalirActionPerformed
 
     private void pnlBannerMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pnlBannerMouseReleased
@@ -840,6 +1034,21 @@ public class SGE extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_tpnlTabsMouseReleased
 
+    private void txtUsuarioLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUsuarioLoginActionPerformed
+        // TODO add your handling code here:
+        new swAutenticar().execute();
+    }//GEN-LAST:event_txtUsuarioLoginActionPerformed
+
+    private void txtClaveLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtClaveLoginActionPerformed
+        // TODO add your handling code here:
+        new swAutenticar().execute();
+    }//GEN-LAST:event_txtClaveLoginActionPerformed
+
+    private void btnIngresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIngresarActionPerformed
+        // TODO add your handling code here:
+        new swAutenticar().execute();
+    }//GEN-LAST:event_btnIngresarActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -877,27 +1086,38 @@ public class SGE extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnEnviarMensaje;
+    private javax.swing.JButton btnIngresar;
     private javax.swing.JButton btnOcultarMensajes;
     private javax.swing.JButton btnSalir;
     private javax.swing.JButton btnVerMensajes;
-    private javax.swing.JDesktopPane dpPrincipal;
+    private javax.swing.JPanel frameLogin;
+    private javax.swing.JPanel frameProcesando;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JLabel lblClaveLogin;
     private javax.swing.JLabel lblFecha;
+    private javax.swing.JLabel lblProcesandoLogin;
     private javax.swing.JLabel lblSeparador;
     private javax.swing.JLabel lblTitulo;
     private javax.swing.JLabel lblTituloBanner;
+    private javax.swing.JLabel lblTituloLogin;
     private javax.swing.JLabel lblUsuario;
+    private javax.swing.JLabel lblUsuarioLogin;
     private javax.swing.JList lisUsuarios;
     private javax.swing.JPanel pnlBanner;
+    private javax.swing.JPanel pnlFondoLogin;
+    private javax.swing.JPanel pnlLogin;
     private javax.swing.JPanel pnlMensajes;
     private javax.swing.JPanel pnlMenu;
     private javax.swing.JPanel pnlTabs;
     private javax.swing.JPanel pnlTitulo;
+    private javax.swing.JPanel pnlTituloLogin;
     private javax.swing.JTabbedPane tpnlTabs;
+    private javax.swing.JPasswordField txtClaveLogin;
     private javax.swing.JLabel txtFecha;
     private javax.swing.JTextField txtMensaje;
     private javax.swing.JEditorPane txtMensajes;
     private javax.swing.JLabel txtUsuario;
+    private javax.swing.JTextField txtUsuarioLogin;
     // End of variables declaration//GEN-END:variables
 }
