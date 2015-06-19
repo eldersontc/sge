@@ -6,6 +6,7 @@ import com.sge.base.excepciones.Excepciones;
 import com.sge.base.formularios.frameBasex;
 import com.sge.base.formularios.frameLogin;
 import com.sge.base.formularios.frameBase;
+import com.sge.base.formularios.frameCargando;
 import com.sge.modulos.administracion.clases.Mensaje;
 import com.sge.modulos.administracion.clases.Menu;
 import com.sge.modulos.administracion.clases.Usuario;
@@ -214,35 +215,35 @@ public class SGE extends javax.swing.JFrame {
         }
     }
 
-    private void ClickMenuItem(ActionEvent e) {
+    private void ClickMenuItem(ActionEvent evt) {
         // TODO add your handling code here:
-        JMenuItem menuItem = (JMenuItem) e.getSource();
-        //LanzarFormulario(menuItem.getName());
-        AgregarTab(menuItem.getName(), menuItem.getText());
-    }
-
-    public void AgregarTab(String frameName, String title){
         try {
-            Class<?> clazz = Class.forName(frameName);
-            Constructor<?> constructor = clazz.getConstructor(int.class);
-            frameBase lis = (frameBase) constructor.newInstance(new Object[]{0});
-            lis.setUsuario(getUsuario());
-            tpnlTabs.addTab(title, lis);
+            JMenuItem menuItem = (JMenuItem) evt.getSource();
+            AgregarTab(menuItem.getName(), menuItem.getText());
         } catch (Exception e) {
-            Excepciones.Controlar(e, this);
+            
         }
     }
     
-    public void LanzarFormulario(String frameName) {
-        try {
-            Class<?> clazz = Class.forName(frameName);
-            Constructor<?> constructor = clazz.getConstructor(int.class);
-            frameBasex frame = (frameBasex) constructor.newInstance(new Object[]{0});
+    
+    public frameBase CrearInstancia(String frameName) throws Exception {
+        Class<?> clazz = Class.forName(frameName);
+        Constructor<?> constructor = clazz.getConstructor(int.class);
+        frameBase frame = (frameBase) constructor.newInstance(new Object[]{0});
+        return frame;
+    }
+    
+    public void AgregarTab(String frameName, String title) throws Exception {
+        int index = tpnlTabs.indexOfTab(title);
+        if (index == -1) {
+            frameCargando frameCargando = new frameCargando();
+            frameBase frame = CrearInstancia(frameName);
             frame.setUsuario(getUsuario());
-            dpPrincipal.add(frame);
-            frame.setVisible(true);
-        } catch (Exception e) {
-            Excepciones.Controlar(e, this);
+            frameCargando.AgregarFrame(frame);
+            tpnlTabs.addTab(title, frameCargando);
+            tpnlTabs.setSelectedIndex(tpnlTabs.getTabCount() - 1);
+        } else {
+            tpnlTabs.setSelectedIndex(index);
         }
     }
 
@@ -716,6 +717,13 @@ public class SGE extends javax.swing.JFrame {
 
         pnlTabs.setBackground(java.awt.Color.white);
 
+        tpnlTabs.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        tpnlTabs.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                tpnlTabsMouseReleased(evt);
+            }
+        });
+
         javax.swing.GroupLayout pnlTabsLayout = new javax.swing.GroupLayout(pnlTabs);
         pnlTabs.setLayout(pnlTabsLayout);
         pnlTabsLayout.setHorizontalGroup(
@@ -813,6 +821,23 @@ public class SGE extends javax.swing.JFrame {
             EnviarMensaje();
         }
     }//GEN-LAST:event_btnEnviarMensajeActionPerformed
+
+    private void tpnlTabsMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tpnlTabsMouseReleased
+        // TODO add your handling code here:
+        if (SwingUtilities.isRightMouseButton(evt)) {
+            JPopupMenu popup = new JPopupMenu();
+            popup.setLayout(new java.awt.BorderLayout());
+            JMenuItem menuClose = new JMenuItem("CERRAR");
+            menuClose.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    tpnlTabs.remove(tpnlTabs.getSelectedIndex());
+                }
+            });
+            popup.add(menuClose);
+            popup.show(tpnlTabs, evt.getPoint().x, evt.getPoint().y);
+        }
+    }//GEN-LAST:event_tpnlTabsMouseReleased
 
     /**
      * @param args the command line arguments

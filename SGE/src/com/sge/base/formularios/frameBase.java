@@ -229,7 +229,7 @@ public class frameBase<T> extends JPanel {
 
     //////////////////////////////// METODOS BASE //////////////////////////////
     public void Cerrar(){
-        Window window = (Window)this.getParent().getParent().getParent().getParent();
+        Window window = (Window)this.getParent().getParent().getParent().getParent().getParent().getParent();
         window.dispose();
         window.dispatchEvent(new WindowEvent(window, WindowEvent.WINDOW_CLOSING));
     }

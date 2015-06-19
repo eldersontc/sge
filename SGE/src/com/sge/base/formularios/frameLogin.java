@@ -52,7 +52,7 @@ public class frameLogin extends javax.swing.JInternalFrame {
 
         @Override
         protected Object doInBackground() {
-            FabricaControles.VerProcesando(frame);
+            //FabricaControles.VerProcesando(frame);
             cliAdministracion cliente = new cliAdministracion();
             String json = "";
             try {
@@ -80,7 +80,7 @@ public class frameLogin extends javax.swing.JInternalFrame {
                     }
                 }
             } catch (Exception e) {
-                FabricaControles.OcultarProcesando(frame);
+                //FabricaControles.OcultarProcesando(frame);
                 cancel(false);
                 Excepciones.Controlar(e, frame);
             } finally {
@@ -91,7 +91,7 @@ public class frameLogin extends javax.swing.JInternalFrame {
 
         @Override
         protected void done() {
-            FabricaControles.OcultarProcesando(frame);
+            //FabricaControles.OcultarProcesando(frame);
         }
     }
 

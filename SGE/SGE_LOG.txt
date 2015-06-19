@@ -549,3 +549,60 @@
 06/17/2015 22:08:22 : java.net.SocketException : Socket closed 
 06/17/2015 22:24:54 : java.net.SocketException : Socket closed 
 06/17/2015 22:32:06 : java.net.SocketException : Socket closed 
+06/17/2015 22:59:28 : java.net.SocketException : Socket closed 
+06/17/2015 23:00:02 : java.net.SocketException : Socket closed 
+06/17/2015 23:13:56 : java.net.SocketException : Socket closed 
+06/17/2015 23:15:13 : java.net.SocketException : Socket closed 
+06/17/2015 23:16:36 : java.net.SocketException : Socket closed 
+06/17/2015 23:18:18 : java.net.SocketException : Socket closed 
+06/17/2015 23:20:51 : java.lang.NullPointerException : null 
+06/17/2015 23:21:02 : java.net.SocketException : Socket closed 
+06/17/2015 23:30:41 : java.net.SocketException : Socket closed 
+06/17/2015 23:35:43 : java.net.SocketException : Socket closed 
+06/18/2015 00:10:40 : java.net.SocketException : Socket closed 
+06/18/2015 13:03:18 : java.net.SocketException : Socket closed 
+06/18/2015 13:05:12 : java.net.SocketException : Socket closed 
+06/18/2015 13:11:46 : java.net.SocketException : Socket closed 
+06/18/2015 13:12:53 : java.net.SocketException : Socket closed 
+06/18/2015 13:13:47 : java.net.SocketException : Socket closed 
+06/18/2015 13:14:21 : java.net.SocketException : Socket closed 
+06/18/2015 13:15:09 : java.net.SocketException : Socket closed 
+06/18/2015 14:04:24 : java.net.SocketException : Socket closed 
+06/18/2015 14:05:10 : java.net.SocketException : Socket closed 
+06/18/2015 14:12:50 : com.sge.base.controles.FabricaControles : VerCargando : 266 
+06/18/2015 14:12:50 : com.sge.base.formularios.frameBase : VerCargando : 177 
+06/18/2015 14:12:50 : com.sge.modulos.administracion.formularios.lisUsuario$swObtenerUsuarios : doInBackground : 78 
+06/18/2015 14:12:50 : javax.swing.SwingWorker$1 : call : 295 
+06/18/2015 14:12:50 : java.util.concurrent.FutureTask : run : 266 
+06/18/2015 14:12:50 : javax.swing.SwingWorker : run : 334 
+06/18/2015 14:12:50 : java.util.concurrent.ThreadPoolExecutor : runWorker : 1142 
+06/18/2015 14:12:50 : java.util.concurrent.ThreadPoolExecutor$Worker : run : 617 
+06/18/2015 14:12:50 : java.lang.Thread : run : 745 
+06/18/2015 14:15:03 : com.sge.base.controles.FabricaControles : VerCargando : 266 
+06/18/2015 14:15:03 : com.sge.base.formularios.frameBase : VerCargando : 177 
+06/18/2015 14:15:03 : com.sge.modulos.administracion.formularios.lisPerfil$swObtenerPerfiles : doInBackground : 59 
+06/18/2015 14:15:03 : javax.swing.SwingWorker$1 : call : 295 
+06/18/2015 14:15:03 : java.util.concurrent.FutureTask : run : 266 
+06/18/2015 14:15:03 : javax.swing.SwingWorker : run : 334 
+06/18/2015 14:15:03 : java.util.concurrent.ThreadPoolExecutor : runWorker : 1142 
+06/18/2015 14:15:03 : java.util.concurrent.ThreadPoolExecutor$Worker : run : 617 
+06/18/2015 14:15:03 : java.lang.Thread : run : 745 
+06/18/2015 14:16:22 : java.lang.Exception : EL USUARIO YA SE ENCUENTRA CONECTADO. 
+06/18/2015 14:18:01 : com.sge.base.controles.FabricaControles : VerCargando : 266 
+06/18/2015 14:18:01 : com.sge.base.formularios.frameBase : VerCargando : 177 
+06/18/2015 14:18:01 : com.sge.modulos.inventarios.formularios.lisEntradaInventario$swObtenerEntradaInventarios : doInBackground : 70 
+06/18/2015 14:18:01 : javax.swing.SwingWorker$1 : call : 295 
+06/18/2015 14:18:01 : java.util.concurrent.FutureTask : run : 266 
+06/18/2015 14:18:01 : javax.swing.SwingWorker : run : 334 
+06/18/2015 14:18:01 : java.util.concurrent.ThreadPoolExecutor : runWorker : 1142 
+06/18/2015 14:18:01 : java.util.concurrent.ThreadPoolExecutor$Worker : run : 617 
+06/18/2015 14:18:01 : java.lang.Thread : run : 745 
+06/18/2015 14:21:59 : com.sge.base.controles.FabricaControles : VerCargando : 266 
+06/18/2015 14:21:59 : com.sge.base.formularios.frameBase : VerCargando : 177 
+06/18/2015 14:21:59 : com.sge.modulos.administracion.formularios.lisPerfil$swObtenerPerfiles : doInBackground : 59 
+06/18/2015 14:21:59 : javax.swing.SwingWorker$1 : call : 295 
+06/18/2015 14:21:59 : java.util.concurrent.FutureTask : run : 266 
+06/18/2015 14:21:59 : javax.swing.SwingWorker : run : 334 
+06/18/2015 14:21:59 : java.util.concurrent.ThreadPoolExecutor : runWorker : 1142 
+06/18/2015 14:21:59 : java.util.concurrent.ThreadPoolExecutor$Worker : run : 617 
+06/18/2015 14:21:59 : java.lang.Thread : run : 745 

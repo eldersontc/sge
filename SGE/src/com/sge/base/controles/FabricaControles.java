@@ -1,5 +1,6 @@
 package com.sge.base.controles;
 
+import com.sge.base.formularios.frameCargando;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -21,6 +22,7 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JDesktopPane;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -261,28 +263,32 @@ public class FabricaControles {
     }
 
     public static void VerCargando(JPanel panel) {
+        frameCargando frameCargando = (frameCargando)panel.getParent().getParent().getParent();
+        frameCargando.VerCargando();
 //        for (Component component : panel.getParent().getComponents()) {
 //            if ("panelCargando".equals(component.getName())) {
 //                return;
 //            }
 //        }
-//        JInternalFrame frame = (JInternalFrame) panel.getParent().getParent().getParent().getParent();
+//        JPanel parent = (JPanel) panel.getParent();
 //        JPanel panelCargando = new JPanel();
 //        panelCargando.setName("panelCargando");
 //        panelCargando.setBackground(Color.white);
 //        panelCargando.setLayout(new BorderLayout());
-//        ImageIcon iconoCargando = new ImageIcon(frame.getClass().getResource("/com/sge/base/imagenes/preload-24.gif"));
+//        ImageIcon iconoCargando = new ImageIcon(parent.getClass().getResource("/com/sge/base/imagenes/preload-24.gif"));
 //        JLabel labelCargando = new JLabel();
 //        labelCargando.setText("Cargando, espere un momento por favor...");
 //        labelCargando.setIcon(iconoCargando);
 //        labelCargando.setHorizontalAlignment(SwingConstants.CENTER);
 //        panelCargando.add(labelCargando, BorderLayout.CENTER);
-//        frame.setLayout(new BorderLayout());
-//        frame.add(panelCargando, 0);
+//        parent.setLayout(new BorderLayout());
+//        parent.add(panelCargando, 0);
 //        panel.setVisible(false);
     }
 
     public static void OcultarCargando(JPanel panel) {
+        frameCargando frameCargando = (frameCargando)panel.getParent().getParent().getParent();
+        frameCargando.OcultarCargando();
 //        Component panelCargando = null;
 //        for (Component component : panel.getParent().getComponents()) {
 //            if ("panelCargando".equals(component.getName())) {
@@ -410,22 +416,26 @@ public class FabricaControles {
     }
 
     public static void VerModal(Component parent, JPanel panel){
+        frameCargando frameCargando = new frameCargando();
         JDialog dialog = new JDialog();
         dialog.setModal(true);
         dialog.setSize(800, 400);
         dialog.setLayout(new BorderLayout());
         dialog.setLocationRelativeTo(parent);
-        dialog.add(panel);
+        frameCargando.AgregarFrame(panel);
+        dialog.add(frameCargando);
         dialog.show();
     }
     
     public static void VerModal(Component parent, JPanel panel, Action action){
+        frameCargando frameCargando = new frameCargando();
         JDialog dialog = new JDialog();
         dialog.setModal(true);
         dialog.setSize(800, 400);
         dialog.setLayout(new BorderLayout());
         dialog.setLocationRelativeTo(parent);
-        dialog.add(panel);
+        frameCargando.AgregarFrame(panel);
+        dialog.add(frameCargando);
         dialog.addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 action.actionPerformed(new ActionEvent(panel, 0, null));
@@ -435,22 +445,26 @@ public class FabricaControles {
     }
     
     public static void VerFrame(Component parent, JPanel panel){
+        frameCargando frameCargando = new frameCargando();
         JFrame frame = new JFrame();
         frame.setSize(panel.getPreferredSize().width, panel.getPreferredSize().height + 30);
         frame.setResizable(false);
         frame.setLayout(new BorderLayout());
         frame.setLocationRelativeTo(parent);
-        frame.add(panel);
+        frameCargando.AgregarFrame(panel);
+        frame.add(frameCargando);
         frame.show();
     }
     
     public static void VerFrame(Component parent, JPanel panel, Action action){
+        frameCargando frameCargando = new frameCargando();
         JFrame frame = new JFrame();
         frame.setSize(panel.getPreferredSize().width, panel.getPreferredSize().height + 30);
         frame.setResizable(false);
         frame.setLayout(new BorderLayout());
         frame.setLocationRelativeTo(parent);
-        frame.add(panel);
+        frameCargando.AgregarFrame(panel);
+        frame.add(frameCargando);
         frame.addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 action.actionPerformed(new ActionEvent(evt.getSource(), evt.getID(), null));
