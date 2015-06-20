@@ -798,6 +798,7 @@ public class SGE extends javax.swing.JFrame {
         pnlFondoLogin.setBackground(java.awt.Color.white);
 
         frameProcesando.setBackground(java.awt.Color.white);
+        frameProcesando.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         lblProcesandoLogin.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblProcesandoLogin.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sge/base/imagenes/process-32.gif"))); // NOI18N
@@ -830,7 +831,7 @@ public class SGE extends javax.swing.JFrame {
         pnlTituloLoginLayout.setHorizontalGroup(
             pnlTituloLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlTituloLoginLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(25, Short.MAX_VALUE)
                 .addComponent(lblTituloLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 239, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -871,18 +872,18 @@ public class SGE extends javax.swing.JFrame {
             frameLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(pnlTituloLogin, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(frameLoginLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(frameLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, frameLoginLayout.createSequentialGroup()
-                        .addGroup(frameLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblUsuarioLogin, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(lblClaveLogin, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(frameLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(btnIngresar, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(frameLoginLayout.createSequentialGroup()
+                        .addGroup(frameLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(lblClaveLogin)
+                            .addComponent(lblUsuarioLogin))
                         .addGap(18, 18, 18)
                         .addGroup(frameLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txtUsuarioLogin)
-                            .addComponent(txtClaveLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(btnIngresar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(15, Short.MAX_VALUE))
+                            .addComponent(txtUsuarioLogin, javax.swing.GroupLayout.DEFAULT_SIZE, 156, Short.MAX_VALUE)
+                            .addComponent(txtClaveLogin))))
+                .addGap(25, 25, 25))
         );
         frameLoginLayout.setVerticalGroup(
             frameLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
