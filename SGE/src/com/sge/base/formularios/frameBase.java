@@ -5,7 +5,6 @@ import com.sge.base.controles.FabricaControles;
 import com.sge.base.excepciones.Excepciones;
 import com.sge.base.reportes.FabricaReportes;
 import com.sge.base.utils.Utils;
-import com.sge.modulos.administracion.clases.Usuario;
 import com.sge.modulos.administracion.clases.ValorDefinido;
 import java.awt.Component;
 import java.awt.Window;
@@ -40,8 +39,6 @@ public class frameBase<T> extends JPanel {
     
     private List<T> seleccionados;
     
-    private Usuario usuario;
-
     public int getId() {
         return id;
     }
@@ -90,14 +87,10 @@ public class frameBase<T> extends JPanel {
         this.seleccionados = seleccionados;
     }
     
-    public Usuario getUsuario() {
-        return usuario;
+    public int getIdUsuario(){
+        return Integer.valueOf(System.getProperty("idUsuario"));
     }
-
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
-    }
-
+    
     public Class<?> getClazz() throws ClassNotFoundException {
         String clazz = ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0].getTypeName();
         return Class.forName(clazz);

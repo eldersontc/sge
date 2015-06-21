@@ -336,9 +336,7 @@ public class lisOrdenProduccion extends frameBase<OrdenProduccion> {
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
         // TODO add your handling code here:
-        regOrdenProduccion regOrdenProduccion = new regOrdenProduccion(0);
-        regOrdenProduccion.setUsuario(getUsuario());
-        VerFrame(regOrdenProduccion, refr);
+        VerFrame(new regOrdenProduccion(0), refr);
     }//GEN-LAST:event_btnNuevoActionPerformed
 
     private void btnSeleccionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeleccionarActionPerformed

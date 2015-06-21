@@ -30,25 +30,25 @@ public class cliFinanzas extends cliBase {
     //////////////////////////////////// CAJA //////////////////////////////////
     public String ObtenerCajas(Object requestEntity) throws ClientErrorException {
         WebTarget resource = client.target(BASE_URI).path("CajaSRV");
-        resource = resource.path("ObtenerCajas");
+        resource = resource.path("ObtenerCajas" + getPathIdUsuario());
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
     }
 
     public String RegistrarCaja(Object requestEntity) throws ClientErrorException {
         WebTarget resource = client.target(BASE_URI).path("CajaSRV");
-        resource = resource.path("RegistrarCaja");
+        resource = resource.path("RegistrarCaja" + getPathIdUsuario());
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
     }
 
     public String ActualizarCaja(Object requestEntity) throws ClientErrorException {
         WebTarget resource = client.target(BASE_URI).path("CajaSRV");
-        resource = resource.path("ActualizarCaja");
+        resource = resource.path("ActualizarCaja" + getPathIdUsuario());
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
     }
 
     public String EliminarCaja(Object requestEntity) throws ClientErrorException {
         WebTarget resource = client.target(BASE_URI).path("CajaSRV");
-        resource = resource.path("EliminarCaja");
+        resource = resource.path("EliminarCaja" + getPathIdUsuario());
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
     }
 
@@ -56,25 +56,25 @@ public class cliFinanzas extends cliBase {
     /////////////////////////////// ENTRADA DE CAJA ////////////////////////////
     public String ObtenerEntradasCaja(Object requestEntity) throws ClientErrorException {
         WebTarget resource = client.target(BASE_URI).path("EntradaCajaSRV");
-        resource = resource.path("ObtenerEntradasCaja");
+        resource = resource.path("ObtenerEntradasCaja" + getPathIdUsuario());
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
     }
 
     public String ObtenerEntradaCaja(Object requestEntity) throws ClientErrorException {
         WebTarget resource = client.target(BASE_URI).path("EntradaCajaSRV");
-        resource = resource.path("ObtenerEntradaCaja");
+        resource = resource.path("ObtenerEntradaCaja" + getPathIdUsuario());
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
     }
 
     public String RegistrarEntradaCaja(Object requestEntity) throws ClientErrorException {
         WebTarget resource = client.target(BASE_URI).path("EntradaCajaSRV");
-        resource = resource.path("RegistrarEntradaCaja");
+        resource = resource.path("RegistrarEntradaCaja" + getPathIdUsuario());
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
     }
 
     public String EliminarEntradaCaja(Object requestEntity) throws ClientErrorException {
         WebTarget resource = client.target(BASE_URI).path("EntradaCajaSRV");
-        resource = resource.path("EliminarEntradaCaja");
+        resource = resource.path("EliminarEntradaCaja" + getPathIdUsuario());
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
     }
 
@@ -82,25 +82,25 @@ public class cliFinanzas extends cliBase {
     /////////////////////////////// SALIDA DE CAJA /////////////////////////////
     public String ObtenerSalidasCaja(Object requestEntity) throws ClientErrorException {
         WebTarget resource = client.target(BASE_URI).path("SalidaCajaSRV");
-        resource = resource.path("ObtenerSalidasCaja");
+        resource = resource.path("ObtenerSalidasCaja" + getPathIdUsuario());
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
     }
 
     public String ObtenerSalidaCaja(Object requestEntity) throws ClientErrorException {
         WebTarget resource = client.target(BASE_URI).path("SalidaCajaSRV");
-        resource = resource.path("ObtenerSalidaCaja");
+        resource = resource.path("ObtenerSalidaCaja" + getPathIdUsuario());
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
     }
 
     public String RegistrarSalidaCaja(Object requestEntity) throws ClientErrorException {
         WebTarget resource = client.target(BASE_URI).path("SalidaCajaSRV");
-        resource = resource.path("RegistrarSalidaCaja");
+        resource = resource.path("RegistrarSalidaCaja" + getPathIdUsuario());
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
     }
 
     public String EliminarSalidaCaja(Object requestEntity) throws ClientErrorException {
         WebTarget resource = client.target(BASE_URI).path("SalidaCajaSRV");
-        resource = resource.path("EliminarSalidaCaja");
+        resource = resource.path("EliminarSalidaCaja" + getPathIdUsuario());
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
     }
 

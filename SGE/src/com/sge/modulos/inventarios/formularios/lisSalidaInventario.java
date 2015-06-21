@@ -345,9 +345,7 @@ public class lisSalidaInventario extends frameBase<SalidaInventario> {
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
         // TODO add your handling code here:
-        regSalidaInventario regSalidaInventario = new regSalidaInventario(0);
-        regSalidaInventario.setUsuario(getUsuario());
-        VerFrame(regSalidaInventario, refr);
+        VerFrame(new regSalidaInventario(0), refr);
     }//GEN-LAST:event_btnNuevoActionPerformed
 
     private void txtFiltroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFiltroActionPerformed

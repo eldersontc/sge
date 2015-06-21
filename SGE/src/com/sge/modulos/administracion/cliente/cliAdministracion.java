@@ -36,13 +36,13 @@ public class cliAdministracion extends cliBase {
 
     public String ObtenerMenusPorPerfil(Object requestEntity) throws ClientErrorException {
         WebTarget resource = client.target(BASE_URI).path("MenuSRV");
-        resource = resource.path("ObtenerMenusPorPerfil");
+        resource = resource.path("ObtenerMenusPorPerfil" + getPathIdUsuario());
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
     }
 
     public String ActualizarPermisos(Object requestEntity) throws ClientErrorException {
         WebTarget resource = client.target(BASE_URI).path("MenuSRV");
-        resource = resource.path("ActualizarPermisos");
+        resource = resource.path("ActualizarPermisos" + getPathIdUsuario());
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
     }
 
@@ -62,19 +62,19 @@ public class cliAdministracion extends cliBase {
 
     public String RegistrarUsuario(Object requestEntity) throws ClientErrorException {
         WebTarget resource = client.target(BASE_URI).path("UsuarioSRV");
-        resource = resource.path("RegistrarUsuario");
+        resource = resource.path("RegistrarUsuario" + getPathIdUsuario());
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
     }
 
     public String ActualizarUsuario(Object requestEntity) throws ClientErrorException {
         WebTarget resource = client.target(BASE_URI).path("UsuarioSRV");
-        resource = resource.path("ActualizarUsuario");
+        resource = resource.path("ActualizarUsuario" + getPathIdUsuario());
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
     }
 
     public String EliminarUsuario(Object requestEntity) throws ClientErrorException {
         WebTarget resource = client.target(BASE_URI).path("UsuarioSRV");
-        resource = resource.path("EliminarUsuario");
+        resource = resource.path("EliminarUsuario" + getPathIdUsuario());
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
     }
 
@@ -94,25 +94,25 @@ public class cliAdministracion extends cliBase {
     ////////////////////////////// PERFIL //////////////////////////////////////
     public String ObtenerPerfiles(Object requestEntity) throws ClientErrorException {
         WebTarget resource = client.target(BASE_URI).path("PerfilSRV");
-        resource = resource.path("ObtenerPerfiles");
+        resource = resource.path("ObtenerPerfiles" + getPathIdUsuario());
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
     }
 
     public String RegistrarPerfil(Object requestEntity) throws ClientErrorException {
         WebTarget resource = client.target(BASE_URI).path("PerfilSRV");
-        resource = resource.path("RegistrarPerfil");
+        resource = resource.path("RegistrarPerfil" + getPathIdUsuario());
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
     }
 
     public String ActualizarPerfil(Object requestEntity) throws ClientErrorException {
         WebTarget resource = client.target(BASE_URI).path("PerfilSRV");
-        resource = resource.path("ActualizarPerfil");
+        resource = resource.path("ActualizarPerfil" + getPathIdUsuario());
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
     }
 
     public String EliminarPerfil(Object requestEntity) throws ClientErrorException {
         WebTarget resource = client.target(BASE_URI).path("PerfilSRV");
-        resource = resource.path("EliminarPerfil");
+        resource = resource.path("EliminarPerfil" + getPathIdUsuario());
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
     }
 
@@ -120,31 +120,31 @@ public class cliAdministracion extends cliBase {
     ////////////////////////////////// EMPLEADO ////////////////////////////////
     public String ObtenerEmpleados(Object requestEntity) throws ClientErrorException {
         WebTarget resource = client.target(BASE_URI).path("EmpleadoSRV");
-        resource = resource.path("ObtenerEmpleados");
+        resource = resource.path("ObtenerEmpleados" + getPathIdUsuario());
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
     }
 
     public String ObtenerEmpleado(Object requestEntity) throws ClientErrorException {
         WebTarget resource = client.target(BASE_URI).path("EmpleadoSRV");
-        resource = resource.path("ObtenerEmpleado");
+        resource = resource.path("ObtenerEmpleado" + getPathIdUsuario());
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
     }
 
     public String RegistrarEmpleado(Object requestEntity) throws ClientErrorException {
         WebTarget resource = client.target(BASE_URI).path("EmpleadoSRV");
-        resource = resource.path("RegistrarEmpleado");
+        resource = resource.path("RegistrarEmpleado" + getPathIdUsuario());
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
     }
 
     public String ActualizarEmpleado(Object requestEntity) throws ClientErrorException {
         WebTarget resource = client.target(BASE_URI).path("EmpleadoSRV");
-        resource = resource.path("ActualizarEmpleado");
+        resource = resource.path("ActualizarEmpleado" + getPathIdUsuario());
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
     }
 
     public String EliminarEmpleado(Object requestEntity) throws ClientErrorException {
         WebTarget resource = client.target(BASE_URI).path("EmpleadoSRV");
-        resource = resource.path("EliminarEmpleado");
+        resource = resource.path("EliminarEmpleado" + getPathIdUsuario());
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
     }
 
@@ -152,25 +152,25 @@ public class cliAdministracion extends cliBase {
     ////////////////////////////// MONEDA //////////////////////////////////////
     public String ObtenerMonedas(Object requestEntity) throws ClientErrorException {
         WebTarget resource = client.target(BASE_URI).path("MonedaSRV");
-        resource = resource.path("ObtenerMonedas");
+        resource = resource.path("ObtenerMonedas" + getPathIdUsuario());
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
     }
 
     public String RegistrarMoneda(Object requestEntity) throws ClientErrorException {
         WebTarget resource = client.target(BASE_URI).path("MonedaSRV");
-        resource = resource.path("RegistrarMoneda");
+        resource = resource.path("RegistrarMoneda" + getPathIdUsuario());
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
     }
 
     public String ActualizarMoneda(Object requestEntity) throws ClientErrorException {
         WebTarget resource = client.target(BASE_URI).path("MonedaSRV");
-        resource = resource.path("ActualizarMoneda");
+        resource = resource.path("ActualizarMoneda" + getPathIdUsuario());
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
     }
 
     public String EliminarMoneda(Object requestEntity) throws ClientErrorException {
         WebTarget resource = client.target(BASE_URI).path("MonedaSRV");
-        resource = resource.path("EliminarMoneda");
+        resource = resource.path("EliminarMoneda" + getPathIdUsuario());
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
     }
 
@@ -178,43 +178,43 @@ public class cliAdministracion extends cliBase {
     ////////////////////////////////// REPORTE /////////////////////////////////
     public String ObtenerReportes(Object requestEntity) throws ClientErrorException {
         WebTarget resource = client.target(BASE_URI).path("ReporteSRV");
-        resource = resource.path("ObtenerReportes");
+        resource = resource.path("ObtenerReportes" + getPathIdUsuario());
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
     }
 
     public String ObtenerReporte(Object requestEntity) throws ClientErrorException {
         WebTarget resource = client.target(BASE_URI).path("ReporteSRV");
-        resource = resource.path("ObtenerReporte");
+        resource = resource.path("ObtenerReporte" + getPathIdUsuario());
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
     }
 
     public String RegistrarReporte(Object requestEntity) throws ClientErrorException {
         WebTarget resource = client.target(BASE_URI).path("ReporteSRV");
-        resource = resource.path("RegistrarReporte");
+        resource = resource.path("RegistrarReporte" + getPathIdUsuario());
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
     }
 
     public String ActualizarReporte(Object requestEntity) throws ClientErrorException {
         WebTarget resource = client.target(BASE_URI).path("ReporteSRV");
-        resource = resource.path("ActualizarReporte");
+        resource = resource.path("ActualizarReporte" + getPathIdUsuario());
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
     }
 
     public String EliminarReporte(Object requestEntity) throws ClientErrorException {
         WebTarget resource = client.target(BASE_URI).path("ReporteSRV");
-        resource = resource.path("EliminarReporte");
+        resource = resource.path("EliminarReporte" + getPathIdUsuario());
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
     }
 
     public String GenerarReporteConEntidad(Object requestEntity) throws ClientErrorException {
         WebTarget resource = client.target(BASE_URI).path("ReporteSRV");
-        resource = resource.path("GenerarReporteConEntidad");
+        resource = resource.path("GenerarReporteConEntidad" + getPathIdUsuario());
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
     }
 
     public String GenerarReporteSinEntidad(Object requestEntity) throws ClientErrorException {
         WebTarget resource = client.target(BASE_URI).path("ReporteSRV");
-        resource = resource.path("GenerarReporteSinEntidad");
+        resource = resource.path("GenerarReporteSinEntidad" + getPathIdUsuario());
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
     }
 
@@ -222,37 +222,37 @@ public class cliAdministracion extends cliBase {
     //////////////////////////// VALOR DEFINIDO ////////////////////////////////
     public String ObtenerValoresDefinidos(Object requestEntity) throws ClientErrorException {
         WebTarget resource = client.target(BASE_URI).path("ValorDefinidoSRV");
-        resource = resource.path("ObtenerValoresDefinidos");
+        resource = resource.path("ObtenerValoresDefinidos" + getPathIdUsuario());
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
     }
 
     public String ObtenerValorDefinido(Object requestEntity) throws ClientErrorException {
         WebTarget resource = client.target(BASE_URI).path("ValorDefinidoSRV");
-        resource = resource.path("ObtenerValorDefinido");
+        resource = resource.path("ObtenerValorDefinido" + getPathIdUsuario());
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
     }
 
     public String RegistrarValorDefinido(Object requestEntity) throws ClientErrorException {
         WebTarget resource = client.target(BASE_URI).path("ValorDefinidoSRV");
-        resource = resource.path("RegistrarValorDefinido");
+        resource = resource.path("RegistrarValorDefinido" + getPathIdUsuario());
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
     }
 
     public String ActualizarValorDefinido(Object requestEntity) throws ClientErrorException {
         WebTarget resource = client.target(BASE_URI).path("ValorDefinidoSRV");
-        resource = resource.path("ActualizarValorDefinido");
+        resource = resource.path("ActualizarValorDefinido" + getPathIdUsuario());
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
     }
 
     public String EliminarValorDefinido(Object requestEntity) throws ClientErrorException {
         WebTarget resource = client.target(BASE_URI).path("ValorDefinidoSRV");
-        resource = resource.path("EliminarValorDefinido");
+        resource = resource.path("EliminarValorDefinido" + getPathIdUsuario());
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
     }
 
     public String ObtenerValorDefinidoPorUsuarioYEntidad(Object requestEntity) throws ClientErrorException {
         WebTarget resource = client.target(BASE_URI).path("ValorDefinidoSRV");
-        resource = resource.path("ObtenerValorDefinidoPorUsuarioYEntidad");
+        resource = resource.path("ObtenerValorDefinidoPorUsuarioYEntidad" + getPathIdUsuario());
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
     }
 
@@ -260,13 +260,13 @@ public class cliAdministracion extends cliBase {
     ////////////////////////////////// ENTIDAD /////////////////////////////////
     public String ObtenerEntidades(Object requestEntity) throws ClientErrorException {
         WebTarget resource = client.target(BASE_URI).path("EntidadSRV");
-        resource = resource.path("ObtenerEntidades");
+        resource = resource.path("ObtenerEntidades" + getPathIdUsuario());
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
     }
 
     public String ObtenerEntidad(Object requestEntity) throws ClientErrorException {
         WebTarget resource = client.target(BASE_URI).path("EntidadSRV");
-        resource = resource.path("ObtenerEntidad");
+        resource = resource.path("ObtenerEntidad" + getPathIdUsuario());
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
     }
 
@@ -274,31 +274,31 @@ public class cliAdministracion extends cliBase {
     /////////////////////////////// NUMERACION /////////////////////////////////
     public String ObtenerNumeraciones(Object requestEntity) throws ClientErrorException {
         WebTarget resource = client.target(BASE_URI).path("NumeracionSRV");
-        resource = resource.path("ObtenerNumeraciones");
+        resource = resource.path("ObtenerNumeraciones" + getPathIdUsuario());
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
     }
 
     public String ObtenerNumeracion(Object requestEntity) throws ClientErrorException {
         WebTarget resource = client.target(BASE_URI).path("NumeracionSRV");
-        resource = resource.path("ObtenerNumeracion");
+        resource = resource.path("ObtenerNumeracion" + getPathIdUsuario());
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
     }
 
     public String RegistrarNumeracion(Object requestEntity) throws ClientErrorException {
         WebTarget resource = client.target(BASE_URI).path("NumeracionSRV");
-        resource = resource.path("RegistrarNumeracion");
+        resource = resource.path("RegistrarNumeracion" + getPathIdUsuario());
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
     }
 
     public String ActualizarNumeracion(Object requestEntity) throws ClientErrorException {
         WebTarget resource = client.target(BASE_URI).path("NumeracionSRV");
-        resource = resource.path("ActualizarNumeracion");
+        resource = resource.path("ActualizarNumeracion" + getPathIdUsuario());
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
     }
 
     public String EliminarNumeracion(Object requestEntity) throws ClientErrorException {
         WebTarget resource = client.target(BASE_URI).path("NumeracionSRV");
-        resource = resource.path("EliminarNumeracion");
+        resource = resource.path("EliminarNumeracion" + getPathIdUsuario());
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
     }
 
@@ -306,7 +306,7 @@ public class cliAdministracion extends cliBase {
     ////////////////////////////// DEPARTAMENTO ////////////////////////////////
     public String ObtenerDepartamentos(Object requestEntity) throws ClientErrorException {
         WebTarget resource = client.target(BASE_URI).path("DepartamentoSRV");
-        resource = resource.path("ObtenerDepartamentos");
+        resource = resource.path("ObtenerDepartamentos" + getPathIdUsuario());
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
     }
 
@@ -314,7 +314,7 @@ public class cliAdministracion extends cliBase {
     //////////////////////////////// PROVINCIA /////////////////////////////////
     public String ObtenerProvincias(Object requestEntity) throws ClientErrorException {
         WebTarget resource = client.target(BASE_URI).path("ProvinciaSRV");
-        resource = resource.path("ObtenerProvincias");
+        resource = resource.path("ObtenerProvincias" + getPathIdUsuario());
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
     }
 
@@ -322,7 +322,7 @@ public class cliAdministracion extends cliBase {
     ///////////////////////////////// DISTRITO /////////////////////////////////
     public String ObtenerDistritos(Object requestEntity) throws ClientErrorException {
         WebTarget resource = client.target(BASE_URI).path("DistritoSRV");
-        resource = resource.path("ObtenerDistritos");
+        resource = resource.path("ObtenerDistritos" + getPathIdUsuario());
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
     }
 
@@ -330,22 +330,22 @@ public class cliAdministracion extends cliBase {
     ///////////////////////////// MENSAJE //////////////////////////////////////
     public String ObtenerMensajesPorUsuarioOrigenYDestino(Object requestEntity) throws ClientErrorException {
         WebTarget resource = client.target(BASE_URI).path("MensajeSRV");
-        resource = resource.path("ObtenerMensajesPorUsuarioOrigenYDestino");
+        resource = resource.path("ObtenerMensajesPorUsuarioOrigenYDestino" + getPathIdUsuario());
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
     }
 
     public String RegistrarMensaje(Object requestEntity) throws ClientErrorException {
         WebTarget resource = client.target(BASE_URI).path("MensajeSRV");
-        resource = resource.path("RegistrarMensaje");
+        resource = resource.path("RegistrarMensaje" + getPathIdUsuario());
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
     }
 
     public String CambiarALeido(Object requestEntity) throws ClientErrorException {
         WebTarget resource = client.target(BASE_URI).path("MensajeSRV");
-        resource = resource.path("CambiarALeido");
+        resource = resource.path("CambiarALeido" + getPathIdUsuario());
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
     }
-
+    
     ////////////////////////////////////////////////////////////////////////////
     public void close() {
         client.close();

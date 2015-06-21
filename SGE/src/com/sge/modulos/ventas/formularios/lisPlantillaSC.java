@@ -170,7 +170,7 @@ public class lisPlantillaSC extends frameBase<PlantillaSolicitudCotizacion> {
             cliVentas cliVentas = new cliVentas();
             try {
                 int idPlantilla = ObtenerValorCelda(tbPlantillas, 1);
-                String json = cliVentas.GenerarSolicitudCotizacion(new Gson().toJson(new int[]{idPlantilla, getUsuario().getIdUsuario()}));
+                String json = cliVentas.GenerarSolicitudCotizacion(new Gson().toJson(new int[]{idPlantilla, getIdUsuario()}));
                 String[] resultado = new Gson().fromJson(json, String[].class);
 
                 if (resultado[0].equals("true")) {
@@ -214,7 +214,6 @@ public class lisPlantillaSC extends frameBase<PlantillaSolicitudCotizacion> {
                     }
 
                     regSolicitudCotizacion regSolicitudCotizacion = new regSolicitudCotizacion();
-                    regSolicitudCotizacion.setUsuario(getUsuario());
                     regSolicitudCotizacion.setEntidad(solicitud);
                     regSolicitudCotizacion.AsignarControles();
                     getParent().add(regSolicitudCotizacion);

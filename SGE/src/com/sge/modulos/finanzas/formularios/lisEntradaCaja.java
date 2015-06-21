@@ -334,9 +334,7 @@ public class lisEntradaCaja extends frameBase<EntradaCaja> {
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
         // TODO add your handling code here:
-        regEntradaCaja regEntradaCaja = new regEntradaCaja(0);
-        regEntradaCaja.setUsuario(getUsuario());
-        VerFrame(regEntradaCaja, refr);
+        VerFrame(new regEntradaCaja(0), refr);
     }//GEN-LAST:event_btnNuevoActionPerformed
 
     private void btnSeleccionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeleccionarActionPerformed

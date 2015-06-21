@@ -244,7 +244,7 @@ public class lisSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
             cliVentas cliVentas = new cliVentas();
             try {
                 int idSolicitud = ObtenerValorCelda(tbSolicitudes, 1);
-                String json = cliVentas.GenerarCotizacion(new Gson().toJson(new int[]{idSolicitud, getUsuario().getIdUsuario()}));
+                String json = cliVentas.GenerarCotizacion(new Gson().toJson(new int[]{idSolicitud, getIdUsuario()}));
                 String[] resultado = new Gson().fromJson(json, String[].class);
 
                 if (resultado[0].equals("true")) {
@@ -328,7 +328,6 @@ public class lisSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
                     }
 
                     regCotizacion regCotizacion = new regCotizacion(0);
-                    regCotizacion.setUsuario(getUsuario());
                     regCotizacion.setEntidad(cotizacion);
                     regCotizacion.AsignarControles();
                     getParent().add(regCotizacion);
@@ -591,9 +590,7 @@ public class lisSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
         // TODO add your handling code here:
-        regSolicitudCotizacion regSolicitudCotizacion = new regSolicitudCotizacion(0);
-        regSolicitudCotizacion.setUsuario(getUsuario());
-        VerFrame(regSolicitudCotizacion, refr);
+        VerFrame(new regSolicitudCotizacion(0), refr);
     }//GEN-LAST:event_btnNuevoActionPerformed
 
     private void btnSeleccionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeleccionarActionPerformed

@@ -30,31 +30,31 @@ public class cliCompras extends cliBase {
     ///////////////////////////////// PROVEEDOR ////////////////////////////////
     public String ObtenerProveedores(Object requestEntity) throws ClientErrorException {
         WebTarget resource = client.target(BASE_URI).path("ProveedorSRV");
-        resource = resource.path("ObtenerProveedores");
+        resource = resource.path("ObtenerProveedores" + getPathIdUsuario());
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
     }
 
     public String ObtenerProveedor(Object requestEntity) throws ClientErrorException {
         WebTarget resource = client.target(BASE_URI).path("ProveedorSRV");
-        resource = resource.path("ObtenerProveedor");
+        resource = resource.path("ObtenerProveedor" + getPathIdUsuario());
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
     }
 
     public String RegistrarProveedor(Object requestEntity) throws ClientErrorException {
         WebTarget resource = client.target(BASE_URI).path("ProveedorSRV");
-        resource = resource.path("RegistrarProveedor");
+        resource = resource.path("RegistrarProveedor" + getPathIdUsuario());
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
     }
 
     public String ActualizarProveedor(Object requestEntity) throws ClientErrorException {
         WebTarget resource = client.target(BASE_URI).path("ProveedorSRV");
-        resource = resource.path("ActualizarProveedor");
+        resource = resource.path("ActualizarProveedor" + getPathIdUsuario());
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
     }
 
     public String EliminarProveedor(Object requestEntity) throws ClientErrorException {
         WebTarget resource = client.target(BASE_URI).path("ProveedorSRV");
-        resource = resource.path("EliminarProveedor");
+        resource = resource.path("EliminarProveedor" + getPathIdUsuario());
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
     }
 

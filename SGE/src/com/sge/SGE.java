@@ -1,9 +1,7 @@
 package com.sge;
 
 import com.google.gson.Gson;
-import com.sge.base.controles.FabricaControles;
 import com.sge.base.excepciones.Excepciones;
-import com.sge.base.formularios.frameLogin;
 import com.sge.base.formularios.frameBase;
 import com.sge.base.formularios.framePreload;
 import com.sge.modulos.administracion.clases.Mensaje;
@@ -26,11 +24,8 @@ import java.net.URL;
 import java.net.UnknownHostException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import javax.swing.AbstractAction;
-import javax.swing.Action;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
-import javax.swing.JInternalFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -76,6 +71,10 @@ public class SGE extends javax.swing.JFrame {
         this.usuario.setIp(host.getHostAddress());
     }
     
+    public void AsignarIdUsuario(int idUsuario){
+        System.setProperty("idUsuario", String.valueOf(idUsuario));
+    }
+    
     public void Init() {
         OcultarBanner();
         setExtendedState(java.awt.Frame.MAXIMIZED_BOTH);
@@ -98,6 +97,11 @@ public class SGE extends javax.swing.JFrame {
         pnlFondoLogin.setVisible(false);
         txtUsuario.setText(getUsuario().getUsuario());
         txtFecha.setText(new SimpleDateFormat("dd/MM/yyyy").format(this.fechaServidor));
+    }
+    
+    public void LimpiarLogin(){
+        txtUsuarioLogin.setText("");
+        txtClaveLogin.setText("");
     }
     
     private int mensajesSinLeer;
@@ -139,9 +143,11 @@ public class SGE extends javax.swing.JFrame {
                                 setUsuario(usuarios[0]);
                                 setFechaServidor(new Gson().fromJson(resultado[2], Date.class));
                                 AsignarIp();
+                                AsignarIdUsuario(getUsuario().getIdUsuario());
                                 cliente.ConectarUsuario(new Gson().toJson(getUsuario()));
                                 LlenarMenus(getUsuario().getIdUsuario());
                                 VerBanner();
+                                LimpiarLogin();
                             }
                         } else {
                             throw new Exception("CLAVE INCORRECTA.");
@@ -287,7 +293,6 @@ public class SGE extends javax.swing.JFrame {
         int index = tpnlTabs.indexOfTab(title);
         if (index == -1) {
             frameBase frame = CrearInstancia(frameName);
-            frame.setUsuario(getUsuario());
             framePreload frameCargando = new framePreload();
             frameCargando.AgregarFrame(frame);
             frame.Init();

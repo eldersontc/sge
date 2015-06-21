@@ -26,4 +26,8 @@ public class cliBase {
         }
         return ipServidor;
     }
+
+    public String getPathIdUsuario() {
+        return "/" + System.getProperty("idUsuario");
+    }
 }

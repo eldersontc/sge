@@ -35,43 +35,43 @@ public class cliProduccion extends cliBase {
     ////////////////////////////// ORDEN TRABAJO ///////////////////////////////
     public String ObtenerOrdenesTrabajo(Object requestEntity) throws ClientErrorException {
         WebTarget resource = client.target(BASE_URI).path("OrdenTrabajoSRV");
-        resource = resource.path("ObtenerOrdenesTrabajo");
+        resource = resource.path("ObtenerOrdenesTrabajo" + getPathIdUsuario());
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
     }
 
     public String ObtenerOrdenTrabajo(Object requestEntity) throws ClientErrorException {
         WebTarget resource = client.target(BASE_URI).path("OrdenTrabajoSRV");
-        resource = resource.path("ObtenerOrdenTrabajo");
+        resource = resource.path("ObtenerOrdenTrabajo" + getPathIdUsuario());
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
     }
 
     public String RegistrarOrdenTrabajo(Object requestEntity) throws ClientErrorException {
         WebTarget resource = client.target(BASE_URI).path("OrdenTrabajoSRV");
-        resource = resource.path("RegistrarOrdenTrabajo");
+        resource = resource.path("RegistrarOrdenTrabajo" + getPathIdUsuario());
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
     }
 
     public String ActualizarOrdenTrabajo(Object requestEntity) throws ClientErrorException {
         WebTarget resource = client.target(BASE_URI).path("OrdenTrabajoSRV");
-        resource = resource.path("ActualizarOrdenTrabajo");
+        resource = resource.path("ActualizarOrdenTrabajo" + getPathIdUsuario());
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
     }
 
     public String EliminarOrdenTrabajo(Object requestEntity) throws ClientErrorException {
         WebTarget resource = client.target(BASE_URI).path("OrdenTrabajoSRV");
-        resource = resource.path("EliminarOrdenTrabajo");
+        resource = resource.path("EliminarOrdenTrabajo" + getPathIdUsuario());
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
     }
 
     public String GenerarSalidaInventario(Object requestEntity) throws ClientErrorException {
         WebTarget resource = client.target(BASE_URI).path("OrdenTrabajoSRV");
-        resource = resource.path("GenerarSalidaInventario");
+        resource = resource.path("GenerarSalidaInventario" + getPathIdUsuario());
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
     }
 
     public String GenerarSalidaCaja(Object requestEntity) throws ClientErrorException {
         WebTarget resource = client.target(BASE_URI).path("OrdenTrabajoSRV");
-        resource = resource.path("GenerarSalidaCaja");
+        resource = resource.path("GenerarSalidaCaja" + getPathIdUsuario());
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
     }
 
@@ -79,31 +79,31 @@ public class cliProduccion extends cliBase {
     //////////////////////////// ORDEN PRODUCCION //////////////////////////////
     public String ObtenerOrdenesProduccion(Object requestEntity) throws ClientErrorException {
         WebTarget resource = client.target(BASE_URI).path("OrdenProduccionSRV");
-        resource = resource.path("ObtenerOrdenesProduccion");
+        resource = resource.path("ObtenerOrdenesProduccion" + getPathIdUsuario());
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
     }
 
     public String ObtenerOrdenProduccion(Object requestEntity) throws ClientErrorException {
         WebTarget resource = client.target(BASE_URI).path("OrdenProduccionSRV");
-        resource = resource.path("ObtenerOrdenProduccion");
+        resource = resource.path("ObtenerOrdenProduccion" + getPathIdUsuario());
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
     }
 
     public String RegistrarOrdenProduccion(Object requestEntity) throws ClientErrorException {
         WebTarget resource = client.target(BASE_URI).path("OrdenProduccionSRV");
-        resource = resource.path("RegistrarOrdenProduccion");
+        resource = resource.path("RegistrarOrdenProduccion" + getPathIdUsuario());
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
     }
 
     public String ActualizarOrdenProduccion(Object requestEntity) throws ClientErrorException {
         WebTarget resource = client.target(BASE_URI).path("OrdenProduccionSRV");
-        resource = resource.path("ActualizarOrdenProduccion");
+        resource = resource.path("ActualizarOrdenProduccion" + getPathIdUsuario());
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
     }
 
     public String EliminarOrdenProduccion(Object requestEntity) throws ClientErrorException {
         WebTarget resource = client.target(BASE_URI).path("OrdenProduccionSRV");
-        resource = resource.path("EliminarOrdenProduccion");
+        resource = resource.path("EliminarOrdenProduccion" + getPathIdUsuario());
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
     }
 

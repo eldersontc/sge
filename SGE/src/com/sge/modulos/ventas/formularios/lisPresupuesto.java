@@ -176,7 +176,7 @@ public class lisPresupuesto extends frameBase<Presupuesto> {
             String json = "";
             try {
                 int idPresupuesto = ObtenerValorCelda(tbPresupuestos, 1);
-                json = plantillaSC.AprobarPresupuesto(new Gson().toJson(idPresupuesto));
+                //json = plantillaSC.AprobarPresupuesto(new Gson().toJson(idPresupuesto));
             } catch (Exception e) {
                 OcultarCargando(frame);
                 cancel(false);
@@ -213,7 +213,7 @@ public class lisPresupuesto extends frameBase<Presupuesto> {
             String json = "";
             try {
                 int idPresupuesto = ObtenerValorCelda(tbPresupuestos, 1);
-                json = plantillaSC.DesaprobarPresupuesto(new Gson().toJson(idPresupuesto));
+                //json = plantillaSC.DesaprobarPresupuesto(new Gson().toJson(idPresupuesto));
             } catch (Exception e) {
                 OcultarCargando(frame);
                 cancel(false);
@@ -250,7 +250,7 @@ public class lisPresupuesto extends frameBase<Presupuesto> {
             String json = "";
             try {
                 int idPresupuesto = ObtenerValorCelda(tbPresupuestos, 1);
-                json = plantillaSC.EnviarPresupuesto(new Gson().toJson(idPresupuesto));
+                //json = plantillaSC.EnviarPresupuesto(new Gson().toJson(idPresupuesto));
             } catch (Exception e) {
                 OcultarCargando(frame);
                 cancel(false);
@@ -287,7 +287,7 @@ public class lisPresupuesto extends frameBase<Presupuesto> {
             String json = "";
             try {
                 int idPresupuesto = ObtenerValorCelda(tbPresupuestos, 1);
-                json = plantillaSC.AceptarPresupuesto(new Gson().toJson(idPresupuesto));
+                //json = plantillaSC.AceptarPresupuesto(new Gson().toJson(idPresupuesto));
             } catch (Exception e) {
                 OcultarCargando(frame);
                 cancel(false);
@@ -324,7 +324,7 @@ public class lisPresupuesto extends frameBase<Presupuesto> {
             String json = "";
             try {
                 int idPresupuesto = ObtenerValorCelda(tbPresupuestos, 1);
-                json = plantillaSC.RechazarPresupuesto(new Gson().toJson(idPresupuesto));
+                //json = plantillaSC.RechazarPresupuesto(new Gson().toJson(idPresupuesto));
             } catch (Exception e) {
                 OcultarCargando(frame);
                 cancel(false);
@@ -360,7 +360,7 @@ public class lisPresupuesto extends frameBase<Presupuesto> {
             cliVentas cliVentas = new cliVentas();
             try {
                 int idPresupuesto = ObtenerValorCelda(tbPresupuestos, 1);
-                String json = cliVentas.GenerarOrdenTrabajo(new Gson().toJson(new int[]{idPresupuesto, getUsuario().getIdUsuario()}));
+                String json = cliVentas.GenerarOrdenTrabajo(new Gson().toJson(new int[]{idPresupuesto, getIdUsuario()}));
                 String[] resultado = new Gson().fromJson(json, String[].class);
 
                 if (resultado[0].equals("true")) {
@@ -486,7 +486,6 @@ public class lisPresupuesto extends frameBase<Presupuesto> {
                             ordenTrabajo.getItems().add(itemOrdenTrabajo);
                         }
                         regOrdenTrabajo regOrdenTrabajo = new regOrdenTrabajo(0);
-                        regOrdenTrabajo.setUsuario(getUsuario());
                         regOrdenTrabajo.setEntidad(ordenTrabajo);
                         regOrdenTrabajo.AsignarControles();
                         getParent().add(regOrdenTrabajo);
@@ -825,9 +824,7 @@ public class lisPresupuesto extends frameBase<Presupuesto> {
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
         // TODO add your handling code here:
-        regPresupuesto regPresupuesto = new regPresupuesto(0);
-        regPresupuesto.setUsuario(getUsuario());
-        VerFrame(regPresupuesto, refr);
+        VerFrame(new regPresupuesto(0), refr);
     }//GEN-LAST:event_btnNuevoActionPerformed
 
     private void btnSeleccionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeleccionarActionPerformed

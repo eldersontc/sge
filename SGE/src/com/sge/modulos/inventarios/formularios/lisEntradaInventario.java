@@ -5,8 +5,6 @@ import com.sge.base.formularios.frameBase;
 import com.sge.modulos.inventarios.clases.EntradaInventario;
 import com.sge.modulos.inventarios.cliente.cliInventarios;
 import java.awt.event.ActionEvent;
-import java.util.ArrayList;
-import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ImageIcon;
@@ -350,9 +348,7 @@ public class lisEntradaInventario extends frameBase<EntradaInventario> {
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
         // TODO add your handling code here:
-        regEntradaInventario regEntradaInventario = new regEntradaInventario(0);
-        regEntradaInventario.setUsuario(getUsuario());
-        VerFrame(regEntradaInventario, refr);
+        VerFrame(new regEntradaInventario(0), refr);
     }//GEN-LAST:event_btnNuevoActionPerformed
 
     private void btnSeleccionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeleccionarActionPerformed

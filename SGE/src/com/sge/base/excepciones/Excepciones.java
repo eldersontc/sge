@@ -43,7 +43,7 @@ public class Excepciones {
 //            writer = new FileWriter(System.getProperty("user.dir") + "/SGE_LOG.txt", true);
 //            DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
 //            writer.append(String.format("%s : %s : %s \n", df.format(new Date()), exception.getClass().getName(), exception.getMessage()));
-//        } catch (Exception e) {
+//        } catch (Exception e) {eta
 //        } finally {
 //            try {
 //                writer.close();

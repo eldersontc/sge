@@ -458,9 +458,7 @@ public class lisCotizacion extends frameBase<Cotizacion> {
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
         // TODO add your handling code here:
-        regCotizacion regCotizacion = new regCotizacion(0);
-        regCotizacion.setUsuario(getUsuario());
-        VerFrame(regCotizacion, refr);
+        VerFrame(new regCotizacion(0), refr);
     }//GEN-LAST:event_btnNuevoActionPerformed
 
     private void btnSeleccionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeleccionarActionPerformed

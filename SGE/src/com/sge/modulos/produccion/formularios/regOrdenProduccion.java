@@ -132,7 +132,7 @@ public class regOrdenProduccion extends frameBase<OrdenProduccion> {
             VerCargando(frame);
             cliAdministracion cliente = new cliAdministracion();
             try {
-                String json = cliente.ObtenerValorDefinidoPorUsuarioYEntidad(new Gson().toJson(new int[]{getUsuario().getIdUsuario(), 7}));
+                String json = cliente.ObtenerValorDefinidoPorUsuarioYEntidad(new Gson().toJson(new int[]{getIdUsuario(), 7}));
                 String[] resultado = new Gson().fromJson(json, String[].class);
                 if (resultado[0].equals("true")) {
                     if (resultado[2].isEmpty()) {

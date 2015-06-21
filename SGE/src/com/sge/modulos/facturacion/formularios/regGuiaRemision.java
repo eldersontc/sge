@@ -206,7 +206,7 @@ public class regGuiaRemision extends frameBase<GuiaRemision> {
             VerCargando(frame);
             cliAdministracion cliente = new cliAdministracion();
             try {
-                String json = cliente.ObtenerValorDefinidoPorUsuarioYEntidad(new Gson().toJson(new int[]{getUsuario().getIdUsuario(), 11}));
+                String json = cliente.ObtenerValorDefinidoPorUsuarioYEntidad(new Gson().toJson(new int[]{getIdUsuario(), 11}));
                 String[] resultado = new Gson().fromJson(json, String[].class);
                 if (resultado[0].equals("true")) {
                     if (resultado[2].isEmpty()) {

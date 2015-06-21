@@ -175,7 +175,7 @@ public class lisOrdenTrabajo extends frameBase<OrdenTrabajo> {
             cliProduccion cliProduccion = new cliProduccion();
             try {
                 int idOrdenTrabajo = ObtenerValorCelda(tbOrdenesTrabajo, 1);
-                String json = cliProduccion.GenerarSalidaInventario(new Gson().toJson(new int[]{idOrdenTrabajo, getUsuario().getIdUsuario()}));
+                String json = cliProduccion.GenerarSalidaInventario(new Gson().toJson(new int[]{idOrdenTrabajo, getIdUsuario()}));
                 String[] resultado = new Gson().fromJson(json, String[].class);
 
                 if (resultado[0].equals("true")) {
@@ -214,7 +214,6 @@ public class lisOrdenTrabajo extends frameBase<OrdenTrabajo> {
                     }
 
                     regSalidaInventario regSalidaInventario = new regSalidaInventario();
-                    regSalidaInventario.setUsuario(getUsuario());
                     regSalidaInventario.setEntidad(salidaInventario);
                     regSalidaInventario.AsignarControlesConStocks();
                     regSalidaInventario.CalcularTotales();
@@ -246,7 +245,7 @@ public class lisOrdenTrabajo extends frameBase<OrdenTrabajo> {
             cliProduccion cliProduccion = new cliProduccion();
             try {
                 int idOrdenTrabajo = ObtenerValorCelda(tbOrdenesTrabajo, 1);
-                String json = cliProduccion.GenerarSalidaInventario(new Gson().toJson(new int[]{idOrdenTrabajo, getUsuario().getIdUsuario()}));
+                String json = cliProduccion.GenerarSalidaInventario(new Gson().toJson(new int[]{idOrdenTrabajo, getIdUsuario()}));
                 String[] resultado = new Gson().fromJson(json, String[].class);
 
                 if (resultado[0].equals("true")) {
@@ -285,7 +284,6 @@ public class lisOrdenTrabajo extends frameBase<OrdenTrabajo> {
                     }
 
                     regSalidaInventario regSalidaInventario = new regSalidaInventario();
-                    regSalidaInventario.setUsuario(getUsuario());
                     regSalidaInventario.setEntidad(salidaInventario);
                     regSalidaInventario.AsignarControlesConStocks();
                     regSalidaInventario.CalcularTotales();
