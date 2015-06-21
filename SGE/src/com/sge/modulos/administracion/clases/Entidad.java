@@ -9,6 +9,8 @@ public class Entidad {
     private int idEntidad;
     private String nombre;
     private String formulario;
+    private boolean reporte;
+    private boolean valorDefinido;
     private boolean activo;
 
     public Entidad() {
@@ -36,6 +38,22 @@ public class Entidad {
 
     public void setFormulario(String formulario) {
         this.formulario = formulario;
+    }
+
+    public boolean isReporte() {
+        return reporte;
+    }
+
+    public void setReporte(boolean reporte) {
+        this.reporte = reporte;
+    }
+
+    public boolean isValorDefinido() {
+        return valorDefinido;
+    }
+
+    public void setValorDefinido(boolean valorDefinido) {
+        this.valorDefinido = valorDefinido;
     }
 
     public boolean isActivo() {

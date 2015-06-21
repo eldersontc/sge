@@ -347,6 +347,32 @@ public class cliAdministracion extends cliBase {
     }
     
     ////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////// FILTRO //////////////////////////////////////
+    public String ObtenerFiltros(Object requestEntity) throws ClientErrorException {
+        WebTarget resource = client.target(BASE_URI).path("FiltroSRV");
+        resource = resource.path("ObtenerFiltros" + getPathIdUsuario());
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
+    }
+
+    public String RegistrarFiltro(Object requestEntity) throws ClientErrorException {
+        WebTarget resource = client.target(BASE_URI).path("FiltroSRV");
+        resource = resource.path("RegistrarFiltro" + getPathIdUsuario());
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
+    }
+
+    public String ActualizarFiltro(Object requestEntity) throws ClientErrorException {
+        WebTarget resource = client.target(BASE_URI).path("FiltroSRV");
+        resource = resource.path("ActualizarFiltro" + getPathIdUsuario());
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
+    }
+
+    public String EliminarFiltro(Object requestEntity) throws ClientErrorException {
+        WebTarget resource = client.target(BASE_URI).path("FiltroSRV");
+        resource = resource.path("EliminarFiltro" + getPathIdUsuario());
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
+    }
+
+    ////////////////////////////////////////////////////////////////////////////
     public void close() {
         client.close();
     }

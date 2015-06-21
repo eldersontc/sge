@@ -301,9 +301,10 @@ public class regValorDefinido extends frameBase<ValorDefinido> {
     }// </editor-fold>//GEN-END:initComponents
 
     private void schEntidadSearch() {
-        VerModal(new lisEntidad(1), sele_enti);
+        String filtro = "WHERE Entidad.valorDefinido = TRUE";
+        VerModal(new lisEntidad(1, filtro), sele_enti);
     }
-
+    
     private void schUsuarioSearch() {
         VerModal(new lisUsuario(1), select_usuario);
     }

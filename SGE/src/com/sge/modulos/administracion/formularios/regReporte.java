@@ -391,7 +391,8 @@ public class regReporte extends frameBase<Reporte> {
     }// </editor-fold>//GEN-END:initComponents
 
     private void schEntidadSearch() {
-        VerModal(new lisEntidad(1), sele_enti);
+        String filtro = "WHERE Entidad.reporte = TRUE";
+        VerModal(new lisEntidad(1, filtro), sele_enti);
     }
 
     private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
