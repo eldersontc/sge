@@ -45,6 +45,7 @@ public class BaseDAO {
         recursos.add("com/sge/modulos/administracion/mapeos/Menu.hbm.xml");
         recursos.add("com/sge/modulos/administracion/mapeos/PerfilMenu.hbm.xml");
         recursos.add("com/sge/modulos/administracion/mapeos/Mensaje.hbm.xml");
+        recursos.add("com/sge/modulos/administracion/mapeos/Filtro.hbm.xml");
         // COMPRAS
         recursos.add("com/sge/modulos/compras/mapeos/Proveedor.hbm.xml");
         // INVENTARIOS
