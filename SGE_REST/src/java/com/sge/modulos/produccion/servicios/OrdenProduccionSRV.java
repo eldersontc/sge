@@ -8,6 +8,7 @@ import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
@@ -18,7 +19,7 @@ import javax.ws.rs.core.UriInfo;
  */
 @Path("OrdenProduccionSRV")
 public class OrdenProduccionSRV {
-    
+
     @Context
     private UriInfo context;
 
@@ -26,98 +27,98 @@ public class OrdenProduccionSRV {
     }
 
     @POST
-    @Path("ObtenerOrdenesProduccion")
+    @Path("ObtenerOrdenesProduccion/{idUsuario}")
     @Consumes("application/json")
     @Produces("application/json")
-    public String ObtenerOrdenesProduccion(String json) {
+    public String ObtenerOrdenesProduccion(@PathParam("idUsuario") int idUsuario, String json) {
         List<String> resultado = new ArrayList<>();
         try {
             String filtro = new Gson().fromJson(json, String.class);
-            OrdenProduccionDTO OrdenProduccionDTO = new OrdenProduccionDTO();
+            OrdenProduccionDTO OrdenProduccionDTO = new OrdenProduccionDTO(idUsuario);
             List<OrdenProduccion> lista = OrdenProduccionDTO.ObtenerOrdenesProduccion(filtro);
             resultado.add(new Gson().toJson(true));
             resultado.add(new Gson().toJson(lista));
         } catch (Exception e) {
             resultado.clear();
             resultado.add(new Gson().toJson(false));
-            resultado.add(new Gson().toJson(e));
+            resultado.add(new Gson().toJson(e.getMessage()));
         }
         return new Gson().toJson(resultado);
     }
 
     @POST
-    @Path("ObtenerOrdenProduccion")
+    @Path("ObtenerOrdenProduccion/{idUsuario}")
     @Consumes("application/json")
     @Produces("application/json")
-    public String ObtenerOrdenProduccion(String json) {
+    public String ObtenerOrdenProduccion(@PathParam("idUsuario") int idUsuario, String json) {
         List<String> resultado = new ArrayList<>();
         int idOrdenProduccion = new Gson().fromJson(json, int.class);
         try {
-            OrdenProduccionDTO OrdenProduccionDTO = new OrdenProduccionDTO();
+            OrdenProduccionDTO OrdenProduccionDTO = new OrdenProduccionDTO(idUsuario);
             OrdenProduccion ordenProduccion = OrdenProduccionDTO.ObtenerOrdenProduccion(idOrdenProduccion);
             resultado.add(new Gson().toJson(true));
             resultado.add(new Gson().toJson(ordenProduccion));
         } catch (Exception e) {
             resultado.clear();
             resultado.add(new Gson().toJson(false));
-            resultado.add(new Gson().toJson(e));
+            resultado.add(new Gson().toJson(e.getMessage()));
         }
         return new Gson().toJson(resultado);
     }
 
     @POST
-    @Path("RegistrarOrdenProduccion")
+    @Path("RegistrarOrdenProduccion/{idUsuario}")
     @Consumes("application/json")
     @Produces("application/json")
-    public String RegistrarOrdenProduccion(String json) {
+    public String RegistrarOrdenProduccion(@PathParam("idUsuario") int idUsuario, String json) {
         List<String> resultado = new ArrayList<>();
         OrdenProduccion ordenProduccion = new Gson().fromJson(json, OrdenProduccion.class);
         try {
-            OrdenProduccionDTO OrdenProduccionDTO = new OrdenProduccionDTO();
+            OrdenProduccionDTO OrdenProduccionDTO = new OrdenProduccionDTO(idUsuario);
             OrdenProduccionDTO.RegistrarOrdenProduccion(ordenProduccion);
             resultado.add(new Gson().toJson(true));
         } catch (Exception e) {
             resultado.clear();
             resultado.add(new Gson().toJson(false));
-            resultado.add(new Gson().toJson(e));
+            resultado.add(new Gson().toJson(e.getMessage()));
         }
         return new Gson().toJson(resultado);
     }
 
     @POST
-    @Path("ActualizarOrdenProduccion")
+    @Path("ActualizarOrdenProduccion/{idUsuario}")
     @Consumes("application/json")
     @Produces("application/json")
-    public String ActualizarOrdenProduccion(String json) {
+    public String ActualizarOrdenProduccion(@PathParam("idUsuario") int idUsuario, String json) {
         List<String> resultado = new ArrayList<>();
         OrdenProduccion ordenProduccion = new Gson().fromJson(json, OrdenProduccion.class);
         try {
-            OrdenProduccionDTO OrdenProduccionDTO = new OrdenProduccionDTO();
+            OrdenProduccionDTO OrdenProduccionDTO = new OrdenProduccionDTO(idUsuario);
             OrdenProduccionDTO.ActualizarOrdenProduccion(ordenProduccion);
             resultado.add(new Gson().toJson(true));
         } catch (Exception e) {
             resultado.clear();
             resultado.add(new Gson().toJson(false));
-            resultado.add(new Gson().toJson(e));
+            resultado.add(new Gson().toJson(e.getMessage()));
         }
         return new Gson().toJson(resultado);
     }
 
     @POST
-    @Path("EliminarOrdenProduccion")
+    @Path("EliminarOrdenProduccion/{idUsuario}")
     @Consumes("application/json")
     @Produces("application/json")
-    public String EliminarOrdenProduccion(String json) {
+    public String EliminarOrdenProduccion(@PathParam("idUsuario") int idUsuario, String json) {
         List<String> resultado = new ArrayList<>();
         int idOrdenProduccion = new Gson().fromJson(json, int.class);
         try {
-            OrdenProduccionDTO OrdenProduccionDTO = new OrdenProduccionDTO();
+            OrdenProduccionDTO OrdenProduccionDTO = new OrdenProduccionDTO(idUsuario);
             OrdenProduccionDTO.EliminarOrdenProduccion(idOrdenProduccion);
             resultado.add(new Gson().toJson(true));
         } catch (Exception e) {
             resultado.clear();
             resultado.add(new Gson().toJson(false));
-            resultado.add(new Gson().toJson(e));
+            resultado.add(new Gson().toJson(e.getMessage()));
         }
         return new Gson().toJson(resultado);
     }

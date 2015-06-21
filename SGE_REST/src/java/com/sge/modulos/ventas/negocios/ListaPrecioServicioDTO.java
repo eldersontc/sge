@@ -1,5 +1,6 @@
 package com.sge.modulos.ventas.negocios;
 
+import com.sge.base.negocios.BaseDTO;
 import com.sge.modulos.ventas.accesoDatos.EscalaListaPrecioServicioDAO;
 import com.sge.modulos.ventas.accesoDatos.ItemListaPrecioServicioDAO;
 import com.sge.modulos.ventas.accesoDatos.ListaPrecioServicioDAO;
@@ -15,13 +16,17 @@ import java.util.List;
  *
  * @author elderson
  */
-public class ListaPrecioServicioDTO {
-    
+public class ListaPrecioServicioDTO extends BaseDTO {
+
     ListaPrecioServicioDAO listaPrecioDAO;
     ItemListaPrecioServicioDAO itemListaPrecioDAO;
     UnidadListaPrecioServicioDAO unidadListaPrecioDAO;
     EscalaListaPrecioServicioDAO escalaListaPrecioDAO;
-    
+
+    public ListaPrecioServicioDTO(int idUsuario) {
+        super(idUsuario);
+    }
+
     public List<ListaPrecioServicio> ObtenerListasPrecio(String filtro) {
         List<ListaPrecioServicio> lista;
         try {
@@ -42,7 +47,7 @@ public class ListaPrecioServicioDTO {
             listaPrecioDAO = new ListaPrecioServicioDAO();
             listaPrecioDAO.AbrirSesion();
             listaPrecio = listaPrecioDAO.ObtenerPorId(ListaPrecioServicio.class, idListaPrecioServicio);
-            
+
             itemListaPrecioDAO = new ItemListaPrecioServicioDAO();
             itemListaPrecioDAO.AsignarSesion(listaPrecioDAO);
             List<Object[]> filtros = new ArrayList<>();
@@ -72,7 +77,7 @@ public class ListaPrecioServicioDTO {
         }
         return unidades;
     }
-    
+
     public List<EscalaListaPrecioServicio> ObtenerEscalasListaPrecioServicio(int idUnidadListaPrecioServicio) {
         List<EscalaListaPrecioServicio> escalas = null;
         try {
@@ -88,7 +93,7 @@ public class ListaPrecioServicioDTO {
         }
         return escalas;
     }
-    
+
     public List<EscalaListaPrecioServicio> ObtenerEscalasListaPrecioServicioPorUnidad(int idListaPrecioServicio, int idServicio, int idServicioUnidad) {
         List<EscalaListaPrecioServicio> escalas = null;
         try {
@@ -102,7 +107,7 @@ public class ListaPrecioServicioDTO {
         }
         return escalas;
     }
-    
+
     public boolean RegistrarListaPrecioServicio(ListaPrecioServicio listaPrecio) {
         try {
             listaPrecioDAO = new ListaPrecioServicioDAO();
@@ -117,7 +122,7 @@ public class ListaPrecioServicioDTO {
         }
         return true;
     }
-    
+
     public ItemListaPrecioServicio[] RegistrarItemsListaPrecioServicio(ItemListaPrecioServicio[] itemsListaPrecio) {
         try {
             itemListaPrecioDAO = new ItemListaPrecioServicioDAO();
@@ -134,7 +139,7 @@ public class ListaPrecioServicioDTO {
         }
         return itemsListaPrecio;
     }
-    
+
     public UnidadListaPrecioServicio[] RegistrarUnidadesListaPrecioServicio(UnidadListaPrecioServicio[] unidadesListaPrecio) {
         try {
             unidadListaPrecioDAO = new UnidadListaPrecioServicioDAO();
@@ -151,7 +156,7 @@ public class ListaPrecioServicioDTO {
         }
         return unidadesListaPrecio;
     }
-    
+
     public boolean RegistrarEscalaListaPrecioServicio(EscalaListaPrecioServicio escalaListaPrecio) {
         try {
             escalaListaPrecioDAO = new EscalaListaPrecioServicioDAO();
@@ -196,21 +201,21 @@ public class ListaPrecioServicioDTO {
         }
         return true;
     }
-    
+
     public boolean EliminarListaPrecioServicio(int idListaPrecioServicio) {
         try {
             escalaListaPrecioDAO = new EscalaListaPrecioServicioDAO();
             escalaListaPrecioDAO.IniciarTransaccion();
             escalaListaPrecioDAO.EliminarEscalaListaPrecioServicioPorIdListaPrecioServicio(idListaPrecioServicio);
-            
+
             unidadListaPrecioDAO = new UnidadListaPrecioServicioDAO();
             unidadListaPrecioDAO.AsignarSesion(escalaListaPrecioDAO);
             unidadListaPrecioDAO.EliminarUnidadListaPrecioServicioPorIdListaPrecioServicio(idListaPrecioServicio);
-            
+
             itemListaPrecioDAO = new ItemListaPrecioServicioDAO();
             itemListaPrecioDAO.AsignarSesion(escalaListaPrecioDAO);
             itemListaPrecioDAO.EliminarItemListaPrecioServicioPorIdListaPrecioServicio(idListaPrecioServicio);
-            
+
             listaPrecioDAO = new ListaPrecioServicioDAO();
             listaPrecioDAO.AsignarSesion(escalaListaPrecioDAO);
             listaPrecioDAO.EliminarListaPrecioServicio(idListaPrecioServicio);
@@ -224,17 +229,17 @@ public class ListaPrecioServicioDTO {
         }
         return true;
     }
-    
+
     public boolean EliminarItemListaPrecioServicio(int idItemListaPrecioServicio) {
         try {
             escalaListaPrecioDAO = new EscalaListaPrecioServicioDAO();
             escalaListaPrecioDAO.IniciarTransaccion();
             escalaListaPrecioDAO.EliminarEscalaListaPrecioServicioPorIdItemListaPrecioServicio(idItemListaPrecioServicio);
-            
+
             unidadListaPrecioDAO = new UnidadListaPrecioServicioDAO();
             unidadListaPrecioDAO.AsignarSesion(escalaListaPrecioDAO);
             unidadListaPrecioDAO.EliminarUnidadListaPrecioServicioPorIdItemListaPrecioServicio(idItemListaPrecioServicio);
-            
+
             itemListaPrecioDAO = new ItemListaPrecioServicioDAO();
             itemListaPrecioDAO.AsignarSesion(escalaListaPrecioDAO);
             itemListaPrecioDAO.EliminarItemListaPrecioServicio(idItemListaPrecioServicio);
@@ -248,17 +253,17 @@ public class ListaPrecioServicioDTO {
         }
         return true;
     }
-    
+
     public boolean EliminarUnidadListaPrecioServicio(int idUnidadListaPrecioServicio) {
         try {
             unidadListaPrecioDAO = new UnidadListaPrecioServicioDAO();
             unidadListaPrecioDAO.IniciarTransaccion();
             unidadListaPrecioDAO.EliminarUnidadListaPrecioServicio(idUnidadListaPrecioServicio);
-            
+
             escalaListaPrecioDAO = new EscalaListaPrecioServicioDAO();
             escalaListaPrecioDAO.AsignarSesion(unidadListaPrecioDAO);
             escalaListaPrecioDAO.EliminarEscalaListaPrecioServicioPorIdUnidadListaPrecioServicio(idUnidadListaPrecioServicio);
-            
+
             unidadListaPrecioDAO.ConfirmarTransaccion();
         } catch (Exception e) {
             unidadListaPrecioDAO.AbortarTransaccion();
@@ -268,7 +273,7 @@ public class ListaPrecioServicioDTO {
         }
         return true;
     }
-    
+
     public boolean EliminarEscalaListaPrecioServicio(int idEscalaListaPrecioServicio) {
         try {
             escalaListaPrecioDAO = new EscalaListaPrecioServicioDAO();

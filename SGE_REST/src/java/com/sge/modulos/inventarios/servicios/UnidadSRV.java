@@ -8,6 +8,7 @@ import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
@@ -18,7 +19,7 @@ import javax.ws.rs.core.UriInfo;
  */
 @Path("UnidadSRV")
 public class UnidadSRV {
-    
+
     @Context
     private UriInfo context;
 
@@ -26,78 +27,78 @@ public class UnidadSRV {
     }
 
     @POST
-    @Path("ObtenerUnidades")
+    @Path("ObtenerUnidades/{idUsuario}")
     @Consumes("application/json")
     @Produces("application/json")
-    public String ObtenerUnidades(String json) {
+    public String ObtenerUnidades(@PathParam("idUsuario") int idUsuario, String json) {
         List<String> resultado = new ArrayList<>();
         try {
             String filtro = new Gson().fromJson(json, String.class);
-            UnidadDTO UnidadDTO = new UnidadDTO();
+            UnidadDTO UnidadDTO = new UnidadDTO(idUsuario);
             List<Unidad> lista = UnidadDTO.ObtenerUnidades(filtro);
             resultado.add(new Gson().toJson(true));
             resultado.add(new Gson().toJson(lista));
         } catch (Exception e) {
             resultado.clear();
             resultado.add(new Gson().toJson(false));
-            resultado.add(new Gson().toJson(e));
+            resultado.add(new Gson().toJson(e.getMessage()));
         }
         return new Gson().toJson(resultado);
     }
-    
+
     @POST
-    @Path("RegistrarUnidad")
+    @Path("RegistrarUnidad/{idUsuario}")
     @Consumes("application/json")
     @Produces("application/json")
-    public String RegistrarUnidad(String json) {
+    public String RegistrarUnidad(@PathParam("idUsuario") int idUsuario, String json) {
         List<String> resultado = new ArrayList<>();
         Unidad unidad = new Gson().fromJson(json, Unidad.class);
         try {
-            UnidadDTO UnidadDTO = new UnidadDTO();
+            UnidadDTO UnidadDTO = new UnidadDTO(idUsuario);
             UnidadDTO.RegistrarUnidad(unidad);
             resultado.add(new Gson().toJson(true));
         } catch (Exception e) {
             resultado.clear();
             resultado.add(new Gson().toJson(false));
-            resultado.add(new Gson().toJson(e));
+            resultado.add(new Gson().toJson(e.getMessage()));
         }
         return new Gson().toJson(resultado);
     }
-    
+
     @POST
-    @Path("ActualizarUnidad")
+    @Path("ActualizarUnidad/{idUsuario}")
     @Consumes("application/json")
     @Produces("application/json")
-    public String ActualizarUnidad(String json) {
+    public String ActualizarUnidad(@PathParam("idUsuario") int idUsuario, String json) {
         List<String> resultado = new ArrayList<>();
         Unidad unidad = new Gson().fromJson(json, Unidad.class);
         try {
-            UnidadDTO UnidadDTO = new UnidadDTO();
+            UnidadDTO UnidadDTO = new UnidadDTO(idUsuario);
             UnidadDTO.ActualizarUnidad(unidad);
             resultado.add(new Gson().toJson(true));
         } catch (Exception e) {
             resultado.clear();
             resultado.add(new Gson().toJson(false));
-            resultado.add(new Gson().toJson(e));
+            resultado.add(new Gson().toJson(e.getMessage()));
         }
         return new Gson().toJson(resultado);
     }
-    
+
     @POST
-    @Path("EliminarUnidad")
+    @Path("EliminarUnidad/{idUsuario}")
     @Consumes("application/json")
     @Produces("application/json")
-    public String EliminarUnidad(String json) {
+    public String EliminarUnidad(@PathParam("idUsuario") int idUsuario, String json) {
         List<String> resultado = new ArrayList<>();
         int idUnidad = new Gson().fromJson(json, int.class);
         try {
-            UnidadDTO UnidadDTO = new UnidadDTO();
+            UnidadDTO UnidadDTO = new UnidadDTO(idUsuario);
             UnidadDTO.EliminarUnidad(idUnidad);
             resultado.add(new Gson().toJson(true));
         } catch (Exception e) {
             resultado.clear();
             resultado.add(new Gson().toJson(false));
-            resultado.add(new Gson().toJson(e));
+            resultado.add(new Gson().toJson(e.getMessage()));
         }
         return new Gson().toJson(resultado);
     }

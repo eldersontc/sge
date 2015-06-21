@@ -1,5 +1,6 @@
 package com.sge.modulos.administracion.negocios;
 
+import com.sge.base.negocios.BaseDTO;
 import com.sge.modulos.administracion.accesoDatos.EmpleadoDAO;
 import com.sge.modulos.administracion.entidades.Empleado;
 import java.util.List;
@@ -8,10 +9,14 @@ import java.util.List;
  *
  * @author elderson
  */
-public class EmpleadoDTO {
-    
+public class EmpleadoDTO extends BaseDTO {
+
     EmpleadoDAO empleadoDAO;
-    
+
+    public EmpleadoDTO(int idUsuario) {
+        super(idUsuario);
+    }
+
     public List<Empleado> ObtenerEmpleados(String filtro) {
         List<Empleado> lista;
         try {
@@ -25,7 +30,7 @@ public class EmpleadoDTO {
         }
         return lista;
     }
-    
+
     public Empleado ObtenerEmpleado(int idEmpleado) {
         Empleado empleado;
         try {
@@ -39,7 +44,7 @@ public class EmpleadoDTO {
         }
         return empleado;
     }
-    
+
     public boolean RegistrarEmpleado(Empleado empleado) {
         try {
             empleadoDAO = new EmpleadoDAO();
@@ -54,7 +59,7 @@ public class EmpleadoDTO {
         }
         return true;
     }
-    
+
     public boolean ActualizarEmpleado(Empleado empleado) {
         try {
             empleadoDAO = new EmpleadoDAO();
@@ -69,7 +74,7 @@ public class EmpleadoDTO {
         }
         return true;
     }
-    
+
     public boolean EliminarEmpleado(int idEmpleado) {
         try {
             empleadoDAO = new EmpleadoDAO();

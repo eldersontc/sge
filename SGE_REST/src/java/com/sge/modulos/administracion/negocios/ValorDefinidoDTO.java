@@ -1,5 +1,6 @@
 package com.sge.modulos.administracion.negocios;
 
+import com.sge.base.negocios.BaseDTO;
 import com.sge.modulos.administracion.accesoDatos.ValorDefinidoDAO;
 import com.sge.modulos.administracion.entidades.ValorDefinido;
 import java.util.ArrayList;
@@ -9,9 +10,13 @@ import java.util.List;
  *
  * @author elderson
  */
-public class ValorDefinidoDTO {
+public class ValorDefinidoDTO extends BaseDTO {
 
     ValorDefinidoDAO valorDefinidoDAO;
+
+    public ValorDefinidoDTO(int idUsuario) {
+        super(idUsuario);
+    }
 
     public List<ValorDefinido> ObtenerValoresDefinidos(String filtro) {
         List<ValorDefinido> lista;

@@ -10,6 +10,16 @@ import java.util.Properties;
  * @author elderson
  */
 public class BaseDTO {
+
+    private int idUsuario;
+    
+    public BaseDTO(int idUsuario) {
+        this.idUsuario = idUsuario;
+    }
+    
+    public int getIdUsuario() {
+        return idUsuario;
+    }
     
     public String getCarpetaReportes() throws IOException {
         Properties prop = new Properties();

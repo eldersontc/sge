@@ -1,5 +1,6 @@
 package com.sge.modulos.administracion.negocios;
 
+import com.sge.base.negocios.BaseDTO;
 import com.sge.modulos.administracion.accesoDatos.MensajeDAO;
 import com.sge.modulos.administracion.accesoDatos.UsuarioDAO;
 import com.sge.modulos.administracion.entidades.Usuario;
@@ -9,10 +10,14 @@ import java.util.List;
  *
  * @author elderson
  */
-public class UsuarioDTO {
+public class UsuarioDTO extends BaseDTO {
 
     UsuarioDAO usuarioDAO;
     MensajeDAO mensajeDAO;
+
+    public UsuarioDTO(int idUsuario) {
+        super(idUsuario);
+    }
 
     public List<Usuario> ObtenerUsuarios(String filtro) {
         List<Usuario> lista;
@@ -36,9 +41,9 @@ public class UsuarioDTO {
 
             mensajeDAO = new MensajeDAO();
             mensajeDAO.AsignarSesion(usuarioDAO);
-            
+
             lista = usuarioDAO.ObtenerUsuarios(String.format("WHERE Usuario.idUsuario NOT IN (%d)", idUsuarioDestino));
-            
+
             for (Usuario usuario : lista) {
                 int mensajesSinLeer = mensajeDAO.ObtenerMensajesSinLeer(usuario.getIdUsuario(), idUsuarioDestino);
                 usuario.setMensajesSinLeer(mensajesSinLeer);

@@ -1,5 +1,6 @@
 package com.sge.modulos.ventas.negocios;
 
+import com.sge.base.negocios.BaseDTO;
 import com.sge.modulos.ventas.accesoDatos.EscalaListaPrecioProductoDAO;
 import com.sge.modulos.ventas.accesoDatos.ItemListaPrecioProductoDAO;
 import com.sge.modulos.ventas.accesoDatos.ListaPrecioProductoDAO;
@@ -15,13 +16,17 @@ import java.util.List;
  *
  * @author elderson
  */
-public class ListaPrecioProductoDTO {
-    
+public class ListaPrecioProductoDTO extends BaseDTO {
+
     ListaPrecioProductoDAO listaPrecioDAO;
     ItemListaPrecioProductoDAO itemListaPrecioDAO;
     UnidadListaPrecioProductoDAO unidadListaPrecioDAO;
     EscalaListaPrecioProductoDAO escalaListaPrecioDAO;
-    
+
+    public ListaPrecioProductoDTO(int idUsuario) {
+        super(idUsuario);
+    }
+
     public List<ListaPrecioProducto> ObtenerListasPrecio(String filtro) {
         List<ListaPrecioProducto> lista;
         try {
@@ -42,7 +47,7 @@ public class ListaPrecioProductoDTO {
             listaPrecioDAO = new ListaPrecioProductoDAO();
             listaPrecioDAO.AbrirSesion();
             listaPrecio = listaPrecioDAO.ObtenerPorId(ListaPrecioProducto.class, idListaPrecioProducto);
-            
+
             itemListaPrecioDAO = new ItemListaPrecioProductoDAO();
             itemListaPrecioDAO.AsignarSesion(listaPrecioDAO);
             List<Object[]> filtros = new ArrayList<>();
@@ -72,7 +77,7 @@ public class ListaPrecioProductoDTO {
         }
         return unidades;
     }
-    
+
     public List<EscalaListaPrecioProducto> ObtenerEscalasListaPrecioProducto(int idUnidadListaPrecioProducto) {
         List<EscalaListaPrecioProducto> escalas = null;
         try {
@@ -88,7 +93,7 @@ public class ListaPrecioProductoDTO {
         }
         return escalas;
     }
-    
+
     public boolean RegistrarListaPrecioProducto(ListaPrecioProducto listaPrecio) {
         try {
             listaPrecioDAO = new ListaPrecioProductoDAO();
@@ -103,7 +108,7 @@ public class ListaPrecioProductoDTO {
         }
         return true;
     }
-    
+
     public ItemListaPrecioProducto[] RegistrarItemsListaPrecioProducto(ItemListaPrecioProducto[] itemsListaPrecio) {
         try {
             itemListaPrecioDAO = new ItemListaPrecioProductoDAO();
@@ -120,7 +125,7 @@ public class ListaPrecioProductoDTO {
         }
         return itemsListaPrecio;
     }
-    
+
     public UnidadListaPrecioProducto[] RegistrarUnidadesListaPrecioProducto(UnidadListaPrecioProducto[] unidadesListaPrecio) {
         try {
             unidadListaPrecioDAO = new UnidadListaPrecioProductoDAO();
@@ -137,7 +142,7 @@ public class ListaPrecioProductoDTO {
         }
         return unidadesListaPrecio;
     }
-    
+
     public boolean RegistrarEscalaListaPrecioProducto(EscalaListaPrecioProducto escalaListaPrecio) {
         try {
             escalaListaPrecioDAO = new EscalaListaPrecioProductoDAO();
@@ -182,21 +187,21 @@ public class ListaPrecioProductoDTO {
         }
         return true;
     }
-    
+
     public boolean EliminarListaPrecioProducto(int idListaPrecioProducto) {
         try {
             escalaListaPrecioDAO = new EscalaListaPrecioProductoDAO();
             escalaListaPrecioDAO.IniciarTransaccion();
             escalaListaPrecioDAO.EliminarEscalaListaPrecioProductoPorIdListaPrecioProducto(idListaPrecioProducto);
-            
+
             unidadListaPrecioDAO = new UnidadListaPrecioProductoDAO();
             unidadListaPrecioDAO.AsignarSesion(escalaListaPrecioDAO);
             unidadListaPrecioDAO.EliminarUnidadListaPrecioProductoPorIdListaPrecioProducto(idListaPrecioProducto);
-            
+
             itemListaPrecioDAO = new ItemListaPrecioProductoDAO();
             itemListaPrecioDAO.AsignarSesion(escalaListaPrecioDAO);
             itemListaPrecioDAO.EliminarItemListaPrecioProductoPorIdListaPrecioProducto(idListaPrecioProducto);
-            
+
             listaPrecioDAO = new ListaPrecioProductoDAO();
             listaPrecioDAO.AsignarSesion(escalaListaPrecioDAO);
             listaPrecioDAO.EliminarListaPrecioProducto(idListaPrecioProducto);
@@ -210,21 +215,21 @@ public class ListaPrecioProductoDTO {
         }
         return true;
     }
-    
+
     public boolean EliminarItemListaPrecioProducto(int idItemListaPrecioProducto) {
         try {
             escalaListaPrecioDAO = new EscalaListaPrecioProductoDAO();
             escalaListaPrecioDAO.IniciarTransaccion();
             escalaListaPrecioDAO.EliminarEscalaListaPrecioProductoPorIdItemListaPrecioProducto(idItemListaPrecioProducto);
-            
+
             unidadListaPrecioDAO = new UnidadListaPrecioProductoDAO();
             unidadListaPrecioDAO.AsignarSesion(escalaListaPrecioDAO);
             unidadListaPrecioDAO.EliminarUnidadListaPrecioProductoPorIdItemListaPrecioProducto(idItemListaPrecioProducto);
-            
+
             itemListaPrecioDAO = new ItemListaPrecioProductoDAO();
             itemListaPrecioDAO.AsignarSesion(escalaListaPrecioDAO);
             itemListaPrecioDAO.EliminarItemListaPrecioProducto(idItemListaPrecioProducto);
-            
+
             escalaListaPrecioDAO.ConfirmarTransaccion();
         } catch (Exception e) {
             escalaListaPrecioDAO.AbortarTransaccion();
@@ -234,17 +239,17 @@ public class ListaPrecioProductoDTO {
         }
         return true;
     }
-    
+
     public boolean EliminarUnidadListaPrecioProducto(int idUnidadListaPrecioProducto) {
         try {
             unidadListaPrecioDAO = new UnidadListaPrecioProductoDAO();
             unidadListaPrecioDAO.IniciarTransaccion();
             unidadListaPrecioDAO.EliminarUnidadListaPrecioProducto(idUnidadListaPrecioProducto);
-            
+
             escalaListaPrecioDAO = new EscalaListaPrecioProductoDAO();
             escalaListaPrecioDAO.AsignarSesion(unidadListaPrecioDAO);
             escalaListaPrecioDAO.EliminarEscalaListaPrecioProductoPorIdUnidadListaPrecioProducto(idUnidadListaPrecioProducto);
-            
+
             unidadListaPrecioDAO.ConfirmarTransaccion();
         } catch (Exception e) {
             unidadListaPrecioDAO.AbortarTransaccion();
@@ -254,7 +259,7 @@ public class ListaPrecioProductoDTO {
         }
         return true;
     }
-    
+
     public boolean EliminarEscalaListaPrecioProducto(int idEscalaListaPrecioProducto) {
         try {
             escalaListaPrecioDAO = new EscalaListaPrecioProductoDAO();
@@ -269,7 +274,7 @@ public class ListaPrecioProductoDTO {
         }
         return true;
     }
-    
+
     public List<EscalaListaPrecioProducto> ObtenerEscalasPorProducto(int idListaPrecioProducto, int idProducto, int idUnidad) {
         List<EscalaListaPrecioProducto> escalas = null;
         try {

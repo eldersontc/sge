@@ -1,5 +1,6 @@
 package com.sge.modulos.inventarios.negocios;
 
+import com.sge.base.negocios.BaseDTO;
 import com.sge.modulos.inventarios.accesoDatos.UnidadDAO;
 import com.sge.modulos.inventarios.entidades.Unidad;
 import java.util.List;
@@ -8,10 +9,14 @@ import java.util.List;
  *
  * @author elderson
  */
-public class UnidadDTO {
-    
+public class UnidadDTO extends BaseDTO {
+
     UnidadDAO unidadDAO;
-    
+
+    public UnidadDTO(int idUsuario) {
+        super(idUsuario);
+    }
+
     public List<Unidad> ObtenerUnidades(String filtro) {
         List<Unidad> lista;
         try {
@@ -25,7 +30,7 @@ public class UnidadDTO {
         }
         return lista;
     }
-    
+
     public boolean RegistrarUnidad(Unidad unidad) {
         try {
             unidadDAO = new UnidadDAO();
@@ -40,7 +45,7 @@ public class UnidadDTO {
         }
         return true;
     }
-    
+
     public boolean ActualizarUnidad(Unidad unidad) {
         try {
             unidadDAO = new UnidadDAO();
@@ -55,7 +60,7 @@ public class UnidadDTO {
         }
         return true;
     }
-    
+
     public boolean EliminarUnidad(int idUnidad) {
         try {
             unidadDAO = new UnidadDAO();

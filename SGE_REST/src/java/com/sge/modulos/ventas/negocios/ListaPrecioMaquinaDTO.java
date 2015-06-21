@@ -1,5 +1,6 @@
 package com.sge.modulos.ventas.negocios;
 
+import com.sge.base.negocios.BaseDTO;
 import com.sge.modulos.ventas.accesoDatos.EscalaListaPrecioMaquinaDAO;
 import com.sge.modulos.ventas.accesoDatos.ListaPrecioMaquinaDAO;
 import com.sge.modulos.ventas.accesoDatos.ItemListaPrecioMaquinaDAO;
@@ -13,11 +14,15 @@ import java.util.List;
  *
  * @author elderson
  */
-public class ListaPrecioMaquinaDTO {
+public class ListaPrecioMaquinaDTO extends BaseDTO {
 
     ListaPrecioMaquinaDAO listaPrecioDAO;
     ItemListaPrecioMaquinaDAO itemListaPrecioDAO;
     EscalaListaPrecioMaquinaDAO escalaListaPrecioDAO;
+
+    public ListaPrecioMaquinaDTO(int idUsuario) {
+        super(idUsuario);
+    }
 
     public List<ListaPrecioMaquina> ObtenerListasPrecio(String filtro) {
         List<ListaPrecioMaquina> lista;
@@ -146,7 +151,7 @@ public class ListaPrecioMaquinaDTO {
         }
         return true;
     }
-    
+
     public boolean ActualizarEscalaListaPrecioMaquina(EscalaListaPrecioMaquina escalaListaPrecio) {
         try {
             escalaListaPrecioDAO = new EscalaListaPrecioMaquinaDAO();
@@ -226,15 +231,15 @@ public class ListaPrecioMaquinaDTO {
         try {
             itemListaPrecioDAO = new ItemListaPrecioMaquinaDAO();
             itemListaPrecioDAO.AbrirSesion();
-            
+
             List<Object[]> filtros = new ArrayList<>();
             filtros.add(new Object[]{"idListaPrecioMaquina", idListaPrecioMaquina});
             filtros.add(new Object[]{"idMaquina", idMaquina});
             items = itemListaPrecioDAO.ObtenerLista(ItemListaPrecioMaquina.class, filtros);
-            
+
             escalaListaPrecioDAO = new EscalaListaPrecioMaquinaDAO();
             escalaListaPrecioDAO.AsignarSesion(itemListaPrecioDAO);
-            
+
             for (ItemListaPrecioMaquina item : items) {
                 filtros = new ArrayList<>();
                 filtros.add(new Object[]{"idItemListaPrecioMaquina", item.getIdItemListaPrecioMaquina()});

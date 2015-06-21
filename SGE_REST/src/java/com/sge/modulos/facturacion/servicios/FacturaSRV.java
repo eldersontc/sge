@@ -8,6 +8,7 @@ import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
@@ -18,7 +19,7 @@ import javax.ws.rs.core.UriInfo;
  */
 @Path("FacturaSRV")
 public class FacturaSRV {
-    
+
     @Context
     private UriInfo context;
 
@@ -26,79 +27,79 @@ public class FacturaSRV {
     }
 
     @POST
-    @Path("ObtenerFacturas")
+    @Path("ObtenerFacturas/{idUsuario}")
     @Consumes("application/json")
     @Produces("application/json")
-    public String ObtenerFacturas(String json) {
+    public String ObtenerFacturas(@PathParam("idUsuario") int idUsuario, String json) {
         List<String> resultado = new ArrayList<>();
         try {
             String filtro = new Gson().fromJson(json, String.class);
-            FacturaDTO FacturaDTO = new FacturaDTO();
+            FacturaDTO FacturaDTO = new FacturaDTO(idUsuario);
             List<Factura> lista = FacturaDTO.ObtenerFacturas(filtro);
             resultado.add(new Gson().toJson(true));
             resultado.add(new Gson().toJson(lista));
         } catch (Exception e) {
             resultado.clear();
             resultado.add(new Gson().toJson(false));
-            resultado.add(new Gson().toJson(e));
+            resultado.add(new Gson().toJson(e.getMessage()));
         }
         return new Gson().toJson(resultado);
     }
 
     @POST
-    @Path("ObtenerFactura")
+    @Path("ObtenerFactura/{idUsuario}")
     @Consumes("application/json")
     @Produces("application/json")
-    public String ObtenerFactura(String json) {
+    public String ObtenerFactura(@PathParam("idUsuario") int idUsuario, String json) {
         List<String> resultado = new ArrayList<>();
         int idFactura = new Gson().fromJson(json, int.class);
         try {
-            FacturaDTO entradaInventarioDTO = new FacturaDTO();
+            FacturaDTO entradaInventarioDTO = new FacturaDTO(idUsuario);
             Factura entradaInventario = entradaInventarioDTO.ObtenerFactura(idFactura);
             resultado.add(new Gson().toJson(true));
             resultado.add(new Gson().toJson(entradaInventario));
         } catch (Exception e) {
             resultado.clear();
             resultado.add(new Gson().toJson(false));
-            resultado.add(new Gson().toJson(e));
-        }
-        return new Gson().toJson(resultado);
-    }
-    
-    @POST
-    @Path("RegistrarFactura")
-    @Consumes("application/json")
-    @Produces("application/json")
-    public String RegistrarFactura(String json) {
-        List<String> resultado = new ArrayList<>();
-        Factura caja = new Gson().fromJson(json, Factura.class);
-        try {
-            FacturaDTO FacturaDTO = new FacturaDTO();
-            FacturaDTO.RegistrarFactura(caja);
-            resultado.add(new Gson().toJson(true));
-        } catch (Exception e) {
-            resultado.clear();
-            resultado.add(new Gson().toJson(false));
-            resultado.add(new Gson().toJson(e));
+            resultado.add(new Gson().toJson(e.getMessage()));
         }
         return new Gson().toJson(resultado);
     }
 
     @POST
-    @Path("EliminarFactura")
+    @Path("RegistrarFactura/{idUsuario}")
     @Consumes("application/json")
     @Produces("application/json")
-    public String EliminarFactura(String json) {
+    public String RegistrarFactura(@PathParam("idUsuario") int idUsuario, String json) {
+        List<String> resultado = new ArrayList<>();
+        Factura caja = new Gson().fromJson(json, Factura.class);
+        try {
+            FacturaDTO FacturaDTO = new FacturaDTO(idUsuario);
+            FacturaDTO.RegistrarFactura(caja);
+            resultado.add(new Gson().toJson(true));
+        } catch (Exception e) {
+            resultado.clear();
+            resultado.add(new Gson().toJson(false));
+            resultado.add(new Gson().toJson(e.getMessage()));
+        }
+        return new Gson().toJson(resultado);
+    }
+
+    @POST
+    @Path("EliminarFactura/{idUsuario}")
+    @Consumes("application/json")
+    @Produces("application/json")
+    public String EliminarFactura(@PathParam("idUsuario") int idUsuario, String json) {
         List<String> resultado = new ArrayList<>();
         int idFactura = new Gson().fromJson(json, int.class);
         try {
-            FacturaDTO FacturaDTO = new FacturaDTO();
+            FacturaDTO FacturaDTO = new FacturaDTO(idUsuario);
             FacturaDTO.EliminarFactura(idFactura);
             resultado.add(new Gson().toJson(true));
         } catch (Exception e) {
             resultado.clear();
             resultado.add(new Gson().toJson(false));
-            resultado.add(new Gson().toJson(e));
+            resultado.add(new Gson().toJson(e.getMessage()));
         }
         return new Gson().toJson(resultado);
     }

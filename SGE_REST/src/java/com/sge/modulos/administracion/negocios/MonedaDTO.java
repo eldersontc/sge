@@ -1,5 +1,6 @@
 package com.sge.modulos.administracion.negocios;
 
+import com.sge.base.negocios.BaseDTO;
 import com.sge.modulos.administracion.accesoDatos.MonedaDAO;
 import com.sge.modulos.administracion.entidades.Moneda;
 import java.util.List;
@@ -8,10 +9,14 @@ import java.util.List;
  *
  * @author elderson
  */
-public class MonedaDTO {
-    
+public class MonedaDTO extends BaseDTO {
+
     MonedaDAO monedaDAO;
-    
+
+    public MonedaDTO(int idUsuario) {
+        super(idUsuario);
+    }
+
     public List<Moneda> ObtenerMonedas(String filtro) {
         List<Moneda> lista;
         try {
@@ -25,7 +30,7 @@ public class MonedaDTO {
         }
         return lista;
     }
-    
+
     public boolean RegistrarMoneda(Moneda moneda) {
         try {
             monedaDAO = new MonedaDAO();
@@ -40,7 +45,7 @@ public class MonedaDTO {
         }
         return true;
     }
-    
+
     public boolean ActualizarMoneda(Moneda moneda) {
         try {
             monedaDAO = new MonedaDAO();
@@ -55,7 +60,7 @@ public class MonedaDTO {
         }
         return true;
     }
-    
+
     public boolean EliminarMoneda(int idMoneda) {
         try {
             monedaDAO = new MonedaDAO();

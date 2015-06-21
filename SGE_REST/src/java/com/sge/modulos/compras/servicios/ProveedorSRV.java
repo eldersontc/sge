@@ -8,6 +8,7 @@ import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
@@ -18,7 +19,7 @@ import javax.ws.rs.core.UriInfo;
  */
 @Path("ProveedorSRV")
 public class ProveedorSRV {
-    
+
     @Context
     private UriInfo context;
 
@@ -26,98 +27,98 @@ public class ProveedorSRV {
     }
 
     @POST
-    @Path("ObtenerProveedores")
+    @Path("ObtenerProveedores/{idUsuario}")
     @Consumes("application/json")
     @Produces("application/json")
-    public String ObtenerProveedores(String json) {
+    public String ObtenerProveedores(@PathParam("idUsuario") int idUsuario, String json) {
         List<String> resultado = new ArrayList<>();
         try {
             String filtro = new Gson().fromJson(json, String.class);
-            ProveedorDTO proveedorDTO = new ProveedorDTO();
+            ProveedorDTO proveedorDTO = new ProveedorDTO(idUsuario);
             List<Proveedor> lista = proveedorDTO.ObtenerProveedores(filtro);
             resultado.add(new Gson().toJson(true));
             resultado.add(new Gson().toJson(lista));
         } catch (Exception e) {
             resultado.clear();
             resultado.add(new Gson().toJson(false));
-            resultado.add(new Gson().toJson(e));
+            resultado.add(new Gson().toJson(e.getMessage()));
         }
         return new Gson().toJson(resultado);
     }
-    
+
     @POST
-    @Path("ObtenerProveedor")
+    @Path("ObtenerProveedor/{idUsuario}")
     @Consumes("application/json")
     @Produces("application/json")
-    public String ObtenerProveedor(String json) {
+    public String ObtenerProveedor(@PathParam("idUsuario") int idUsuario, String json) {
         List<String> resultado = new ArrayList<>();
         try {
             int idProveedor = new Gson().fromJson(json, int.class);
-            ProveedorDTO proveedorDTO = new ProveedorDTO();
+            ProveedorDTO proveedorDTO = new ProveedorDTO(idUsuario);
             Proveedor proveedor = proveedorDTO.ObtenerProveedor(idProveedor);
             resultado.add(new Gson().toJson(true));
             resultado.add(new Gson().toJson(proveedor));
         } catch (Exception e) {
             resultado.clear();
             resultado.add(new Gson().toJson(false));
-            resultado.add(new Gson().toJson(e));
+            resultado.add(new Gson().toJson(e.getMessage()));
         }
         return new Gson().toJson(resultado);
     }
-    
+
     @POST
-    @Path("RegistrarProveedor")
+    @Path("RegistrarProveedor/{idUsuario}")
     @Consumes("application/json")
     @Produces("application/json")
-    public String RegistrarProveedor(String json) {
+    public String RegistrarProveedor(@PathParam("idUsuario") int idUsuario, String json) {
         List<String> resultado = new ArrayList<>();
         Proveedor proveedor = new Gson().fromJson(json, Proveedor.class);
         try {
-            ProveedorDTO proveedorDTO = new ProveedorDTO();
+            ProveedorDTO proveedorDTO = new ProveedorDTO(idUsuario);
             proveedorDTO.RegistrarProveedor(proveedor);
             resultado.add(new Gson().toJson(true));
         } catch (Exception e) {
             resultado.clear();
             resultado.add(new Gson().toJson(false));
-            resultado.add(new Gson().toJson(e));
+            resultado.add(new Gson().toJson(e.getMessage()));
         }
         return new Gson().toJson(resultado);
     }
-    
+
     @POST
-    @Path("ActualizarProveedor")
+    @Path("ActualizarProveedor/{idUsuario}")
     @Consumes("application/json")
     @Produces("application/json")
-    public String ActualizarProveedor(String json) {
+    public String ActualizarProveedor(@PathParam("idUsuario") int idUsuario, String json) {
         List<String> resultado = new ArrayList<>();
         Proveedor proveedor = new Gson().fromJson(json, Proveedor.class);
         try {
-            ProveedorDTO proveedorDTO = new ProveedorDTO();
+            ProveedorDTO proveedorDTO = new ProveedorDTO(idUsuario);
             proveedorDTO.ActualizarProveedor(proveedor);
             resultado.add(new Gson().toJson(true));
         } catch (Exception e) {
             resultado.clear();
             resultado.add(new Gson().toJson(false));
-            resultado.add(new Gson().toJson(e));
+            resultado.add(new Gson().toJson(e.getMessage()));
         }
         return new Gson().toJson(resultado);
     }
-    
+
     @POST
-    @Path("EliminarProveedor")
+    @Path("EliminarProveedor/{idUsuario}")
     @Consumes("application/json")
     @Produces("application/json")
-    public String EliminarProveedor(String json) {
+    public String EliminarProveedor(@PathParam("idUsuario") int idUsuario, String json) {
         List<String> resultado = new ArrayList<>();
         int idProveedor = new Gson().fromJson(json, int.class);
         try {
-            ProveedorDTO proveedorDTO = new ProveedorDTO();
+            ProveedorDTO proveedorDTO = new ProveedorDTO(idUsuario);
             proveedorDTO.EliminarProveedor(idProveedor);
             resultado.add(new Gson().toJson(true));
         } catch (Exception e) {
             resultado.clear();
             resultado.add(new Gson().toJson(false));
-            resultado.add(new Gson().toJson(e));
+            resultado.add(new Gson().toJson(e.getMessage()));
         }
         return new Gson().toJson(resultado);
     }

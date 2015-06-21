@@ -13,6 +13,7 @@ import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
@@ -23,7 +24,7 @@ import javax.ws.rs.core.UriInfo;
  */
 @Path("PresupuestoSRV")
 public class PresupuestoSRV {
-    
+
     @Context
     private UriInfo context;
 
@@ -31,111 +32,111 @@ public class PresupuestoSRV {
     }
 
     @POST
-    @Path("ObtenerPresupuestos")
+    @Path("ObtenerPresupuestos/{idUsuario}")
     @Consumes("application/json")
     @Produces("application/json")
-    public String ObtenerPresupuestos(String json) {
+    public String ObtenerPresupuestos(@PathParam("idUsuario") int idUsuario, String json) {
         List<String> resultado = new ArrayList<>();
         try {
             String filtro = new Gson().fromJson(json, String.class);
-            PresupuestoDTO PresupuestoDTO = new PresupuestoDTO();
+            PresupuestoDTO PresupuestoDTO = new PresupuestoDTO(idUsuario);
             List<Presupuesto> lista = PresupuestoDTO.ObtenerPresupuestos(filtro);
             resultado.add(new Gson().toJson(true));
             resultado.add(new Gson().toJson(lista));
         } catch (Exception e) {
             resultado.clear();
             resultado.add(new Gson().toJson(false));
-            resultado.add(new Gson().toJson(e));
+            resultado.add(new Gson().toJson(e.getMessage()));
         }
         return new Gson().toJson(resultado);
     }
 
     @POST
-    @Path("ObtenerPresupuesto")
+    @Path("ObtenerPresupuesto/{idUsuario}")
     @Consumes("application/json")
     @Produces("application/json")
-    public String ObtenerPresupuesto(String json) {
+    public String ObtenerPresupuesto(@PathParam("idUsuario") int idUsuario, String json) {
         List<String> resultado = new ArrayList<>();
         int idPresupuesto = new Gson().fromJson(json, int.class);
         try {
-            PresupuestoDTO PresupuestoDTO = new PresupuestoDTO();
+            PresupuestoDTO PresupuestoDTO = new PresupuestoDTO(idUsuario);
             Presupuesto presupuesto = PresupuestoDTO.ObtenerPresupuesto(idPresupuesto);
             resultado.add(new Gson().toJson(true));
             resultado.add(new Gson().toJson(presupuesto));
         } catch (Exception e) {
             resultado.clear();
             resultado.add(new Gson().toJson(false));
-            resultado.add(new Gson().toJson(e));
+            resultado.add(new Gson().toJson(e.getMessage()));
         }
         return new Gson().toJson(resultado);
     }
 
     @POST
-    @Path("RegistrarPresupuesto")
+    @Path("RegistrarPresupuesto/{idUsuario}")
     @Consumes("application/json")
     @Produces("application/json")
-    public String RegistrarPresupuesto(String json) {
+    public String RegistrarPresupuesto(@PathParam("idUsuario") int idUsuario, String json) {
         List<String> resultado = new ArrayList<>();
         Presupuesto presupuesto = new Gson().fromJson(json, Presupuesto.class);
         try {
-            PresupuestoDTO PresupuestoDTO = new PresupuestoDTO();
+            PresupuestoDTO PresupuestoDTO = new PresupuestoDTO(idUsuario);
             PresupuestoDTO.RegistrarPresupuesto(presupuesto);
             resultado.add(new Gson().toJson(true));
         } catch (Exception e) {
             resultado.clear();
             resultado.add(new Gson().toJson(false));
-            resultado.add(new Gson().toJson(e));
+            resultado.add(new Gson().toJson(e.getMessage()));
         }
         return new Gson().toJson(resultado);
     }
 
     @POST
-    @Path("ActualizarPresupuesto")
+    @Path("ActualizarPresupuesto/{idUsuario}")
     @Consumes("application/json")
     @Produces("application/json")
-    public String ActualizarPresupuesto(String json) {
+    public String ActualizarPresupuesto(@PathParam("idUsuario") int idUsuario, String json) {
         List<String> resultado = new ArrayList<>();
         Presupuesto presupuesto = new Gson().fromJson(json, Presupuesto.class);
         try {
-            PresupuestoDTO PresupuestoDTO = new PresupuestoDTO();
+            PresupuestoDTO PresupuestoDTO = new PresupuestoDTO(idUsuario);
             PresupuestoDTO.ActualizarPresupuesto(presupuesto);
             resultado.add(new Gson().toJson(true));
         } catch (Exception e) {
             resultado.clear();
             resultado.add(new Gson().toJson(false));
-            resultado.add(new Gson().toJson(e));
+            resultado.add(new Gson().toJson(e.getMessage()));
         }
         return new Gson().toJson(resultado);
     }
 
     @POST
-    @Path("EliminarPresupuesto")
+    @Path("EliminarPresupuesto/{idUsuario}")
     @Consumes("application/json")
     @Produces("application/json")
-    public String EliminarPresupuesto(String json) {
+    public String EliminarPresupuesto(@PathParam("idUsuario") int idUsuario, String json) {
         List<String> resultado = new ArrayList<>();
         int idPresupuesto = new Gson().fromJson(json, int.class);
         try {
-            PresupuestoDTO PresupuestoDTO = new PresupuestoDTO();
+            PresupuestoDTO PresupuestoDTO = new PresupuestoDTO(idUsuario);
             PresupuestoDTO.EliminarPresupuesto(idPresupuesto);
             resultado.add(new Gson().toJson(true));
         } catch (Exception e) {
             resultado.clear();
             resultado.add(new Gson().toJson(false));
-            resultado.add(new Gson().toJson(e));
+            resultado.add(new Gson().toJson(e.getMessage()));
         }
         return new Gson().toJson(resultado);
     }
-    
+
     @POST
-    @Path("CambiarEstadoPresupuesto")
+    @Path("CambiarEstadoPresupuesto/{idUsuario}")
     @Consumes("application/json")
     @Produces("application/json")
-    public String CambiarEstadoPresupuesto(String json) {
+    public String CambiarEstadoPresupuesto(@PathParam("idUsuario") int idUsuario, String json) {
         List<String> resultado = new ArrayList<>();
         int[] ids = new Gson().fromJson(json, int[].class);
         try {
-            PresupuestoDTO PresupuestoDTO = new PresupuestoDTO();
+            PresupuestoDTO PresupuestoDTO = new PresupuestoDTO(idUsuario);
             PresupuestoDTO.CambiarEstadoPresupuesto(ids[0], ids[1]);
             resultado.add(new Gson().toJson(true));
         } catch (Exception e) {
@@ -145,113 +146,18 @@ public class PresupuestoSRV {
         }
         return new Gson().toJson(resultado);
     }
-    
+
     @POST
-    @Path("AprobarPresupuesto")
+    @Path("GenerarOrdenTrabajo/{idUsuario}")
     @Consumes("application/json")
     @Produces("application/json")
-    public String AprobarPresupuesto(String json) {
-        List<String> resultado = new ArrayList<>();
-        int idPresupuesto = new Gson().fromJson(json, int.class);
-        try {
-            PresupuestoDTO PresupuestoDTO = new PresupuestoDTO();
-            PresupuestoDTO.AprobarPresupuesto(idPresupuesto);
-            resultado.add(new Gson().toJson(true));
-        } catch (Exception e) {
-            resultado.clear();
-            resultado.add(new Gson().toJson(false));
-            resultado.add(new Gson().toJson(e));
-        }
-        return new Gson().toJson(resultado);
-    }
-    
-    @POST
-    @Path("DesaprobarPresupuesto")
-    @Consumes("application/json")
-    @Produces("application/json")
-    public String DesaprobarPresupuesto(String json) {
-        List<String> resultado = new ArrayList<>();
-        int idPresupuesto = new Gson().fromJson(json, int.class);
-        try {
-            PresupuestoDTO PresupuestoDTO = new PresupuestoDTO();
-            PresupuestoDTO.DesaprobarPresupuesto(idPresupuesto);
-            resultado.add(new Gson().toJson(true));
-        } catch (Exception e) {
-            resultado.clear();
-            resultado.add(new Gson().toJson(false));
-            resultado.add(new Gson().toJson(e));
-        }
-        return new Gson().toJson(resultado);
-    }
-    
-    @POST
-    @Path("EnviarPresupuesto")
-    @Consumes("application/json")
-    @Produces("application/json")
-    public String EnviarPresupuesto(String json) {
-        List<String> resultado = new ArrayList<>();
-        int idPresupuesto = new Gson().fromJson(json, int.class);
-        try {
-            PresupuestoDTO PresupuestoDTO = new PresupuestoDTO();
-            PresupuestoDTO.EnviarPresupuesto(idPresupuesto);
-            resultado.add(new Gson().toJson(true));
-        } catch (Exception e) {
-            resultado.clear();
-            resultado.add(new Gson().toJson(false));
-            resultado.add(new Gson().toJson(e));
-        }
-        return new Gson().toJson(resultado);
-    }
-    
-    @POST
-    @Path("AceptarPresupuesto")
-    @Consumes("application/json")
-    @Produces("application/json")
-    public String AceptarPresupuesto(String json) {
-        List<String> resultado = new ArrayList<>();
-        int idPresupuesto = new Gson().fromJson(json, int.class);
-        try {
-            PresupuestoDTO PresupuestoDTO = new PresupuestoDTO();
-            PresupuestoDTO.AceptarPresupuesto(idPresupuesto);
-            resultado.add(new Gson().toJson(true));
-        } catch (Exception e) {
-            resultado.clear();
-            resultado.add(new Gson().toJson(false));
-            resultado.add(new Gson().toJson(e));
-        }
-        return new Gson().toJson(resultado);
-    }
-    
-    @POST
-    @Path("RechazarPresupuesto")
-    @Consumes("application/json")
-    @Produces("application/json")
-    public String RechazarPresupuesto(String json) {
-        List<String> resultado = new ArrayList<>();
-        int idPresupuesto = new Gson().fromJson(json, int.class);
-        try {
-            PresupuestoDTO PresupuestoDTO = new PresupuestoDTO();
-            PresupuestoDTO.RechazarPresupuesto(idPresupuesto);
-            resultado.add(new Gson().toJson(true));
-        } catch (Exception e) {
-            resultado.clear();
-            resultado.add(new Gson().toJson(false));
-            resultado.add(new Gson().toJson(e));
-        }
-        return new Gson().toJson(resultado);
-    }
-    
-    @POST
-    @Path("GenerarOrdenTrabajo")
-    @Consumes("application/json")
-    @Produces("application/json")
-    public String GenerarOrdenTrabajo(String json) {
+    public String GenerarOrdenTrabajo(@PathParam("idUsuario") int idUsuario, String json) {
         List<String> resultado = new ArrayList<>();
         int[] ids = new Gson().fromJson(json, int[].class);
         try {
-            CotizacionDTO cotizacionDTO = new CotizacionDTO();
+            CotizacionDTO cotizacionDTO = new CotizacionDTO(idUsuario);
             List<Cotizacion> cotizaciones = cotizacionDTO.ObtenerCotizacionesPorPresupuesto(ids[0]);
-            ValorDefinidoDTO valorDefinidoDTO = new ValorDefinidoDTO();
+            ValorDefinidoDTO valorDefinidoDTO = new ValorDefinidoDTO(idUsuario);
             ValorDefinido valorDefinido = valorDefinidoDTO.ObtenerValorDefinidoPorUsuarioYEntidad(ids[1], 6);
             resultado.add(new Gson().toJson(true));
             resultado.add(new Gson().toJson(new Date()));
@@ -260,7 +166,7 @@ public class PresupuestoSRV {
         } catch (Exception e) {
             resultado.clear();
             resultado.add(new Gson().toJson(false));
-            resultado.add(new Gson().toJson(e));
+            resultado.add(new Gson().toJson(e.getMessage()));
         }
         return new Gson().toJson(resultado);
     }

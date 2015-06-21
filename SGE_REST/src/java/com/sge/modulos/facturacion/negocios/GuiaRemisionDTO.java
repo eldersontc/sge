@@ -1,5 +1,6 @@
 package com.sge.modulos.facturacion.negocios;
 
+import com.sge.base.negocios.BaseDTO;
 import com.sge.modulos.administracion.accesoDatos.NumeracionDAO;
 import com.sge.modulos.facturacion.accesoDatos.GuiaRemisionDAO;
 import com.sge.modulos.facturacion.accesoDatos.ItemGuiaRemisionDAO;
@@ -12,11 +13,15 @@ import java.util.List;
  *
  * @author elderson
  */
-public class GuiaRemisionDTO {
-    
+public class GuiaRemisionDTO extends BaseDTO {
+
     GuiaRemisionDAO guiaRemisionDAO;
     ItemGuiaRemisionDAO itemGuiaRemisionDAO;
     NumeracionDAO numeracionDAO;
+
+    public GuiaRemisionDTO(int idUsuario) {
+        super(idUsuario);
+    }
 
     public List<GuiaRemision> ObtenerGuiasRemision(String filtro) {
         List<GuiaRemision> lista;
@@ -57,14 +62,14 @@ public class GuiaRemisionDTO {
         try {
             guiaRemisionDAO = new GuiaRemisionDAO();
             guiaRemisionDAO.IniciarTransaccion();
-            
+
             numeracionDAO = new NumeracionDAO();
             numeracionDAO.AsignarSesion(guiaRemisionDAO);
-            
-            if(!guiaRemision.isNumeracionManual()){
+
+            if (!guiaRemision.isNumeracionManual()) {
                 guiaRemision.setNumero(numeracionDAO.GenerarNumeracion(guiaRemision.getIdNumeracion()));
             }
-            
+
             guiaRemisionDAO.Agregar(guiaRemision);
 
             itemGuiaRemisionDAO = new ItemGuiaRemisionDAO();

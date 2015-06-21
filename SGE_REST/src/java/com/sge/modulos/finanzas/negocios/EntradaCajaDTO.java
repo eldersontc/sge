@@ -1,5 +1,6 @@
 package com.sge.modulos.finanzas.negocios;
 
+import com.sge.base.negocios.BaseDTO;
 import com.sge.modulos.administracion.accesoDatos.NumeracionDAO;
 import com.sge.modulos.finanzas.accesoDatos.CajaDAO;
 import com.sge.modulos.finanzas.accesoDatos.EntradaCajaDAO;
@@ -13,12 +14,16 @@ import java.util.List;
  *
  * @author elderson
  */
-public class EntradaCajaDTO {
-    
+public class EntradaCajaDTO extends BaseDTO {
+
     EntradaCajaDAO entradaCajaDAO;
     ItemEntradaCajaDAO itemEntradaCajaDAO;
     CajaDAO cajaDAO;
     NumeracionDAO numeracionDAO;
+
+    public EntradaCajaDTO(int idUsuario) {
+        super(idUsuario);
+    }
 
     public List<EntradaCaja> ObtenerEntradasCaja(String filtro) {
         List<EntradaCaja> lista;
@@ -58,14 +63,14 @@ public class EntradaCajaDTO {
         try {
             entradaCajaDAO = new EntradaCajaDAO();
             entradaCajaDAO.IniciarTransaccion();
-            
+
             numeracionDAO = new NumeracionDAO();
             numeracionDAO.AsignarSesion(entradaCajaDAO);
-            
-            if(!entradaCaja.isNumeracionManual()){
+
+            if (!entradaCaja.isNumeracionManual()) {
                 entradaCaja.setNumero(numeracionDAO.GenerarNumeracion(entradaCaja.getIdNumeracion()));
             }
-            
+
             entradaCajaDAO.Agregar(entradaCaja);
 
             itemEntradaCajaDAO = new ItemEntradaCajaDAO();
@@ -80,7 +85,7 @@ public class EntradaCajaDTO {
             }
 
             cajaDAO.ActualizarSaldo(entradaCaja.getIdCaja(), entradaCaja.getTotal());
-            
+
             entradaCajaDAO.ConfirmarTransaccion();
         } catch (Exception e) {
             entradaCajaDAO.AbortarTransaccion();

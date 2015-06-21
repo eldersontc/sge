@@ -26,6 +26,10 @@ public class ReporteDTO extends BaseDTO {
     ReporteDAO reporteDAO;
     ItemReporteDAO itemReporteDAO;
 
+    public ReporteDTO(int idUsuario) {
+        super(idUsuario);
+    }
+
     public List<Reporte> ObtenerReportes(String filtro) {
         List<Reporte> lista;
         try {
@@ -55,7 +59,7 @@ public class ReporteDTO extends BaseDTO {
         }
         return lista;
     }
-    
+
     public Reporte ObtenerReporte(int idReporte) {
         Reporte reporte;
         try {
@@ -151,17 +155,17 @@ public class ReporteDTO extends BaseDTO {
             reporteDAO = new ReporteDAO();
             reporteDAO.AbrirSesion();
             Reporte reporte = reporteDAO.ObtenerPorId(Reporte.class, idReporte);
-            
+
             itemReporteDAO = new ItemReporteDAO();
             itemReporteDAO.AsignarSesion(reporteDAO);
-            
+
             List<Object[]> filtros = new ArrayList<>();
             filtros.add(new Object[]{"idReporte", idReporte});
             List<ItemReporte> items = itemReporteDAO.ObtenerLista(ItemReporte.class, filtros);
             reporte.setItems(items);
-            
+
             Map parametros = new HashMap();
-            
+
             for (ItemReporte item : reporte.getItems()) {
                 if (item.isAsignarId()) {
                     parametros.put(item.getNombre(), id);
@@ -169,12 +173,12 @@ public class ReporteDTO extends BaseDTO {
                     parametros.put(item.getNombre(), item.getValor());
                 }
             }
-            
+
             JasperPrint jasperPrint = JasperFillManager.fillReport(getCarpetaReportes() + reporte.getUbicacion(), parametros, reporteDAO.getConexion());
             ByteArrayOutputStream out = new ByteArrayOutputStream();
             ObjectOutputStream os = new ObjectOutputStream(out);
             os.writeObject(jasperPrint);
-            
+
             bytes = out.toByteArray();
         } catch (Exception e) {
             throw e;
@@ -183,33 +187,33 @@ public class ReporteDTO extends BaseDTO {
         }
         return bytes;
     }
-    
+
     public byte[] GenerarReporteSinEntidad(int idReporte) throws Exception {
         byte[] bytes = null;
         try {
             reporteDAO = new ReporteDAO();
             reporteDAO.AbrirSesion();
             Reporte reporte = reporteDAO.ObtenerPorId(Reporte.class, idReporte);
-            
+
             itemReporteDAO = new ItemReporteDAO();
             itemReporteDAO.AsignarSesion(reporteDAO);
-            
+
             List<Object[]> filtros = new ArrayList<>();
             filtros.add(new Object[]{"idReporte", idReporte});
             List<ItemReporte> items = itemReporteDAO.ObtenerLista(ItemReporte.class, filtros);
             reporte.setItems(items);
-            
+
             Map parametros = new HashMap();
-            
+
             for (ItemReporte item : reporte.getItems()) {
                 parametros.put(item.getNombre(), item.getValor());
             }
-            
+
             JasperPrint jasperPrint = JasperFillManager.fillReport(getCarpetaReportes() + reporte.getUbicacion(), parametros, reporteDAO.getConexion());
             ByteArrayOutputStream out = new ByteArrayOutputStream();
             ObjectOutputStream os = new ObjectOutputStream(out);
             os.writeObject(jasperPrint);
-            
+
             bytes = out.toByteArray();
         } catch (Exception e) {
             throw e;
@@ -218,24 +222,24 @@ public class ReporteDTO extends BaseDTO {
         }
         return bytes;
     }
-    
+
     public File GenerarPdfConEntidad(int idReporte, int id) throws Exception {
         File pdf = null;
         try {
             reporteDAO = new ReporteDAO();
             reporteDAO.AbrirSesion();
             Reporte reporte = reporteDAO.ObtenerPorId(Reporte.class, idReporte);
-            
+
             itemReporteDAO = new ItemReporteDAO();
             itemReporteDAO.AsignarSesion(reporteDAO);
-            
+
             List<Object[]> filtros = new ArrayList<>();
             filtros.add(new Object[]{"idReporte", idReporte});
             List<ItemReporte> items = itemReporteDAO.ObtenerLista(ItemReporte.class, filtros);
             reporte.setItems(items);
-            
+
             Map parametros = new HashMap();
-            
+
             for (ItemReporte item : reporte.getItems()) {
                 if (item.isAsignarId()) {
                     parametros.put(item.getNombre(), id);
@@ -243,13 +247,13 @@ public class ReporteDTO extends BaseDTO {
                     parametros.put(item.getNombre(), item.getValor());
                 }
             }
-            
+
             JasperPrint jasperPrint = JasperFillManager.fillReport(getCarpetaReportes() + reporte.getUbicacion(), parametros, reporteDAO.getConexion());
-            
+
             pdf = File.createTempFile("output.", ".pdf");
-            
+
             JasperExportManager.exportReportToPdfStream(jasperPrint, new FileOutputStream(pdf));
-            
+
         } catch (Exception e) {
             throw e;
         } finally {

@@ -1,5 +1,6 @@
 package com.sge.modulos.ventas.negocios;
 
+import com.sge.base.negocios.BaseDTO;
 import com.sge.modulos.ventas.accesoDatos.EscalaListaPrecioServicioDAO;
 import com.sge.modulos.ventas.accesoDatos.ServicioDAO;
 import com.sge.modulos.ventas.accesoDatos.ServicioMaquinaDAO;
@@ -15,12 +16,16 @@ import java.util.List;
  *
  * @author elderson
  */
-public class ServicioDTO {
-    
+public class ServicioDTO extends BaseDTO {
+
     ServicioDAO servicioDAO;
     ServicioUnidadDAO servicioUnidadDAO;
     ServicioMaquinaDAO servicioMaquinaDAO;
     EscalaListaPrecioServicioDAO escalaListaPrecioServicioDAO;
+
+    public ServicioDTO(int idUsuario) {
+        super(idUsuario);
+    }
 
     public List<Servicio> ObtenerServicios(String filtro) {
         List<Servicio> lista;
@@ -42,19 +47,19 @@ public class ServicioDTO {
             servicioDAO = new ServicioDAO();
             servicioDAO.AbrirSesion();
             servicio = servicioDAO.ObtenerPorId(Servicio.class, idServicio);
-            
+
             servicioMaquinaDAO = new ServicioMaquinaDAO();
             servicioMaquinaDAO.AsignarSesion(servicioDAO);
             List<Object[]> filtros = new ArrayList<>();
             filtros.add(new Object[]{"idServicio", idServicio});
             List<ServicioMaquina> maquinas = servicioMaquinaDAO.ObtenerLista(ServicioMaquina.class, filtros);
             servicio.setMaquinas(maquinas);
-            
+
             servicioUnidadDAO = new ServicioUnidadDAO();
             servicioUnidadDAO.AsignarSesion(servicioDAO);
             List<ServicioUnidad> unidades = servicioUnidadDAO.ObtenerLista(ServicioUnidad.class, filtros);
             servicio.setUnidades(unidades);
-            
+
         } catch (Exception e) {
             throw e;
         } finally {
@@ -102,11 +107,11 @@ public class ServicioDTO {
             servicioMaquinaDAO = new ServicioMaquinaDAO();
             servicioMaquinaDAO.AsignarSesion(servicioDAO);
             for (ServicioMaquina servicioMaquina : servicio.getMaquinas()) {
-                if(servicioMaquina.isAgregar()){
+                if (servicioMaquina.isAgregar()) {
                     servicioMaquina.setIdServicio(servicio.getIdServicio());
                     servicioMaquinaDAO.Agregar(servicioMaquina);
                 }
-                if(servicioMaquina.isEliminar()){
+                if (servicioMaquina.isEliminar()) {
                     servicioMaquinaDAO.EliminarServicioMaquina(servicioMaquina.getIdServicioMaquina());
                 }
             }
@@ -114,14 +119,14 @@ public class ServicioDTO {
             servicioUnidadDAO = new ServicioUnidadDAO();
             servicioUnidadDAO.AsignarSesion(servicioDAO);
             for (ServicioUnidad servicioUnidad : servicio.getUnidades()) {
-                if(servicioUnidad.isAgregar()){
+                if (servicioUnidad.isAgregar()) {
                     servicioUnidad.setIdServicio(servicio.getIdServicio());
                     servicioUnidadDAO.Agregar(servicioUnidad);
                 }
-                if(servicioUnidad.isActualizar()){
+                if (servicioUnidad.isActualizar()) {
                     servicioUnidadDAO.ActualizarServicioUnidad(servicioUnidad.getIdServicioUnidad(), servicioUnidad.getFactor());
                 }
-                if(servicioUnidad.isEliminar()){
+                if (servicioUnidad.isEliminar()) {
                     servicioUnidadDAO.EliminarServicioUnidad(servicioUnidad.getIdServicioUnidad());
                 }
             }
@@ -159,7 +164,7 @@ public class ServicioDTO {
         }
         return true;
     }
-    
+
     public List<ServicioUnidad> ObtenerServicioUnidades(String filtro) {
         List<ServicioUnidad> lista = new ArrayList<>();
         try {
@@ -173,7 +178,7 @@ public class ServicioDTO {
         }
         return lista;
     }
-    
+
     public List<Servicio> ObtenerUnidadesPorServicios(Servicio[] servicios, int idListaPrecioServicio) {
         List<Servicio> lista = new ArrayList<>();
         try {
@@ -182,21 +187,21 @@ public class ServicioDTO {
 
             escalaListaPrecioServicioDAO = new EscalaListaPrecioServicioDAO();
             escalaListaPrecioServicioDAO.AsignarSesion(servicioUnidadDAO);
-            
+
             for (Servicio servicio : servicios) {
-                
+
                 List<Object[]> filtros = new ArrayList<>();
                 filtros.add(new Object[]{"idServicio", servicio.getIdServicio()});
 
                 List<ServicioUnidad> unidades = servicioUnidadDAO.ObtenerLista(ServicioUnidad.class, filtros);
-                
+
                 for (ServicioUnidad unidad : unidades) {
-                    
+
                     List<EscalaListaPrecioServicio> escalas = escalaListaPrecioServicioDAO.ObtenerEscalasPorUnidad(idListaPrecioServicio, servicio.getIdServicio(), unidad.getIdServicioUnidad());
-                    
+
                     unidad.setEscalas(escalas);
                 }
-                
+
                 servicio.setUnidades(unidades);
 
                 lista.add(servicio);

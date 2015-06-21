@@ -11,6 +11,7 @@ import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
@@ -21,7 +22,7 @@ import javax.ws.rs.core.UriInfo;
  */
 @Path("PlantillaSolicitudCotizacionSRV")
 public class PlantillaSolicitudCotizacionSRV {
-    
+
     @Context
     private UriInfo context;
 
@@ -29,114 +30,114 @@ public class PlantillaSolicitudCotizacionSRV {
     }
 
     @POST
-    @Path("ObtenerPlantillasSolicitudCotizacion")
+    @Path("ObtenerPlantillasSolicitudCotizacion/{idUsuario}")
     @Consumes("application/json")
     @Produces("application/json")
-    public String ObtenerPlantillasSolicitudCotizacion(String json) {
+    public String ObtenerPlantillasSolicitudCotizacion(@PathParam("idUsuario") int idUsuario, String json) {
         List<String> resultado = new ArrayList<>();
         try {
             String filtro = new Gson().fromJson(json, String.class);
-            PlantillaSolicitudCotizacionDTO PlantillaSolicitudCotizacionDTO = new PlantillaSolicitudCotizacionDTO();
+            PlantillaSolicitudCotizacionDTO PlantillaSolicitudCotizacionDTO = new PlantillaSolicitudCotizacionDTO(idUsuario);
             List<PlantillaSolicitudCotizacion> lista = PlantillaSolicitudCotizacionDTO.ObtenerPlantillasSolicitudCotizacion(filtro);
             resultado.add(new Gson().toJson(true));
             resultado.add(new Gson().toJson(lista));
         } catch (Exception e) {
             resultado.clear();
             resultado.add(new Gson().toJson(false));
-            resultado.add(new Gson().toJson(e));
+            resultado.add(new Gson().toJson(e.getMessage()));
         }
         return new Gson().toJson(resultado);
     }
 
     @POST
-    @Path("ObtenerPlantillaSolicitudCotizacion")
+    @Path("ObtenerPlantillaSolicitudCotizacion/{idUsuario}")
     @Consumes("application/json")
     @Produces("application/json")
-    public String ObtenerPlantillaSolicitudCotizacion(String json) {
+    public String ObtenerPlantillaSolicitudCotizacion(@PathParam("idUsuario") int idUsuario, String json) {
         List<String> resultado = new ArrayList<>();
         int idPlantillaSolicitudCotizacion = new Gson().fromJson(json, int.class);
         try {
-            PlantillaSolicitudCotizacionDTO PlantillaSolicitudCotizacionDTO = new PlantillaSolicitudCotizacionDTO();
+            PlantillaSolicitudCotizacionDTO PlantillaSolicitudCotizacionDTO = new PlantillaSolicitudCotizacionDTO(idUsuario);
             PlantillaSolicitudCotizacion plantillaSolicitudCotizacion = PlantillaSolicitudCotizacionDTO.ObtenerPlantillaSolicitudCotizacion(idPlantillaSolicitudCotizacion);
             resultado.add(new Gson().toJson(true));
             resultado.add(new Gson().toJson(plantillaSolicitudCotizacion));
         } catch (Exception e) {
             resultado.clear();
             resultado.add(new Gson().toJson(false));
-            resultado.add(new Gson().toJson(e));
+            resultado.add(new Gson().toJson(e.getMessage()));
         }
         return new Gson().toJson(resultado);
     }
 
     @POST
-    @Path("RegistrarPlantillaSolicitudCotizacion")
+    @Path("RegistrarPlantillaSolicitudCotizacion/{idUsuario}")
     @Consumes("application/json")
     @Produces("application/json")
-    public String RegistrarPlantillaSolicitudCotizacion(String json) {
+    public String RegistrarPlantillaSolicitudCotizacion(@PathParam("idUsuario") int idUsuario, String json) {
         List<String> resultado = new ArrayList<>();
         PlantillaSolicitudCotizacion plantillaSolicitudCotizacion = new Gson().fromJson(json, PlantillaSolicitudCotizacion.class);
         try {
-            PlantillaSolicitudCotizacionDTO PlantillaSolicitudCotizacionDTO = new PlantillaSolicitudCotizacionDTO();
+            PlantillaSolicitudCotizacionDTO PlantillaSolicitudCotizacionDTO = new PlantillaSolicitudCotizacionDTO(idUsuario);
             PlantillaSolicitudCotizacionDTO.RegistrarPlantillaSolicitudCotizacion(plantillaSolicitudCotizacion);
             resultado.add(new Gson().toJson(true));
         } catch (Exception e) {
             resultado.clear();
             resultado.add(new Gson().toJson(false));
-            resultado.add(new Gson().toJson(e));
+            resultado.add(new Gson().toJson(e.getMessage()));
         }
         return new Gson().toJson(resultado);
     }
 
     @POST
-    @Path("ActualizarPlantillaSolicitudCotizacion")
+    @Path("ActualizarPlantillaSolicitudCotizacion/{idUsuario}")
     @Consumes("application/json")
     @Produces("application/json")
-    public String ActualizarPlantillaSolicitudCotizacion(String json) {
+    public String ActualizarPlantillaSolicitudCotizacion(@PathParam("idUsuario") int idUsuario, String json) {
         List<String> resultado = new ArrayList<>();
         PlantillaSolicitudCotizacion plantillaSolicitudCotizacion = new Gson().fromJson(json, PlantillaSolicitudCotizacion.class);
         try {
-            PlantillaSolicitudCotizacionDTO PlantillaSolicitudCotizacionDTO = new PlantillaSolicitudCotizacionDTO();
+            PlantillaSolicitudCotizacionDTO PlantillaSolicitudCotizacionDTO = new PlantillaSolicitudCotizacionDTO(idUsuario);
             PlantillaSolicitudCotizacionDTO.ActualizarPlantillaSolicitudCotizacion(plantillaSolicitudCotizacion);
             resultado.add(new Gson().toJson(true));
         } catch (Exception e) {
             resultado.clear();
             resultado.add(new Gson().toJson(false));
-            resultado.add(new Gson().toJson(e));
+            resultado.add(new Gson().toJson(e.getMessage()));
         }
         return new Gson().toJson(resultado);
     }
 
     @POST
-    @Path("EliminarPlantillaSolicitudCotizacion")
+    @Path("EliminarPlantillaSolicitudCotizacion/{idUsuario}")
     @Consumes("application/json")
     @Produces("application/json")
-    public String EliminarPlantillaSolicitudCotizacion(String json) {
+    public String EliminarPlantillaSolicitudCotizacion(@PathParam("idUsuario") int idUsuario, String json) {
         List<String> resultado = new ArrayList<>();
         int idPlantillaSolicitudCotizacion = new Gson().fromJson(json, int.class);
         try {
-            PlantillaSolicitudCotizacionDTO PlantillaSolicitudCotizacionDTO = new PlantillaSolicitudCotizacionDTO();
+            PlantillaSolicitudCotizacionDTO PlantillaSolicitudCotizacionDTO = new PlantillaSolicitudCotizacionDTO(idUsuario);
             PlantillaSolicitudCotizacionDTO.EliminarPlantillaSolicitudCotizacion(idPlantillaSolicitudCotizacion);
             resultado.add(new Gson().toJson(true));
         } catch (Exception e) {
             resultado.clear();
             resultado.add(new Gson().toJson(false));
-            resultado.add(new Gson().toJson(e));
+            resultado.add(new Gson().toJson(e.getMessage()));
         }
         return new Gson().toJson(resultado);
     }
-    
+
     @POST
-    @Path("GenerarSolicitudCotizacion")
+    @Path("GenerarSolicitudCotizacion/{idUsuario}")
     @Consumes("application/json")
     @Produces("application/json")
-    public String GenerarSolicitudCotizacion(String json) {
+    public String GenerarSolicitudCotizacion(@PathParam("idUsuario") int idUsuario, String json) {
         List<String> resultado = new ArrayList<>();
         int[] ids = new Gson().fromJson(json, int[].class);
         try {
-            PlantillaSolicitudCotizacionDTO plantillaSDTO = new PlantillaSolicitudCotizacionDTO();
+            PlantillaSolicitudCotizacionDTO plantillaSDTO = new PlantillaSolicitudCotizacionDTO(idUsuario);
             PlantillaSolicitudCotizacion plantilla = plantillaSDTO.ObtenerPlantillaSolicitudCotizacion(ids[0]);
             int grupo = plantillaSDTO.ObtenerGrupo();
-            ValorDefinidoDTO valorDefinidoDTO = new ValorDefinidoDTO();
+            ValorDefinidoDTO valorDefinidoDTO = new ValorDefinidoDTO(idUsuario);
             ValorDefinido valorDefinido = valorDefinidoDTO.ObtenerValorDefinidoPorUsuarioYEntidad(ids[1], 3);
             resultado.add(new Gson().toJson(true));
             resultado.add(new Gson().toJson(new Date()));
@@ -146,7 +147,7 @@ public class PlantillaSolicitudCotizacionSRV {
         } catch (Exception e) {
             resultado.clear();
             resultado.add(new Gson().toJson(false));
-            resultado.add(new Gson().toJson(e));
+            resultado.add(new Gson().toJson(e.getMessage()));
         }
         return new Gson().toJson(resultado);
     }

@@ -1,5 +1,6 @@
 package com.sge.modulos.inventarios.negocios;
 
+import com.sge.base.negocios.BaseDTO;
 import com.sge.modulos.administracion.accesoDatos.NumeracionDAO;
 import com.sge.modulos.inventarios.accesoDatos.EntradaInventarioDAO;
 import com.sge.modulos.inventarios.accesoDatos.ItemEntradaInventarioDAO;
@@ -13,12 +14,16 @@ import java.util.List;
  *
  * @author elderson
  */
-public class EntradaInventarioDTO {
+public class EntradaInventarioDTO extends BaseDTO {
 
     EntradaInventarioDAO entradaInventarioDAO;
     ItemEntradaInventarioDAO itemEntradaInventarioDAO;
     ProductoAlmacenDAO productoAlmacenDAO;
     NumeracionDAO numeracionDAO;
+
+    public EntradaInventarioDTO(int idUsuario) {
+        super(idUsuario);
+    }
 
     public List<EntradaInventario> ObtenerEntradaInventarios(String filtro) {
         List<EntradaInventario> lista;
@@ -58,14 +63,14 @@ public class EntradaInventarioDTO {
         try {
             entradaInventarioDAO = new EntradaInventarioDAO();
             entradaInventarioDAO.IniciarTransaccion();
-            
+
             numeracionDAO = new NumeracionDAO();
             numeracionDAO.AsignarSesion(entradaInventarioDAO);
-            
-            if(!entradaInventario.isNumeracionManual()){
+
+            if (!entradaInventario.isNumeracionManual()) {
                 entradaInventario.setNumero(numeracionDAO.GenerarNumeracion(entradaInventario.getIdNumeracion()));
             }
-            
+
             entradaInventarioDAO.Agregar(entradaInventario);
 
             itemEntradaInventarioDAO = new ItemEntradaInventarioDAO();
@@ -76,16 +81,16 @@ public class EntradaInventarioDTO {
                 item.setIdAlmacen(entradaInventario.getIdAlmacen());
                 itemEntradaInventarioDAO.Agregar(item);
             }
-            
+
             entradaInventarioDAO.PreconfirmarTransaccion();
-            
+
             productoAlmacenDAO = new ProductoAlmacenDAO();
             productoAlmacenDAO.AsignarSesion(entradaInventarioDAO);
-            
+
             for (ItemEntradaInventario item : entradaInventario.getItems()) {
                 productoAlmacenDAO.ActualizarStockFisico(item.getIdProducto(), item.getIdAlmacen(), item.getCantidad() * item.getFactor());
             }
-            
+
             entradaInventarioDAO.ConfirmarTransaccion();
         } catch (Exception e) {
             entradaInventarioDAO.AbortarTransaccion();

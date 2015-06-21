@@ -1,5 +1,6 @@
 package com.sge.modulos.administracion.negocios;
 
+import com.sge.base.negocios.BaseDTO;
 import com.sge.modulos.administracion.accesoDatos.PerfilDAO;
 import com.sge.modulos.administracion.entidades.Perfil;
 import java.util.List;
@@ -8,9 +9,13 @@ import java.util.List;
  *
  * @author elderson
  */
-public class PerfilDTO {
-    
+public class PerfilDTO extends BaseDTO {
+
     PerfilDAO perfilDAO;
+
+    public PerfilDTO(int idUsuario) {
+        super(idUsuario);
+    }
 
     public List<Perfil> ObtenerPerfiles(String filtro) {
         List<Perfil> lista;

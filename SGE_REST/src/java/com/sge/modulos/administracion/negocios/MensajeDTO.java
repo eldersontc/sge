@@ -1,8 +1,8 @@
 package com.sge.modulos.administracion.negocios;
 
+import com.sge.base.negocios.BaseDTO;
 import com.sge.modulos.administracion.accesoDatos.MensajeDAO;
 import com.sge.modulos.administracion.entidades.Mensaje;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -10,16 +10,20 @@ import java.util.List;
  *
  * @author elderson
  */
-public class MensajeDTO {
+public class MensajeDTO extends BaseDTO {
 
     MensajeDAO mensajeDAO;
 
-    public int ObtenerMensajesSinLeer(int idUsuarioDestino) {
+    public MensajeDTO(int idUsuario) {
+        super(idUsuario);
+    }
+
+    public int ObtenerMensajesSinLeer() {
         int mensajesSinLeer;
         try {
             mensajeDAO = new MensajeDAO();
             mensajeDAO.AbrirSesion();
-            mensajesSinLeer = mensajeDAO.ObtenerMensajesSinLeer(idUsuarioDestino);
+            mensajesSinLeer = mensajeDAO.ObtenerMensajesSinLeer(getIdUsuario());
         } catch (Exception e) {
             throw e;
         } finally {
@@ -27,7 +31,7 @@ public class MensajeDTO {
         }
         return mensajesSinLeer;
     }
-    
+
     public List<Mensaje> ObtenerMensajesPorUsuarioOrigenYDestino(int idUsuarioOrigen, int idUsuarioDestino) {
         List<Mensaje> lista;
         try {

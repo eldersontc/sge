@@ -11,6 +11,7 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
@@ -31,161 +32,161 @@ public class ReporteSRV {
     }
 
     @POST
-    @Path("ObtenerReportes")
+    @Path("ObtenerReportes/{idUsuario}")
     @Consumes("application/json")
     @Produces("application/json")
-    public String ObtenerReportes(String json) {
+    public String ObtenerReportes(@PathParam("idUsuario") int idUsuario, String json) {
         List<String> resultado = new ArrayList<>();
         try {
             String filtro = new Gson().fromJson(json, String.class);
-            ReporteDTO reporteDTO = new ReporteDTO();
+            ReporteDTO reporteDTO = new ReporteDTO(idUsuario);
             List<Reporte> lista = reporteDTO.ObtenerReportes(filtro);
             resultado.add(new Gson().toJson(true));
             resultado.add(new Gson().toJson(lista));
         } catch (Exception e) {
             resultado.clear();
             resultado.add(new Gson().toJson(false));
-            resultado.add(new Gson().toJson(e));
+            resultado.add(new Gson().toJson(e.getMessage()));
         }
         return new Gson().toJson(resultado);
     }
-    
+
     @POST
-    @Path("ObtenerReportesPorEntidad")
+    @Path("ObtenerReportesPorEntidad/{idUsuario}")
     @Consumes("application/json")
     @Produces("application/json")
-    public String ObtenerReportesPorEntidad(String json) {
+    public String ObtenerReportesPorEntidad(@PathParam("idUsuario") int idUsuario, String json) {
         List<String> resultado = new ArrayList<>();
         try {
             int idEntidad = new Gson().fromJson(json, int.class);
-            ReporteDTO reporteDTO = new ReporteDTO();
+            ReporteDTO reporteDTO = new ReporteDTO(idUsuario);
             List<Reporte> lista = reporteDTO.ObtenerReportesPorEntidad(idEntidad);
             resultado.add(new Gson().toJson(true));
             resultado.add(new Gson().toJson(lista));
         } catch (Exception e) {
             resultado.clear();
             resultado.add(new Gson().toJson(false));
-            resultado.add(new Gson().toJson(e));
+            resultado.add(new Gson().toJson(e.getMessage()));
         }
         return new Gson().toJson(resultado);
     }
 
     @POST
-    @Path("ObtenerReporte")
+    @Path("ObtenerReporte/{idUsuario}")
     @Consumes("application/json")
     @Produces("application/json")
-    public String ObtenerReporte(String json) {
+    public String ObtenerReporte(@PathParam("idUsuario") int idUsuario, String json) {
         List<String> resultado = new ArrayList<>();
         try {
             int idReporte = new Gson().fromJson(json, int.class);
-            ReporteDTO reporteDTO = new ReporteDTO();
+            ReporteDTO reporteDTO = new ReporteDTO(idUsuario);
             Reporte reporte = reporteDTO.ObtenerReporte(idReporte);
             resultado.add(new Gson().toJson(true));
             resultado.add(new Gson().toJson(reporte));
         } catch (Exception e) {
             resultado.clear();
             resultado.add(new Gson().toJson(false));
-            resultado.add(new Gson().toJson(e));
+            resultado.add(new Gson().toJson(e.getMessage()));
         }
         return new Gson().toJson(resultado);
     }
 
     @POST
-    @Path("RegistrarReporte")
+    @Path("RegistrarReporte/{idUsuario}")
     @Consumes("application/json")
     @Produces("application/json")
-    public String RegistrarReporte(String json) {
+    public String RegistrarReporte(@PathParam("idUsuario") int idUsuario, String json) {
         List<String> resultado = new ArrayList<>();
         Reporte reporte = new Gson().fromJson(json, Reporte.class);
         try {
-            ReporteDTO reporteDTO = new ReporteDTO();
+            ReporteDTO reporteDTO = new ReporteDTO(idUsuario);
             reporteDTO.RegistrarReporte(reporte);
             resultado.add(new Gson().toJson(true));
         } catch (Exception e) {
             resultado.clear();
             resultado.add(new Gson().toJson(false));
-            resultado.add(new Gson().toJson(e));
+            resultado.add(new Gson().toJson(e.getMessage()));
         }
         return new Gson().toJson(resultado);
     }
 
     @POST
-    @Path("ActualizarReporte")
+    @Path("ActualizarReporte/{idUsuario}")
     @Consumes("application/json")
     @Produces("application/json")
-    public String ActualizarReporte(String json) {
+    public String ActualizarReporte(@PathParam("idUsuario") int idUsuario, String json) {
         List<String> resultado = new ArrayList<>();
         Reporte reporte = new Gson().fromJson(json, Reporte.class);
         try {
-            ReporteDTO reporteDTO = new ReporteDTO();
+            ReporteDTO reporteDTO = new ReporteDTO(idUsuario);
             reporteDTO.ActualizarReporte(reporte);
             resultado.add(new Gson().toJson(true));
         } catch (Exception e) {
             resultado.clear();
             resultado.add(new Gson().toJson(false));
-            resultado.add(new Gson().toJson(e));
+            resultado.add(new Gson().toJson(e.getMessage()));
         }
         return new Gson().toJson(resultado);
     }
 
     @POST
-    @Path("EliminarReporte")
+    @Path("EliminarReporte/{idUsuario}")
     @Consumes("application/json")
     @Produces("application/json")
-    public String EliminarReporte(String json) {
+    public String EliminarReporte(@PathParam("idUsuario") int idUsuario, String json) {
         List<String> resultado = new ArrayList<>();
         int idReporte = new Gson().fromJson(json, int.class);
         try {
-            ReporteDTO reporteDTO = new ReporteDTO();
+            ReporteDTO reporteDTO = new ReporteDTO(idUsuario);
             reporteDTO.EliminarReporte(idReporte);
             resultado.add(new Gson().toJson(true));
         } catch (Exception e) {
             resultado.clear();
             resultado.add(new Gson().toJson(false));
-            resultado.add(new Gson().toJson(e));
+            resultado.add(new Gson().toJson(e.getMessage()));
         }
         return new Gson().toJson(resultado);
     }
 
     //////////////////// GENERACION DE REPORTES ////////////////////////////////
     @POST
-    @Path("GenerarReporteConEntidad")
+    @Path("GenerarReporteConEntidad/{idUsuario}")
     @Consumes("application/json")
     @Produces("application/json")
-    public String GenerarReporteConEntidad(String json) {
+    public String GenerarReporteConEntidad(@PathParam("idUsuario") int idUsuario, String json) {
         List<String> resultado = new ArrayList<>();
         int[] arrayInt = new Gson().fromJson(json, int[].class);
         int idReporte = arrayInt[0];
         int id = arrayInt[1];
         try {
-            ReporteDTO reporteDTO = new ReporteDTO();
+            ReporteDTO reporteDTO = new ReporteDTO(idUsuario);
             byte[] bytes = reporteDTO.GenerarReporteConEntidad(idReporte, id);
             resultado.add(new Gson().toJson(true));
             resultado.add(new Gson().toJson(bytes));
         } catch (Exception e) {
             resultado.clear();
             resultado.add(new Gson().toJson(false));
-            resultado.add(new Gson().toJson(e));
+            resultado.add(new Gson().toJson(e.getMessage()));
         }
         return new Gson().toJson(resultado);
     }
 
     @POST
-    @Path("GenerarReporteSinEntidad")
+    @Path("GenerarReporteSinEntidad/{idUsuario}")
     @Consumes("application/json")
     @Produces("application/json")
-    public String GenerarReporteSinEntidad(String json) {
+    public String GenerarReporteSinEntidad(@PathParam("idUsuario") int idUsuario, String json) {
         List<String> resultado = new ArrayList<>();
         int idReporte = new Gson().fromJson(json, int.class);
         try {
-            ReporteDTO reporteDTO = new ReporteDTO();
+            ReporteDTO reporteDTO = new ReporteDTO(idUsuario);
             byte[] bytes = reporteDTO.GenerarReporteSinEntidad(idReporte);
             resultado.add(new Gson().toJson(true));
             resultado.add(new Gson().toJson(bytes));
         } catch (Exception e) {
             resultado.clear();
             resultado.add(new Gson().toJson(false));
-            resultado.add(new Gson().toJson(e));
+            resultado.add(new Gson().toJson(e.getMessage()));
         }
         return new Gson().toJson(resultado);
     }
@@ -196,7 +197,7 @@ public class ReporteSRV {
     public Response GenerarPdfConEntidad(@FormParam("r") int r, @FormParam("i") int i) {
         ResponseBuilder response = null;
         try {
-            ReporteDTO reporteDTO = new ReporteDTO();
+            ReporteDTO reporteDTO = new ReporteDTO(0);
             File pdf = reporteDTO.GenerarPdfConEntidad(r, i);
             response = Response.ok((Object) pdf);
             response.header("Content-Disposition",

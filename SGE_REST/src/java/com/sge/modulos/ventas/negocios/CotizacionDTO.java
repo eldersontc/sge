@@ -36,6 +36,10 @@ public class CotizacionDTO extends BaseDTO {
     EscalaListaPrecioServicioDAO escalaListaPrecioServicioDAO;
     NumeracionDAO numeracionDAO;
 
+    public CotizacionDTO(int idUsuario) {
+        super(idUsuario);
+    }
+
     public List<Cotizacion> ObtenerCotizaciones(String filtro) {
         List<Cotizacion> lista;
         try {
@@ -59,31 +63,31 @@ public class CotizacionDTO extends BaseDTO {
 
             itemCotizacionDAO = new ItemCotizacionDAO();
             itemCotizacionDAO.AsignarSesion(cotizacionDAO);
-            
+
             servicioCotizacionDAO = new ServicioCotizacionDAO();
             servicioCotizacionDAO.AsignarSesion(cotizacionDAO);
-            
+
             for (Cotizacion cotizacion : lista) {
-                
+
                 List<Object[]> filtros = new ArrayList<>();
                 filtros.add(new Object[]{"idCotizacion", cotizacion.getIdCotizacion()});
                 List<ItemCotizacion> items = itemCotizacionDAO.ObtenerLista(ItemCotizacion.class, filtros);
-                
+
                 for (ItemCotizacion item : items) {
-                    
+
                     filtros = new ArrayList<>();
                     filtros.add(new Object[]{"idItemCotizacion", item.getIdItemCotizacion()});
                     List<ServicioCotizacion> acabados = servicioCotizacionDAO.ObtenerLista(ServicioCotizacion.class, filtros);
-                    
+
                     item.setAcabados(acabados);
-                    
+
                     if (item.getUbicacionGraficoPrecorte() != null && !item.getUbicacionGraficoPrecorte().isEmpty()) {
                         BufferedImage grafico = ImageIO.read(new File(getCarpetaGraficos() + item.getUbicacionGraficoPrecorte()));
                         ByteArrayOutputStream arrayBytesOut = new ByteArrayOutputStream();
                         ImageIO.write(grafico, "jpg", arrayBytesOut);
                         item.setGraficoPrecorte(arrayBytesOut.toByteArray());
                     }
-                    
+
                     if (item.getUbicacionGraficoImpresion() != null && !item.getUbicacionGraficoImpresion().isEmpty()) {
                         BufferedImage grafico = ImageIO.read(new File(getCarpetaGraficos() + item.getUbicacionGraficoImpresion()));
                         ByteArrayOutputStream arrayBytesOut = new ByteArrayOutputStream();
@@ -91,7 +95,7 @@ public class CotizacionDTO extends BaseDTO {
                         item.setGraficoImpresion(arrayBytesOut.toByteArray());
                     }
                 }
-                
+
                 cotizacion.setItems(items);
             }
         } catch (Exception e) {
@@ -114,52 +118,52 @@ public class CotizacionDTO extends BaseDTO {
 
             servicioCotizacionDAO = new ServicioCotizacionDAO();
             servicioCotizacionDAO.AsignarSesion(cotizacionDAO);
-            
+
             servicioUnidadDAO = new ServicioUnidadDAO();
             servicioUnidadDAO.AsignarSesion(cotizacionDAO);
-            
+
             escalaListaPrecioServicioDAO = new EscalaListaPrecioServicioDAO();
             escalaListaPrecioServicioDAO.AsignarSesion(servicioUnidadDAO);
-            
+
             List<Object[]> filtros = new ArrayList<>();
             filtros.add(new Object[]{"idCotizacion", idCotizacion});
             List<ItemCotizacion> items = itemCotizacionDAO.ObtenerLista(ItemCotizacion.class, filtros);
 
             for (ItemCotizacion item : items) {
-                
+
                 filtros = new ArrayList<>();
                 filtros.add(new Object[]{"idItemCotizacion", item.getIdItemCotizacion()});
                 List<ServicioCotizacion> acabados = servicioCotizacionDAO.ObtenerLista(ServicioCotizacion.class, filtros);
-                
+
                 for (ServicioCotizacion acabado : acabados) {
-                    
+
                     filtros = new ArrayList<>();
                     filtros.add(new Object[]{"idServicio", acabado.getIdServicio()});
                     List<ServicioUnidad> unidades = servicioUnidadDAO.ObtenerLista(ServicioUnidad.class, filtros);
-                    
+
                     for (ServicioUnidad unidad : unidades) {
-                        
+
                         List<EscalaListaPrecioServicio> escalas = escalaListaPrecioServicioDAO.ObtenerEscalasPorUnidad(cotizacion.getIdListaPrecioServicio(), acabado.getIdServicio(), unidad.getIdServicioUnidad());
-                        
+
                         unidad.setEscalas(escalas);
                     }
-                    
+
                     acabado.setUnidades(unidades);
-                    
+
                     ServicioUnidad unidad = servicioUnidadDAO.ObtenerPorId(ServicioUnidad.class, acabado.getIdServicioUnidad());
-                    
+
                     acabado.setUnidad(unidad);
                 }
-                
+
                 item.setAcabados(acabados);
-                
+
                 if (item.getUbicacionGraficoPrecorte() != null && !item.getUbicacionGraficoPrecorte().isEmpty()) {
                     BufferedImage grafico = ImageIO.read(new File(getCarpetaGraficos() + item.getUbicacionGraficoPrecorte()));
                     ByteArrayOutputStream arrayBytesOut = new ByteArrayOutputStream();
                     ImageIO.write(grafico, "jpg", arrayBytesOut);
                     item.setGraficoPrecorte(arrayBytesOut.toByteArray());
                 }
-                
+
                 if (item.getUbicacionGraficoImpresion() != null && !item.getUbicacionGraficoImpresion().isEmpty()) {
                     BufferedImage grafico = ImageIO.read(new File(getCarpetaGraficos() + item.getUbicacionGraficoImpresion()));
                     ByteArrayOutputStream arrayBytesOut = new ByteArrayOutputStream();
@@ -181,16 +185,16 @@ public class CotizacionDTO extends BaseDTO {
         try {
             cotizacionDAO = new CotizacionDAO();
             cotizacionDAO.IniciarTransaccion();
-            
+
             numeracionDAO = new NumeracionDAO();
             numeracionDAO.AsignarSesion(cotizacionDAO);
-            
-            if(!cotizacion.isNumeracionManual()){
+
+            if (!cotizacion.isNumeracionManual()) {
                 cotizacion.setNumero(numeracionDAO.GenerarNumeracion(cotizacion.getIdNumeracion()));
             }
-            
+
             cotizacion.setEstado("PENDIENTE DE APROBACIÓN");
-            
+
             cotizacionDAO.Agregar(cotizacion);
 
             itemCotizacionDAO = new ItemCotizacionDAO();
@@ -198,11 +202,11 @@ public class CotizacionDTO extends BaseDTO {
 
             servicioCotizacionDAO = new ServicioCotizacionDAO();
             servicioCotizacionDAO.AsignarSesion(cotizacionDAO);
-            
+
             for (ItemCotizacion item : cotizacion.getItems()) {
-                
+
                 item.setIdCotizacion(cotizacion.getIdCotizacion());
-                
+
                 if (item.getGraficoPrecorte() != null) {
                     String ubicacion = "PRECORTE-" + new Date().getTime() + ".JPG";
                     FileOutputStream fos = new FileOutputStream(getCarpetaGraficos() + ubicacion);
@@ -210,7 +214,7 @@ public class CotizacionDTO extends BaseDTO {
                     fos.close();
                     item.setUbicacionGraficoPrecorte(ubicacion);
                 }
-                
+
                 if (item.getGraficoImpresion() != null) {
                     String ubicacion = "IMPRESION-" + new Date().getTime() + ".JPG";
                     FileOutputStream fos = new FileOutputStream(getCarpetaGraficos() + ubicacion);
@@ -218,13 +222,13 @@ public class CotizacionDTO extends BaseDTO {
                     fos.close();
                     item.setUbicacionGraficoImpresion(ubicacion);
                 }
-                
+
                 itemCotizacionDAO.Agregar(item);
-                
+
                 for (ServicioCotizacion acabado : item.getAcabados()) {
-                    
+
                     acabado.setIdItemCotizacion(item.getIdItemCotizacion());
-                    
+
                     servicioCotizacionDAO.Agregar(acabado);
                 }
             }
@@ -256,12 +260,12 @@ public class CotizacionDTO extends BaseDTO {
 
             servicioCotizacionDAO = new ServicioCotizacionDAO();
             servicioCotizacionDAO.AsignarSesion(cotizacionDAO);
-            
+
             for (ItemCotizacion item : cotizacion.getItems()) {
                 if (item.isAgregar()) {
-                    
+
                     item.setIdCotizacion(cotizacion.getIdCotizacion());
-                    
+
                     if (item.getGraficoPrecorte() != null) {
                         String ubicacion = "PRECORTE-" + new Date().getTime() + ".JPG";
                         FileOutputStream fos = new FileOutputStream(getCarpetaGraficos() + ubicacion);
@@ -269,7 +273,7 @@ public class CotizacionDTO extends BaseDTO {
                         fos.close();
                         item.setUbicacionGraficoPrecorte(ubicacion);
                     }
-                    
+
                     if (item.getGraficoImpresion() != null) {
                         String ubicacion = "IMPRESION-" + new Date().getTime() + ".JPG";
                         FileOutputStream fos = new FileOutputStream(getCarpetaGraficos() + ubicacion);
@@ -277,39 +281,39 @@ public class CotizacionDTO extends BaseDTO {
                         fos.close();
                         item.setUbicacionGraficoImpresion(ubicacion);
                     }
-                    
+
                     itemCotizacionDAO.Agregar(item);
-                    
+
                     for (ServicioCotizacion acabado : item.getAcabados()) {
                         acabado.setIdItemCotizacion(item.getIdItemCotizacion());
                         servicioCotizacionDAO.Agregar(acabado);
                     }
                 }
                 if (item.isActualizar()) {
-                    
+
                     itemCotizacionDAO.ActualizarItemCotizacion(item);
-                    
+
                     if (item.getGraficoPrecorte() != null) {
                         FileOutputStream fos = new FileOutputStream(getCarpetaGraficos() + item.getUbicacionGraficoPrecorte());
                         fos.write(item.getGraficoPrecorte());
                         fos.close();
                     }
-                    
+
                     if (item.getGraficoImpresion() != null) {
                         FileOutputStream fos = new FileOutputStream(getCarpetaGraficos() + item.getUbicacionGraficoImpresion());
                         fos.write(item.getGraficoImpresion());
                         fos.close();
                     }
-                    
+
                     for (ServicioCotizacion acabado : item.getAcabados()) {
-                        if(acabado.isAgregar()){
+                        if (acabado.isAgregar()) {
                             acabado.setIdItemCotizacion(item.getIdItemCotizacion());
                             servicioCotizacionDAO.Agregar(acabado);
                         }
-                        if(acabado.isActualizar()){
+                        if (acabado.isActualizar()) {
                             servicioCotizacionDAO.ActualizarServicioCotizacion(acabado.getIdServicioCotizacion(), acabado.isPrecioManual(), acabado.getPrecio(), acabado.getCantidad(), acabado.getTotal());
                         }
-                        if(acabado.isEliminar()){
+                        if (acabado.isEliminar()) {
                             servicioCotizacionDAO.EliminarServicioCotizacion(acabado.getIdServicioCotizacion());
                         }
                     }
@@ -346,35 +350,35 @@ public class CotizacionDTO extends BaseDTO {
 
             itemCotizacionDAO = new ItemCotizacionDAO();
             itemCotizacionDAO.AsignarSesion(cotizacionDAO);
-            
+
             List<Object[]> filtros = new ArrayList<>();
             filtros.add(new Object[]{"idCotizacion", idCotizacion});
             List<ItemCotizacion> items = itemCotizacionDAO.ObtenerLista(ItemCotizacion.class, filtros);
-            
+
             servicioCotizacionDAO = new ServicioCotizacionDAO();
             servicioCotizacionDAO.AsignarSesion(cotizacionDAO);
-            
+
             for (ItemCotizacion item : items) {
-                
+
                 servicioCotizacionDAO.EliminarServicioCotizacionPorIdItemCotizacion(item.getIdItemCotizacion());
-                
-                if(item.getUbicacionGraficoPrecorte() != null && !item.getUbicacionGraficoPrecorte().isEmpty()){
+
+                if (item.getUbicacionGraficoPrecorte() != null && !item.getUbicacionGraficoPrecorte().isEmpty()) {
                     File file = new File(getCarpetaGraficos() + item.getUbicacionGraficoPrecorte());
-                    if(file.exists()){
+                    if (file.exists()) {
                         file.delete();
                     }
                 }
-                
-                if(item.getUbicacionGraficoImpresion()!= null && !item.getUbicacionGraficoImpresion().isEmpty()){
+
+                if (item.getUbicacionGraficoImpresion() != null && !item.getUbicacionGraficoImpresion().isEmpty()) {
                     File file = new File(getCarpetaGraficos() + item.getUbicacionGraficoImpresion());
-                    if(file.exists()){
+                    if (file.exists()) {
                         file.delete();
                     }
                 }
-                
+
                 itemCotizacionDAO.EliminarItemCotizacion(item.getIdItemCotizacion());
             }
-            
+
             cotizacionDAO.ConfirmarTransaccion();
         } catch (Exception e) {
             cotizacionDAO.AbortarTransaccion();

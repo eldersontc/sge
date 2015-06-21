@@ -1,5 +1,6 @@
 package com.sge.modulos.ventas.negocios;
 
+import com.sge.base.negocios.BaseDTO;
 import com.sge.modulos.ventas.accesoDatos.ItemPlantillaSolicitudCotizacionDAO;
 import com.sge.modulos.ventas.accesoDatos.PlantillaSolicitudCotizacionDAO;
 import com.sge.modulos.ventas.entidades.ItemPlantillaSolicitudCotizacion;
@@ -11,11 +12,15 @@ import java.util.List;
  *
  * @author elderson
  */
-public class PlantillaSolicitudCotizacionDTO {
- 
+public class PlantillaSolicitudCotizacionDTO extends BaseDTO {
+
     PlantillaSolicitudCotizacionDAO plantillaDAO;
     ItemPlantillaSolicitudCotizacionDAO itemPlantillaDAO;
-    
+
+    public PlantillaSolicitudCotizacionDTO(int idUsuario) {
+        super(idUsuario);
+    }
+
     public List<PlantillaSolicitudCotizacion> ObtenerPlantillasSolicitudCotizacion(String filtro) {
         List<PlantillaSolicitudCotizacion> lista;
         try {
@@ -36,7 +41,7 @@ public class PlantillaSolicitudCotizacionDTO {
             plantillaDAO = new PlantillaSolicitudCotizacionDAO();
             plantillaDAO.AbrirSesion();
             plantilla = plantillaDAO.ObtenerPorId(PlantillaSolicitudCotizacion.class, idPlantilla);
-            
+
             itemPlantillaDAO = new ItemPlantillaSolicitudCotizacionDAO();
             itemPlantillaDAO.AsignarSesion(plantillaDAO);
             List<Object[]> filtros = new ArrayList<>();
@@ -83,14 +88,14 @@ public class PlantillaSolicitudCotizacionDTO {
             itemPlantillaDAO = new ItemPlantillaSolicitudCotizacionDAO();
             itemPlantillaDAO.AsignarSesion(plantillaDAO);
             for (ItemPlantillaSolicitudCotizacion item : plantilla.getItems()) {
-                if(item.isAgregar()){
+                if (item.isAgregar()) {
                     item.setIdPlantillaSolicitudCotizacion(plantilla.getIdPlantillaSolicitudCotizacion());
                     itemPlantillaDAO.Agregar(item);
                 }
-                if(item.isActualizar()){
+                if (item.isActualizar()) {
                     itemPlantillaDAO.ActualizarItemPlantillaSolicitudCotizacion(item);
                 }
-                if(item.isEliminar()){
+                if (item.isEliminar()) {
                     itemPlantillaDAO.EliminarItemPlantillaSolicitudCotizacion(item.getIdItemPlantillaSolicitudCotizacion());
                 }
             }
@@ -124,7 +129,7 @@ public class PlantillaSolicitudCotizacionDTO {
         }
         return true;
     }
-    
+
     public int ObtenerGrupo() {
         int grupo = 0;
         try {

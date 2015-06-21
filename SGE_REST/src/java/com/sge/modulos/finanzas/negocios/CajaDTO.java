@@ -1,5 +1,6 @@
 package com.sge.modulos.finanzas.negocios;
 
+import com.sge.base.negocios.BaseDTO;
 import com.sge.modulos.finanzas.accesoDatos.CajaDAO;
 import com.sge.modulos.finanzas.entidades.Caja;
 import java.util.List;
@@ -8,10 +9,14 @@ import java.util.List;
  *
  * @author elderson
  */
-public class CajaDTO {
-    
+public class CajaDTO extends BaseDTO {
+
     CajaDAO cajaDAO;
-    
+
+    public CajaDTO(int idUsuario) {
+        super(idUsuario);
+    }
+
     public List<Caja> ObtenerCajas(String filtro) {
         List<Caja> lista;
         try {
@@ -25,7 +30,7 @@ public class CajaDTO {
         }
         return lista;
     }
-    
+
     public boolean RegistrarCaja(Caja caja) {
         try {
             cajaDAO = new CajaDAO();
@@ -40,7 +45,7 @@ public class CajaDTO {
         }
         return true;
     }
-    
+
     public boolean ActualizarCaja(Caja caja) {
         try {
             cajaDAO = new CajaDAO();
@@ -55,7 +60,7 @@ public class CajaDTO {
         }
         return true;
     }
-    
+
     public boolean EliminarCaja(int idCaja) {
         try {
             cajaDAO = new CajaDAO();

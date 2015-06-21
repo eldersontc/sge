@@ -1,5 +1,6 @@
 package com.sge.modulos.ventas.negocios;
 
+import com.sge.base.negocios.BaseDTO;
 import com.sge.modulos.administracion.accesoDatos.NumeracionDAO;
 import com.sge.modulos.ventas.accesoDatos.ItemSolicitudCotizacionDAO;
 import com.sge.modulos.ventas.accesoDatos.SolicitudCotizacionDAO;
@@ -12,12 +13,16 @@ import java.util.List;
  *
  * @author elderson
  */
-public class SolicitudCotizacionDTO {
-    
+public class SolicitudCotizacionDTO extends BaseDTO {
+
     SolicitudCotizacionDAO solicitudCotizacionDAO;
     ItemSolicitudCotizacionDAO itemSolicitudCotizacionDAO;
     NumeracionDAO numeracionDAO;
-    
+
+    public SolicitudCotizacionDTO(int idUsuario) {
+        super(idUsuario);
+    }
+
     public List<SolicitudCotizacion> ObtenerSolicitudesCotizacion(String filtro) {
         List<SolicitudCotizacion> lista;
         try {
@@ -38,7 +43,7 @@ public class SolicitudCotizacionDTO {
             solicitudCotizacionDAO = new SolicitudCotizacionDAO();
             solicitudCotizacionDAO.AbrirSesion();
             solicitudCotizacion = solicitudCotizacionDAO.ObtenerPorId(SolicitudCotizacion.class, idSolicitudCotizacion);
-            
+
             itemSolicitudCotizacionDAO = new ItemSolicitudCotizacionDAO();
             itemSolicitudCotizacionDAO.AsignarSesion(solicitudCotizacionDAO);
             List<Object[]> filtros = new ArrayList<>();
@@ -57,16 +62,16 @@ public class SolicitudCotizacionDTO {
         try {
             solicitudCotizacionDAO = new SolicitudCotizacionDAO();
             solicitudCotizacionDAO.IniciarTransaccion();
-            
+
             numeracionDAO = new NumeracionDAO();
             numeracionDAO.AsignarSesion(solicitudCotizacionDAO);
-            
-            if(!solicitudCotizacion.isNumeracionManual()){
+
+            if (!solicitudCotizacion.isNumeracionManual()) {
                 solicitudCotizacion.setNumero(numeracionDAO.GenerarNumeracion(solicitudCotizacion.getIdNumeracion()));
             }
-            
+
             solicitudCotizacion.setEstado("PENDIENTE DE APROBACIÓN");
-            
+
             solicitudCotizacionDAO.Agregar(solicitudCotizacion);
 
             itemSolicitudCotizacionDAO = new ItemSolicitudCotizacionDAO();
@@ -95,14 +100,14 @@ public class SolicitudCotizacionDTO {
             itemSolicitudCotizacionDAO = new ItemSolicitudCotizacionDAO();
             itemSolicitudCotizacionDAO.AsignarSesion(solicitudCotizacionDAO);
             for (ItemSolicitudCotizacion item : solicitudCotizacion.getItems()) {
-                if(item.isAgregar()){
+                if (item.isAgregar()) {
                     item.setIdSolicitudCotizacion(solicitudCotizacion.getIdSolicitudCotizacion());
                     itemSolicitudCotizacionDAO.Agregar(item);
                 }
-                if(item.isActualizar()){
+                if (item.isActualizar()) {
                     itemSolicitudCotizacionDAO.ActualizarItemSolicitudCotizacion(item);
                 }
-                if(item.isEliminar()){
+                if (item.isEliminar()) {
                     itemSolicitudCotizacionDAO.EliminarItemSolicitudCotizacion(item.getIdItemSolicitudCotizacion());
                 }
             }
@@ -135,7 +140,7 @@ public class SolicitudCotizacionDTO {
         }
         return true;
     }
-    
+
     public boolean AprobarSolicitudCotizacion(int idSolicitudCotizacion) {
         try {
             solicitudCotizacionDAO = new SolicitudCotizacionDAO();
@@ -150,7 +155,7 @@ public class SolicitudCotizacionDTO {
         }
         return true;
     }
-    
+
     public boolean DesaprobarSolicitudCotizacion(int idSolicitudCotizacion) {
         try {
             solicitudCotizacionDAO = new SolicitudCotizacionDAO();

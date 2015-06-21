@@ -1,5 +1,6 @@
 package com.sge.modulos.ventas.negocios;
 
+import com.sge.base.negocios.BaseDTO;
 import com.sge.modulos.ventas.accesoDatos.ClienteDAO;
 import com.sge.modulos.ventas.accesoDatos.ContactoClienteDAO;
 import com.sge.modulos.ventas.accesoDatos.DireccionClienteDAO;
@@ -13,11 +14,15 @@ import java.util.List;
  *
  * @author elderson
  */
-public class ClienteDTO {
-    
+public class ClienteDTO extends BaseDTO {
+
     ClienteDAO clienteDAO;
     DireccionClienteDAO direccionClienteDAO;
     ContactoClienteDAO contactoClienteDAO;
+
+    public ClienteDTO(int idUsuario) {
+        super(idUsuario);
+    }
 
     public List<Cliente> ObtenerClientes(String filtro) {
         List<Cliente> lista;
@@ -39,23 +44,23 @@ public class ClienteDTO {
             clienteDAO = new ClienteDAO();
             clienteDAO.AbrirSesion();
             cliente = clienteDAO.ObtenerPorId(Cliente.class, idCliente);
-            
+
             contactoClienteDAO = new ContactoClienteDAO();
             contactoClienteDAO.AsignarSesion(clienteDAO);
-            
+
             List<Object[]> filtros = new ArrayList<>();
             filtros.add(new Object[]{"idCliente", idCliente});
             List<ContactoCliente> contactos = contactoClienteDAO.ObtenerLista(ContactoCliente.class, filtros);
             cliente.setContactos(contactos);
-            
+
             direccionClienteDAO = new DireccionClienteDAO();
             direccionClienteDAO.AsignarSesion(clienteDAO);
-            
+
             filtros = new ArrayList<>();
             filtros.add(new Object[]{"idCliente", idCliente});
             List<DireccionCliente> direcciones = direccionClienteDAO.ObtenerLista(DireccionCliente.class, filtros);
             cliente.setDirecciones(direcciones);
-            
+
         } catch (Exception e) {
             throw e;
         } finally {
@@ -103,14 +108,14 @@ public class ClienteDTO {
             contactoClienteDAO = new ContactoClienteDAO();
             contactoClienteDAO.AsignarSesion(clienteDAO);
             for (ContactoCliente contactoCliente : cliente.getContactos()) {
-                if(contactoCliente.isAgregar()){
+                if (contactoCliente.isAgregar()) {
                     contactoCliente.setIdCliente(cliente.getIdCliente());
                     contactoClienteDAO.Agregar(contactoCliente);
                 }
-                if(contactoCliente.isActualizar()){
+                if (contactoCliente.isActualizar()) {
                     contactoClienteDAO.ActualizarContactoCliente(contactoCliente.getIdContactoCliente(), contactoCliente.getNombre(), contactoCliente.getCargo(), contactoCliente.getTelefono(), contactoCliente.getCorreo());
                 }
-                if(contactoCliente.isEliminar()){
+                if (contactoCliente.isEliminar()) {
                     contactoClienteDAO.EliminarContactoCliente(contactoCliente.getIdContactoCliente());
                 }
             }
@@ -118,14 +123,14 @@ public class ClienteDTO {
             direccionClienteDAO = new DireccionClienteDAO();
             direccionClienteDAO.AsignarSesion(clienteDAO);
             for (DireccionCliente direccionCliente : cliente.getDirecciones()) {
-                if(direccionCliente.isAgregar()){
+                if (direccionCliente.isAgregar()) {
                     direccionCliente.setIdCliente(cliente.getIdCliente());
                     direccionClienteDAO.Agregar(direccionCliente);
                 }
-                if(direccionCliente.isActualizar()){
+                if (direccionCliente.isActualizar()) {
                     direccionClienteDAO.ActualizarDireccionCliente(direccionCliente.getIdDireccionCliente(), direccionCliente.getIdDepartamento(), direccionCliente.getNombreDepartamento(), direccionCliente.getIdProvincia(), direccionCliente.getNombreProvincia(), direccionCliente.getIdDistrito(), direccionCliente.getNombreDistrito(), direccionCliente.getDireccion());
                 }
-                if(direccionCliente.isEliminar()){
+                if (direccionCliente.isEliminar()) {
                     direccionClienteDAO.EliminarDireccionCliente(direccionCliente.getIdDireccionCliente());
                 }
             }
@@ -163,7 +168,7 @@ public class ClienteDTO {
         }
         return true;
     }
-    
+
     public List<ContactoCliente> ObtenerContactosCliente(String filtro) {
         List<ContactoCliente> lista;
         try {
@@ -177,7 +182,7 @@ public class ClienteDTO {
         }
         return lista;
     }
-    
+
     public List<DireccionCliente> ObtenerDireccionesCliente(String filtro) {
         List<DireccionCliente> lista;
         try {

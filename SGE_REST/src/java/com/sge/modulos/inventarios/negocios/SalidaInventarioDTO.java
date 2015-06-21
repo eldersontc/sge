@@ -1,5 +1,6 @@
 package com.sge.modulos.inventarios.negocios;
 
+import com.sge.base.negocios.BaseDTO;
 import com.sge.modulos.administracion.accesoDatos.NumeracionDAO;
 import com.sge.modulos.inventarios.accesoDatos.SalidaInventarioDAO;
 import com.sge.modulos.inventarios.accesoDatos.ItemSalidaInventarioDAO;
@@ -14,12 +15,16 @@ import java.util.List;
  *
  * @author elderson
  */
-public class SalidaInventarioDTO {
+public class SalidaInventarioDTO extends BaseDTO {
 
     SalidaInventarioDAO salidaInventarioDAO;
     ItemSalidaInventarioDAO itemSalidaInventarioDAO;
     ProductoAlmacenDAO productoAlmacenDAO;
     NumeracionDAO numeracionDAO;
+
+    public SalidaInventarioDTO(int idUsuario) {
+        super(idUsuario);
+    }
 
     public List<SalidaInventario> ObtenerSalidaInventarios(String filtro) {
         List<SalidaInventario> lista;
@@ -79,14 +84,14 @@ public class SalidaInventarioDTO {
             }
 
             salidaInventarioDAO.PreconfirmarTransaccion();
-            
+
             productoAlmacenDAO = new ProductoAlmacenDAO();
             productoAlmacenDAO.AsignarSesion(salidaInventarioDAO);
-            
+
             for (ItemSalidaInventario item : salidaInventario.getItems()) {
                 productoAlmacenDAO.ActualizarStockFisico(item.getIdProducto(), item.getIdAlmacen(), item.getCantidad() * item.getFactor() * -1);
             }
-            
+
             salidaInventarioDAO.ConfirmarTransaccion();
         } catch (Exception e) {
             salidaInventarioDAO.AbortarTransaccion();
@@ -138,7 +143,7 @@ public class SalidaInventarioDTO {
                 filtros.add(new Object[]{"idAlmacen", item.getIdAlmacen()});
                 filtros.add(new Object[]{"idProducto", item.getIdProducto()});
                 List<ProductoAlmacen> productoAlmacenes = productoAlmacenDAO.ObtenerLista(ProductoAlmacen.class, filtros);
-                if(!productoAlmacenes.isEmpty()){
+                if (!productoAlmacenes.isEmpty()) {
                     item.setCantidadMaxima(productoAlmacenes.get(0).getStockFisico());
                 }
             }

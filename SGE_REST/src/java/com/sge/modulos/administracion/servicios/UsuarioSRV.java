@@ -9,6 +9,7 @@ import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
@@ -19,7 +20,7 @@ import javax.ws.rs.core.UriInfo;
  */
 @Path("UsuarioSRV")
 public class UsuarioSRV {
-    
+
     @Context
     private UriInfo context;
 
@@ -34,7 +35,7 @@ public class UsuarioSRV {
         List<String> resultado = new ArrayList<>();
         try {
             String filtro = new Gson().fromJson(json, String.class);
-            UsuarioDTO usuarioDTO = new UsuarioDTO();
+            UsuarioDTO usuarioDTO = new UsuarioDTO(0);
             List<Usuario> lista = usuarioDTO.ObtenerUsuarios(filtro);
             resultado.add(new Gson().toJson(true));
             resultado.add(new Gson().toJson(lista));
@@ -43,11 +44,10 @@ public class UsuarioSRV {
             resultado.clear();
             resultado.add(new Gson().toJson(false));
             resultado.add(new Gson().toJson(e.getMessage()));
-            resultado.add(new Gson().toJson(System.getProperty("user.home")));
         }
         return new Gson().toJson(resultado);
     }
-    
+
     @POST
     @Path("ObtenerUsuariosConMensajesSinLeer")
     @Consumes("application/json")
@@ -55,76 +55,76 @@ public class UsuarioSRV {
     public String ObtenerUsuariosConMensajesSinLeer(String json) {
         List<String> resultado = new ArrayList<>();
         try {
-            int idUsuarioDestino = new Gson().fromJson(json, int.class);
-            UsuarioDTO usuarioDTO = new UsuarioDTO();
-            List<Usuario> lista = usuarioDTO.ObtenerUsuariosConMensajesSinLeer(idUsuarioDestino);
+            int idUsuario = new Gson().fromJson(json, int.class);
+            UsuarioDTO usuarioDTO = new UsuarioDTO(idUsuario);
+            List<Usuario> lista = usuarioDTO.ObtenerUsuariosConMensajesSinLeer(idUsuario);
             resultado.add(new Gson().toJson(true));
             resultado.add(new Gson().toJson(lista));
         } catch (Exception e) {
             resultado.clear();
             resultado.add(new Gson().toJson(false));
-            resultado.add(new Gson().toJson(e));
+            resultado.add(new Gson().toJson(e.getMessage()));
         }
         return new Gson().toJson(resultado);
     }
-    
+
     @POST
-    @Path("RegistrarUsuario")
+    @Path("RegistrarUsuario/{idUsuario}")
     @Consumes("application/json")
     @Produces("application/json")
-    public String RegistrarUsuario(String json) {
+    public String RegistrarUsuario(@PathParam("idUsuario") int idUsuario, String json) {
         List<String> resultado = new ArrayList<>();
         Usuario usuario = new Gson().fromJson(json, Usuario.class);
         try {
-            UsuarioDTO usuarioDTO = new UsuarioDTO();
+            UsuarioDTO usuarioDTO = new UsuarioDTO(idUsuario);
             usuarioDTO.RegistrarUsuario(usuario);
             resultado.add(new Gson().toJson(true));
         } catch (Exception e) {
             resultado.clear();
             resultado.add(new Gson().toJson(false));
-            resultado.add(new Gson().toJson(e));
+            resultado.add(new Gson().toJson(e.getMessage()));
         }
         return new Gson().toJson(resultado);
     }
-    
+
     @POST
-    @Path("ActualizarUsuario")
+    @Path("ActualizarUsuario/{idUsuario}")
     @Consumes("application/json")
     @Produces("application/json")
-    public String ActualizarUsuario(String json) {
+    public String ActualizarUsuario(@PathParam("idUsuario") int idUsuario, String json) {
         List<String> resultado = new ArrayList<>();
         Usuario usuario = new Gson().fromJson(json, Usuario.class);
         try {
-            UsuarioDTO usuarioDTO = new UsuarioDTO();
+            UsuarioDTO usuarioDTO = new UsuarioDTO(idUsuario);
             usuarioDTO.ActualizarUsuario(usuario);
             resultado.add(new Gson().toJson(true));
         } catch (Exception e) {
             resultado.clear();
             resultado.add(new Gson().toJson(false));
-            resultado.add(new Gson().toJson(e));
+            resultado.add(new Gson().toJson(e.getMessage()));
         }
         return new Gson().toJson(resultado);
     }
-    
+
     @POST
-    @Path("EliminarUsuario")
+    @Path("EliminarUsuario/{idUsuarioPath}")
     @Consumes("application/json")
     @Produces("application/json")
-    public String EliminarUsuario(String json) {
+    public String EliminarUsuario(@PathParam("idUsuarioPath") int idUsuarioPath, String json) {
         List<String> resultado = new ArrayList<>();
         int idUsuario = new Gson().fromJson(json, int.class);
         try {
-            UsuarioDTO usuarioDTO = new UsuarioDTO();
+            UsuarioDTO usuarioDTO = new UsuarioDTO(idUsuarioPath);
             usuarioDTO.EliminarUsuario(idUsuario);
             resultado.add(new Gson().toJson(true));
         } catch (Exception e) {
             resultado.clear();
             resultado.add(new Gson().toJson(false));
-            resultado.add(new Gson().toJson(e));
+            resultado.add(new Gson().toJson(e.getMessage()));
         }
         return new Gson().toJson(resultado);
     }
-    
+
     @POST
     @Path("ConectarUsuario")
     @Consumes("application/json")
@@ -133,17 +133,17 @@ public class UsuarioSRV {
         List<String> resultado = new ArrayList<>();
         Usuario usuario = new Gson().fromJson(json, Usuario.class);
         try {
-            UsuarioDTO usuarioDTO = new UsuarioDTO();
+            UsuarioDTO usuarioDTO = new UsuarioDTO(usuario.getIdUsuario());
             usuarioDTO.ConectarUsuario(usuario);
             resultado.add(new Gson().toJson(true));
         } catch (Exception e) {
             resultado.clear();
             resultado.add(new Gson().toJson(false));
-            resultado.add(new Gson().toJson(e));
+            resultado.add(new Gson().toJson(e.getMessage()));
         }
         return new Gson().toJson(resultado);
     }
-    
+
     @POST
     @Path("DesconectarUsuario")
     @Consumes("application/json")
@@ -152,13 +152,13 @@ public class UsuarioSRV {
         List<String> resultado = new ArrayList<>();
         int idUsuario = new Gson().fromJson(json, int.class);
         try {
-            UsuarioDTO usuarioDTO = new UsuarioDTO();
+            UsuarioDTO usuarioDTO = new UsuarioDTO(idUsuario);
             usuarioDTO.DesconectarUsuario(idUsuario);
             resultado.add(new Gson().toJson(true));
         } catch (Exception e) {
             resultado.clear();
             resultado.add(new Gson().toJson(false));
-            resultado.add(new Gson().toJson(e));
+            resultado.add(new Gson().toJson(e.getMessage()));
         }
         return new Gson().toJson(resultado);
     }

@@ -1,5 +1,6 @@
 package com.sge.modulos.inventarios.negocios;
 
+import com.sge.base.negocios.BaseDTO;
 import com.sge.modulos.inventarios.accesoDatos.ProductoAlmacenDAO;
 import com.sge.modulos.inventarios.accesoDatos.ProductoDAO;
 import com.sge.modulos.inventarios.accesoDatos.ProductoUnidadDAO;
@@ -14,11 +15,15 @@ import java.util.List;
  *
  * @author elderson
  */
-public class ProductoDTO {
+public class ProductoDTO extends BaseDTO {
 
     ProductoDAO productoDAO;
     ProductoAlmacenDAO productoAlmacenDAO;
     ProductoUnidadDAO productoUnidadDAO;
+
+    public ProductoDTO(int idUsuario) {
+        super(idUsuario);
+    }
 
     public List<Producto> ObtenerProductos(String filtro) {
         List<Producto> lista;
@@ -47,7 +52,7 @@ public class ProductoDTO {
         }
         return lista;
     }
-    
+
     public Producto ObtenerProducto(int idProducto) {
         Producto producto = null;
         try {
@@ -111,7 +116,7 @@ public class ProductoDTO {
             productoDAO = new ProductoDAO();
             productoDAO.IniciarTransaccion();
             productoDAO.ActualizarProducto(producto);
-            
+
             productoUnidadDAO = new ProductoUnidadDAO();
             productoUnidadDAO.AsignarSesion(productoDAO);
             for (ProductoUnidad productoUnidad : producto.getUnidades()) {
@@ -194,7 +199,7 @@ public class ProductoDTO {
         }
         return lista;
     }
-    
+
     public List<ProductoUnidad> ObtenerProductoUnidades(String filtro) {
         List<ProductoUnidad> lista = new ArrayList<>();
         try {
@@ -208,7 +213,7 @@ public class ProductoDTO {
         }
         return lista;
     }
-    
+
     public List<ProductoAlmacen> ObtenerProductoAlmacenes(String filtro) {
         List<ProductoAlmacen> lista = new ArrayList<>();
         try {

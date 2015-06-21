@@ -8,6 +8,7 @@ import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
@@ -18,7 +19,7 @@ import javax.ws.rs.core.UriInfo;
  */
 @Path("EmpleadoSRV")
 public class EmpleadoSRV {
- 
+
     @Context
     private UriInfo context;
 
@@ -26,98 +27,98 @@ public class EmpleadoSRV {
     }
 
     @POST
-    @Path("ObtenerEmpleados")
+    @Path("ObtenerEmpleados/{idUsuario}")
     @Consumes("application/json")
     @Produces("application/json")
-    public String ObtenerEmpleados(String json) {
+    public String ObtenerEmpleados(@PathParam("idUsuario") int idUsuario, String json) {
         List<String> resultado = new ArrayList<>();
         try {
             String filtro = new Gson().fromJson(json, String.class);
-            EmpleadoDTO empleadoDTO = new EmpleadoDTO();
+            EmpleadoDTO empleadoDTO = new EmpleadoDTO(idUsuario);
             List<Empleado> lista = empleadoDTO.ObtenerEmpleados(filtro);
             resultado.add(new Gson().toJson(true));
             resultado.add(new Gson().toJson(lista));
         } catch (Exception e) {
             resultado.clear();
             resultado.add(new Gson().toJson(false));
-            resultado.add(new Gson().toJson(e));
+            resultado.add(new Gson().toJson(e.getMessage()));
         }
         return new Gson().toJson(resultado);
     }
-    
+
     @POST
-    @Path("ObtenerEmpleado")
+    @Path("ObtenerEmpleado/{idUsuario}")
     @Consumes("application/json")
     @Produces("application/json")
-    public String ObtenerEmpleado(String json) {
+    public String ObtenerEmpleado(@PathParam("idUsuario") int idUsuario, String json) {
         List<String> resultado = new ArrayList<>();
         try {
             int idEmpleado = new Gson().fromJson(json, int.class);
-            EmpleadoDTO empleadoDTO = new EmpleadoDTO();
+            EmpleadoDTO empleadoDTO = new EmpleadoDTO(idUsuario);
             Empleado empleado = empleadoDTO.ObtenerEmpleado(idEmpleado);
             resultado.add(new Gson().toJson(true));
             resultado.add(new Gson().toJson(empleado));
         } catch (Exception e) {
             resultado.clear();
             resultado.add(new Gson().toJson(false));
-            resultado.add(new Gson().toJson(e));
+            resultado.add(new Gson().toJson(e.getMessage()));
         }
         return new Gson().toJson(resultado);
     }
-    
+
     @POST
-    @Path("RegistrarEmpleado")
+    @Path("RegistrarEmpleado/{idUsuario}")
     @Consumes("application/json")
     @Produces("application/json")
-    public String RegistrarEmpleado(String json) {
+    public String RegistrarEmpleado(@PathParam("idUsuario") int idUsuario, String json) {
         List<String> resultado = new ArrayList<>();
         Empleado empleado = new Gson().fromJson(json, Empleado.class);
         try {
-            EmpleadoDTO empleadoDTO = new EmpleadoDTO();
+            EmpleadoDTO empleadoDTO = new EmpleadoDTO(idUsuario);
             empleadoDTO.RegistrarEmpleado(empleado);
             resultado.add(new Gson().toJson(true));
         } catch (Exception e) {
             resultado.clear();
             resultado.add(new Gson().toJson(false));
-            resultado.add(new Gson().toJson(e));
+            resultado.add(new Gson().toJson(e.getMessage()));
         }
         return new Gson().toJson(resultado);
     }
-    
+
     @POST
-    @Path("ActualizarEmpleado")
+    @Path("ActualizarEmpleado/{idUsuario}")
     @Consumes("application/json")
     @Produces("application/json")
-    public String ActualizarEmpleado(String json) {
+    public String ActualizarEmpleado(@PathParam("idUsuario") int idUsuario, String json) {
         List<String> resultado = new ArrayList<>();
         Empleado empleado = new Gson().fromJson(json, Empleado.class);
         try {
-            EmpleadoDTO empleadoDTO = new EmpleadoDTO();
+            EmpleadoDTO empleadoDTO = new EmpleadoDTO(idUsuario);
             empleadoDTO.ActualizarEmpleado(empleado);
             resultado.add(new Gson().toJson(true));
         } catch (Exception e) {
             resultado.clear();
             resultado.add(new Gson().toJson(false));
-            resultado.add(new Gson().toJson(e));
+            resultado.add(new Gson().toJson(e.getMessage()));
         }
         return new Gson().toJson(resultado);
     }
-    
+
     @POST
-    @Path("EliminarEmpleado")
+    @Path("EliminarEmpleado/{idUsuario}")
     @Consumes("application/json")
     @Produces("application/json")
-    public String EliminarEmpleado(String json) {
+    public String EliminarEmpleado(@PathParam("idUsuario") int idUsuario, String json) {
         List<String> resultado = new ArrayList<>();
         int idEmpleado = new Gson().fromJson(json, int.class);
         try {
-            EmpleadoDTO empleadoDTO = new EmpleadoDTO();
+            EmpleadoDTO empleadoDTO = new EmpleadoDTO(idUsuario);
             empleadoDTO.EliminarEmpleado(idEmpleado);
             resultado.add(new Gson().toJson(true));
         } catch (Exception e) {
             resultado.clear();
             resultado.add(new Gson().toJson(false));
-            resultado.add(new Gson().toJson(e));
+            resultado.add(new Gson().toJson(e.getMessage()));
         }
         return new Gson().toJson(resultado);
     }

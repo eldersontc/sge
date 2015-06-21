@@ -1,5 +1,6 @@
 package com.sge.modulos.ventas.negocios;
 
+import com.sge.base.negocios.BaseDTO;
 import com.sge.modulos.ventas.accesoDatos.MetodoImpresionDAO;
 import com.sge.modulos.ventas.entidades.MetodoImpresion;
 import java.util.List;
@@ -8,10 +9,14 @@ import java.util.List;
  *
  * @author elderson
  */
-public class MetodoImpresionDTO {
-    
+public class MetodoImpresionDTO extends BaseDTO {
+
     MetodoImpresionDAO metodoImpresionDAO;
-    
+
+    public MetodoImpresionDTO(int idUsuario) {
+        super(idUsuario);
+    }
+
     public List<MetodoImpresion> ObtenerMetodosImpresion(String filtro) {
         List<MetodoImpresion> lista;
         try {
@@ -25,7 +30,7 @@ public class MetodoImpresionDTO {
         }
         return lista;
     }
-    
+
     public boolean RegistrarMetodoImpresion(MetodoImpresion metodoImpresion) {
         try {
             metodoImpresionDAO = new MetodoImpresionDAO();
@@ -40,7 +45,7 @@ public class MetodoImpresionDTO {
         }
         return true;
     }
-    
+
     public boolean ActualizarMetodoImpresion(MetodoImpresion metodoImpresion) {
         try {
             metodoImpresionDAO = new MetodoImpresionDAO();
@@ -55,7 +60,7 @@ public class MetodoImpresionDTO {
         }
         return true;
     }
-    
+
     public boolean EliminarMetodoImpresion(int idMetodoImpresion) {
         try {
             metodoImpresionDAO = new MetodoImpresionDAO();

@@ -1,5 +1,6 @@
 package com.sge.modulos.inventarios.negocios;
 
+import com.sge.base.negocios.BaseDTO;
 import com.sge.modulos.inventarios.accesoDatos.AlmacenDAO;
 import com.sge.modulos.inventarios.entidades.Almacen;
 import java.util.List;
@@ -8,10 +9,14 @@ import java.util.List;
  *
  * @author elderson
  */
-public class AlmacenDTO {
-    
+public class AlmacenDTO extends BaseDTO {
+
     AlmacenDAO almacenDAO;
-    
+
+    public AlmacenDTO(int idUsuario) {
+        super(idUsuario);
+    }
+
     public List<Almacen> ObtenerAlmacenes(String filtro) {
         List<Almacen> lista;
         try {
@@ -25,7 +30,7 @@ public class AlmacenDTO {
         }
         return lista;
     }
-    
+
     public boolean RegistrarAlmacen(Almacen almacen) {
         try {
             almacenDAO = new AlmacenDAO();
@@ -40,7 +45,7 @@ public class AlmacenDTO {
         }
         return true;
     }
-    
+
     public boolean ActualizarAlmacen(Almacen almacen) {
         try {
             almacenDAO = new AlmacenDAO();
@@ -55,7 +60,7 @@ public class AlmacenDTO {
         }
         return true;
     }
-    
+
     public boolean EliminarAlmacen(int idAlmacen) {
         try {
             almacenDAO = new AlmacenDAO();

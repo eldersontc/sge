@@ -8,6 +8,7 @@ import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
@@ -18,7 +19,7 @@ import javax.ws.rs.core.UriInfo;
  */
 @Path("DistritoSRV")
 public class DistritoSRV {
-    
+
     @Context
     private UriInfo context;
 
@@ -26,21 +27,21 @@ public class DistritoSRV {
     }
 
     @POST
-    @Path("ObtenerDistritos")
+    @Path("ObtenerDistritos/{idUsuario}")
     @Consumes("application/json")
     @Produces("application/json")
-    public String ObtenerDistritos(String json) {
+    public String ObtenerDistritos(@PathParam("idUsuario") int idUsuario, String json) {
         List<String> resultado = new ArrayList<>();
         try {
             String filtro = new Gson().fromJson(json, String.class);
-            DistritoDTO distritoDTO = new DistritoDTO();
+            DistritoDTO distritoDTO = new DistritoDTO(idUsuario);
             List<Distrito> lista = distritoDTO.ObtenerDistritos(filtro);
             resultado.add(new Gson().toJson(true));
             resultado.add(new Gson().toJson(lista));
         } catch (Exception e) {
             resultado.clear();
             resultado.add(new Gson().toJson(false));
-            resultado.add(new Gson().toJson(e));
+            resultado.add(new Gson().toJson(e.getMessage()));
         }
         return new Gson().toJson(resultado);
     }

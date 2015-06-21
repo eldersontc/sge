@@ -1,5 +1,6 @@
 package com.sge.modulos.compras.negocios;
 
+import com.sge.base.negocios.BaseDTO;
 import com.sge.modulos.compras.accesoDatos.ProveedorDAO;
 import com.sge.modulos.compras.entidades.Proveedor;
 import java.util.List;
@@ -8,9 +9,13 @@ import java.util.List;
  *
  * @author elderson
  */
-public class ProveedorDTO {
+public class ProveedorDTO extends BaseDTO {
 
     ProveedorDAO proveedorDAO;
+
+    public ProveedorDTO(int idUsuario) {
+        super(idUsuario);
+    }
 
     public List<Proveedor> ObtenerProveedores(String filtro) {
         List<Proveedor> lista;

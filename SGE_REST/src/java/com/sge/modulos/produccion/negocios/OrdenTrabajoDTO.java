@@ -20,12 +20,16 @@ import javax.imageio.ImageIO;
  * @author elderson
  */
 public class OrdenTrabajoDTO extends BaseDTO {
-    
+
     OrdenTrabajoDAO ordenTrabajoDAO;
     ItemOrdenTrabajoDAO itemOrdenTrabajoDAO;
     ServicioOrdenTrabajoDAO servicioOrdenTrabajoDAO;
     NumeracionDAO numeracionDAO;
-    
+
+    public OrdenTrabajoDTO(int idUsuario) {
+        super(idUsuario);
+    }
+
     public List<OrdenTrabajo> ObtenerOrdenesTrabajo(String filtro) {
         List<OrdenTrabajo> lista;
         try {
@@ -46,32 +50,32 @@ public class OrdenTrabajoDTO extends BaseDTO {
             ordenTrabajoDAO = new OrdenTrabajoDAO();
             ordenTrabajoDAO.AbrirSesion();
             ordenTrabajo = ordenTrabajoDAO.ObtenerPorId(OrdenTrabajo.class, idOrdenTrabajo);
-            
+
             itemOrdenTrabajoDAO = new ItemOrdenTrabajoDAO();
             itemOrdenTrabajoDAO.AsignarSesion(ordenTrabajoDAO);
-            
+
             servicioOrdenTrabajoDAO = new ServicioOrdenTrabajoDAO();
             servicioOrdenTrabajoDAO.AsignarSesion(ordenTrabajoDAO);
-            
+
             List<Object[]> filtros = new ArrayList<>();
             filtros.add(new Object[]{"idOrdenTrabajo", idOrdenTrabajo});
             List<ItemOrdenTrabajo> items = itemOrdenTrabajoDAO.ObtenerLista(ItemOrdenTrabajo.class, filtros);
-            
+
             for (ItemOrdenTrabajo item : items) {
-                
+
                 filtros = new ArrayList<>();
                 filtros.add(new Object[]{"idItemOrdenTrabajo", item.getIdItemOrdenTrabajo()});
                 List<ServicioOrdenTrabajo> acabados = servicioOrdenTrabajoDAO.ObtenerLista(ServicioOrdenTrabajo.class, filtros);
-                
+
                 item.setAcabados(acabados);
-                
+
                 if (item.getUbicacionGraficoPrecorte() != null && !item.getUbicacionGraficoPrecorte().isEmpty()) {
                     BufferedImage grafico = ImageIO.read(new File(getCarpetaGraficos() + item.getUbicacionGraficoPrecorte()));
                     ByteArrayOutputStream arrayBytesOut = new ByteArrayOutputStream();
                     ImageIO.write(grafico, "jpg", arrayBytesOut);
                     item.setGraficoPrecorte(arrayBytesOut.toByteArray());
                 }
-                
+
                 if (item.getUbicacionGraficoImpresion() != null && !item.getUbicacionGraficoImpresion().isEmpty()) {
                     BufferedImage grafico = ImageIO.read(new File(getCarpetaGraficos() + item.getUbicacionGraficoImpresion()));
                     ByteArrayOutputStream arrayBytesOut = new ByteArrayOutputStream();
@@ -79,7 +83,7 @@ public class OrdenTrabajoDTO extends BaseDTO {
                     item.setGraficoImpresion(arrayBytesOut.toByteArray());
                 }
             }
-            
+
             ordenTrabajo.setItems(items);
         } catch (Exception e) {
             throw e;
@@ -93,32 +97,32 @@ public class OrdenTrabajoDTO extends BaseDTO {
         try {
             ordenTrabajoDAO = new OrdenTrabajoDAO();
             ordenTrabajoDAO.IniciarTransaccion();
-            
+
             numeracionDAO = new NumeracionDAO();
             numeracionDAO.AsignarSesion(ordenTrabajoDAO);
-            
-            if(!ordenTrabajo.isNumeracionManual()){
+
+            if (!ordenTrabajo.isNumeracionManual()) {
                 ordenTrabajo.setNumero(numeracionDAO.GenerarNumeracion(ordenTrabajo.getIdNumeracion()));
             }
-            
+
             ordenTrabajoDAO.Agregar(ordenTrabajo);
 
             itemOrdenTrabajoDAO = new ItemOrdenTrabajoDAO();
             itemOrdenTrabajoDAO.AsignarSesion(ordenTrabajoDAO);
-            
+
             servicioOrdenTrabajoDAO = new ServicioOrdenTrabajoDAO();
             servicioOrdenTrabajoDAO.AsignarSesion(ordenTrabajoDAO);
-            
+
             for (ItemOrdenTrabajo item : ordenTrabajo.getItems()) {
-                
+
                 item.setIdOrdenTrabajo(ordenTrabajo.getIdOrdenTrabajo());
-                
+
                 itemOrdenTrabajoDAO.Agregar(item);
-                
+
                 for (ServicioOrdenTrabajo acabado : item.getAcabados()) {
-                    
+
                     acabado.setIdItemOrdenTrabajo(item.getIdItemOrdenTrabajo());
-                    
+
                     servicioOrdenTrabajoDAO.Agregar(acabado);
                 }
             }
@@ -141,11 +145,11 @@ public class OrdenTrabajoDTO extends BaseDTO {
 
             itemOrdenTrabajoDAO = new ItemOrdenTrabajoDAO();
             itemOrdenTrabajoDAO.AsignarSesion(ordenTrabajoDAO);
-            
+
             for (ItemOrdenTrabajo item : ordenTrabajo.getItems()) {
-                
+
                 itemOrdenTrabajoDAO.ActualizarItemOrdenTrabajo(item);
-                
+
             }
 
             ordenTrabajoDAO.ConfirmarTransaccion();
@@ -166,22 +170,22 @@ public class OrdenTrabajoDTO extends BaseDTO {
 
             itemOrdenTrabajoDAO = new ItemOrdenTrabajoDAO();
             itemOrdenTrabajoDAO.AsignarSesion(ordenTrabajoDAO);
-            
+
             servicioOrdenTrabajoDAO = new ServicioOrdenTrabajoDAO();
             servicioOrdenTrabajoDAO.AsignarSesion(ordenTrabajoDAO);
-            
+
             List<Object[]> filtros = new ArrayList<>();
             filtros.add(new Object[]{"idOrdenTrabajo", idOrdenTrabajo});
             List<ItemOrdenTrabajo> items = itemOrdenTrabajoDAO.ObtenerLista(ItemOrdenTrabajo.class, filtros);
 
             for (ItemOrdenTrabajo item : items) {
-                
+
                 servicioOrdenTrabajoDAO.EliminarServicioOrdenTrabajoPorIdItemOrdenTrabajo(item.getIdItemOrdenTrabajo());
-                
+
                 itemOrdenTrabajoDAO.EliminarItemOrdenTrabajo(item.getIdItemOrdenTrabajo());
-            
+
             }
-            
+
             ordenTrabajoDAO.ConfirmarTransaccion();
         } catch (Exception e) {
             ordenTrabajoDAO.AbortarTransaccion();

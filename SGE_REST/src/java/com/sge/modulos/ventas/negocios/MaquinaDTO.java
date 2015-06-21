@@ -1,5 +1,6 @@
 package com.sge.modulos.ventas.negocios;
 
+import com.sge.base.negocios.BaseDTO;
 import com.sge.modulos.ventas.accesoDatos.MaquinaDAO;
 import com.sge.modulos.ventas.entidades.Maquina;
 import java.util.List;
@@ -8,9 +9,13 @@ import java.util.List;
  *
  * @author elderson
  */
-public class MaquinaDTO {
-    
+public class MaquinaDTO extends BaseDTO {
+
     MaquinaDAO maquinaDAO;
+
+    public MaquinaDTO(int idUsuario) {
+        super(idUsuario);
+    }
 
     public List<Maquina> ObtenerMaquinas(String filtro) {
         List<Maquina> lista;

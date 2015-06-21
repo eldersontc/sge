@@ -11,6 +11,7 @@ import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
@@ -21,7 +22,7 @@ import javax.ws.rs.core.UriInfo;
  */
 @Path("ListaPrecioServicioSRV")
 public class ListaPrecioServicioSRV {
-    
+
     @Context
     private UriInfo context;
 
@@ -29,295 +30,295 @@ public class ListaPrecioServicioSRV {
     }
 
     @POST
-    @Path("ObtenerListasPrecioServicio")
+    @Path("ObtenerListasPrecioServicio/{idUsuario}")
     @Consumes("application/json")
     @Produces("application/json")
-    public String ObtenerListasPrecioServicio(String json) {
+    public String ObtenerListasPrecioServicio(@PathParam("idUsuario") int idUsuario, String json) {
         List<String> resultado = new ArrayList<>();
         try {
             String filtro = new Gson().fromJson(json, String.class);
-            ListaPrecioServicioDTO listaPrecioServicioDTO = new ListaPrecioServicioDTO();
+            ListaPrecioServicioDTO listaPrecioServicioDTO = new ListaPrecioServicioDTO(idUsuario);
             List<ListaPrecioServicio> lista = listaPrecioServicioDTO.ObtenerListasPrecio(filtro);
             resultado.add(new Gson().toJson(true));
             resultado.add(new Gson().toJson(lista));
         } catch (Exception e) {
             resultado.clear();
             resultado.add(new Gson().toJson(false));
-            resultado.add(new Gson().toJson(e));
+            resultado.add(new Gson().toJson(e.getMessage()));
         }
         return new Gson().toJson(resultado);
     }
 
     @POST
-    @Path("ObtenerListaPrecioServicio")
+    @Path("ObtenerListaPrecioServicio/{idUsuario}")
     @Consumes("application/json")
     @Produces("application/json")
-    public String ObtenerListaPrecioServicio(String json) {
+    public String ObtenerListaPrecioServicio(@PathParam("idUsuario") int idUsuario, String json) {
         List<String> resultado = new ArrayList<>();
         int idListaPrecioServicio = new Gson().fromJson(json, int.class);
         try {
-            ListaPrecioServicioDTO listaPrecioServicioDTO = new ListaPrecioServicioDTO();
+            ListaPrecioServicioDTO listaPrecioServicioDTO = new ListaPrecioServicioDTO(idUsuario);
             ListaPrecioServicio listaPrecio = listaPrecioServicioDTO.ObtenerListaPrecioServicio(idListaPrecioServicio);
             resultado.add(new Gson().toJson(true));
             resultado.add(new Gson().toJson(listaPrecio));
         } catch (Exception e) {
             resultado.clear();
             resultado.add(new Gson().toJson(false));
-            resultado.add(new Gson().toJson(e));
+            resultado.add(new Gson().toJson(e.getMessage()));
         }
         return new Gson().toJson(resultado);
     }
 
     @POST
-    @Path("ObtenerUnidadesListaPrecioServicio")
+    @Path("ObtenerUnidadesListaPrecioServicio/{idUsuario}")
     @Consumes("application/json")
     @Produces("application/json")
-    public String ObtenerUnidadesListaPrecioServicio(String json) {
+    public String ObtenerUnidadesListaPrecioServicio(@PathParam("idUsuario") int idUsuario, String json) {
         List<String> resultado = new ArrayList<>();
         int idItemListaPrecioServicio = new Gson().fromJson(json, int.class);
         try {
-            ListaPrecioServicioDTO listaPrecioServicioDTO = new ListaPrecioServicioDTO();
+            ListaPrecioServicioDTO listaPrecioServicioDTO = new ListaPrecioServicioDTO(idUsuario);
             List<UnidadListaPrecioServicio> unidades = listaPrecioServicioDTO.ObtenerUnidadesListaPrecioServicio(idItemListaPrecioServicio);
             resultado.add(new Gson().toJson(true));
             resultado.add(new Gson().toJson(unidades));
         } catch (Exception e) {
             resultado.clear();
             resultado.add(new Gson().toJson(false));
-            resultado.add(new Gson().toJson(e));
+            resultado.add(new Gson().toJson(e.getMessage()));
         }
         return new Gson().toJson(resultado);
     }
-    
+
     @POST
-    @Path("ObtenerEscalasListaPrecioServicio")
+    @Path("ObtenerEscalasListaPrecioServicio/{idUsuario}")
     @Consumes("application/json")
     @Produces("application/json")
-    public String ObtenerEscalasListaPrecioServicio(String json) {
+    public String ObtenerEscalasListaPrecioServicio(@PathParam("idUsuario") int idUsuario, String json) {
         List<String> resultado = new ArrayList<>();
         int idUnidadListaPrecioServicio = new Gson().fromJson(json, int.class);
         try {
-            ListaPrecioServicioDTO listaPrecioServicioDTO = new ListaPrecioServicioDTO();
+            ListaPrecioServicioDTO listaPrecioServicioDTO = new ListaPrecioServicioDTO(idUsuario);
             List<EscalaListaPrecioServicio> escalas = listaPrecioServicioDTO.ObtenerEscalasListaPrecioServicio(idUnidadListaPrecioServicio);
             resultado.add(new Gson().toJson(true));
             resultado.add(new Gson().toJson(escalas));
         } catch (Exception e) {
             resultado.clear();
             resultado.add(new Gson().toJson(false));
-            resultado.add(new Gson().toJson(e));
+            resultado.add(new Gson().toJson(e.getMessage()));
         }
         return new Gson().toJson(resultado);
     }
-    
+
     @POST
-    @Path("ObtenerEscalasListaPrecioServicioPorUnidad")
+    @Path("ObtenerEscalasListaPrecioServicioPorUnidad/{idUsuario}")
     @Consumes("application/json")
     @Produces("application/json")
-    public String ObtenerEscalasListaPrecioServicioPorUnidad(String json) {
+    public String ObtenerEscalasListaPrecioServicioPorUnidad(@PathParam("idUsuario") int idUsuario, String json) {
         List<String> resultado = new ArrayList<>();
         int[] ids = new Gson().fromJson(json, int[].class);
         try {
-            ListaPrecioServicioDTO listaPrecioServicioDTO = new ListaPrecioServicioDTO();
+            ListaPrecioServicioDTO listaPrecioServicioDTO = new ListaPrecioServicioDTO(idUsuario);
             List<EscalaListaPrecioServicio> escalas = listaPrecioServicioDTO.ObtenerEscalasListaPrecioServicioPorUnidad(ids[0], ids[1], ids[2]);
             resultado.add(new Gson().toJson(true));
             resultado.add(new Gson().toJson(escalas));
         } catch (Exception e) {
             resultado.clear();
             resultado.add(new Gson().toJson(false));
-            resultado.add(new Gson().toJson(e));
+            resultado.add(new Gson().toJson(e.getMessage()));
         }
         return new Gson().toJson(resultado);
     }
-    
+
     @POST
-    @Path("RegistrarListaPrecioServicio")
+    @Path("RegistrarListaPrecioServicio/{idUsuario}")
     @Consumes("application/json")
     @Produces("application/json")
-    public String RegistrarListaPrecioServicio(String json) {
+    public String RegistrarListaPrecioServicio(@PathParam("idUsuario") int idUsuario, String json) {
         List<String> resultado = new ArrayList<>();
         ListaPrecioServicio listaPrecio = new Gson().fromJson(json, ListaPrecioServicio.class);
         try {
-            ListaPrecioServicioDTO listaPrecioServicioDTO = new ListaPrecioServicioDTO();
+            ListaPrecioServicioDTO listaPrecioServicioDTO = new ListaPrecioServicioDTO(idUsuario);
             listaPrecioServicioDTO.RegistrarListaPrecioServicio(listaPrecio);
             resultado.add(new Gson().toJson(true));
         } catch (Exception e) {
             resultado.clear();
             resultado.add(new Gson().toJson(false));
-            resultado.add(new Gson().toJson(e));
+            resultado.add(new Gson().toJson(e.getMessage()));
         }
         return new Gson().toJson(resultado);
     }
-    
+
     @POST
-    @Path("RegistrarItemsListaPrecioServicio")
+    @Path("RegistrarItemsListaPrecioServicio/{idUsuario}")
     @Consumes("application/json")
     @Produces("application/json")
-    public String RegistrarItemsListaPrecioServicio(String json) {
+    public String RegistrarItemsListaPrecioServicio(@PathParam("idUsuario") int idUsuario, String json) {
         List<String> resultado = new ArrayList<>();
         ItemListaPrecioServicio[] itemsListaPrecio = new Gson().fromJson(json, ItemListaPrecioServicio[].class);
         try {
-            ListaPrecioServicioDTO listaPrecioServicioDTO = new ListaPrecioServicioDTO();
+            ListaPrecioServicioDTO listaPrecioServicioDTO = new ListaPrecioServicioDTO(idUsuario);
             listaPrecioServicioDTO.RegistrarItemsListaPrecioServicio(itemsListaPrecio);
             resultado.add(new Gson().toJson(true));
             resultado.add(new Gson().toJson(itemsListaPrecio));
         } catch (Exception e) {
             resultado.clear();
             resultado.add(new Gson().toJson(false));
-            resultado.add(new Gson().toJson(e));
+            resultado.add(new Gson().toJson(e.getMessage()));
         }
         return new Gson().toJson(resultado);
     }
-    
+
     @POST
-    @Path("RegistrarUnidadesListaPrecioServicio")
+    @Path("RegistrarUnidadesListaPrecioServicio/{idUsuario}")
     @Consumes("application/json")
     @Produces("application/json")
-    public String RegistrarUnidadesListaPrecioServicio(String json) {
+    public String RegistrarUnidadesListaPrecioServicio(@PathParam("idUsuario") int idUsuario, String json) {
         List<String> resultado = new ArrayList<>();
         UnidadListaPrecioServicio[] unidadesListaPrecio = new Gson().fromJson(json, UnidadListaPrecioServicio[].class);
         try {
-            ListaPrecioServicioDTO listaPrecioServicioDTO = new ListaPrecioServicioDTO();
+            ListaPrecioServicioDTO listaPrecioServicioDTO = new ListaPrecioServicioDTO(idUsuario);
             listaPrecioServicioDTO.RegistrarUnidadesListaPrecioServicio(unidadesListaPrecio);
             resultado.add(new Gson().toJson(true));
             resultado.add(new Gson().toJson(unidadesListaPrecio));
         } catch (Exception e) {
             resultado.clear();
             resultado.add(new Gson().toJson(false));
-            resultado.add(new Gson().toJson(e));
+            resultado.add(new Gson().toJson(e.getMessage()));
         }
         return new Gson().toJson(resultado);
     }
-    
+
     @POST
-    @Path("RegistrarEscalaListaPrecioServicio")
+    @Path("RegistrarEscalaListaPrecioServicio/{idUsuario}")
     @Consumes("application/json")
     @Produces("application/json")
-    public String RegistrarEscalaListaPrecioServicio(String json) {
+    public String RegistrarEscalaListaPrecioServicio(@PathParam("idUsuario") int idUsuario, String json) {
         List<String> resultado = new ArrayList<>();
         EscalaListaPrecioServicio escalaListaPrecio = new Gson().fromJson(json, EscalaListaPrecioServicio.class);
         try {
-            ListaPrecioServicioDTO listaPrecioServicioDTO = new ListaPrecioServicioDTO();
+            ListaPrecioServicioDTO listaPrecioServicioDTO = new ListaPrecioServicioDTO(idUsuario);
             listaPrecioServicioDTO.RegistrarEscalaListaPrecioServicio(escalaListaPrecio);
             resultado.add(new Gson().toJson(true));
             resultado.add(new Gson().toJson(escalaListaPrecio.getIdEscalaListaPrecioServicio()));
         } catch (Exception e) {
             resultado.clear();
             resultado.add(new Gson().toJson(false));
-            resultado.add(new Gson().toJson(e));
+            resultado.add(new Gson().toJson(e.getMessage()));
         }
         return new Gson().toJson(resultado);
     }
 
     @POST
-    @Path("ActualizarListaPrecioServicio")
+    @Path("ActualizarListaPrecioServicio/{idUsuario}")
     @Consumes("application/json")
     @Produces("application/json")
-    public String ActualizarListaPrecioServicio(String json) {
+    public String ActualizarListaPrecioServicio(@PathParam("idUsuario") int idUsuario, String json) {
         List<String> resultado = new ArrayList<>();
         ListaPrecioServicio listaPrecio = new Gson().fromJson(json, ListaPrecioServicio.class);
         try {
-            ListaPrecioServicioDTO listaPrecioServicioDTO = new ListaPrecioServicioDTO();
+            ListaPrecioServicioDTO listaPrecioServicioDTO = new ListaPrecioServicioDTO(idUsuario);
             listaPrecioServicioDTO.ActualizarListaPrecioServicio(listaPrecio);
             resultado.add(new Gson().toJson(true));
         } catch (Exception e) {
             resultado.clear();
             resultado.add(new Gson().toJson(false));
-            resultado.add(new Gson().toJson(e));
+            resultado.add(new Gson().toJson(e.getMessage()));
         }
         return new Gson().toJson(resultado);
     }
-    
+
     @POST
-    @Path("ActualizarEscalaListaPrecioServicio")
+    @Path("ActualizarEscalaListaPrecioServicio/{idUsuario}")
     @Consumes("application/json")
     @Produces("application/json")
-    public String ActualizarEscalaListaPrecioServicio(String json) {
+    public String ActualizarEscalaListaPrecioServicio(@PathParam("idUsuario") int idUsuario, String json) {
         List<String> resultado = new ArrayList<>();
         EscalaListaPrecioServicio escalaListaPrecio = new Gson().fromJson(json, EscalaListaPrecioServicio.class);
         try {
-            ListaPrecioServicioDTO listaPrecioServicioDTO = new ListaPrecioServicioDTO();
+            ListaPrecioServicioDTO listaPrecioServicioDTO = new ListaPrecioServicioDTO(idUsuario);
             listaPrecioServicioDTO.ActualizarEscalaListaPrecioServicio(escalaListaPrecio);
             resultado.add(new Gson().toJson(true));
             resultado.add(new Gson().toJson(escalaListaPrecio.getIdEscalaListaPrecioServicio()));
         } catch (Exception e) {
             resultado.clear();
             resultado.add(new Gson().toJson(false));
-            resultado.add(new Gson().toJson(e));
+            resultado.add(new Gson().toJson(e.getMessage()));
         }
         return new Gson().toJson(resultado);
     }
 
     @POST
-    @Path("EliminarListaPrecioServicio")
+    @Path("EliminarListaPrecioServicio/{idUsuario}")
     @Consumes("application/json")
     @Produces("application/json")
-    public String EliminarListaPrecioServicio(String json) {
+    public String EliminarListaPrecioServicio(@PathParam("idUsuario") int idUsuario, String json) {
         List<String> resultado = new ArrayList<>();
         int idListaPrecioServicio = new Gson().fromJson(json, int.class);
         try {
-            ListaPrecioServicioDTO listaPrecioServicioDTO = new ListaPrecioServicioDTO();
+            ListaPrecioServicioDTO listaPrecioServicioDTO = new ListaPrecioServicioDTO(idUsuario);
             listaPrecioServicioDTO.EliminarListaPrecioServicio(idListaPrecioServicio);
             resultado.add(new Gson().toJson(true));
         } catch (Exception e) {
             resultado.clear();
             resultado.add(new Gson().toJson(false));
-            resultado.add(new Gson().toJson(e));
+            resultado.add(new Gson().toJson(e.getMessage()));
         }
         return new Gson().toJson(resultado);
     }
-    
+
     @POST
-    @Path("EliminarItemListaPrecioServicio")
+    @Path("EliminarItemListaPrecioServicio/{idUsuario}")
     @Consumes("application/json")
     @Produces("application/json")
-    public String EliminarItemListaPrecioServicio(String json) {
+    public String EliminarItemListaPrecioServicio(@PathParam("idUsuario") int idUsuario, String json) {
         List<String> resultado = new ArrayList<>();
         int idItemListaPrecioServicio = new Gson().fromJson(json, int.class);
         try {
-            ListaPrecioServicioDTO listaPrecioServicioDTO = new ListaPrecioServicioDTO();
+            ListaPrecioServicioDTO listaPrecioServicioDTO = new ListaPrecioServicioDTO(idUsuario);
             listaPrecioServicioDTO.EliminarItemListaPrecioServicio(idItemListaPrecioServicio);
             resultado.add(new Gson().toJson(true));
         } catch (Exception e) {
             resultado.clear();
             resultado.add(new Gson().toJson(false));
-            resultado.add(new Gson().toJson(e));
+            resultado.add(new Gson().toJson(e.getMessage()));
         }
         return new Gson().toJson(resultado);
     }
-    
+
     @POST
-    @Path("EliminarUnidadListaPrecioServicio")
+    @Path("EliminarUnidadListaPrecioServicio/{idUsuario}")
     @Consumes("application/json")
     @Produces("application/json")
-    public String EliminarUnidadListaPrecioServicio(String json) {
+    public String EliminarUnidadListaPrecioServicio(@PathParam("idUsuario") int idUsuario, String json) {
         List<String> resultado = new ArrayList<>();
         int idUnidadListaPrecioServicio = new Gson().fromJson(json, int.class);
         try {
-            ListaPrecioServicioDTO listaPrecioServicioDTO = new ListaPrecioServicioDTO();
+            ListaPrecioServicioDTO listaPrecioServicioDTO = new ListaPrecioServicioDTO(idUsuario);
             listaPrecioServicioDTO.EliminarUnidadListaPrecioServicio(idUnidadListaPrecioServicio);
             resultado.add(new Gson().toJson(true));
         } catch (Exception e) {
             resultado.clear();
             resultado.add(new Gson().toJson(false));
-            resultado.add(new Gson().toJson(e));
+            resultado.add(new Gson().toJson(e.getMessage()));
         }
         return new Gson().toJson(resultado);
     }
-    
+
     @POST
-    @Path("EliminarEscalaListaPrecioServicio")
+    @Path("EliminarEscalaListaPrecioServicio/{idUsuario}")
     @Consumes("application/json")
     @Produces("application/json")
-    public String EliminarEscalaListaPrecioServicio(String json) {
+    public String EliminarEscalaListaPrecioServicio(@PathParam("idUsuario") int idUsuario, String json) {
         List<String> resultado = new ArrayList<>();
         int idEscalaListaPrecioServicio = new Gson().fromJson(json, int.class);
         try {
-            ListaPrecioServicioDTO listaPrecioServicioDTO = new ListaPrecioServicioDTO();
+            ListaPrecioServicioDTO listaPrecioServicioDTO = new ListaPrecioServicioDTO(idUsuario);
             listaPrecioServicioDTO.EliminarEscalaListaPrecioServicio(idEscalaListaPrecioServicio);
             resultado.add(new Gson().toJson(true));
         } catch (Exception e) {
             resultado.clear();
             resultado.add(new Gson().toJson(false));
-            resultado.add(new Gson().toJson(e));
+            resultado.add(new Gson().toJson(e.getMessage()));
         }
         return new Gson().toJson(resultado);
     }

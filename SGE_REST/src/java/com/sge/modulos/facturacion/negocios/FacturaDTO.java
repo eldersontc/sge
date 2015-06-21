@@ -1,5 +1,6 @@
 package com.sge.modulos.facturacion.negocios;
 
+import com.sge.base.negocios.BaseDTO;
 import com.sge.modulos.administracion.accesoDatos.NumeracionDAO;
 import com.sge.modulos.facturacion.accesoDatos.FacturaDAO;
 import com.sge.modulos.facturacion.accesoDatos.ItemFacturaDAO;
@@ -12,12 +13,16 @@ import java.util.List;
  *
  * @author elderson
  */
-public class FacturaDTO {
-    
+public class FacturaDTO extends BaseDTO {
+
     FacturaDAO facturaDAO;
     ItemFacturaDAO itemFacturaDAO;
     NumeracionDAO numeracionDAO;
-    
+
+    public FacturaDTO(int idUsuario) {
+        super(idUsuario);
+    }
+
     public List<Factura> ObtenerFacturas(String filtro) {
         List<Factura> lista;
         try {
@@ -56,14 +61,14 @@ public class FacturaDTO {
         try {
             facturaDAO = new FacturaDAO();
             facturaDAO.IniciarTransaccion();
-            
+
             numeracionDAO = new NumeracionDAO();
             numeracionDAO.AsignarSesion(facturaDAO);
-            
-            if(!factura.isNumeracionManual()){
+
+            if (!factura.isNumeracionManual()) {
                 factura.setNumero(numeracionDAO.GenerarNumeracion(factura.getIdNumeracion()));
             }
-            
+
             facturaDAO.Agregar(factura);
 
             itemFacturaDAO = new ItemFacturaDAO();

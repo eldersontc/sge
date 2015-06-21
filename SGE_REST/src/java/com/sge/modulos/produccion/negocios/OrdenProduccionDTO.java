@@ -1,5 +1,6 @@
 package com.sge.modulos.produccion.negocios;
 
+import com.sge.base.negocios.BaseDTO;
 import com.sge.modulos.administracion.accesoDatos.NumeracionDAO;
 import com.sge.modulos.produccion.accesoDatos.ItemOrdenProduccionDAO;
 import com.sge.modulos.produccion.accesoDatos.OrdenProduccionDAO;
@@ -12,11 +13,15 @@ import java.util.List;
  *
  * @author elderson
  */
-public class OrdenProduccionDTO {
-    
+public class OrdenProduccionDTO extends BaseDTO {
+
     OrdenProduccionDAO ordenProduccionDAO;
     ItemOrdenProduccionDAO itemOrdenProduccionDAO;
     NumeracionDAO numeracionDAO;
+
+    public OrdenProduccionDTO(int idUsuario) {
+        super(idUsuario);
+    }
 
     public List<OrdenProduccion> ObtenerOrdenesProduccion(String filtro) {
         List<OrdenProduccion> lista;
@@ -57,14 +62,14 @@ public class OrdenProduccionDTO {
         try {
             ordenProduccionDAO = new OrdenProduccionDAO();
             ordenProduccionDAO.IniciarTransaccion();
-            
+
             numeracionDAO = new NumeracionDAO();
             numeracionDAO.AsignarSesion(ordenProduccionDAO);
-            
-            if(!ordenProduccion.isNumeracionManual()){
+
+            if (!ordenProduccion.isNumeracionManual()) {
                 ordenProduccion.setNumero(numeracionDAO.GenerarNumeracion(ordenProduccion.getIdNumeracion()));
             }
-            
+
             ordenProduccionDAO.Agregar(ordenProduccion);
 
             itemOrdenProduccionDAO = new ItemOrdenProduccionDAO();

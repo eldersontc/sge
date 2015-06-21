@@ -8,6 +8,7 @@ import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
@@ -18,7 +19,7 @@ import javax.ws.rs.core.UriInfo;
  */
 @Path("GuiaRemisionSRV")
 public class GuiaRemisionSRV {
-    
+
     @Context
     private UriInfo context;
 
@@ -26,98 +27,98 @@ public class GuiaRemisionSRV {
     }
 
     @POST
-    @Path("ObtenerGuiasRemision")
+    @Path("ObtenerGuiasRemision/{idUsuario}")
     @Consumes("application/json")
     @Produces("application/json")
-    public String ObtenerGuiasRemision(String json) {
+    public String ObtenerGuiasRemision(@PathParam("idUsuario") int idUsuario, String json) {
         List<String> resultado = new ArrayList<>();
         try {
             String filtro = new Gson().fromJson(json, String.class);
-            GuiaRemisionDTO GuiaRemisionDTO = new GuiaRemisionDTO();
+            GuiaRemisionDTO GuiaRemisionDTO = new GuiaRemisionDTO(idUsuario);
             List<GuiaRemision> lista = GuiaRemisionDTO.ObtenerGuiasRemision(filtro);
             resultado.add(new Gson().toJson(true));
             resultado.add(new Gson().toJson(lista));
         } catch (Exception e) {
             resultado.clear();
             resultado.add(new Gson().toJson(false));
-            resultado.add(new Gson().toJson(e));
+            resultado.add(new Gson().toJson(e.getMessage()));
         }
         return new Gson().toJson(resultado);
     }
 
     @POST
-    @Path("ObtenerGuiaRemision")
+    @Path("ObtenerGuiaRemision/{idUsuario}")
     @Consumes("application/json")
     @Produces("application/json")
-    public String ObtenerGuiaRemision(String json) {
+    public String ObtenerGuiaRemision(@PathParam("idUsuario") int idUsuario, String json) {
         List<String> resultado = new ArrayList<>();
         int idGuiaRemision = new Gson().fromJson(json, int.class);
         try {
-            GuiaRemisionDTO GuiaRemisionDTO = new GuiaRemisionDTO();
+            GuiaRemisionDTO GuiaRemisionDTO = new GuiaRemisionDTO(idUsuario);
             GuiaRemision guiaRemision = GuiaRemisionDTO.ObtenerGuiaRemision(idGuiaRemision);
             resultado.add(new Gson().toJson(true));
             resultado.add(new Gson().toJson(guiaRemision));
         } catch (Exception e) {
             resultado.clear();
             resultado.add(new Gson().toJson(false));
-            resultado.add(new Gson().toJson(e));
+            resultado.add(new Gson().toJson(e.getMessage()));
         }
         return new Gson().toJson(resultado);
     }
 
     @POST
-    @Path("RegistrarGuiaRemision")
+    @Path("RegistrarGuiaRemision/{idUsuario}")
     @Consumes("application/json")
     @Produces("application/json")
-    public String RegistrarGuiaRemision(String json) {
+    public String RegistrarGuiaRemision(@PathParam("idUsuario") int idUsuario, String json) {
         List<String> resultado = new ArrayList<>();
         GuiaRemision guiaRemision = new Gson().fromJson(json, GuiaRemision.class);
         try {
-            GuiaRemisionDTO GuiaRemisionDTO = new GuiaRemisionDTO();
+            GuiaRemisionDTO GuiaRemisionDTO = new GuiaRemisionDTO(idUsuario);
             GuiaRemisionDTO.RegistrarGuiaRemision(guiaRemision);
             resultado.add(new Gson().toJson(true));
         } catch (Exception e) {
             resultado.clear();
             resultado.add(new Gson().toJson(false));
-            resultado.add(new Gson().toJson(e));
+            resultado.add(new Gson().toJson(e.getMessage()));
         }
         return new Gson().toJson(resultado);
     }
 
     @POST
-    @Path("ActualizarGuiaRemision")
+    @Path("ActualizarGuiaRemision/{idUsuario}")
     @Consumes("application/json")
     @Produces("application/json")
-    public String ActualizarGuiaRemision(String json) {
+    public String ActualizarGuiaRemision(@PathParam("idUsuario") int idUsuario, String json) {
         List<String> resultado = new ArrayList<>();
         GuiaRemision guiaRemision = new Gson().fromJson(json, GuiaRemision.class);
         try {
-            GuiaRemisionDTO GuiaRemisionDTO = new GuiaRemisionDTO();
+            GuiaRemisionDTO GuiaRemisionDTO = new GuiaRemisionDTO(idUsuario);
             GuiaRemisionDTO.ActualizarGuiaRemision(guiaRemision);
             resultado.add(new Gson().toJson(true));
         } catch (Exception e) {
             resultado.clear();
             resultado.add(new Gson().toJson(false));
-            resultado.add(new Gson().toJson(e));
+            resultado.add(new Gson().toJson(e.getMessage()));
         }
         return new Gson().toJson(resultado);
     }
 
     @POST
-    @Path("EliminarGuiaRemision")
+    @Path("EliminarGuiaRemision/{idUsuario}")
     @Consumes("application/json")
     @Produces("application/json")
-    public String EliminarGuiaRemision(String json) {
+    public String EliminarGuiaRemision(@PathParam("idUsuario") int idUsuario, String json) {
         List<String> resultado = new ArrayList<>();
         int idGuiaRemision = new Gson().fromJson(json, int.class);
         try {
-            GuiaRemisionDTO GuiaRemisionDTO = new GuiaRemisionDTO();
+            GuiaRemisionDTO GuiaRemisionDTO = new GuiaRemisionDTO(idUsuario);
             GuiaRemisionDTO.EliminarGuiaRemision(idGuiaRemision);
             resultado.add(new Gson().toJson(true));
         } catch (Exception e) {
             resultado.clear();
             resultado.add(new Gson().toJson(false));
-            resultado.add(new Gson().toJson(e));
+            resultado.add(new Gson().toJson(e.getMessage()));
         }
         return new Gson().toJson(resultado);
     }

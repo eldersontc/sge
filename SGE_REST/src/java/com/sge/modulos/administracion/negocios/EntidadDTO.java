@@ -1,5 +1,6 @@
 package com.sge.modulos.administracion.negocios;
 
+import com.sge.base.negocios.BaseDTO;
 import com.sge.modulos.administracion.accesoDatos.EntidadDAO;
 import com.sge.modulos.administracion.entidades.Entidad;
 import java.util.List;
@@ -8,10 +9,14 @@ import java.util.List;
  *
  * @author elderson
  */
-public class EntidadDTO {
-    
+public class EntidadDTO extends BaseDTO {
+
     EntidadDAO entidadDAO;
-    
+
+    public EntidadDTO(int idUsuario) {
+        super(idUsuario);
+    }
+
     public List<Entidad> ObtenerEntidades(String filtro) {
         List<Entidad> lista;
         try {
@@ -25,7 +30,7 @@ public class EntidadDTO {
         }
         return lista;
     }
-    
+
     public Entidad ObtenerEntidad(int idEntidad) {
         Entidad entidad;
         try {

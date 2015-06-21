@@ -1,5 +1,6 @@
 package com.sge.modulos.finanzas.negocios;
 
+import com.sge.base.negocios.BaseDTO;
 import com.sge.modulos.administracion.accesoDatos.NumeracionDAO;
 import com.sge.modulos.finanzas.accesoDatos.CajaDAO;
 import com.sge.modulos.finanzas.accesoDatos.SalidaCajaDAO;
@@ -13,12 +14,16 @@ import java.util.List;
  *
  * @author elderson
  */
-public class SalidaCajaDTO {
+public class SalidaCajaDTO extends BaseDTO {
 
     SalidaCajaDAO salidaCajaDAO;
     ItemSalidaCajaDAO itemSalidaCajaDAO;
     CajaDAO cajaDAO;
     NumeracionDAO numeracionDAO;
+
+    public SalidaCajaDTO(int idUsuario) {
+        super(idUsuario);
+    }
 
     public List<SalidaCaja> ObtenerSalidasCaja(String filtro) {
         List<SalidaCaja> lista;

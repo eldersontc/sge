@@ -1,5 +1,6 @@
 package com.sge.modulos.administracion.negocios;
 
+import com.sge.base.negocios.BaseDTO;
 import com.sge.modulos.administracion.accesoDatos.MenuDAO;
 import com.sge.modulos.administracion.accesoDatos.PerfilMenuDAO;
 import com.sge.modulos.administracion.entidades.Menu;
@@ -11,10 +12,14 @@ import java.util.List;
  *
  * @author elderson
  */
-public class MenuDTO {
+public class MenuDTO extends BaseDTO {
 
     MenuDAO menuDAO;
     PerfilMenuDAO perfilMenuDAO;
+
+    public MenuDTO(int idUsuario) {
+        super(idUsuario);
+    }
 
     private List<Menu> ObtenerSubMenus(List<Menu> menus, int idMenuPadre) {
         List<Menu> lista = new ArrayList<>();
@@ -56,12 +61,12 @@ public class MenuDTO {
         return lista;
     }
 
-    public List<Menu> ObtenerMenusPorUsuario(int idUsuario) {
+    public List<Menu> ObtenerMenusPorUsuario() {
         List<Menu> lista;
         try {
             menuDAO = new MenuDAO();
             menuDAO.AbrirSesion();
-            lista = ObtenerMenus(menuDAO.ObtenerMenusPorUsuario(idUsuario));
+            lista = ObtenerMenus(menuDAO.ObtenerMenusPorUsuario(getIdUsuario()));
         } catch (Exception e) {
             throw e;
         } finally {

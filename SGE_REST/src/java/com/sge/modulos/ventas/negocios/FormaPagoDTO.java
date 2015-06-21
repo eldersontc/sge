@@ -1,5 +1,6 @@
 package com.sge.modulos.ventas.negocios;
 
+import com.sge.base.negocios.BaseDTO;
 import com.sge.modulos.ventas.accesoDatos.FormaPagoDAO;
 import com.sge.modulos.ventas.entidades.FormaPago;
 import java.util.List;
@@ -8,10 +9,14 @@ import java.util.List;
  *
  * @author elderson
  */
-public class FormaPagoDTO {
-    
+public class FormaPagoDTO extends BaseDTO {
+
     FormaPagoDAO formaPagoDAO;
-    
+
+    public FormaPagoDTO(int idUsuario) {
+        super(idUsuario);
+    }
+
     public List<FormaPago> ObtenerFormasPago(String filtro) {
         List<FormaPago> lista;
         try {
@@ -25,7 +30,7 @@ public class FormaPagoDTO {
         }
         return lista;
     }
-    
+
     public boolean RegistrarFormaPago(FormaPago formaPago) {
         try {
             formaPagoDAO = new FormaPagoDAO();
@@ -40,7 +45,7 @@ public class FormaPagoDTO {
         }
         return true;
     }
-    
+
     public boolean ActualizarFormaPago(FormaPago formaPago) {
         try {
             formaPagoDAO = new FormaPagoDAO();
@@ -55,7 +60,7 @@ public class FormaPagoDTO {
         }
         return true;
     }
-    
+
     public boolean EliminarFormaPago(int idFormaPago) {
         try {
             formaPagoDAO = new FormaPagoDAO();

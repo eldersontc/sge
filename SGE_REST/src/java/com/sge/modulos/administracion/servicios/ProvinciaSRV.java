@@ -8,6 +8,7 @@ import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
@@ -18,7 +19,7 @@ import javax.ws.rs.core.UriInfo;
  */
 @Path("ProvinciaSRV")
 public class ProvinciaSRV {
-    
+
     @Context
     private UriInfo context;
 
@@ -26,14 +27,14 @@ public class ProvinciaSRV {
     }
 
     @POST
-    @Path("ObtenerProvincias")
+    @Path("ObtenerProvincias/{idUsuario}")
     @Consumes("application/json")
     @Produces("application/json")
-    public String ObtenerProvincias(String json) {
+    public String ObtenerProvincias(@PathParam("idUsuario") int idUsuario, String json) {
         List<String> resultado = new ArrayList<>();
         try {
             String filtro = new Gson().fromJson(json, String.class);
-            ProvinciaDTO provinciaDTO = new ProvinciaDTO();
+            ProvinciaDTO provinciaDTO = new ProvinciaDTO(idUsuario);
             List<Provincia> lista = provinciaDTO.ObtenerProvincias(filtro);
             resultado.add(new Gson().toJson(true));
             resultado.add(new Gson().toJson(lista));
