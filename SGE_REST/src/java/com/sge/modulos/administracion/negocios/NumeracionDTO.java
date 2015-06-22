@@ -22,7 +22,7 @@ public class NumeracionDTO extends BaseDTO {
         try {
             numeracionDAO = new NumeracionDAO();
             numeracionDAO.AbrirSesion();
-            lista = numeracionDAO.ObtenerNumeraciones(filtro);
+            lista = numeracionDAO.ObtenerNumeraciones(getFiltro(numeracionDAO, 16, filtro));
         } catch (Exception e) {
             throw e;
         } finally {

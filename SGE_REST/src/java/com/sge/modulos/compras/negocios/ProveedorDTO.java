@@ -22,7 +22,7 @@ public class ProveedorDTO extends BaseDTO {
         try {
             proveedorDAO = new ProveedorDAO();
             proveedorDAO.AbrirSesion();
-            lista = proveedorDAO.ObtenerProveedores(filtro);
+            lista = proveedorDAO.ObtenerProveedores(getFiltro(proveedorDAO, 19, filtro));
         } catch (Exception e) {
             throw e;
         } finally {

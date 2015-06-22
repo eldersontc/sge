@@ -35,7 +35,7 @@ public class ReporteDTO extends BaseDTO {
         try {
             reporteDAO = new ReporteDAO();
             reporteDAO.AbrirSesion();
-            lista = reporteDAO.ObtenerReportes(filtro);
+            lista = reporteDAO.ObtenerReportes(getFiltro(reporteDAO, 18, filtro));
         } catch (Exception e) {
             throw e;
         } finally {

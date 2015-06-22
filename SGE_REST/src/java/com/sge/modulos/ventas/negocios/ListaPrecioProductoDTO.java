@@ -32,7 +32,7 @@ public class ListaPrecioProductoDTO extends BaseDTO {
         try {
             listaPrecioDAO = new ListaPrecioProductoDAO();
             listaPrecioDAO.AbrirSesion();
-            lista = listaPrecioDAO.ObtenerListasPrecio(filtro);
+            lista = listaPrecioDAO.ObtenerListasPrecio(getFiltro(listaPrecioDAO, 27, filtro));
         } catch (Exception e) {
             throw e;
         } finally {

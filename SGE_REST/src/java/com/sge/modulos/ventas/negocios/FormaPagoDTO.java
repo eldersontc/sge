@@ -22,7 +22,7 @@ public class FormaPagoDTO extends BaseDTO {
         try {
             formaPagoDAO = new FormaPagoDAO();
             formaPagoDAO.AbrirSesion();
-            lista = formaPagoDAO.ObtenerFormasPago(filtro);
+            lista = formaPagoDAO.ObtenerFormasPago(getFiltro(formaPagoDAO, 25, filtro));
         } catch (Exception e) {
             throw e;
         } finally {

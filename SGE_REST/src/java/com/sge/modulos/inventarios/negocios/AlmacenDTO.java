@@ -22,7 +22,7 @@ public class AlmacenDTO extends BaseDTO {
         try {
             almacenDAO = new AlmacenDAO();
             almacenDAO.AbrirSesion();
-            lista = almacenDAO.ObtenerAlmacenes(filtro);
+            lista = almacenDAO.ObtenerAlmacenes(getFiltro(almacenDAO, 21, filtro));
         } catch (Exception e) {
             throw e;
         } finally {

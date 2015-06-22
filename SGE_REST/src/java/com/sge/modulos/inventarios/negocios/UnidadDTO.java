@@ -22,7 +22,7 @@ public class UnidadDTO extends BaseDTO {
         try {
             unidadDAO = new UnidadDAO();
             unidadDAO.AbrirSesion();
-            lista = unidadDAO.ObtenerUnidades(filtro);
+            lista = unidadDAO.ObtenerUnidades(getFiltro(unidadDAO, 23, filtro));
         } catch (Exception e) {
             throw e;
         } finally {

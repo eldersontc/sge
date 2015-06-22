@@ -22,7 +22,7 @@ public class ProvinciaDTO extends BaseDTO {
         try {
             provinciaDAO = new ProvinciaDAO();
             provinciaDAO.AbrirSesion();
-            lista = provinciaDAO.ObtenerProvincias(filtro);
+            lista = provinciaDAO.ObtenerProvincias(getFiltro(provinciaDAO, 17, filtro));
         } catch (Exception e) {
             throw e;
         } finally {

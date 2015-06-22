@@ -29,7 +29,7 @@ public class ClienteDTO extends BaseDTO {
         try {
             clienteDAO = new ClienteDAO();
             clienteDAO.AbrirSesion();
-            lista = clienteDAO.ObtenerClientes(filtro);
+            lista = clienteDAO.ObtenerClientes(getFiltro(clienteDAO, 24, filtro));
         } catch (Exception e) {
             throw e;
         } finally {

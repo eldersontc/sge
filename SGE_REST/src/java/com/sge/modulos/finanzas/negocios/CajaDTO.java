@@ -22,7 +22,7 @@ public class CajaDTO extends BaseDTO {
         try {
             cajaDAO = new CajaDAO();
             cajaDAO.AbrirSesion();
-            lista = cajaDAO.ObtenerCajas(filtro);
+            lista = cajaDAO.ObtenerCajas(getFiltro(cajaDAO, 20, filtro));
         } catch (Exception e) {
             throw e;
         } finally {

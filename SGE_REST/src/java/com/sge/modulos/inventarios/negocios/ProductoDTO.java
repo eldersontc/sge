@@ -30,7 +30,7 @@ public class ProductoDTO extends BaseDTO {
         try {
             productoDAO = new ProductoDAO();
             productoDAO.AbrirSesion();
-            lista = productoDAO.ObtenerProductos(filtro);
+            lista = productoDAO.ObtenerProductos(getFiltro(productoDAO, 22, filtro));
         } catch (Exception e) {
             throw e;
         } finally {

@@ -22,7 +22,7 @@ public class EmpleadoDTO extends BaseDTO {
         try {
             empleadoDAO = new EmpleadoDAO();
             empleadoDAO.AbrirSesion();
-            lista = empleadoDAO.ObtenerEmpleados(filtro);
+            lista = empleadoDAO.ObtenerEmpleados(getFiltro(empleadoDAO, 14, filtro));
         } catch (Exception e) {
             throw e;
         } finally {

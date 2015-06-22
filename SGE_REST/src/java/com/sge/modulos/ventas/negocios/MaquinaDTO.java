@@ -22,7 +22,7 @@ public class MaquinaDTO extends BaseDTO {
         try {
             maquinaDAO = new MaquinaDAO();
             maquinaDAO.AbrirSesion();
-            lista = maquinaDAO.ObtenerMaquinas(filtro);
+            lista = maquinaDAO.ObtenerMaquinas(getFiltro(maquinaDAO, 29, filtro));
         } catch (Exception e) {
             throw e;
         } finally {

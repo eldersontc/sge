@@ -22,7 +22,7 @@ public class DistritoDTO extends BaseDTO {
         try {
             distritoDAO = new DistritoDAO();
             distritoDAO.AbrirSesion();
-            lista = distritoDAO.ObtenerDistritos(filtro);
+            lista = distritoDAO.ObtenerDistritos(getFiltro(distritoDAO, 13, filtro));
         } catch (Exception e) {
             throw e;
         } finally {

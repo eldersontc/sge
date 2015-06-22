@@ -32,7 +32,7 @@ public class ServicioDTO extends BaseDTO {
         try {
             servicioDAO = new ServicioDAO();
             servicioDAO.AbrirSesion();
-            lista = servicioDAO.ObtenerServicios(filtro);
+            lista = servicioDAO.ObtenerServicios(getFiltro(servicioDAO, 32, filtro));
         } catch (Exception e) {
             throw e;
         } finally {

@@ -22,7 +22,7 @@ public class MonedaDTO extends BaseDTO {
         try {
             monedaDAO = new MonedaDAO();
             monedaDAO.AbrirSesion();
-            lista = monedaDAO.ObtenerMonedas(filtro);
+            lista = monedaDAO.ObtenerMonedas(getFiltro(monedaDAO, 15, filtro));
         } catch (Exception e) {
             throw e;
         } finally {

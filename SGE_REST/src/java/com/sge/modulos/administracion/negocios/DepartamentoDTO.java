@@ -22,7 +22,7 @@ public class DepartamentoDTO extends BaseDTO {
         try {
             departamentoDAO = new DepartamentoDAO();
             departamentoDAO.AbrirSesion();
-            lista = departamentoDAO.ObtenerDepartamentos(filtro);
+            lista = departamentoDAO.ObtenerDepartamentos(getFiltro(departamentoDAO, 12, filtro));
         } catch (Exception e) {
             throw e;
         } finally {

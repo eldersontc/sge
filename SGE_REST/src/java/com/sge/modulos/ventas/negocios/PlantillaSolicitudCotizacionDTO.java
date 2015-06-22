@@ -26,7 +26,7 @@ public class PlantillaSolicitudCotizacionDTO extends BaseDTO {
         try {
             plantillaDAO = new PlantillaSolicitudCotizacionDAO();
             plantillaDAO.AbrirSesion();
-            lista = plantillaDAO.ObtenerPlantillasSolicitudCotizacion(filtro);
+            lista = plantillaDAO.ObtenerPlantillasSolicitudCotizacion(getFiltro(plantillaDAO, 31, filtro));
         } catch (Exception e) {
             throw e;
         } finally {

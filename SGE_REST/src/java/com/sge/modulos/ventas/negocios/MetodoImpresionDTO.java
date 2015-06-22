@@ -22,7 +22,7 @@ public class MetodoImpresionDTO extends BaseDTO {
         try {
             metodoImpresionDAO = new MetodoImpresionDAO();
             metodoImpresionDAO.AbrirSesion();
-            lista = metodoImpresionDAO.ObtenerMetodosImpresion(filtro);
+            lista = metodoImpresionDAO.ObtenerMetodosImpresion(getFiltro(metodoImpresionDAO, 30, filtro));
         } catch (Exception e) {
             throw e;
         } finally {
