@@ -104,7 +104,7 @@ public class lisProductoAlmacen extends frameBase<ProductoAlmacen> {
                 java.lang.Boolean.class, java.lang.Integer.class, java.lang.String.class, java.lang.Integer.class
             };
             boolean[] canEdit = new boolean [] {
-                true, false, true, true
+                true, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {

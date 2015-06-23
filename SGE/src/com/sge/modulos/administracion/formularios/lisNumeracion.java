@@ -43,11 +43,11 @@ public class lisNumeracion extends frameBase<Numeracion> {
     public void Init() {
         switch (getModo()) {
             case 0:
-                OcultarColumna(tbNumeraciones, 0);
+                OcultarColumnas(tbNumeraciones, new int[]{0, 1});
                 OcultarControl(btnSeleccionar);
                 break;
             case 1:
-                OcultarColumnas(tbNumeraciones, new int[]{0, 6, 7});
+                OcultarColumnas(tbNumeraciones, new int[]{0, 1, 6, 7});
                 OcultarControl(btnNuevo);
                 break;
         }
@@ -217,17 +217,21 @@ public class lisNumeracion extends frameBase<Numeracion> {
             }
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
+                if(getModo() == 0) {
+                    return canEdit [columnIndex];
+                } else {
+                    return false;
+                }
             }
         });
         tbNumeraciones.setRowHeight(25);
         tbNumeraciones.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        tbNumeraciones.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbNumeracionesMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tbNumeraciones);
-        if (tbNumeraciones.getColumnModel().getColumnCount() > 0) {
-            tbNumeraciones.getColumnModel().getColumn(1).setMinWidth(0);
-            tbNumeraciones.getColumnModel().getColumn(1).setPreferredWidth(0);
-            tbNumeraciones.getColumnModel().getColumn(1).setMaxWidth(0);
-        }
 
         pnlTitulo.setBackground(new java.awt.Color(67, 100, 130));
         pnlTitulo.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -372,6 +376,27 @@ public class lisNumeracion extends frameBase<Numeracion> {
         // TODO add your handling code here:
         new swObtenerNumeraciones().execute();
     }//GEN-LAST:event_btnRefrescarActionPerformed
+
+    private void tbNumeracionesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbNumeracionesMouseClicked
+        // TODO add your handling code here:
+        if (evt.getClickCount() == 2) {
+            switch (getModo()) {
+                case 1:
+                    if (FilaActiva(tbNumeraciones)) {
+                        Numeracion numeracion = new Numeracion();
+                        numeracion.setIdNumeracion(ObtenerValorCelda(tbNumeraciones, 1));
+                        numeracion.setDescripcion(ObtenerValorCelda(tbNumeraciones, 2));
+                        numeracion.setManual(ObtenerValorCelda(tbNumeraciones, 4));
+                        numeracion.setActivo(ObtenerValorCelda(tbNumeraciones, 5));
+                        setSeleccionado(numeracion);
+                    }
+                    Cerrar();
+                    break;
+                case 2:
+                    break;
+            }
+        }
+    }//GEN-LAST:event_tbNumeracionesMouseClicked
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnNuevo;

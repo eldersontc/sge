@@ -45,11 +45,11 @@ public class lisCaja extends frameBase<Caja> {
     public void Init() {
         switch (getModo()) {
             case 0:
-                OcultarColumna(tbCajas, 0);
+                OcultarColumnas(tbCajas, new int[]{0, 1});
                 OcultarControl(btnSeleccionar);
                 break;
             case 1:
-                OcultarColumnas(tbCajas, new int[]{0, 7, 8});
+                OcultarColumnas(tbCajas, new int[]{0, 1, 7, 8});
                 OcultarControl(btnNuevo);
                 break;
         }
@@ -275,20 +275,21 @@ public class lisCaja extends frameBase<Caja> {
             }
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
+                if(getModo() == 0) {
+                    return canEdit [columnIndex];
+                } else {
+                    return false;
+                }
             }
         });
         tbCajas.setRowHeight(25);
         tbCajas.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        tbCajas.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbCajasMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tbCajas);
-        if (tbCajas.getColumnModel().getColumnCount() > 0) {
-            tbCajas.getColumnModel().getColumn(1).setMinWidth(0);
-            tbCajas.getColumnModel().getColumn(1).setPreferredWidth(0);
-            tbCajas.getColumnModel().getColumn(1).setMaxWidth(0);
-            tbCajas.getColumnModel().getColumn(3).setMinWidth(0);
-            tbCajas.getColumnModel().getColumn(3).setPreferredWidth(0);
-            tbCajas.getColumnModel().getColumn(3).setMaxWidth(0);
-        }
 
         pnlTitulo.setBackground(new java.awt.Color(67, 100, 130));
         pnlTitulo.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -434,6 +435,28 @@ public class lisCaja extends frameBase<Caja> {
         // TODO add your handling code here:
         new swObtenerCajas().execute();
     }//GEN-LAST:event_btnRefrescarActionPerformed
+
+    private void tbCajasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbCajasMouseClicked
+        // TODO add your handling code here:
+        if (evt.getClickCount() == 2) {
+            switch (getModo()) {
+                case 1:
+                    if (FilaActiva(tbCajas)) {
+                        Caja caja = new Caja();
+                        caja.setIdCaja(ObtenerValorCelda(tbCajas, 1));
+                        caja.setDescripcion(ObtenerValorCelda(tbCajas, 2));
+                        caja.setIdMoneda(ObtenerValorCelda(tbCajas, 3));
+                        caja.setSimboloMoneda(ObtenerValorCelda(tbCajas, 4));
+                        caja.setActivo(ObtenerValorCelda(tbCajas, 6));
+                        setSeleccionado(caja);
+                    }
+                    Cerrar();
+                    break;
+                case 2:
+                    break;
+            }
+        }
+    }//GEN-LAST:event_tbCajasMouseClicked
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnNuevo;

@@ -50,14 +50,14 @@ public class lisOrdenTrabajo extends frameBase<OrdenTrabajo> {
     public void Init() {
         switch (getModo()) {
             case 0:
-                OcultarColumna(tbOrdenesTrabajo, 0);
+                OcultarColumnas(tbOrdenesTrabajo, new int[]{0, 1});
                 OcultarControl(btnSeleccionar);
                 break;
             case 1:
-                OcultarColumnas(tbOrdenesTrabajo, new int[]{0, 10, 11});
+                OcultarColumnas(tbOrdenesTrabajo, new int[]{0, 1, 10, 11});
                 break;
             case 2:
-                OcultarColumnas(tbOrdenesTrabajo, new int[]{10, 11});
+                OcultarColumnas(tbOrdenesTrabajo, new int[]{1, 10, 11});
                 break;
         }
         new swObtenerOrdenesTrabajo().execute();
@@ -113,14 +113,23 @@ public class lisOrdenTrabajo extends frameBase<OrdenTrabajo> {
                 String[] resultado = new Gson().fromJson(json, String[].class);
 
                 if (resultado[0].equals("true")) {
-                    EliminarTodasFilas(tbOrdenesTrabajo);
                     OrdenTrabajo[] ordenesTrabajo = new Gson().fromJson(resultado[1], OrdenTrabajo[].class);
-                    for (OrdenTrabajo ordenTrabajo : ordenesTrabajo) {
-                        AgregarFila(tbOrdenesTrabajo, new Object[]{false, ordenTrabajo.getIdOrdenTrabajo(), ordenTrabajo.getNumero(), ordenTrabajo.getDescripcion(), ordenTrabajo.getCantidad(), ordenTrabajo.getFechaCreacionString(), ordenTrabajo.getRazonSocialCliente(), ordenTrabajo.getNombreCotizador(), ordenTrabajo.getNombreVendedor(), ordenTrabajo.getTotal(), Icon_Edit, Icon_Dele});
+                    if (getModo() == 1 && ordenesTrabajo.length == 1) {
+                        setSeleccionado(ordenesTrabajo[0]);
+                        Cerrar();
+                    } else if (getModo() == 2 && ordenesTrabajo.length == 1) {
+                        setSeleccionados(new ArrayList<>());
+                        getSeleccionados().add(ordenesTrabajo[0]);
+                        Cerrar();
+                    } else {
+                        EliminarTodasFilas(tbOrdenesTrabajo);
+                        for (OrdenTrabajo ordenTrabajo : ordenesTrabajo) {
+                            AgregarFila(tbOrdenesTrabajo, new Object[]{false, ordenTrabajo.getIdOrdenTrabajo(), ordenTrabajo.getNumero(), ordenTrabajo.getDescripcion(), ordenTrabajo.getCantidad(), ordenTrabajo.getFechaCreacionString(), ordenTrabajo.getRazonSocialCliente(), ordenTrabajo.getNombreCotizador(), ordenTrabajo.getNombreVendedor(), ordenTrabajo.getTotal(), Icon_Edit, Icon_Dele});
+                        }
+                        AgregarBoton(tbOrdenesTrabajo, edit, 10);
+                        AgregarBoton(tbOrdenesTrabajo, dele, 11);
+                        AgregarOrdenamiento(tbOrdenesTrabajo);
                     }
-                    AgregarBoton(tbOrdenesTrabajo, edit, 10);
-                    AgregarBoton(tbOrdenesTrabajo, dele, 11);
-                    AgregarOrdenamiento(tbOrdenesTrabajo);
                 }
                 OcultarCargando(frame);
             } catch (Exception e) {
@@ -362,17 +371,21 @@ public class lisOrdenTrabajo extends frameBase<OrdenTrabajo> {
             }
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
+                if(getModo() == 0) {
+                    return canEdit [columnIndex];
+                } else {
+                    return false;
+                }
             }
         });
         tbOrdenesTrabajo.setRowHeight(25);
         tbOrdenesTrabajo.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        tbOrdenesTrabajo.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbOrdenesTrabajoMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tbOrdenesTrabajo);
-        if (tbOrdenesTrabajo.getColumnModel().getColumnCount() > 0) {
-            tbOrdenesTrabajo.getColumnModel().getColumn(1).setMinWidth(0);
-            tbOrdenesTrabajo.getColumnModel().getColumn(1).setPreferredWidth(0);
-            tbOrdenesTrabajo.getColumnModel().getColumn(1).setMaxWidth(0);
-        }
 
         pnlTitulo.setBackground(new java.awt.Color(67, 100, 130));
         pnlTitulo.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -551,6 +564,28 @@ public class lisOrdenTrabajo extends frameBase<OrdenTrabajo> {
             new swGenerarSalidaCaja().execute();
         }
     }//GEN-LAST:event_btnGenerarSalidaCajaActionPerformed
+
+    private void tbOrdenesTrabajoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbOrdenesTrabajoMouseClicked
+        // TODO add your handling code here:
+        if (evt.getClickCount() == 2) {
+            switch (getModo()) {
+                case 1:
+                    if (FilaActiva(tbOrdenesTrabajo)) {
+                        OrdenTrabajo ordenTrabajo = new OrdenTrabajo();
+                        ordenTrabajo.setIdOrdenTrabajo(ObtenerValorCelda(tbOrdenesTrabajo, 1));
+                        ordenTrabajo.setNumero(ObtenerValorCelda(tbOrdenesTrabajo, 2));
+                        ordenTrabajo.setDescripcion(ObtenerValorCelda(tbOrdenesTrabajo, 3));
+                        ordenTrabajo.setCantidad(ObtenerValorCelda(tbOrdenesTrabajo, 4));
+                        ordenTrabajo.setTotal(ObtenerValorCelda(tbOrdenesTrabajo, 9));
+                        setSeleccionado(ordenTrabajo);
+                    }
+                    Cerrar();
+                    break;
+                case 2:
+                    break;
+            }
+        }
+    }//GEN-LAST:event_tbOrdenesTrabajoMouseClicked
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnGenerarSalidaCaja;

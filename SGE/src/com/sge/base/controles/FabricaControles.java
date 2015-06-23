@@ -20,20 +20,16 @@ import javax.swing.AbstractCellEditor;
 import javax.swing.Action;
 import javax.swing.DefaultCellEditor;
 import javax.swing.Icon;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JComponent;
 import javax.swing.JDesktopPane;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
-import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
-import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
@@ -283,83 +279,6 @@ public class FabricaControles {
         framePreload.Ocultar();
     }
 
-    public static void VerModal(JDesktopPane desktop, JInternalFrame frame, Action action) {
-        GraphicsEnvironment graphicsEnvironment = GraphicsEnvironment.getLocalGraphicsEnvironment();
-        GraphicsDevice graphicsDevice = graphicsEnvironment.getDefaultScreenDevice();
-        DisplayMode display = graphicsDevice.getDisplayMode();
-        frame.setLocation((display.getWidth() - frame.getWidth()) / 2, ((display.getHeight() - frame.getHeight()) / 2) - 40);
-        desktop.add(frame);
-        frame.setLayer(JLayeredPane.MODAL_LAYER);
-        frame.setVisible(true);
-        JPanel panelModal = new JPanel();
-        panelModal.setName("panelModal");
-        panelModal.setOpaque(false);
-        JLayeredPane layered = JLayeredPane.getLayeredPaneAbove(frame);
-        layered.setLayer(panelModal, JLayeredPane.MODAL_LAYER);
-        panelModal.setBounds(0, 0, layered.getWidth(), layered.getHeight());
-        panelModal.addMouseListener(new MouseAdapter() {
-        });
-        panelModal.addMouseMotionListener(new MouseMotionAdapter() {
-        });
-        layered.add(panelModal);
-        frame.toFront();
-        frame.addInternalFrameListener(new javax.swing.event.InternalFrameAdapter() {
-            @Override
-            public void internalFrameClosing(javax.swing.event.InternalFrameEvent evt) {
-                JLayeredPane layered = JLayeredPane.getLayeredPaneAbove(evt.getInternalFrame());
-                Component panelModal = null;
-                for (Component component : layered.getComponents()) {
-                    if ("panelModal".equals(component.getName())) {
-                        panelModal = component;
-                        break;
-                    }
-                }
-                if (panelModal != null) {
-                    layered.remove(panelModal);
-                }
-                action.actionPerformed(new ActionEvent(evt.getSource(), 0, ""));
-            }
-        });
-    }
-
-    public static void VerModal(JDesktopPane desktop, JInternalFrame frame) {
-        GraphicsEnvironment graphicsEnvironment = GraphicsEnvironment.getLocalGraphicsEnvironment();
-        GraphicsDevice graphicsDevice = graphicsEnvironment.getDefaultScreenDevice();
-        DisplayMode display = graphicsDevice.getDisplayMode();
-        frame.setLocation((display.getWidth() - frame.getWidth()) / 2, ((display.getHeight() - frame.getHeight()) / 2) - 40);
-        desktop.add(frame);
-        frame.setLayer(JLayeredPane.MODAL_LAYER);
-        frame.setVisible(true);
-        JPanel panelModal = new JPanel();
-        panelModal.setName("panelModal");
-        panelModal.setOpaque(false);
-        JLayeredPane layered = JLayeredPane.getLayeredPaneAbove(frame);
-        layered.setLayer(panelModal, JLayeredPane.MODAL_LAYER.intValue());
-        panelModal.setBounds(0, 0, layered.getWidth(), layered.getHeight());
-        panelModal.addMouseListener(new MouseAdapter() {
-        });
-        panelModal.addMouseMotionListener(new MouseMotionAdapter() {
-        });
-        layered.add(panelModal);
-        frame.toFront();
-        frame.addInternalFrameListener(new javax.swing.event.InternalFrameAdapter() {
-            @Override
-            public void internalFrameClosing(javax.swing.event.InternalFrameEvent evt) {
-                JLayeredPane layered = JLayeredPane.getLayeredPaneAbove(evt.getInternalFrame());
-                Component panelModal = null;
-                for (Component component : layered.getComponents()) {
-                    if ("panelModal".equals(component.getName())) {
-                        panelModal = component;
-                        break;
-                    }
-                }
-                if (panelModal != null) {
-                    layered.remove(panelModal);
-                }
-            }
-        });
-    }
-
     public static void VerModal(Component parent, frameBase framebBase){
         JDialog dialog = new JDialog();
         dialog.setModal(true);
@@ -431,11 +350,7 @@ public class FabricaControles {
     }
 
     public static void VerAdvertencia(String message, Component parent) {
-        if (parent instanceof JInternalFrame || parent instanceof JPanel) {
-            JOptionPane.showInternalMessageDialog(parent, message, "MENSAJE", JOptionPane.WARNING_MESSAGE);
-        } else {
-            JOptionPane.showMessageDialog(null, message, "MENSAJE", JOptionPane.WARNING_MESSAGE);
-        }
+        JOptionPane.showMessageDialog(parent, message, "MENSAJE", JOptionPane.WARNING_MESSAGE);
     }
 
     public static void AgregarEventoChange(JTable tabla, Action action) {

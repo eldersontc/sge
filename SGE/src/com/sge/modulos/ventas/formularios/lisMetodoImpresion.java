@@ -43,11 +43,11 @@ public class lisMetodoImpresion extends frameBase<MetodoImpresion> {
     public void Init() {
         switch (getModo()) {
             case 0:
-                OcultarColumna(tbMetodosImpresion, 0);
+                OcultarColumnas(tbMetodosImpresion, new int[]{0, 1});
                 OcultarControl(btnSeleccionar);
                 break;
             case 1:
-                OcultarColumnas(tbMetodosImpresion, new int[]{0, 9, 10});
+                OcultarColumnas(tbMetodosImpresion, new int[]{0, 1, 9, 10});
                 OcultarControl(btnNuevo);
                 break;
         }
@@ -96,14 +96,19 @@ public class lisMetodoImpresion extends frameBase<MetodoImpresion> {
                 String json = get().toString();
                 String[] resultado = new Gson().fromJson(json, String[].class);
                 if (resultado[0].equals("true")) {
-                    EliminarTodasFilas(tbMetodosImpresion);
                     MetodoImpresion[] metodosImpresion = new Gson().fromJson(resultado[1], MetodoImpresion[].class);
-                    for (MetodoImpresion metodoImpresion : metodosImpresion) {
-                        AgregarFila(tbMetodosImpresion, new Object[]{false, metodoImpresion.getIdMetodoImpresion(), metodoImpresion.getNombre(), metodoImpresion.getFactorPases(), metodoImpresion.getFactorCambios(), metodoImpresion.getFactorHorizontal(), metodoImpresion.getFactorVertical(), metodoImpresion.getLetras(), metodoImpresion.isActivo(), Icon_Save, Icon_Dele});
+                    if (getModo() == 1 && metodosImpresion.length == 1) {
+                        setSeleccionado(metodosImpresion[0]);
+                        Cerrar();
+                    } else {
+                        EliminarTodasFilas(tbMetodosImpresion);
+                        for (MetodoImpresion metodoImpresion : metodosImpresion) {
+                            AgregarFila(tbMetodosImpresion, new Object[]{false, metodoImpresion.getIdMetodoImpresion(), metodoImpresion.getNombre(), metodoImpresion.getFactorPases(), metodoImpresion.getFactorCambios(), metodoImpresion.getFactorHorizontal(), metodoImpresion.getFactorVertical(), metodoImpresion.getLetras(), metodoImpresion.isActivo(), Icon_Save, Icon_Dele});
+                        }
+                        AgregarBoton(tbMetodosImpresion, save, 9);
+                        AgregarBoton(tbMetodosImpresion, dele, 10);
+                        AgregarOrdenamiento(tbMetodosImpresion);
                     }
-                    AgregarBoton(tbMetodosImpresion, save, 9);
-                    AgregarBoton(tbMetodosImpresion, dele, 10);
-                    AgregarOrdenamiento(tbMetodosImpresion);
                 }
                 OcultarCargando(frame);
             } catch (Exception e) {
@@ -252,17 +257,21 @@ public class lisMetodoImpresion extends frameBase<MetodoImpresion> {
             }
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
+                if(getModo() == 0) {
+                    return canEdit [columnIndex];
+                } else {
+                    return false;
+                }
             }
         });
         tbMetodosImpresion.setRowHeight(25);
         tbMetodosImpresion.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        tbMetodosImpresion.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbMetodosImpresionMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tbMetodosImpresion);
-        if (tbMetodosImpresion.getColumnModel().getColumnCount() > 0) {
-            tbMetodosImpresion.getColumnModel().getColumn(1).setMinWidth(0);
-            tbMetodosImpresion.getColumnModel().getColumn(1).setPreferredWidth(0);
-            tbMetodosImpresion.getColumnModel().getColumn(1).setMaxWidth(0);
-        }
 
         pnlTitulo.setBackground(new java.awt.Color(67, 100, 130));
         pnlTitulo.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -411,6 +420,31 @@ public class lisMetodoImpresion extends frameBase<MetodoImpresion> {
         // TODO add your handling code here:
         new swObtenerMetodosImpresion().execute();
     }//GEN-LAST:event_btnRefrescarActionPerformed
+
+    private void tbMetodosImpresionMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbMetodosImpresionMouseClicked
+        // TODO add your handling code here:
+        if (evt.getClickCount() == 2) {
+            switch (getModo()) {
+                case 1:
+                    if (FilaActiva(tbMetodosImpresion)) {
+                        MetodoImpresion metodoImpresion = new MetodoImpresion();
+                        metodoImpresion.setIdMetodoImpresion(ObtenerValorCelda(tbMetodosImpresion, 1));
+                        metodoImpresion.setNombre(ObtenerValorCelda(tbMetodosImpresion, 2));
+                        metodoImpresion.setFactorPases(ObtenerValorCelda(tbMetodosImpresion, 3));
+                        metodoImpresion.setFactorCambios(ObtenerValorCelda(tbMetodosImpresion, 4));
+                        metodoImpresion.setFactorHorizontal(ObtenerValorCelda(tbMetodosImpresion, 5));
+                        metodoImpresion.setFactorVertical(ObtenerValorCelda(tbMetodosImpresion, 6));
+                        metodoImpresion.setLetras(ObtenerValorCelda(tbMetodosImpresion, 7));
+                        metodoImpresion.setActivo(ObtenerValorCelda(tbMetodosImpresion, 8));
+                        setSeleccionado(metodoImpresion);
+                    }
+                    Cerrar();
+                    break;
+                case 2:
+                    break;
+            }
+        }
+    }//GEN-LAST:event_tbMetodosImpresionMouseClicked
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnNuevo;

@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import com.sge.base.formularios.frameBase;
 import com.sge.modulos.inventarios.clases.SeleccionProducto;
 import com.sge.modulos.inventarios.cliente.cliInventarios;
-import java.util.ArrayList;
 import java.util.List;
 import javax.swing.SwingWorker;
 
@@ -22,21 +21,25 @@ public class selProducto extends frameBase<SeleccionProducto> {
      */
     public selProducto(int modo, int idAlmacen) {
         initComponents();
-        Init(modo, idAlmacen);
+        setModo(modo);
+        setIdAlmacen(idAlmacen);
     }
 
-    private int modo;
-
-    private int idAlmacen;
-
-    private List<SeleccionProducto> seleccionados = new ArrayList<>();
-
-    public void Init(int modo, int idAlmacen) {
-        this.modo = modo;
-        this.idAlmacen = idAlmacen;
+    @Override
+    public void Init() {
         new swObtenerProductos().execute();
     }
+    
+    private int idAlmacen;
 
+    public void setIdAlmacen(int idAlmacen){
+        this.idAlmacen = idAlmacen;
+    }
+    
+    public int getIdAlmacen(){
+        return idAlmacen;
+    }
+    
     public class swObtenerProductos extends SwingWorker {
 
         @Override
@@ -46,12 +49,12 @@ public class selProducto extends frameBase<SeleccionProducto> {
             String json = "";
             try {
                 String filtro = "";
-                switch (modo) {
+                switch (getModo()) {
                     case 1:
-                        filtro = "WHERE ProductoAlmacen.idAlmacen = " + idAlmacen;
+                        filtro = "WHERE ProductoAlmacen.idAlmacen = " + getIdAlmacen();
                         break;
                     case 2:
-                        filtro = "WHERE ProductoAlmacen.stockFisico > 0 AND ProductoAlmacen.idAlmacen = " + idAlmacen;
+                        filtro = "WHERE ProductoAlmacen.stockFisico > 0 AND ProductoAlmacen.idAlmacen = " + getIdAlmacen();
                         break;
                 }
                 json = cliente.ObtenerProductosPorAlmacen(new Gson().toJson(filtro));
@@ -85,11 +88,7 @@ public class selProducto extends frameBase<SeleccionProducto> {
             }
         }
     }
-
-    public List<SeleccionProducto> getSeleccionados() {
-        return seleccionados;
-    }
-
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -275,7 +274,7 @@ public class selProducto extends frameBase<SeleccionProducto> {
                         producto.setPrecio(ObtenerValorCelda(tbProductos, 6));
                         break;
                 }
-                seleccionados.add(producto);
+                getSeleccionados().add(producto);
             }
         }
         Cerrar();

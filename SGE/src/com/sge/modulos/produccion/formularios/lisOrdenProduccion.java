@@ -341,19 +341,6 @@ public class lisOrdenProduccion extends frameBase<OrdenProduccion> {
 
     private void btnSeleccionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeleccionarActionPerformed
         // TODO add your handling code here:
-        switch (getModo()) {
-            case 1:
-                if (FilaActiva(tbOrdenesProduccion)) {
-                    OrdenProduccion ordenProduccion = new OrdenProduccion();
-                    ordenProduccion.setIdOrdenProduccion(ObtenerValorCelda(tbOrdenesProduccion, 1));
-                    ordenProduccion.setNumero(ObtenerValorCelda(tbOrdenesProduccion, 2));
-                    setSeleccionado(ordenProduccion);
-                }
-                Cerrar();
-                break;
-            case 2:
-                break;
-        }
     }//GEN-LAST:event_btnSeleccionarActionPerformed
 
     private void txtFiltroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFiltroActionPerformed

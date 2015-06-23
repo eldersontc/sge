@@ -45,15 +45,15 @@ public class lisProducto extends frameBase<Producto> {
     public void Init() {
         switch (getModo()) {
             case 0:
-                OcultarColumna(tbProductos, 0);
+                OcultarColumnas(tbProductos, new int[]{0, 1});
                 OcultarControl(btnSeleccionar);
                 break;
             case 1:
-                OcultarColumnas(tbProductos, new int[]{0, 10, 11});
+                OcultarColumnas(tbProductos, new int[]{0, 1, 10, 11});
                 OcultarControl(btnNuevo);
                 break;
             case 2:
-                OcultarColumnas(tbProductos, new int[]{10, 11});
+                OcultarColumnas(tbProductos, new int[]{1, 10, 11});
                 OcultarControl(btnNuevo);
                 break;
         }
@@ -109,14 +109,23 @@ public class lisProducto extends frameBase<Producto> {
                 String json = get().toString();
                 String[] resultado = new Gson().fromJson(json, String[].class);
                 if (resultado[0].equals("true")) {
-                    EliminarTodasFilas(tbProductos);
                     Producto[] productos = new Gson().fromJson(resultado[1], Producto[].class);
-                    for (Producto producto : productos) {
-                        AgregarFila(tbProductos, new Object[]{false, producto.getIdProducto(), producto.getCodigo(), producto.getDescripcion(), producto.getAlto(), producto.getLargo(), producto.getIdUnidadBase(), producto.getAbreviacionUnidadBase(), producto.getFactorUnidadBase(), producto.isActivo(), Icon_Edit, Icon_Dele});
+                    if (getModo() == 1 && productos.length == 1) {
+                        setSeleccionado(productos[0]);
+                        Cerrar();
+                    } else if (getModo() == 2 && productos.length == 1) {
+                        setSeleccionados(new ArrayList<>());
+                        getSeleccionados().add(productos[0]);
+                        Cerrar();
+                    } else {
+                        EliminarTodasFilas(tbProductos);
+                        for (Producto producto : productos) {
+                            AgregarFila(tbProductos, new Object[]{false, producto.getIdProducto(), producto.getCodigo(), producto.getDescripcion(), producto.getAlto(), producto.getLargo(), producto.getIdUnidadBase(), producto.getAbreviacionUnidadBase(), producto.getFactorUnidadBase(), producto.isActivo(), Icon_Edit, Icon_Dele});
+                        }
+                        AgregarBoton(tbProductos, edit, 10);
+                        AgregarBoton(tbProductos, dele, 11);
+                        AgregarOrdenamiento(tbProductos);
                     }
-                    AgregarBoton(tbProductos, edit, 10);
-                    AgregarBoton(tbProductos, dele, 11);
-                    AgregarOrdenamiento(tbProductos);
                 }
                 OcultarCargando(frame);
             } catch (Exception e) {
@@ -217,20 +226,29 @@ public class lisProducto extends frameBase<Producto> {
             }
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
+                boolean isEditable = false;
+                switch (getModo()) {
+                    case 0:
+                    isEditable = canEdit [columnIndex];
+                    break;
+                    case 1:
+                    isEditable = false;
+                    break;
+                    case 2:
+                    isEditable = columnIndex == 0;
+                    break;
+                }
+                return isEditable;
             }
         });
         tbProductos.setRowHeight(25);
         tbProductos.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        tbProductos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbProductosMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tbProductos);
-        if (tbProductos.getColumnModel().getColumnCount() > 0) {
-            tbProductos.getColumnModel().getColumn(1).setMinWidth(0);
-            tbProductos.getColumnModel().getColumn(1).setPreferredWidth(0);
-            tbProductos.getColumnModel().getColumn(1).setMaxWidth(0);
-            tbProductos.getColumnModel().getColumn(6).setMinWidth(0);
-            tbProductos.getColumnModel().getColumn(6).setPreferredWidth(0);
-            tbProductos.getColumnModel().getColumn(6).setMaxWidth(0);
-        }
 
         pnlTitulo.setBackground(new java.awt.Color(67, 100, 130));
         pnlTitulo.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -397,6 +415,31 @@ public class lisProducto extends frameBase<Producto> {
         // TODO add your handling code here:
         new swObtenerProductos().execute();
     }//GEN-LAST:event_btnRefrescarActionPerformed
+
+    private void tbProductosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbProductosMouseClicked
+        // TODO add your handling code here:
+        if (evt.getClickCount() == 2) {
+            switch (getModo()) {
+                case 1:
+                    if (FilaActiva(tbProductos)) {
+                        setSeleccionado(new Producto());
+                        getSeleccionado().setIdProducto(ObtenerValorCelda(tbProductos, 1));
+                        getSeleccionado().setCodigo(ObtenerValorCelda(tbProductos, 2));
+                        getSeleccionado().setDescripcion(ObtenerValorCelda(tbProductos, 3));
+                        getSeleccionado().setAlto(ObtenerValorCelda(tbProductos, 4));
+                        getSeleccionado().setLargo(ObtenerValorCelda(tbProductos, 5));
+                        getSeleccionado().setIdUnidadBase(ObtenerValorCelda(tbProductos, 6));
+                        getSeleccionado().setAbreviacionUnidadBase(ObtenerValorCelda(tbProductos, 7));
+                        getSeleccionado().setFactorUnidadBase(ObtenerValorCelda(tbProductos, 8));
+                        getSeleccionado().setActivo(ObtenerValorCelda(tbProductos, 9));
+                        Cerrar();
+                    }
+                    break;
+                case 2:
+                    break;
+            }
+        }
+    }//GEN-LAST:event_tbProductosMouseClicked
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnNuevo;

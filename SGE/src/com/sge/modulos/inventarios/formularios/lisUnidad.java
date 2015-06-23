@@ -6,7 +6,6 @@ import com.sge.modulos.inventarios.clases.Unidad;
 import com.sge.modulos.inventarios.cliente.cliInventarios;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
-import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ImageIcon;
@@ -45,15 +44,15 @@ public class lisUnidad extends frameBase<Unidad> {
     public void Init() {
         switch (getModo()) {
             case 0:
-                OcultarColumna(tbUnidades, 0);
+                OcultarColumnas(tbUnidades, new int[]{0, 1});
                 OcultarControl(btnSeleccionar);
                 break;
             case 1:
-                OcultarColumnas(tbUnidades, new int[]{0, 5, 6});
+                OcultarColumnas(tbUnidades, new int[]{0, 1, 5, 6});
                 OcultarControl(btnNuevo);
                 break;
             case 2:
-                OcultarColumnas(tbUnidades, new int[]{5, 6});
+                OcultarColumnas(tbUnidades, new int[]{1, 5, 6});
                 OcultarControl(btnNuevo);
                 break;
         }
@@ -255,17 +254,24 @@ public class lisUnidad extends frameBase<Unidad> {
             }
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
+                boolean isEditable = false;
+                switch (getModo()) {
+                    case 0:
+                    isEditable = canEdit [columnIndex];
+                    break;
+                    case 1:
+                    isEditable = false;
+                    break;
+                    case 2:
+                    isEditable = columnIndex == 0;
+                    break;
+                }
+                return isEditable;
             }
         });
         tbUnidades.setRowHeight(25);
         tbUnidades.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane1.setViewportView(tbUnidades);
-        if (tbUnidades.getColumnModel().getColumnCount() > 0) {
-            tbUnidades.getColumnModel().getColumn(1).setMinWidth(0);
-            tbUnidades.getColumnModel().getColumn(1).setPreferredWidth(0);
-            tbUnidades.getColumnModel().getColumn(1).setMaxWidth(0);
-        }
 
         pnlTitulo.setBackground(new java.awt.Color(67, 100, 130));
         pnlTitulo.setBorder(javax.swing.BorderFactory.createEtchedBorder());

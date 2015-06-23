@@ -45,15 +45,15 @@ public class lisCotizacion extends frameBase<Cotizacion> {
     public void Init() {
         switch (getModo()) {
             case 0:
-                OcultarColumna(tbCotizaciones, 0);
+                OcultarColumnas(tbCotizaciones, new int[]{0, 1});
                 OcultarControl(btnSeleccionar);
                 break;
             case 1:
-                OcultarColumnas(tbCotizaciones, new int[]{0, 10, 11});
+                OcultarColumnas(tbCotizaciones, new int[]{0, 1, 10, 11});
                 OcultarControl(btnNuevo);
                 break;
             case 2:
-                OcultarColumnas(tbCotizaciones, new int[]{10, 11});
+                OcultarColumnas(tbCotizaciones, new int[]{1, 10, 11});
                 OcultarControl(btnNuevo);
                 break;
         }
@@ -110,14 +110,23 @@ public class lisCotizacion extends frameBase<Cotizacion> {
                 String[] resultado = new Gson().fromJson(json, String[].class);
 
                 if (resultado[0].equals("true")) {
-                    EliminarTodasFilas(tbCotizaciones);
                     Cotizacion[] cotizaciones = new Gson().fromJson(resultado[1], Cotizacion[].class);
-                    for (Cotizacion cotizacion : cotizaciones) {
-                        AgregarFila(tbCotizaciones, new Object[]{false, cotizacion.getIdCotizacion(), cotizacion.getNumero(), cotizacion.getDescripcion(), cotizacion.getFechaCreacionString(), cotizacion.getRazonSocialCliente(), cotizacion.getNombreCotizador(), cotizacion.getNombreVendedor(), cotizacion.getTotal(), cotizacion.getEstado(), Icon_Edit, Icon_Dele});
+                    if (getModo() == 1 && cotizaciones.length == 1) {
+                        setSeleccionado(cotizaciones[0]);
+                        Cerrar();
+                    } else if (getModo() == 2 && cotizaciones.length == 1) {
+                        setSeleccionados(new ArrayList<>());
+                        getSeleccionados().add(cotizaciones[0]);
+                        Cerrar();
+                    } else {
+                        EliminarTodasFilas(tbCotizaciones);
+                        for (Cotizacion cotizacion : cotizaciones) {
+                            AgregarFila(tbCotizaciones, new Object[]{false, cotizacion.getIdCotizacion(), cotizacion.getNumero(), cotizacion.getDescripcion(), cotizacion.getFechaCreacionString(), cotizacion.getRazonSocialCliente(), cotizacion.getNombreCotizador(), cotizacion.getNombreVendedor(), cotizacion.getTotal(), cotizacion.getEstado(), Icon_Edit, Icon_Dele});
+                        }
+                        AgregarBoton(tbCotizaciones, edit, 10);
+                        AgregarBoton(tbCotizaciones, dele, 11);
+                        AgregarOrdenamiento(tbCotizaciones);
                     }
-                    AgregarBoton(tbCotizaciones, edit, 10);
-                    AgregarBoton(tbCotizaciones, dele, 11);
-                    AgregarOrdenamiento(tbCotizaciones);
                 }
                 OcultarCargando(frame);
             } catch (Exception e) {
@@ -312,17 +321,29 @@ public class lisCotizacion extends frameBase<Cotizacion> {
             }
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
+                boolean isEditable = false;
+                switch (getModo()) {
+                    case 0:
+                    isEditable = canEdit [columnIndex];
+                    break;
+                    case 1:
+                    isEditable = false;
+                    break;
+                    case 2:
+                    isEditable = columnIndex == 0;
+                    break;
+                }
+                return isEditable;
             }
         });
         tbCotizaciones.setRowHeight(25);
         tbCotizaciones.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        tbCotizaciones.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbCotizacionesMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tbCotizaciones);
-        if (tbCotizaciones.getColumnModel().getColumnCount() > 0) {
-            tbCotizaciones.getColumnModel().getColumn(1).setMinWidth(0);
-            tbCotizaciones.getColumnModel().getColumn(1).setPreferredWidth(0);
-            tbCotizaciones.getColumnModel().getColumn(1).setMaxWidth(0);
-        }
 
         pnlTitulo.setBackground(new java.awt.Color(67, 100, 130));
         pnlTitulo.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -516,6 +537,27 @@ public class lisCotizacion extends frameBase<Cotizacion> {
             DesaprobarCotizacion();
         }
     }//GEN-LAST:event_btnDesaprobarActionPerformed
+
+    private void tbCotizacionesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbCotizacionesMouseClicked
+        // TODO add your handling code here:
+        if (evt.getClickCount() == 2) {
+            switch (getModo()) {
+                case 1:
+                    if (FilaActiva(tbCotizaciones)) {
+                        Cotizacion cotizacion = new Cotizacion();
+                        cotizacion.setIdCotizacion(ObtenerValorCelda(tbCotizaciones, 1));
+                        cotizacion.setNumero(ObtenerValorCelda(tbCotizaciones, 2));
+                        cotizacion.setDescripcion(ObtenerValorCelda(tbCotizaciones, 3));
+                        cotizacion.setTotal(ObtenerValorCelda(tbCotizaciones, 8));
+                        setSeleccionado(cotizacion);
+                    }
+                    Cerrar();
+                    break;
+                case 2:
+                    break;
+            }
+        }
+    }//GEN-LAST:event_tbCotizacionesMouseClicked
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAprobar;

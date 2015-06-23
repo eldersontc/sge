@@ -45,11 +45,11 @@ public class lisServicio extends frameBase<Servicio> {
     public void Init() {
         switch (getModo()) {
             case 0:
-                OcultarColumna(tbServicios, 0);
+                OcultarColumnas(tbServicios, new int[]{0, 1});
                 OcultarControl(btnSeleccionar);
                 break;
             case 1:
-                OcultarColumnas(tbServicios, new int[]{0, 5, 6});
+                OcultarColumnas(tbServicios, new int[]{0, 1, 5, 6});
                 OcultarControl(btnNuevo);
                 break;
         }
@@ -105,14 +105,23 @@ public class lisServicio extends frameBase<Servicio> {
                 String json = get().toString();
                 String[] resultado = new Gson().fromJson(json, String[].class);
                 if (resultado[0].equals("true")) {
-                    EliminarTodasFilas(tbServicios);
                     Servicio[] servicios = new Gson().fromJson(resultado[1], Servicio[].class);
-                    for (Servicio servicio : servicios) {
-                        AgregarFila(tbServicios, new Object[]{false, servicio.getIdServicio(), servicio.getCodigo(), servicio.getDescripcion(), servicio.isActivo(), Icon_Edit, Icon_Dele});
+                    if (getModo() == 1 && servicios.length == 1) {
+                        setSeleccionado(servicios[0]);
+                        Cerrar();
+                    } else if (getModo() == 2 && servicios.length == 1) {
+                        setSeleccionados(new ArrayList<>());
+                        getSeleccionados().add(servicios[0]);
+                        Cerrar();
+                    } else {
+                        EliminarTodasFilas(tbServicios);
+                        for (Servicio servicio : servicios) {
+                            AgregarFila(tbServicios, new Object[]{false, servicio.getIdServicio(), servicio.getCodigo(), servicio.getDescripcion(), servicio.isActivo(), Icon_Edit, Icon_Dele});
+                        }
+                        AgregarBoton(tbServicios, edit, 5);
+                        AgregarBoton(tbServicios, dele, 6);
+                        AgregarOrdenamiento(tbServicios);
                     }
-                    AgregarBoton(tbServicios, edit, 5);
-                    AgregarBoton(tbServicios, dele, 6);
-                    AgregarOrdenamiento(tbServicios);
                 }
                 OcultarCargando(frame);
             } catch (Exception e) {
@@ -213,17 +222,21 @@ public class lisServicio extends frameBase<Servicio> {
             }
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
+                if(getModo() == 0) {
+                    return canEdit [columnIndex];
+                } else {
+                    return false;
+                }
             }
         });
         tbServicios.setRowHeight(25);
         tbServicios.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        tbServicios.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbServiciosMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tbServicios);
-        if (tbServicios.getColumnModel().getColumnCount() > 0) {
-            tbServicios.getColumnModel().getColumn(1).setMinWidth(0);
-            tbServicios.getColumnModel().getColumn(1).setPreferredWidth(0);
-            tbServicios.getColumnModel().getColumn(1).setMaxWidth(0);
-        }
 
         pnlTitulo.setBackground(new java.awt.Color(67, 100, 130));
         pnlTitulo.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -380,6 +393,26 @@ public class lisServicio extends frameBase<Servicio> {
         // TODO add your handling code here:
         new swObtenerServicios().execute();
     }//GEN-LAST:event_btnRefrescarActionPerformed
+
+    private void tbServiciosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbServiciosMouseClicked
+        // TODO add your handling code here:
+        if (evt.getClickCount() == 2) {
+            switch (getModo()) {
+                case 1:
+                    if (FilaActiva(tbServicios)) {
+                        Servicio servicio = new Servicio();
+                        servicio.setIdServicio(ObtenerValorCelda(tbServicios, 1));
+                        servicio.setCodigo(ObtenerValorCelda(tbServicios, 2));
+                        servicio.setDescripcion(ObtenerValorCelda(tbServicios, 3));
+                        setSeleccionado(servicio);
+                    }
+                    Cerrar();
+                    break;
+                case 2:
+                    break;
+            }
+        }
+    }//GEN-LAST:event_tbServiciosMouseClicked
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnNuevo;

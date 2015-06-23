@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import com.sge.base.formularios.frameBase;
 import com.sge.modulos.administracion.clases.Entidad;
 import com.sge.modulos.administracion.clases.Filtro;
-import com.sge.modulos.administracion.clases.Filtro;
 import com.sge.modulos.administracion.clases.Usuario;
 import com.sge.modulos.administracion.cliente.cliAdministracion;
 import java.awt.event.ActionEvent;
@@ -46,11 +45,11 @@ public class lisFiltro extends frameBase<Filtro> {
     public void Init() {
         switch (getModo()) {
             case 0:
-                OcultarColumna(tbFiltros, 0);
+                OcultarColumnas(tbFiltros, new int[]{0, 1});
                 OcultarControl(btnSeleccionar);
                 break;
             case 1:
-                OcultarColumnas(tbFiltros, new int[]{0, 8, 9});
+                OcultarColumnas(tbFiltros, new int[]{0, 1, 8, 9});
                 OcultarControl(btnNuevo);
                 break;
         }

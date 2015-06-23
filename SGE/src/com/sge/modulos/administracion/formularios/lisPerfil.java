@@ -43,11 +43,11 @@ public class lisPerfil extends frameBase<Perfil> {
     public void Init() {
         switch (getModo()) {
             case 0:
-                OcultarColumna(tbPerfiles, 0);
+                OcultarColumnas(tbPerfiles, new int[]{0, 1});
                 OcultarControl(btnSeleccionar);
                 break;
             case 1:
-                OcultarColumnas(tbPerfiles, new int[]{0, 4, 5});
+                OcultarColumnas(tbPerfiles, new int[]{0, 1, 4, 5});
                 OcultarControl(btnNuevo);
                 break;
         }
@@ -254,17 +254,21 @@ public class lisPerfil extends frameBase<Perfil> {
             }
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
+                if(getModo() == 0) {
+                    return canEdit [columnIndex];
+                } else {
+                    return false;
+                }
             }
         });
         tbPerfiles.setRowHeight(25);
         tbPerfiles.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        tbPerfiles.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbPerfilesMouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(tbPerfiles);
-        if (tbPerfiles.getColumnModel().getColumnCount() > 0) {
-            tbPerfiles.getColumnModel().getColumn(1).setMinWidth(0);
-            tbPerfiles.getColumnModel().getColumn(1).setPreferredWidth(0);
-            tbPerfiles.getColumnModel().getColumn(1).setMaxWidth(0);
-        }
 
         pnlTitulo1.setBackground(new java.awt.Color(67, 100, 130));
         pnlTitulo1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -407,6 +411,25 @@ public class lisPerfil extends frameBase<Perfil> {
         // TODO add your handling code here:
         new swObtenerPerfiles().execute();
     }//GEN-LAST:event_btnRefrescarActionPerformed
+
+    private void tbPerfilesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbPerfilesMouseClicked
+        // TODO add your handling code here:
+        if (evt.getClickCount() == 2) {
+            switch (getModo()) {
+                case 1:
+                    if (FilaActiva(tbPerfiles)) {
+                        Perfil perfil = new Perfil();
+                        perfil.setIdPerfil(ObtenerValorCelda(tbPerfiles, 1));
+                        perfil.setNombre(ObtenerValorCelda(tbPerfiles, 2));
+                        setSeleccionado(perfil);
+                    }
+                    Cerrar();
+                    break;
+                case 2:
+                    break;
+            }
+        }
+    }//GEN-LAST:event_tbPerfilesMouseClicked
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnNuevo;

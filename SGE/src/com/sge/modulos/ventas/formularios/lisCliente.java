@@ -43,11 +43,11 @@ public class lisCliente extends frameBase<Cliente> {
     public void Init() {
         switch (getModo()) {
             case 0:
-                OcultarColumna(tbClientes, 0);
+                OcultarColumnas(tbClientes, new int[]{0, 1, 4, 6, 8});
                 OcultarControl(btnSeleccionar);
                 break;
             case 1:
-                OcultarColumnas(tbClientes, new int[]{0, 11, 12});
+                OcultarColumnas(tbClientes, new int[]{0, 1, 4, 6, 8, 11, 12});
                 OcultarControl(btnNuevo);
                 break;
         }
@@ -103,14 +103,19 @@ public class lisCliente extends frameBase<Cliente> {
                 String json = get().toString();
                 String[] resultado = new Gson().fromJson(json, String[].class);
                 if (resultado[0].equals("true")) {
-                    EliminarTodasFilas(tbClientes);
                     Cliente[] clientes = new Gson().fromJson(resultado[1], Cliente[].class);
-                    for (Cliente cliente : clientes) {
-                        AgregarFila(tbClientes, new Object[]{false, cliente.getIdCliente(), cliente.getRazonSocial(), cliente.getFechaUltimaVenta(), cliente.getIdListaPrecioProducto(), cliente.getNombreListaPrecioProducto(), cliente.getIdListaPrecioServicio(), cliente.getNombreListaPrecioServicio(), cliente.getIdListaPrecioMaquina(), cliente.getNombreListaPrecioMaquina(), cliente.isActivo(), Icon_Edit, Icon_Dele});
+                    if (getModo() == 1 && clientes.length == 1) {
+                        setSeleccionado(clientes[0]);
+                        Cerrar();
+                    } else {
+                        EliminarTodasFilas(tbClientes);
+                        for (Cliente cliente : clientes) {
+                            AgregarFila(tbClientes, new Object[]{false, cliente.getIdCliente(), cliente.getRazonSocial(), cliente.getFechaUltimaVenta(), cliente.getIdListaPrecioProducto(), cliente.getNombreListaPrecioProducto(), cliente.getIdListaPrecioServicio(), cliente.getNombreListaPrecioServicio(), cliente.getIdListaPrecioMaquina(), cliente.getNombreListaPrecioMaquina(), cliente.isActivo(), Icon_Edit, Icon_Dele});
+                        }
+                        AgregarBoton(tbClientes, edit, 11);
+                        AgregarBoton(tbClientes, dele, 12);
+                        AgregarOrdenamiento(tbClientes);
                     }
-                    AgregarBoton(tbClientes, edit, 11);
-                    AgregarBoton(tbClientes, dele, 12);
-                    AgregarOrdenamiento(tbClientes);
                 }
                 OcultarCargando(frame);
             } catch (Exception e) {
@@ -203,7 +208,7 @@ public class lisCliente extends frameBase<Cliente> {
                 java.lang.Boolean.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.Boolean.class, java.lang.Object.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                true, false, true, true, false, true, false, true, false, true, true, true, true
+                true, false, true, false, false, true, false, true, false, true, true, true, true
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -211,26 +216,21 @@ public class lisCliente extends frameBase<Cliente> {
             }
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
+                if(getModo() == 0) {
+                    return canEdit [columnIndex];
+                } else {
+                    return false;
+                }
             }
         });
         tbClientes.setRowHeight(25);
         tbClientes.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        tbClientes.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbClientesMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tbClientes);
-        if (tbClientes.getColumnModel().getColumnCount() > 0) {
-            tbClientes.getColumnModel().getColumn(1).setMinWidth(0);
-            tbClientes.getColumnModel().getColumn(1).setPreferredWidth(0);
-            tbClientes.getColumnModel().getColumn(1).setMaxWidth(0);
-            tbClientes.getColumnModel().getColumn(4).setMinWidth(0);
-            tbClientes.getColumnModel().getColumn(4).setPreferredWidth(0);
-            tbClientes.getColumnModel().getColumn(4).setMaxWidth(0);
-            tbClientes.getColumnModel().getColumn(6).setMinWidth(0);
-            tbClientes.getColumnModel().getColumn(6).setPreferredWidth(0);
-            tbClientes.getColumnModel().getColumn(6).setMaxWidth(0);
-            tbClientes.getColumnModel().getColumn(8).setMinWidth(0);
-            tbClientes.getColumnModel().getColumn(8).setPreferredWidth(0);
-            tbClientes.getColumnModel().getColumn(8).setMaxWidth(0);
-        }
 
         pnlTitulo.setBackground(new java.awt.Color(67, 100, 130));
         pnlTitulo.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -379,6 +379,31 @@ public class lisCliente extends frameBase<Cliente> {
         // TODO add your handling code here:
         new swObtenerClientes().execute();
     }//GEN-LAST:event_btnRefrescarActionPerformed
+
+    private void tbClientesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbClientesMouseClicked
+        // TODO add your handling code here:
+        if (evt.getClickCount() == 2) {
+            switch (getModo()) {
+                case 1:
+                    if (FilaActiva(tbClientes)) {
+                        Cliente cliente = new Cliente();
+                        cliente.setIdCliente(ObtenerValorCelda(tbClientes, 1));
+                        cliente.setRazonSocial(ObtenerValorCelda(tbClientes, 2));
+                        cliente.setIdListaPrecioProducto(ObtenerValorCelda(tbClientes, 4));
+                        cliente.setNombreListaPrecioProducto(ObtenerValorCelda(tbClientes, 5));
+                        cliente.setIdListaPrecioServicio(ObtenerValorCelda(tbClientes, 6));
+                        cliente.setNombreListaPrecioServicio(ObtenerValorCelda(tbClientes, 7));
+                        cliente.setIdListaPrecioMaquina(ObtenerValorCelda(tbClientes, 8));
+                        cliente.setNombreListaPrecioMaquina(ObtenerValorCelda(tbClientes, 9));
+                        setSeleccionado(cliente);
+                    }
+                    Cerrar();
+                    break;
+                case 2:
+                    break;
+            }
+        }
+    }//GEN-LAST:event_tbClientesMouseClicked
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnNuevo;

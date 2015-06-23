@@ -43,11 +43,11 @@ public class lisEmpleado extends frameBase<Empleado> {
     public void Init() {
         switch (getModo()) {
             case 0:
-                OcultarColumna(tbEmpleados, 0);
+                OcultarColumnas(tbEmpleados, new int[]{0, 1});
                 OcultarControl(btnSeleccionar);
                 break;
             case 1:
-                OcultarColumnas(tbEmpleados, new int[]{0, 6, 7});
+                OcultarColumnas(tbEmpleados, new int[]{0, 1, 6, 7});
                 OcultarControl(btnNuevo);
                 break;
         }
@@ -216,17 +216,21 @@ public class lisEmpleado extends frameBase<Empleado> {
             }
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
+                if(getModo() == 0) {
+                    return canEdit [columnIndex];
+                } else {
+                    return false;
+                }
             }
         });
         tbEmpleados.setRowHeight(25);
         tbEmpleados.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        tbEmpleados.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbEmpleadosMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tbEmpleados);
-        if (tbEmpleados.getColumnModel().getColumnCount() > 0) {
-            tbEmpleados.getColumnModel().getColumn(1).setMinWidth(0);
-            tbEmpleados.getColumnModel().getColumn(1).setPreferredWidth(0);
-            tbEmpleados.getColumnModel().getColumn(1).setMaxWidth(0);
-        }
 
         pnlTitulo.setBackground(new java.awt.Color(67, 100, 130));
         pnlTitulo.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -369,6 +373,25 @@ public class lisEmpleado extends frameBase<Empleado> {
         // TODO add your handling code here:
         new swObtenerEmpleados().execute();
     }//GEN-LAST:event_btnRefrescarActionPerformed
+
+    private void tbEmpleadosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbEmpleadosMouseClicked
+        // TODO add your handling code here:
+        if (evt.getClickCount() == 2) {
+            switch (getModo()) {
+                case 1:
+                    if (FilaActiva(tbEmpleados)) {
+                        Empleado empleado = new Empleado();
+                        empleado.setIdEmpleado(ObtenerValorCelda(tbEmpleados, 1));
+                        empleado.setNombre(ObtenerValorCelda(tbEmpleados, 3));
+                        setSeleccionado(empleado);
+                    }
+                    Cerrar();
+                    break;
+                case 2:
+                    break;
+            }
+        }
+    }//GEN-LAST:event_tbEmpleadosMouseClicked
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnNuevo;

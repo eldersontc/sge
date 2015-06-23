@@ -54,12 +54,18 @@ public class lisServicioUnidad extends frameBase<ServicioUnidad> {
                 String[] resultado = new Gson().fromJson(json, String[].class);
 
                 if (resultado[0].equals("true")) {
-                    EliminarTodasFilas(tbUnidades);
                     ServicioUnidad[] unidades = new Gson().fromJson(resultado[1].toString(), ServicioUnidad[].class);
-                    for (ServicioUnidad unidad : unidades) {
-                        AgregarFila(tbUnidades, new Object[]{false, unidad.getIdServicioUnidad(), unidad.getIdUnidad(), unidad.getAbreviacionUnidad(), unidad.getFactor()});
+                    if (unidades.length == 1) {
+                        setSeleccionados(new ArrayList<>());
+                        getSeleccionados().add(unidades[0]);
+                        Cerrar();
+                    } else {
+                        EliminarTodasFilas(tbUnidades);
+                        for (ServicioUnidad unidad : unidades) {
+                            AgregarFila(tbUnidades, new Object[]{false, unidad.getIdServicioUnidad(), unidad.getIdUnidad(), unidad.getAbreviacionUnidad(), unidad.getFactor()});
+                        }
+                        AgregarOrdenamiento(tbUnidades);
                     }
-                    AgregarOrdenamiento(tbUnidades);
                 }
                 OcultarCargando(frame);
             } catch (Exception e) {
@@ -102,7 +108,7 @@ public class lisServicioUnidad extends frameBase<ServicioUnidad> {
                 java.lang.Boolean.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.String.class, java.lang.Integer.class
             };
             boolean[] canEdit = new boolean [] {
-                true, false, true, true, true
+                true, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -115,6 +121,11 @@ public class lisServicioUnidad extends frameBase<ServicioUnidad> {
         });
         tbUnidades.setRowHeight(25);
         tbUnidades.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        tbUnidades.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbUnidadesMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tbUnidades);
         if (tbUnidades.getColumnModel().getColumnCount() > 0) {
             tbUnidades.getColumnModel().getColumn(1).setMinWidth(0);
@@ -246,6 +257,25 @@ public class lisServicioUnidad extends frameBase<ServicioUnidad> {
         // TODO add your handling code here:
         new swObtenerUnidades().execute();
     }//GEN-LAST:event_btnRefrescarActionPerformed
+
+    private void tbUnidadesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbUnidadesMouseClicked
+        // TODO add your handling code here:
+        if (evt.getClickCount() == 2) {
+            setSeleccionados(new ArrayList<>());
+            for (int i = 0; i < tbUnidades.getRowCount(); i++) {
+                boolean check = ObtenerValorCelda(tbUnidades, i, 0);
+                if (check) {
+                    ServicioUnidad servicioUnidad = new ServicioUnidad();
+                    servicioUnidad.setIdServicioUnidad(ObtenerValorCelda(tbUnidades, i, 1));
+                    servicioUnidad.setIdUnidad(ObtenerValorCelda(tbUnidades, i, 2));
+                    servicioUnidad.setAbreviacionUnidad(ObtenerValorCelda(tbUnidades, i, 3));
+                    servicioUnidad.setFactor(ObtenerValorCelda(tbUnidades, i, 4));
+                    getSeleccionados().add(servicioUnidad);
+                }
+            }
+            Cerrar();
+        }
+    }//GEN-LAST:event_tbUnidadesMouseClicked
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnRefrescar;

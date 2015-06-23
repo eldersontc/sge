@@ -40,6 +40,25 @@ public class lisMaquina extends frameBase<Maquina> {
         setFiltro(filtro);
     }
 
+    @Override
+    public void Init() {
+        switch (getModo()) {
+            case 0:
+                OcultarColumnas(tbMaquinas, new int[]{0, 1});
+                OcultarControl(btnSeleccionar);
+                break;
+            case 1:
+                OcultarColumnas(tbMaquinas, new int[]{0, 1, 7, 8});
+                OcultarControl(btnNuevo);
+                break;
+            case 2:
+                OcultarColumnas(tbMaquinas, new int[]{1, 7, 8});
+                OcultarControl(btnNuevo);
+                break;
+        }
+        new swObtenerMaquinas().execute();
+    }
+
     ImageIcon Icon_Edit = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/edit-16.png"));
     ImageIcon Icon_Dele = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/delete-16.png"));
 
@@ -89,14 +108,23 @@ public class lisMaquina extends frameBase<Maquina> {
                 String json = get().toString();
                 String[] resultado = new Gson().fromJson(json, String[].class);
                 if (resultado[0].equals("true")) {
-                    EliminarTodasFilas(tbMaquinas);
                     Maquina[] maquinas = new Gson().fromJson(resultado[1], Maquina[].class);
-                    for (Maquina maquina : maquinas) {
-                        AgregarFila(tbMaquinas, new Object[]{false, maquina.getIdMaquina(), maquina.getDescripcion(), maquina.getTipoMaquina(), maquina.getAltoMaximoPliego(), maquina.getLargoMaximoPliego(), maquina.isActivo(), Icon_Edit, Icon_Dele});
+                    if (getModo() == 1 && maquinas.length == 1) {
+                        setSeleccionado(maquinas[0]);
+                        Cerrar();
+                    } else if (getModo() == 2 && maquinas.length == 1) {
+                        setSeleccionados(new ArrayList<>());
+                        getSeleccionados().add(maquinas[0]);
+                        Cerrar();
+                    } else {
+                        EliminarTodasFilas(tbMaquinas);
+                        for (Maquina maquina : maquinas) {
+                            AgregarFila(tbMaquinas, new Object[]{false, maquina.getIdMaquina(), maquina.getDescripcion(), maquina.getTipoMaquina(), maquina.getAltoMaximoPliego(), maquina.getLargoMaximoPliego(), maquina.isActivo(), Icon_Edit, Icon_Dele});
+                        }
+                        AgregarBoton(tbMaquinas, edit, 7);
+                        AgregarBoton(tbMaquinas, dele, 8);
+                        AgregarOrdenamiento(tbMaquinas);
                     }
-                    AgregarBoton(tbMaquinas, edit, 7);
-                    AgregarBoton(tbMaquinas, dele, 8);
-                    AgregarOrdenamiento(tbMaquinas);
                 }
                 OcultarCargando(frame);
             } catch (Exception e) {
@@ -141,25 +169,6 @@ public class lisMaquina extends frameBase<Maquina> {
                 ControlarExcepcion(e);
             }
         }
-    }
-
-    @Override
-    public void Init() {
-        switch (getModo()) {
-            case 0:
-                OcultarColumna(tbMaquinas, 0);
-                OcultarControl(btnSeleccionar);
-                break;
-            case 1:
-                OcultarColumnas(tbMaquinas, new int[]{0, 7, 8});
-                OcultarControl(btnNuevo);
-                break;
-            case 2:
-                OcultarColumnas(tbMaquinas, new int[]{7, 8});
-                OcultarControl(btnNuevo);
-                break;
-        }
-        new swObtenerMaquinas().execute();
     }
 
     public void EditarMaquina() {
@@ -216,17 +225,29 @@ public class lisMaquina extends frameBase<Maquina> {
             }
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
+                boolean isEditable = false;
+                switch (getModo()) {
+                    case 0:
+                    isEditable = canEdit [columnIndex];
+                    break;
+                    case 1:
+                    isEditable = false;
+                    break;
+                    case 2:
+                    isEditable = columnIndex == 0;
+                    break;
+                }
+                return isEditable;
             }
         });
         tbMaquinas.setRowHeight(25);
         tbMaquinas.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        tbMaquinas.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbMaquinasMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tbMaquinas);
-        if (tbMaquinas.getColumnModel().getColumnCount() > 0) {
-            tbMaquinas.getColumnModel().getColumn(1).setMinWidth(0);
-            tbMaquinas.getColumnModel().getColumn(1).setPreferredWidth(0);
-            tbMaquinas.getColumnModel().getColumn(1).setMaxWidth(0);
-        }
 
         pnlTitulo.setBackground(new java.awt.Color(67, 100, 130));
         pnlTitulo.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -384,6 +405,27 @@ public class lisMaquina extends frameBase<Maquina> {
         // TODO add your handling code here:
         new swObtenerMaquinas().execute();
     }//GEN-LAST:event_btnRefrescarActionPerformed
+
+    private void tbMaquinasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbMaquinasMouseClicked
+        // TODO add your handling code here:
+        if (evt.getClickCount() == 2) {
+            switch (getModo()) {
+                case 1:
+                    if (FilaActiva(tbMaquinas)) {
+                        Maquina maquina = new Maquina();
+                        maquina.setIdMaquina(ObtenerValorCelda(tbMaquinas, 1));
+                        maquina.setDescripcion(ObtenerValorCelda(tbMaquinas, 2));
+                        maquina.setAltoMaximoPliego(ObtenerValorCelda(tbMaquinas, 4));
+                        maquina.setLargoMaximoPliego(ObtenerValorCelda(tbMaquinas, 5));
+                        setSeleccionado(maquina);
+                    }
+                    Cerrar();
+                    break;
+                case 2:
+                    break;
+            }
+        }
+    }//GEN-LAST:event_tbMaquinasMouseClicked
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnNuevo;

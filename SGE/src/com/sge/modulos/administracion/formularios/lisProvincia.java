@@ -43,11 +43,11 @@ public class lisProvincia extends frameBase<Provincia> {
     public void Init() {
         switch (getModo()) {
             case 0:
-                OcultarColumna(tbProvincias, 0);
+                OcultarColumnas(tbProvincias, new int[]{0, 1});
                 OcultarControl(btnSeleccionar);
                 break;
             case 1:
-                OcultarColumnas(tbProvincias, new int[]{0, 3, 4});
+                OcultarColumnas(tbProvincias, new int[]{0, 1, 3, 4});
                 OcultarControl(btnNuevo);
                 break;
         }
@@ -161,17 +161,21 @@ public class lisProvincia extends frameBase<Provincia> {
             }
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
+                if(getModo() == 0) {
+                    return canEdit [columnIndex];
+                } else {
+                    return false;
+                }
             }
         });
         tbProvincias.setRowHeight(25);
         tbProvincias.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        tbProvincias.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbProvinciasMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tbProvincias);
-        if (tbProvincias.getColumnModel().getColumnCount() > 0) {
-            tbProvincias.getColumnModel().getColumn(1).setMinWidth(0);
-            tbProvincias.getColumnModel().getColumn(1).setPreferredWidth(0);
-            tbProvincias.getColumnModel().getColumn(1).setMaxWidth(0);
-        }
 
         pnlTitulo.setBackground(new java.awt.Color(67, 100, 130));
         pnlTitulo.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -314,6 +318,25 @@ public class lisProvincia extends frameBase<Provincia> {
         // TODO add your handling code here:
         new swObtenerProvincias().execute();
     }//GEN-LAST:event_btnRefrescarActionPerformed
+
+    private void tbProvinciasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbProvinciasMouseClicked
+        // TODO add your handling code here:
+        if (evt.getClickCount() == 2) {
+            switch (getModo()) {
+                case 1:
+                    if (FilaActiva(tbProvincias)) {
+                        Provincia provincia = new Provincia();
+                        provincia.setIdProvincia(ObtenerValorCelda(tbProvincias, 1));
+                        provincia.setNombre(ObtenerValorCelda(tbProvincias, 2));
+                        setSeleccionado(provincia);
+                    }
+                    Cerrar();
+                    break;
+                case 2:
+                    break;
+            }
+        }
+    }//GEN-LAST:event_tbProvinciasMouseClicked
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnNuevo;

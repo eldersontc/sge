@@ -43,11 +43,11 @@ public class lisDistrito extends frameBase<Distrito> {
     public void Init() {
         switch (getModo()) {
             case 0:
-                OcultarColumna(tbDistritos, 0);
+                OcultarColumnas(tbDistritos, new int[]{0, 1});
                 OcultarControl(btnSeleccionar);
                 break;
             case 1:
-                OcultarColumnas(tbDistritos, new int[]{0, 3, 4});
+                OcultarColumnas(tbDistritos, new int[]{0, 1, 3, 4});
                 OcultarControl(btnNuevo);
                 break;
         }
@@ -161,17 +161,21 @@ public class lisDistrito extends frameBase<Distrito> {
             }
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
+                if(getModo() == 0) {
+                    return canEdit [columnIndex];
+                } else {
+                    return false;
+                }
             }
         });
         tbDistritos.setRowHeight(25);
         tbDistritos.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        tbDistritos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbDistritosMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tbDistritos);
-        if (tbDistritos.getColumnModel().getColumnCount() > 0) {
-            tbDistritos.getColumnModel().getColumn(1).setMinWidth(0);
-            tbDistritos.getColumnModel().getColumn(1).setPreferredWidth(0);
-            tbDistritos.getColumnModel().getColumn(1).setMaxWidth(0);
-        }
 
         pnlTitulo.setBackground(new java.awt.Color(67, 100, 130));
         pnlTitulo.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -314,6 +318,25 @@ public class lisDistrito extends frameBase<Distrito> {
         // TODO add your handling code here:
         new swObtenerDistritos().execute();
     }//GEN-LAST:event_btnRefrescarActionPerformed
+
+    private void tbDistritosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbDistritosMouseClicked
+        // TODO add your handling code here:
+        if (evt.getClickCount() == 2) {
+            switch (getModo()) {
+                case 1:
+                    if (FilaActiva(tbDistritos)) {
+                        Distrito distrito = new Distrito();
+                        distrito.setIdDistrito(ObtenerValorCelda(tbDistritos, 1));
+                        distrito.setNombre(ObtenerValorCelda(tbDistritos, 2));
+                        setSeleccionado(distrito);
+                    }
+                    Cerrar();
+                    break;
+                case 2:
+                    break;
+            }
+        }
+    }//GEN-LAST:event_tbDistritosMouseClicked
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnNuevo;

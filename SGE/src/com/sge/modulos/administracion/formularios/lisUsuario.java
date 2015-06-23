@@ -42,13 +42,15 @@ public class lisUsuario extends frameBase<Usuario> {
 
     @Override
     public void Init() {
+        tbUsuarios.setFocusable(false);
+        tbUsuarios.setRowSelectionAllowed(true);
         switch (getModo()) {
             case 0:
-                OcultarColumna(tbUsuarios, 0);
+                OcultarColumnas(tbUsuarios, new int[]{0, 1, 4});
                 OcultarControl(btnSeleccionar);
                 break;
             case 1:
-                OcultarColumnas(tbUsuarios, new int[]{0, 7, 8});
+                OcultarColumnas(tbUsuarios, new int[]{0, 1, 4, 7, 8});
                 OcultarControl(btnNuevo);
                 break;
         }
@@ -269,7 +271,7 @@ public class lisUsuario extends frameBase<Usuario> {
                 java.lang.Boolean.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.Boolean.class, java.lang.Object.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                true, false, true, true, true, true, true, true, true
+                true, false, true, true, false, true, true, true, true
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -277,17 +279,21 @@ public class lisUsuario extends frameBase<Usuario> {
             }
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
+                if(getModo() == 0) {
+                    return canEdit [columnIndex];
+                } else {
+                    return false;
+                }
             }
         });
         tbUsuarios.setRowHeight(25);
         tbUsuarios.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        tbUsuarios.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbUsuariosMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tbUsuarios);
-        if (tbUsuarios.getColumnModel().getColumnCount() > 0) {
-            tbUsuarios.getColumnModel().getColumn(1).setMinWidth(0);
-            tbUsuarios.getColumnModel().getColumn(1).setPreferredWidth(0);
-            tbUsuarios.getColumnModel().getColumn(1).setMaxWidth(0);
-        }
 
         pnlTitulo.setBackground(new java.awt.Color(67, 100, 130));
         pnlTitulo.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -430,6 +436,25 @@ public class lisUsuario extends frameBase<Usuario> {
         // TODO add your handling code here:
         new swObtenerUsuarios().execute();
     }//GEN-LAST:event_btnRefrescarActionPerformed
+
+    private void tbUsuariosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbUsuariosMouseClicked
+        // TODO add your handling code here:
+        if (evt.getClickCount() == 2) {
+            switch (getModo()) {
+                case 1:
+                    if (FilaActiva(tbUsuarios)) {
+                        Usuario usuario = new Usuario();
+                        usuario.setIdUsuario(ObtenerValorCelda(tbUsuarios, 1));
+                        usuario.setUsuario(ObtenerValorCelda(tbUsuarios, 2));
+                        setSeleccionado(usuario);
+                    }
+                    Cerrar();
+                    break;
+                case 2:
+                    break;
+            }
+        }
+    }//GEN-LAST:event_tbUsuariosMouseClicked
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnNuevo;

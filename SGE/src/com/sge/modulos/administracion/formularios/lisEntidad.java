@@ -43,11 +43,11 @@ public class lisEntidad extends frameBase<Entidad> {
     public void Init() {
         switch (getModo()) {
             case 0:
-                OcultarColumna(tbEntidades, 0);
+                OcultarColumnas(tbEntidades, new int[]{0, 1});
                 OcultarControl(btnSeleccionar);
                 break;
             case 1:
-                OcultarColumnas(tbEntidades, new int[]{0, 3, 4});
+                OcultarColumnas(tbEntidades, new int[]{0, 1, 3, 4});
                 OcultarControl(btnNuevo);
                 break;
         }
@@ -161,17 +161,21 @@ public class lisEntidad extends frameBase<Entidad> {
             }
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
+                if(getModo() == 0) {
+                    return canEdit [columnIndex];
+                } else {
+                    return false;
+                }
             }
         });
         tbEntidades.setRowHeight(25);
         tbEntidades.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        tbEntidades.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbEntidadesMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tbEntidades);
-        if (tbEntidades.getColumnModel().getColumnCount() > 0) {
-            tbEntidades.getColumnModel().getColumn(1).setMinWidth(0);
-            tbEntidades.getColumnModel().getColumn(1).setPreferredWidth(0);
-            tbEntidades.getColumnModel().getColumn(1).setMaxWidth(0);
-        }
 
         pnlTitulo.setBackground(new java.awt.Color(67, 100, 130));
         pnlTitulo.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -314,6 +318,25 @@ public class lisEntidad extends frameBase<Entidad> {
         // TODO add your handling code here:
         new swObtenerEntidades().execute();
     }//GEN-LAST:event_btnRefrescarActionPerformed
+
+    private void tbEntidadesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbEntidadesMouseClicked
+        // TODO add your handling code here:
+        if (evt.getClickCount() == 2) {
+            switch (getModo()) {
+                case 1:
+                    if (FilaActiva(tbEntidades)) {
+                        Entidad entidad = new Entidad();
+                        entidad.setIdEntidad(ObtenerValorCelda(tbEntidades, 1));
+                        entidad.setNombre(ObtenerValorCelda(tbEntidades, 2));
+                        setSeleccionado(entidad);
+                    }
+                    Cerrar();
+                    break;
+                case 2:
+                    break;
+            }
+        }
+    }//GEN-LAST:event_tbEntidadesMouseClicked
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnNuevo;

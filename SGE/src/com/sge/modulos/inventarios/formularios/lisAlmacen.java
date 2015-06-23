@@ -45,15 +45,15 @@ public class lisAlmacen extends frameBase<Almacen> {
     public void Init() {
         switch (getModo()) {
             case 0:
-                OcultarColumna(tbAlmacenes, 0);
+                OcultarColumnas(tbAlmacenes, new int[]{0, 1});
                 OcultarControl(btnSeleccionar);
                 break;
             case 1:
-                OcultarColumnas(tbAlmacenes, new int[]{0, 5, 6});
+                OcultarColumnas(tbAlmacenes, new int[]{0, 1, 5, 6});
                 OcultarControl(btnNuevo);
                 break;
             case 2:
-                OcultarColumnas(tbAlmacenes, new int[]{5, 6});
+                OcultarColumnas(tbAlmacenes, new int[]{1, 5, 6});
                 OcultarControl(btnNuevo);
                 break;
         }
@@ -103,14 +103,23 @@ public class lisAlmacen extends frameBase<Almacen> {
                 String[] resultado = new Gson().fromJson(json, String[].class);
 
                 if (resultado[0].equals("true")) {
-                    EliminarTodasFilas(tbAlmacenes);
                     Almacen[] almacenes = new Gson().fromJson(resultado[1], Almacen[].class);
-                    for (Almacen almacen : almacenes) {
-                        AgregarFila(tbAlmacenes, new Object[]{false, almacen.getIdAlmacen(), almacen.getCodigo(), almacen.getDescripcion(), almacen.isActivo(), Icon_Save, Icon_Dele});
+                    if (getModo() == 1 && almacenes.length == 1) {
+                        setSeleccionado(almacenes[0]);
+                        Cerrar();
+                    } else if (getModo() == 2 && almacenes.length == 1) {
+                        setSeleccionados(new ArrayList<>());
+                        getSeleccionados().add(almacenes[0]);
+                        Cerrar();
+                    } else {
+                        EliminarTodasFilas(tbAlmacenes);
+                        for (Almacen almacen : almacenes) {
+                            AgregarFila(tbAlmacenes, new Object[]{false, almacen.getIdAlmacen(), almacen.getCodigo(), almacen.getDescripcion(), almacen.isActivo(), Icon_Save, Icon_Dele});
+                        }
+                        AgregarBoton(tbAlmacenes, save, 5);
+                        AgregarBoton(tbAlmacenes, dele, 6);
+                        AgregarOrdenamiento(tbAlmacenes);
                     }
-                    AgregarBoton(tbAlmacenes, save, 5);
-                    AgregarBoton(tbAlmacenes, dele, 6);
-                    AgregarOrdenamiento(tbAlmacenes);
                 }
                 OcultarCargando(frame);
             } catch (Exception e) {
@@ -256,17 +265,29 @@ public class lisAlmacen extends frameBase<Almacen> {
             }
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
+                boolean isEditable = false;
+                switch (getModo()) {
+                    case 0:
+                    isEditable = canEdit [columnIndex];
+                    break;
+                    case 1:
+                    isEditable = false;
+                    break;
+                    case 2:
+                    isEditable = columnIndex == 0;
+                    break;
+                }
+                return isEditable;
             }
         });
         tbAlmacenes.setRowHeight(25);
         tbAlmacenes.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        tbAlmacenes.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbAlmacenesMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tbAlmacenes);
-        if (tbAlmacenes.getColumnModel().getColumnCount() > 0) {
-            tbAlmacenes.getColumnModel().getColumn(1).setMinWidth(0);
-            tbAlmacenes.getColumnModel().getColumn(1).setPreferredWidth(0);
-            tbAlmacenes.getColumnModel().getColumn(1).setMaxWidth(0);
-        }
 
         pnlTitulo.setBackground(new java.awt.Color(67, 100, 130));
         pnlTitulo.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -422,6 +443,25 @@ public class lisAlmacen extends frameBase<Almacen> {
         // TODO add your handling code here:
         new swObtenerAlmacenes().execute();
     }//GEN-LAST:event_btnRefrescarActionPerformed
+
+    private void tbAlmacenesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbAlmacenesMouseClicked
+        // TODO add your handling code here:
+        if (evt.getClickCount() == 2) {
+            switch (getModo()) {
+                case 1:
+                    if (FilaActiva(tbAlmacenes)) {
+                        Almacen almacen = new Almacen();
+                        almacen.setIdAlmacen(ObtenerValorCelda(tbAlmacenes, 1));
+                        almacen.setDescripcion(ObtenerValorCelda(tbAlmacenes, 3));
+                        setSeleccionado(almacen);
+                    }
+                    Cerrar();
+                    break;
+                case 2:
+                    break;
+            }
+        }
+    }//GEN-LAST:event_tbAlmacenesMouseClicked
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnNuevo;

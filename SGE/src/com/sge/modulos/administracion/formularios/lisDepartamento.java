@@ -43,11 +43,11 @@ public class lisDepartamento extends frameBase<Departamento> {
     public void Init() {
         switch (getModo()) {
             case 0:
-                OcultarColumna(tbDepartamentos, 0);
+                OcultarColumnas(tbDepartamentos, new int[]{0, 1});
                 OcultarControl(btnSeleccionar);
                 break;
             case 1:
-                OcultarColumnas(tbDepartamentos, new int[]{0, 3, 4});
+                OcultarColumnas(tbDepartamentos, new int[]{0, 1, 3, 4});
                 OcultarControl(btnNuevo);
                 break;
         }
@@ -161,17 +161,21 @@ public class lisDepartamento extends frameBase<Departamento> {
             }
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
+                if(getModo() == 0) {
+                    return canEdit [columnIndex];
+                } else {
+                    return false;
+                }
             }
         });
         tbDepartamentos.setRowHeight(25);
         tbDepartamentos.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        tbDepartamentos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbDepartamentosMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tbDepartamentos);
-        if (tbDepartamentos.getColumnModel().getColumnCount() > 0) {
-            tbDepartamentos.getColumnModel().getColumn(1).setMinWidth(0);
-            tbDepartamentos.getColumnModel().getColumn(1).setPreferredWidth(0);
-            tbDepartamentos.getColumnModel().getColumn(1).setMaxWidth(0);
-        }
 
         pnlTitulo.setBackground(new java.awt.Color(67, 100, 130));
         pnlTitulo.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -315,6 +319,24 @@ public class lisDepartamento extends frameBase<Departamento> {
         new swObtenerDepartamentos().execute();
     }//GEN-LAST:event_btnRefrescarActionPerformed
 
+    private void tbDepartamentosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbDepartamentosMouseClicked
+        // TODO add your handling code here:
+        if (evt.getClickCount() == 2) {
+            switch (getModo()) {
+                case 1:
+                    if (FilaActiva(tbDepartamentos)) {
+                        Departamento departamento = new Departamento();
+                        departamento.setIdDepartamento(ObtenerValorCelda(tbDepartamentos, 1));
+                        departamento.setNombre(ObtenerValorCelda(tbDepartamentos, 2));
+                        setSeleccionado(departamento);
+                    }
+                    Cerrar();
+                    break;
+                case 2:
+                    break;
+            }
+        }
+    }//GEN-LAST:event_tbDepartamentosMouseClicked
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnNuevo;

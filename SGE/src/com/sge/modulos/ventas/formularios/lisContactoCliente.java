@@ -53,12 +53,17 @@ public class lisContactoCliente extends frameBase<ContactoCliente> {
                 String[] resultado = new Gson().fromJson(json, String[].class);
 
                 if (resultado[0].equals("true")) {
-                    EliminarTodasFilas(tbContactos);
                     ContactoCliente[] contactos = new Gson().fromJson(resultado[1], ContactoCliente[].class);
-                    for (ContactoCliente contacto : contactos) {
-                        AgregarFila(tbContactos, new Object[]{false, contacto.getIdContactoCliente(), contacto.getNombre(), contacto.getCargo()});
+                    if (contactos.length == 1) {
+                        setSeleccionado(contactos[0]);
+                        Cerrar();
+                    } else {
+                        EliminarTodasFilas(tbContactos);
+                        for (ContactoCliente contacto : contactos) {
+                            AgregarFila(tbContactos, new Object[]{false, contacto.getIdContactoCliente(), contacto.getNombre(), contacto.getCargo()});
+                        }
+                        AgregarOrdenamiento(tbContactos);
                     }
-                    AgregarOrdenamiento(tbContactos);
                 }
                 OcultarCargando(frame);
             } catch (Exception e) {
@@ -101,7 +106,7 @@ public class lisContactoCliente extends frameBase<ContactoCliente> {
                 java.lang.Boolean.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, true, true
+                false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -114,8 +119,16 @@ public class lisContactoCliente extends frameBase<ContactoCliente> {
         });
         tbContactos.setRowHeight(25);
         tbContactos.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        tbContactos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbContactosMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tbContactos);
         if (tbContactos.getColumnModel().getColumnCount() > 0) {
+            tbContactos.getColumnModel().getColumn(0).setMinWidth(0);
+            tbContactos.getColumnModel().getColumn(0).setPreferredWidth(0);
+            tbContactos.getColumnModel().getColumn(0).setMaxWidth(0);
             tbContactos.getColumnModel().getColumn(1).setMinWidth(0);
             tbContactos.getColumnModel().getColumn(1).setPreferredWidth(0);
             tbContactos.getColumnModel().getColumn(1).setMaxWidth(0);
@@ -237,6 +250,20 @@ public class lisContactoCliente extends frameBase<ContactoCliente> {
         // TODO add your handling code here:
         new swObtenerContactos().execute();
     }//GEN-LAST:event_btnRefrescarActionPerformed
+
+    private void tbContactosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbContactosMouseClicked
+        // TODO add your handling code here:
+        if (evt.getClickCount() == 2) {
+            if (FilaActiva(tbContactos)) {
+                ContactoCliente contacto = new ContactoCliente();
+                contacto.setIdContactoCliente(ObtenerValorCelda(tbContactos, 1));
+                contacto.setNombre(ObtenerValorCelda(tbContactos, 2));
+                contacto.setCargo(ObtenerValorCelda(tbContactos, 3));
+                setSeleccionado(contacto);
+                Cerrar();
+            }
+        }
+    }//GEN-LAST:event_tbContactosMouseClicked
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnRefrescar;

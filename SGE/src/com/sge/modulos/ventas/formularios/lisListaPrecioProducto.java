@@ -39,6 +39,21 @@ public class lisListaPrecioProducto extends frameBase<ListaPrecioProducto> {
         setFiltro(filtro);
     }
 
+    @Override
+    public void Init() {
+        switch (getModo()) {
+            case 0:
+                OcultarColumnas(tbListasPrecio, new int[]{0, 1});
+                OcultarControl(btnSeleccionar);
+                break;
+            case 1:
+                OcultarColumnas(tbListasPrecio, new int[]{0, 1, 4, 5});
+                OcultarControl(btnNuevo);
+                break;
+        }
+        new swObtenerListaPrecioProductos().execute();
+    }
+
     ImageIcon Icon_Edit = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/edit-16.png"));
     ImageIcon Icon_Dele = new ImageIcon(getClass().getResource("/com/sge/base/imagenes/delete-16.png"));
 
@@ -89,14 +104,19 @@ public class lisListaPrecioProducto extends frameBase<ListaPrecioProducto> {
                 String[] resultado = new Gson().fromJson(json, String[].class);
 
                 if (resultado[0].equals("true")) {
-                    EliminarTodasFilas(tbListasPrecio);
                     ListaPrecioProducto[] listasPrecio = new Gson().fromJson(resultado[1], ListaPrecioProducto[].class);
-                    for (ListaPrecioProducto listaPrecio : listasPrecio) {
-                        AgregarFila(tbListasPrecio, new Object[]{false, listaPrecio.getIdListaPrecioProducto(), listaPrecio.getNombre(), listaPrecio.isActivo(), Icon_Edit, Icon_Dele});
+                    if (getModo() == 1 && listasPrecio.length == 1) {
+                        setSeleccionado(listasPrecio[0]);
+                        Cerrar();
+                    } else {
+                        EliminarTodasFilas(tbListasPrecio);
+                        for (ListaPrecioProducto listaPrecio : listasPrecio) {
+                            AgregarFila(tbListasPrecio, new Object[]{false, listaPrecio.getIdListaPrecioProducto(), listaPrecio.getNombre(), listaPrecio.isActivo(), Icon_Edit, Icon_Dele});
+                        }
+                        AgregarBoton(tbListasPrecio, edit, 4);
+                        AgregarBoton(tbListasPrecio, dele, 5);
+                        AgregarOrdenamiento(tbListasPrecio);
                     }
-                    AgregarBoton(tbListasPrecio, edit, 4);
-                    AgregarBoton(tbListasPrecio, dele, 5);
-                    AgregarOrdenamiento(tbListasPrecio);
                 }
                 OcultarCargando(frame);
             } catch (Exception e) {
@@ -141,20 +161,6 @@ public class lisListaPrecioProducto extends frameBase<ListaPrecioProducto> {
                 ControlarExcepcion(e);
             }
         }
-    }
-
-    public void Init() {
-        switch (getModo()) {
-            case 0:
-                OcultarColumna(tbListasPrecio, 0);
-                OcultarControl(btnSeleccionar);
-                break;
-            case 1:
-                OcultarColumnas(tbListasPrecio, new int[]{0, 4, 5});
-                OcultarControl(btnNuevo);
-                break;
-        }
-        new swObtenerListaPrecioProductos().execute();
     }
 
     public void EditarListaPrecioProducto() {
@@ -211,17 +217,21 @@ public class lisListaPrecioProducto extends frameBase<ListaPrecioProducto> {
             }
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
+                if(getModo() == 0) {
+                    return canEdit [columnIndex];
+                } else {
+                    return false;
+                }
             }
         });
         tbListasPrecio.setRowHeight(25);
         tbListasPrecio.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        tbListasPrecio.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbListasPrecioMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tbListasPrecio);
-        if (tbListasPrecio.getColumnModel().getColumnCount() > 0) {
-            tbListasPrecio.getColumnModel().getColumn(1).setMinWidth(0);
-            tbListasPrecio.getColumnModel().getColumn(1).setPreferredWidth(0);
-            tbListasPrecio.getColumnModel().getColumn(1).setMaxWidth(0);
-        }
 
         pnlTitulo.setBackground(new java.awt.Color(67, 100, 130));
         pnlTitulo.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -364,6 +374,25 @@ public class lisListaPrecioProducto extends frameBase<ListaPrecioProducto> {
         // TODO add your handling code here:
         new swObtenerListaPrecioProductos().execute();
     }//GEN-LAST:event_btnRefrescarActionPerformed
+
+    private void tbListasPrecioMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbListasPrecioMouseClicked
+        // TODO add your handling code here:
+        if (evt.getClickCount() == 2) {
+            switch (getModo()) {
+                case 1:
+                    if (FilaActiva(tbListasPrecio)) {
+                        ListaPrecioProducto listaPrecio = new ListaPrecioProducto();
+                        listaPrecio.setIdListaPrecioProducto(ObtenerValorCelda(tbListasPrecio, 1));
+                        listaPrecio.setNombre(ObtenerValorCelda(tbListasPrecio, 2));
+                        setSeleccionado(listaPrecio);
+                    }
+                    Cerrar();
+                    break;
+                case 2:
+                    break;
+            }
+        }
+    }//GEN-LAST:event_tbListasPrecioMouseClicked
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnNuevo;

@@ -43,11 +43,11 @@ public class lisMoneda extends frameBase<Moneda> {
     public void Init() {
         switch (getModo()) {
             case 0:
-                OcultarColumna(tbMonedas, 0);
+                OcultarColumnas(tbMonedas, new int[]{0, 1});
                 OcultarControl(btnSeleccionar);
                 break;
             case 1:
-                OcultarColumnas(tbMonedas, new int[]{0, 5, 6});
+                OcultarColumnas(tbMonedas, new int[]{0, 1, 5, 6});
                 OcultarControl(btnNuevo);
                 break;
         }
@@ -253,17 +253,21 @@ public class lisMoneda extends frameBase<Moneda> {
             }
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
+                if(getModo() == 0) {
+                    return canEdit [columnIndex];
+                } else {
+                    return false;
+                }
             }
         });
         tbMonedas.setRowHeight(25);
         tbMonedas.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        tbMonedas.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbMonedasMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tbMonedas);
-        if (tbMonedas.getColumnModel().getColumnCount() > 0) {
-            tbMonedas.getColumnModel().getColumn(1).setMinWidth(0);
-            tbMonedas.getColumnModel().getColumn(1).setPreferredWidth(0);
-            tbMonedas.getColumnModel().getColumn(1).setMaxWidth(0);
-        }
 
         pnlTitulo.setBackground(new java.awt.Color(67, 100, 130));
         pnlTitulo.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -406,6 +410,25 @@ public class lisMoneda extends frameBase<Moneda> {
         // TODO add your handling code here:
         new swObtenerMonedas().execute();
     }//GEN-LAST:event_btnRefrescarActionPerformed
+
+    private void tbMonedasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbMonedasMouseClicked
+        // TODO add your handling code here:
+        if (evt.getClickCount() == 2) {
+            switch (getModo()) {
+                case 1:
+                    if (FilaActiva(tbMonedas)) {
+                        Moneda moneda = new Moneda();
+                        moneda.setIdMoneda(ObtenerValorCelda(tbMonedas, 1));
+                        moneda.setSimbolo(ObtenerValorCelda(tbMonedas, 2));
+                        setSeleccionado(moneda);
+                    }
+                    Cerrar();
+                    break;
+                case 2:
+                    break;
+            }
+        }
+    }//GEN-LAST:event_tbMonedasMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

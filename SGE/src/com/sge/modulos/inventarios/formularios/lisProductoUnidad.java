@@ -59,12 +59,21 @@ public class lisProductoUnidad extends frameBase<ProductoUnidad> {
                 String[] resultado = new Gson().fromJson(json, String[].class);
 
                 if (resultado[0].equals("true")) {
-                    EliminarTodasFilas(tbUnidades);
                     ProductoUnidad[] unidades = new Gson().fromJson(resultado[1].toString(), ProductoUnidad[].class);
-                    for (ProductoUnidad unidad : unidades) {
-                        AgregarFila(tbUnidades, new Object[]{false, unidad.getIdProductoUnidad(), unidad.getIdUnidad(), unidad.getAbreviacionUnidad(), unidad.getFactor()});
+                    if (getModo() == 1 && unidades.length == 1) {
+                        setSeleccionado(unidades[0]);
+                        Cerrar();
+                    } else if (getModo() == 2 && unidades.length == 1) {
+                        setSeleccionados(new ArrayList<>());
+                        getSeleccionados().add(unidades[0]);
+                        Cerrar();
+                    } else {
+                        EliminarTodasFilas(tbUnidades);
+                        for (ProductoUnidad unidad : unidades) {
+                            AgregarFila(tbUnidades, new Object[]{false, unidad.getIdProductoUnidad(), unidad.getIdUnidad(), unidad.getAbreviacionUnidad(), unidad.getFactor()});
+                        }
+                        AgregarOrdenamiento(tbUnidades);
                     }
-                    AgregarOrdenamiento(tbUnidades);
                 }
                 OcultarCargando(frame);
             } catch (Exception e) {
@@ -107,7 +116,7 @@ public class lisProductoUnidad extends frameBase<ProductoUnidad> {
                 java.lang.Boolean.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.String.class, java.lang.Integer.class
             };
             boolean[] canEdit = new boolean [] {
-                true, false, true, true, true
+                true, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -120,6 +129,11 @@ public class lisProductoUnidad extends frameBase<ProductoUnidad> {
         });
         tbUnidades.setRowHeight(25);
         tbUnidades.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        tbUnidades.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbUnidadesMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tbUnidades);
         if (tbUnidades.getColumnModel().getColumnCount() > 0) {
             tbUnidades.getColumnModel().getColumn(1).setMinWidth(0);
@@ -266,6 +280,27 @@ public class lisProductoUnidad extends frameBase<ProductoUnidad> {
         // TODO add your handling code here:
         new swObtenerUnidades().execute();
     }//GEN-LAST:event_btnRefrescarActionPerformed
+
+    private void tbUnidadesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbUnidadesMouseClicked
+        // TODO add your handling code here:
+        if (evt.getClickCount() == 2) {
+            switch (getModo()) {
+                case 1:
+                    if (FilaActiva(tbUnidades)) {
+                        ProductoUnidad productoUnidad = new ProductoUnidad();
+                        productoUnidad.setIdProductoUnidad(ObtenerValorCelda(tbUnidades, 1));
+                        productoUnidad.setIdUnidad(ObtenerValorCelda(tbUnidades, 2));
+                        productoUnidad.setAbreviacionUnidad(ObtenerValorCelda(tbUnidades, 3));
+                        productoUnidad.setFactor(ObtenerValorCelda(tbUnidades, 4));
+                        setSeleccionado(productoUnidad);
+                        Cerrar();
+                    }
+                    break;
+                case 2:
+                    break;
+            }
+        }
+    }//GEN-LAST:event_tbUnidadesMouseClicked
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnRefrescar;

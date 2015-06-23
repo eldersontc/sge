@@ -43,11 +43,11 @@ public class lisReporte extends frameBase<Reporte> {
     public void Init() {
         switch (getModo()) {
             case 0:
-                OcultarColumna(tbReportes, 0);
+                OcultarColumnas(tbReportes, new int[]{0, 1});
                 OcultarControl(btnSeleccionar);
                 break;
             case 1:
-                OcultarColumnas(tbReportes, new int[]{0, 5, 6});
+                OcultarColumnas(tbReportes, new int[]{0, 1, 5, 6});
                 OcultarControl(btnNuevo);
                 break;
         }
@@ -218,17 +218,21 @@ public class lisReporte extends frameBase<Reporte> {
             }
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
+                if(getModo() == 0) {
+                    return canEdit [columnIndex];
+                } else {
+                    return false;
+                }
             }
         });
         tbReportes.setRowHeight(25);
         tbReportes.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        tbReportes.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbReportesMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tbReportes);
-        if (tbReportes.getColumnModel().getColumnCount() > 0) {
-            tbReportes.getColumnModel().getColumn(1).setMinWidth(0);
-            tbReportes.getColumnModel().getColumn(1).setPreferredWidth(0);
-            tbReportes.getColumnModel().getColumn(1).setMaxWidth(0);
-        }
 
         pnlTitulo.setBackground(new java.awt.Color(67, 100, 130));
         pnlTitulo.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -389,6 +393,25 @@ public class lisReporte extends frameBase<Reporte> {
             ImprimirSinEntidad(ObtenerValorCelda(tbReportes, 1), ObtenerValorCelda(tbReportes, 2), frame);
         }
     }//GEN-LAST:event_btnImprimirActionPerformed
+
+    private void tbReportesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbReportesMouseClicked
+        // TODO add your handling code here:
+        if (evt.getClickCount() == 2) {
+            switch (getModo()) {
+                case 1:
+                    if (FilaActiva(tbReportes)) {
+                        Reporte reporte = new Reporte();
+                        reporte.setIdReporte(ObtenerValorCelda(tbReportes, 1));
+                        reporte.setNombre(ObtenerValorCelda(tbReportes, 2));
+                        setSeleccionado(reporte);
+                    }
+                    Cerrar();
+                    break;
+                case 2:
+                    break;
+            }
+        }
+    }//GEN-LAST:event_tbReportesMouseClicked
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnImprimir;

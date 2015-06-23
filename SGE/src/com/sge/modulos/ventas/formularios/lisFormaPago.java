@@ -43,11 +43,11 @@ public class lisFormaPago extends frameBase<FormaPago> {
     public void Init() {
         switch (getModo()) {
             case 0:
-                OcultarColumna(tbFormasPago, 0);
+                OcultarColumnas(tbFormasPago, new int[]{0, 1});
                 OcultarControl(btnSeleccionar);
                 break;
             case 1:
-                OcultarColumnas(tbFormasPago, new int[]{0, 6, 7});
+                OcultarColumnas(tbFormasPago, new int[]{0, 1, 6, 7});
                 OcultarControl(btnNuevo);
                 break;
         }
@@ -95,16 +95,20 @@ public class lisFormaPago extends frameBase<FormaPago> {
             try {
                 String json = get().toString();
                 String[] resultado = new Gson().fromJson(json, String[].class);
-
                 if (resultado[0].equals("true")) {
-                    EliminarTodasFilas(tbFormasPago);
                     FormaPago[] formasPago = new Gson().fromJson(resultado[1], FormaPago[].class);
-                    for (FormaPago formaPago : formasPago) {
-                        AgregarFila(tbFormasPago, new Object[]{false, formaPago.getIdFormaPago(), formaPago.getDescripcion(), formaPago.isCredito(), formaPago.getDias(), formaPago.isActivo(), Icon_Save, Icon_Dele});
+                    if (getModo() == 1 && formasPago.length == 1) {
+                        setSeleccionado(formasPago[0]);
+                        Cerrar();
+                    } else {
+                        EliminarTodasFilas(tbFormasPago);
+                        for (FormaPago formaPago : formasPago) {
+                            AgregarFila(tbFormasPago, new Object[]{false, formaPago.getIdFormaPago(), formaPago.getDescripcion(), formaPago.isCredito(), formaPago.getDias(), formaPago.isActivo(), Icon_Save, Icon_Dele});
+                        }
+                        AgregarBoton(tbFormasPago, save, 6);
+                        AgregarBoton(tbFormasPago, dele, 7);
+                        AgregarOrdenamiento(tbFormasPago);
                     }
-                    AgregarBoton(tbFormasPago, save, 6);
-                    AgregarBoton(tbFormasPago, dele, 7);
-                    AgregarOrdenamiento(tbFormasPago);
                 }
                 OcultarCargando(frame);
             } catch (Exception e) {
@@ -250,17 +254,21 @@ public class lisFormaPago extends frameBase<FormaPago> {
             }
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
+                if(getModo() == 0) {
+                    return canEdit [columnIndex];
+                } else {
+                    return false;
+                }
             }
         });
         tbFormasPago.setRowHeight(25);
         tbFormasPago.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        tbFormasPago.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbFormasPagoMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tbFormasPago);
-        if (tbFormasPago.getColumnModel().getColumnCount() > 0) {
-            tbFormasPago.getColumnModel().getColumn(1).setMinWidth(0);
-            tbFormasPago.getColumnModel().getColumn(1).setPreferredWidth(0);
-            tbFormasPago.getColumnModel().getColumn(1).setMaxWidth(0);
-        }
 
         pnlTitulo.setBackground(new java.awt.Color(67, 100, 130));
         pnlTitulo.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -406,6 +414,28 @@ public class lisFormaPago extends frameBase<FormaPago> {
         // TODO add your handling code here:
         new swObtenerFormaPagos().execute();
     }//GEN-LAST:event_btnRefrescarActionPerformed
+
+    private void tbFormasPagoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbFormasPagoMouseClicked
+        // TODO add your handling code here:
+        if (evt.getClickCount() == 2) {
+            switch (getModo()) {
+                case 1:
+                    if (FilaActiva(tbFormasPago)) {
+                        FormaPago formaPago = new FormaPago();
+                        formaPago.setIdFormaPago(ObtenerValorCelda(tbFormasPago, 1));
+                        formaPago.setDescripcion(ObtenerValorCelda(tbFormasPago, 2));
+                        formaPago.setCredito(ObtenerValorCelda(tbFormasPago, 3));
+                        formaPago.setDias(ObtenerValorCelda(tbFormasPago, 4));
+                        formaPago.setActivo(ObtenerValorCelda(tbFormasPago, 5));
+                        setSeleccionado(formaPago);
+                    }
+                    Cerrar();
+                    break;
+                case 2:
+                    break;
+            }
+        }
+    }//GEN-LAST:event_tbFormasPagoMouseClicked
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnNuevo;

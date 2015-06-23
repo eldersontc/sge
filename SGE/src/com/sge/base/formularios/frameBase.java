@@ -11,6 +11,7 @@ import java.awt.Window;
 import java.awt.event.WindowEvent;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.ParameterizedType;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.Action;
 import javax.swing.JList;
@@ -28,17 +29,17 @@ public class frameBase<T> extends JPanel {
 
     /////////////////////////////// VARIABLES //////////////////////////////////
     private int id;
-    
+
     private int modo;
-    
+
     private String filtro;
-    
+
     private T entidad;
 
     private T seleccionado;
-    
+
     private List<T> seleccionados;
-    
+
     public int getId() {
         return id;
     }
@@ -46,7 +47,7 @@ public class frameBase<T> extends JPanel {
     public void setId(int id) {
         this.id = id;
     }
-    
+
     public int getModo() {
         return modo;
     }
@@ -62,7 +63,7 @@ public class frameBase<T> extends JPanel {
     public void setFiltro(String filtro) {
         this.filtro = filtro;
     }
-    
+
     public T getEntidad() {
         return entidad;
     }
@@ -78,19 +79,22 @@ public class frameBase<T> extends JPanel {
     public void setSeleccionado(T seleccionado) {
         this.seleccionado = seleccionado;
     }
-    
+
     public List<T> getSeleccionados() {
+        if (seleccionados == null) {
+            setSeleccionados(new ArrayList<>());
+        }
         return seleccionados;
     }
 
     public void setSeleccionados(List<T> seleccionados) {
         this.seleccionados = seleccionados;
     }
-    
-    public int getIdUsuario(){
+
+    public int getIdUsuario() {
         return Integer.valueOf(System.getProperty("idUsuario"));
     }
-    
+
     public Class<?> getClazz() throws ClassNotFoundException {
         String clazz = ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0].getTypeName();
         return Class.forName(clazz);
@@ -279,10 +283,10 @@ public class frameBase<T> extends JPanel {
 
     private ValorDefinido valorDefinido;
 
-    public void setValorDefinido(ValorDefinido valorDefinido){
+    public void setValorDefinido(ValorDefinido valorDefinido) {
         this.valorDefinido = valorDefinido;
     }
-    
+
     public void setJson(String json) {
         this.valorDefinido.setJson(json);
     }
