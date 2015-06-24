@@ -2,7 +2,6 @@ package com.sge.modulos.ventas.accesoDatos;
 
 import com.sge.base.accesoDatos.BaseDAO;
 import com.sge.modulos.ventas.entidades.PlantillaSolicitudCotizacion;
-import java.math.BigInteger;
 import java.util.List;
 
 /**
@@ -17,11 +16,6 @@ public class PlantillaSolicitudCotizacionDAO extends BaseDAO {
                 + "FROM \n"
                 + "Ventas.PlantillaSolicitudCotizacion AS PlantillaSolicitudCotizacion " + filtro;
         return super.ObtenerLista(sql, PlantillaSolicitudCotizacion.class);
-    }
-
-    public int ObtenerGrupo() {
-        String sql = "SELECT nextval ('Ventas.Grupo_Seq')";
-        return ((BigInteger) super.ObtenerValor(sql)).intValue();
     }
 
     public int ActualizarPlantillaSolicitudCotizacion(int idPlantillaSolicitudCotizacion, String nombre, String lineaProduccion, boolean activo) {

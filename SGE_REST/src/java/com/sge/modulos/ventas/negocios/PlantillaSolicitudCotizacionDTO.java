@@ -35,6 +35,25 @@ public class PlantillaSolicitudCotizacionDTO extends BaseDTO {
         return lista;
     }
 
+    public PlantillaSolicitudCotizacion[] ObtenerPlantillasSolicitudCotizacionConItems(PlantillaSolicitudCotizacion[] plantillas) {
+        try {
+            itemPlantillaDAO = new ItemPlantillaSolicitudCotizacionDAO();
+            itemPlantillaDAO.AbrirSesion();
+            
+            for (PlantillaSolicitudCotizacion plantilla : plantillas) {
+                List<Object[]> filtros = new ArrayList<>();
+                filtros.add(new Object[]{"idPlantillaSolicitudCotizacion", plantilla.getIdPlantillaSolicitudCotizacion()});
+                List<ItemPlantillaSolicitudCotizacion> items = itemPlantillaDAO.ObtenerLista(ItemPlantillaSolicitudCotizacion.class, filtros);
+                plantilla.setItems(items);
+            }
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            itemPlantillaDAO.CerrarSesion();
+        }
+        return plantillas;
+    }
+    
     public PlantillaSolicitudCotizacion ObtenerPlantillaSolicitudCotizacion(int idPlantilla) {
         PlantillaSolicitudCotizacion plantilla = null;
         try {
@@ -128,19 +147,5 @@ public class PlantillaSolicitudCotizacionDTO extends BaseDTO {
             plantillaDAO.CerrarSesion();
         }
         return true;
-    }
-
-    public int ObtenerGrupo() {
-        int grupo = 0;
-        try {
-            plantillaDAO = new PlantillaSolicitudCotizacionDAO();
-            plantillaDAO.AbrirSesion();
-            grupo = plantillaDAO.ObtenerGrupo();
-        } catch (Exception e) {
-            throw e;
-        } finally {
-            plantillaDAO.CerrarSesion();
-        }
-        return grupo;
     }
 }
