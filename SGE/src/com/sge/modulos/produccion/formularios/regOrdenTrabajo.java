@@ -1307,7 +1307,7 @@ public class regOrdenTrabajo extends frameBase<OrdenTrabajo> {
             this.item = (ItemOrdenTrabajo) lisItems.getSelectedValue();
             AsignarControlesItem();
             AsignarTitulo(tpnlItems, 0, this.item.getNombre());
-            MostrarControl(tpnlItems);
+            VerControl(tpnlItems);
         } else {
             OcultarControl(tpnlItems);
         }

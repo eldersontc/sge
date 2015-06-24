@@ -63,7 +63,7 @@ public class Utils {
         modelo.removeRow(tabla.convertRowIndexToModel(tabla.getSelectedRow()));
     }
 
-    public static void MostrarColumna(JTable tabla, int columna, int ancho){
+    public static void VerColumna(JTable tabla, int columna, int ancho){
         tabla.getColumnModel().getColumn(columna).setMinWidth(ancho);
         tabla.getColumnModel().getColumn(columna).setMaxWidth(ancho);
         tabla.getColumnModel().getColumn(columna).setWidth(ancho);
@@ -97,35 +97,37 @@ public class Utils {
         componet.setVisible(false);
     }
 
-    public static void MostrarControl(Component componet) {
+    public static void VerControl(Component componet) {
         componet.setVisible(true);
     }
 
-    ////////////////////////////// JINTERNALFRAME //////////////////////////////
-
-    public static void Cerrar(JInternalFrame frame) {
-        try {
-            frame.setClosed(true);
-        } catch (Exception e) {
-            Excepciones.Controlar(e, frame);
-        }
-    }
-
     ////////////////////////////////// JTREE ///////////////////////////////////
-    public static void AgregarNodo(JTree tree, Object userObject) {
+    public static DefaultMutableTreeNode AgregarNodo(JTree tree, Object userObject) {
         DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
         DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
-        model.insertNodeInto(new DefaultMutableTreeNode(userObject), root, root.getChildCount());
+        DefaultMutableTreeNode nodo = new DefaultMutableTreeNode(userObject);
+        model.insertNodeInto(nodo, root, root.getChildCount());
+        return nodo;
     }
 
-    public static void EliminarNodoActivo(JTree tree, List<?> list) {
+    public static void AgregarNodo(JTree tree, TreePath path, Object userObject){
+        DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
+        DefaultMutableTreeNode nodo = (DefaultMutableTreeNode) path.getLastPathComponent();
+        model.insertNodeInto(new DefaultMutableTreeNode(userObject), nodo, nodo.getChildCount());
+    }
+    
+    public static void AgregarNodo(JTree tree, DefaultMutableTreeNode nodoPadre, Object userObject){
+        DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
+        model.insertNodeInto(new DefaultMutableTreeNode(userObject), nodoPadre, nodoPadre.getChildCount());
+    }
+    
+    public static void EliminarNodoActivo(JTree tree) {
         DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
         TreePath path = tree.getSelectionPath();
         if (path != null) {
             DefaultMutableTreeNode nodo = (DefaultMutableTreeNode) path.getLastPathComponent();
             if (nodo.getParent() != null) {
                 model.removeNodeFromParent(nodo);
-                list.remove(nodo.getUserObject());
             }
         }
     }
@@ -133,6 +135,11 @@ public class Utils {
     public static <T> T ObtenerValorNodo(TreePath path) {
         DefaultMutableTreeNode nodo = (DefaultMutableTreeNode) path.getLastPathComponent();
         return (T) nodo.getUserObject();
+    }
+    
+    public static <T> T ObtenerValorNodoPadre(TreePath path) {
+        DefaultMutableTreeNode nodo = (DefaultMutableTreeNode) path.getLastPathComponent();
+        return (T) ((DefaultMutableTreeNode)nodo.getParent()).getUserObject();
     }
     
     public static void ExpandirTodosNodos(JTree tree){

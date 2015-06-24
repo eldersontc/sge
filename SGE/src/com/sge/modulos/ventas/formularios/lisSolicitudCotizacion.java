@@ -272,60 +272,58 @@ public class lisSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
                     cotizacion.setDescripcionFormaPago(solicitud.getDescripcionFormaPago());
                     cotizacion.setIdVendedor(solicitud.getIdVendedor());
                     cotizacion.setNombreVendedor(solicitud.getNombreVendedor());
-                    cotizacion.setLineaProduccion(solicitud.getLineaProduccion());
                     cotizacion.setIdContactoCliente(solicitud.getIdContactoCliente());
                     cotizacion.setNombreContactoCliente(solicitud.getNombreContactoCliente());
                     cotizacion.setIdSolicitudCotizacion(solicitud.getIdSolicitudCotizacion());
                     cotizacion.setNumeroSolicitudCotizacion(solicitud.getNumero());
-                    cotizacion.setCantidad(solicitud.getCantidad());
-
-                    for (ItemSolicitudCotizacion itemSolicitud : solicitud.getItems()) {
-                        ItemCotizacion itemCotizacion = new ItemCotizacion();
-                        itemCotizacion.setNombre(itemSolicitud.getNombre());
-                        itemCotizacion.setIdServicioImpresion(itemSolicitud.getIdServicioImpresion());
-                        itemCotizacion.setNombreServicioImpresion(itemSolicitud.getNombreServicioImpresion());
-                        itemCotizacion.setIdMaquina(itemSolicitud.getIdMaquina());
-                        itemCotizacion.setDescripcionMaquina(itemSolicitud.getDescripcionMaquina());
-                        itemCotizacion.setAltoMaximoPliegoMaquina(itemSolicitud.getAltoMaximoPliegoMaquina());
-                        itemCotizacion.setLargoMaximoPliegoMaquina(itemSolicitud.getLargoMaximoPliegoMaquina());
-                        itemCotizacion.setIdMaterial(itemSolicitud.getIdMaterial());
-                        itemCotizacion.setCodigoMaterial(itemSolicitud.getCodigoMaterial());
-                        itemCotizacion.setNombreMaterial(itemSolicitud.getNombreMaterial());
-                        itemCotizacion.setAltoMaterial(itemSolicitud.getAltoMaterial());
-                        itemCotizacion.setLargoMaterial(itemSolicitud.getLargoMaterial());
-                        itemCotizacion.setIdUnidadMaterial(itemSolicitud.getIdUnidadMaterial());
-                        itemCotizacion.setAbreviacionUnidadMaterial(itemSolicitud.getAbreviacionUnidadMaterial());
-                        itemCotizacion.setFactorUnidadMaterial(itemSolicitud.getFactorUnidadMaterial());
-                        itemCotizacion.setNombreTipoUnidad(itemSolicitud.getNombreTipoUnidad());
-                        itemCotizacion.setUnidadMedidaAbierta(itemSolicitud.getUnidadMedidaAbierta());
-                        itemCotizacion.setMedidaAbierta(itemSolicitud.isMedidaAbierta());
-                        itemCotizacion.setMedidaCerrada(itemSolicitud.isMedidaCerrada());
-                        itemCotizacion.setTiraRetira(itemSolicitud.isTiraRetira());
-                        itemCotizacion.setGrafico(itemSolicitud.isGrafico());
-                        itemCotizacion.setMaterial(itemSolicitud.isMaterial());
-                        itemCotizacion.setServicioImpresion(itemSolicitud.isServicioImpresion());
-                        itemCotizacion.setFondo(itemSolicitud.isFondo());
-                        itemCotizacion.setTipoUnidad(itemSolicitud.isTipoUnidad());
-                        itemCotizacion.setLargoMedidaAbierta(itemSolicitud.getLargoMedidaAbierta());
-                        itemCotizacion.setAltoMedidaAbierta(itemSolicitud.getAltoMedidaAbierta());
-                        itemCotizacion.setLargoMedidaCerrada(itemSolicitud.getLargoMedidaCerrada());
-                        itemCotizacion.setAltoMedidaCerrada(itemSolicitud.getAltoMedidaCerrada());
-                        itemCotizacion.setTiraColor(itemSolicitud.getTiraColor());
-                        itemCotizacion.setRetiraColor(itemSolicitud.getRetiraColor());
-                        itemCotizacion.setdFondo(itemSolicitud.getdFondo());
-                        itemCotizacion.setCantidadTipoUnidad(itemSolicitud.getCantidadTipoUnidad());
-                        itemCotizacion.setObservacion(itemSolicitud.getAcabados());
-
-                        if (itemSolicitud.isGrafico()) {
-                            itemCotizacion.setIdMetodoImpresion(4);
-                            itemCotizacion.setDescripcionMetodoImpresion("TIRA");
-                            itemCotizacion.setCantidadPases(1);
-                            itemCotizacion.setCantidadCambios(1);
-                            itemCotizacion.setFactorHorizontal(1);
-                            itemCotizacion.setFactorVertical(1);
-                        }
-                        cotizacion.getItems().add(itemCotizacion);
-                    }
+                    
+//                    for (ItemSolicitudCotizacion itemSolicitud : solicitud.getItems()) {
+//                        ItemCotizacion itemCotizacion = new ItemCotizacion();
+//                        itemCotizacion.setNombre(itemSolicitud.getNombre());
+//                        itemCotizacion.setIdServicioImpresion(itemSolicitud.getIdServicioImpresion());
+//                        itemCotizacion.setNombreServicioImpresion(itemSolicitud.getNombreServicioImpresion());
+//                        itemCotizacion.setIdMaquina(itemSolicitud.getIdMaquina());
+//                        itemCotizacion.setDescripcionMaquina(itemSolicitud.getDescripcionMaquina());
+//                        itemCotizacion.setAltoMaximoPliegoMaquina(itemSolicitud.getAltoMaximoPliegoMaquina());
+//                        itemCotizacion.setLargoMaximoPliegoMaquina(itemSolicitud.getLargoMaximoPliegoMaquina());
+//                        itemCotizacion.setIdMaterial(itemSolicitud.getIdMaterial());
+//                        itemCotizacion.setCodigoMaterial(itemSolicitud.getCodigoMaterial());
+//                        itemCotizacion.setNombreMaterial(itemSolicitud.getNombreMaterial());
+//                        itemCotizacion.setAltoMaterial(itemSolicitud.getAltoMaterial());
+//                        itemCotizacion.setLargoMaterial(itemSolicitud.getLargoMaterial());
+//                        itemCotizacion.setIdUnidadMaterial(itemSolicitud.getIdUnidadMaterial());
+//                        itemCotizacion.setAbreviacionUnidadMaterial(itemSolicitud.getAbreviacionUnidadMaterial());
+//                        itemCotizacion.setFactorUnidadMaterial(itemSolicitud.getFactorUnidadMaterial());
+//                        itemCotizacion.setNombreTipoUnidad(itemSolicitud.getNombreTipoUnidad());
+//                        itemCotizacion.setUnidadMedidaAbierta(itemSolicitud.getUnidadMedidaAbierta());
+//                        itemCotizacion.setMedidaAbierta(itemSolicitud.isMedidaAbierta());
+//                        itemCotizacion.setMedidaCerrada(itemSolicitud.isMedidaCerrada());
+//                        itemCotizacion.setTiraRetira(itemSolicitud.isTiraRetira());
+//                        itemCotizacion.setGrafico(itemSolicitud.isGrafico());
+//                        itemCotizacion.setMaterial(itemSolicitud.isMaterial());
+//                        itemCotizacion.setServicioImpresion(itemSolicitud.isServicioImpresion());
+//                        itemCotizacion.setFondo(itemSolicitud.isFondo());
+//                        itemCotizacion.setTipoUnidad(itemSolicitud.isTipoUnidad());
+//                        itemCotizacion.setLargoMedidaAbierta(itemSolicitud.getLargoMedidaAbierta());
+//                        itemCotizacion.setAltoMedidaAbierta(itemSolicitud.getAltoMedidaAbierta());
+//                        itemCotizacion.setLargoMedidaCerrada(itemSolicitud.getLargoMedidaCerrada());
+//                        itemCotizacion.setAltoMedidaCerrada(itemSolicitud.getAltoMedidaCerrada());
+//                        itemCotizacion.setTiraColor(itemSolicitud.getTiraColor());
+//                        itemCotizacion.setRetiraColor(itemSolicitud.getRetiraColor());
+//                        itemCotizacion.setdFondo(itemSolicitud.getdFondo());
+//                        itemCotizacion.setCantidadTipoUnidad(itemSolicitud.getCantidadTipoUnidad());
+//                        itemCotizacion.setObservacion(itemSolicitud.getAcabados());
+//
+//                        if (itemSolicitud.isGrafico()) {
+//                            itemCotizacion.setIdMetodoImpresion(4);
+//                            itemCotizacion.setDescripcionMetodoImpresion("TIRA");
+//                            itemCotizacion.setCantidadPases(1);
+//                            itemCotizacion.setCantidadCambios(1);
+//                            itemCotizacion.setFactorHorizontal(1);
+//                            itemCotizacion.setFactorVertical(1);
+//                        }
+//                        cotizacion.getItems().add(itemCotizacion);
+//                    }
 
                     regCotizacion regCotizacion = new regCotizacion(0);
                     regCotizacion.setEntidad(cotizacion);

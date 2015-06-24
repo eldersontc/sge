@@ -92,7 +92,7 @@ public class perMenu extends frameBase<Menu> {
         @Override
         protected Object doInBackground() throws Exception {
             VerCargando(frame);
-            MostrarControl(treeMenus);
+            VerControl(treeMenus);
             cliAdministracion cliente = new cliAdministracion();
             String json = "";
             try {

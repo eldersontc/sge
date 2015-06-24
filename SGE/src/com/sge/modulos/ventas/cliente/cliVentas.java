@@ -78,6 +78,12 @@ public class cliVentas extends cliBase {
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
     }
 
+    public String ObtenerPlantillasSolicitudCotizacionConItems(Object requestEntity) throws ClientErrorException {
+        WebTarget resource = client.target(BASE_URI).path("PlantillaSolicitudCotizacionSRV");
+        resource = resource.path("ObtenerPlantillasSolicitudCotizacionConItems"+ getPathIdUsuario());
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
+    }
+    
     public String ObtenerPlantillaSolicitudCotizacion(Object requestEntity) throws ClientErrorException {
         WebTarget resource = client.target(BASE_URI).path("PlantillaSolicitudCotizacionSRV");
         resource = resource.path("ObtenerPlantillaSolicitudCotizacion"+ getPathIdUsuario());
@@ -101,13 +107,7 @@ public class cliVentas extends cliBase {
         resource = resource.path("EliminarPlantillaSolicitudCotizacion"+ getPathIdUsuario());
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
     }
-
-    public String GenerarSolicitudCotizacion(Object requestEntity) throws ClientErrorException {
-        WebTarget resource = client.target(BASE_URI).path("PlantillaSolicitudCotizacionSRV");
-        resource = resource.path("GenerarSolicitudCotizacion"+ getPathIdUsuario());
-        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON), String.class);
-    }
-
+    
     ////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////// SERVICIO ////////////////////////////////
     public String ObtenerServicios(Object requestEntity) throws ClientErrorException {

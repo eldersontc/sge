@@ -1892,7 +1892,7 @@ public class regCotizacion extends frameBase<Cotizacion> {
             this.item = (ItemCotizacion) lisItems.getSelectedValue();
             AsignarControlesItem();
             AsignarTitulo(tpnlItems, 0, this.item.getNombre());
-            MostrarControl(tpnlItems);
+            VerControl(tpnlItems);
         } else {
             OcultarControl(tpnlItems);
         }

@@ -19,6 +19,7 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JTree;
+import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
 /**
@@ -143,8 +144,8 @@ public class frameBase<T> extends JPanel {
         Utils.EliminarFila(tabla);
     }
 
-    public void MostrarColumna(JTable tabla, int columna, int ancho) {
-        Utils.MostrarColumna(tabla, columna, ancho);
+    public void VerColumna(JTable tabla, int columna, int ancho) {
+        Utils.VerColumna(tabla, columna, ancho);
     }
 
     public void OcultarColumna(JTable tabla, int columna) {
@@ -159,8 +160,8 @@ public class frameBase<T> extends JPanel {
         Utils.OcultarControl(component);
     }
 
-    public void MostrarControl(Component component) {
-        Utils.MostrarControl(component);
+    public void VerControl(Component component) {
+        Utils.VerControl(component);
     }
 
     public void AgregarOrdenamiento(JTable tabla) {
@@ -171,18 +172,30 @@ public class frameBase<T> extends JPanel {
         Utils.Filtrar(tabla, filtro);
     }
 
-    public void AgregarNodo(JTree tree, Object userObject) {
-        Utils.AgregarNodo(tree, userObject);
+    public DefaultMutableTreeNode AgregarNodo(JTree tree, Object userObject) {
+        return Utils.AgregarNodo(tree, userObject);
     }
 
-    public void EliminarNodoActivo(JTree tree, List<?> list) {
-        Utils.EliminarNodoActivo(tree, list);
+    public void AgregarNodo(JTree tree, TreePath path, Object userObject) {
+        Utils.AgregarNodo(tree, path, userObject);
+    }
+
+    public void AgregarNodo(JTree tree, DefaultMutableTreeNode nodoPadre, Object userObject) {
+        Utils.AgregarNodo(tree, nodoPadre, userObject);
+    }
+    
+    public void EliminarNodoActivo(JTree tree) {
+        Utils.EliminarNodoActivo(tree);
     }
 
     public <T> T ObtenerValorNodo(TreePath path) {
         return Utils.ObtenerValorNodo(path);
     }
 
+    public <T> T ObtenerValorNodoPadre(TreePath path) {
+        return Utils.ObtenerValorNodoPadre(path);
+    }
+    
     public void AgregarElemento(JList list, Object element) {
         Utils.AgregarElemento(list, element);
     }

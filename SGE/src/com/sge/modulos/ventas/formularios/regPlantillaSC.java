@@ -15,6 +15,8 @@ import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.DefaultListModel;
 import javax.swing.SwingWorker;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 /**
  *
@@ -52,6 +54,8 @@ public class regPlantillaSC extends frameBase<PlantillaSolicitudCotizacion> {
             Servicio seleccionado = ((lisServicio) e.getSource()).getSeleccionado();
             if (!(seleccionado == null)) {
                 schServicioImpresion.asingValues(seleccionado.getIdServicio(), seleccionado.getDescripcion());
+                item.setIdServicioImpresion(seleccionado.getIdServicio());
+                item.setNombreServicioImpresion(seleccionado.getDescripcion());
             }
         }
     };
@@ -62,12 +66,14 @@ public class regPlantillaSC extends frameBase<PlantillaSolicitudCotizacion> {
             Producto seleccionado = ((lisProducto) e.getSource()).getSeleccionado();
             if (!(seleccionado == null)) {
                 schMaterial.asingValues(seleccionado.getIdProducto(), seleccionado.getDescripcion());
+                item.setIdMaterial(seleccionado.getIdProducto());
+                item.setCodigoMaterial(seleccionado.getCodigo());
+                item.setNombreMaterial(seleccionado.getDescripcion());
                 item.setAltoMaterial(seleccionado.getAlto());
                 item.setLargoMaterial(seleccionado.getLargo());
                 item.setIdUnidadMaterial(seleccionado.getIdUnidadBase());
                 item.setAbreviacionUnidadMaterial(seleccionado.getAbreviacionUnidadBase());
                 item.setFactorUnidadMaterial(seleccionado.getFactorUnidadBase());
-                item.setCodigoMaterial(seleccionado.getCodigo());
             }
         }
     };
@@ -185,29 +191,6 @@ public class regPlantillaSC extends frameBase<PlantillaSolicitudCotizacion> {
         chkFondo.setSelected(this.item.isFondo());
     }
 
-    private void AsignarValoresItem() {
-        this.item.setNombre(txtNombreItem.getText());
-        this.item.setServicioImpresion(chkServicioImpresion.isSelected());
-        this.item.setIdServicioImpresion(schServicioImpresion.getId());
-        this.item.setNombreServicioImpresion(schServicioImpresion.getText());
-        this.item.setMaterial(chkMaterial.isSelected());
-        this.item.setIdMaterial(schMaterial.getId());
-        this.item.setNombreMaterial(schMaterial.getText());
-        this.item.setTipoUnidad(chkTipoUnidad.isSelected());
-        if (cboTipoUnidad.getSelectedItem() != null) {
-            this.item.setNombreTipoUnidad(cboTipoUnidad.getSelectedItem().toString());
-        }
-        this.item.setMedidaAbierta(chkMedidaAbierta.isSelected());
-        if (cboUnidadMedidaAbierta.getSelectedItem() != null) {
-            this.item.setUnidadMedidaAbierta(cboUnidadMedidaAbierta.getSelectedItem().toString());
-        }
-        this.item.setMedidaCerrada(chkMedidaCerrada.isSelected());
-        this.item.setTiraRetira(chkTiraRetira.isSelected());
-        this.item.setGrafico(chkGrafico.isSelected());
-        this.item.setFondo(chkFondo.isSelected());
-        this.item.setGrafico(chkGrafico.isSelected());
-    }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -229,21 +212,20 @@ public class regPlantillaSC extends frameBase<PlantillaSolicitudCotizacion> {
         cboLineaProduccion = new javax.swing.JComboBox();
         tpnlItems = new javax.swing.JTabbedPane();
         pnlItem = new javax.swing.JPanel();
-        schServicioImpresion = new com.sge.base.controles.JSearch();
+        lblNombreItem = new javax.swing.JLabel();
+        txtNombreItem = new javax.swing.JTextField();
         chkServicioImpresion = new javax.swing.JCheckBox();
+        schServicioImpresion = new com.sge.base.controles.JSearch();
         schMaterial = new com.sge.base.controles.JSearch();
         chkMaterial = new javax.swing.JCheckBox();
         chkTipoUnidad = new javax.swing.JCheckBox();
         cboTipoUnidad = new javax.swing.JComboBox();
         chkMedidaAbierta = new javax.swing.JCheckBox();
-        chkMedidaCerrada = new javax.swing.JCheckBox();
-        chkTiraRetira = new javax.swing.JCheckBox();
-        chkFondo = new javax.swing.JCheckBox();
-        chkGrafico = new javax.swing.JCheckBox();
         cboUnidadMedidaAbierta = new javax.swing.JComboBox();
-        btnGuardarItem = new javax.swing.JButton();
-        lblNombreItem = new javax.swing.JLabel();
-        txtNombreItem = new javax.swing.JTextField();
+        chkTiraRetira = new javax.swing.JCheckBox();
+        chkMedidaCerrada = new javax.swing.JCheckBox();
+        chkGrafico = new javax.swing.JCheckBox();
+        chkFondo = new javax.swing.JCheckBox();
         btnNuevoItem = new javax.swing.JButton();
         btnEliminarItem = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
@@ -280,7 +262,7 @@ public class regPlantillaSC extends frameBase<PlantillaSolicitudCotizacion> {
             .addGroup(pnlTituloLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lblTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 503, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(383, Short.MAX_VALUE))
         );
         pnlTituloLayout.setVerticalGroup(
             pnlTituloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -292,7 +274,7 @@ public class regPlantillaSC extends frameBase<PlantillaSolicitudCotizacion> {
 
         chkActivo.setText("ACTIVO");
 
-        lblLineaProduccion.setText("LINEA DE PRODUCCIÓN");
+        lblLineaProduccion.setText("L. PRODUCCIÓN");
 
         lblNombre.setText("NOMBRE");
 
@@ -301,6 +283,31 @@ public class regPlantillaSC extends frameBase<PlantillaSolicitudCotizacion> {
         pnlItem.setBackground(java.awt.Color.white);
         pnlItem.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
+        lblNombreItem.setText("NOMBRE");
+
+        txtNombreItem.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                txtNombreItemChange();
+            }
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                txtNombreItemChange();
+            }
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                txtNombreItemChange();
+            }
+
+        });
+
+        chkServicioImpresion.setText("IMPRESIÓN");
+        chkServicioImpresion.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                chkServicioImpresionStateChanged(evt);
+            }
+        });
+
         schServicioImpresion.addSearchListener(new SearchListener() {
             @Override
             public void Search(){
@@ -308,13 +315,7 @@ public class regPlantillaSC extends frameBase<PlantillaSolicitudCotizacion> {
             }
             @Override
             public void Clear(){
-            }
-        });
-
-        chkServicioImpresion.setText("SERVICIO DE IMPRESIÓN");
-        chkServicioImpresion.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                chkServicioImpresionStateChanged(evt);
+                schServicioImpresionClear();
             }
         });
 
@@ -344,6 +345,11 @@ public class regPlantillaSC extends frameBase<PlantillaSolicitudCotizacion> {
         });
 
         cboTipoUnidad.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "UNIDADES", "PAGINAS", "JUEGOS", "ORIGINALES", "OTROS" }));
+        cboTipoUnidad.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cboTipoUnidadItemStateChanged(evt);
+            }
+        });
 
         chkMedidaAbierta.setText("MEDIDA ABIERTA");
         chkMedidaAbierta.addChangeListener(new javax.swing.event.ChangeListener() {
@@ -352,113 +358,129 @@ public class regPlantillaSC extends frameBase<PlantillaSolicitudCotizacion> {
             }
         });
 
-        chkMedidaCerrada.setText("MEDIDA CERRADA");
-
-        chkTiraRetira.setText("TIRA Y RETIRA");
-
-        chkFondo.setText("FONDO");
-
-        chkGrafico.setText("GRÁFICO");
-
         cboUnidadMedidaAbierta.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "CM", "MT" }));
-
-        btnGuardarItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sge/base/imagenes/save-16.png"))); // NOI18N
-        btnGuardarItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnGuardarItemActionPerformed(evt);
+        cboUnidadMedidaAbierta.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cboUnidadMedidaAbiertaItemStateChanged(evt);
             }
         });
 
-        lblNombreItem.setText("NOMBRE");
+        chkTiraRetira.setText("TIRA Y RETIRA");
+        chkTiraRetira.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                chkTiraRetiraStateChanged(evt);
+            }
+        });
+
+        chkMedidaCerrada.setText("MEDIDA CERRADA");
+        chkMedidaCerrada.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                chkMedidaCerradaStateChanged(evt);
+            }
+        });
+
+        chkGrafico.setText("GRÁFICO");
+        chkGrafico.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                chkGraficoStateChanged(evt);
+            }
+        });
+
+        chkFondo.setText("FONDO");
+        chkFondo.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                chkFondoStateChanged(evt);
+            }
+        });
 
         javax.swing.GroupLayout pnlItemLayout = new javax.swing.GroupLayout(pnlItem);
         pnlItem.setLayout(pnlItemLayout);
         pnlItemLayout.setHorizontalGroup(
             pnlItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlItemLayout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(12, 12, 12)
                 .addGroup(pnlItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlItemLayout.createSequentialGroup()
-                        .addGroup(pnlItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(chkGrafico, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, pnlItemLayout.createSequentialGroup()
-                                .addComponent(chkMedidaCerrada)
-                                .addGap(47, 47, 47)
-                                .addGroup(pnlItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(chkFondo)
-                                    .addComponent(chkTiraRetira))))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnGuardarItem))
                     .addGroup(pnlItemLayout.createSequentialGroup()
+                        .addComponent(lblNombreItem, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(12, 12, 12)
+                        .addComponent(txtNombreItem, javax.swing.GroupLayout.PREFERRED_SIZE, 404, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(pnlItemLayout.createSequentialGroup()
+                        .addComponent(chkTipoUnidad, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(12, 12, 12)
+                        .addComponent(cboTipoUnidad, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(pnlItemLayout.createSequentialGroup()
+                        .addGroup(pnlItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(chkServicioImpresion, javax.swing.GroupLayout.DEFAULT_SIZE, 166, Short.MAX_VALUE)
+                            .addComponent(chkMaterial, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(12, 12, 12)
                         .addGroup(pnlItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(schMaterial, javax.swing.GroupLayout.PREFERRED_SIZE, 404, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlItemLayout.createSequentialGroup()
+                                .addComponent(schServicioImpresion, javax.swing.GroupLayout.PREFERRED_SIZE, 404, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap())))
+                    .addGroup(pnlItemLayout.createSequentialGroup()
+                        .addGroup(pnlItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addGroup(pnlItemLayout.createSequentialGroup()
-                                .addGroup(pnlItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(chkMedidaAbierta)
-                                    .addComponent(chkTipoUnidad)
-                                    .addComponent(chkMaterial))
-                                .addGap(54, 54, 54)
-                                .addGroup(pnlItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(schMaterial, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(cboUnidadMedidaAbierta, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(cboTipoUnidad, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(chkTiraRetira, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(12, 12, 12)
+                                .addComponent(chkFondo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addGroup(pnlItemLayout.createSequentialGroup()
-                                .addGroup(pnlItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(chkServicioImpresion)
-                                    .addComponent(lblNombreItem, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(pnlItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(txtNombreItem)
-                                    .addComponent(schServicioImpresion, javax.swing.GroupLayout.DEFAULT_SIZE, 255, Short.MAX_VALUE))))
-                        .addGap(0, 2, Short.MAX_VALUE)))
-                .addContainerGap())
+                                .addComponent(chkMedidaAbierta, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(12, 12, 12)
+                                .addComponent(cboUnidadMedidaAbierta, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(88, 88, 88)
+                        .addGroup(pnlItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(chkMedidaCerrada, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(chkGrafico, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)))))
         );
         pnlItemLayout.setVerticalGroup(
             pnlItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlItemLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(pnlItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblNombreItem)
-                    .addComponent(txtNombreItem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 8, Short.MAX_VALUE)
-                .addGroup(pnlItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(schServicioImpresion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(chkServicioImpresion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(pnlItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(schMaterial, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(chkMaterial, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(17, 17, 17)
                 .addGroup(pnlItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(chkTipoUnidad)
+                    .addComponent(lblNombreItem, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(pnlItemLayout.createSequentialGroup()
+                        .addGap(1, 1, 1)
+                        .addComponent(txtNombreItem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(6, 6, 6)
+                .addGroup(pnlItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(chkServicioImpresion, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(schServicioImpresion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(6, 6, 6)
+                .addGroup(pnlItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(chkMaterial, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(schMaterial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(6, 6, 6)
+                .addGroup(pnlItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnlItemLayout.createSequentialGroup()
+                        .addGap(1, 1, 1)
+                        .addComponent(chkTipoUnidad))
                     .addComponent(cboTipoUnidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(pnlItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(chkMedidaAbierta)
-                    .addComponent(cboUnidadMedidaAbierta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(7, 7, 7)
                 .addGroup(pnlItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnGuardarItem, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlItemLayout.createSequentialGroup()
-                        .addGroup(pnlItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(chkMedidaCerrada)
-                            .addComponent(chkTiraRetira))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(pnlItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(chkGrafico)
-                            .addComponent(chkFondo))))
-                .addContainerGap())
+                    .addComponent(cboUnidadMedidaAbierta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(pnlItemLayout.createSequentialGroup()
+                        .addGap(1, 1, 1)
+                        .addGroup(pnlItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(chkMedidaAbierta)
+                            .addComponent(chkMedidaCerrada))))
+                .addGap(6, 6, 6)
+                .addGroup(pnlItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(chkTiraRetira)
+                    .addComponent(chkFondo)
+                    .addComponent(chkGrafico)))
         );
 
         tpnlItems.addTab("ITEM", pnlItem);
 
-        btnNuevoItem.setText("NUEVO");
+        btnNuevoItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sge/base/imagenes/add-16.png"))); // NOI18N
         btnNuevoItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnNuevoItemActionPerformed(evt);
             }
         });
 
-        btnEliminarItem.setText("ELIMINAR");
+        btnEliminarItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/sge/base/imagenes/delete-16.png"))); // NOI18N
         btnEliminarItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnEliminarItemActionPerformed(evt);
@@ -467,9 +489,9 @@ public class regPlantillaSC extends frameBase<PlantillaSolicitudCotizacion> {
 
         lisItems.setModel(new DefaultListModel());
         lisItems.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        lisItems.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
-            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
-                lisItemsValueChanged(evt);
+        lisItems.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lisItemsMouseClicked(evt);
             }
         });
         jScrollPane2.setViewportView(lisItems);
@@ -482,56 +504,59 @@ public class regPlantillaSC extends frameBase<PlantillaSolicitudCotizacion> {
             .addGroup(frameLayout.createSequentialGroup()
                 .addGap(23, 23, 23)
                 .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, frameLayout.createSequentialGroup()
-                        .addComponent(btnNuevoItem, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(frameLayout.createSequentialGroup()
+                        .addComponent(lblNombre)
+                        .addGap(27, 27, 27)
+                        .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 292, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(33, 33, 33)
+                        .addComponent(lblLineaProduccion)
+                        .addGap(41, 41, 41)
+                        .addComponent(cboLineaProduccion, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(chkActivo))
+                    .addGroup(frameLayout.createSequentialGroup()
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnEliminarItem, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                    .addComponent(lblLineaProduccion, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 174, Short.MAX_VALUE)
-                    .addComponent(lblNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 490, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGroup(frameLayout.createSequentialGroup()
-                            .addComponent(cboLineaProduccion, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(chkActivo)
-                            .addGap(9, 9, 9)))
-                    .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addGroup(frameLayout.createSequentialGroup()
-                            .addComponent(btnAceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addComponent(tpnlItems, javax.swing.GroupLayout.PREFERRED_SIZE, 489, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(23, Short.MAX_VALUE))
+                        .addComponent(tpnlItems))
+                    .addGroup(frameLayout.createSequentialGroup()
+                        .addComponent(btnNuevoItem, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(6, 6, 6)
+                        .addComponent(btnEliminarItem, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(428, 428, 428)
+                        .addComponent(btnAceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(7, 7, 7)
+                        .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE))))
         );
         frameLayout.setVerticalGroup(
             frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(frameLayout.createSequentialGroup()
                 .addComponent(pnlTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGap(18, 18, 18)
+                .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(frameLayout.createSequentialGroup()
+                        .addGap(5, 5, 5)
+                        .addComponent(lblNombre))
                     .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblNombre))
-                .addGap(1, 1, 1)
-                .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(chkActivo)
+                    .addGroup(frameLayout.createSequentialGroup()
+                        .addGap(5, 5, 5)
+                        .addComponent(lblLineaProduccion))
                     .addComponent(cboLineaProduccion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblLineaProduccion))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addGroup(frameLayout.createSequentialGroup()
+                        .addGap(1, 1, 1)
+                        .addComponent(chkActivo)))
+                .addGap(12, 12, 12)
                 .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(tpnlItems, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane2))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(tpnlItems, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(6, 6, 6)
                 .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(btnNuevoItem)
-                        .addComponent(btnEliminarItem))
-                    .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(btnCancelar)
-                        .addComponent(btnAceptar)))
-                .addGap(17, 17, 17))
+                    .addComponent(btnNuevoItem)
+                    .addComponent(btnEliminarItem)
+                    .addGroup(frameLayout.createSequentialGroup()
+                        .addGap(3, 3, 3)
+                        .addGroup(frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnAceptar)
+                            .addComponent(btnCancelar)))))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -546,22 +571,35 @@ public class regPlantillaSC extends frameBase<PlantillaSolicitudCotizacion> {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void txtNombreItemChange(){
+        this.item.setNombre(txtNombreItem.getText());
+        lisItems.updateUI();
+        tpnlItems.setTitleAt(0, this.item.getNombre());
+    }
+    
     private void schServicioImpresionSearch() {
         String filtro = "WHERE Servicio.servicioImpresion = TRUE";
         VerModal(new lisServicio(1, filtro), sele_serv);
     }
 
+    private void schServicioImpresionClear(){
+        this.item.setIdServicioImpresion(0);
+        this.item.setNombreServicioImpresion("");
+    }
+    
     private void schMaterialSearch() {
         VerModal(new lisProducto(1), sele_mate);
     }
 
     private void schMaterialClear() {
+        this.item.setIdMaterial(0);
+        this.item.setCodigoMaterial("");
+        this.item.setNombreMaterial("");
         this.item.setAltoMaterial(0);
         this.item.setLargoMaterial(0);
         this.item.setIdUnidadMaterial(0);
-        this.item.setAbreviacionUnidadMaterial(null);
+        this.item.setAbreviacionUnidadMaterial("");
         this.item.setFactorUnidadMaterial(0);
-        this.item.setCodigoMaterial(null);
     }
 
     private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
@@ -576,35 +614,36 @@ public class regPlantillaSC extends frameBase<PlantillaSolicitudCotizacion> {
 
     private void chkServicioImpresionStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chkServicioImpresionStateChanged
         // TODO add your handling code here:
+        this.item.setServicioImpresion(chkServicioImpresion.isSelected());
         schServicioImpresion.setEnabled(chkServicioImpresion.isSelected());
     }//GEN-LAST:event_chkServicioImpresionStateChanged
 
     private void chkMaterialStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chkMaterialStateChanged
         // TODO add your handling code here:
+        this.item.setMaterial(chkMaterial.isSelected());
         schMaterial.setEnabled(chkMaterial.isSelected());
     }//GEN-LAST:event_chkMaterialStateChanged
 
     private void chkTipoUnidadStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chkTipoUnidadStateChanged
         // TODO add your handling code here:
+        this.item.setTipoUnidad(chkTipoUnidad.isSelected());
+        this.item.setNombreTipoUnidad(cboTipoUnidad.getSelectedItem().toString());
         cboTipoUnidad.setEnabled(chkTipoUnidad.isSelected());
     }//GEN-LAST:event_chkTipoUnidadStateChanged
 
     private void chkMedidaAbiertaStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chkMedidaAbiertaStateChanged
         // TODO add your handling code here:
+        this.item.setMedidaAbierta(chkMedidaAbierta.isSelected());
+        this.item.setUnidadMedidaAbierta(cboUnidadMedidaAbierta.getSelectedItem().toString());
         cboUnidadMedidaAbierta.setEnabled(chkMedidaAbierta.isSelected());
     }//GEN-LAST:event_chkMedidaAbiertaStateChanged
-
-    private void btnGuardarItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarItemActionPerformed
-        // TODO add your handling code here:
-        AsignarValoresItem();
-        lisItems.updateUI();
-        VerAdvertencia("ITEM GUARDADO!", this);
-    }//GEN-LAST:event_btnGuardarItemActionPerformed
 
     private void btnNuevoItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoItemActionPerformed
         // TODO add your handling code here:
         ItemPlantillaSolicitudCotizacion item = new ItemPlantillaSolicitudCotizacion();
         item.setNombre("ITEM " + (getEntidad().getItems().size() + 1));
+        item.setNombreTipoUnidad("");
+        item.setUnidadMedidaAbierta("");
         getEntidad().getItems().add(item);
         AgregarElemento(lisItems, item);
     }//GEN-LAST:event_btnNuevoItemActionPerformed
@@ -618,25 +657,55 @@ public class regPlantillaSC extends frameBase<PlantillaSolicitudCotizacion> {
             itemPlantilla.setEliminar(true);
         }
         EliminarElementoActivo(lisItems);
+        if(lisItems.getModel().getSize() == 0){
+            OcultarControl(tpnlItems);
+        }
     }//GEN-LAST:event_btnEliminarItemActionPerformed
 
-    private void lisItemsValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_lisItemsValueChanged
+    private void cboTipoUnidadItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cboTipoUnidadItemStateChanged
+        // TODO add your handling code here:
+        this.item.setNombreTipoUnidad(cboTipoUnidad.getSelectedItem().toString());
+    }//GEN-LAST:event_cboTipoUnidadItemStateChanged
+
+    private void cboUnidadMedidaAbiertaItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cboUnidadMedidaAbiertaItemStateChanged
+        // TODO add your handling code here:
+        this.item.setUnidadMedidaAbierta(cboUnidadMedidaAbierta.getSelectedItem().toString());
+    }//GEN-LAST:event_cboUnidadMedidaAbiertaItemStateChanged
+
+    private void chkMedidaCerradaStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chkMedidaCerradaStateChanged
+        // TODO add your handling code here:
+        this.item.setMedidaCerrada(chkMedidaCerrada.isSelected());
+    }//GEN-LAST:event_chkMedidaCerradaStateChanged
+
+    private void chkTiraRetiraStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chkTiraRetiraStateChanged
+        // TODO add your handling code here:
+        this.item.setTiraRetira(chkTiraRetira.isSelected());
+    }//GEN-LAST:event_chkTiraRetiraStateChanged
+
+    private void chkGraficoStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chkGraficoStateChanged
+        // TODO add your handling code here:
+        this.item.setGrafico(chkGrafico.isSelected());
+    }//GEN-LAST:event_chkGraficoStateChanged
+
+    private void chkFondoStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chkFondoStateChanged
+        // TODO add your handling code here:
+        this.item.setFondo(chkFondo.isSelected());
+    }//GEN-LAST:event_chkFondoStateChanged
+
+    private void lisItemsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lisItemsMouseClicked
         // TODO add your handling code here:
         if (lisItems.getSelectedValue() != null) {
             this.item = (ItemPlantillaSolicitudCotizacion) lisItems.getSelectedValue();
             AsignarControlesItem();
             AsignarTitulo(tpnlItems, 0, this.item.getNombre());
-            MostrarControl(tpnlItems);
-        } else {
-            OcultarControl(tpnlItems);
+            VerControl(tpnlItems);
         }
-    }//GEN-LAST:event_lisItemsValueChanged
+    }//GEN-LAST:event_lisItemsMouseClicked
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAceptar;
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnEliminarItem;
-    private javax.swing.JButton btnGuardarItem;
     private javax.swing.JButton btnNuevoItem;
     private javax.swing.JComboBox cboLineaProduccion;
     private javax.swing.JComboBox cboTipoUnidad;

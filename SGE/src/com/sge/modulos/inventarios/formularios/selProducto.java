@@ -294,15 +294,15 @@ public class selProducto extends frameBase<SeleccionProducto> {
         // TODO add your handling code here:
         switch (cboCosto.getSelectedItem().toString()) {
             case "COSTO ULTIMA COMPRA":
-                MostrarColumna(tbProductos, 4, 80);
+                VerColumna(tbProductos, 4, 80);
                 OcultarColumnas(tbProductos, new int[]{5, 6});
                 break;
             case "COSTO PROMEDIO":
-                MostrarColumna(tbProductos, 5, 80);
+                VerColumna(tbProductos, 5, 80);
                 OcultarColumnas(tbProductos, new int[]{4, 6});
                 break;
             case "COSTO REFERENCIA":
-                MostrarColumna(tbProductos, 6, 80);
+                VerColumna(tbProductos, 6, 80);
                 OcultarColumnas(tbProductos, new int[]{4, 5});
                 break;
         }
