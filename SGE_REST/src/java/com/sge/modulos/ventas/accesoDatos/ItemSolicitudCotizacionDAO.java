@@ -34,8 +34,8 @@ public class ItemSolicitudCotizacionDAO extends BaseDAO {
         return super.Ejecutar(sql);
     }
 
-    public int EliminarItemSolicitudCotizacionPorIdSolicitudCotizacion(int idSolicitudCotizacion) {
-        String sql = "DELETE FROM Ventas.ItemSolicitudCotizacion WHERE idSolicitudCotizacion = " + idSolicitudCotizacion;
+    public int EliminarItemSolicitudCotizacionPorIdGrupoSolicitudCotizacion(int idGrupoSolicitudCotizacion) {
+        String sql = "DELETE FROM Ventas.ItemSolicitudCotizacion WHERE idGrupoSolicitudCotizacion = " + idGrupoSolicitudCotizacion;
         return super.Ejecutar(sql);
     }
 }

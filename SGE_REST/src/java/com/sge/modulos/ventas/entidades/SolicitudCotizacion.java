@@ -16,7 +16,6 @@ public class SolicitudCotizacion {
     private int idNumeracion;
     private String descripcionNumeracion;
     private Date fechaCreacion;
-    private String grupo;
     private String descripcion;
     private int idCliente;
     private String razonSocialCliente;
@@ -32,16 +31,14 @@ public class SolicitudCotizacion {
     private String nombreVendedor;
     private int idFormaPago;
     private String descripcionFormaPago;
-    private String lineaProduccion;
     private int idContactoCliente;
     private String nombreContactoCliente;
-    private int cantidad;
     private String observacion;
     private String estado;
-    private List<ItemSolicitudCotizacion> items;
-    
+    private List<GrupoSolicitudCotizacion> grupos;
+
     public SolicitudCotizacion() {
-        items = new ArrayList<>();
+        grupos = new ArrayList<>();
     }
 
     public int getIdSolicitudCotizacion() {
@@ -91,15 +88,7 @@ public class SolicitudCotizacion {
     public void setFechaCreacion(Date fechaCreacion) {
         this.fechaCreacion = fechaCreacion;
     }
-
-    public String getGrupo() {
-        return grupo;
-    }
-
-    public void setGrupo(String grupo) {
-        this.grupo = grupo;
-    }
-
+    
     public String getDescripcion() {
         return descripcion;
     }
@@ -220,14 +209,6 @@ public class SolicitudCotizacion {
         this.descripcionFormaPago = descripcionFormaPago;
     }
 
-    public String getLineaProduccion() {
-        return lineaProduccion;
-    }
-
-    public void setLineaProduccion(String lineaProduccion) {
-        this.lineaProduccion = lineaProduccion;
-    }
-
     public int getIdContactoCliente() {
         return idContactoCliente;
     }
@@ -244,14 +225,6 @@ public class SolicitudCotizacion {
         this.nombreContactoCliente = nombreContactoCliente;
     }
     
-    public int getCantidad() {
-        return cantidad;
-    }
-
-    public void setCantidad(int cantidad) {
-        this.cantidad = cantidad;
-    }
-
     public String getObservacion() {
         return observacion;
     }
@@ -268,11 +241,11 @@ public class SolicitudCotizacion {
         this.estado = estado;
     }
 
-    public List<ItemSolicitudCotizacion> getItems() {
-        return items;
+    public List<GrupoSolicitudCotizacion> getGrupos() {
+        return grupos;
     }
 
-    public void setItems(List<ItemSolicitudCotizacion> items) {
-        this.items = items;
+    public void setGrupos(List<GrupoSolicitudCotizacion> grupos) {
+        this.grupos = grupos;
     }
 }

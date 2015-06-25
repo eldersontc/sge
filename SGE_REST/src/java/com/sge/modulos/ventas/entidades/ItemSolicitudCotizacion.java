@@ -7,7 +7,7 @@ package com.sge.modulos.ventas.entidades;
 public class ItemSolicitudCotizacion {
     
     private int idItemSolicitudCotizacion;
-    private int idSolicitudCotizacion;
+    private int idGrupoSolicitudCotizacion;
     private String nombre;
     private int idServicioImpresion;
     private String nombreServicioImpresion;
@@ -57,12 +57,12 @@ public class ItemSolicitudCotizacion {
         this.idItemSolicitudCotizacion = idItemSolicitudCotizacion;
     }
 
-    public int getIdSolicitudCotizacion() {
-        return idSolicitudCotizacion;
+    public int getIdGrupoSolicitudCotizacion() {
+        return idGrupoSolicitudCotizacion;
     }
 
-    public void setIdSolicitudCotizacion(int idSolicitudCotizacion) {
-        this.idSolicitudCotizacion = idSolicitudCotizacion;
+    public void setIdGrupoSolicitudCotizacion(int idGrupoSolicitudCotizacion) {
+        this.idGrupoSolicitudCotizacion = idGrupoSolicitudCotizacion;
     }
 
     public String getNombre() {
@@ -157,6 +157,10 @@ public class ItemSolicitudCotizacion {
         return altoMaterial;
     }
 
+    public void setAltoMaterial(double altoMaterial) {
+        this.altoMaterial = altoMaterial;
+    }
+
     public int getIdUnidadMaterial() {
         return idUnidadMaterial;
     }
@@ -181,10 +185,6 @@ public class ItemSolicitudCotizacion {
         this.factorUnidadMaterial = factorUnidadMaterial;
     }
     
-    public void setAltoMaterial(double altoMaterial) {
-        this.altoMaterial = altoMaterial;
-    }
-
     public String getNombreTipoUnidad() {
         return nombreTipoUnidad;
     }

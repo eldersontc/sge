@@ -9,7 +9,7 @@
                 <param name="sequence">ventas.itemsolicitudcotizacion_iditemsolicitudcotizacion_seq</param>
             </generator>
         </id>
-        <property name="idSolicitudCotizacion" column="idSolicitudCotizacion"/>
+        <property name="idGrupoSolicitudCotizacion" column="idGrupoSolicitudCotizacion"/>
         <property name="nombre" column="nombre"/>
         <property name="idServicioImpresion" column="idServicioImpresion"/>
         <property name="nombreServicioImpresion" column="nombreServicioImpresion"/>

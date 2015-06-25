@@ -2,8 +2,10 @@ package com.sge.modulos.ventas.negocios;
 
 import com.sge.base.negocios.BaseDTO;
 import com.sge.modulos.administracion.accesoDatos.NumeracionDAO;
+import com.sge.modulos.ventas.accesoDatos.GrupoSolicitudCotizacionDAO;
 import com.sge.modulos.ventas.accesoDatos.ItemSolicitudCotizacionDAO;
 import com.sge.modulos.ventas.accesoDatos.SolicitudCotizacionDAO;
+import com.sge.modulos.ventas.entidades.GrupoSolicitudCotizacion;
 import com.sge.modulos.ventas.entidades.ItemSolicitudCotizacion;
 import com.sge.modulos.ventas.entidades.SolicitudCotizacion;
 import java.util.ArrayList;
@@ -16,6 +18,7 @@ import java.util.List;
 public class SolicitudCotizacionDTO extends BaseDTO {
 
     SolicitudCotizacionDAO solicitudCotizacionDAO;
+    GrupoSolicitudCotizacionDAO grupoSolicitudCotizacionDAO;
     ItemSolicitudCotizacionDAO itemSolicitudCotizacionDAO;
     NumeracionDAO numeracionDAO;
 
@@ -44,12 +47,26 @@ public class SolicitudCotizacionDTO extends BaseDTO {
             solicitudCotizacionDAO.AbrirSesion();
             solicitudCotizacion = solicitudCotizacionDAO.ObtenerPorId(SolicitudCotizacion.class, idSolicitudCotizacion);
 
+            grupoSolicitudCotizacionDAO = new GrupoSolicitudCotizacionDAO();
+            grupoSolicitudCotizacionDAO.AsignarSesion(solicitudCotizacionDAO);
+
             itemSolicitudCotizacionDAO = new ItemSolicitudCotizacionDAO();
             itemSolicitudCotizacionDAO.AsignarSesion(solicitudCotizacionDAO);
+
             List<Object[]> filtros = new ArrayList<>();
             filtros.add(new Object[]{"idSolicitudCotizacion", idSolicitudCotizacion});
-            List<ItemSolicitudCotizacion> items = itemSolicitudCotizacionDAO.ObtenerLista(ItemSolicitudCotizacion.class, filtros);
-            solicitudCotizacion.setItems(items);
+            List<GrupoSolicitudCotizacion> grupos = grupoSolicitudCotizacionDAO.ObtenerLista(GrupoSolicitudCotizacion.class, filtros);
+
+            for (GrupoSolicitudCotizacion grupo : grupos) {
+
+                filtros = new ArrayList<>();
+                filtros.add(new Object[]{"idGrupoSolicitudCotizacion", grupo.getIdGrupoSolicitudCotizacion()});
+                List<ItemSolicitudCotizacion> items = itemSolicitudCotizacionDAO.ObtenerLista(ItemSolicitudCotizacion.class, filtros);
+
+                grupo.setItems(items);
+            }
+
+            solicitudCotizacion.setGrupos(grupos);
         } catch (Exception e) {
             throw e;
         } finally {
@@ -74,11 +91,22 @@ public class SolicitudCotizacionDTO extends BaseDTO {
 
             solicitudCotizacionDAO.Agregar(solicitudCotizacion);
 
+            grupoSolicitudCotizacionDAO = new GrupoSolicitudCotizacionDAO();
+            grupoSolicitudCotizacionDAO.AsignarSesion(solicitudCotizacionDAO);
+
             itemSolicitudCotizacionDAO = new ItemSolicitudCotizacionDAO();
             itemSolicitudCotizacionDAO.AsignarSesion(solicitudCotizacionDAO);
-            for (ItemSolicitudCotizacion item : solicitudCotizacion.getItems()) {
-                item.setIdSolicitudCotizacion(solicitudCotizacion.getIdSolicitudCotizacion());
-                itemSolicitudCotizacionDAO.Agregar(item);
+
+            for (GrupoSolicitudCotizacion grupo : solicitudCotizacion.getGrupos()) {
+
+                grupo.setIdSolicitudCotizacion(solicitudCotizacion.getIdSolicitudCotizacion());
+                grupoSolicitudCotizacionDAO.Agregar(grupo);
+
+                for (ItemSolicitudCotizacion item : grupo.getItems()) {
+
+                    item.setIdGrupoSolicitudCotizacion(grupo.getIdGrupoSolicitudCotizacion());
+                    itemSolicitudCotizacionDAO.Agregar(item);
+                }
             }
 
             solicitudCotizacionDAO.ConfirmarTransaccion();
@@ -97,18 +125,41 @@ public class SolicitudCotizacionDTO extends BaseDTO {
             solicitudCotizacionDAO.IniciarTransaccion();
             solicitudCotizacionDAO.ActualizarSolicitudCotizacion(solicitudCotizacion);
 
+            grupoSolicitudCotizacionDAO = new GrupoSolicitudCotizacionDAO();
+            grupoSolicitudCotizacionDAO.AsignarSesion(solicitudCotizacionDAO);
+
             itemSolicitudCotizacionDAO = new ItemSolicitudCotizacionDAO();
             itemSolicitudCotizacionDAO.AsignarSesion(solicitudCotizacionDAO);
-            for (ItemSolicitudCotizacion item : solicitudCotizacion.getItems()) {
-                if (item.isAgregar()) {
-                    item.setIdSolicitudCotizacion(solicitudCotizacion.getIdSolicitudCotizacion());
-                    itemSolicitudCotizacionDAO.Agregar(item);
+
+            for (GrupoSolicitudCotizacion grupo : solicitudCotizacion.getGrupos()) {
+                if (grupo.isAgregar()) {
+                    grupo.setIdSolicitudCotizacion(solicitudCotizacion.getIdSolicitudCotizacion());
+                    grupoSolicitudCotizacionDAO.Agregar(grupo);
+                    for (ItemSolicitudCotizacion item : grupo.getItems()) {
+                        item.setIdGrupoSolicitudCotizacion(grupo.getIdGrupoSolicitudCotizacion());
+                        itemSolicitudCotizacionDAO.Agregar(item);
+                    }
                 }
-                if (item.isActualizar()) {
-                    itemSolicitudCotizacionDAO.ActualizarItemSolicitudCotizacion(item);
+                if (grupo.isActualizar()) {
+                    grupoSolicitudCotizacionDAO.ActualizarGrupoSolicitudCotizacion(grupo);
+                    for (ItemSolicitudCotizacion item : grupo.getItems()) {
+                        if(item.isAgregar()){
+                            item.setIdGrupoSolicitudCotizacion(grupo.getIdGrupoSolicitudCotizacion());
+                            itemSolicitudCotizacionDAO.Agregar(item);
+                        }
+                        if(item.isActualizar()){
+                            item.setIdGrupoSolicitudCotizacion(grupo.getIdGrupoSolicitudCotizacion());
+                            itemSolicitudCotizacionDAO.ActualizarItemSolicitudCotizacion(item);
+                        }
+                        if(item.isEliminar()){
+                            item.setIdGrupoSolicitudCotizacion(grupo.getIdGrupoSolicitudCotizacion());
+                            itemSolicitudCotizacionDAO.EliminarItemSolicitudCotizacion(item.getIdItemSolicitudCotizacion());
+                        }
+                    }
                 }
-                if (item.isEliminar()) {
-                    itemSolicitudCotizacionDAO.EliminarItemSolicitudCotizacion(item.getIdItemSolicitudCotizacion());
+                if (grupo.isEliminar()) {
+                    grupoSolicitudCotizacionDAO.EliminarGrupoSolicitudCotizacion(grupo.getIdGrupoSolicitudCotizacion());
+                    itemSolicitudCotizacionDAO.EliminarItemSolicitudCotizacionPorIdGrupoSolicitudCotizacion(grupo.getIdGrupoSolicitudCotizacion());
                 }
             }
             solicitudCotizacionDAO.ConfirmarTransaccion();
@@ -127,10 +178,21 @@ public class SolicitudCotizacionDTO extends BaseDTO {
             solicitudCotizacionDAO.IniciarTransaccion();
             solicitudCotizacionDAO.EliminarSolicitudCotizacion(idSolicitudCotizacion);
 
+            grupoSolicitudCotizacionDAO = new GrupoSolicitudCotizacionDAO();
+            grupoSolicitudCotizacionDAO.AsignarSesion(solicitudCotizacionDAO);
+            
             itemSolicitudCotizacionDAO = new ItemSolicitudCotizacionDAO();
             itemSolicitudCotizacionDAO.AsignarSesion(solicitudCotizacionDAO);
-            itemSolicitudCotizacionDAO.EliminarItemSolicitudCotizacionPorIdSolicitudCotizacion(idSolicitudCotizacion);
+            
+            List<Object[]> filtros = new ArrayList<>();
+            filtros.add(new Object[]{"idSolicitudCotizacion", idSolicitudCotizacion});
+            List<GrupoSolicitudCotizacion> grupos = grupoSolicitudCotizacionDAO.ObtenerLista(GrupoSolicitudCotizacion.class, filtros);
 
+            for (GrupoSolicitudCotizacion grupo : grupos) {
+                grupoSolicitudCotizacionDAO.EliminarGrupoSolicitudCotizacion(grupo.getIdGrupoSolicitudCotizacion());
+                itemSolicitudCotizacionDAO.EliminarItemSolicitudCotizacionPorIdGrupoSolicitudCotizacion(grupo.getIdGrupoSolicitudCotizacion());
+            }
+            
             solicitudCotizacionDAO.ConfirmarTransaccion();
         } catch (Exception e) {
             solicitudCotizacionDAO.AbortarTransaccion();

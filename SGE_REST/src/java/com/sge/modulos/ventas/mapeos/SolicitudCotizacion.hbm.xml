@@ -14,7 +14,6 @@
         <property name="idNumeracion" column="idNumeracion"/>
         <property name="descripcionNumeracion" column="descripcionNumeracion"/>
         <property name="fechaCreacion" column="fechaCreacion"/>
-        <property name="grupo" column="grupo"/>
         <property name="descripcion" column="descripcion"/>
         <property name="idCliente" column="idCliente"/>
         <property name="razonSocialCliente" column="razonSocialCliente"/>
@@ -30,10 +29,8 @@
         <property name="nombreVendedor" column="nombreVendedor"/>
         <property name="idFormaPago" column="idFormaPago"/>
         <property name="descripcionFormaPago" column="descripcionFormaPago"/>
-        <property name="lineaProduccion" column="lineaProduccion"/>
         <property name="idContactoCliente" column="idContactoCliente"/>
         <property name="nombreContactoCliente" column="nombreContactoCliente"/>
-        <property name="cantidad" column="cantidad"/>
         <property name="observacion" column="observacion"/>
         <property name="estado" column="estado"/>
     </class>
