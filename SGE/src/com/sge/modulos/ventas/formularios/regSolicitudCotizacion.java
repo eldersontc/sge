@@ -145,6 +145,8 @@ public class regSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
             Maquina seleccionado = ((lisMaquina) evt.getSource()).getSeleccionado();
             if (!(seleccionado == null)) {
                 schMaquina.asingValues(seleccionado.getIdMaquina(), seleccionado.getDescripcion());
+                item.setIdMaquina(seleccionado.getIdMaquina());
+                item.setDescripcionMaquina(seleccionado.getDescripcion());
                 item.setAltoMaximoPliegoMaquina(seleccionado.getAltoMaximoPliego());
                 item.setLargoMaximoPliegoMaquina(seleccionado.getLargoMaximoPliego());
             }
@@ -157,6 +159,8 @@ public class regSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
             Servicio seleccionado = ((lisServicio) e.getSource()).getSeleccionado();
             if (!(seleccionado == null)) {
                 schServicioImpresion.asingValues(seleccionado.getIdServicio(), seleccionado.getDescripcion());
+                item.setIdServicioImpresion(seleccionado.getIdServicio());
+                item.setNombreServicioImpresion(seleccionado.getDescripcion());
             }
         }
     };
@@ -167,12 +171,14 @@ public class regSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
             Producto seleccionado = ((lisProducto) e.getSource()).getSeleccionado();
             if (!(seleccionado == null)) {
                 schMaterial.asingValues(seleccionado.getIdProducto(), seleccionado.getDescripcion());
+                item.setIdMaterial(seleccionado.getIdProducto());
+                item.setCodigoMaterial(seleccionado.getCodigo());
+                item.setNombreMaterial(seleccionado.getDescripcion());
                 item.setAltoMaterial(seleccionado.getAlto());
                 item.setLargoMaterial(seleccionado.getLargo());
                 item.setIdUnidadMaterial(seleccionado.getIdUnidadBase());
                 item.setAbreviacionUnidadMaterial(seleccionado.getAbreviacionUnidadBase());
                 item.setFactorUnidadMaterial(seleccionado.getFactorUnidadBase());
-                item.setCodigoMaterial(seleccionado.getCodigo());
             }
         }
     };
@@ -242,6 +248,24 @@ public class regSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
         }
     };
 
+    public List<GrupoSolicitudCotizacion> getGrupos() {
+        for (GrupoSolicitudCotizacion grupo : getEntidad().getGrupos()) {
+            if(grupo.getIdGrupoSolicitudCotizacion() == 0){
+                grupo.setAgregar(true);
+            } else if (!grupo.isEliminar()){
+                grupo.setActualizar(true);
+            }
+            for (ItemSolicitudCotizacion item : grupo.getItems()) {
+                if(item.getIdItemSolicitudCotizacion() == 0){
+                    item.setAgregar(true);
+                } else if (!item.isEliminar()){
+                    item.setActualizar(true);
+                }
+            }
+        }
+        return getEntidad().getGrupos();
+    }
+    
     private void AsignarValores() {
         getEntidad().setIdCliente(schCliente.getId());
         getEntidad().setRazonSocialCliente(schCliente.getText());
@@ -258,7 +282,7 @@ public class regSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
         getEntidad().setDescripcion(txtDescripcion.getText());
         getEntidad().setIdContactoCliente(schContacto.getId());
         getEntidad().setNombreContactoCliente(schContacto.getText());
-        //getEntidad().setItems(getItems());
+        getEntidad().setGrupos(getGrupos());
     }
 
     @Override
@@ -275,9 +299,13 @@ public class regSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
         schFormaPago.asingValues(getEntidad().getIdFormaPago(), getEntidad().getDescripcionFormaPago());
         txtDescripcion.setText(getEntidad().getDescripcion());
         schContacto.asingValues(getEntidad().getIdContactoCliente(), getEntidad().getNombreContactoCliente());
-        for (GrupoSolicitudCotizacion grupoSolicitud : getEntidad().getGrupos()) {
-            AgregarNodo(treeGruposItems, grupoSolicitud);
+        for (GrupoSolicitudCotizacion grupo : getEntidad().getGrupos()) {
+            DefaultMutableTreeNode nodoGrupo = AgregarNodo(treeGruposItems, grupo);
+            for (ItemSolicitudCotizacion item : grupo.getItems()) {
+                AgregarNodo(treeGruposItems, nodoGrupo, item);
+            }
         }
+        ExpandirTodosNodos(treeGruposItems);
     }
 
     @Override
@@ -349,19 +377,7 @@ public class regSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
             OcultarCargando(frame);
         }
     }
-
-    public List<ItemSolicitudCotizacion> getItems() {
-//        for (ItemSolicitudCotizacion item : getEntidad().getItems()) {
-//            if (item.getIdItemSolicitudCotizacion() == 0) {
-//                item.setAgregar(true);
-//            } else if (!item.isEliminar()) {
-//                item.setActualizar(true);
-//            }
-//        }
-//        return getEntidad().getItems();
-        return null;
-    }
-
+    
     public class swGuardarSolicitud extends SwingWorker<Object, Object> {
 
         @Override
@@ -416,31 +432,31 @@ public class regSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
         tpnlGruposItems.setTitleAt(0, this.item.getNombre());
         txtNombreItem.setText(this.item.getNombre());
         chkMedidaAbierta.setSelected(this.item.isMedidaAbierta());
-        txtAltoMedidaAbierta.setEnabled(this.item.isMedidaAbierta());
-        txtLargoMedidaAbierta.setEnabled(this.item.isMedidaAbierta());
+        spAltoMedidaAbierta.setEnabled(this.item.isMedidaAbierta());
+        spLargoMedidaAbierta.setEnabled(this.item.isMedidaAbierta());
         cboUnidadMedidaAbierta.setEnabled(this.item.isMedidaAbierta());
-        txtAltoMedidaAbierta.setText(String.valueOf(this.item.getAltoMedidaAbierta()));
-        txtLargoMedidaAbierta.setText(String.valueOf(this.item.getLargoMedidaAbierta()));
+        spAltoMedidaAbierta.setValue(this.item.getAltoMedidaAbierta());
+        spLargoMedidaAbierta.setValue(this.item.getLargoMedidaAbierta());
         cboUnidadMedidaAbierta.setSelectedItem(this.item.getUnidadMedidaAbierta());
         chkMedidaCerrada.setSelected(this.item.isMedidaCerrada());
-        txtAltoMedidaCerrada.setEnabled(this.item.isMedidaCerrada());
-        txtLargoMedidaCerrada.setEnabled(this.item.isMedidaCerrada());
-        txtAltoMedidaCerrada.setText(String.valueOf(this.item.getAltoMedidaCerrada()));
-        txtLargoMedidaCerrada.setText(String.valueOf(this.item.getLargoMedidaCerrada()));
+        spAltoMedidaCerrada.setEnabled(this.item.isMedidaCerrada());
+        spLargoMedidaCerrada.setEnabled(this.item.isMedidaCerrada());
+        spAltoMedidaCerrada.setValue(this.item.getAltoMedidaCerrada());
+        spLargoMedidaCerrada.setValue(this.item.getLargoMedidaCerrada());
         chkTiraRetira.setSelected(this.item.isTiraRetira());
-        txtTiraColor.setEnabled(this.item.isTiraRetira());
-        txtRetiraColor.setEnabled(this.item.isTiraRetira());
-        txtTiraColor.setText(String.valueOf(this.item.getTiraColor()));
-        txtRetiraColor.setText(String.valueOf(this.item.getRetiraColor()));
+        spTiraColor.setEnabled(this.item.isTiraRetira());
+        spRetiraColor.setEnabled(this.item.isTiraRetira());
+        spTiraColor.setValue(this.item.getTiraColor());
+        spRetiraColor.setValue(this.item.getRetiraColor());
         chkTipoUnidad.setSelected(this.item.isTipoUnidad());
         cboTipoUnidad.setEnabled(this.item.isTipoUnidad());
-        txtCantidadTipoUnidad.setEnabled(this.item.isTipoUnidad());
+        spCantidadTipoUnidad.setEnabled(this.item.isTipoUnidad());
         cboTipoUnidad.setSelectedItem(this.item.getNombreTipoUnidad());
-        txtCantidadTipoUnidad.setText(String.valueOf(this.item.getCantidadTipoUnidad()));
+        spCantidadTipoUnidad.setValue(this.item.getCantidadTipoUnidad());
         chkGrafico.setSelected(this.item.isGrafico());
         chkFondo.setSelected(this.item.isFondo());
-        txtFondo.setEnabled(this.item.isFondo());
-        txtFondo.setText(String.valueOf(this.item.getdFondo()));
+        spFondo.setEnabled(this.item.isFondo());
+        spFondo.setValue(this.item.getdFondo());
         chkServicioImpresion.setSelected(this.item.isServicioImpresion());
         schServicioImpresion.setEnabled(this.item.isServicioImpresion());
         schMaquina.setEnabled(this.item.isServicioImpresion());
@@ -451,40 +467,7 @@ public class regSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
         schMaterial.asingValues(this.item.getIdMaterial(), this.item.getNombreMaterial());
         txtAcabados.setText(this.item.getAcabados());
     }
-
-    private void AsignarValoresItem() {
-        this.item.setNombre(txtNombreItem.getText());
-        this.item.setMedidaAbierta(chkMedidaAbierta.isSelected());
-        this.item.setAltoMedidaAbierta(Double.parseDouble(txtAltoMedidaAbierta.getText()));
-        this.item.setLargoMedidaAbierta(Double.parseDouble(txtLargoMedidaAbierta.getText()));
-        if (cboUnidadMedidaAbierta.getSelectedItem() != null) {
-            this.item.setUnidadMedidaAbierta(cboUnidadMedidaAbierta.getSelectedItem().toString());
-        }
-        this.item.setMedidaCerrada(chkMedidaCerrada.isSelected());
-        this.item.setAltoMedidaCerrada(Double.parseDouble(txtAltoMedidaCerrada.getText()));
-        this.item.setLargoMedidaCerrada(Double.parseDouble(txtLargoMedidaCerrada.getText()));
-        this.item.setTiraRetira(chkTiraRetira.isSelected());
-        this.item.setTiraColor(Double.parseDouble(txtTiraColor.getText()));
-        this.item.setRetiraColor(Double.parseDouble(txtTiraColor.getText()));
-        this.item.setTipoUnidad(chkTipoUnidad.isSelected());
-        if (cboTipoUnidad.getSelectedItem() != null) {
-            this.item.setNombreTipoUnidad(cboTipoUnidad.getSelectedItem().toString());
-        }
-        this.item.setCantidadTipoUnidad(Integer.valueOf(txtCantidadTipoUnidad.getText()));
-        this.item.setFondo(chkFondo.isSelected());
-        this.item.setdFondo(Double.parseDouble(txtFondo.getText()));
-        this.item.setGrafico(chkGrafico.isSelected());
-        this.item.setServicioImpresion(chkServicioImpresion.isSelected());
-        this.item.setIdServicioImpresion(schServicioImpresion.getId());
-        this.item.setNombreServicioImpresion(schServicioImpresion.getText());
-        this.item.setIdMaquina(schMaquina.getId());
-        this.item.setDescripcionMaquina(schMaquina.getText());
-        this.item.setMaterial(chkMaterial.isSelected());
-        this.item.setIdMaterial(schMaterial.getId());
-        this.item.setNombreMaterial(schMaterial.getText());
-        this.item.setAcabados(txtAcabados.getText());
-    }
-
+    
     public void Aceptar() {
         if (super.isFromJson()) {
             AsignarValores();
@@ -537,24 +520,16 @@ public class regSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
         chkMedidaAbierta = new javax.swing.JCheckBox();
         chkMedidaCerrada = new javax.swing.JCheckBox();
         lblAltoMedidaAbierta = new javax.swing.JLabel();
-        txtAltoMedidaAbierta = new javax.swing.JTextField();
         lblLargoMedidaAbierta = new javax.swing.JLabel();
-        txtLargoMedidaAbierta = new javax.swing.JTextField();
         cboUnidadMedidaAbierta = new javax.swing.JComboBox();
         lblAltoMedidaCerrada = new javax.swing.JLabel();
-        txtAltoMedidaCerrada = new javax.swing.JTextField();
         lblLargoMedidaCerrada = new javax.swing.JLabel();
-        txtLargoMedidaCerrada = new javax.swing.JTextField();
         chkTiraRetira = new javax.swing.JCheckBox();
         lblTiraColor = new javax.swing.JLabel();
-        txtTiraColor = new javax.swing.JTextField();
         lblRetiraColor = new javax.swing.JLabel();
-        txtRetiraColor = new javax.swing.JTextField();
-        txtFondo = new javax.swing.JTextField();
         chkFondo = new javax.swing.JCheckBox();
         chkTipoUnidad = new javax.swing.JCheckBox();
         cboTipoUnidad = new javax.swing.JComboBox();
-        txtCantidadTipoUnidad = new javax.swing.JTextField();
         chkGrafico = new javax.swing.JCheckBox();
         chkServicioImpresion = new javax.swing.JCheckBox();
         schServicioImpresion = new com.sge.base.controles.JSearch();
@@ -562,6 +537,14 @@ public class regSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
         chkMaterial = new javax.swing.JCheckBox();
         lblMaquina = new javax.swing.JLabel();
         schMaterial = new com.sge.base.controles.JSearch();
+        spAltoMedidaAbierta = new javax.swing.JSpinner();
+        spLargoMedidaAbierta = new javax.swing.JSpinner();
+        spAltoMedidaCerrada = new javax.swing.JSpinner();
+        spLargoMedidaCerrada = new javax.swing.JSpinner();
+        spFondo = new javax.swing.JSpinner();
+        spRetiraColor = new javax.swing.JSpinner();
+        spTiraColor = new javax.swing.JSpinner();
+        spCantidadTipoUnidad = new javax.swing.JSpinner();
         tabInformacionAdicional = new javax.swing.JPanel();
         lblListaPrecioProducto = new javax.swing.JLabel();
         schListaPrecioProducto = new com.sge.base.controles.JSearch();
@@ -708,8 +691,39 @@ public class regSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
 
         lblNombreItem.setText("NOMBRE");
 
+        txtNombreItem.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                txtNombreItemChange();
+            }
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                txtNombreItemChange();
+            }
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                txtNombreItemChange();
+            }
+
+        });
+
         lblAcabados.setText("ACABADOS");
 
+        txtAcabados.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                txtAcabadosChange();
+            }
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                txtAcabadosChange();
+            }
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                txtAcabadosChange();
+            }
+
+        });
         txtAcabados.setColumns(20);
         txtAcabados.setRows(5);
         jScrollPane3.setViewportView(txtAcabados);
@@ -730,21 +744,13 @@ public class regSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
 
         lblAltoMedidaAbierta.setText("ALTO");
 
-        txtAltoMedidaAbierta.setText("0");
-
         lblLargoMedidaAbierta.setText("LARGO");
-
-        txtLargoMedidaAbierta.setText("0");
 
         cboUnidadMedidaAbierta.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "CM", "MT" }));
 
         lblAltoMedidaCerrada.setText("ALTO");
 
-        txtAltoMedidaCerrada.setText("0");
-
         lblLargoMedidaCerrada.setText("LARGO");
-
-        txtLargoMedidaCerrada.setText("0");
 
         chkTiraRetira.setText("TIRA Y RETIRA");
         chkTiraRetira.addChangeListener(new javax.swing.event.ChangeListener() {
@@ -755,13 +761,7 @@ public class regSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
 
         lblTiraColor.setText("TIRA COLOR");
 
-        txtTiraColor.setText("0");
-
         lblRetiraColor.setText("RETIRA COLOR");
-
-        txtRetiraColor.setText("0");
-
-        txtFondo.setText("0");
 
         chkFondo.setText("FONDO");
         chkFondo.addChangeListener(new javax.swing.event.ChangeListener() {
@@ -778,12 +778,15 @@ public class regSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
         });
 
         cboTipoUnidad.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "UNIDADES", "PAGINAS", "JUEGOS", "ORIGINALES", "OTROS" }));
-
-        txtCantidadTipoUnidad.setText("0");
+        cboTipoUnidad.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cboTipoUnidadItemStateChanged(evt);
+            }
+        });
 
         chkGrafico.setText("GRÁFICO");
 
-        chkServicioImpresion.setText("SERV. IMPRESIÓN");
+        chkServicioImpresion.setText("IMPRESIÓN");
         chkServicioImpresion.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
         chkServicioImpresion.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
@@ -798,6 +801,7 @@ public class regSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
             }
             @Override
             public void Clear(){
+                schServicioImpresionClear();
             }
         });
 
@@ -833,6 +837,62 @@ public class regSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
             }
         });
 
+        spAltoMedidaAbierta.setModel(new javax.swing.SpinnerNumberModel(Double.valueOf(0.0d), null, null, Double.valueOf(1.0d)));
+        spAltoMedidaAbierta.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                spAltoMedidaAbiertaStateChanged(evt);
+            }
+        });
+
+        spLargoMedidaAbierta.setModel(new javax.swing.SpinnerNumberModel(Double.valueOf(0.0d), null, null, Double.valueOf(1.0d)));
+        spLargoMedidaAbierta.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                spLargoMedidaAbiertaStateChanged(evt);
+            }
+        });
+
+        spAltoMedidaCerrada.setModel(new javax.swing.SpinnerNumberModel(Double.valueOf(0.0d), null, null, Double.valueOf(1.0d)));
+        spAltoMedidaCerrada.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                spAltoMedidaCerradaStateChanged(evt);
+            }
+        });
+
+        spLargoMedidaCerrada.setModel(new javax.swing.SpinnerNumberModel(Double.valueOf(0.0d), null, null, Double.valueOf(1.0d)));
+        spLargoMedidaCerrada.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                spLargoMedidaCerradaStateChanged(evt);
+            }
+        });
+
+        spFondo.setModel(new javax.swing.SpinnerNumberModel(Double.valueOf(0.0d), null, null, Double.valueOf(1.0d)));
+        spFondo.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                spFondoStateChanged(evt);
+            }
+        });
+
+        spRetiraColor.setModel(new javax.swing.SpinnerNumberModel(Double.valueOf(0.0d), null, null, Double.valueOf(1.0d)));
+        spRetiraColor.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                spRetiraColorStateChanged(evt);
+            }
+        });
+
+        spTiraColor.setModel(new javax.swing.SpinnerNumberModel(Double.valueOf(0.0d), null, null, Double.valueOf(1.0d)));
+        spTiraColor.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                spTiraColorStateChanged(evt);
+            }
+        });
+
+        spCantidadTipoUnidad.setModel(new javax.swing.SpinnerNumberModel());
+        spCantidadTipoUnidad.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                spCantidadTipoUnidadStateChanged(evt);
+            }
+        });
+
         javax.swing.GroupLayout pnlItemLayout = new javax.swing.GroupLayout(pnlItem);
         pnlItem.setLayout(pnlItemLayout);
         pnlItemLayout.setHorizontalGroup(
@@ -863,11 +923,11 @@ public class regSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
                                             .addGroup(pnlItemLayout.createSequentialGroup()
                                                 .addComponent(lblAltoMedidaAbierta)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(txtAltoMedidaAbierta, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addComponent(spAltoMedidaAbierta, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                 .addComponent(lblLargoMedidaAbierta)
-                                                .addGap(7, 7, 7)
-                                                .addComponent(txtLargoMedidaAbierta, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(4, 4, 4)
+                                                .addComponent(spLargoMedidaAbierta, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                 .addComponent(cboUnidadMedidaAbierta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -879,11 +939,9 @@ public class regSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
                                                 .addGroup(pnlItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                                     .addComponent(chkFondo, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                     .addGroup(pnlItemLayout.createSequentialGroup()
-                                                        .addComponent(txtAltoMedidaCerrada, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                        .addGap(7, 7, 7)
-                                                        .addComponent(lblLargoMedidaCerrada)
+                                                        .addComponent(spAltoMedidaCerrada, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                        .addComponent(txtLargoMedidaCerrada, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                                                        .addComponent(lblLargoMedidaCerrada))))))
                                     .addComponent(chkTiraRetira)
                                     .addGroup(pnlItemLayout.createSequentialGroup()
                                         .addGroup(pnlItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
@@ -893,21 +951,24 @@ public class regSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
                                                 .addComponent(cboTipoUnidad, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                             .addGroup(pnlItemLayout.createSequentialGroup()
                                                 .addComponent(lblTiraColor, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addGap(18, 18, 18)
-                                                .addComponent(txtTiraColor, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(spTiraColor, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(18, 18, 18)
                                                 .addComponent(lblRetiraColor)))
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addGroup(pnlItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addGroup(pnlItemLayout.createSequentialGroup()
-                                                .addComponent(txtRetiraColor, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addComponent(spRetiraColor, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                                .addComponent(txtFondo, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                .addComponent(spFondo, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE))
                                             .addGroup(pnlItemLayout.createSequentialGroup()
-                                                .addComponent(txtCantidadTipoUnidad, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addComponent(spCantidadTipoUnidad, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                                 .addComponent(chkGrafico, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                                .addGap(0, 0, Short.MAX_VALUE)))
+                                .addGap(0, 59, Short.MAX_VALUE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlItemLayout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(spLargoMedidaCerrada, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(18, 18, 18))
                     .addGroup(pnlItemLayout.createSequentialGroup()
                         .addComponent(chkMaterial)
@@ -934,18 +995,18 @@ public class regSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(pnlItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(lblAltoMedidaCerrada)
-                                    .addComponent(txtAltoMedidaCerrada, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtLargoMedidaCerrada, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(lblLargoMedidaCerrada)))
+                                    .addComponent(lblLargoMedidaCerrada)
+                                    .addComponent(spAltoMedidaCerrada, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(spLargoMedidaCerrada, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(pnlItemLayout.createSequentialGroup()
                                 .addComponent(chkMedidaAbierta)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(pnlItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(cboUnidadMedidaAbierta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(lblAltoMedidaAbierta)
-                                    .addComponent(txtAltoMedidaAbierta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(lblLargoMedidaAbierta)
-                                    .addComponent(txtLargoMedidaAbierta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                    .addComponent(spAltoMedidaAbierta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(spLargoMedidaAbierta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(pnlItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(chkTiraRetira)
@@ -954,15 +1015,15 @@ public class regSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
                         .addGroup(pnlItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(lblTiraColor)
                             .addComponent(lblRetiraColor)
-                            .addComponent(txtRetiraColor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtTiraColor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtFondo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(spFondo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(spRetiraColor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(spTiraColor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(pnlItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(chkTipoUnidad, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(cboTipoUnidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtCantidadTipoUnidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(chkGrafico))
+                            .addComponent(chkGrafico)
+                            .addComponent(spCantidadTipoUnidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(pnlItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(pnlItemLayout.createSequentialGroup()
@@ -978,7 +1039,7 @@ public class regSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
                             .addComponent(chkMaterial, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(schMaterial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(49, Short.MAX_VALUE))
+                .addContainerGap(47, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout tabGrupoItemLayout = new javax.swing.GroupLayout(tabGrupoItem);
@@ -1350,11 +1411,23 @@ public class regSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
         tpnlGruposItems.setTitleAt(0, this.grupo.getNombre());
     }
 
+    private void txtNombreItemChange(){
+        this.item.setNombre(txtNombreItem.getText());
+        treeGruposItems.updateUI();
+        tpnlGruposItems.setTitleAt(0, this.item.getNombre());
+    }
+    
+    private void txtAcabadosChange(){
+        this.item.setAcabados(txtAcabados.getText());
+    }
+    
     private void schMaquinaSearch() {
         VerModal(new lisMaquina(1), sele_maqu);
     }
 
     private void schMaquinaClear() {
+        this.item.setIdMaquina(0);
+        this.item.setDescripcionMaquina("");
         this.item.setAltoMaximoPliegoMaquina(0);
         this.item.setLargoMaximoPliegoMaquina(0);
     }
@@ -1364,17 +1437,24 @@ public class regSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
         VerModal(new lisServicio(1, filtro), sele_serv);
     }
 
+    private void schServicioImpresionClear(){
+        this.item.setIdServicioImpresion(0);
+        this.item.setNombreServicioImpresion("");
+    }
+    
     private void schMaterialSearch() {
         VerModal(new lisProducto(1), sele_mate);
     }
 
     private void schMaterialClear() {
+        this.item.setIdMaterial(0);
+        this.item.setCodigoMaterial("");
+        this.item.setNombreMaterial("");
         this.item.setAltoMaterial(0);
         this.item.setLargoMaterial(0);
         this.item.setIdUnidadMaterial(0);
-        this.item.setAbreviacionUnidadMaterial(null);
+        this.item.setAbreviacionUnidadMaterial("");
         this.item.setFactorUnidadMaterial(0);
-        this.item.setCodigoMaterial(null);
     }
 
     private void schContactoSearch() {
@@ -1394,42 +1474,49 @@ public class regSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
 
     private void chkServicioImpresionStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chkServicioImpresionStateChanged
         // TODO add your handling code here:
+        this.item.setServicioImpresion(chkServicioImpresion.isSelected());
         schServicioImpresion.setEnabled(chkServicioImpresion.isSelected());
         schMaquina.setEnabled(chkServicioImpresion.isSelected());
     }//GEN-LAST:event_chkServicioImpresionStateChanged
 
     private void chkMaterialStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chkMaterialStateChanged
         // TODO add your handling code here:
+        this.item.setMaterial(chkMaterial.isSelected());
         schMaterial.setEnabled(chkMaterial.isSelected());
     }//GEN-LAST:event_chkMaterialStateChanged
 
     private void chkTipoUnidadStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chkTipoUnidadStateChanged
         // TODO add your handling code here:
+        this.item.setTipoUnidad(chkTipoUnidad.isSelected());
         cboTipoUnidad.setEnabled(chkTipoUnidad.isSelected());
     }//GEN-LAST:event_chkTipoUnidadStateChanged
 
     private void chkMedidaAbiertaStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chkMedidaAbiertaStateChanged
         // TODO add your handling code here:
-        txtAltoMedidaAbierta.setEnabled(chkMedidaAbierta.isSelected());
-        txtLargoMedidaAbierta.setEnabled(chkMedidaAbierta.isSelected());
+        this.item.setMedidaAbierta(chkMedidaAbierta.isSelected());
+        spAltoMedidaAbierta.setEnabled(chkMedidaAbierta.isSelected());
+        spLargoMedidaAbierta.setEnabled(chkMedidaAbierta.isSelected());
         cboUnidadMedidaAbierta.setEnabled(chkMedidaAbierta.isSelected());
     }//GEN-LAST:event_chkMedidaAbiertaStateChanged
 
     private void chkMedidaCerradaStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chkMedidaCerradaStateChanged
         // TODO add your handling code here:
-        txtAltoMedidaCerrada.setEnabled(chkMedidaCerrada.isSelected());
-        txtLargoMedidaCerrada.setEnabled(chkMedidaCerrada.isSelected());
+        this.item.setMedidaAbierta(chkMedidaCerrada.isSelected());
+        spAltoMedidaCerrada.setEnabled(chkMedidaCerrada.isSelected());
+        spLargoMedidaCerrada.setEnabled(chkMedidaCerrada.isSelected());
     }//GEN-LAST:event_chkMedidaCerradaStateChanged
 
     private void chkTiraRetiraStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chkTiraRetiraStateChanged
         // TODO add your handling code here:
-        txtTiraColor.setEnabled(chkTiraRetira.isSelected());
-        txtRetiraColor.setEnabled(chkTiraRetira.isSelected());
+        this.item.setTiraRetira(chkTiraRetira.isSelected());
+        spTiraColor.setEnabled(chkTiraRetira.isSelected());
+        spRetiraColor.setEnabled(chkTiraRetira.isSelected());
     }//GEN-LAST:event_chkTiraRetiraStateChanged
 
     private void chkFondoStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chkFondoStateChanged
         // TODO add your handling code here:
-        txtFondo.setEnabled(chkFondo.isSelected());
+        this.item.setFondo(chkFondo.isSelected());
+        spFondo.setEnabled(chkFondo.isSelected());
     }//GEN-LAST:event_chkFondoStateChanged
 
     private void btnNuevoGrupoItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoGrupoItemActionPerformed
@@ -1508,6 +1595,51 @@ public class regSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
         this.grupo.setCantidad((int) spCantidad.getValue());
     }//GEN-LAST:event_spCantidadStateChanged
 
+    private void spAltoMedidaAbiertaStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_spAltoMedidaAbiertaStateChanged
+        // TODO add your handling code here:
+        this.item.setAltoMedidaAbierta((double)spAltoMedidaAbierta.getValue());
+    }//GEN-LAST:event_spAltoMedidaAbiertaStateChanged
+
+    private void spLargoMedidaAbiertaStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_spLargoMedidaAbiertaStateChanged
+        // TODO add your handling code here:
+        this.item.setLargoMedidaAbierta((double)spLargoMedidaAbierta.getValue());
+    }//GEN-LAST:event_spLargoMedidaAbiertaStateChanged
+
+    private void spAltoMedidaCerradaStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_spAltoMedidaCerradaStateChanged
+        // TODO add your handling code here:
+        this.item.setAltoMedidaCerrada((double)spAltoMedidaCerrada.getValue());
+    }//GEN-LAST:event_spAltoMedidaCerradaStateChanged
+
+    private void spLargoMedidaCerradaStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_spLargoMedidaCerradaStateChanged
+        // TODO add your handling code here:
+        this.item.setLargoMedidaCerrada((double)spLargoMedidaCerrada.getValue());
+    }//GEN-LAST:event_spLargoMedidaCerradaStateChanged
+
+    private void spTiraColorStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_spTiraColorStateChanged
+        // TODO add your handling code here:
+        this.item.setTiraColor((double)spTiraColor.getValue());
+    }//GEN-LAST:event_spTiraColorStateChanged
+
+    private void spRetiraColorStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_spRetiraColorStateChanged
+        // TODO add your handling code here:
+        this.item.setRetiraColor((double)spRetiraColor.getValue());
+    }//GEN-LAST:event_spRetiraColorStateChanged
+
+    private void spFondoStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_spFondoStateChanged
+        // TODO add your handling code here:
+        this.item.setdFondo((double)spFondo.getValue());
+    }//GEN-LAST:event_spFondoStateChanged
+
+    private void spCantidadTipoUnidadStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_spCantidadTipoUnidadStateChanged
+        // TODO add your handling code here:
+        this.item.setCantidadTipoUnidad((int)spCantidadTipoUnidad.getValue());
+    }//GEN-LAST:event_spCantidadTipoUnidadStateChanged
+
+    private void cboTipoUnidadItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cboTipoUnidadItemStateChanged
+        // TODO add your handling code here:
+        this.item.setNombreTipoUnidad(cboTipoUnidad.getSelectedItem().toString());
+    }//GEN-LAST:event_cboTipoUnidadItemStateChanged
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAceptar;
     private javax.swing.JButton btnCancelar;
@@ -1567,24 +1699,24 @@ public class regSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
     private com.sge.base.controles.JSearch schNumeracion;
     private com.sge.base.controles.JSearch schServicioImpresion;
     private com.sge.base.controles.JSearch schVendedor;
+    private javax.swing.JSpinner spAltoMedidaAbierta;
+    private javax.swing.JSpinner spAltoMedidaCerrada;
     private javax.swing.JSpinner spCantidad;
+    private javax.swing.JSpinner spCantidadTipoUnidad;
+    private javax.swing.JSpinner spFondo;
+    private javax.swing.JSpinner spLargoMedidaAbierta;
+    private javax.swing.JSpinner spLargoMedidaCerrada;
+    private javax.swing.JSpinner spRetiraColor;
+    private javax.swing.JSpinner spTiraColor;
     private javax.swing.JPanel tabGrupoItem;
     private javax.swing.JPanel tabInformacionAdicional;
     private javax.swing.JTabbedPane tpnlGruposItems;
     private javax.swing.JTree treeGruposItems;
     private javax.swing.JTextArea txtAcabados;
-    private javax.swing.JTextField txtAltoMedidaAbierta;
-    private javax.swing.JTextField txtAltoMedidaCerrada;
-    private javax.swing.JTextField txtCantidadTipoUnidad;
     private javax.swing.JTextField txtDescripcion;
     private javax.swing.JFormattedTextField txtFechaCreacion;
-    private javax.swing.JTextField txtFondo;
-    private javax.swing.JTextField txtLargoMedidaAbierta;
-    private javax.swing.JTextField txtLargoMedidaCerrada;
     private javax.swing.JTextField txtNombreGrupo;
     private javax.swing.JTextField txtNombreItem;
     private javax.swing.JTextField txtNumero;
-    private javax.swing.JTextField txtRetiraColor;
-    private javax.swing.JTextField txtTiraColor;
     // End of variables declaration//GEN-END:variables
 }

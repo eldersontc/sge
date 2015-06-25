@@ -420,11 +420,11 @@
                                                           <Group type="102" alignment="0" attributes="0">
                                                               <Component id="lblAltoMedidaAbierta" min="-2" max="-2" attributes="0"/>
                                                               <EmptySpace max="-2" attributes="0"/>
-                                                              <Component id="txtAltoMedidaAbierta" min="-2" pref="55" max="-2" attributes="0"/>
+                                                              <Component id="spAltoMedidaAbierta" min="-2" pref="55" max="-2" attributes="0"/>
                                                               <EmptySpace max="-2" attributes="0"/>
                                                               <Component id="lblLargoMedidaAbierta" min="-2" max="-2" attributes="0"/>
-                                                              <EmptySpace min="-2" pref="7" max="-2" attributes="0"/>
-                                                              <Component id="txtLargoMedidaAbierta" min="-2" pref="52" max="-2" attributes="0"/>
+                                                              <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
+                                                              <Component id="spLargoMedidaAbierta" min="-2" pref="55" max="-2" attributes="0"/>
                                                               <EmptySpace max="-2" attributes="0"/>
                                                               <Component id="cboUnidadMedidaAbierta" min="-2" max="-2" attributes="0"/>
                                                           </Group>
@@ -438,11 +438,9 @@
                                                               <Group type="103" groupAlignment="0" attributes="0">
                                                                   <Component id="chkFondo" alignment="0" min="-2" pref="98" max="-2" attributes="0"/>
                                                                   <Group type="102" alignment="0" attributes="0">
-                                                                      <Component id="txtAltoMedidaCerrada" min="-2" pref="55" max="-2" attributes="0"/>
-                                                                      <EmptySpace min="-2" pref="7" max="-2" attributes="0"/>
-                                                                      <Component id="lblLargoMedidaCerrada" min="-2" max="-2" attributes="0"/>
+                                                                      <Component id="spAltoMedidaCerrada" min="-2" pref="55" max="-2" attributes="0"/>
                                                                       <EmptySpace max="-2" attributes="0"/>
-                                                                      <Component id="txtLargoMedidaCerrada" min="-2" pref="52" max="-2" attributes="0"/>
+                                                                      <Component id="lblLargoMedidaCerrada" min="-2" max="-2" attributes="0"/>
                                                                   </Group>
                                                               </Group>
                                                           </Group>
@@ -458,28 +456,32 @@
                                                           </Group>
                                                           <Group type="102" alignment="1" attributes="0">
                                                               <Component id="lblTiraColor" min="-2" pref="94" max="-2" attributes="0"/>
-                                                              <EmptySpace type="separate" max="-2" attributes="0"/>
-                                                              <Component id="txtTiraColor" min="-2" pref="55" max="-2" attributes="0"/>
                                                               <EmptySpace max="-2" attributes="0"/>
+                                                              <Component id="spTiraColor" min="-2" pref="55" max="-2" attributes="0"/>
+                                                              <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
                                                               <Component id="lblRetiraColor" min="-2" max="-2" attributes="0"/>
                                                           </Group>
                                                       </Group>
                                                       <EmptySpace max="-2" attributes="0"/>
                                                       <Group type="103" groupAlignment="0" attributes="0">
                                                           <Group type="102" alignment="0" attributes="0">
-                                                              <Component id="txtRetiraColor" min="-2" pref="52" max="-2" attributes="0"/>
+                                                              <Component id="spRetiraColor" min="-2" pref="55" max="-2" attributes="0"/>
                                                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                                              <Component id="txtFondo" min="-2" pref="55" max="-2" attributes="0"/>
+                                                              <Component id="spFondo" min="-2" pref="55" max="-2" attributes="0"/>
                                                           </Group>
                                                           <Group type="102" alignment="0" attributes="0">
-                                                              <Component id="txtCantidadTipoUnidad" min="-2" pref="52" max="-2" attributes="0"/>
+                                                              <Component id="spCantidadTipoUnidad" min="-2" pref="55" max="-2" attributes="0"/>
                                                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
                                                               <Component id="chkGrafico" min="-2" pref="98" max="-2" attributes="0"/>
                                                           </Group>
                                                       </Group>
                                                   </Group>
                                               </Group>
+                                              <EmptySpace min="0" pref="59" max="32767" attributes="0"/>
+                                          </Group>
+                                          <Group type="102" alignment="1" attributes="0">
                                               <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                                              <Component id="spLargoMedidaCerrada" min="-2" pref="55" max="-2" attributes="0"/>
                                           </Group>
                                       </Group>
                                       <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
@@ -515,9 +517,9 @@
                                               <EmptySpace max="-2" attributes="0"/>
                                               <Group type="103" groupAlignment="3" attributes="0">
                                                   <Component id="lblAltoMedidaCerrada" alignment="3" min="-2" max="-2" attributes="0"/>
-                                                  <Component id="txtAltoMedidaCerrada" alignment="3" min="-2" max="-2" attributes="0"/>
-                                                  <Component id="txtLargoMedidaCerrada" alignment="3" min="-2" max="-2" attributes="0"/>
                                                   <Component id="lblLargoMedidaCerrada" alignment="3" min="-2" max="-2" attributes="0"/>
+                                                  <Component id="spAltoMedidaCerrada" alignment="3" min="-2" max="-2" attributes="0"/>
+                                                  <Component id="spLargoMedidaCerrada" alignment="3" min="-2" max="-2" attributes="0"/>
                                               </Group>
                                           </Group>
                                           <Group type="102" alignment="1" attributes="0">
@@ -526,9 +528,9 @@
                                               <Group type="103" groupAlignment="3" attributes="0">
                                                   <Component id="cboUnidadMedidaAbierta" alignment="3" min="-2" max="-2" attributes="0"/>
                                                   <Component id="lblAltoMedidaAbierta" alignment="3" min="-2" max="-2" attributes="0"/>
-                                                  <Component id="txtAltoMedidaAbierta" alignment="3" min="-2" max="-2" attributes="0"/>
                                                   <Component id="lblLargoMedidaAbierta" alignment="3" min="-2" max="-2" attributes="0"/>
-                                                  <Component id="txtLargoMedidaAbierta" alignment="3" min="-2" max="-2" attributes="0"/>
+                                                  <Component id="spAltoMedidaAbierta" alignment="3" min="-2" max="-2" attributes="0"/>
+                                                  <Component id="spLargoMedidaAbierta" alignment="3" min="-2" max="-2" attributes="0"/>
                                               </Group>
                                           </Group>
                                       </Group>
@@ -541,16 +543,16 @@
                                       <Group type="103" groupAlignment="3" attributes="0">
                                           <Component id="lblTiraColor" alignment="3" min="-2" max="-2" attributes="0"/>
                                           <Component id="lblRetiraColor" alignment="3" min="-2" max="-2" attributes="0"/>
-                                          <Component id="txtRetiraColor" alignment="3" min="-2" max="-2" attributes="0"/>
-                                          <Component id="txtTiraColor" alignment="3" min="-2" max="-2" attributes="0"/>
-                                          <Component id="txtFondo" alignment="3" min="-2" max="-2" attributes="0"/>
+                                          <Component id="spFondo" alignment="3" min="-2" max="-2" attributes="0"/>
+                                          <Component id="spRetiraColor" alignment="3" min="-2" max="-2" attributes="0"/>
+                                          <Component id="spTiraColor" alignment="3" min="-2" max="-2" attributes="0"/>
                                       </Group>
                                       <EmptySpace max="-2" attributes="0"/>
                                       <Group type="103" groupAlignment="3" attributes="0">
                                           <Component id="chkTipoUnidad" alignment="3" min="-2" pref="29" max="-2" attributes="0"/>
                                           <Component id="cboTipoUnidad" alignment="3" min="-2" max="-2" attributes="0"/>
-                                          <Component id="txtCantidadTipoUnidad" alignment="3" min="-2" max="-2" attributes="0"/>
                                           <Component id="chkGrafico" alignment="3" min="-2" max="-2" attributes="0"/>
+                                          <Component id="spCantidadTipoUnidad" alignment="3" min="-2" max="-2" attributes="0"/>
                                       </Group>
                                       <EmptySpace max="-2" attributes="0"/>
                                       <Group type="103" groupAlignment="0" attributes="0">
@@ -573,7 +575,7 @@
                                   </Group>
                                   <Component id="jScrollPane3" alignment="1" min="-2" pref="260" max="-2" attributes="0"/>
                               </Group>
-                              <EmptySpace pref="49" max="32767" attributes="0"/>
+                              <EmptySpace pref="47" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
@@ -585,6 +587,10 @@
                       </Properties>
                     </Component>
                     <Component class="javax.swing.JTextField" name="txtNombreItem">
+                      <AuxValues>
+                        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JTextField()"/>
+                        <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="txtNombreItem.getDocument().addDocumentListener(new DocumentListener() {&#xa;    @Override&#xa;    public void changedUpdate(DocumentEvent e) {&#xa;        txtNombreItemChange();&#xa;    }&#xa;    @Override&#xa;    public void removeUpdate(DocumentEvent e) {&#xa;        txtNombreItemChange();&#xa;    }&#xa;    @Override&#xa;    public void insertUpdate(DocumentEvent e) {&#xa;        txtNombreItemChange();&#xa;    }&#xa;&#xa;  });"/>
+                      </AuxValues>
                     </Component>
                     <Component class="javax.swing.JLabel" name="lblAcabados">
                       <Properties>
@@ -603,6 +609,10 @@
                             <Property name="columns" type="int" value="20"/>
                             <Property name="rows" type="int" value="5"/>
                           </Properties>
+                          <AuxValues>
+                            <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JTextArea()"/>
+                            <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="txtAcabados.getDocument().addDocumentListener(new DocumentListener() {&#xa;    @Override&#xa;    public void changedUpdate(DocumentEvent e) {&#xa;        txtAcabadosChange();&#xa;    }&#xa;    @Override&#xa;    public void removeUpdate(DocumentEvent e) {&#xa;        txtAcabadosChange();&#xa;    }&#xa;    @Override&#xa;    public void insertUpdate(DocumentEvent e) {&#xa;        txtAcabadosChange();&#xa;    }&#xa;&#xa;  });"/>
+                          </AuxValues>
                         </Component>
                       </SubComponents>
                     </Container>
@@ -627,19 +637,9 @@
                         <Property name="text" type="java.lang.String" value="ALTO"/>
                       </Properties>
                     </Component>
-                    <Component class="javax.swing.JTextField" name="txtAltoMedidaAbierta">
-                      <Properties>
-                        <Property name="text" type="java.lang.String" value="0"/>
-                      </Properties>
-                    </Component>
                     <Component class="javax.swing.JLabel" name="lblLargoMedidaAbierta">
                       <Properties>
                         <Property name="text" type="java.lang.String" value="LARGO"/>
-                      </Properties>
-                    </Component>
-                    <Component class="javax.swing.JTextField" name="txtLargoMedidaAbierta">
-                      <Properties>
-                        <Property name="text" type="java.lang.String" value="0"/>
                       </Properties>
                     </Component>
                     <Component class="javax.swing.JComboBox" name="cboUnidadMedidaAbierta">
@@ -657,19 +657,9 @@
                         <Property name="text" type="java.lang.String" value="ALTO"/>
                       </Properties>
                     </Component>
-                    <Component class="javax.swing.JTextField" name="txtAltoMedidaCerrada">
-                      <Properties>
-                        <Property name="text" type="java.lang.String" value="0"/>
-                      </Properties>
-                    </Component>
                     <Component class="javax.swing.JLabel" name="lblLargoMedidaCerrada">
                       <Properties>
                         <Property name="text" type="java.lang.String" value="LARGO"/>
-                      </Properties>
-                    </Component>
-                    <Component class="javax.swing.JTextField" name="txtLargoMedidaCerrada">
-                      <Properties>
-                        <Property name="text" type="java.lang.String" value="0"/>
                       </Properties>
                     </Component>
                     <Component class="javax.swing.JCheckBox" name="chkTiraRetira">
@@ -685,24 +675,9 @@
                         <Property name="text" type="java.lang.String" value="TIRA COLOR"/>
                       </Properties>
                     </Component>
-                    <Component class="javax.swing.JTextField" name="txtTiraColor">
-                      <Properties>
-                        <Property name="text" type="java.lang.String" value="0"/>
-                      </Properties>
-                    </Component>
                     <Component class="javax.swing.JLabel" name="lblRetiraColor">
                       <Properties>
                         <Property name="text" type="java.lang.String" value="RETIRA COLOR"/>
-                      </Properties>
-                    </Component>
-                    <Component class="javax.swing.JTextField" name="txtRetiraColor">
-                      <Properties>
-                        <Property name="text" type="java.lang.String" value="0"/>
-                      </Properties>
-                    </Component>
-                    <Component class="javax.swing.JTextField" name="txtFondo">
-                      <Properties>
-                        <Property name="text" type="java.lang.String" value="0"/>
                       </Properties>
                     </Component>
                     <Component class="javax.swing.JCheckBox" name="chkFondo">
@@ -733,11 +708,9 @@
                           </StringArray>
                         </Property>
                       </Properties>
-                    </Component>
-                    <Component class="javax.swing.JTextField" name="txtCantidadTipoUnidad">
-                      <Properties>
-                        <Property name="text" type="java.lang.String" value="0"/>
-                      </Properties>
+                      <Events>
+                        <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="cboTipoUnidadItemStateChanged"/>
+                      </Events>
                     </Component>
                     <Component class="javax.swing.JCheckBox" name="chkGrafico">
                       <Properties>
@@ -746,7 +719,7 @@
                     </Component>
                     <Component class="javax.swing.JCheckBox" name="chkServicioImpresion">
                       <Properties>
-                        <Property name="text" type="java.lang.String" value="SERV. IMPRESI&#xd3;N"/>
+                        <Property name="text" type="java.lang.String" value="IMPRESI&#xd3;N"/>
                         <Property name="horizontalTextPosition" type="int" value="2"/>
                       </Properties>
                       <Events>
@@ -755,7 +728,7 @@
                     </Component>
                     <Component class="com.sge.base.controles.JSearch" name="schServicioImpresion">
                       <AuxValues>
-                        <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="schServicioImpresion.addSearchListener(new SearchListener() {&#xa;    @Override&#xa;    public void Search(){&#xa;        schServicioImpresionSearch();&#xa;    }&#xa;    @Override&#xa;    public void Clear(){&#xa;    }&#xa;});"/>
+                        <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="schServicioImpresion.addSearchListener(new SearchListener() {&#xa;    @Override&#xa;    public void Search(){&#xa;        schServicioImpresionSearch();&#xa;    }&#xa;    @Override&#xa;    public void Clear(){&#xa;        schServicioImpresionClear();&#xa;    }&#xa;});"/>
                       </AuxValues>
                     </Component>
                     <Component class="com.sge.base.controles.JSearch" name="schMaquina">
@@ -781,6 +754,86 @@
                       <AuxValues>
                         <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="schMaterial.addSearchListener(new SearchListener() {&#xa;    @Override&#xa;    public void Search(){&#xa;        schMaterialSearch();&#xa;    }&#xa;    @Override&#xa;    public void Clear(){&#xa;        schMaterialClear();&#xa;    }&#xa;});"/>
                       </AuxValues>
+                    </Component>
+                    <Component class="javax.swing.JSpinner" name="spAltoMedidaAbierta">
+                      <Properties>
+                        <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
+                          <SpinnerModel initial="0.0" numberType="java.lang.Double" stepSize="1.0" type="number"/>
+                        </Property>
+                      </Properties>
+                      <Events>
+                        <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="spAltoMedidaAbiertaStateChanged"/>
+                      </Events>
+                    </Component>
+                    <Component class="javax.swing.JSpinner" name="spLargoMedidaAbierta">
+                      <Properties>
+                        <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
+                          <SpinnerModel initial="0.0" numberType="java.lang.Double" stepSize="1.0" type="number"/>
+                        </Property>
+                      </Properties>
+                      <Events>
+                        <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="spLargoMedidaAbiertaStateChanged"/>
+                      </Events>
+                    </Component>
+                    <Component class="javax.swing.JSpinner" name="spAltoMedidaCerrada">
+                      <Properties>
+                        <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
+                          <SpinnerModel initial="0.0" numberType="java.lang.Double" stepSize="1.0" type="number"/>
+                        </Property>
+                      </Properties>
+                      <Events>
+                        <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="spAltoMedidaCerradaStateChanged"/>
+                      </Events>
+                    </Component>
+                    <Component class="javax.swing.JSpinner" name="spLargoMedidaCerrada">
+                      <Properties>
+                        <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
+                          <SpinnerModel initial="0.0" numberType="java.lang.Double" stepSize="1.0" type="number"/>
+                        </Property>
+                      </Properties>
+                      <Events>
+                        <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="spLargoMedidaCerradaStateChanged"/>
+                      </Events>
+                    </Component>
+                    <Component class="javax.swing.JSpinner" name="spFondo">
+                      <Properties>
+                        <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
+                          <SpinnerModel initial="0.0" numberType="java.lang.Double" stepSize="1.0" type="number"/>
+                        </Property>
+                      </Properties>
+                      <Events>
+                        <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="spFondoStateChanged"/>
+                      </Events>
+                    </Component>
+                    <Component class="javax.swing.JSpinner" name="spRetiraColor">
+                      <Properties>
+                        <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
+                          <SpinnerModel initial="0.0" numberType="java.lang.Double" stepSize="1.0" type="number"/>
+                        </Property>
+                      </Properties>
+                      <Events>
+                        <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="spRetiraColorStateChanged"/>
+                      </Events>
+                    </Component>
+                    <Component class="javax.swing.JSpinner" name="spTiraColor">
+                      <Properties>
+                        <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
+                          <SpinnerModel initial="0.0" numberType="java.lang.Double" stepSize="1.0" type="number"/>
+                        </Property>
+                      </Properties>
+                      <Events>
+                        <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="spTiraColorStateChanged"/>
+                      </Events>
+                    </Component>
+                    <Component class="javax.swing.JSpinner" name="spCantidadTipoUnidad">
+                      <Properties>
+                        <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
+                          <SpinnerModel initial="0" numberType="java.lang.Integer" stepSize="1" type="number"/>
+                        </Property>
+                      </Properties>
+                      <Events>
+                        <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="spCantidadTipoUnidadStateChanged"/>
+                      </Events>
                     </Component>
                   </SubComponents>
                 </Container>

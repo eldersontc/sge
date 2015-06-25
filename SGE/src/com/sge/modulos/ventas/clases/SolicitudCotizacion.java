@@ -251,7 +251,7 @@ public class SolicitudCotizacion {
         return grupos;
     }
 
-    public void setGrupos(List<GrupoSolicitudCotizacion> items) {
+    public void setGrupos(List<GrupoSolicitudCotizacion> grupos) {
         this.grupos = grupos;
     }
 }
