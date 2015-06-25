@@ -14,11 +14,16 @@ import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.Action;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JSpinner;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.JTree;
+import javax.swing.text.JTextComponent;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
@@ -211,7 +216,31 @@ public class frameBase<T> extends JPanel {
     public void ExpandirTodosNodos(JTree tree) {
         Utils.ExpandirTodosNodos(tree);
     }
+    
+    public void AsignarTexto(JTextComponent textComponent, String texto){
+        Utils.AsignarTexto(textComponent, texto);
+    }
+    
+    public void AsignarVacio(JTextField textField){
+        Utils.AsignarVacio(textField);
+    }
+    
+    public void AsignarSeleccion(JCheckBox checkBox, boolean seleccion){
+        Utils.AsignarSeleccion(checkBox, seleccion);
+    }
+    
+    public void HabilitarControles(Object[] controles, boolean habilitar){
+        Utils.HabilitarControles(controles, habilitar);
+    }
+    
+    public void AsignarValor(JSpinner spinner, Object valor){
+        Utils.AsignarValor(spinner, valor);
+    }
 
+    public void AsignarItemActivo(JComboBox comboBox, Object item){
+        Utils.AsignarItemActivo(comboBox, item);
+    }
+    
     ////////////////////////// FABRICA DE CONTROLES ////////////////////////////
     public void VerProcesando(JPanel panel) {
         FabricaControles.VerProcesando(panel);

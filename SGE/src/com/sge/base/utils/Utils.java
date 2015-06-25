@@ -4,15 +4,21 @@ import com.sge.base.excepciones.Excepciones;
 import java.awt.Component;
 import java.util.List;
 import javax.swing.DefaultListModel;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JInternalFrame;
 import javax.swing.JList;
+import javax.swing.JSpinner;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.JTree;
 import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
+import javax.swing.text.JTextComponent;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
@@ -100,7 +106,22 @@ public class Utils {
     public static void VerControl(Component componet) {
         componet.setVisible(true);
     }
-
+    
+    public static void HabilitarControles(Object[] controles, boolean habilitar){
+        for (Object control : controles) {
+            ((JComponent)control).setEnabled(habilitar);
+        }
+    }
+    ////////////////////////// JSPINNER ////////////////////////////////////////
+    public static void AsignarValor(JSpinner spinner, Object valor){
+        spinner.setValue(valor);
+    }
+    
+    ///////////////////////// JCOMBOBOX ////////////////////////////////////////
+    public static void AsignarItemActivo(JComboBox comboBox, Object item){
+        comboBox.setSelectedItem(item);
+    }
+    
     ////////////////////////////////// JTREE ///////////////////////////////////
     public static DefaultMutableTreeNode AgregarNodo(JTree tree, Object userObject) {
         DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
@@ -162,5 +183,19 @@ public class Utils {
     ///////////////////////////// JTABBEDPANE //////////////////////////////////
     public static void AsignarTitulo(JTabbedPane tabbedPane, int tab, String titulo) {
         tabbedPane.setTitleAt(tab, titulo);
+    }
+    
+    ////////////////////////// JTEXTFIELD //////////////////////////////////////
+    public static void AsignarTexto(JTextComponent textComponent, String texto){
+        textComponent.setText(texto);
+    }
+    
+    public static void AsignarVacio(JTextField textField){
+        textField.setText("");
+    }
+    
+    ///////////////////////// JCHECKBOX ////////////////////////////////////////
+    public static void AsignarSeleccion(JCheckBox checkBox, boolean seleccion){
+        checkBox.setSelected(seleccion);
     }
 }
