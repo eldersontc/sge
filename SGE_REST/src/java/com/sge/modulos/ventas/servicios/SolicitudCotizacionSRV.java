@@ -58,7 +58,7 @@ public class SolicitudCotizacionSRV {
         int idSolicitudCotizacion = new Gson().fromJson(json, int.class);
         try {
             SolicitudCotizacionDTO SolicitudCotizacionDTO = new SolicitudCotizacionDTO(idUsuario);
-            SolicitudCotizacion solicitudCotizacion = SolicitudCotizacionDTO.ObtenerSolicitudCotizacion(idSolicitudCotizacion);
+            SolicitudCotizacion solicitudCotizacion = SolicitudCotizacionDTO.ObtenerSolicitudCotizacion(idSolicitudCotizacion, false);
             resultado.add(new Gson().toJson(true));
             resultado.add(new Gson().toJson(solicitudCotizacion));
         } catch (Exception e) {
@@ -173,7 +173,7 @@ public class SolicitudCotizacionSRV {
         int[] ids = new Gson().fromJson(json, int[].class);
         try {
             SolicitudCotizacionDTO SolicitudCotizacionDTO = new SolicitudCotizacionDTO(idUsuario);
-            SolicitudCotizacion solicitudCotizacion = SolicitudCotizacionDTO.ObtenerSolicitudCotizacion(ids[0]);
+            SolicitudCotizacion solicitudCotizacion = SolicitudCotizacionDTO.ObtenerSolicitudCotizacion(ids[0], true);
             ValorDefinidoDTO valorDefinidoDTO = new ValorDefinidoDTO(idUsuario);
             ValorDefinido valorDefinido = valorDefinidoDTO.ObtenerValorDefinidoPorUsuarioYEntidad(ids[1], 4);
             resultado.add(new Gson().toJson(true));

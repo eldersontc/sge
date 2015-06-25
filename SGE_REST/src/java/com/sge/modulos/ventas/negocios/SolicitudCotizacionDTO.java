@@ -40,13 +40,17 @@ public class SolicitudCotizacionDTO extends BaseDTO {
         return lista;
     }
 
-    public SolicitudCotizacion ObtenerSolicitudCotizacion(int idSolicitudCotizacion) {
+    public SolicitudCotizacion ObtenerSolicitudCotizacion(int idSolicitudCotizacion, boolean validarEstado) throws Exception {
         SolicitudCotizacion solicitudCotizacion = null;
         try {
             solicitudCotizacionDAO = new SolicitudCotizacionDAO();
             solicitudCotizacionDAO.AbrirSesion();
             solicitudCotizacion = solicitudCotizacionDAO.ObtenerPorId(SolicitudCotizacion.class, idSolicitudCotizacion);
 
+            if(validarEstado && !solicitudCotizacion.getEstado().equals("APROBADO")){
+                throw new Exception("SÓLO SE PUEDE GENERAR COTIZACIÓN CUANDO ESTÁ EN ESTADO : APROBADO.");
+            }
+            
             grupoSolicitudCotizacionDAO = new GrupoSolicitudCotizacionDAO();
             grupoSolicitudCotizacionDAO.AsignarSesion(solicitudCotizacionDAO);
 
@@ -203,11 +207,16 @@ public class SolicitudCotizacionDTO extends BaseDTO {
         return true;
     }
 
-    public boolean AprobarSolicitudCotizacion(int idSolicitudCotizacion) {
+    public boolean AprobarSolicitudCotizacion(int idSolicitudCotizacion) throws Exception {
         try {
             solicitudCotizacionDAO = new SolicitudCotizacionDAO();
             solicitudCotizacionDAO.IniciarTransaccion();
-            solicitudCotizacionDAO.ActualizarEstadoSolicitudCotizacion(idSolicitudCotizacion, "APROBADO");
+            SolicitudCotizacion solicitudCotizacion = solicitudCotizacionDAO.ObtenerPorId(SolicitudCotizacion.class, idSolicitudCotizacion);
+            if(solicitudCotizacion.getEstado().equals("PENDIENTE DE APROBACIÓN")){
+                solicitudCotizacionDAO.ActualizarEstadoSolicitudCotizacion(idSolicitudCotizacion, "APROBADO");
+            } else {
+                throw  new Exception("SÓLO SE PUEDE APROBAR CUANDO ESTÁ EN ESTADO : PENDIENTE DE APROBACIÓN.");
+            }
             solicitudCotizacionDAO.ConfirmarTransaccion();
         } catch (Exception e) {
             solicitudCotizacionDAO.AbortarTransaccion();
@@ -218,11 +227,16 @@ public class SolicitudCotizacionDTO extends BaseDTO {
         return true;
     }
 
-    public boolean DesaprobarSolicitudCotizacion(int idSolicitudCotizacion) {
+    public boolean DesaprobarSolicitudCotizacion(int idSolicitudCotizacion) throws Exception {
         try {
             solicitudCotizacionDAO = new SolicitudCotizacionDAO();
             solicitudCotizacionDAO.IniciarTransaccion();
-            solicitudCotizacionDAO.ActualizarEstadoSolicitudCotizacion(idSolicitudCotizacion, "PENDIENTE DE APROBACIÓN");
+            SolicitudCotizacion solicitudCotizacion = solicitudCotizacionDAO.ObtenerPorId(SolicitudCotizacion.class, idSolicitudCotizacion);
+            if(solicitudCotizacion.getEstado().equals("APROBADO")){
+                solicitudCotizacionDAO.ActualizarEstadoSolicitudCotizacion(idSolicitudCotizacion, "PENDIENTE DE APROBACIÓN");
+            } else {
+                throw  new Exception("SÓLO SE PUEDE DESAPROBAR CUANDO ESTÁ EN ESTADO : APROBADO.");
+            }
             solicitudCotizacionDAO.ConfirmarTransaccion();
         } catch (Exception e) {
             solicitudCotizacionDAO.AbortarTransaccion();
