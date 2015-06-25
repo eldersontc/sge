@@ -53,6 +53,7 @@ public class Excepciones {
     }
 
     public static void Controlar(String[] resultado, Component component) {
+        FabricaControles.VerAdvertencia(resultado[1], component);
 //        try {
 //            if (resultado.length > 1) {
 //                Exception exception = new Gson().fromJson(resultado[1], Exception.class);

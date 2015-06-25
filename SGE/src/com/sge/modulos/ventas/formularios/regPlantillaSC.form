@@ -349,7 +349,7 @@
                     <Property name="text" type="java.lang.String" value="IMPRESI&#xd3;N"/>
                   </Properties>
                   <Events>
-                    <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="chkServicioImpresionStateChanged"/>
+                    <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="chkServicioImpresionItemStateChanged"/>
                   </Events>
                 </Component>
                 <Component class="com.sge.base.controles.JSearch" name="schServicioImpresion">
@@ -367,7 +367,7 @@
                     <Property name="text" type="java.lang.String" value="MATERIAL"/>
                   </Properties>
                   <Events>
-                    <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="chkMaterialStateChanged"/>
+                    <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="chkMaterialItemStateChanged"/>
                   </Events>
                 </Component>
                 <Component class="javax.swing.JCheckBox" name="chkTipoUnidad">
@@ -375,7 +375,7 @@
                     <Property name="text" type="java.lang.String" value="TIPO UNIDAD"/>
                   </Properties>
                   <Events>
-                    <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="chkTipoUnidadStateChanged"/>
+                    <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="chkTipoUnidadItemStateChanged"/>
                   </Events>
                 </Component>
                 <Component class="javax.swing.JComboBox" name="cboTipoUnidad">
@@ -399,7 +399,7 @@
                     <Property name="text" type="java.lang.String" value="MEDIDA ABIERTA"/>
                   </Properties>
                   <Events>
-                    <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="chkMedidaAbiertaStateChanged"/>
+                    <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="chkMedidaAbiertaItemStateChanged"/>
                   </Events>
                 </Component>
                 <Component class="javax.swing.JComboBox" name="cboUnidadMedidaAbierta">
@@ -420,7 +420,7 @@
                     <Property name="text" type="java.lang.String" value="TIRA Y RETIRA"/>
                   </Properties>
                   <Events>
-                    <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="chkTiraRetiraStateChanged"/>
+                    <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="chkTiraRetiraItemStateChanged"/>
                   </Events>
                 </Component>
                 <Component class="javax.swing.JCheckBox" name="chkMedidaCerrada">
@@ -428,7 +428,7 @@
                     <Property name="text" type="java.lang.String" value="MEDIDA CERRADA"/>
                   </Properties>
                   <Events>
-                    <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="chkMedidaCerradaStateChanged"/>
+                    <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="chkMedidaCerradaItemStateChanged"/>
                   </Events>
                 </Component>
                 <Component class="javax.swing.JCheckBox" name="chkGrafico">
@@ -436,7 +436,7 @@
                     <Property name="text" type="java.lang.String" value="GR&#xc1;FICO"/>
                   </Properties>
                   <Events>
-                    <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="chkGraficoStateChanged"/>
+                    <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="chkGraficoItemStateChanged"/>
                   </Events>
                 </Component>
                 <Component class="javax.swing.JCheckBox" name="chkFondo">
@@ -444,7 +444,7 @@
                     <Property name="text" type="java.lang.String" value="FONDO"/>
                   </Properties>
                   <Events>
-                    <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="chkFondoStateChanged"/>
+                    <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="chkFondoItemStateChanged"/>
                   </Events>
                 </Component>
               </SubComponents>

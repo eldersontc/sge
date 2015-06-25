@@ -3,8 +3,6 @@ package com.sge.modulos.ventas.formularios;
 import com.google.gson.Gson;
 import com.sge.base.formularios.frameBase;
 import com.sge.modulos.ventas.clases.Cotizacion;
-import com.sge.modulos.ventas.clases.ItemCotizacion;
-import com.sge.modulos.ventas.clases.ItemSolicitudCotizacion;
 import com.sge.modulos.ventas.clases.SolicitudCotizacion;
 import com.sge.modulos.ventas.cliente.cliVentas;
 import java.awt.event.ActionEvent;
@@ -190,6 +188,7 @@ public class lisSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
                 if (resultado[0].equals("true")) {
                     new swObtenerSolicitudesCotizacion().execute();
                 } else {
+                    ControlarExcepcion(resultado);
                     OcultarCargando(frame);
                 }
             } catch (Exception e) {
@@ -227,6 +226,7 @@ public class lisSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
                 if (resultado[0].equals("true")) {
                     new swObtenerSolicitudesCotizacion().execute();
                 } else {
+                    ControlarExcepcion(resultado);
                     OcultarCargando(frame);
                 }
             } catch (Exception e) {
@@ -330,6 +330,8 @@ public class lisSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
                     regCotizacion.AsignarControles();
                     getParent().add(regCotizacion);
                     regCotizacion.setVisible(true);
+                } else {
+                    ControlarExcepcion(resultado);
                 }
             } catch (Exception e) {
                 OcultarCargando(frame);
@@ -358,34 +360,7 @@ public class lisSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
             new swEliminarSolicitudCotizacion().execute();
         }
     }
-
-    public void AprobarSolicitudCotizacion() {
-        String estado = ObtenerValorCelda(tbSolicitudes, 7);
-        if (estado.equals("PENDIENTE DE APROBACIÓN")) {
-            new swAprobarSolicitudCotizacion().execute();
-        } else {
-            VerAdvertencia("SÓLO SE PUEDE APROBAR CUANDO ESTÁ EN ESTADO : PENDIENTE DE APROBACIÓN.", frame);
-        }
-    }
-
-    public void DesaprobarSolicitudCotizacion() {
-        String estado = ObtenerValorCelda(tbSolicitudes, 7);
-        if (estado.equals("APROBADO")) {
-            new swDesaprobarSolicitudCotizacion().execute();
-        } else {
-            VerAdvertencia("SÓLO SE PUEDE DESAPROBAR CUANDO ESTÁ EN ESTADO : APROBADO.", frame);
-        }
-    }
-
-    public void GenerarCotizacion() {
-        String estado = ObtenerValorCelda(tbSolicitudes, 7);
-        if (estado.equals("APROBADO")) {
-            new swGenerarCotizacion().execute();
-        } else {
-            VerAdvertencia("SÓLO SE PUEDE GENERAR COTIZACIÓN CUANDO ESTÁ EN ESTADO : APROBADO.", frame);
-        }
-    }
-
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -621,21 +596,21 @@ public class lisSolicitudCotizacion extends frameBase<SolicitudCotizacion> {
     private void btnGenerarCotizacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarCotizacionActionPerformed
         // TODO add your handling code here:
         if (FilaActiva(tbSolicitudes)) {
-            GenerarCotizacion();
+            new swGenerarCotizacion().execute();
         }
     }//GEN-LAST:event_btnGenerarCotizacionActionPerformed
 
     private void btnAprobarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAprobarActionPerformed
         // TODO add your handling code here:
         if (FilaActiva(tbSolicitudes)) {
-            AprobarSolicitudCotizacion();
+            new swAprobarSolicitudCotizacion().execute();
         }
     }//GEN-LAST:event_btnAprobarActionPerformed
 
     private void btnDesaprobarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDesaprobarActionPerformed
         // TODO add your handling code here:
         if (FilaActiva(tbSolicitudes)) {
-            DesaprobarSolicitudCotizacion();
+            new swDesaprobarSolicitudCotizacion().execute();
         }
     }//GEN-LAST:event_btnDesaprobarActionPerformed
 

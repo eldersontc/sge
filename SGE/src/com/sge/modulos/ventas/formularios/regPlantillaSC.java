@@ -302,9 +302,9 @@ public class regPlantillaSC extends frameBase<PlantillaSolicitudCotizacion> {
         });
 
         chkServicioImpresion.setText("IMPRESIÓN");
-        chkServicioImpresion.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                chkServicioImpresionStateChanged(evt);
+        chkServicioImpresion.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                chkServicioImpresionItemStateChanged(evt);
             }
         });
 
@@ -331,16 +331,16 @@ public class regPlantillaSC extends frameBase<PlantillaSolicitudCotizacion> {
         });
 
         chkMaterial.setText("MATERIAL");
-        chkMaterial.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                chkMaterialStateChanged(evt);
+        chkMaterial.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                chkMaterialItemStateChanged(evt);
             }
         });
 
         chkTipoUnidad.setText("TIPO UNIDAD");
-        chkTipoUnidad.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                chkTipoUnidadStateChanged(evt);
+        chkTipoUnidad.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                chkTipoUnidadItemStateChanged(evt);
             }
         });
 
@@ -352,9 +352,9 @@ public class regPlantillaSC extends frameBase<PlantillaSolicitudCotizacion> {
         });
 
         chkMedidaAbierta.setText("MEDIDA ABIERTA");
-        chkMedidaAbierta.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                chkMedidaAbiertaStateChanged(evt);
+        chkMedidaAbierta.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                chkMedidaAbiertaItemStateChanged(evt);
             }
         });
 
@@ -366,30 +366,30 @@ public class regPlantillaSC extends frameBase<PlantillaSolicitudCotizacion> {
         });
 
         chkTiraRetira.setText("TIRA Y RETIRA");
-        chkTiraRetira.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                chkTiraRetiraStateChanged(evt);
+        chkTiraRetira.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                chkTiraRetiraItemStateChanged(evt);
             }
         });
 
         chkMedidaCerrada.setText("MEDIDA CERRADA");
-        chkMedidaCerrada.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                chkMedidaCerradaStateChanged(evt);
+        chkMedidaCerrada.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                chkMedidaCerradaItemStateChanged(evt);
             }
         });
 
         chkGrafico.setText("GRÁFICO");
-        chkGrafico.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                chkGraficoStateChanged(evt);
+        chkGrafico.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                chkGraficoItemStateChanged(evt);
             }
         });
 
         chkFondo.setText("FONDO");
-        chkFondo.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                chkFondoStateChanged(evt);
+        chkFondo.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                chkFondoItemStateChanged(evt);
             }
         });
 
@@ -612,32 +612,6 @@ public class regPlantillaSC extends frameBase<PlantillaSolicitudCotizacion> {
         Cerrar();
     }//GEN-LAST:event_btnCancelarActionPerformed
 
-    private void chkServicioImpresionStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chkServicioImpresionStateChanged
-        // TODO add your handling code here:
-        this.item.setServicioImpresion(chkServicioImpresion.isSelected());
-        schServicioImpresion.setEnabled(chkServicioImpresion.isSelected());
-    }//GEN-LAST:event_chkServicioImpresionStateChanged
-
-    private void chkMaterialStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chkMaterialStateChanged
-        // TODO add your handling code here:
-        this.item.setMaterial(chkMaterial.isSelected());
-        schMaterial.setEnabled(chkMaterial.isSelected());
-    }//GEN-LAST:event_chkMaterialStateChanged
-
-    private void chkTipoUnidadStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chkTipoUnidadStateChanged
-        // TODO add your handling code here:
-        this.item.setTipoUnidad(chkTipoUnidad.isSelected());
-        this.item.setNombreTipoUnidad(cboTipoUnidad.getSelectedItem().toString());
-        cboTipoUnidad.setEnabled(chkTipoUnidad.isSelected());
-    }//GEN-LAST:event_chkTipoUnidadStateChanged
-
-    private void chkMedidaAbiertaStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chkMedidaAbiertaStateChanged
-        // TODO add your handling code here:
-        this.item.setMedidaAbierta(chkMedidaAbierta.isSelected());
-        this.item.setUnidadMedidaAbierta(cboUnidadMedidaAbierta.getSelectedItem().toString());
-        cboUnidadMedidaAbierta.setEnabled(chkMedidaAbierta.isSelected());
-    }//GEN-LAST:event_chkMedidaAbiertaStateChanged
-
     private void btnNuevoItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoItemActionPerformed
         // TODO add your handling code here:
         ItemPlantillaSolicitudCotizacion item = new ItemPlantillaSolicitudCotizacion();
@@ -672,26 +646,6 @@ public class regPlantillaSC extends frameBase<PlantillaSolicitudCotizacion> {
         this.item.setUnidadMedidaAbierta(cboUnidadMedidaAbierta.getSelectedItem().toString());
     }//GEN-LAST:event_cboUnidadMedidaAbiertaItemStateChanged
 
-    private void chkMedidaCerradaStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chkMedidaCerradaStateChanged
-        // TODO add your handling code here:
-        this.item.setMedidaCerrada(chkMedidaCerrada.isSelected());
-    }//GEN-LAST:event_chkMedidaCerradaStateChanged
-
-    private void chkTiraRetiraStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chkTiraRetiraStateChanged
-        // TODO add your handling code here:
-        this.item.setTiraRetira(chkTiraRetira.isSelected());
-    }//GEN-LAST:event_chkTiraRetiraStateChanged
-
-    private void chkGraficoStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chkGraficoStateChanged
-        // TODO add your handling code here:
-        this.item.setGrafico(chkGrafico.isSelected());
-    }//GEN-LAST:event_chkGraficoStateChanged
-
-    private void chkFondoStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chkFondoStateChanged
-        // TODO add your handling code here:
-        this.item.setFondo(chkFondo.isSelected());
-    }//GEN-LAST:event_chkFondoStateChanged
-
     private void lisItemsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lisItemsMouseClicked
         // TODO add your handling code here:
         if (lisItems.getSelectedValue() != null) {
@@ -701,6 +655,52 @@ public class regPlantillaSC extends frameBase<PlantillaSolicitudCotizacion> {
             VerControl(tpnlItems);
         }
     }//GEN-LAST:event_lisItemsMouseClicked
+
+    private void chkServicioImpresionItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_chkServicioImpresionItemStateChanged
+        // TODO add your handling code here:
+        this.item.setServicioImpresion(chkServicioImpresion.isSelected());
+        schServicioImpresion.setEnabled(chkServicioImpresion.isSelected());
+    }//GEN-LAST:event_chkServicioImpresionItemStateChanged
+
+    private void chkMaterialItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_chkMaterialItemStateChanged
+        // TODO add your handling code here:
+        this.item.setMaterial(chkMaterial.isSelected());
+        schMaterial.setEnabled(chkMaterial.isSelected());
+    }//GEN-LAST:event_chkMaterialItemStateChanged
+
+    private void chkTipoUnidadItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_chkTipoUnidadItemStateChanged
+        // TODO add your handling code here:
+        this.item.setTipoUnidad(chkTipoUnidad.isSelected());
+        this.item.setNombreTipoUnidad(cboTipoUnidad.getSelectedItem().toString());
+        cboTipoUnidad.setEnabled(chkTipoUnidad.isSelected());
+    }//GEN-LAST:event_chkTipoUnidadItemStateChanged
+
+    private void chkMedidaAbiertaItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_chkMedidaAbiertaItemStateChanged
+        // TODO add your handling code here:
+        this.item.setMedidaAbierta(chkMedidaAbierta.isSelected());
+        this.item.setUnidadMedidaAbierta(cboUnidadMedidaAbierta.getSelectedItem().toString());
+        cboUnidadMedidaAbierta.setEnabled(chkMedidaAbierta.isSelected());
+    }//GEN-LAST:event_chkMedidaAbiertaItemStateChanged
+
+    private void chkTiraRetiraItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_chkTiraRetiraItemStateChanged
+        // TODO add your handling code here:
+        this.item.setTiraRetira(chkTiraRetira.isSelected());
+    }//GEN-LAST:event_chkTiraRetiraItemStateChanged
+
+    private void chkFondoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_chkFondoItemStateChanged
+        // TODO add your handling code here:
+        this.item.setFondo(chkFondo.isSelected());
+    }//GEN-LAST:event_chkFondoItemStateChanged
+
+    private void chkMedidaCerradaItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_chkMedidaCerradaItemStateChanged
+        // TODO add your handling code here:
+        this.item.setMedidaCerrada(chkMedidaCerrada.isSelected());
+    }//GEN-LAST:event_chkMedidaCerradaItemStateChanged
+
+    private void chkGraficoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_chkGraficoItemStateChanged
+        // TODO add your handling code here:
+        this.item.setGrafico(chkGrafico.isSelected());
+    }//GEN-LAST:event_chkGraficoItemStateChanged
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAceptar;
